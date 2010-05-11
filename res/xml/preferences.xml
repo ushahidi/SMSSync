@@ -16,5 +16,22 @@
 
 <!-- This is a primitive example showing the different types of preferences available. -->
 <PreferenceScreen
-  xmlns:android="http://schemas.android.com/apk/res/android">
+	xmlns:android="http://schemas.android.com/apk/res/android">
+  
+	<PreferenceCategory
+    	android:title="@string/general_settings">
+    	
+		<EditTextPreference
+    		android:key="website_preference"
+   			android:title="@string/edittxt_website_pref"
+      		android:summary="@string/edittxt_website_pref_hint"
+      		android:dialogTitle="@string/edittxt_website_pref_dialog_title" />
+        
+        <CheckBoxPreference
+        	android:key="enable_sms_sync_preference"
+       		android:title="@string/chk_enable_sms_sync"
+          	android:summary="@string/chk_sms_sync_hint" />
+          	
+          	  	        
+  	</PreferenceCategory>
 </PreferenceScreen>
