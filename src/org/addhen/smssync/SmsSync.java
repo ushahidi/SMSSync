@@ -21,12 +21,15 @@ package org.addhen.smssync;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 
-public class SmsSync extends Activity {
+public class SmsSync extends PreferenceActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    	super.onCreate(savedInstanceState);
+        
+        // Load the preferences from an XML resource
+        addPreferencesFromResource(R.xml.preferences);
     }
 }

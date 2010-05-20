@@ -24,7 +24,7 @@
 		<EditTextPreference
     		android:key="website_preference"
    			android:title="@string/edittxt_website_pref"
-      		android:summary="@string/edittxt_website_pref_hint"
+      		android:summary="@string/edittxt_website_pref_summary"
       		android:dialogTitle="@string/edittxt_website_pref_dialog_title" />
         
         <CheckBoxPreference
@@ -32,6 +32,12 @@
        		android:title="@string/chk_enable_sms_sync"
           	android:summary="@string/chk_sms_sync_hint" />
           	
-          	  	        
+        <EditTextPreference
+    		android:key="keyword_preference"
+   			android:title="@string/edittxt_keyword_pref"
+      		android:summary="@string/editxt_keyword_pref_summary"
+      		android:dialogTitle="@string/edittxt_keyword_dialog_pref"
+      		android:hint="@string/edittxt_keyword_hint" />
+          	
   	</PreferenceCategory>
 </PreferenceScreen>
