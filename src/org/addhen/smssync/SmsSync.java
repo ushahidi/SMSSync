@@ -1,8 +1,8 @@
 /** 
- * Copyright (c) 2010 Ushahidi Inc
+ * Copyright (c) 2010 Addhen
  * All rights reserved
- * Contact: team@ushahidi.com
- * Website: http://www.ushahidi.com
+ * Contact: henry@addhen.org
+ * Website: http://www.addhen.org/blog
  * 
  * GNU Lesser General Public License Usage
  * This file may be used under the terms of the GNU Lesser
@@ -13,13 +13,11 @@
  * will be met: http://www.gnu.org/licenses/lgpl.html.	
  *	
  *
- * If you have questions regarding the use of this file, please contact
- * Ushahidi developers at team@ushahidi.com.
  * 
  **/
+
 package org.addhen.smssync;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
