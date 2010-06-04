@@ -23,11 +23,43 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import android.util.Log;
 
 public class SmsSyncHttpClient {
+	
+	public static final DefaultHttpClient httpclient = new DefaultHttpClient();
+	public static HttpResponse GetURL(String URL) throws IOException {
+    	
+		try {
+			//wrap try around because this constructor can throw Error
+			final HttpGet httpget = new HttpGet(URL);
+			httpget.addHeader("User-Agent", "SmsSync-Android/1.0)");
+
+			// Post, check and show the result (not really spectacular, but works):
+			HttpResponse response =  httpclient.execute(httpget);
+			
+			return response;
+
+		} catch (final Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    }
 	
 	/**
      * Upload sms to a webservice via HTTP POST
@@ -37,33 +69,46 @@ public class SmsSyncHttpClient {
      * @throws IOException
      * TODO Think through this method and make it more generic.
      */
-    public static boolean postSmsToWebService(String URL, HashMap<String, String> params) throws IOException{
-        ClientHttpRequest req = null;
-
-        try {
-             URL url = new URL(URL);
-             req = new ClientHttpRequest(url);
-             
-             req.setParameter("api_key", params.get("api_key"));
-             req.setParameter("message_from",params.get("message_from"));
-             req.setParameter("message_description", params.get("message_description"));
-             
-             //InputStream serverInput = req.post();
-             
-             
-             /*if( GetText(serverInput) ){
-            	 
-            	 return true;
-             }*/
-             
-             //TODO determine for a successful sms post
-             return true;
-             
-        } catch (MalformedURLException ex) {
-        	//fall through and return false
-        }
-        return false;
-   }
+    public static boolean postSmsToWebService(String URL, HashMap<String, String> params) {
+    	// Create a new HttpClient and Post Header  
+        HttpClient httpclient = new DefaultHttpClient();  
+        HttpPost httppost = new HttpPost(URL);  
+      
+        try {  
+            // Add your data  
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);  
+            nameValuePairs.add(new BasicNameValuePair("api_key", params.get("api_key")));  
+            nameValuePairs.add(new BasicNameValuePair("phone", params.get("phone")));
+            nameValuePairs.add(new BasicNameValuePair("body", params.get("body")));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));  
+      
+            // Execute HTTP Post Request  
+            HttpResponse response = httpclient.execute(httppost);  
+            
+            if( GetText(response) != "" ) {
+            	Log.i("HttpReponse", "This came in "+URL+" "+response.getStatusLine().getStatusCode()+" "+GetText(response));
+            	return true;
+            } else {
+            	return false;
+            }
+            
+        } catch (ClientProtocolException e) {  
+            return false;
+        } catch (IOException e) {  
+        	return false;  
+        }  
+        
+    }
+    
+    public static String GetText(HttpResponse response) {
+		String text = "";
+		try {
+			text = GetText(response.getEntity().getContent());
+		} catch (final Exception ex) {
+		
+		}
+		return text;
+	}
     
     public static String GetText(InputStream in) {
 		String text = "";
