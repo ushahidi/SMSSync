@@ -19,8 +19,13 @@
     <string name="edittxt_website_pref">Choose your website.</string>
     <string name="edittxt_website_pref_summary">The website you want to push sms to.</string>
     <string name="edittxt_website_pref_dialog_title">Enter a valid URL.</string>
+    <string name="edittxt_api_key_pref">Enter webservice API Key</string>
+    <string name="edittxt_api_key_pref_dialog_title">Enter webservice API Key</string>
+    <string name="edittxt_api_key_pref_summary">A unique key to for your webservice</string>
     <string name="edittxt_keyword_pref">Enter keyword(s).</string>
     <string name="edittxt_keyword_dialog_pref">Enter keyword(s).</string>
+    <string name="sms_sync_enabled">SmsSync Is Enabled</string>
+    <string name="sms_sync_disabled">SmsSync Disabled</string>
     <string name="edittxt_keyword_hint">games,laugh,productive,...</string>
     <string name="editxt_keyword_pref_summary">Leaving this 
     	field empty means all messages will be sent.</string>

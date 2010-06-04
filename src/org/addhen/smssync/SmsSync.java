@@ -18,16 +18,25 @@
 
 package org.addhen.smssync;
 
-import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
 
-public class SmsSync extends PreferenceActivity {
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-        
-        // Load the preferences from an XML resource
-        addPreferencesFromResource(R.xml.preferences);
-    }
+
+public class SmsSync {
+	public static String website = "";
+	public static String keyword = "";
+	public static String apiKey = "";
+	public static Boolean enabled = false;
+	public static final String PREF_NAME = "SMS_SYNC_PREF";
+	
+	public static void loadPreferences( Context context ) {
+		final SharedPreferences settings = context.getSharedPreferences(
+				PREF_NAME, 0);
+		
+		website = settings.getString("WebsitePref", "");
+		keyword = settings.getString("Keyword", "");
+		apiKey = settings.getString("ApiKey", "");
+		enabled = settings.getBoolean("EnableSmsSync", false);
+		
+	}
 }

@@ -21,16 +21,22 @@
 	<PreferenceCategory
     	android:title="@string/general_settings">
     	
+    	<CheckBoxPreference
+        	android:key="enable_sms_sync_preference"
+       		android:title="@string/chk_enable_sms_sync"
+          	android:summary="@string/chk_sms_sync_hint" />
+		
 		<EditTextPreference
     		android:key="website_preference"
    			android:title="@string/edittxt_website_pref"
       		android:summary="@string/edittxt_website_pref_summary"
       		android:dialogTitle="@string/edittxt_website_pref_dialog_title" />
         
-        <CheckBoxPreference
-        	android:key="enable_sms_sync_preference"
-       		android:title="@string/chk_enable_sms_sync"
-          	android:summary="@string/chk_sms_sync_hint" />
+        <EditTextPreference
+    		android:key="api_key_preference"
+   			android:title="@string/edittxt_api_key_pref"
+      		android:summary="@string/edittxt_api_key_pref_summary"
+      		android:dialogTitle="@string/edittxt_api_key_pref_dialog_title" />
           	
         <EditTextPreference
     		android:key="keyword_preference"
