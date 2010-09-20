@@ -23,7 +23,7 @@ import java.util.Iterator;
 public class ClientHttpRequest {
 	URLConnection connection;
 	OutputStream os = null;
-	
+
 	@SuppressWarnings("unchecked")
 	Map cookies = new HashMap();
 
@@ -502,4 +502,3 @@ public static InputStream post(URL url, Map cookies, Map parameters) throws IOEx
     return new ClientHttpRequest(url).post(name1, value1, name2, value2, name3, value3, name4, value4);
   }
 }
-

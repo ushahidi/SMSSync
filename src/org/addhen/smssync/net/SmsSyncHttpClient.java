@@ -37,10 +37,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.util.Log;
-
 public class SmsSyncHttpClient {
-	
+
 	public static final DefaultHttpClient httpclient = new DefaultHttpClient();
 	public static HttpResponse GetURL(String URL) throws IOException {
     	
@@ -51,7 +49,7 @@ public class SmsSyncHttpClient {
 
 			// Post, check and show the result (not really spectacular, but works):
 			HttpResponse response =  httpclient.execute(httpget);
-			
+
 			return response;
 
 		} catch (final Exception e) {
@@ -60,7 +58,7 @@ public class SmsSyncHttpClient {
 		}
 		return null;
     }
-	
+
 	/**
      * Upload sms to a webservice via HTTP POST
      * @param address
@@ -85,8 +83,7 @@ public class SmsSyncHttpClient {
             // Execute HTTP Post Request  
             HttpResponse response = httpclient.execute(httppost);  
             
-            if( GetText(response) != "" ) {
-            	Log.i("HttpReponse", "This came in "+URL+" "+response.getStatusLine().getStatusCode()+" "+GetText(response));
+            if( response.getStatusLine().getStatusCode() == 200 ) {
             	return true;
             } else {
             	return false;
@@ -105,7 +102,7 @@ public class SmsSyncHttpClient {
 		try {
 			text = GetText(response.getEntity().getContent());
 		} catch (final Exception ex) {
-		
+
 		}
 		return text;
 	}

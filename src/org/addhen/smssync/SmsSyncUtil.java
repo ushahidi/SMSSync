@@ -34,7 +34,7 @@ public class SmsSyncUtil {
 	private static NetworkInfo networkInfo;
 	
 	/**
-	 * joins two strings together
+	 * Joins two strings together
 	 * @param first
 	 * @param second
 	 * @return
@@ -44,7 +44,7 @@ public class SmsSyncUtil {
 	}
 	
 	/**
-	 * Converts a string integer 
+	 * Converts a string to an integer 
 	 * @param value
 	 * @return
 	 */
