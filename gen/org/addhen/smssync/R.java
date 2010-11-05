@@ -11,7 +11,11 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int icon=0x7f020000;
+        public static final int favicon=0x7f020000;
+        public static final int icon=0x7f020001;
+        public static final int noti_smssync=0x7f020002;
+        public static final int smssync_48=0x7f020003;
+        public static final int smssync_72=0x7f020004;
     }
     public static final class layout {
         public static final int main=0x7f030000;
@@ -31,6 +35,11 @@ public final class R {
         public static final int edittxt_website_pref_summary=0x7f050001;
         public static final int editxt_keyword_pref_summary=0x7f05000b;
         public static final int general_settings=0x7f05000c;
+        public static final int notification_summary=0x7f050012;
+        public static final int powered=0x7f050013;
+        public static final int powered_by=0x7f050014;
+        public static final int sms_status_failed=0x7f050011;
+        public static final int sms_status_success=0x7f050010;
         public static final int sms_sync_disabled=0x7f050009;
         public static final int sms_sync_enabled=0x7f050008;
     }

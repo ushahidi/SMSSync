@@ -1,0 +1,125 @@
+/** 
+ * Copyright (c) 2010 Addhen
+ * All rights reserved
+ * Contact: henry@addhen.org
+ * Website: http://www.addhen.org/blog
+ * 
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.	
+ *	
+ *
+ * 
+ **/
+
+package org.addhen.smssync;
+
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
+import android.preference.PreferenceActivity;
+
+public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+	
+	public static final String KEY_WEBSITE_PREF = "website_preference";
+	public static final String KEY_KEYWORD_PREF = "keyword_preference";
+	public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
+	public static final String KEY_API_KEY_PREF = "api_key_preference";
+	public static final String PREFS_NAME = "SMS_SYNC_PREF";
+	
+	private EditTextPreference websitePref;
+	private EditTextPreference apiKeyPref;
+	private EditTextPreference keywordPref;
+	private CheckBoxPreference enableSmsSync;
+
+	private SharedPreferences settings ;
+	private SharedPreferences.Editor editor;
+	
+	@Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        // Load the preferences from an XML resource
+        addPreferencesFromResource(R.xml.preferences);
+        websitePref = (EditTextPreference)getPreferenceScreen().findPreference(
+        		KEY_WEBSITE_PREF);
+        
+        apiKeyPref = (EditTextPreference)getPreferenceScreen().findPreference(
+        		KEY_API_KEY_PREF);
+        
+        keywordPref = (EditTextPreference)getPreferenceScreen().findPreference(
+        		KEY_KEYWORD_PREF);
+        
+        enableSmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
+        		KEY_ENABLE_SMS_SYNC_PREF);
+        this.savePreferences();
+    }
+	
+	protected void savePreferences() {
+		settings = getSharedPreferences(PREFS_NAME, 0);
+		
+		editor = settings.edit();
+		editor.putString("WebsitePref", websitePref.getText());
+		editor.putString("ApiKey", apiKeyPref.getText());
+		editor.putString("Keyword", keywordPref.getText());
+		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
+		editor.commit();
+	}
+	
+	@Override
+	protected void onResume() {
+		 super.onResume();
+		 // Set up a listener whenever a key changes
+		 getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+		 
+	}
+	
+	@Override
+	protected void onPause() {
+		 super.onPause();
+
+	        // Unregister the listener whenever a key changes
+	        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+	        
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		NotificationManager notificationManager =
+		    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		//Enable or disable sms update
+		if(key.equals("enable_sms_sync_preference")) {
+			//TODO do some validation here
+		}
+		
+		if( sharedPreferences.getBoolean("enable_sms_sync_preference",false))
+		{
+			Intent baseIntent = new Intent(this, Settings.class);
+	        baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			
+			
+			Notification notification = new Notification(R.drawable.favicon, "Status", System.currentTimeMillis());
+			
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
+			notification.setLatestEventInfo(this, "SMSSync","SMSSync Gateway is Running", pendingIntent);
+			notificationManager.notify(1, notification);
+			
+		} else {
+			notificationManager.cancelAll();
+		}
+		
+	}
+
+}

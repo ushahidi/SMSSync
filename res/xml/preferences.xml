@@ -44,6 +44,11 @@
       		android:summary="@string/editxt_keyword_pref_summary"
       		android:dialogTitle="@string/edittxt_keyword_dialog_pref"
       		android:hint="@string/edittxt_keyword_hint" />
+      		
+      	<Preference android:key="powered_preference"
+                android:title="@string/app_name"
+                android:summary="@string/powered_by"
+                android:persistent="false" />
           	
   	</PreferenceCategory>
 </PreferenceScreen>

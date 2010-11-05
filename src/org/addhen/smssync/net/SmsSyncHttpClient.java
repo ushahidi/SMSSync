@@ -37,6 +37,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.util.Log;
+
 public class SmsSyncHttpClient {
 
 	public static final DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -75,9 +77,9 @@ public class SmsSyncHttpClient {
         try {  
             // Add your data  
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);  
-            nameValuePairs.add(new BasicNameValuePair("api_key", params.get("api_key")));  
-            nameValuePairs.add(new BasicNameValuePair("phone", params.get("phone")));
-            nameValuePairs.add(new BasicNameValuePair("body", params.get("body")));
+            nameValuePairs.add(new BasicNameValuePair("secret", params.get("secrete")));  
+            nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
+            nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));  
       
             // Execute HTTP Post Request  
