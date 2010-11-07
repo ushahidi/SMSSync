@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.Vector;
 
 import android.content.Context;
@@ -146,5 +147,27 @@ public class SmsSyncUtil {
 	public static void showToast(Context context, int i ) {
 		int duration = Toast.LENGTH_SHORT;
 		Toast.makeText(context, i, duration).show();
+	}
+	
+	/**
+	 * Find words in a string
+	 * 
+	 * @param String message - The string to search by.
+	 * @param String keywords - The keywords to 
+	 * 
+	 * @return boolean
+	 */
+	public static boolean processString(String message, String [] keywords) {
+		Scanner scanner = new Scanner(message);
+		while( scanner.hasNext() ) {
+			for ( String keyword : keywords ) {
+				if( scanner.nextLine().contentEquals(keyword)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 }

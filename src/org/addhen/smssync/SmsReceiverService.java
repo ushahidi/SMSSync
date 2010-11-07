@@ -62,7 +62,6 @@ public class SmsReceiverService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 	    
-		//int mResultCode = intent != null ? intent.getIntExtra("result", 0) : 0;
 	    Message msg = mServiceHandler.obtainMessage();
 	    msg.arg1 = startId;
 	    msg.obj = intent;
@@ -91,8 +90,7 @@ public class SmsReceiverService extends Service {
 			int serviceId = msg.arg1;
 			Intent intent = (Intent) msg.obj;
 			String action = intent.getAction();
-			//String dataType = intent.getType();
-
+			
 			if (ACTION_SMS_RECEIVED.equals(action)) {
 				handleSmsReceived(intent);
 			} 
@@ -131,10 +129,23 @@ public class SmsReceiverService extends Service {
 	    if( SmsSync.enabled ) {
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
-	    		if( !this.postToAWebService() ) {
-	    			this.showNotification(messageBody, "SMSSync Message Sending failed.");
-	    		}else {
-	    			this.showNotification(messageBody, "SMSSync Message Sent.");
+	    		// if keywoard is enabled
+	    		if(SmsSync.keyword.equals("")){
+	    			String [] keywords = SmsSync.keyword.split(",");
+	    			if( SmsSyncUtil.processString(messageBody, keywords)){
+	    				if( !this.postToAWebService() ) {
+		    				this.showNotification(messageBody, "SMSSync Message Sending failed.");
+		    			}else {
+		    				this.showNotification(messageBody, "SMSSync Message Sent.");
+		    			}
+	    			}
+	    		// keyword is not enabled
+	    		} else {
+	    			if( !this.postToAWebService() ) {
+	    				this.showNotification(messageBody, "SMSSync Message Sending failed.");
+	    			}else {
+	    				this.showNotification(messageBody, "SMSSync Message Sent.");
+	    			}
 	    		}
 	    	}
 	    }

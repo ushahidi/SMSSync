@@ -16,26 +16,23 @@
 
 <!-- This is a primitive example showing the different types of preferences available. -->
 <resources>
-    <string name="edittxt_website_pref">Choose your website.</string>
-    <string name="edittxt_website_pref_summary">This is the website that incoming messages will be forwarded to.</string>
-    <string name="edittxt_website_pref_dialog_title">Enter the Website URL.</string>
+    <string name="edittxt_website_pref">Enter the Sync URL</string>
+    <string name="edittxt_website_pref_summary">This is the website that will receive the text messages.</string>
+    <string name="edittxt_website_pref_dialog_title">Enter the Sync URL</string>
     <string name="edittxt_api_key_pref">Enter the Secret</string>
-    <string name="edittxt_api_key_pref_dialog_title">Enter webservice API Key</string>
-    <string name="edittxt_api_key_pref_summary">If a secret/key has been specified on the receiving website, it will be required to transmit the text messages.</string>
-    <string name="edittxt_keyword_pref">Enter Keyword(s).</string>
-    <string name="edittxt_keyword_dialog_pref">Enter keyword(s).</string>
+    <string name="edittxt_api_key_pref_summary">If a secret/key has been specified at the website, it will be required.</string>
+    <string name="edittxt_keyword_pref">Enter Keyword(s)</string>
     <string name="sms_sync_enabled">SMSSync Is Enabled</string>
     <string name="sms_sync_disabled">SMSSync Disabled</string>
-    <string name="edittxt_keyword_hint">fire, crime, help, water,...</string>
-    <string name="editxt_keyword_pref_summary">Leaving this 
-    	field empty means all messages will be sent.</string>
-    <string name="general_settings">General Settings.</string>
-    <string name="chk_enable_sms_sync">Send SMS to a webservice.</string>
-    <string name="chk_sms_sync_hint">Specify what keywords to filter the text messages with - separate keywords with a comma (,). Leaving this field empty means all messages will be forwarded to the website above.</string>
+    <string name="edittxt_keyword_hint">fire, crime, help, report,etc</string>
+    <string name="editxt_keyword_pref_summary">Specify what keywords that will be used to filter the message sent to the gateway.</string>
+    <string name="general_settings">General Settings</string>
+    <string name="chk_enable_sms_sync">Start SMSSync</string>
+    <string name="chk_sms_sync_hint">Start and Stop SMS gateway.</string>
     <string name="app_name">SMSSync</string>
     <string name="sms_status_success">SMSSync Message Sent</string>
     <string name="sms_status_failed">SMSSync Message Sending failed</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="powered">Powered</string>
-    <string name="powered_by">Powered by Ushahidi</string>
+    <string name="powered_by">Created by Ushahidi</string>
 </resources>

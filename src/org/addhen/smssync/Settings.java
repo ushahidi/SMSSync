@@ -25,10 +25,14 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.preference.Preference.OnPreferenceClickListener;
+import android.widget.Toast;
 
 public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	
@@ -36,6 +40,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	public static final String KEY_KEYWORD_PREF = "keyword_preference";
 	public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
 	public static final String KEY_API_KEY_PREF = "api_key_preference";
+	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
 	public static final String PREFS_NAME = "SMS_SYNC_PREF";
 	
 	private EditTextPreference websitePref;
@@ -45,6 +50,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
+	private static final String URL = "http://smssync.ushahidi.com";
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,17 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         
         enableSmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_SMS_SYNC_PREF);
+        
+     // Attach an action to report a bug
+        Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
+        poweredPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        	public boolean onPreferenceClick(Preference preference) {
+        		final Intent i = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(URL));
+  		    	startActivity(i);
+  		    	return true;
+        	}
+        });
+        
         this.savePreferences();
     }
 	

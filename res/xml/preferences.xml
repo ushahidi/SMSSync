@@ -36,19 +36,19 @@
     		android:key="api_key_preference"
    			android:title="@string/edittxt_api_key_pref"
       		android:summary="@string/edittxt_api_key_pref_summary"
-      		android:dialogTitle="@string/edittxt_api_key_pref_dialog_title" />
+      		android:dialogTitle="@string/edittxt_api_key_pref" />
           	
         <EditTextPreference
     		android:key="keyword_preference"
    			android:title="@string/edittxt_keyword_pref"
       		android:summary="@string/editxt_keyword_pref_summary"
-      		android:dialogTitle="@string/edittxt_keyword_dialog_pref"
+      		android:dialogTitle="@string/edittxt_keyword_pref"
       		android:hint="@string/edittxt_keyword_hint" />
       		
       	<Preference android:key="powered_preference"
                 android:title="@string/app_name"
                 android:summary="@string/powered_by"
-                android:persistent="false" />
+                 />
           	
   	</PreferenceCategory>
 </PreferenceScreen>
