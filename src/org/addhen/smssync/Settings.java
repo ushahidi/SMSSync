@@ -32,7 +32,7 @@ import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.widget.Toast;
+
 
 public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
 	
