@@ -39,6 +39,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	public static final String KEY_WEBSITE_PREF = "website_preference";
 	public static final String KEY_KEYWORD_PREF = "keyword_preference";
 	public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
+	public static final String KEY_ENABLE_MMS_SYNC_PREF = "enable_mms_sync_preference";
+	public static final String KEY_ENABLE_GPS_SYNC_PREF = "enable_gps_sync_preference";
 	public static final String KEY_API_KEY_PREF = "api_key_preference";
 	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
 	public static final String PREFS_NAME = "SMS_SYNC_PREF";
@@ -47,7 +49,9 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	private EditTextPreference apiKeyPref;
 	private EditTextPreference keywordPref;
 	private CheckBoxPreference enableSmsSync;
-
+	private CheckBoxPreference enableMmsSync;
+	private CheckBoxPreference enableGpsSync;
+	
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
 	private static final String URL = "http://smssync.ushahidi.com";
@@ -70,6 +74,12 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         enableSmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_SMS_SYNC_PREF);
         
+        enableMmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
+        		KEY_ENABLE_MMS_SYNC_PREF);
+        
+        enableGpsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
+        		KEY_ENABLE_GPS_SYNC_PREF);
+        
      // Attach an action to report a bug
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
         poweredPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -91,6 +101,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		editor.putString("ApiKey", apiKeyPref.getText());
 		editor.putString("Keyword", keywordPref.getText());
 		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
+		editor.putBoolean("EnableMmsSync",enableMmsSync.isChecked());
+		editor.putBoolean("EnableGpsSync", enableGpsSync.isChecked());
 		editor.commit();
 	}
 	

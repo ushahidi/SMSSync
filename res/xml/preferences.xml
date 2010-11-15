@@ -44,11 +44,23 @@
       		android:summary="@string/editxt_keyword_pref_summary"
       		android:dialogTitle="@string/edittxt_keyword_pref"
       		android:hint="@string/edittxt_keyword_hint" />
-      		
-      	<Preference android:key="powered_preference"
-                android:title="@string/app_name"
-                android:summary="@string/powered_by"
-                 />
           	
   	</PreferenceCategory>
+  	<PreferenceCategory
+    	android:title="@string/optional_settings">
+    	
+    	<CheckBoxPreference
+        	android:key="enable_mms_sync_preference"
+       		android:title="@string/chk_enable_mms_sync"
+          	android:summary="@string/chk_mms_sync_hint" />
+	  	
+	  	<CheckBoxPreference
+        	android:key="enable_gps_sync_preference"
+       		android:title="@string/chk_enable_gps_sync"
+          	android:summary="@string/chk_gps_sync_hint" />
+	  	
+  	</PreferenceCategory>
+  	<Preference android:key="powered_preference"
+    	android:title="@string/app_name"
+      	android:summary="@string/powered_by"/>
 </PreferenceScreen>
