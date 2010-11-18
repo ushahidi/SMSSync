@@ -56,6 +56,8 @@ public class SmsReceiverService extends Service {
 	private static PowerManager.WakeLock mStartingService;
 	private HashMap<String,String> params = new HashMap<String, String>();
 	private LocationManager locationManager;
+	public double latitude;
+	public double longitude;
 
 	@Override
 	public void onCreate() {
@@ -284,15 +286,12 @@ public class SmsReceiverService extends Service {
 	}
 	
 	// get the current location of the user
-	public class MyLocationListener implements LocationListener { 
+	public class MyLocationListener implements LocationListener {
+		
 	    public void onLocationChanged(Location location) { 
-	    	double latitude = 0;
-	    	double longitude = 0;
 	    	
 	    	if (location != null) { 
-	    
-	    		locationManager.removeUpdates(this);
-	  	      
+	    		locationManager.removeUpdates(this);      
 	    		latitude = location.getLatitude(); 
 	  	        longitude = location.getLongitude(); 
 	  	        
