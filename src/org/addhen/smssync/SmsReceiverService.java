@@ -19,6 +19,7 @@
 package org.addhen.smssync;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.addhen.smssync.net.SmsSyncHttpClient;
 
@@ -28,6 +29,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -36,6 +40,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
+import android.provider.Settings;
 import android.telephony.SmsMessage;
 
 public class SmsReceiverService extends Service {
@@ -48,6 +53,7 @@ public class SmsReceiverService extends Service {
 	private static final Object mStartingServiceSync = new Object();
 	private static PowerManager.WakeLock mStartingService;
 	private HashMap<String,String> params = new HashMap<String, String>();
+	private LocationManager locationManager;
 
 	@Override
 	public void onCreate() {
@@ -57,6 +63,8 @@ public class SmsReceiverService extends Service {
 	    getApplicationContext();
 	    mServiceLooper = thread.getLooper();
 	    mServiceHandler = new ServiceHandler(mServiceLooper);
+	    locationManager = (LocationManager) 
+	    getSystemService(Context.LOCATION_SERVICE);
 	}
 
 	@Override
@@ -243,4 +251,63 @@ public class SmsReceiverService extends Service {
 	      	}
 		}
 	}
+	
+	//update the device current location
+	private void updateLocation() {
+		MyLocationListener listener = new MyLocationListener(); 
+        LocationManager manager = (LocationManager) 
+        	getSystemService(Context.LOCATION_SERVICE); 
+        long updateTimeMsec = 1000L; 
+        
+        //DIPO Fix
+        List<String> providers = manager.getProviders(true);
+        boolean gps_provider = false, network_provider = false;
+        
+        for (String name : providers) {
+        	if (name.equals(LocationManager.GPS_PROVIDER)) gps_provider = true;
+        	if (name.equals(LocationManager.NETWORK_PROVIDER)) network_provider = true;        	
+        }
+        
+        //Register for GPS location if enabled or if neither is enabled
+        if( gps_provider || (!gps_provider && !network_provider) ) {
+			manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
+   updateTimeMsec, 500.0f, 
+		    listener);
+		} else if (network_provider) {
+			manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 
+   updateTimeMsec, 500.0f, 
+		    listener); 
+		}
+        
+	}
+	
+	// get the current location of the user
+	public class MyLocationListener implements LocationListener { 
+	    public void onLocationChanged(Location location) { 
+	    	double latitude = 0;
+	    	double longitude = 0;
+	    	
+	    	if (location != null) { 
+	    
+	    		locationManager.removeUpdates(this);
+	  	      
+	    		latitude = location.getLatitude(); 
+	  	        longitude = location.getLongitude(); 
+	  	        
+	  	    }	     
+	    }
+	    
+	    public void onProviderDisabled(String provider) { 
+	    	
+	    }
+	    
+	    public void onProviderEnabled(String provider) { 
+	   
+	    }
+	    
+	    public void onStatusChanged(String provider, int status, Bundle extras) { 
+	      
+	    } 
+	}
+	
 }
