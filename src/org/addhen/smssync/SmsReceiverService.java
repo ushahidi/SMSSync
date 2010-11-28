@@ -142,7 +142,7 @@ public class SmsReceiverService extends Service {
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
 	    		// if keywoard is enabled
-	    		if(SmsSync.keyword.equals("")){
+	    		if(!SmsSync.keyword.equals("")){
 	    			String [] keywords = SmsSync.keyword.split(",");
 	    			if( SmsSyncUtil.processString(messageBody, keywords)){
 	    				if( !this.postToAWebService() ) {
@@ -190,9 +190,9 @@ public class SmsReceiverService extends Service {
 	private boolean postToAWebService() {
 			
 		StringBuilder urlBuilder = new StringBuilder(SmsSync.website);
-    	params.put("screte",SmsSync.apiKey);
+    	params.put("secrete",SmsSync.apiKey);
 		params.put("from", fromAddress); 
-		params.put("message",messageBody); 
+		params.put("message",messageBody);
 		return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
 		
 	}

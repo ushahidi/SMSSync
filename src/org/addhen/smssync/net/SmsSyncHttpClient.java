@@ -77,7 +77,7 @@ public class SmsSyncHttpClient {
         try {  
             // Add your data  
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);  
-            nameValuePairs.add(new BasicNameValuePair("secret", params.get("secrete")));  
+            nameValuePairs.add(new BasicNameValuePair("secrete", params.get("secrete")));  
             nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
             nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));  
