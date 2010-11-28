@@ -76,11 +76,11 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         enableSmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_SMS_SYNC_PREF);
         
-        enableMmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
+        /** enableMmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_MMS_SYNC_PREF);
         
         enableGpsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
-        		KEY_ENABLE_GPS_SYNC_PREF);
+        		KEY_ENABLE_GPS_SYNC_PREF);*/
         
      // Attach an action to report a bug
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
@@ -103,8 +103,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		editor.putString("ApiKey", apiKeyPref.getText());
 		editor.putString("Keyword", keywordPref.getText());
 		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
-		editor.putBoolean("EnableMmsSync",enableMmsSync.isChecked());
-		editor.putBoolean("EnableGpsSync", enableGpsSync.isChecked());
+		//editor.putBoolean("EnableMmsSync",enableMmsSync.isChecked());
+		//editor.putBoolean("EnableGpsSync", enableGpsSync.isChecked());
 		editor.commit();
 	}
 	

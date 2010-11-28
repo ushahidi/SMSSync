@@ -46,7 +46,7 @@
       		android:hint="@string/edittxt_keyword_hint" />
           	
   	</PreferenceCategory>
-  	<PreferenceCategory
+  	<!-- <PreferenceCategory
     	android:title="@string/optional_settings">
     	
     	<CheckBoxPreference
@@ -59,7 +59,7 @@
        		android:title="@string/chk_enable_gps_sync"
           	android:summary="@string/chk_gps_sync_hint" />
 	  	
-  	</PreferenceCategory>
+  	</PreferenceCategory> -->
   	<Preference android:key="powered_preference"
     	android:title="@string/app_name"
       	android:summary="@string/powered_by"/>

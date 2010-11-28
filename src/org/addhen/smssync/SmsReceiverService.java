@@ -190,7 +190,7 @@ public class SmsReceiverService extends Service {
 	private boolean postToAWebService() {
 			
 		StringBuilder urlBuilder = new StringBuilder(SmsSync.website);
-    	params.put("secrete",SmsSync.apiKey);
+    	params.put("secret",SmsSync.apiKey);
 		params.put("from", fromAddress); 
 		params.put("message",messageBody);
 		return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
