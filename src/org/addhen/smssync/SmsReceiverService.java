@@ -31,9 +31,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -61,7 +63,7 @@ public class SmsReceiverService extends Service {
 
 	@Override
 	public void onCreate() {
-	    SmsSync.loadPreferences(this);
+	    SmsSyncPref.loadPreferences(this);
 	    HandlerThread thread = new HandlerThread("Message sending starts", Process.THREAD_PRIORITY_BACKGROUND);
 	    thread.start();
 	    getApplicationContext();
@@ -138,12 +140,12 @@ public class SmsReceiverService extends Service {
 	    	}
 	    }
 	    
-	    if( SmsSync.enabled ) {
+	    if( SmsSyncPref.enabled ) {
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
 	    		// if keywoard is enabled
-	    		if(!SmsSync.keyword.equals("")){
-	    			String [] keywords = SmsSync.keyword.split(",");
+	    		if(!SmsSyncPref.keyword.equals("")){
+	    			String [] keywords = SmsSyncPref.keyword.split(",");
 	    			if( SmsSyncUtil.processString(messageBody, keywords)){
 	    				if( !this.postToAWebService() ) {
 		    				this.showNotification(messageBody, "SMSSync Message Sending failed.");
@@ -189,8 +191,8 @@ public class SmsReceiverService extends Service {
 	 */
 	private boolean postToAWebService() {
 			
-		StringBuilder urlBuilder = new StringBuilder(SmsSync.website);
-    	params.put("secret",SmsSync.apiKey);
+		StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
+    	params.put("secret",SmsSyncPref.apiKey);
 		params.put("from", fromAddress); 
 		params.put("message",messageBody);
 		return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
@@ -238,6 +240,24 @@ public class SmsReceiverService extends Service {
 	      
 			mStartingService.acquire();
 			context.startService(intent);
+		}
+	}
+	
+	private void delSmsFromInbox(SmsMessage msg) {
+
+		try {
+			Uri uriSms = Uri.parse("content://sms/inbox");
+			int threadId;	
+			StringBuilder sb = new StringBuilder();
+			sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
+			sb.append("body='" + msg.getMessageBody() + "'");
+			Cursor c = getContentResolver().query(uriSms, null, sb.toString(), null, null);
+			c.moveToFirst();
+			threadId= c.getInt(1);
+			getContentResolver().delete(Uri.parse("content://sms/conversations/" + threadId), null, null);
+			c.close();
+		} catch (Exception ex) {
+			
 		}
 	}
 

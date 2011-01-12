@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  	package="org.addhen.smssync" android:versionCode="3" android:versionName="1.0.2">
-      <uses-permission android:name="android.permission.RECEIVE_SMS" />
-      <uses-permission android:name="android.permission.INTERNET" />
-      <uses-permission android:name="android.permission.WAKE_LOCK"/>
-      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  	package="org.addhen.smssync" android:versionCode="4" android:versionName="1.0.3">
+    	<uses-permission android:name="android.permission.RECEIVE_SMS" />
+      	<uses-permission android:name="android.permission.READ_SMS" />
+    	<uses-permission android:name="android.permission.WRITE_SMS" />
+      	<uses-permission android:name="android.permission.INTERNET" />
+      	<uses-permission android:name="android.permission.WAKE_LOCK"/>
+      	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+      	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      	
     <application android:icon="@drawable/icon" android:label="@string/app_name">
+    	<provider android:name="org.addhen.smssync.data.SmsSyncDatabase"
+            android:authorities="org.addhen.smssync.data.Smssync"/>
     	<service android:name=".SmsReceiverService" />
         <activity android:name=".Settings"
                   android:label="@string/app_name">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <!-- outbox -->
+        <activity android:name="SmsSyncOutbox" android:label="@string/sms_sync_outbox">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.PICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.smsync.smssync_msg" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.smsync.smssync_msg" />
+            </intent-filter>
         </activity>
+        
 		<!--  sms -->
         <receiver android:name=".SmsReceiver">
       		<intent-filter>
@@ -23,5 +48,5 @@
       		</intent-filter>
       	</receiver>
     </application>
-    <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="7"/>
+    <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="7"/>
 </manifest>  

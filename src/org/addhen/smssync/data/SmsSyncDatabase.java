@@ -1,173 +1,228 @@
-/** 
- ** Copyright (c) 2010 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- ** 
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.	
- **	
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- ** 
- **/
-
 package org.addhen.smssync.data;
 
-import java.util.List;
+import org.addhen.smssync.SmsSync.SmssyncMsgs;
+import org.addhen.smssync.SmsSync;
 
+import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
+import android.text.TextUtils;
+import android.util.Log;
 
-public class SmsSyncDatabase {
-	
-	// column names
-	public static final String MESSAGE_ID = "_id";
-	public static final String MESSAGE_BODY = "message_body";
-	public static final String MESSAGE_FROM = "message_from";
-	public static final String LATITUDE = "latitude";
-	public static final String LONGITUDE = "longitude";
-	public static final String MMS_BODY = "mms_body";
-	public static final String IS_MESSAGE_SENT = "is_sent";
-	
-	// colum titles
-	public static final String[] OUTBOX_COLUMNS = new String[] {MESSAGE_ID,
-		MESSAGE_BODY, MESSAGE_FROM, LATITUDE, LONGITUDE, MMS_BODY,
-		IS_MESSAGE_SENT
-	};
-	
-	private DatabaseHelper mDbHelper;
-	
-	private SQLiteDatabase mDb;
+import java.util.HashMap;
 
-	private static final String DATABASE_NAME = "smssync_db";
+/**
+ * Provides access to a database of notes. Each note has a title, the note
+ * itself, a creation date and a modified data.
+ */
+public class SmsSyncDatabase extends ContentProvider {
 
-	private static final String MESSAGE_OUTBOX_TABLE = "message_outbox";
-	
-	private static final int DATABASE_VERSION = 1;
-	
-	private static final String MESSAGE_OUTBOX_TABLE_CREATE = "CREATE TABLE " + MESSAGE_OUTBOX_TABLE + " ("
-		+ MESSAGE_ID + " INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY , "  
-		+ MESSAGE_BODY + " TEXT NOT NULL, "
-		+ MESSAGE_FROM + " TEXT NOT NULL, "
-		+ LATITUDE + "TEXT, "
-		+ LONGITUDE + " TEXT, "
-		+ MMS_BODY + " TEXT, "
-		+ IS_MESSAGE_SENT + " BOOLEAN NOT NULL "
-		+ ")";
-	
-	private final Context mContext;
-	
-	public SmsSyncDatabase( Context context) {
-		mContext = context;
-	}
-	
-	public SmsSyncDatabase open() throws SQLException {
-  		mDbHelper = new DatabaseHelper(mContext);
-	  	mDb = mDbHelper.getWritableDatabase();
+    private static final String TAG = "SmsSyncDatabase";
 
-	  	return this;
-  	}
+    private static final String DATABASE_NAME = "smsync.db";
+    private static final int DATABASE_VERSION = 2;
+    private static final String SMSSYNC_MSG_TABLE_NAME = "smssync_msgs";
 
-  	public void close() {
-  		mDbHelper.close();
-  	}
-	
-  	/**
-  	 * Insert item to the message_outbox table
-  	 * @author eyedol
-  	 *
-  	 */
-  	public long insertMessage( Messages messages) {
-  		ContentValues initialValues = new ContentValues();
-  		initialValues.put(MESSAGE_BODY, messages.getMessageBody());
-  		initialValues.put(MESSAGE_FROM, messages.getMessageFrom());
-  		initialValues.put(LATITUDE, messages.getLatitude());
-  		initialValues.put(LONGITUDE, messages.getLongitude());
-  		initialValues.put(MMS_BODY, messages.getMmsBody());
-  		initialValues.put(IS_MESSAGE_SENT, messages.getMessageSent());  		
-  		return mDb.insert(MESSAGE_OUTBOX_TABLE, null, initialValues);
-  	}
-  	
-  	/**
-  	 * Add item to the message_outbox table.
-  	 * @param List addIncidents
-  	 */
-  	public long addMessages(List<Messages> messages ) {
-  		long rowId = 0;
-  		try {
-  			mDb.beginTransaction();
-  			for( Messages message: messages ) {
-  				rowId = insertMessage(message);
-  			}
-  			mDb.setTransactionSuccessful();
-  			
-  		} finally {
-  			mDb.endTransaction();
-  		}
-  		
-  		return rowId;
-  	}
-  	
-  	/**
-  	 * Fetch all unsent messages.
-  	 * @param sent
-  	 * @return
-  	 */
-  	public Cursor fetchUnsentMessages( String sent ) {
-	  		String sql = "SELECT * FROM "+MESSAGE_OUTBOX_TABLE+" WHERE "+IS_MESSAGE_SENT+" = ? ORDER BY "
-	  			+MESSAGE_BODY+" COLLATE NOCASE";
-	  		return mDb.rawQuery(sql, new String[] { sent } );
-  	}
-  	
-  	/**
-  	 * Mark a message as sent / unsent
-  	 * @param String status - 1 for sent, 0 for unset
-  	 * 
-  	 * @return void
-  	 */
-  	public void markMessageStatus( String status ) {
-  		ContentValues values = new ContentValues();
-  		values.put(IS_MESSAGE_SENT, 0);
-  		
-  		String whereClause = "WHERE "+IS_MESSAGE_SENT;
-  		String whereArgs [] = {status};
-  		
-  		mDb.update(MESSAGE_OUTBOX_TABLE, values, whereClause, whereArgs);
-  	}
-  	
-  	public boolean deleteSentMessage(int id) {
-  		return mDb.delete(MESSAGE_OUTBOX_TABLE, MESSAGE_ID + "=" + id, null) > 0;
-  	}
-  	
-	private static class DatabaseHelper extends SQLiteOpenHelper {
-		
-		DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		}
-		
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			
-			db.execSQL(MESSAGE_OUTBOX_TABLE_CREATE);
-		}
+    private static HashMap<String, String> smsSyncMsgProjectionMap;
 
-    	@Override
-    	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    		db.execSQL("DROP TABLE IF EXISTS " + MESSAGE_OUTBOX_TABLE_CREATE);
-      		onCreate(db);
-    	}
-	
-	}
-		
+    private static final int SMSSYNC_MSG = 1;
+    private static final int SMSSYNC_MSG_ID = 2;
+
+    private static final UriMatcher sUriMatcher;
+
+    /**
+     * This class helps open, create, and upgrade the database file.
+     */
+    private static class DatabaseHelper extends SQLiteOpenHelper {
+
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL("CREATE TABLE " + SMSSYNC_MSG_TABLE_NAME + " ("
+                    + SmssyncMsgs._ID + " INTEGER PRIMARY KEY,"
+                    + SmssyncMsgs.MESSAGE_FROM + " TEXT,"
+                    + SmssyncMsgs.MESSAGE_BODY + " TEXT,"
+                    + SmssyncMsgs.CREATED_DATE + " INTEGER,"
+                    + ");");
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                    + newVersion + ", which will destroy all old data");
+            db.execSQL("DROP TABLE IF EXISTS notes");
+            onCreate(db);
+        }
+    }
+
+    private DatabaseHelper mOpenHelper;
+
+    @Override
+    public boolean onCreate() {
+        mOpenHelper = new DatabaseHelper(getContext());
+        return true;
+    }
+
+    @Override
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+            String sortOrder) {
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+
+        switch (sUriMatcher.match(uri)) {
+        case SMSSYNC_MSG:
+            qb.setTables(SMSSYNC_MSG_TABLE_NAME);
+            qb.setProjectionMap(smsSyncMsgProjectionMap);
+            break;
+
+        case SMSSYNC_MSG_ID:
+            qb.setTables(SMSSYNC_MSG_TABLE_NAME);
+            qb.setProjectionMap(smsSyncMsgProjectionMap);
+            qb.appendWhere(SmssyncMsgs._ID + "=" + uri.getPathSegments().get(1));
+            break;
+
+        default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        // If no sort order is specified use the default
+        String orderBy;
+        if (TextUtils.isEmpty(sortOrder)) {
+            orderBy = SmsSync.SmssyncMsgs.DEFAULT_SORT_ORDER;
+        } else {
+            orderBy = sortOrder;
+        }
+
+        // Get the database and run the query
+        SQLiteDatabase db = mOpenHelper.getReadableDatabase();
+        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, orderBy);
+
+        // Tell the cursor what uri to watch, so it knows when its source data changes
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
+    }
+
+    @Override
+    public String getType(Uri uri) {
+        switch (sUriMatcher.match(uri)) {
+        case SMSSYNC_MSG:
+            return SmssyncMsgs.CONTENT_TYPE;
+
+        case SMSSYNC_MSG_ID:
+            return SmssyncMsgs.CONTENT_ITEM_TYPE;
+
+        default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+    }
+
+    @Override
+    public Uri insert(Uri uri, ContentValues initialValues) {
+        // Validate the requested uri
+        if (sUriMatcher.match(uri) != SMSSYNC_MSG) {
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        ContentValues values;
+        if (initialValues != null) {
+            values = new ContentValues(initialValues);
+        } else {
+            values = new ContentValues();
+        }
+
+        Long now = Long.valueOf(System.currentTimeMillis());
+
+        // Make sure that the fields are all set
+        if (values.containsKey(SmsSync.SmssyncMsgs.CREATED_DATE) == false) {
+            values.put(SmsSync.SmssyncMsgs.CREATED_DATE, now);
+        }
+
+        if (values.containsKey(SmsSync.SmssyncMsgs.MESSAGE_BODY) == false) {
+            Resources r = Resources.getSystem();
+            values.put(SmsSync.SmssyncMsgs.MESSAGE_BODY, r.getString(android.R.string.untitled));
+        }
+
+        if (values.containsKey(SmsSync.SmssyncMsgs.SMSSYNC_MSG) == false) {
+            values.put(SmsSync.SmssyncMsgs.SMSSYNC_MSG, "");
+        }
+
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        long rowId = db.insert(SMSSYNC_MSG_TABLE_NAME, SmssyncMsgs.SMSSYNC_MSG, values);
+        if (rowId > 0) {
+            Uri noteUri = ContentUris.withAppendedId(SmsSync.SmssyncMsgs.CONTENT_URI, rowId);
+            getContext().getContentResolver().notifyChange(noteUri, null);
+            return noteUri;
+        }
+
+        throw new SQLException("Failed to insert row into " + uri);
+    }
+
+    @Override
+    public int delete(Uri uri, String where, String[] whereArgs) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int count;
+        switch (sUriMatcher.match(uri)) {
+        case SMSSYNC_MSG:
+            count = db.delete(SMSSYNC_MSG_TABLE_NAME, where, whereArgs);
+            break;
+
+        case SMSSYNC_MSG_ID:
+            String noteId = uri.getPathSegments().get(1);
+            count = db.delete(SMSSYNC_MSG_TABLE_NAME, SmssyncMsgs._ID + "=" + noteId
+                    + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);
+            break;
+
+        default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
+    }
+
+    @Override
+    public int update(Uri uri, ContentValues values, String where, String[] whereArgs) {
+        SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int count;
+        switch (sUriMatcher.match(uri)) {
+        case SMSSYNC_MSG:
+            count = db.update(SMSSYNC_MSG_TABLE_NAME, values, where, whereArgs);
+            break;
+
+        case SMSSYNC_MSG_ID:
+            String noteId = uri.getPathSegments().get(1);
+            count = db.update(SMSSYNC_MSG_TABLE_NAME, values, SmssyncMsgs._ID + "=" + noteId
+                    + (!TextUtils.isEmpty(where) ? " AND (" + where + ')' : ""), whereArgs);
+            break;
+
+        default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
+    }
+
+    static {
+        sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        sUriMatcher.addURI(SmsSync.AUTHORITY, "notes", SMSSYNC_MSG);
+        sUriMatcher.addURI(SmsSync.AUTHORITY, "notes/#", SMSSYNC_MSG_ID);
+
+        smsSyncMsgProjectionMap = new HashMap<String, String>();
+        smsSyncMsgProjectionMap.put(SmssyncMsgs._ID, SmssyncMsgs._ID);
+        smsSyncMsgProjectionMap.put(SmssyncMsgs.MESSAGE_FROM, SmssyncMsgs.MESSAGE_FROM);
+        smsSyncMsgProjectionMap.put(SmssyncMsgs.SMSSYNC_MSG, SmssyncMsgs.SMSSYNC_MSG);
+        smsSyncMsgProjectionMap.put(SmssyncMsgs.CREATED_DATE, SmssyncMsgs.CREATED_DATE);
+    }
 }

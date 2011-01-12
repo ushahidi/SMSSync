@@ -18,35 +18,24 @@
  ** 
  **/
 
-package org.addhen.smssync;
+package org.addhen.smssync.data;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class SmsSync {
 	
-	public static final String AUTHORITY = "org.addhen.smssync.data.SmsSync";
-
-    // This class cannot be instantiated
-    private SmsSync() {}
-	
 	// smssync outbox table
 	public static final class SmssyncMsgs implements BaseColumns {
 		
-		public static final Uri CONTENT_URI = Uri.parse("content://"+AUTHORITY+"smssync_msgs");
-		
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.smsync.smssync_msg";
-
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.smsync.smssync_msg";
-		
+		public static final Uri CONTENT_URI
+        = Uri.parse("content://org.addhen.smssync.data.SmsSync/smssync_msgs");
 		// column names
 		public static final String MESSAGE_BODY = "message_body";
 		public static final String MESSAGE_FROM = "message_from";
 		public static final String IS_MESSAGE_SENT = "is_sent";
 		public static final String CREATED_DATE = "created";
-		
 		public static final String SMSSYNC_MSG = "smssyn_msg";
-		
 		public static final String DEFAULT_SORT_ORDER = "created DESC";
 	}
 }

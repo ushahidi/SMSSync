@@ -34,10 +34,15 @@
     <string name="chk_mms_sync_hint">This will include Multimedia Messages to the messages to be sent to the website.</string>
     <string name="chk_enable_gps_sync">Add GPS coordinates</string>
     <string name="chk_gps_sync_hint">This will include GPS coordinates of the current location of the phone to the messages to be sent to the website.</string>
-    <string name="app_name">SMSSync</string>
+    <string name="app_name">SMSSync v1.0.3</string>
+    <string name="sms_sync_outbox">SMSSync - Outobox - v1.0.3</string>
+    <string name="version">1.0.3</string>
     <string name="sms_status_success">SMSSync Message Sent</string>
     <string name="sms_status_failed">SMSSync Message Sending failed</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="powered">Powered</string>
     <string name="powered_by">Created by Ushahidi</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_sync">Sync</string>
+    <string name="menu_settings">Settings</string>
 </resources>
