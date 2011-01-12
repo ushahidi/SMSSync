@@ -1,0 +1,5 @@
+*.swp
+.classpath
+proguard.cfg
+bin/*
+

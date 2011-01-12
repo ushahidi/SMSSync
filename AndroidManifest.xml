@@ -24,4 +24,4 @@
       	</receiver>
     </application>
     <uses-sdk android:minSdkVersion="5" android:targetSdkVersion="7"/>
-</manifest> 
+</manifest>  
