@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>smssync-test</name>
+	<name>smssynctest</name>
 	<comment></comment>
 	<projects>
 		<project>smssync</project>
