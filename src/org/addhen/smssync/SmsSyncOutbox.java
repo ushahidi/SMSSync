@@ -19,198 +19,232 @@
  **/
 
 package org.addhen.smssync;
+ 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
-import org.addhen.smssync.data.SmsSync.SmssyncMsgs;
-
-import android.app.ListActivity;
-import android.content.ContentUris;
+import org.addhen.smssync.data.Messages;
+import org.addhen.smssync.data.SmsSyncDatabase;
+ 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-
-
-public class SmsSyncOutbox extends ListActivity {
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemClickListener;
+ 
+public class SmsSyncOutbox extends Activity
+{
+  
+	/** Called when the activity is first created. */
+	private ListView listMessages = null;
+	private List<Messages> mOldMessages;
+	private ListMessagesAdapter ila = new ListMessagesAdapter( this );
+	private static final int SMSSYNC_SYNC = Menu.FIRST+1;
+	private static final int SETTINGS = Menu.FIRST+2;
+	private final Handler mHandler = new Handler();
+	public static SmsSyncDatabase mDb;
 	
-	private static final String TAG = "SMSList";
-	
-	public static final int MENU_ITEM_DELETE = Menu.FIRST;
-	public static final int MENU_ITEM_SYNC = Menu.FIRST + 1;
-	public static final int MENU_ITEM_SETTINGS = Menu.FIRST + 2;
-	
-	private static final int VIEW_SETTINGS = 0;
-	
-	private static final String[] PROJECTION = new String[] {
-		SmssyncMsgs._ID,
-		SmssyncMsgs.MESSAGE_BODY
-	};
-	
-	private static final int COLUMN_INDEX_TITLE = 1;
-	
+  
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setContentView( R.layout.list_messages );
+       
+		listMessages = (ListView) findViewById( R.id.view_messages );
+		mOldMessages = new ArrayList<Messages>();
+		mHandler.post(mDisplayMessages);		
+		
+	}
+  
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	protected void onResume(){
+		super.onResume();
+		
+		if(ila.getCount() == 0 ) {
+			mHandler.post(mDisplayMessages);
+		}
+	}
+  
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}
+  
+	final Runnable mDisplayMessages = new Runnable() {
+		public void run() {
+			setProgressBarIndeterminateVisibility(true);
+			showMessages();
+			try{
+				setProgressBarIndeterminateVisibility(false);
+			} catch(Exception e){
+				return;  //means that the dialog is not showing, ignore please!
+			}
+		}
+	};
 
-        setDefaultKeyMode(DEFAULT_KEYS_SHORTCUT);
-
-        Intent intent = getIntent();
-        if (intent.getData() == null) {
-            intent.setData(SmssyncMsgs.CONTENT_URI);
-        }
-
-        // Inform the list we provide context menus for items
-        getListView().setOnCreateContextMenuListener(this);
+	//menu stuff
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
+		populateMenu(menu);
+	}
+  
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		populateMenu(menu);
+ 
+		return(super.onCreateOptionsMenu(menu));
+	}
+ 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		//applyMenuChoice(item);
+ 
+		return(applyMenuChoice(item) ||
+				super.onOptionsItemSelected(item));
+	}
+ 
+	public boolean onContextItemSelected(MenuItem item) {
+ 
+		return(applyMenuChoice(item) ||
+        super.onContextItemSelected(item));
+	}
+  
+	private void populateMenu(Menu menu) {
+		MenuItem i;i = menu.add( Menu.NONE, SMSSYNC_SYNC, Menu.NONE, R.string.menu_sync );
+		i.setIcon(android.R.drawable.ic_menu_upload);
+		
+		i = menu.add( Menu.NONE, SETTINGS, Menu.NONE, R.string.menu_settings);
+		i.setIcon(android.R.drawable.ic_menu_preferences);
+		  
+	  
+	}
+  
+	private boolean applyMenuChoice(MenuItem item) {
+		Intent intent;
+		switch (item.getItemId()) {
+    		case SMSSYNC_SYNC:
+    			//TODO start the sync activity
+    			ReportsTask reportsTask = new ReportsTask();
+	            reportsTask.appContext = this;
+	            reportsTask.execute();
+    			return(true); 
         
-        // Perform a managed query. The Activity will handle closing and requerying the cursor
-        // when needed.
-        Cursor cursor = managedQuery(getIntent().getData(), PROJECTION, null, null,
-                "DESC");
-
-        // Used to map notes entries from the database to views
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.outbox, cursor,
-                new String[] { SmssyncMsgs.MESSAGE_BODY }, new int[] { android.R.id.text1 });
-        setListAdapter(adapter);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        menu.add(0,MENU_ITEM_SYNC, 0, R.string.menu_sync )
-        	.setShortcut('4', 's')
-        	.setIcon(android.R.drawable.ic_menu_upload);
-
-        menu.add(1,MENU_ITEM_SETTINGS, 0, R.string.menu_settings )
-    	.setShortcut('5', 'p')
-    	.setIcon(android.R.drawable.ic_menu_preferences);
+    		case SETTINGS:
+    			intent = new Intent( SmsSyncOutbox.this,  Settings.class);
+			
+    			// Make it a subactivity so we know when it returns
+    			startActivity(intent);
+    			return(true);
         
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        final boolean haveItems = getListAdapter().getCount() > 0;
-
-        // If there are any notes in the list (which implies that one of
-        // them is selected), then we need to generate the actions that
-        // can be performed on the current selection.  This will be a combination
-        // of our own specific actions along with any extensions that can be
-        // found.
-        if (haveItems) {
-            // This is the selected item.
-            Uri uri = ContentUris.withAppendedId(getIntent().getData(), getSelectedItemId());
-
-            // Build menu...  always starts with the EDIT action...
-            Intent[] specifics = new Intent[1];
-            specifics[0] = new Intent(Intent.ACTION_EDIT, uri);
-            MenuItem[] items = new MenuItem[1];
-
-            // ... is followed by whatever other actions are available...
-            Intent intent = new Intent(null, uri);
-            intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            menu.addIntentOptions(Menu.CATEGORY_ALTERNATIVE, 0, 0, null, specifics, intent, 0,
-                    items);
-
-            // Give a shortcut to the edit action.
-            if (items[0] != null) {
-                items[0].setShortcut('1', 'e');
-            }
-        } else {
-            menu.removeGroup(Menu.CATEGORY_ALTERNATIVE);
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	Intent launchIntent;
-    	
-        switch (item.getItemId()) {
-
-        	case MENU_ITEM_SYNC:
-        		launchIntent = new Intent( SmsSyncOutbox.this,Settings.class);
-        		startActivityForResult( launchIntent, VIEW_SETTINGS );
-        		setResult(RESULT_OK);
-        		return true;
-        		
-        	case MENU_ITEM_SETTINGS:
-        		launchIntent = new Intent( SmsSyncOutbox.this,Settings.class);
-        		startActivityForResult( launchIntent, VIEW_SETTINGS );
-        		setResult(RESULT_OK);
-        		return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-             info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return;
-        }
-
-        Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
-        if (cursor == null) {
-            // For some reason the requested item isn't available, do nothing
-            return;
-        }
-
-        // Setup the menu header
-        menu.setHeaderTitle(cursor.getString(COLUMN_INDEX_TITLE));
-
-        // Add a menu item to delete the note
-        menu.add(0, MENU_ITEM_DELETE, 0, R.string.menu_delete);
-    }
-        
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info;
-        try {
-             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        } catch (ClassCastException e) {
-            Log.e(TAG, "bad menuInfo", e);
-            return false;
-        }
-
-        switch (item.getItemId()) {
-            case MENU_ITEM_DELETE: {
-                // Delete the note that the context menu is for
-                Uri noteUri = ContentUris.withAppendedId(getIntent().getData(), info.id);
-                getContentResolver().delete(noteUri, null, null);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
-        Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
-        
-        String action = getIntent().getAction();
-        if (Intent.ACTION_PICK.equals(action) || Intent.ACTION_GET_CONTENT.equals(action)) {
-            // The caller is waiting for us to return a note selected by
-            // the user.  The have clicked on one, so return it now.
-            setResult(RESULT_OK, new Intent().setData(uri));
-        } else {
-            // Launch activity to view/edit the currently selected item
-            startActivity(new Intent(Intent.ACTION_EDIT, uri));
-        }
-    }
-
+		}
+		return(false);
+	}
 	
+	 //thread class
+	private class ReportsTask extends AsyncTask <Void, Void, Integer> {
+		
+		protected Integer status;
+		protected Context appContext;
+		
+		@Override
+		protected void onPreExecute() {
+			setProgressBarIndeterminateVisibility(true);
+
+		}
+		
+		@Override 
+		protected Integer doInBackground(Void... params) {
+			status = Util.processMessages(appContext);
+			return status;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result)
+		{
+			if( result == 4 ){
+				
+				//Util.showToast(appContext, R.string.internet_connection);
+			} else if( result == 0 ) {
+				showMessages();
+				setProgressBarIndeterminateVisibility(false);
+			}
+		}
+
+		
+	}
+  
+	// get incidents from the db
+	public void showMessages() {
+		Cursor cursor;
+		cursor = SmsSyncApplication.mDb.fetchAllMessages();
+	  
+		String messagesFrom;
+		String messagesDate;
+		String messagesBody;
+		String messagesId;
+			
+		if (cursor.moveToFirst()) {
+			int messagesIdIndex = cursor.getColumnIndexOrThrow( 
+				SmsSyncDatabase.MESSAGES_ID);
+			int messagesFromIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_FROM);
+			int messagesDateIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_DATE);
+				
+			int messagesBodyIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_BODY);
+				
+				
+			ila.removeItems();
+			ila.notifyDataSetChanged();
+			mOldMessages.clear();
+					
+			do {
+			  
+				Messages messages = new Messages();
+				mOldMessages.add( messages );
+			  
+				int id = Util.toInt(cursor.getString(messagesIdIndex));
+				messages.setMessageId(id);
+				
+				
+				messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
+				messages.setMessageFrom(messagesFrom);
+				
+				messagesDate = cursor.getString(messagesDateIndex);
+				messages.setMessageDate(messagesDate);
+			  
+				messagesBody = cursor.getString(messagesBodyIndex);
+				messages.setMessageBody(messagesBody);
+					
+				ila.addItem( new ListMessagesText(messagesFrom, messagesBody, messagesDate, id));
+			  
+			} while (cursor.moveToNext());
+		}
+    
+		cursor.close();
+		ila.notifyDataSetChanged();
+		listMessages.setAdapter( ila );
+	}
+  
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		super.onActivityResult(requestCode, resultCode, intent);
+	}
+  
 }

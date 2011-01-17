@@ -4,18 +4,14 @@ public class Messages {
 	
 	private String messageBody;
 	private String messageFrom;
-	private String latitude;
-	private String longitude;
-	private String mmsBody;
-	private boolean isMessageSent; 
+	private String messageDate;
+	private int messageId;
 	
 	public Messages() {
 		this.messageBody = "";
 		this.messageFrom = "";
-		this.latitude = "";
-		this.longitude = "";
-		this.mmsBody = "";
-		this.isMessageSent = true; 
+		this.messageDate = "";
+		this.messageId = 0;	  
 	}
 	
 	public void setMessageBody( String messageBody ) {
@@ -34,36 +30,20 @@ public class Messages {
 		return this.messageFrom;
 	}
 	
-	public void setLatitude( String latitude ) {
-		this.latitude = latitude;
+	public void setMessageDate( String messageDate ) {
+		this.messageDate = messageDate;
 	}
 	
-	public String getLatitude() {
-		return this.latitude;
+	public String getMessageDate() {
+		return this.messageDate;
 	}
 	
-	public void setLongitude ( String longitude ) {
-		this.longitude = longitude;
+	public void setMessageId ( int messageId ) {
+		this.messageId = messageId;
 	}
 	
-	public String getLongitude() {
-		return this.longitude;
-	}
-	
-	public void setMessageSent( boolean isMessageSent ) {
-		this.isMessageSent = isMessageSent;
-	}
-	
-	public boolean getMessageSent() {
-		return this.isMessageSent;
-	}
-	
-	public void setMmsBody( String mmsBody ) {
-		this.mmsBody = mmsBody;
-	}
-	
-	public String getMmsBody() {
-		return this.mmsBody;
+	public int getMessageId() {
+		return this.messageId;
 	}
 	
 }
