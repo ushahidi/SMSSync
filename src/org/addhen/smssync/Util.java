@@ -26,15 +26,26 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import android.app.NotificationManager;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -52,7 +63,19 @@ public class Util{
 	private static JSONObject jsonObject;
 	private static Pattern pattern;
 	private static Matcher matcher;
-
+	public static final Uri MMS_SMS_CONTENT_URI = Uri.parse("content://mms-sms/");
+	public static final Uri THREAD_ID_CONTENT_URI =
+        Uri.withAppendedPath(MMS_SMS_CONTENT_URI, "threadID");
+	public static final Uri CONVERSATION_CONTENT_URI =
+        Uri.withAppendedPath(MMS_SMS_CONTENT_URI, "conversations");
+	public static final String SMS_CONTENT_URI = "content://sms/conversations/";
+	public static final int NOTIFICATION_ALERT = 1337;
+	public static final String SMS_ID = "_id";
+	public static final String SMS_CONTENT_INBOX = "content://sms/inbox";
+	public static final int READ_THREAD = 1;
+	public static HashMap<String,String> smsMap = new HashMap<String,String>();
+	private static final String TIME_FORMAT_12_HOUR = "h:mm a";
+    private static final String TIME_FORMAT_24_HOUR = "H:mm";
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@" +
 			"[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	
@@ -201,9 +224,9 @@ public class Util{
 			listMessages.add(messages);
 			
 			messages.setMessageId(2);
-			messages.setMessageFrom("233243581806");
-			messages.setMessageBody("Hello message");
-			messages.setMessageDate("20:01, Jan 15");
+			messages.setMessageFrom(smsMap.get("messageFrom"));
+			messages.setMessageBody(smsMap.get("messageBody"));
+			messages.setMessageDate(smsMap.get("messageDate"));
 			mMessages = listMessages;
 			
 			if(mMessages != null) {
@@ -275,4 +298,90 @@ public class Util{
 		return status;
 	}
 	
+	/**
+     * Tries to locate the message id (from the system database), given the message
+     * thread id, the timestamp of the message.
+     */
+    public static long findMessageId(Context context, long threadId, long _timestamp) {
+    	long id = 0;
+    	long timestamp = _timestamp;
+    	if (threadId > 0) {
+                    
+    		Cursor cursor = context.getContentResolver().query(
+    				ContentUris.withAppendedId(CONVERSATION_CONTENT_URI, threadId),
+    				new String[] { "_id", "date", "thread_id" },
+    				//"thread_id=" + threadId + " and " + "date=" + timestamp,
+    				"date=" + timestamp, null, "date desc");
+                    
+    		if (cursor != null) {
+    			try {
+    				if (cursor.moveToFirst()) {
+    					id = cursor.getLong(0);
+                                                                                          
+    				}
+    			} finally {
+    				cursor.close();
+    			}
+    		}                       
+    	}
+    	return id;
+    }
+    
+    /**
+     * Tries to locate the message thread id given the address (phone or email) of the
+     * message sender
+     */
+    public static int getThreadId(Context context, SmsMessage msg) {
+    	int threadId = 0;
+    
+		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
+				
+		StringBuilder sb = new StringBuilder();
+		sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
+		sb.append("body='" + msg.getMessageBody() + "'");
+		Cursor c = context.getContentResolver().query(uriSms, null, sb.toString(), null, null);
+		c.moveToFirst();
+		threadId= c.getInt(1);
+		c.close();
+		
+    	return threadId;
+    }
+    
+ // Clear the standard notification alert
+    public static void clear(Context context) {
+      clearAll(context);
+    }
+
+    // Clear a single notification
+    public static void clearAll(Context context) {
+      NotificationManager myNM =
+        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      myNM.cancelAll();
+    }
+
+
+	
+    /*
+     * Format a unix timestamp to a string suitable for display to the user according
+     * to their system settings (12 or 24 hour time)
+     */
+    public static String formatTimestamp(Context context, long timestamp) {
+            String HOURS_24 = "24";
+            String hours;
+            hours = "24";
+            
+            SimpleDateFormat mSDF = new SimpleDateFormat();
+            if (HOURS_24.equals(hours)) {
+                    mSDF.applyLocalizedPattern(TIME_FORMAT_24_HOUR);
+            } else {
+                    mSDF.applyLocalizedPattern(TIME_FORMAT_12_HOUR);
+            }
+            return mSDF.format(new Date(timestamp));
+    }
+    
+    public static void delSmsFromInbox(Context context, SmsMessage msg) {
+    	int threadId = getThreadId(context, msg);
+    	context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + threadId), null, null);
+	}
+    
 }

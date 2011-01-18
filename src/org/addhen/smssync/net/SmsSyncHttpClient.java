@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.addhen.smssync.Util;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -38,6 +39,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+
+import android.util.Log;
 
 public class SmsSyncHttpClient {
 
@@ -74,19 +77,27 @@ public class SmsSyncHttpClient {
         HttpClient httpclient = new DefaultHttpClient();  
         HttpPost httppost = new HttpPost(URL);  
       
-        try {  
+        try {
+        	
             // Add your data  
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);  
-            nameValuePairs.add(new BasicNameValuePair("secret", params.get("secrete")));  
+            nameValuePairs.add(new BasicNameValuePair("secret", params.get("secret")));  
             nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
             nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));  
-      
+            
             // Execute HTTP Post Request  
             HttpResponse response = httpclient.execute(httppost);  
             
             if( response.getStatusLine().getStatusCode() == 200 ) {
-            	return true;
+            	boolean success = Util.extractPayloadJSON(getText(response));
+            	
+            	if( success ){
+            		return true;
+            	} else {
+            		return false;
+            	}
+            	
             } else {
             	return false;
             }
@@ -99,17 +110,17 @@ public class SmsSyncHttpClient {
         
     }
     
-    public static String GetText(HttpResponse response) {
+    public static String getText(HttpResponse response) {
 		String text = "";
 		try {
-			text = GetText(response.getEntity().getContent());
+			text = getText(response.getEntity().getContent());
 		} catch (final Exception ex) {
 
 		}
 		return text;
 	}
     
-    public static String GetText(InputStream in) {
+    public static String getText(InputStream in) {
 		String text = "";
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				in), 1024);

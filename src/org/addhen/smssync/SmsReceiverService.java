@@ -21,7 +21,6 @@
 package org.addhen.smssync;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.addhen.smssync.net.SmsSyncHttpClient;
 
@@ -32,9 +31,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +42,7 @@ import android.os.PowerManager;
 import android.os.Process;
 import android.provider.Settings;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
 public class SmsReceiverService extends Service {
 	private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -54,28 +51,28 @@ public class SmsReceiverService extends Service {
 	private Looper mServiceLooper;
 	private String fromAddress = "";
     private String messageBody = "";
+    private long timestamp = 0;
 	private static final Object mStartingServiceSync = new Object();
 	private static PowerManager.WakeLock mStartingService;
 	private HashMap<String,String> params = new HashMap<String, String>();
-	private LocationManager locationManager;
 	public double latitude;
 	public double longitude;
-
+	private NotificationManager notificationManager;
+	SmsMessage sms;
+	
 	@Override
 	public void onCreate() {
 	    SmsSyncPref.loadPreferences(this);
 	    HandlerThread thread = new HandlerThread("Message sending starts", Process.THREAD_PRIORITY_BACKGROUND);
 	    thread.start();
 	    getApplicationContext();
+	    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	    mServiceLooper = thread.getLooper();
 	    mServiceHandler = new ServiceHandler(mServiceLooper);
-	    locationManager = (LocationManager) 
-	    getSystemService(Context.LOCATION_SERVICE);
 	}
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-	    
 	    Message msg = mServiceHandler.obtainMessage();
 	    msg.arg1 = startId;
 	    msg.obj = intent;
@@ -83,8 +80,7 @@ public class SmsReceiverService extends Service {
 	}
 
 	@Override
-	public void onDestroy() {
-	    
+	public void onDestroy() {	    
 		mServiceLooper.quit();
 	}
 
@@ -121,11 +117,11 @@ public class SmsReceiverService extends Service {
 	    Bundle bundle = intent.getExtras();
 	    if (bundle != null) {
 	    	SmsMessage[] messages = getMessagesFromIntent(intent);
-	    	SmsMessage sms = messages[0];
+	    	sms = messages[0];
 	    	if (messages != null) {
 	    		//extract message details phone number and the message body
 	    		fromAddress = sms.getDisplayOriginatingAddress();
-	    		
+	    		timestamp = sms.getTimestampMillis();
 	    		String body;
 	    		if (messages.length == 1 || sms.isReplace()) {
 	    			body = sms.getDisplayMessageBody();
@@ -140,25 +136,35 @@ public class SmsReceiverService extends Service {
 	    	}
 	    }
 	    
-	    if( SmsSyncPref.enabled ) {
-	    	
+	    if( SmsSyncPref.enabled) {
+	    	Log.i("Enabled: ", "enable: "+SmsSyncPref.enabled);
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
 	    		// if keywoard is enabled
 	    		if(!SmsSyncPref.keyword.equals("")){
 	    			String [] keywords = SmsSyncPref.keyword.split(",");
 	    			if( SmsSyncUtil.processString(messageBody, keywords)){
 	    				if( !this.postToAWebService() ) {
-		    				this.showNotification(messageBody, "SMSSync Message Sending failed.");
-		    			}else {
-		    				this.showNotification(messageBody, "SMSSync Message Sent.");
+		    				this.showNotification(messageBody, getString(R.string.sending_failed));
+		    				this.postToOutbox();
+		    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
+		    				Util.clear(SmsReceiverService.this);
+	    				}else {
+	    					Util.delSmsFromInbox(SmsReceiverService.this,sms);
+		    				Util.clear(SmsReceiverService.this);
+		    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
 		    			}
 	    			}
 	    		// keyword is not enabled
 	    		} else {
 	    			if( !this.postToAWebService() ) {
-	    				this.showNotification(messageBody, "SMSSync Message Sending failed.");
-	    			}else {
-	    				this.showNotification(messageBody, "SMSSync Message Sent.");
+	    				this.showNotification(messageBody, getString(R.string.sending_failed));
+	    				this.postToOutbox();
+	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    				Util.clear(SmsReceiverService.this);
+	    			}else {			
+	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    				Util.clear(SmsReceiverService.this);
+	    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}
 	    	}
@@ -176,8 +182,7 @@ public class SmsReceiverService extends Service {
 		Intent baseIntent = new Intent(this, Settings.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		
-		NotificationManager notificationManager =
-		    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		
 		Notification notification = new Notification(R.drawable.favicon, "Status", System.currentTimeMillis());
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
 		notification.setLatestEventInfo(this, notification_title, message, pendingIntent);
@@ -198,7 +203,21 @@ public class SmsReceiverService extends Service {
 		return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
 		
 	}
-
+	
+	private void postToOutbox() {
+		Integer threadId = new Integer(Util.getThreadId(SmsReceiverService.this,sms));
+		String messageId = threadId.toString();
+		String messageDate = Util.formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
+		
+		Util.smsMap.put("messageFrom", fromAddress);
+		Util.smsMap.put("messageBody", messageBody);
+		Util.smsMap.put("messageDate", messageDate);
+		Util.smsMap.put("messageId", messageId);
+		
+		Util.processMessages(SmsReceiverService.this);
+	
+	}
+	
 	public static final SmsMessage[] getMessagesFromIntent(Intent intent) {
 		Object[] messages = (Object[]) intent.getSerializableExtra("pdus");
 	    if (messages == null) {
@@ -237,26 +256,9 @@ public class SmsReceiverService extends Service {
 	            	"Sms messages .SmsReceiverService");
 				mStartingService.setReferenceCounted(false);
 			}
-	      
+			
 			mStartingService.acquire();
 			context.startService(intent);
-		}
-	}
-	
-	private void delSmsFromInbox(SmsMessage msg) {
-
-		try {
-			Uri uriSms = Uri.parse("content://sms/inbox");
-			int threadId;	
-			StringBuilder sb = new StringBuilder();
-			sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
-			sb.append("body='" + msg.getMessageBody() + "'");
-			Cursor c = getContentResolver().query(uriSms, null, sb.toString(), null, null);
-			c.moveToFirst();
-			threadId= c.getInt(1);
-			getContentResolver().delete(Uri.parse("content://sms/conversations/" + threadId), null, null);
-			c.close();
-		} catch (Exception ex) {
 			
 		}
 	}
@@ -275,60 +277,4 @@ public class SmsReceiverService extends Service {
 	      	}
 		}
 	}
-	
-	//update the device current location
-	private void updateLocation() {
-		MyLocationListener listener = new MyLocationListener(); 
-        LocationManager manager = (LocationManager) 
-        	getSystemService(Context.LOCATION_SERVICE); 
-        long updateTimeMsec = 1000L; 
-        
-        //DIPO Fix
-        List<String> providers = manager.getProviders(true);
-        boolean gps_provider = false, network_provider = false;
-        
-        for (String name : providers) {
-        	if (name.equals(LocationManager.GPS_PROVIDER)) gps_provider = true;
-        	if (name.equals(LocationManager.NETWORK_PROVIDER)) network_provider = true;        	
-        }
-        
-        //Register for GPS location if enabled or if neither is enabled
-        if( gps_provider || (!gps_provider && !network_provider) ) {
-			manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 
-   updateTimeMsec, 500.0f, 
-		    listener);
-		} else if (network_provider) {
-			manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 
-   updateTimeMsec, 500.0f, 
-		    listener); 
-		}
-        
-	}
-	
-	// get the current location of the user
-	public class MyLocationListener implements LocationListener {
-		
-	    public void onLocationChanged(Location location) { 
-	    	
-	    	if (location != null) { 
-	    		locationManager.removeUpdates(this);      
-	    		latitude = location.getLatitude(); 
-	  	        longitude = location.getLongitude(); 
-	  	        
-	  	    }	     
-	    }
-	    
-	    public void onProviderDisabled(String provider) { 
-	    	
-	    }
-	    
-	    public void onProviderEnabled(String provider) { 
-	   
-	    }
-	    
-	    public void onStatusChanged(String provider, int status, Bundle extras) { 
-	      
-	    } 
-	}
-	
 }
