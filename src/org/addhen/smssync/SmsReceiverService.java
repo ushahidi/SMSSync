@@ -49,6 +49,7 @@ public class SmsReceiverService extends Service {
 	
 	private ServiceHandler mServiceHandler;
 	private Looper mServiceLooper;
+	private Context context;
 	private String fromAddress = "";
     private String messageBody = "";
     private long timestamp = 0;
@@ -59,13 +60,16 @@ public class SmsReceiverService extends Service {
 	public double longitude;
 	private NotificationManager notificationManager;
 	SmsMessage sms;
+	private static final int MESSAGE_RETRY = 8;
+	private static final int MESSAGE_RETRY_PAUSE = 1000;
+	private int mResultCode;
 	
 	@Override
 	public void onCreate() {
 	    SmsSyncPref.loadPreferences(this);
 	    HandlerThread thread = new HandlerThread("Message sending starts", Process.THREAD_PRIORITY_BACKGROUND);
 	    thread.start();
-	    getApplicationContext();
+	    context = getApplicationContext();
 	    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	    mServiceLooper = thread.getLooper();
 	    mServiceHandler = new ServiceHandler(mServiceLooper);
@@ -74,6 +78,7 @@ public class SmsReceiverService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 	    Message msg = mServiceHandler.obtainMessage();
+	    mResultCode = intent != null ? intent.getIntExtra("result", 0) : 0;
 	    msg.arg1 = startId;
 	    msg.obj = intent;
 	    mServiceHandler.sendMessage(msg);
@@ -100,6 +105,7 @@ public class SmsReceiverService extends Service {
 			int serviceId = msg.arg1;
 			Intent intent = (Intent) msg.obj;
 			String action = intent.getAction();
+			Log.i("SMS Action", "Action: "+action);
 			
 			if (ACTION_SMS_RECEIVED.equals(action)) {
 				handleSmsReceived(intent);
@@ -206,7 +212,9 @@ public class SmsReceiverService extends Service {
 	
 	private void postToOutbox() {
 		Integer threadId = new Integer(Util.getThreadId(SmsReceiverService.this,sms));
-		String messageId = threadId.toString();
+		Long msgId = new Long(Util.findMessageId(this, threadId, timestamp));
+		String messageId = msgId.toString();
+		Log.i("Message Id", "Message Id: "+messageId);
 		String messageDate = Util.formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
 		
 		Util.smsMap.put("messageFrom", fromAddress);
