@@ -57,6 +57,7 @@ public final class R {
         public static final int sms_sync_disabled=0x7f050007;
         public static final int sms_sync_enabled=0x7f050006;
         public static final int sms_sync_outbox=0x7f050013;
+        public static final int status=0x7f05001f;
         public static final int version=0x7f050014;
     }
     public static final class xml {

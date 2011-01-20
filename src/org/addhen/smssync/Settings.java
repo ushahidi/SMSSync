@@ -24,9 +24,11 @@ package org.addhen.smssync;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
@@ -51,8 +53,6 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	private EditTextPreference apiKeyPref;
 	private EditTextPreference keywordPref;
 	private CheckBoxPreference enableSmsSync;
-	private CheckBoxPreference enableMmsSync;
-	private CheckBoxPreference enableGpsSync;
 	
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
@@ -82,7 +82,6 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         enableGpsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_GPS_SYNC_PREF);*/
         
-     // Attach an action to report a bug
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
         poweredPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
         	public boolean onPreferenceClick(Preference preference) {
@@ -103,8 +102,6 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		editor.putString("ApiKey", apiKeyPref.getText());
 		editor.putString("Keyword", keywordPref.getText());
 		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
-		//editor.putBoolean("EnableMmsSync",enableMmsSync.isChecked());
-		//editor.putBoolean("EnableGpsSync", enableGpsSync.isChecked());
 		editor.commit();
 	}
 	
@@ -130,27 +127,32 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 			String key) {
 		NotificationManager notificationManager =
 		    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		//Enable or disable sms update
-		if(key.equals("enable_sms_sync_preference")) {
-			//TODO do some validation here
-		}
+		PackageManager pm = getPackageManager();
+	    ComponentName cn = new ComponentName(Settings.this, SmsReceiver.class);
 		
 		if( sharedPreferences.getBoolean("enable_sms_sync_preference",false))
 		{
+			pm.setComponentEnabledSetting(cn,
+			          PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
+			          PackageManager.DONT_KILL_APP);
+			
 			Intent baseIntent = new Intent(this, Settings.class);
 	        baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
 			
-			Notification notification = new Notification(R.drawable.favicon, "Status", System.currentTimeMillis());
+			Notification notification = new Notification(R.drawable.favicon, getString(R.string.status), System.currentTimeMillis());
 			
 			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
-			notification.setLatestEventInfo(this, "SMSSync","SMSSync Gateway is Running", pendingIntent);
+			notification.setLatestEventInfo(this, getString(R.string.app_name),getString(R.string.notification_summary), pendingIntent);
 			notificationManager.notify(1, notification);
 			
 		} else {
+			pm.setComponentEnabledSetting(cn,
+					PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+					PackageManager.DONT_KILL_APP);
 			notificationManager.cancelAll();
 		}
-		
+		this.savePreferences();
 	}
 
 }

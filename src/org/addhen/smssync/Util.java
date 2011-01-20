@@ -34,16 +34,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import android.app.NotificationManager;
-import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.telephony.SmsMessage;
 import android.util.Log;
 import android.widget.Toast;
@@ -196,14 +192,11 @@ public class Util{
 			return jsonObject.getJSONObject("payload").getBoolean("success");
 		
 		} catch (JSONException e) {
-			
-			e.printStackTrace();
+			return false;
+			//e.printStackTrace();
 		}
 		
-		return false;
 	}
-	
-	
 	
 	/**
 	 * process reports
@@ -222,8 +215,8 @@ public class Util{
 			
 			Messages messages = new Messages();
 			listMessages.add(messages);
-			
-			messages.setMessageId(2);
+			int messageId = Integer.parseInt(smsMap.get("messageId"));
+			messages.setMessageId(messageId);
 			messages.setMessageFrom(smsMap.get("messageFrom"));
 			messages.setMessageBody(smsMap.get("messageBody"));
 			messages.setMessageDate(smsMap.get("messageDate"));
@@ -331,8 +324,8 @@ public class Util{
      * Tries to locate the message thread id given the address (phone or email) of the
      * message sender
      */
-    public static int getThreadId(Context context, SmsMessage msg) {
-    	int threadId = 0;
+    public static long getMessageId(Context context, SmsMessage msg) {
+    	long messageId = 0;
     
 		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
 				
@@ -340,23 +333,28 @@ public class Util{
 		sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
 		sb.append("body='" + msg.getMessageBody() + "'");
 		Cursor c = context.getContentResolver().query(uriSms, null, sb.toString(), null, null);
-		c.moveToFirst();
-		threadId= c.getInt(1);
-		c.close();
 		
-    	return threadId;
+		if(c.getCount() > 0 && c != null ) {
+			c.moveToFirst();
+		
+			messageId = c.getLong(c.getColumnIndex("_id"));
+			Log.i("SMSSync", "Message Id "+messageId);
+			c.close();
+		}
+		
+    	return messageId;
     }
     
- // Clear the standard notification alert
+    // Clear the standard notification alert
     public static void clear(Context context) {
-      clearAll(context);
+    	clearAll(context);
     }
 
     // Clear a single notification
     public static void clearAll(Context context) {
-      NotificationManager myNM =
-        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-      myNM.cancelAll();
+    	NotificationManager myNM =
+    		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    	myNM.cancelAll();
     }
 
 
@@ -379,9 +377,11 @@ public class Util{
             return mSDF.format(new Date(timestamp));
     }
     
-    public static void delSmsFromInbox(Context context, SmsMessage msg) {
-    	int threadId = getThreadId(context, msg);
-    	context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + threadId), null, null);
-	}
+    public static void delSmsFromInbox(Context context, SmsMessage msg) {   	
+    	long messageId = getMessageId(context, msg);
+    	if( messageId >= 0 ) {
+    		context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + messageId), null, null);
+    	}
+    }
     
 }

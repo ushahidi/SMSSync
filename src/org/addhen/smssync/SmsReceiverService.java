@@ -30,6 +30,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class SmsReceiverService extends Service {
 	
 	private ServiceHandler mServiceHandler;
 	private Looper mServiceLooper;
-	private Context context;
+	private Context mContext;
 	private String fromAddress = "";
     private String messageBody = "";
     private long timestamp = 0;
@@ -60,19 +61,20 @@ public class SmsReceiverService extends Service {
 	public double longitude;
 	private NotificationManager notificationManager;
 	SmsMessage sms;
-	private static final int MESSAGE_RETRY = 8;
-	private static final int MESSAGE_RETRY_PAUSE = 1000;
 	private int mResultCode;
+	private static final String TAG = "SMSSync";
+	
 	
 	@Override
 	public void onCreate() {
-	    SmsSyncPref.loadPreferences(this);
-	    HandlerThread thread = new HandlerThread("Message sending starts", Process.THREAD_PRIORITY_BACKGROUND);
+	    
+	    HandlerThread thread = new HandlerThread(TAG, Process.THREAD_PRIORITY_BACKGROUND);
 	    thread.start();
-	    context = getApplicationContext();
+	    mContext = getApplicationContext();
 	    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	    mServiceLooper = thread.getLooper();
 	    mServiceHandler = new ServiceHandler(mServiceLooper);
+	    SmsSyncPref.loadPreferences(mContext);
 	}
 
 	@Override
@@ -104,13 +106,13 @@ public class SmsReceiverService extends Service {
 			
 			int serviceId = msg.arg1;
 			Intent intent = (Intent) msg.obj;
-			String action = intent.getAction();
-			Log.i("SMS Action", "Action: "+action);
+			if( intent != null ) {
+				String action = intent.getAction();
 			
-			if (ACTION_SMS_RECEIVED.equals(action)) {
-				handleSmsReceived(intent);
-			} 
-
+				if (ACTION_SMS_RECEIVED.equals(action)) {
+					handleSmsReceived(intent);
+				} 
+			}
 			finishStartingService(SmsReceiverService.this, serviceId);
 	    }
 	}
@@ -125,7 +127,7 @@ public class SmsReceiverService extends Service {
 	    	SmsMessage[] messages = getMessagesFromIntent(intent);
 	    	sms = messages[0];
 	    	if (messages != null) {
-	    		//extract message details phone number and the message body
+	    		//extract message details. phone number and the message body
 	    		fromAddress = sms.getDisplayOriginatingAddress();
 	    		timestamp = sms.getTimestampMillis();
 	    		String body;
@@ -143,7 +145,7 @@ public class SmsReceiverService extends Service {
 	    }
 	    
 	    if( SmsSyncPref.enabled) {
-	    	Log.i("Enabled: ", "enable: "+SmsSyncPref.enabled);
+	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
 	    		// if keywoard is enabled
 	    		if(!SmsSyncPref.keyword.equals("")){
@@ -153,10 +155,8 @@ public class SmsReceiverService extends Service {
 		    				this.showNotification(messageBody, getString(R.string.sending_failed));
 		    				this.postToOutbox();
 		    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
-		    				Util.clear(SmsReceiverService.this);
 	    				}else {
 	    					Util.delSmsFromInbox(SmsReceiverService.this,sms);
-		    				Util.clear(SmsReceiverService.this);
 		    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
 		    			}
 	    			}
@@ -166,10 +166,8 @@ public class SmsReceiverService extends Service {
 	    				this.showNotification(messageBody, getString(R.string.sending_failed));
 	    				this.postToOutbox();
 	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
-	    				Util.clear(SmsReceiverService.this);
 	    			}else {			
 	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
-	    				Util.clear(SmsReceiverService.this);
 	    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}
@@ -201,20 +199,20 @@ public class SmsReceiverService extends Service {
 	 * @return
 	 */
 	private boolean postToAWebService() {
-			
+		
 		StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
     	params.put("secret",SmsSyncPref.apiKey);
 		params.put("from", fromAddress); 
 		params.put("message",messageBody);
+		
 		return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
 		
 	}
 	
 	private void postToOutbox() {
-		Integer threadId = new Integer(Util.getThreadId(SmsReceiverService.this,sms));
-		Long msgId = new Long(Util.findMessageId(this, threadId, timestamp));
+		Long msgId = new Long(Util.getMessageId(SmsReceiverService.this,sms));
 		String messageId = msgId.toString();
-		Log.i("Message Id", "Message Id: "+messageId);
+		
 		String messageDate = Util.formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
 		
 		Util.smsMap.put("messageFrom", fromAddress);
