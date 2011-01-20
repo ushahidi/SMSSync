@@ -41,7 +41,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.telephony.SmsMessage;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -336,13 +335,34 @@ public class Util{
 		
 		if(c.getCount() > 0 && c != null ) {
 			c.moveToFirst();
-		
 			messageId = c.getLong(c.getColumnIndex("_id"));
-			Log.i("SMSSync", "Message Id "+messageId);
 			c.close();
 		}
 		
     	return messageId;
+    }
+    
+    /**
+     * Tries to locate the message thread id given the address (phone or email) of the
+     * message sender
+     */
+    public static long getThreadId(Context context, SmsMessage msg) {
+    	long threadId = 0;
+    
+		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
+				
+		StringBuilder sb = new StringBuilder();
+		sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
+		sb.append("body='" + msg.getMessageBody() + "'");
+		Cursor c = context.getContentResolver().query(uriSms, null, sb.toString(), null, null);
+		
+		if(c.getCount() > 0 && c != null ) {
+			c.moveToFirst();
+			threadId = c.getLong(c.getColumnIndex("thread_id"));
+			c.close();
+		}
+		
+    	return threadId;
     }
     
     // Clear the standard notification alert
@@ -378,9 +398,9 @@ public class Util{
     }
     
     public static void delSmsFromInbox(Context context, SmsMessage msg) {   	
-    	long messageId = getMessageId(context, msg);
-    	if( messageId >= 0 ) {
-    		context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + messageId), null, null);
+    	long threadId = getThreadId(context, msg);
+    	if( threadId >= 0 ) {
+    		context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + threadId), null, null);
     	}
     }
     
