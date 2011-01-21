@@ -186,11 +186,11 @@ public class SmsReceiverService extends Service {
 		Intent baseIntent = new Intent(this, Settings.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		
-		
-		Notification notification = new Notification(R.drawable.favicon, "Status", System.currentTimeMillis());
+		Notification notification = new Notification(R.drawable.icon, getString(R.string.status), System.currentTimeMillis());
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
 		notification.setLatestEventInfo(this, notification_title, message, pendingIntent);
 		notificationManager.notify(1, notification);
+		
 	}
 
 	/**

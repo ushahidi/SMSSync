@@ -1,8 +1,9 @@
 1.0.3
 * Downgraded to Android 1.6 so smssync works from 1.6 and above.
 * Now sms is deleted from the sms inbox. 
-* Fixed issue with the secret option variable.
-* Better support for localization - All hardcoded strings have been moved to string.xml file
-* Supports outbox -- for messages that manually needs to be sync
+* Fixed issue with the secret variable.
+* Better support for localization - All hardcoded strings have been moved to the string.xml file.
+* Supports outbox -- for messages that manually needs to be synced.
 * Improved SMS background service -- Now it starts and stops perfectly.
 * Added version number to the powered by text on the Settings screen.
+* Changed notification Icon to SMSSync's slick launch icon.
