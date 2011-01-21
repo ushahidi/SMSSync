@@ -5,3 +5,4 @@
 * Better support for localization - All hardcoded strings have been moved to string.xml file
 * Supports outbox -- for messages that manually needs to be sync
 * Improved SMS background service -- Now it starts and stops perfectly.
+* Added version number to the powered by text on the Settings screen.

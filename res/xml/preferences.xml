@@ -61,6 +61,6 @@
 	  	
   	</PreferenceCategory> -->
   	<Preference android:key="powered_preference"
-    	android:title="@string/app_name"
+    	android:title="@string/sms_sync_powered_by"
       	android:summary="@string/powered_by"/>
 </PreferenceScreen>

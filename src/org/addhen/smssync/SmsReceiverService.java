@@ -154,9 +154,9 @@ public class SmsReceiverService extends Service {
 	    				if( !this.postToAWebService() ) {
 		    				this.showNotification(messageBody, getString(R.string.sending_failed));
 		    				this.postToOutbox();
-		    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+		    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
 	    				}else {
-	    					//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    					Util.delSmsFromInbox(SmsReceiverService.this,sms);
 		    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
 		    			}
 	    			}
@@ -165,9 +165,9 @@ public class SmsReceiverService extends Service {
 	    			if( !this.postToAWebService() ) {
 	    				this.showNotification(messageBody, getString(R.string.sending_failed));
 	    				this.postToOutbox();
-	    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
 	    			}else {			
-	    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
 	    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}

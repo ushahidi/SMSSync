@@ -211,10 +211,11 @@ public class Util{
 		
 		if( Util.isConnected(context)) {
 			List<Messages> listMessages = new ArrayList<Messages>();
-			
+			int messageId = 0;
 			Messages messages = new Messages();
 			listMessages.add(messages);
-			int messageId = Integer.parseInt(smsMap.get("messageId"));
+			if( smsMap.get("messageId") != null)
+			messageId = Integer.parseInt(smsMap.get("messageId"));
 			messages.setMessageId(messageId);
 			messages.setMessageFrom(smsMap.get("messageFrom"));
 			messages.setMessageBody(smsMap.get("messageBody"));
