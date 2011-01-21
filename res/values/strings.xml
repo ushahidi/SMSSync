@@ -42,6 +42,7 @@
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="sending_failed">SMSSync Message Sending failed.</string>
     <string name="sending_succeeded">"SMSSync Message Sent."</string>
+    <string name="sync_failed">SMSSync message sending failed. Perhaps its not configured or there is no internet connectivity. Please double check your internet connectivity or your configuration</string>
     <string name="powered">Powered</string>
     <string name="powered_by">Created by Ushahidi</string>
     <string name="menu_delete">Delete</string>

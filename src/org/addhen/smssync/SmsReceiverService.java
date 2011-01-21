@@ -20,19 +20,12 @@
 
 package org.addhen.smssync;
 
-import java.util.HashMap;
-
-import org.addhen.smssync.net.SmsSyncHttpClient;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -43,7 +36,6 @@ import android.os.PowerManager;
 import android.os.Process;
 import android.provider.Settings;
 import android.telephony.SmsMessage;
-import android.util.Log;
 
 public class SmsReceiverService extends Service {
 	private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -51,17 +43,14 @@ public class SmsReceiverService extends Service {
 	private ServiceHandler mServiceHandler;
 	private Looper mServiceLooper;
 	private Context mContext;
-	private String fromAddress = "";
-    private String messageBody = "";
-    private long timestamp = 0;
+	private String messagesFrom = "";
+    private String messagesBody = "";
 	private static final Object mStartingServiceSync = new Object();
 	private static PowerManager.WakeLock mStartingService;
-	private HashMap<String,String> params = new HashMap<String, String>();
 	public double latitude;
 	public double longitude;
 	private NotificationManager notificationManager;
-	SmsMessage sms;
-	private int mResultCode;
+	private SmsMessage sms;
 	private static final String TAG = "SMSSync";
 	
 	
@@ -80,7 +69,6 @@ public class SmsReceiverService extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 	    Message msg = mServiceHandler.obtainMessage();
-	    mResultCode = intent != null ? intent.getIntExtra("result", 0) : 0;
 	    msg.arg1 = startId;
 	    msg.obj = intent;
 	    mServiceHandler.sendMessage(msg);
@@ -128,8 +116,7 @@ public class SmsReceiverService extends Service {
 	    	sms = messages[0];
 	    	if (messages != null) {
 	    		//extract message details. phone number and the message body
-	    		fromAddress = sms.getDisplayOriginatingAddress();
-	    		timestamp = sms.getTimestampMillis();
+	    		messagesFrom = sms.getDisplayOriginatingAddress();
 	    		String body;
 	    		if (messages.length == 1 || sms.isReplace()) {
 	    			body = sms.getDisplayMessageBody();
@@ -140,35 +127,37 @@ public class SmsReceiverService extends Service {
 	    			}
 	    			body = bodyText.toString();
 	    		}
-	    		messageBody = body;
+	    		messagesBody = body;
 	    	}
 	    }
 	    
 	    if( SmsSyncPref.enabled) {
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
+	    		boolean posted = Util.postToAWebService(messagesFrom, messagesBody,SmsReceiverService.this);
 	    		// if keywoard is enabled
 	    		if(!SmsSyncPref.keyword.equals("")){
 	    			String [] keywords = SmsSyncPref.keyword.split(",");
-	    			if( SmsSyncUtil.processString(messageBody, keywords)){
-	    				if( !this.postToAWebService() ) {
-		    				this.showNotification(messageBody, getString(R.string.sending_failed));
+	    			
+	    			if( SmsSyncUtil.processString(messagesBody, keywords)){
+	    				if( !posted ) {
+		    				this.showNotification(messagesBody, getString(R.string.sending_failed));
 		    				this.postToOutbox();
 		    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
 	    				}else {
 	    					Util.delSmsFromInbox(SmsReceiverService.this,sms);
-		    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
+		    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 		    			}
 	    			}
 	    		// keyword is not enabled
 	    		} else {
-	    			if( !this.postToAWebService() ) {
-	    				this.showNotification(messageBody, getString(R.string.sending_failed));
+	    			if( !posted ) {
+	    				this.showNotification(messagesBody, getString(R.string.sending_failed));
 	    				this.postToOutbox();
 	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
 	    			}else {			
 	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
-	    				this.showNotification(messageBody, getString(R.string.sending_succeeded));
+	    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}
 	    	}
@@ -193,32 +182,15 @@ public class SmsReceiverService extends Service {
 		
 	}
 
-	/**
-	 * Posts received sms to a configured web service.
-	 * 
-	 * @return
-	 */
-	private boolean postToAWebService() {
-		
-		StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
-    	params.put("secret",SmsSyncPref.apiKey);
-		params.put("from", fromAddress); 
-		params.put("message",messageBody);
-		
-		return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
-		
-	}
-	
 	private void postToOutbox() {
-		Long msgId = new Long(Util.getMessageId(SmsReceiverService.this,sms));
+		Long msgId = new Long(Util.getId(SmsReceiverService.this,sms,"id"));
 		String messageId = msgId.toString();
 		
 		String messageDate = Util.formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
-		
-		Util.smsMap.put("messageFrom", fromAddress);
-		Util.smsMap.put("messageBody", messageBody);
-		Util.smsMap.put("messageDate", messageDate);
-		Util.smsMap.put("messageId", messageId);
+		Util.smsMap.put("messagesFrom", messagesFrom);
+		Util.smsMap.put("messagesBody", messagesBody);
+		Util.smsMap.put("messagesDate", messageDate);
+		Util.smsMap.put("messagesId", messageId);
 		
 		Util.processMessages(SmsReceiverService.this);
 	

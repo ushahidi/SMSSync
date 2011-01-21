@@ -175,6 +175,11 @@ public class SmsSyncDatabase {
   		return mDb.delete(MESSAGES_TABLE, null, null) > 0;
   	}
   	
+  	public boolean deleteMessagesById( int messageId) {
+  		String whereClause = MESSAGES_ID+"= ?";
+  		String whereArgs[] = {new Integer(messageId).toString()};
+  		return mDb.delete(MESSAGES_TABLE, whereClause, whereArgs) > 0;
+  	}
 
   	public void addMessages(List<Messages> messages) {
   		try {

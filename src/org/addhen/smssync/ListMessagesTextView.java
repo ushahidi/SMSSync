@@ -23,9 +23,6 @@ package org.addhen.smssync;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -35,7 +32,6 @@ public class ListMessagesTextView extends LinearLayout{
 	private TextView messagesFrom;
 	private TextView messagesBody;
 	private TextView messagesDate;
-	private int messagesId;
 	private float fontSize = 13.5f;
 	private LinearLayout textLayout;
 	private TableLayout tblLayout;
@@ -103,7 +99,7 @@ public class ListMessagesTextView extends LinearLayout{
 				TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 		
 		
-		this.messagesId = listText.getMessageId();
+		listText.getMessageId();
 		
 		tblRow.addView( textLayout);
 		tblLayout.addView(tblRow);
@@ -126,6 +122,5 @@ public class ListMessagesTextView extends LinearLayout{
 	}
 	
 	public void setId( int messagesId ) {
-		this.messagesId = messagesId;
 	}
 }

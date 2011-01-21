@@ -37,16 +37,19 @@ import android.app.NotificationManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.addhen.smssync.data.Messages;
+import org.addhen.smssync.net.SmsSyncHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -214,12 +217,11 @@ public class Util{
 			int messageId = 0;
 			Messages messages = new Messages();
 			listMessages.add(messages);
-			if( smsMap.get("messageId") != null)
-			messageId = Integer.parseInt(smsMap.get("messageId"));
+			if( smsMap.get("messagesId") != null) messageId = Integer.parseInt(smsMap.get("messagesId"));
 			messages.setMessageId(messageId);
-			messages.setMessageFrom(smsMap.get("messageFrom"));
-			messages.setMessageBody(smsMap.get("messageBody"));
-			messages.setMessageDate(smsMap.get("messageDate"));
+			messages.setMessageFrom(smsMap.get("messagesFrom"));
+			messages.setMessageBody(smsMap.get("messagesBody"));
+			messages.setMessageDate(smsMap.get("messagesDate"));
 			mMessages = listMessages;
 			
 			if(mMessages != null) {
@@ -230,7 +232,6 @@ public class Util{
 				 return 1;
 			 }
 			  
-
 		} else {
 			return 4;
 		}
@@ -321,49 +322,29 @@ public class Util{
     }
     
     /**
-     * Tries to locate the message thread id given the address (phone or email) of the
+     * Tries to locate the message id or thread id given the address (phone or email) of the
      * message sender
      */
-    public static long getMessageId(Context context, SmsMessage msg) {
-    	long messageId = 0;
-    
+    public static long getId(Context context, SmsMessage msg , String idType ) {
+    	
 		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
 				
 		StringBuilder sb = new StringBuilder();
 		sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
-		sb.append("body='" + msg.getMessageBody() + "'");
+		sb.append("body=" + DatabaseUtils.sqlEscapeString(msg.getMessageBody()));
 		Cursor c = context.getContentResolver().query(uriSms, null, sb.toString(), null, null);
 		
 		if(c.getCount() > 0 && c != null ) {
 			c.moveToFirst();
-			messageId = c.getLong(c.getColumnIndex("_id"));
-			c.close();
-		}
-		
-    	return messageId;
-    }
-    
-    /**
-     * Tries to locate the message thread id given the address (phone or email) of the
-     * message sender
-     */
-    public static long getThreadId(Context context, SmsMessage msg) {
-    	long threadId = 0;
-    
-		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
+			if(idType.equals("id") ) {
+				return c.getLong(c.getColumnIndex("_id"));
 				
-		StringBuilder sb = new StringBuilder();
-		sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
-		sb.append("body='" + msg.getMessageBody() + "'");
-		Cursor c = context.getContentResolver().query(uriSms, null, sb.toString(), null, null);
-		
-		if(c.getCount() > 0 && c != null ) {
-			c.moveToFirst();
-			threadId = c.getLong(c.getColumnIndex("thread_id"));
+			} else if(idType.equals("thread")) {
+				return  c.getLong(c.getColumnIndex("thread_id"));
+			}
 			c.close();
 		}
-		
-    	return threadId;
+		return 0;
     }
     
     // Clear the standard notification alert
@@ -377,34 +358,53 @@ public class Util{
     		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	myNM.cancelAll();
     }
-
-
 	
     /*
      * Format a unix timestamp to a string suitable for display to the user according
      * to their system settings (12 or 24 hour time)
      */
     public static String formatTimestamp(Context context, long timestamp) {
-            String HOURS_24 = "24";
-            String hours;
-            hours = "24";
+    	String HOURS_24 = "24";
+    	String hours = "24";
             
-            SimpleDateFormat mSDF = new SimpleDateFormat();
-            if (HOURS_24.equals(hours)) {
-                    mSDF.applyLocalizedPattern(TIME_FORMAT_24_HOUR);
-            } else {
-                    mSDF.applyLocalizedPattern(TIME_FORMAT_12_HOUR);
-            }
-            return mSDF.format(new Date(timestamp));
+    	SimpleDateFormat mSDF = new SimpleDateFormat();
+    	if (HOURS_24.equals(hours)) {
+    		mSDF.applyLocalizedPattern(TIME_FORMAT_24_HOUR);
+    	} else {
+    		mSDF.applyLocalizedPattern(TIME_FORMAT_12_HOUR);
+    	}
+    	return mSDF.format(new Date(timestamp));
     }
     
     public static void delSmsFromInbox(Context context, SmsMessage msg) {   	
-    	long threadId = getThreadId(context, msg);
+    	long threadId = getId(context, msg,"thread");
+    	
     	if( threadId >= 0 ) {
     		context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + threadId), null, null);
     	}
     }
     
-    
-    
+    /**
+	 * Posts received sms to a configured web service.
+	 * @param String apiKey
+	 * @param String fromAddress
+	 * @param String messageBody
+	 * 
+	 * @return
+	 */
+	public static boolean postToAWebService( String messagesFrom, String messagesBody, Context context) {
+		HashMap<String,String> params = new HashMap<String, String>();
+		if(!SmsSyncPref.website.equals("")) {
+			StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
+			SmsSyncPref.loadPreferences( context );
+			Log.i("Message website", "Hey "+ SmsSyncPref.website);
+			params.put("secret",SmsSyncPref.apiKey);
+			params.put("from", messagesFrom); 
+			params.put("message",messagesBody);
+		
+			return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
+		}
+		return false;
+		
+	}
 }

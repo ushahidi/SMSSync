@@ -22,7 +22,6 @@ package org.addhen.smssync;
  
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.SmsSyncDatabase;
@@ -31,21 +30,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.AdapterView.OnItemClickListener;
  
 public class SmsSyncOutbox extends Activity
 {
@@ -126,7 +119,7 @@ public class SmsSyncOutbox extends Activity
   
 	private void populateMenu(Menu menu) {
 		MenuItem i;i = menu.add( Menu.NONE, SMSSYNC_SYNC, Menu.NONE, R.string.menu_sync );
-		i.setIcon(android.R.drawable.ic_menu_upload);
+		i.setIcon(android.R.drawable.ic_menu_send);
 		
 		i = menu.add( Menu.NONE, SETTINGS, Menu.NONE, R.string.menu_settings);
 		i.setIcon(android.R.drawable.ic_menu_preferences);
@@ -138,16 +131,13 @@ public class SmsSyncOutbox extends Activity
 		Intent intent;
 		switch (item.getItemId()) {
     		case SMSSYNC_SYNC:
-    			//TODO start the sync activity
-    			ReportsTask reportsTask = new ReportsTask();
-	            reportsTask.appContext = this;
-	            reportsTask.execute();
+    			MessagesTask messagesTask = new MessagesTask();
+    			messagesTask.appContext = SmsSyncOutbox.this;
+    			messagesTask.execute();
     			return(true); 
         
     		case SETTINGS:
     			intent = new Intent( SmsSyncOutbox.this,  Settings.class);
-			
-    			// Make it a subactivity so we know when it returns
     			startActivity(intent);
     			return(true);
         
@@ -156,11 +146,10 @@ public class SmsSyncOutbox extends Activity
 	}
 	
 	 //thread class
-	private class ReportsTask extends AsyncTask <Void, Void, Integer> {
+	private class MessagesTask extends AsyncTask <Void, Void, Integer> {
 		
 		protected Integer status;
 		protected Context appContext;
-		
 		@Override
 		protected void onPreExecute() {
 			setProgressBarIndeterminateVisibility(true);
@@ -169,26 +158,24 @@ public class SmsSyncOutbox extends Activity
 		
 		@Override 
 		protected Integer doInBackground(Void... params) {
-			status = Util.processMessages(appContext);
+			status = syncMessages();
 			return status;
 		}
 		
 		@Override
 		protected void onPostExecute(Integer result)
-		{
-			if( result == 4 ){
-				
-				//Util.showToast(appContext, R.string.internet_connection);
-			} else if( result == 0 ) {
-				showMessages();
-				setProgressBarIndeterminateVisibility(false);
+		{	if( status == 0 ) {
+			Util.showToast(appContext, R.string.sending_succeeded);
+			} else {
+				Util.showToast(appContext, R.string.sync_failed);
 			}
+			setProgressBarIndeterminateVisibility(false);
 		}
 
 		
 	}
   
-	// get incidents from the db
+	// get messages from the db
 	public void showMessages() {
 		Cursor cursor;
 		cursor = SmsSyncApplication.mDb.fetchAllMessages();
@@ -196,7 +183,6 @@ public class SmsSyncOutbox extends Activity
 		String messagesFrom;
 		String messagesDate;
 		String messagesBody;
-		String messagesId;
 			
 		if (cursor.moveToFirst()) {
 			int messagesIdIndex = cursor.getColumnIndexOrThrow( 
@@ -240,6 +226,69 @@ public class SmsSyncOutbox extends Activity
 		cursor.close();
 		ila.notifyDataSetChanged();
 		listMessages.setAdapter( ila );
+	}
+	
+	// get messages from the db
+	public int syncMessages() {
+		Cursor cursor;
+		cursor = SmsSyncApplication.mDb.fetchAllMessages();
+	  
+		String messagesFrom;
+		String messagesDate;
+		String messagesBody;
+		int deleted = 0;	
+		if (cursor.moveToFirst()) {
+			int messagesIdIndex = cursor.getColumnIndexOrThrow( 
+				SmsSyncDatabase.MESSAGES_ID);
+			int messagesFromIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_FROM);
+			int messagesDateIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_DATE);
+				
+			int messagesBodyIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_BODY);
+				
+				
+			//ila.removeItems();
+			//ila.notifyDataSetChanged();
+			//mOldMessages.clear();
+					
+			do {
+			  
+				Messages messages = new Messages();
+				mOldMessages.add( messages );
+			  
+				int messageId = Util.toInt(cursor.getString(messagesIdIndex));
+				messages.setMessageId(messageId);
+				
+				
+				messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
+				messages.setMessageFrom(messagesFrom);
+				
+				messagesDate = cursor.getString(messagesDateIndex);
+				messages.setMessageDate(messagesDate);
+			  
+				messagesBody = cursor.getString(messagesBodyIndex);
+				messages.setMessageBody(messagesBody);
+				
+				// post to web service
+				if( Util.postToAWebService(messagesFrom, messagesBody,SmsSyncOutbox.this) ) {
+					//if it successfully pushes message, delete message from db
+					SmsSyncApplication.mDb.deleteMessagesById(messageId);
+					deleted = 0;
+				} else {
+					deleted = 1;
+				}
+				
+			  
+			} while (cursor.moveToNext());
+		}
+    
+		cursor.close();
+		//ila.notifyDataSetChanged();
+		//listMessages.setAdapter( ila );
+		
+		return deleted;
 	}
   
 	@Override

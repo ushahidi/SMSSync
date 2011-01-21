@@ -140,7 +140,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	        baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
 			
-			Notification notification = new Notification(R.drawable.favicon, getString(R.string.status), System.currentTimeMillis());
+			Notification notification = new Notification(R.drawable.icon, getString(R.string.status), System.currentTimeMillis());
 			
 			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
 			notification.setLatestEventInfo(this, getString(R.string.app_name),getString(R.string.notification_summary), pendingIntent);
