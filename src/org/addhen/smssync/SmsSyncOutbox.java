@@ -27,10 +27,8 @@ import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.SmsSyncDatabase;
  
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
@@ -48,7 +46,8 @@ public class SmsSyncOutbox extends Activity
 	private List<Messages> mOldMessages;
 	private ListMessagesAdapter ila = new ListMessagesAdapter( this );
 	private static final int SMSSYNC_SYNC = Menu.FIRST+1;
-	private static final int SETTINGS = Menu.FIRST+2;
+	private static final int DELETE = Menu.FIRST+2;
+	private static final int SETTINGS = Menu.FIRST+3;
 	private final Handler mHandler = new Handler();
 	public static SmsSyncDatabase mDb;
 	
@@ -67,15 +66,19 @@ public class SmsSyncOutbox extends Activity
 	@Override
 	protected void onResume(){
 		super.onResume();
-		
-		if(ila.getCount() == 0 ) {
 			mHandler.post(mDisplayMessages);
-		}
 	}
   
 	@Override
+	protected void onPause() {
+		super.onPause();
+		mHandler.post(mDisplayMessages);
+	}
+	
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		mHandler.post(mDisplayMessages);
 	}
   
 	final Runnable mDisplayMessages = new Runnable() {
@@ -86,6 +89,41 @@ public class SmsSyncOutbox extends Activity
 				setProgressBarIndeterminateVisibility(false);
 			} catch(Exception e){
 				return;  //means that the dialog is not showing, ignore please!
+			}
+		}
+	};
+	
+	final Runnable mSyncMessages = new Runnable() {
+		public void run() {
+			setProgressBarIndeterminateVisibility(true);
+			int result = syncMessages();
+			try {
+				if( result == 0 ){
+					Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
+					
+				}else {
+					Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+				}
+				setProgressBarIndeterminateVisibility(false);
+			}catch(Exception e) {
+				return ; 
+			}
+		}
+	};
+	
+	final Runnable mDeleteAllMessages = new Runnable() {
+		public void run() {
+			setProgressBarIndeterminateVisibility(true);
+			boolean result = deleteAllMessages();
+			try {
+				if( result ){
+					Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted);					
+				}else {
+					Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted_failed);
+				}
+				setProgressBarIndeterminateVisibility(false);
+			}catch(Exception e) {
+				return ; 
 			}
 		}
 	};
@@ -121,6 +159,9 @@ public class SmsSyncOutbox extends Activity
 		MenuItem i;i = menu.add( Menu.NONE, SMSSYNC_SYNC, Menu.NONE, R.string.menu_sync );
 		i.setIcon(android.R.drawable.ic_menu_send);
 		
+		i = menu.add(Menu.NONE, DELETE, Menu.NONE, R.string.menu_delete);
+		i.setIcon(android.R.drawable.ic_menu_delete);
+		
 		i = menu.add( Menu.NONE, SETTINGS, Menu.NONE, R.string.menu_settings);
 		i.setIcon(android.R.drawable.ic_menu_preferences);
 		  
@@ -131,52 +172,24 @@ public class SmsSyncOutbox extends Activity
 		Intent intent;
 		switch (item.getItemId()) {
     		case SMSSYNC_SYNC:
-    			MessagesTask messagesTask = new MessagesTask();
-    			messagesTask.appContext = SmsSyncOutbox.this;
-    			messagesTask.execute();
+    			mHandler.post(mSyncMessages);
     			return(true); 
         
     		case SETTINGS:
     			intent = new Intent( SmsSyncOutbox.this,  Settings.class);
     			startActivity(intent);
     			return(true);
+    			
+    		case DELETE:
+    			mHandler.post(mDeleteAllMessages);
+    			return(true);
         
 		}
 		return(false);
 	}
 	
-	 //thread class
-	private class MessagesTask extends AsyncTask <Void, Void, Integer> {
-		
-		protected Integer status;
-		protected Context appContext;
-		@Override
-		protected void onPreExecute() {
-			setProgressBarIndeterminateVisibility(true);
-
-		}
-		
-		@Override 
-		protected Integer doInBackground(Void... params) {
-			status = syncMessages();
-			return status;
-		}
-		
-		@Override
-		protected void onPostExecute(Integer result)
-		{	if( status == 0 ) {
-			Util.showToast(appContext, R.string.sending_succeeded);
-			} else {
-				Util.showToast(appContext, R.string.sync_failed);
-			}
-			setProgressBarIndeterminateVisibility(false);
-		}
-
-		
-	}
-  
 	// get messages from the db
-	public void showMessages() {
+	public  void showMessages() {
 		Cursor cursor;
 		cursor = SmsSyncApplication.mDb.fetchAllMessages();
 	  
@@ -194,8 +207,7 @@ public class SmsSyncOutbox extends Activity
 				
 			int messagesBodyIndex = cursor.getColumnIndexOrThrow(
 				SmsSyncDatabase.MESSAGES_BODY);
-				
-				
+								
 			ila.removeItems();
 			ila.notifyDataSetChanged();
 			mOldMessages.clear();
@@ -236,7 +248,10 @@ public class SmsSyncOutbox extends Activity
 		String messagesFrom;
 		String messagesDate;
 		String messagesBody;
-		int deleted = 0;	
+		int deleted = 0;
+		ila.removeItems();
+		ila.notifyDataSetChanged();
+		mOldMessages.clear();
 		if (cursor.moveToFirst()) {
 			int messagesIdIndex = cursor.getColumnIndexOrThrow( 
 				SmsSyncDatabase.MESSAGES_ID);
@@ -247,12 +262,7 @@ public class SmsSyncOutbox extends Activity
 				
 			int messagesBodyIndex = cursor.getColumnIndexOrThrow(
 				SmsSyncDatabase.MESSAGES_BODY);
-				
-				
-			//ila.removeItems();
-			//ila.notifyDataSetChanged();
-			//mOldMessages.clear();
-					
+
 			do {
 			  
 				Messages messages = new Messages();
@@ -283,13 +293,17 @@ public class SmsSyncOutbox extends Activity
 			  
 			} while (cursor.moveToNext());
 		}
-    
 		cursor.close();
-		//ila.notifyDataSetChanged();
-		//listMessages.setAdapter( ila );
-		
+		ila.notifyDataSetChanged();
+		listMessages.setAdapter( ila );
 		return deleted;
 	}
+	
+	// Delete all messages from outbox
+	public boolean deleteAllMessages() {
+		return SmsSyncApplication.mDb.deleteAllMessages();
+	}
+	
   
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {

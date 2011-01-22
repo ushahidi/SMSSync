@@ -52,11 +52,11 @@ public class SmsReceiverService extends Service {
 	private NotificationManager notificationManager;
 	private SmsMessage sms;
 	private static final String TAG = "SMSSync";
-	
+	private Handler handler = new Handler();
+	private ListMessagesAdapter ila = new ListMessagesAdapter( this );
 	
 	@Override
 	public void onCreate() {
-	    
 	    HandlerThread thread = new HandlerThread(TAG, Process.THREAD_PRIORITY_BACKGROUND);
 	    thread.start();
 	    mContext = getApplicationContext();
@@ -143,9 +143,10 @@ public class SmsReceiverService extends Service {
 	    				if( !posted ) {
 		    				this.showNotification(messagesBody, getString(R.string.sending_failed));
 		    				this.postToOutbox();
-		    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
+		    				handler.post(mDisplayMessages);
+		    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
 	    				}else {
-	    					Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    					//Util.delSmsFromInbox(SmsReceiverService.this,sms);
 		    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 		    			}
 	    			}
@@ -154,9 +155,14 @@ public class SmsReceiverService extends Service {
 	    			if( !posted ) {
 	    				this.showNotification(messagesBody, getString(R.string.sending_failed));
 	    				this.postToOutbox();
-	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
-	    			}else {			
-	    				Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    				handler.post(mDisplayMessages);
+	    				
+	    				//TODO make this a configurable option
+	    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    			}else {
+	    				
+	    				//TODO make this a configurable option
+	    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
 	    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}
@@ -237,7 +243,6 @@ public class SmsReceiverService extends Service {
 			
 			mStartingService.acquire();
 			context.startService(intent);
-			
 		}
 	}
 
@@ -255,4 +260,11 @@ public class SmsReceiverService extends Service {
 	      	}
 		}
 	}
+	
+	final Runnable mDisplayMessages = new Runnable() {
+		public void run() {
+			ila.notifyDataSetChanged();
+			
+		}
+	};
 }

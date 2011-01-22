@@ -46,6 +46,8 @@ public final class R {
         public static final int menu_delete=0x7f05001d;
         public static final int menu_settings=0x7f05001f;
         public static final int menu_sync=0x7f05001e;
+        public static final int messages_deleted=0x7f050020;
+        public static final int messages_deleted_failed=0x7f050021;
         public static final int notification_summary=0x7f050017;
         public static final int optional_settings=0x7f05000b;
         public static final int powered=0x7f05001b;
@@ -57,7 +59,7 @@ public final class R {
         public static final int sms_sync_disabled=0x7f050007;
         public static final int sms_sync_enabled=0x7f050006;
         public static final int sms_sync_powered_by=0x7f050013;
-        public static final int status=0x7f050020;
+        public static final int status=0x7f050022;
         public static final int sync_failed=0x7f05001a;
         public static final int version=0x7f050014;
     }

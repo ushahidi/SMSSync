@@ -20,10 +20,6 @@
 
 package org.addhen.smssync;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -42,7 +38,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.telephony.SmsMessage;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -266,32 +261,7 @@ public class Util{
 		}
 		return true;
 	}
-	
-	/**
-	 * Validate an Ushahidi instance
-	 * 
-	 * @param String - URL to be validated.
-	 * 
-	 * @return boolean
-	 */
-	public static boolean validateUshahidiInstance( String ushahidiUrl ) {
-		//make an http get request to a dummy api call
-		//TODO improve on how to do this
-		boolean status = false;
-		try {
-		    URL url = new URL(ushahidiUrl);
-		    URLConnection conn = url.openConnection();
-		    conn.connect();
-		    status = true;
-		} catch (MalformedURLException e) {
-		    status = false;
-		} catch (IOException e) {
-		    status = true;
-		}
-
-		return status;
-	}
-	
+		
 	/**
      * Tries to locate the message id (from the system database), given the message
      * thread id, the timestamp of the message.
@@ -304,7 +274,6 @@ public class Util{
     		Cursor cursor = context.getContentResolver().query(
     				ContentUris.withAppendedId(CONVERSATION_CONTENT_URI, threadId),
     				new String[] { "_id", "date", "thread_id" },
-    				//"thread_id=" + threadId + " and " + "date=" + timestamp,
     				"date=" + timestamp, null, "date desc");
                     
     		if (cursor != null) {
@@ -394,16 +363,16 @@ public class Util{
 	 */
 	public static boolean postToAWebService( String messagesFrom, String messagesBody, Context context) {
 		HashMap<String,String> params = new HashMap<String, String>();
+		SmsSyncPref.loadPreferences( context );
 		if(!SmsSyncPref.website.equals("")) {
 			StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
-			SmsSyncPref.loadPreferences( context );
-			Log.i("Message website", "Hey "+ SmsSyncPref.website);
 			params.put("secret",SmsSyncPref.apiKey);
 			params.put("from", messagesFrom); 
 			params.put("message",messagesBody);
 		
 			return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
 		}
+		
 		return false;
 		
 	}

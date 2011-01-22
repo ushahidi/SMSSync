@@ -48,5 +48,7 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_sync">Sync</string>
     <string name="menu_settings">Settings</string>
+    <string name="messages_deleted">Messages Successfully Deleted.</string>
+    <string name="messages_deleted_failed">Messages Couldn\'t Be Deleted.</string>
     <string name="status">Status</string>
 </resources>
