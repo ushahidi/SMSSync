@@ -9,5 +9,5 @@ h1.Instructions
 * The SMSSync sends the following variables via the POST method: 
     * *from*
     * *message*
-    * *secrete*
+    * *secret*
 
