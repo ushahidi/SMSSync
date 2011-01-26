@@ -55,7 +55,6 @@ public class SmsSyncOutbox extends Activity
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setTitle(R.string.outbox);
-		
 		setContentView( R.layout.list_messages );
 		listMessages = (ListView) findViewById( R.id.view_messages );
 		mOldMessages = new ArrayList<Messages>();
