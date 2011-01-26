@@ -26,6 +26,11 @@
        		android:title="@string/chk_enable_sms_sync"
           	android:summary="@string/chk_sms_sync_hint" />
 		
+		<CheckBoxPreference
+            android:key="auto_delete_preference"
+            android:title="@string/chk_enable_auto_delete"
+            android:summary="@string/chk_auto_delete_hint" />
+		
 		<EditTextPreference
     		android:key="website_preference"
    			android:title="@string/edittxt_website_pref"

@@ -47,12 +47,14 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	public static final String KEY_ENABLE_GPS_SYNC_PREF = "enable_gps_sync_preference";
 	public static final String KEY_API_KEY_PREF = "api_key_preference";
 	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
+	public static final String KEY_AUTO_DELETE_MESSAGE = "auto_delete_preference";
 	public static final String PREFS_NAME = "SMS_SYNC_PREF";
 	
 	private EditTextPreference websitePref;
 	private EditTextPreference apiKeyPref;
 	private EditTextPreference keywordPref;
 	private CheckBoxPreference enableSmsSync;
+	private CheckBoxPreference enableAutoDelete;
 	
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
@@ -75,6 +77,9 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         
         enableSmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_SMS_SYNC_PREF);
+        
+        enableAutoDelete = (CheckBoxPreference)getPreferenceScreen().findPreference(
+        		KEY_AUTO_DELETE_MESSAGE);
         
         /** enableMmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_MMS_SYNC_PREF);
@@ -102,6 +107,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		editor.putString("ApiKey", apiKeyPref.getText());
 		editor.putString("Keyword", keywordPref.getText());
 		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
+		editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
 		editor.commit();
 	}
 	

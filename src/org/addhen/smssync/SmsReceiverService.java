@@ -60,10 +60,11 @@ public class SmsReceiverService extends Service {
 	    HandlerThread thread = new HandlerThread(TAG, Process.THREAD_PRIORITY_BACKGROUND);
 	    thread.start();
 	    mContext = getApplicationContext();
+	    SmsSyncPref.loadPreferences(mContext);
 	    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	    mServiceLooper = thread.getLooper();
 	    mServiceHandler = new ServiceHandler(mServiceLooper);
-	    SmsSyncPref.loadPreferences(mContext);
+	    
 	}
 
 	@Override
@@ -111,6 +112,8 @@ public class SmsReceiverService extends Service {
 	private void handleSmsReceived(Intent intent) {
 		
 	    Bundle bundle = intent.getExtras();
+	    SmsSyncPref.loadPreferences(SmsReceiverService.this);
+	    
 	    if (bundle != null) {
 	    	SmsMessage[] messages = getMessagesFromIntent(intent);
 	    	sms = messages[0];
@@ -134,6 +137,7 @@ public class SmsReceiverService extends Service {
 	    if( SmsSyncPref.enabled) {
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
+	    		
 	    		boolean posted = Util.postToAWebService(messagesFrom, messagesBody,SmsReceiverService.this);
 	    		// if keywoard is enabled
 	    		if(!SmsSyncPref.keyword.equals("")){
@@ -144,25 +148,38 @@ public class SmsReceiverService extends Service {
 		    				this.showNotification(messagesBody, getString(R.string.sending_failed));
 		    				this.postToOutbox();
 		    				handler.post(mDisplayMessages);
-		    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+		    				
+		    				// Delete messages from message app's inbox only when its turned on
+		    				if( SmsSyncPref.autoDelete) {
+		    					Util.delSmsFromInbox(SmsReceiverService.this,sms);
+		    				}
+		    				
 	    				}else {
-	    					//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    					
+	    					if(SmsSyncPref.autoDelete) {
+	    						Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    					}
+	    					
 		    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 		    			}
 	    			}
 	    		// keyword is not enabled
 	    		} else {
+	    			
 	    			if( !posted ) {
 	    				this.showNotification(messagesBody, getString(R.string.sending_failed));
 	    				this.postToOutbox();
 	    				handler.post(mDisplayMessages);
 	    				
-	    				//TODO make this a configurable option
-	    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    				if(SmsSyncPref.autoDelete) {
+    						Util.delSmsFromInbox(SmsReceiverService.this,sms);
+    					}
 	    			}else {
 	    				
-	    				//TODO make this a configurable option
-	    				//Util.delSmsFromInbox(SmsReceiverService.this,sms);
+	    				if(SmsSyncPref.autoDelete) {
+    						Util.delSmsFromInbox(SmsReceiverService.this,sms);
+    					}
+	    				
 	    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}

@@ -23,6 +23,7 @@ package org.addhen.smssync;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -34,6 +35,7 @@ public class ListMessagesTextView extends LinearLayout{
 	private TextView messagesDate;
 	private float fontSize = 13.5f;
 	private LinearLayout textLayout;
+	private LinearLayout msgFromAndDateLayout;
 	private TableLayout tblLayout;
 	private TableRow tblRow;
 	
@@ -45,67 +47,78 @@ public class ListMessagesTextView extends LinearLayout{
 	}
 	
 	public void initComponent( Context context, ListMessagesText listText ) {
-		this.textLayout = new LinearLayout(context);
+		textLayout = new LinearLayout(context);
+		msgFromAndDateLayout = new LinearLayout(context);
 		
-		this.tblLayout = new TableLayout(context);
+		tblLayout = new TableLayout(context);
 		
-		this.tblLayout.setLayoutParams(new TableLayout.LayoutParams(
+		tblLayout.setLayoutParams(new TableLayout.LayoutParams(
 				TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-		this.tblLayout.setColumnStretchable(1, true);
-		this.tblRow =  new TableRow(context);
-		this.tblRow.setLayoutParams(new TableRow.LayoutParams(
+		tblLayout.setColumnStretchable(1, true);
+		tblRow =  new TableRow(context);
+		tblRow.setLayoutParams(new TableRow.LayoutParams(
 				TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 		
 		textLayout.setOrientation(VERTICAL);
 		textLayout.setPadding(0, 2, 0, 2);
 		
-		this.textLayout.setLayoutParams(
-				new TableRow.LayoutParams(
-						TableRow.LayoutParams.FILL_PARENT,
-						TableRow.LayoutParams.WRAP_CONTENT)
+		msgFromAndDateLayout.setOrientation(HORIZONTAL);
+		msgFromAndDateLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+		
+		msgFromAndDateLayout.setLayoutParams(
+				new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.FILL_PARENT,
+						LinearLayout.LayoutParams.WRAP_CONTENT)
+		);
+		
+		textLayout.setLayoutParams(
+				new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.FILL_PARENT,
+						LinearLayout.LayoutParams.WRAP_CONTENT)
 		);
 		
 		messagesFrom = new TextView( context);	
-		messagesFrom.setTextColor(Color.rgb(255, 0, 0));
+		messagesFrom.setTextColor(Color.WHITE);
 		messagesFrom.setTextSize(fontSize);
 		messagesFrom.setSingleLine(false);
 		messagesFrom.setTypeface(Typeface.DEFAULT_BOLD);
 		messagesFrom.setPadding(0, 0, 2, 2);
 		messagesFrom.setText( listText.getMessageFrom() );
-		messagesFrom.setLayoutParams( new TableRow.LayoutParams( 
-				TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+		messagesFrom.setLayoutParams( new LinearLayout.LayoutParams( 
+				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		messagesFrom.setGravity(Gravity.LEFT);
+		msgFromAndDateLayout.addView(messagesFrom, new LinearLayout.LayoutParams( 
+				LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		
-		textLayout.addView(messagesFrom, new TableRow.LayoutParams( 
-				TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+		
+		messagesDate = new TextView( context);
+		messagesDate.setTextColor(Color.DKGRAY);
+		messagesDate.setLayoutParams(new LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, 
+				LinearLayout.LayoutParams.WRAP_CONTENT));
+		
+		messagesDate.setText(listText.getMessageDate());
+		messagesDate.setGravity(Gravity.RIGHT);
+		msgFromAndDateLayout.addView(messagesDate, new LinearLayout.LayoutParams( 
+				LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		
+		textLayout.addView(msgFromAndDateLayout, new LinearLayout.LayoutParams( 
+				LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		
 		messagesBody = new TextView( context);
-		messagesBody.setTextColor(Color.WHITE);
-		messagesBody.setLayoutParams( new LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, 
-				TableRow.LayoutParams.WRAP_CONTENT));
+		messagesBody.setTextColor(Color.GRAY);
+		messagesBody.setLayoutParams( new LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, 
+				LinearLayout.LayoutParams.WRAP_CONTENT));
 		
 		messagesBody.setText( listText.getMessageBody() );
 		
-		textLayout.addView( messagesBody, new TableRow.LayoutParams( 
-				TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT) );
-		
-		messagesDate = new TextView( context);
-		messagesDate.setTextColor(Color.GREEN);
-		messagesDate.setLayoutParams(new LayoutParams( TableRow.LayoutParams.WRAP_CONTENT, 
-				TableRow.LayoutParams.WRAP_CONTENT));
-		
-		messagesDate.setText(listText.getMessageDate());
-		
-		textLayout.addView(messagesDate, new TableRow.LayoutParams( 
-				TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-		
+		textLayout.addView( messagesBody, new LinearLayout.LayoutParams( 
+				LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT) );
 		
 		listText.getMessageId();
 		
-		tblRow.addView( textLayout);
-		tblLayout.addView(tblRow);
 		
-		addView(tblLayout, new LinearLayout.LayoutParams(
-				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		addView(textLayout, new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 		
 	}
 	

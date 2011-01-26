@@ -49,14 +49,14 @@ public class SmsSyncOutbox extends Activity
 	private static final int DELETE = Menu.FIRST+2;
 	private static final int SETTINGS = Menu.FIRST+3;
 	private final Handler mHandler = new Handler();
-	public static SmsSyncDatabase mDb;
-	
+	public static SmsSyncDatabase mDb;	
   
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setTitle(R.string.outbox);
+		
 		setContentView( R.layout.list_messages );
-       
 		listMessages = (ListView) findViewById( R.id.view_messages );
 		mOldMessages = new ArrayList<Messages>();
 		mHandler.post(mDisplayMessages);		

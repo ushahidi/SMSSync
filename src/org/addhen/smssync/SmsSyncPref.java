@@ -29,6 +29,7 @@ public class SmsSyncPref {
 	public static String keyword = "";
 	public static String apiKey = "";
 	public static Boolean enabled = false;
+	public static Boolean autoDelete = false;
 	public static final String PREF_NAME = "SMS_SYNC_PREF";
 	
 	public static void loadPreferences( Context context ) {
@@ -39,6 +40,7 @@ public class SmsSyncPref {
 		keyword = settings.getString("Keyword", "");
 		apiKey = settings.getString("ApiKey", "");
 		enabled = settings.getBoolean("EnableSmsSync", false);
+		autoDelete = settings.getBoolean("EnableAutoDelete",false);
 		
 	}
 }
