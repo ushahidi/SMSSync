@@ -38,14 +38,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.TextView;
  
 public class SmsSyncOutbox extends Activity
 {
   
 	/** Called when the activity is first created. */
-	private ListView listMessages = null;
-	private List<Messages> mOldMessages;
-	private ListMessagesAdapter ila = new ListMessagesAdapter( this );
+	private static ListView listMessages = null;
+	private static List<Messages> mOldMessages;
+	private static ListMessagesAdapter ila;
+	private static TextView emptyListText;
 	private static final int SMSSYNC_SYNC = Menu.FIRST+1;
 	private static final int DELETE = Menu.FIRST+2;
 	private static final int SETTINGS = Menu.FIRST+3;
@@ -58,9 +60,19 @@ public class SmsSyncOutbox extends Activity
 		setTitle(R.string.outbox);
 		setContentView( R.layout.list_messages );
 		listMessages = (ListView) findViewById( R.id.view_messages );
+		emptyListText = (TextView) findViewById(R.id.empty);
 		mOldMessages = new ArrayList<Messages>();
-		mHandler.post(mDisplayMessages);		
-		
+		ila = new ListMessagesAdapter(SmsSyncOutbox.this);
+		mHandler.post(mDisplayMessages);
+		displayEmptyListText();
+	}
+	
+	public static void displayEmptyListText() {
+		if(ila.getCount() == 0 ) {
+			emptyListText.setVisibility(View.VISIBLE);
+		} else {
+			emptyListText.setVisibility(View.GONE);
+		}
 	}
   
 	@Override
@@ -150,7 +162,6 @@ public class SmsSyncOutbox extends Activity
 	}
  
 	public boolean onContextItemSelected(MenuItem item) {
- 
 		return(applyMenuChoice(item) ||
         super.onContextItemSelected(item));
 	}
@@ -190,7 +201,7 @@ public class SmsSyncOutbox extends Activity
 	}
 	
 	// get messages from the db
-	public  void showMessages() {
+	public static void showMessages() {
 		Cursor cursor;
 		cursor = SmsSyncApplication.mDb.fetchAllMessages();
 	  
@@ -239,6 +250,7 @@ public class SmsSyncOutbox extends Activity
 		cursor.close();
 		ila.notifyDataSetChanged();
 		listMessages.setAdapter( ila );
+		displayEmptyListText();
 	}
 	
 	// get messages from the db
@@ -250,8 +262,6 @@ public class SmsSyncOutbox extends Activity
 		String messagesDate;
 		
 		int deleted = 0;
-		ila.removeItems();
-		ila.notifyDataSetChanged();
 		mOldMessages.clear();
 		if (cursor.moveToFirst()) {
 			int messagesIdIndex = cursor.getColumnIndexOrThrow( 
@@ -285,6 +295,8 @@ public class SmsSyncOutbox extends Activity
 				// post to web service
 				if( Util.postToAWebService(messagesFrom, messagesBody,SmsSyncOutbox.this) ) {
 					//if it successfully pushes message, delete message from db
+					ila.removeItems();
+					ila.notifyDataSetChanged();
 					SmsSyncApplication.mDb.deleteMessagesById(messageId);
 					deleted = 0;
 				} else {
@@ -296,7 +308,6 @@ public class SmsSyncOutbox extends Activity
 		}
 		cursor.close();
 		ila.notifyDataSetChanged();
-		listMessages.setAdapter( ila );
 		return deleted;
 	}
 	
@@ -315,21 +326,21 @@ public class SmsSyncOutbox extends Activity
 	private class SyncTask extends AsyncTask <Void, Void, Integer> {
 		
 		protected Integer status;
-		
 		@Override
 		protected void onPreExecute() {
 		}
 		
 		@Override 
 		protected Integer doInBackground(Void... params) {
+			status = 0 ;
 			mHandler.post(mSyncMessages);
-			status = 0;
 			return status;
 		}
 		
 		@Override
 		protected void onPostExecute(Integer result)
 		{
+			showMessages();
 		}
 	}
 }

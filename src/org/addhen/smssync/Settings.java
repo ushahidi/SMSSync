@@ -142,7 +142,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 			          PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
 			          PackageManager.DONT_KILL_APP);
 			
-			Intent baseIntent = new Intent(this, Settings.class);
+			Intent baseIntent = new Intent(this, SmsSyncOutbox.class);
 	        baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
 			

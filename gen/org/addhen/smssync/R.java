@@ -19,6 +19,7 @@ public final class R {
         public static final int smssync_72=0x7f020005;
     }
     public static final class id {
+        public static final int empty=0x7f060001;
         public static final int view_messages=0x7f060000;
     }
     public static final class layout {
@@ -44,6 +45,7 @@ public final class R {
         public static final int edittxt_website_pref_dialog_title=0x7f050002;
         public static final int edittxt_website_pref_summary=0x7f050001;
         public static final int editxt_keyword_pref_summary=0x7f050009;
+        public static final int empty_list=0x7f050026;
         public static final int general_settings=0x7f05000a;
         public static final int menu_delete=0x7f050020;
         public static final int menu_settings=0x7f050022;

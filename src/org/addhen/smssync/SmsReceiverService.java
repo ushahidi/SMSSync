@@ -34,7 +34,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
-import android.provider.Settings;
 import android.telephony.SmsMessage;
 
 public class SmsReceiverService extends Service {
@@ -53,13 +52,13 @@ public class SmsReceiverService extends Service {
 	private SmsMessage sms;
 	private static final String TAG = "SMSSync";
 	private Handler handler = new Handler();
-	private ListMessagesAdapter ila = new ListMessagesAdapter( this );
 	
 	@Override
 	public void onCreate() {
 	    HandlerThread thread = new HandlerThread(TAG, Process.THREAD_PRIORITY_BACKGROUND);
 	    thread.start();
 	    mContext = getApplicationContext();
+	    
 	    SmsSyncPref.loadPreferences(mContext);
 	    notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 	    mServiceLooper = thread.getLooper();
@@ -194,7 +193,7 @@ public class SmsReceiverService extends Service {
 	 */
 	private void showNotification(String message, String notification_title ) {
 		
-		Intent baseIntent = new Intent(this, Settings.class);
+		Intent baseIntent = new Intent(this, SmsSyncOutbox.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		
 		Notification notification = new Notification(R.drawable.icon, getString(R.string.status), System.currentTimeMillis());
@@ -279,7 +278,8 @@ public class SmsReceiverService extends Service {
 	
 	final Runnable mDisplayMessages = new Runnable() {
 		public void run() {
-			ila.notifyDataSetChanged();	
+			SmsSyncOutbox.showMessages();
 		}
 	};
+	
 }

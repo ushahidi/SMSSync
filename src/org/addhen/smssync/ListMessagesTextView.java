@@ -25,8 +25,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class ListMessagesTextView extends LinearLayout{
@@ -36,8 +34,6 @@ public class ListMessagesTextView extends LinearLayout{
 	private float fontSize = 13.5f;
 	private LinearLayout textLayout;
 	private LinearLayout msgFromAndDateLayout;
-	private TableLayout tblLayout;
-	private TableRow tblRow;
 	
 	public ListMessagesTextView( Context context, ListMessagesText listText ) {
 		super(context);
@@ -49,15 +45,6 @@ public class ListMessagesTextView extends LinearLayout{
 	public void initComponent( Context context, ListMessagesText listText ) {
 		textLayout = new LinearLayout(context);
 		msgFromAndDateLayout = new LinearLayout(context);
-		
-		tblLayout = new TableLayout(context);
-		
-		tblLayout.setLayoutParams(new TableLayout.LayoutParams(
-				TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-		tblLayout.setColumnStretchable(1, true);
-		tblRow =  new TableRow(context);
-		tblRow.setLayoutParams(new TableRow.LayoutParams(
-				TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 		
 		textLayout.setOrientation(VERTICAL);
 		textLayout.setPadding(0, 2, 0, 2);
