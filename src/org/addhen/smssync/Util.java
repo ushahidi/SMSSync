@@ -38,6 +38,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.telephony.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -364,6 +365,7 @@ public class Util{
 	public static boolean postToAWebService( String messagesFrom, String messagesBody, Context context) {
 		HashMap<String,String> params = new HashMap<String, String>();
 		SmsSyncPref.loadPreferences( context );
+		Log.i("SMSSync TAG", "Website: "+SmsSyncPref.website);
 		if(!SmsSyncPref.website.equals("")) {
 			StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
 			params.put("secret",SmsSyncPref.apiKey);

@@ -110,11 +110,13 @@ public class SmsSyncOutbox extends Activity
 			setProgressBarIndeterminateVisibility(true);
 			int result = syncMessages();
 			try {
-				if( result == 0 ){
+				if (result == 0) {
 					Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
 					
-				}else {
+				}else if (result == 1) {
 					Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+				} else if (result == 2) {
+					Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
 				}
 				setProgressBarIndeterminateVisibility(false);
 			}catch(Exception e) {
@@ -167,14 +169,14 @@ public class SmsSyncOutbox extends Activity
 	}
   
 	private void populateMenu(Menu menu) {
-		MenuItem i;i = menu.add( Menu.NONE, SMSSYNC_SYNC, Menu.NONE, R.string.menu_sync );
+		MenuItem i;i = menu.add( Menu.NONE, SETTINGS, Menu.NONE, R.string.menu_settings );
+		i.setIcon(android.R.drawable.ic_menu_preferences);
+		
+		i = menu.add(Menu.NONE, SMSSYNC_SYNC, Menu.NONE, R.string.menu_sync);
 		i.setIcon(android.R.drawable.ic_menu_send);
 		
-		i = menu.add(Menu.NONE, DELETE, Menu.NONE, R.string.menu_delete);
+		i = menu.add( Menu.NONE, DELETE, Menu.NONE, R.string.menu_delete);
 		i.setIcon(android.R.drawable.ic_menu_delete);
-		
-		i = menu.add( Menu.NONE, SETTINGS, Menu.NONE, R.string.menu_settings);
-		i.setIcon(android.R.drawable.ic_menu_preferences);
 		  
 	  
 	}
@@ -260,6 +262,10 @@ public class SmsSyncOutbox extends Activity
 		String messagesFrom;
 		String messagesBody;
 		String messagesDate;
+		
+		if( cursor.getCount() == 0 ) {
+			return 2;
+		}
 		
 		int deleted = 0;
 		mOldMessages.clear();
