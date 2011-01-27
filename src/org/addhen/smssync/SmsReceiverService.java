@@ -179,7 +179,6 @@ public class SmsReceiverService extends Service {
 	    				if(SmsSyncPref.autoDelete) {
     						Util.delSmsFromInbox(SmsReceiverService.this,sms);
     					}
-	    				
 	    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}
@@ -280,8 +279,7 @@ public class SmsReceiverService extends Service {
 	
 	final Runnable mDisplayMessages = new Runnable() {
 		public void run() {
-			ila.notifyDataSetChanged();
-			
+			ila.notifyDataSetChanged();	
 		}
 	};
 }

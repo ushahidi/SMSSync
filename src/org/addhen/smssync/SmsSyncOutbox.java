@@ -29,6 +29,7 @@ import org.addhen.smssync.data.SmsSyncDatabase;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.ContextMenu;
@@ -171,7 +172,8 @@ public class SmsSyncOutbox extends Activity
 		Intent intent;
 		switch (item.getItemId()) {
     		case SMSSYNC_SYNC:
-    			mHandler.post(mSyncMessages);
+    			SyncTask syncTask= new SyncTask();
+    			syncTask.execute();
     			return(true); 
         
     		case SETTINGS:
@@ -219,7 +221,6 @@ public class SmsSyncOutbox extends Activity
 				int id = Util.toInt(cursor.getString(messagesIdIndex));
 				messages.setMessageId(id);
 				
-				
 				messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
 				messages.setMessageFrom(messagesFrom);
 				
@@ -228,8 +229,9 @@ public class SmsSyncOutbox extends Activity
 			  
 				messagesBody = cursor.getString(messagesBodyIndex);
 				messages.setMessageBody(messagesBody);
-					
+
 				ila.addItem( new ListMessagesText(messagesFrom, messagesBody, messagesDate, id));
+				
 			  
 			} while (cursor.moveToNext());
 		}
@@ -243,10 +245,10 @@ public class SmsSyncOutbox extends Activity
 	public int syncMessages() {
 		Cursor cursor;
 		cursor = SmsSyncApplication.mDb.fetchAllMessages();
-	  
 		String messagesFrom;
-		String messagesDate;
 		String messagesBody;
+		String messagesDate;
+		
 		int deleted = 0;
 		ila.removeItems();
 		ila.notifyDataSetChanged();
@@ -256,11 +258,11 @@ public class SmsSyncOutbox extends Activity
 				SmsSyncDatabase.MESSAGES_ID);
 			int messagesFromIndex = cursor.getColumnIndexOrThrow(
 				SmsSyncDatabase.MESSAGES_FROM);
-			int messagesDateIndex = cursor.getColumnIndexOrThrow(
-				SmsSyncDatabase.MESSAGES_DATE);
 				
 			int messagesBodyIndex = cursor.getColumnIndexOrThrow(
 				SmsSyncDatabase.MESSAGES_BODY);
+			
+			int messagesDateIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_DATE);
 
 			do {
 			  
@@ -308,5 +310,26 @@ public class SmsSyncOutbox extends Activity
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 	}
-  
+	
+	 //thread class
+	private class SyncTask extends AsyncTask <Void, Void, Integer> {
+		
+		protected Integer status;
+		
+		@Override
+		protected void onPreExecute() {
+		}
+		
+		@Override 
+		protected Integer doInBackground(Void... params) {
+			mHandler.post(mSyncMessages);
+			status = 0;
+			return status;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result)
+		{
+		}
+	}
 }
