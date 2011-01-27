@@ -128,15 +128,28 @@ public class SmsSyncOutbox extends Activity
 	final Runnable mDeleteAllMessages = new Runnable() {
 		public void run() {
 			setProgressBarIndeterminateVisibility(true);
-			boolean result = deleteAllMessages();
+			boolean result = false;
+			
+			int deleted = 0;
+			
+			if( SmsSyncApplication.mDb.fetchMessagesCount() == 0 ) {
+				deleted = 1;
+			} else {
+				result = deleteAllMessages();
+			}
+			
 			try {
-				if( result ){
-					Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted);
-					ila.removeItems();
-					ila.notifyDataSetChanged();
-					displayEmptyListText();
-				}else {
-					Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted_failed);
+				if (deleted == 1 ) {
+					Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_delete);
+				} else {
+					if( result ){
+						Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted);
+						ila.removeItems();
+						ila.notifyDataSetChanged();
+						displayEmptyListText();
+					}else {
+						Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted_failed);
+					}
 				}
 				setProgressBarIndeterminateVisibility(false);
 			}catch(Exception e) {

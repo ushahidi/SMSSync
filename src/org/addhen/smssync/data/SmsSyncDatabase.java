@@ -194,5 +194,22 @@ public class SmsSyncDatabase {
   			mDb.endTransaction();
   		}
   	}
+  	
+  	public int fetchMessagesCount() {
+  		Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + MESSAGES_ID + ") FROM "
+  				+ MESSAGES_TABLE, null);
+
+  		int result = 0;
+
+  		if (mCursor == null) {
+  			return result;
+  		}
+
+  		mCursor.moveToFirst();
+    	result = mCursor.getInt(0);
+    	mCursor.close();
+
+    	return result;
+  	}
 
 }
