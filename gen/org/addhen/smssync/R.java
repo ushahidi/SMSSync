@@ -47,6 +47,7 @@ public final class R {
         public static final int editxt_keyword_pref_summary=0x7f050009;
         public static final int empty_list=0x7f050026;
         public static final int general_settings=0x7f05000a;
+        public static final int http_text=0x7f050027;
         public static final int menu_delete=0x7f050020;
         public static final int menu_settings=0x7f050022;
         public static final int menu_sync=0x7f050021;

@@ -35,6 +35,7 @@
     		android:key="website_preference"
    			android:title="@string/edittxt_website_pref"
       		android:summary="@string/edittxt_website_pref_summary"
+      		android:defaultValue="@string/http_text"
       		android:dialogTitle="@string/edittxt_website_pref_dialog_title" />
         
         <EditTextPreference

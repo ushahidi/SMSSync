@@ -49,6 +49,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
 	public static final String KEY_AUTO_DELETE_MESSAGE = "auto_delete_preference";
 	public static final String PREFS_NAME = "SMS_SYNC_PREF";
+	public static final String HTTP_TEXT = "http://";
 	
 	private EditTextPreference websitePref;
 	private EditTextPreference apiKeyPref;
@@ -81,12 +82,6 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         enableAutoDelete = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_AUTO_DELETE_MESSAGE);
         
-        /** enableMmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
-        		KEY_ENABLE_MMS_SYNC_PREF);
-        
-        enableGpsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
-        		KEY_ENABLE_GPS_SYNC_PREF);*/
-        
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
         poweredPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
         	public boolean onPreferenceClick(Preference preference) {
@@ -101,7 +96,9 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	
 	protected void savePreferences() {
 		settings = getSharedPreferences(PREFS_NAME, 0);
-		
+		if (websitePref.getText().equals("")) {
+			websitePref.setText(HTTP_TEXT);
+		}
 		editor = settings.edit();
 		editor.putString("WebsitePref", websitePref.getText());
 		editor.putString("ApiKey", apiKeyPref.getText());
@@ -136,7 +133,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		PackageManager pm = getPackageManager();
 	    ComponentName cn = new ComponentName(Settings.this, SmsReceiver.class);
 		
-		if( sharedPreferences.getBoolean("enable_sms_sync_preference",false))
+		if (sharedPreferences.getBoolean("enable_sms_sync_preference",false))
 		{
 			pm.setComponentEnabledSetting(cn,
 			          PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
@@ -158,6 +155,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 					PackageManager.DONT_KILL_APP);
 			notificationManager.cancelAll();
 		}
+		
 		this.savePreferences();
 	}
 

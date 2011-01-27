@@ -129,7 +129,10 @@ public class SmsSyncOutbox extends Activity
 			boolean result = deleteAllMessages();
 			try {
 				if( result ){
-					Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted);					
+					Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted);
+					ila.removeItems();
+					ila.notifyDataSetChanged();
+					displayEmptyListText();
 				}else {
 					Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted_failed);
 				}
@@ -149,14 +152,11 @@ public class SmsSyncOutbox extends Activity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		populateMenu(menu);
- 
 		return(super.onCreateOptionsMenu(menu));
 	}
  
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		//applyMenuChoice(item);
- 
 		return(applyMenuChoice(item) ||
 				super.onOptionsItemSelected(item));
 	}
@@ -183,7 +183,7 @@ public class SmsSyncOutbox extends Activity
 		Intent intent;
 		switch (item.getItemId()) {
     		case SMSSYNC_SYNC:
-    			SyncTask syncTask= new SyncTask();
+    			SyncTask syncTask = new SyncTask();
     			syncTask.execute();
     			return(true); 
         

@@ -8,3 +8,4 @@
 * Added version number to the powered by text on the Settings screen.
 * Changed notification Icon to SMSSync's slick launch icon.
 * Shows status of Pending messages. Whether there are pending messages or not.
+* Prepopulates URL field with "http://" when setting up the sync URL.
