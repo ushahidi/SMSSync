@@ -36,6 +36,7 @@ import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
 public class SmsReceiverService extends Service {
 	private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -136,8 +137,9 @@ public class SmsReceiverService extends Service {
 	    
 	    if( SmsSyncPref.enabled) {
 	    	// send auto response
-	    	if (SmsSyncPref.enableReply){
-	    		sendReply(messagesFrom,messagesBody);
+	    	if (SmsSyncPref.enableReply) {
+	    		Log.i("SMSSync", "Messages from:"+messagesFrom);
+	    		sendReply(messagesFrom,SmsSyncPref.reply);
 	    	}
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
@@ -222,9 +224,11 @@ public class SmsReceiverService extends Service {
 	
 	}
 	
-	private void sendReply(String sendTo, String sendMsg) {
-		SmsManager smsManager = SmsManager.getDefault();
-		smsManager.sendTextMessage(sendTo, null, sendMsg, null, null);
+	private void sendReply(String replyTo, String msg) {
+		  
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(replyTo, null, msg, null, null); 
+      
 	}
 	
 	public static final SmsMessage[] getMessagesFromIntent(Intent intent) {

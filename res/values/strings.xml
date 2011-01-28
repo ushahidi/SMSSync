@@ -34,7 +34,7 @@
     <string name="chk_enable_sms_sync">Start SMSSync</string>
     <string name="chk_sms_sync_hint">Start and Stop SMS gateway.</string>
     <string name="chk_enable_reply">Reply Messages</string>
-    <string name="chk_reply_hint">This will auto respond to every messages that come to SMSSync.</string>
+    <string name="chk_reply_hint">This will auto respond to every message that comes to SMSSync.</string>
     <string name="chk_enable_gps_sync">Add GPS coordinates</string>
     <string name="chk_gps_sync_hint">This will include GPS coordinates of the current location of the phone to the messages to be sent to the website.</string>
     <string name="chk_enable_auto_delete">Auto Delete Messages</string>
@@ -61,4 +61,5 @@
     <string name="status">Status</string>
     <string name="empty_list">No pending messages</string>
     <string name="http_text">http://</string>
+    <string name="sms_failed">SMS failed</string>
 </resources>

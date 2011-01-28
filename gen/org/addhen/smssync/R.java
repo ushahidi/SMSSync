@@ -65,6 +65,7 @@ public final class R {
         public static final int reply_settings=0x7f05000e;
         public static final int sending_failed=0x7f05001e;
         public static final int sending_succeeded=0x7f05001f;
+        public static final int sms_failed=0x7f05002d;
         public static final int sms_status_failed=0x7f05001c;
         public static final int sms_status_success=0x7f05001b;
         public static final int sms_sync_disabled=0x7f05000a;
