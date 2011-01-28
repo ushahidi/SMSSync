@@ -365,7 +365,7 @@ public class Util{
 	public static boolean postToAWebService( String messagesFrom, String messagesBody, Context context) {
 		HashMap<String,String> params = new HashMap<String, String>();
 		SmsSyncPref.loadPreferences( context );
-		Log.i("SMSSync TAG", "Website: "+SmsSyncPref.website);
+		
 		if(!SmsSyncPref.website.equals("")) {
 			StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
 			params.put("secret",SmsSyncPref.apiKey);
