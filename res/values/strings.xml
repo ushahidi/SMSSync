@@ -16,26 +16,29 @@
 
 <!-- This is a primitive example showing the different types of preferences available. -->
 <resources>
-    <string name="edittxt_website_pref">Enter the Sync URL</string>
+    <string name="edittxt_website_pref">Enter The Sync URL</string>
     <string name="edittxt_website_pref_summary">This is the website that will receive the text messages.</string>
     <string name="edittxt_website_pref_dialog_title">Enter the Sync URL</string>
     <string name="edittxt_api_key_pref">Enter the Secret</string>
     <string name="edittxt_api_key_pref_summary">If a secret/key has been specified at the website, it will be required.</string>
     <string name="edittxt_keyword_pref">Enter Keyword(s)</string>
+    <string name="edittxt_reply">Enter A Response Message</string>
+    <string name="edittxt_reply_summary">The message to be sent to users.</string>
+    <string name="edittxt_reply_default">Your message has been received.Thank you.</string>
     <string name="sms_sync_enabled">SMSSync Is Enabled</string>
     <string name="sms_sync_disabled">SMSSync Disabled</string>
     <string name="edittxt_keyword_hint">fire, crime, help, report,etc</string>
     <string name="editxt_keyword_pref_summary">Specify what keywords that will be used to filter the message sent to the gateway.</string>
     <string name="general_settings">General Settings</string>
-    <string name="optional_settings">Optional Settings</string>
+    <string name="reply_settings">Reply Messages Settings</string>
     <string name="chk_enable_sms_sync">Start SMSSync</string>
     <string name="chk_sms_sync_hint">Start and Stop SMS gateway.</string>
-    <string name="chk_enable_mms_sync">Add Multimedia Messages Service(MMS)</string>
-    <string name="chk_mms_sync_hint">This will include Multimedia Messages to the messages to be sent to the website.</string>
+    <string name="chk_enable_reply">Reply Messages</string>
+    <string name="chk_reply_hint">This will auto respond to every messages that come to SMSSync.</string>
     <string name="chk_enable_gps_sync">Add GPS coordinates</string>
     <string name="chk_gps_sync_hint">This will include GPS coordinates of the current location of the phone to the messages to be sent to the website.</string>
     <string name="chk_enable_auto_delete">Auto Delete Messages</string>
-    <string name="chk_auto_delete_hint">This will automatically delete messages from the the Message app inbox to save space on the phone.</string>
+    <string name="chk_auto_delete_hint">This will automatically delete messages from the the Message app\'s inbox to save space on the phone.</string>
     <string name="app_name">SMSSync</string>
     <string name="sms_sync_powered_by">SMSSync v1.0.3</string>
     <string name="outbox">SMSSync Pending Messages</string>
@@ -44,7 +47,7 @@
     <string name="sms_status_failed">SMSSync Message Sending failed</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="sending_failed">SMSSync Message Sending failed.</string>
-    <string name="sending_succeeded">"SMSSync Message Sent."</string>
+    <string name="sending_succeeded">SMSSync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to be sent.</string>
     <string name="no_messages_to_delete">There are no messages to be deleted.</string>
     <string name="sync_failed">SMSSync message sending failed. Perhaps its not configured or there is no internet connectivity. Please double check your internet connectivity or your configuration</string>

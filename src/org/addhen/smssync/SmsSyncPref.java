@@ -28,8 +28,12 @@ public class SmsSyncPref {
 	public static String website = "";
 	public static String keyword = "";
 	public static String apiKey = "";
+	public static String reply = "";
+	
 	public static Boolean enabled = false;
 	public static Boolean autoDelete = false;
+	public static Boolean enableReply = false;
+	
 	public static final String PREF_NAME = "SMS_SYNC_PREF";
 	
 	public static void loadPreferences( Context context ) {
@@ -39,8 +43,10 @@ public class SmsSyncPref {
 		website = settings.getString("WebsitePref", "");
 		keyword = settings.getString("Keyword", "");
 		apiKey = settings.getString("ApiKey", "");
+		reply = settings.getString("ReplyPref", context.getString(R.string.edittxt_reply_default));
 		enabled = settings.getBoolean("EnableSmsSync", false);
 		autoDelete = settings.getBoolean("EnableAutoDelete",false);
+		enableReply = settings.getBoolean("EnableReply", false);
 		
 	}
 }

@@ -52,20 +52,22 @@
       		android:hint="@string/edittxt_keyword_hint" />
           	
   	</PreferenceCategory>
-  	<!-- <PreferenceCategory
-    	android:title="@string/optional_settings">
+  	<PreferenceCategory
+    	android:title="@string/reply_settings">
     	
     	<CheckBoxPreference
-        	android:key="enable_mms_sync_preference"
-       		android:title="@string/chk_enable_mms_sync"
-          	android:summary="@string/chk_mms_sync_hint" />
+        	android:key="enable_reply_preference"
+       		android:title="@string/chk_enable_reply"
+          	android:summary="@string/chk_reply_hint" />
 	  	
-	  	<CheckBoxPreference
-        	android:key="enable_gps_sync_preference"
-       		android:title="@string/chk_enable_gps_sync"
-          	android:summary="@string/chk_gps_sync_hint" />
+	  	<EditTextPreference
+            android:key="reply_preference"
+            android:title="@string/edittxt_reply"
+            android:summary="@string/edittxt_reply_summary"
+            android:dialogTitle="@string/edittxt_reply"
+            android:defaultValue="@string/edittxt_reply_default" />
 	  	
-  	</PreferenceCategory> -->
+  	</PreferenceCategory> 
   	<Preference android:key="powered_preference"
     	android:title="@string/sms_sync_powered_by"
       	android:summary="@string/powered_by"/>

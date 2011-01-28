@@ -34,6 +34,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
+import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 
 public class SmsReceiverService extends Service {
@@ -134,6 +135,10 @@ public class SmsReceiverService extends Service {
 	    }
 	    
 	    if( SmsSyncPref.enabled) {
+	    	// send auto response
+	    	if (SmsSyncPref.enableReply){
+	    		sendReply(messagesFrom,messagesBody);
+	    	}
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
 	    		
@@ -215,6 +220,11 @@ public class SmsReceiverService extends Service {
 		
 		Util.processMessages(SmsReceiverService.this);
 	
+	}
+	
+	private void sendReply(String sendTo, String sendMsg) {
+		SmsManager smsManager = SmsManager.getDefault();
+		smsManager.sendTextMessage(sendTo, null, sendMsg, null, null);
 	}
 	
 	public static final SmsMessage[] getMessagesFromIntent(Intent intent) {

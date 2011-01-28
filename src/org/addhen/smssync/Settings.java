@@ -48,14 +48,20 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	public static final String KEY_API_KEY_PREF = "api_key_preference";
 	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
 	public static final String KEY_AUTO_DELETE_MESSAGE = "auto_delete_preference";
+	public static final String KEY_ENABLE_REPLY = "enable_reply_preference";
+	public static final String KEY_REPLY = "reply_preference";
+	
 	public static final String PREFS_NAME = "SMS_SYNC_PREF";
 	public static final String HTTP_TEXT = "http://";
 	
 	private EditTextPreference websitePref;
 	private EditTextPreference apiKeyPref;
 	private EditTextPreference keywordPref;
+	private EditTextPreference replyPref;
+	
 	private CheckBoxPreference enableSmsSync;
 	private CheckBoxPreference enableAutoDelete;
+	private CheckBoxPreference enableReply;
 	
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
@@ -82,6 +88,12 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         enableAutoDelete = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_AUTO_DELETE_MESSAGE);
         
+        enableReply = (CheckBoxPreference)getPreferenceScreen().findPreference(
+        		KEY_ENABLE_REPLY);
+        
+        replyPref = (EditTextPreference)getPreferenceScreen().findPreference(
+        		KEY_REPLY);
+        
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
         poweredPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
         	public boolean onPreferenceClick(Preference preference) {
@@ -96,21 +108,35 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	
 	protected void savePreferences() {
 		settings = getSharedPreferences(PREFS_NAME, 0);
+		
 		if (websitePref.getText().equals("")) {
 			websitePref.setText(HTTP_TEXT);
+		}
+		
+		if (replyPref.getText().equals("")) {
+			replyPref.setText(getString(R.string.edittxt_reply_default));
+		}
+		
+		if ( enableReply.isChecked()) {
+			replyPref.setEnabled(true);
+		} else {
+			replyPref.setEnabled(false);
 		}
 		editor = settings.edit();
 		editor.putString("WebsitePref", websitePref.getText());
 		editor.putString("ApiKey", apiKeyPref.getText());
 		editor.putString("Keyword", keywordPref.getText());
+		editor.putString("ReplyPref", replyPref.getText());
 		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
 		editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
+		editor.putBoolean("EnableReply", enableReply.isChecked());
 		editor.commit();
 	}
 	
 	@Override
 	protected void onResume() {
 		 super.onResume();
+		 
 		 // Set up a listener whenever a key changes
 		 getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 		 
@@ -119,7 +145,6 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	@Override
 	protected void onPause() {
 		 super.onPause();
-
 	        // Unregister the listener whenever a key changes
 	        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	        
@@ -132,28 +157,39 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		PackageManager pm = getPackageManager();
 	    ComponentName cn = new ComponentName(Settings.this, SmsReceiver.class);
-		
-		if (sharedPreferences.getBoolean("enable_sms_sync_preference",false))
-		{
-			pm.setComponentEnabledSetting(cn,
+	    
+		if(key.equals(KEY_ENABLE_SMS_SYNC_PREF)){
+			
+			if (sharedPreferences.getBoolean(KEY_ENABLE_SMS_SYNC_PREF,false))
+			{
+				pm.setComponentEnabledSetting(cn,
 			          PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
 			          PackageManager.DONT_KILL_APP);
 			
-			Intent baseIntent = new Intent(this, SmsSyncOutbox.class);
-	        baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				Intent baseIntent = new Intent(this, SmsSyncOutbox.class);
+				baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
+				Notification notification = new Notification(R.drawable.icon, getString(R.string.status), System.currentTimeMillis());
 			
-			Notification notification = new Notification(R.drawable.icon, getString(R.string.status), System.currentTimeMillis());
+				PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
+				notification.setLatestEventInfo(this, getString(R.string.app_name),getString(R.string.notification_summary), pendingIntent);
+				notificationManager.notify(1, notification);
 			
-			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
-			notification.setLatestEventInfo(this, getString(R.string.app_name),getString(R.string.notification_summary), pendingIntent);
-			notificationManager.notify(1, notification);
-			
-		} else {
-			pm.setComponentEnabledSetting(cn,
+			} else {
+				pm.setComponentEnabledSetting(cn,
 					PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
 					PackageManager.DONT_KILL_APP);
-			notificationManager.cancelAll();
+				notificationManager.cancelAll();
+			}
+		}
+		
+		if (key.equals(KEY_ENABLE_REPLY)) {
+			
+			if (sharedPreferences.getBoolean(KEY_ENABLE_REPLY,false)) {
+				replyPref.setEnabled(true);
+			} else {
+				replyPref.setEnabled(false);
+			}
 		}
 		
 		this.savePreferences();
