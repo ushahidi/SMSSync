@@ -11,3 +11,17 @@ h1.Instructions
     * *message*
     * *secret*
 
+* In order for SMSSync to account for perfect transmission, the callback URL needs to give back a formatted JSON string such as its shown below to indicate if it received the message or not.
+   * *Succeeded* 
+        {
+            - payload: {
+                success: "false"
+            }
+        }
+  
+   * *Failed*
+        {
+            - payload: {
+                success: "false"
+            }
+        }

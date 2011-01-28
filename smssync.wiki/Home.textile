@@ -9,8 +9,22 @@ h1.Instructions
 * The SMSSync sends the following variables via the POST method: 
     * *from*
     * *message*
-    * *secrete*
+    * *secret*
 
+* In order for SMSSync to account for perfect transmission, the callback URL needs to give back a formatted JSON string such as its shown below to indicate if it received the message or not.
+   * *Succeeded* 
+        {
+            - payload: {
+                success: "false"
+            }
+        }
+  
+   * *Failed*
+        {
+            - payload: {
+                success: "false"
+            }
+        }
 
 *Scan the QR below to install SMSSync on your Android powered phone*
 [[http://qrcode.kaywa.com/img.php?s=6&#038;d=http%3A%2F%2Fmarket.android.com%2Fdetails%3Fid%3Dorg.addhen.smssync/whaever.png]]
