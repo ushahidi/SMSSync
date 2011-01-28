@@ -62,7 +62,7 @@
 	  	
 	  	<EditTextPreference
             android:key="reply_preference"
-            android:title="@string/edittxt_reply"
+            android:title="@string/edittxt_reply_title"
             android:summary="@string/edittxt_reply_summary"
             android:dialogTitle="@string/edittxt_reply"
             android:defaultValue="@string/edittxt_reply_default" />

@@ -23,6 +23,7 @@
     <string name="edittxt_api_key_pref_summary">If a secret/key has been specified at the website, it will be required.</string>
     <string name="edittxt_keyword_pref">Enter Keyword(s)</string>
     <string name="edittxt_reply">Enter A Response Message</string>
+    <string name="edittxt_reply_title">A Response Message</string>
     <string name="edittxt_reply_summary">The message to be sent to users.</string>
     <string name="edittxt_reply_default">Your message has been received.Thank you.</string>
     <string name="sms_sync_enabled">SMSSync Is Enabled</string>
@@ -30,7 +31,7 @@
     <string name="edittxt_keyword_hint">fire, crime, help, report,etc</string>
     <string name="editxt_keyword_pref_summary">Specify what keywords that will be used to filter the message sent to the gateway.</string>
     <string name="general_settings">General Settings</string>
-    <string name="reply_settings">Reply Messages Settings</string>
+    <string name="reply_settings">Reply Message Settings</string>
     <string name="chk_enable_sms_sync">Start SMSSync</string>
     <string name="chk_sms_sync_hint">Start and Stop SMS gateway.</string>
     <string name="chk_enable_reply">Reply Messages</string>
@@ -38,7 +39,7 @@
     <string name="chk_enable_gps_sync">Add GPS coordinates</string>
     <string name="chk_gps_sync_hint">This will include GPS coordinates of the current location of the phone to the messages to be sent to the website.</string>
     <string name="chk_enable_auto_delete">Auto Delete Messages</string>
-    <string name="chk_auto_delete_hint">This will automatically delete messages from the the Message app\'s inbox to save space on the phone.</string>
+    <string name="chk_auto_delete_hint">This will automatically delete messages from the Message app\'s inbox to save space on the phone.</string>
     <string name="app_name">SMSSync</string>
     <string name="sms_sync_powered_by">SMSSync v1.0.3</string>
     <string name="outbox">SMSSync Pending Messages</string>
