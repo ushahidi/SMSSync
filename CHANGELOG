@@ -9,4 +9,4 @@
 * Changed notification Icon to SMSSync's slick launch icon.
 * Shows status of Pending messages. Whether there are pending messages or not.
 * Prepopulates URL field with "http://" when setting up the sync URL.
-* Sends an auto response once the SMS is recieved.
+* Sends an auto response once the SMS is recieved. This is a configurable option.
