@@ -52,6 +52,7 @@ public final class R {
         public static final int empty_list=0x7f05002c;
         public static final int general_settings=0x7f05000e;
         public static final int http_text=0x7f05002d;
+        public static final int invalid_url=0x7f05002f;
         public static final int menu_delete=0x7f050026;
         public static final int menu_settings=0x7f050028;
         public static final int menu_sync=0x7f050027;

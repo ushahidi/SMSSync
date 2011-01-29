@@ -36,7 +36,6 @@ import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
-import android.util.Log;
 
 public class SmsReceiverService extends Service {
 	private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -138,7 +137,6 @@ public class SmsReceiverService extends Service {
 	    if( SmsSyncPref.enabled) {
 	    	// send auto response
 	    	if (SmsSyncPref.enableReply) {
-	    		Log.i("SMSSync", "Messages from:"+messagesFrom);
 	    		sendReply(messagesFrom,SmsSyncPref.reply);
 	    	}
 	    	
@@ -225,13 +223,13 @@ public class SmsReceiverService extends Service {
 	}
 	
 	private void sendReply(String replyTo, String msg) {
-		  
+		 
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(replyTo, null, msg, null, null); 
-      
 	}
 	
 	public static final SmsMessage[] getMessagesFromIntent(Intent intent) {
+		
 		Object[] messages = (Object[]) intent.getSerializableExtra("pdus");
 	    if (messages == null) {
 	    	return null;
@@ -295,5 +293,4 @@ public class SmsReceiverService extends Service {
 			SmsSyncOutbox.showMessages();
 		}
 	};
-	
 }

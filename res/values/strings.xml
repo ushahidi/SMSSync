@@ -63,4 +63,5 @@
     <string name="empty_list">No pending messages</string>
     <string name="http_text">http://</string>
     <string name="sms_failed">SMS failed</string>
+    <string name="invalid_url">Invalid URL was entered.</string>
 </resources>

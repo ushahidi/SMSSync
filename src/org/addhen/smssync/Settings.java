@@ -149,6 +149,12 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
 	        
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		finish();
+	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -189,6 +195,16 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 				replyPref.setEnabled(true);
 			} else {
 				replyPref.setEnabled(false);
+			}
+		}
+		
+		if (key.equals(KEY_WEBSITE_PREF)) {
+			
+			if (!Util.validateCallbackUrl(
+					sharedPreferences.getString(KEY_WEBSITE_PREF, ""))) {
+				Util.showToast(Settings.this, R.string.invalid_url);
+				websitePref.setText("");
+				SmsSyncPref.website = "";
 			}
 		}
 		

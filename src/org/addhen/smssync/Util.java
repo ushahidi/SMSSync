@@ -25,6 +25,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,7 +42,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.telephony.SmsMessage;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -377,5 +380,29 @@ public class Util{
 		
 		return false;
 		
+	}
+	
+	/**
+	 * Validate an the callback URL
+	 * 
+	 * @param String - callbackURL to be validated.
+	 * 
+	 * @return boolean
+	 */
+	public static boolean validateCallbackUrl( String callbackUrl ) {
+		
+		boolean status = false;
+		try {
+		    URL url = new URL(callbackUrl);
+		    URLConnection conn = url.openConnection();
+		    conn.connect();
+		    status = true;
+		} catch (MalformedURLException e) {
+		    status = false;
+		} catch (IOException e) {
+		    status = true;
+		}
+
+		return status;
 	}
 }
