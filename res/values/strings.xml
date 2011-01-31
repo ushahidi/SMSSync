@@ -41,7 +41,7 @@
     <string name="chk_enable_auto_delete">Auto Delete Messages</string>
     <string name="chk_auto_delete_hint">This will automatically delete messages from the Message app\'s inbox to save space on the phone.</string>
     <string name="app_name">SMSSync</string>
-    <string name="sms_sync_powered_by">SMSSync v1.0.3</string>
+    <string name="sms_sync_powered_by">SMSSync v1.0.4</string>
     <string name="outbox">SMSSync Pending Messages</string>
     <string name="version">1.0.3</string>
     <string name="sms_status_success">SMSSync Message Sent</string>
