@@ -43,7 +43,7 @@
     <string name="app_name">SMSSync</string>
     <string name="sms_sync_powered_by">SMSSync v1.0.4</string>
     <string name="outbox">SMSSync Pending Messages</string>
-    <string name="version">1.0.3</string>
+    <string name="version">1.0.4</string>
     <string name="sms_status_success">SMSSync Message Sent</string>
     <string name="sms_status_failed">SMSSync Message Sending failed</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
