@@ -66,6 +66,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
 	private static final String URL = "http://smssync.ushahidi.com";
+	private static final int NOTIFY_RUNNING = 100;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,17 +176,20 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 				Intent baseIntent = new Intent(this, SmsSyncOutbox.class);
 				baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			
-				Notification notification = new Notification(R.drawable.icon, getString(R.string.status), System.currentTimeMillis());
-			
+				Notification notification = new Notification(
+						R.drawable.icon, getString(R.string.status), 
+						System.currentTimeMillis());
+				notification.flags |= Notification.FLAG_ONGOING_EVENT
+						| Notification.FLAG_NO_CLEAR;
 				PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, baseIntent, 0);
 				notification.setLatestEventInfo(this, getString(R.string.app_name),getString(R.string.notification_summary), pendingIntent);
-				notificationManager.notify(1, notification);
+				notificationManager.notify(NOTIFY_RUNNING, notification);
 			
 			} else {
 				pm.setComponentEnabledSetting(cn,
 					PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
 					PackageManager.DONT_KILL_APP);
-				notificationManager.cancelAll();
+				notificationManager.cancel(NOTIFY_RUNNING);
 			}
 		}
 		
