@@ -186,7 +186,17 @@ public class SmsReceiverService extends Service {
 	    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 	    			}
 	    		}
+	    	
+	    	} else { // no internet
+	    		this.showNotification(messagesBody, getString(R.string.sending_failed));
+				this.postToOutbox();
+				handler.post(mDisplayMessages);
+				
+				if(SmsSyncPref.autoDelete) {
+					Util.delSmsFromInbox(SmsReceiverService.this,sms);
+				}
 	    	}
+	    	
 	    }
 	}
 	

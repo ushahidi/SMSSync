@@ -33,9 +33,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
@@ -75,6 +78,8 @@ public class Util{
     private static final String TIME_FORMAT_24_HOUR = "H:mm";
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@" +
 			"[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
+	private static final int NOTIFY_RUNNING = 100;
 	
 	/**
 	 * joins two strings together
@@ -211,28 +216,23 @@ public class Util{
 	 */
 	public static int processMessages( Context context ) {
 		
-		if( Util.isConnected(context)) {
-			List<Messages> listMessages = new ArrayList<Messages>();
-			int messageId = 0;
-			Messages messages = new Messages();
-			listMessages.add(messages);
-			if( smsMap.get("messagesId") != null) messageId = Integer.parseInt(smsMap.get("messagesId"));
-			messages.setMessageId(messageId);
-			messages.setMessageFrom(smsMap.get("messagesFrom"));
-			messages.setMessageBody(smsMap.get("messagesBody"));
-			messages.setMessageDate(smsMap.get("messagesDate"));
-			mMessages = listMessages;
+		List<Messages> listMessages = new ArrayList<Messages>();
+		int messageId = 0;
+		Messages messages = new Messages();
+		listMessages.add(messages);
+		if( smsMap.get("messagesId") != null) messageId = Integer.parseInt(smsMap.get("messagesId"));
+		messages.setMessageId(messageId);
+		messages.setMessageFrom(smsMap.get("messagesFrom"));
+		messages.setMessageBody(smsMap.get("messagesBody"));
+		messages.setMessageDate(smsMap.get("messagesDate"));
+		mMessages = listMessages;
 			
-			if(mMessages != null) {
-				 SmsSyncApplication.mDb.addMessages(mMessages);
-				 return 0;
+		if(mMessages != null) {
+			SmsSyncApplication.mDb.addMessages(mMessages);
+			return 0;
 			 
-			 } else {
-				 return 1;
-			 }
-			  
 		} else {
-			return 4;
+			return 1;
 		}
 	}
 	
@@ -247,6 +247,33 @@ public class Util{
 	public static void showToast(Context context, int i ) {
 		int duration = Toast.LENGTH_SHORT;
 		Toast.makeText(context, i, duration).show();
+	}
+	
+	/**
+	 * Show notification
+	 */
+	public static void showNotification(Context context) {
+		NotificationManager notificationManager =
+		    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		Intent baseIntent = new Intent(context, SmsSyncOutbox.class);
+		
+		baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	
+		Notification notification = new Notification(
+				R.drawable.icon, context.getString(R.string.status), 
+				System.currentTimeMillis());
+		
+		notification.flags |= Notification.FLAG_ONGOING_EVENT
+				| Notification.FLAG_NO_CLEAR;
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, baseIntent, 0);
+		
+		notification.setLatestEventInfo(context, context.getString(R.string.app_name),
+				context.getString(R.string.notification_summary), pendingIntent);
+		
+		notificationManager.notify(NOTIFY_RUNNING, notification);
+	
 	}
 	
 	/**
@@ -325,11 +352,17 @@ public class Util{
     	clearAll(context);
     }
 
-    // Clear a single notification
+    // Clear all notification
     public static void clearAll(Context context) {
     	NotificationManager myNM =
     		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	myNM.cancelAll();
+    }
+    
+    public static void clearNotify(Context context) {
+    	NotificationManager myNM =
+    		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    	myNM.cancel(NOTIFY_RUNNING);
     }
 	
     /*
