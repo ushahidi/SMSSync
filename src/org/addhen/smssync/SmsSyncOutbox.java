@@ -112,7 +112,6 @@ public class SmsSyncOutbox extends Activity
 	
 	final Runnable mSyncMessages = new Runnable() {
 		public void run() {
-			setProgressBarIndeterminateVisibility(true);
 			int result = syncMessages();
 			try {
 				if (result == 0) {
@@ -123,7 +122,6 @@ public class SmsSyncOutbox extends Activity
 				} else if (result == 2) {
 					Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
 				}
-				setProgressBarIndeterminateVisibility(false);
 			}catch(Exception e) {
 				return ; 
 			}
@@ -352,6 +350,7 @@ public class SmsSyncOutbox extends Activity
 		protected Integer status;
 		@Override
 		protected void onPreExecute() {
+			setProgressBarIndeterminateVisibility(true);
 		}
 		
 		@Override 
@@ -365,6 +364,7 @@ public class SmsSyncOutbox extends Activity
 		protected void onPostExecute(Integer result)
 		{
 			showMessages();
+			setProgressBarIndeterminateVisibility(false);
 		}
 	}
 }
