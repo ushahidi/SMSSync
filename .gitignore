@@ -2,4 +2,4 @@
 proguard.cfg
 bin/*
 test/bin/*
-
+.settings
