@@ -1,3 +1,10 @@
+1.0.5
+Feature:
+  * Scheduler automatically Syncs pending messages to the configured Callback URL. 
+
+Fixed:
+
+
 1.0.4
 * Notification cannot be cleared untill SMSSync is stopped.
 * Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost.

@@ -67,8 +67,27 @@
             android:dialogTitle="@string/edittxt_reply"
             android:defaultValue="@string/edittxt_reply_default" />
 	  	
-  	</PreferenceCategory> 
-  	<Preference android:key="powered_preference"
-    	android:title="@string/sms_sync_powered_by"
-      	android:summary="@string/powered_by"/>
+  	</PreferenceCategory>
+  	<PreferenceCategory
+        android:title="@string/auto_sync_settings">
+        
+        <CheckBoxPreference
+            android:key="auto_sync_preference"
+            android:title="@string/chk_enable_auto_sync"
+            android:summary="@string/chk_enable_auto_sync_hint" />
+        
+        <ListPreference
+            android:key="auto_sync_times" 
+            android:title="@string/txt_auto_sync_delay"
+            android:summary="@string/auto_sync_delay_hint"
+            android:dialogTitle="@string/txt_auto_sync_delay"
+            android:defaultValue="0" />
+        
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/about_smssync"> 
+  	    <Preference android:key="powered_preference"
+    	   android:title="@string/sms_sync_powered_by"
+      	   android:summary="@string/powered_by"/>
+    </PreferenceCategory>
 </PreferenceScreen>

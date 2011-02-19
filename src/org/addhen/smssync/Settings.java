@@ -29,26 +29,39 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
 
 
-public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class Settings extends PreferenceActivity implements 
+	OnSharedPreferenceChangeListener {
 	
 	public static final String KEY_WEBSITE_PREF = "website_preference";
 	public static final String KEY_KEYWORD_PREF = "keyword_preference";
-	public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
-	public static final String KEY_ENABLE_MMS_SYNC_PREF = "enable_mms_sync_preference";
-	public static final String KEY_ENABLE_GPS_SYNC_PREF = "enable_gps_sync_preference";
+	
+	public static final String KEY_ENABLE_SMS_SYNC_PREF = 
+		"enable_sms_sync_preference";
+	
+	public static final String KEY_ENABLE_MMS_SYNC_PREF = 
+		"enable_mms_sync_preference";
+	
+	public static final String KEY_ENABLE_GPS_SYNC_PREF = 
+		"enable_gps_sync_preference";
+	
 	public static final String KEY_API_KEY_PREF = "api_key_preference";
 	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
-	public static final String KEY_AUTO_DELETE_MESSAGE = "auto_delete_preference";
+	
+	public static final String KEY_AUTO_DELETE_MESSAGE = 
+		"auto_delete_preference";
+	
 	public static final String KEY_ENABLE_REPLY = "enable_reply_preference";
 	public static final String KEY_REPLY = "reply_preference";
-	
 	public static final String PREFS_NAME = "SMS_SYNC_PREF";
 	public static final String HTTP_TEXT = "http://";
+	public static final String AUTO_SYNC = "auto_sync_preference";
+	public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 	
 	private EditTextPreference websitePref;
 	private EditTextPreference apiKeyPref;
@@ -58,10 +71,16 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	private CheckBoxPreference enableSmsSync;
 	private CheckBoxPreference enableAutoDelete;
 	private CheckBoxPreference enableReply;
+	private CheckBoxPreference autoSync;
+	
+	private ListPreference autoSyncTimes;
 	
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
 	private static final String URL = "http://smssync.ushahidi.com";
+	
+	private CharSequence[] autoSyncEntries = {"5 Minutes", "10 Minutes", "15 Minutes", "30 Minutes", "60 Minutes"}; 
+    private CharSequence[] autoSyncValues = {"0","5","10","15","30","60"};
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,31 +88,38 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
-        websitePref = (EditTextPreference)getPreferenceScreen().findPreference(
-        		KEY_WEBSITE_PREF);
+        websitePref = (EditTextPreference)
+        	getPreferenceScreen().findPreference(KEY_WEBSITE_PREF);
         
-        apiKeyPref = (EditTextPreference)getPreferenceScreen().findPreference(
-        		KEY_API_KEY_PREF);
+        apiKeyPref = (EditTextPreference)
+        	getPreferenceScreen().findPreference(KEY_API_KEY_PREF);
         
-        keywordPref = (EditTextPreference)getPreferenceScreen().findPreference(
-        		KEY_KEYWORD_PREF);
+        keywordPref = (EditTextPreference)
+        	getPreferenceScreen().findPreference(KEY_KEYWORD_PREF);
         
-        enableSmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
-        		KEY_ENABLE_SMS_SYNC_PREF);
+        enableSmsSync = (CheckBoxPreference)
+        	getPreferenceScreen().findPreference(KEY_ENABLE_SMS_SYNC_PREF);
         
-        enableAutoDelete = (CheckBoxPreference)getPreferenceScreen().findPreference(
-        		KEY_AUTO_DELETE_MESSAGE);
+        enableAutoDelete = (CheckBoxPreference)
+        	getPreferenceScreen().findPreference(KEY_AUTO_DELETE_MESSAGE);
         
         enableReply = (CheckBoxPreference)getPreferenceScreen().findPreference(
         		KEY_ENABLE_REPLY);
+        autoSync = (CheckBoxPreference)getPreferenceScreen().findPreference(AUTO_SYNC);
         
         replyPref = (EditTextPreference)getPreferenceScreen().findPreference(
         		KEY_REPLY);
         
+        autoSyncTimes = (ListPreference)getPreferenceScreen().findPreference(AUTO_SYNC_TIMES);
+        autoSyncTimes.setEntries(autoSyncEntries);
+        autoSyncTimes.setEntryValues(autoSyncValues);
+        
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
-        poweredPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+        poweredPreference.setOnPreferenceClickListener(
+        		new OnPreferenceClickListener() {
         	public boolean onPreferenceClick(Preference preference) {
-        		final Intent i = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(URL));
+        		final Intent i = new Intent(android.content.Intent.ACTION_VIEW, 
+        				Uri.parse(URL));
   		    	startActivity(i);
   		    	return true;
         	}
@@ -104,7 +130,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	
 	protected void savePreferences() {
 		settings = getSharedPreferences(PREFS_NAME, 0);
-		
+		int autoTime = 0;
 		if (websitePref.getText().equals("")) {
 			websitePref.setText(HTTP_TEXT);
 		}
@@ -118,6 +144,26 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		} else {
 			replyPref.setEnabled(false);
 		}
+		
+		if (autoSync.isChecked()) {
+			autoSyncTimes.setEnabled(true);
+		} else {
+			autoSyncTimes.setEnabled(false);
+		}
+		
+		//"5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes" 
+		if(autoSyncTimes.getValue().matches("5")){
+			autoTime = 5;
+		} else if(autoSyncTimes.getValue().matches("10")){
+			autoTime = 10;
+		} else if(autoSyncTimes.getValue().matches("15")){
+			autoTime = 15;
+		} else if(autoSyncTimes.getValue().matches("30")){
+			autoTime = 30;
+		} else if(autoSyncTimes.getValue().matches("60")){
+			autoTime = 60;
+		}
+		
 		editor = settings.edit();
 		editor.putString("WebsitePref", websitePref.getText());
 		editor.putString("ApiKey", apiKeyPref.getText());
@@ -126,6 +172,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
 		editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
 		editor.putBoolean("EnableReply", enableReply.isChecked());
+		editor.putBoolean("AutoSync",autoSync.isChecked());
+		editor.putInt("AutoTime",autoTime);
 		editor.commit();
 	}
 	
@@ -134,7 +182,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		 super.onResume();
 		 
 		 // Set up a listener whenever a key changes
-		 getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+		 getPreferenceScreen().getSharedPreferences().
+		 	registerOnSharedPreferenceChangeListener(this);
 		 
 	}
 	
@@ -142,7 +191,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 	protected void onPause() {
 		 super.onPause();
 	        // Unregister the listener whenever a key changes
-	        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+	        getPreferenceScreen().getSharedPreferences().
+	        	unregisterOnSharedPreferenceChangeListener(this);
 	        
 	}
 	
@@ -152,7 +202,6 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 		finish();
 	}
 
-	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		
@@ -185,6 +234,18 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 				replyPref.setEnabled(true);
 			} else {
 				replyPref.setEnabled(false);
+			}
+		}
+		
+		// Auto sync enable
+		if (key.equals(AUTO_SYNC)) {
+			
+			if (sharedPreferences.getBoolean(AUTO_SYNC,false)) {
+				autoSyncTimes.setEnabled(true);
+				startService( new Intent( Settings.this,SmsSyncService.class));
+			} else {
+				stopService( new Intent(Settings.this, SmsSyncService.class));
+				autoSyncTimes.setEnabled(false);
 			}
 		}
 		

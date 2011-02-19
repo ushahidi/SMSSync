@@ -40,10 +40,14 @@
     <string name="chk_gps_sync_hint">This will include GPS coordinates of the current location of the phone to the messages to be sent to the website.</string>
     <string name="chk_enable_auto_delete">Auto Delete Messages</string>
     <string name="chk_auto_delete_hint">This will automatically delete messages from the Message app\'s inbox to save space on the phone.</string>
+    <string name="chk_enable_auto_sync">Enable Auto Sync</string>
+    <string name="chk_enable_auto_sync_hint">This will allow SMSSync to periodically sync pending messages</string>
+    <string name="txt_auto_sync_delay">Auto sync frequency</string>
+    <string name="auto_sync_delay_hint">Set how often SMSSync syncronizes with the selected instance.</string>
     <string name="app_name">SMSSync</string>
-    <string name="sms_sync_powered_by">SMSSync v1.0.4</string>
+    <string name="sms_sync_powered_by">SMSSync v1.0.5</string>
     <string name="outbox">SMSSync Pending Messages</string>
-    <string name="version">1.0.4</string>
+    <string name="version">1.0.5</string>
     <string name="sms_status_success">SMSSync Message Sent</string>
     <string name="sms_status_failed">SMSSync Message Sending failed</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
@@ -64,4 +68,6 @@
     <string name="http_text">http://</string>
     <string name="sms_failed">SMS failed</string>
     <string name="invalid_url">Invalid URL was entered.</string>
+    <string name="auto_sync_settings">Auto Sync Settings</string>
+    <string name="about_smssync">About Sync</string>
 </resources>

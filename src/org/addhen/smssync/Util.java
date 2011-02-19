@@ -51,6 +51,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.addhen.smssync.data.Messages;
+import org.addhen.smssync.data.SmsSyncDatabase;
 import org.addhen.smssync.net.SmsSyncHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -437,5 +438,52 @@ public class Util{
 		}
 
 		return status;
+	}
+	
+	/**
+	 * 
+	 */
+	public static int snycToWeb( Context context) {
+		Cursor cursor;
+		cursor = SmsSyncApplication.mDb.fetchAllMessages();
+		String messagesFrom;
+		String messagesBody;
+		
+		if( cursor.getCount() == 0 ) {
+			return 2;
+		}
+		
+		int deleted = 0;
+		
+		if (cursor.moveToFirst()) {
+			int messagesIdIndex = cursor.getColumnIndexOrThrow( 
+				SmsSyncDatabase.MESSAGES_ID);
+			int messagesFromIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_FROM);
+				
+			int messagesBodyIndex = cursor.getColumnIndexOrThrow(
+				SmsSyncDatabase.MESSAGES_BODY);
+
+			do {
+			  
+				int messageId = Util.toInt(cursor.getString(messagesIdIndex));
+				messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
+				messagesBody = cursor.getString(messagesBodyIndex);
+				
+				// post to web service
+				if( Util.postToAWebService(messagesFrom, messagesBody,context) ) {
+					//if it successfully pushes message, delete message from db
+					SmsSyncApplication.mDb.deleteMessagesById(messageId);
+					deleted = 0;
+				} else {
+					deleted = 1;
+				}
+				
+			  
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+		return deleted;
+		
 	}
 }

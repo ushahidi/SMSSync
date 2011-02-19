@@ -271,7 +271,7 @@ public class SmsSyncOutbox extends Activity
 		displayEmptyListText();
 	}
 	
-	// get messages from the db
+	// Get messages from the db and push them to the configured callback URL
 	public int syncMessages() {
 		Cursor cursor;
 		cursor = SmsSyncApplication.mDb.fetchAllMessages();
@@ -344,10 +344,11 @@ public class SmsSyncOutbox extends Activity
 		super.onActivityResult(requestCode, resultCode, intent);
 	}
 	
-	 //thread class
+	 //Thread class
 	private class SyncTask extends AsyncTask <Void, Void, Integer> {
 		
 		protected Integer status;
+		
 		@Override
 		protected void onPreExecute() {
 			setProgressBarIndeterminateVisibility(true);
