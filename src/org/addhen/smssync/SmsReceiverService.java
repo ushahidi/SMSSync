@@ -142,7 +142,9 @@ public class SmsReceiverService extends Service {
 	    	
 	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
 	    		
-	    		boolean posted = Util.postToAWebService(messagesFrom, messagesBody,SmsReceiverService.this);
+	    		boolean posted = Util.postToAWebService(messagesFrom, messagesBody,
+	    				SmsReceiverService.this);
+	    		
 	    		// if keywoard is enabled
 	    		if(!SmsSyncPref.keyword.equals("")){
 	    			String [] keywords = SmsSyncPref.keyword.split(",");
@@ -153,7 +155,7 @@ public class SmsReceiverService extends Service {
 		    				this.postToOutbox();
 		    				handler.post(mDisplayMessages);
 		    				
-		    				// Delete messages from message app's inbox only when smssync turned on
+		    				//Delete messages from message app's inbox only when smssync is turned on
 		    				if( SmsSyncPref.autoDelete) {
 		    					Util.delSmsFromInbox(SmsReceiverService.this,sms);
 		    				}
@@ -167,6 +169,7 @@ public class SmsReceiverService extends Service {
 		    				this.showNotification(messagesBody, getString(R.string.sending_succeeded));
 		    			}
 	    			}
+	    			
 	    		// keyword is not enabled
 	    		} else {
 	    			

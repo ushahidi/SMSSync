@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,6 +21,12 @@ public class SmsSyncService extends Service {
 	}
 	
 	private void startService() {
+		
+		SmsSyncPref.loadPreferences(SmsSyncService.this);
+		
+		long period = (SmsSyncPref.autoTime * 60000) ;
+		long delay = 500; 
+		
 		mDoTask = new TimerTask() {
 			@Override
 			public void run() {
@@ -36,7 +41,8 @@ public class SmsSyncService extends Service {
 			}
 			
 		};
-		mT.scheduleAtFixedRate(mDoTask, 300, 30000);
+		
+		mT.scheduleAtFixedRate(mDoTask, delay, period);
 	}
 	
 	private void stopService() {
