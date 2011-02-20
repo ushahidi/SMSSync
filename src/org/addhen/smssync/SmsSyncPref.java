@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 public class SmsSyncPref {
 	
 	public static int autoTime = 0;
+	public static int taskCheckTime = 0;
 	
 	public static String website = "";
 	public static String keyword = "";
@@ -37,6 +38,7 @@ public class SmsSyncPref {
 	public static Boolean autoDelete = false;
 	public static Boolean enableReply = false;
 	public static Boolean enableAutoSync = false;
+	public static Boolean enableTaskCheck = false;
 	
 	public static final String PREF_NAME = "SMS_SYNC_PREF";
 	
@@ -54,5 +56,6 @@ public class SmsSyncPref {
 		enableReply = settings.getBoolean("EnableReply", false);
 		enableAutoSync = settings.getBoolean("AutoSync", false);
 		autoTime = settings.getInt("AutoTime", autoTime);
+		taskCheckTime = settings.getInt("taskCheck", taskCheckTime);
 	}
 }

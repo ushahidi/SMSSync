@@ -9,7 +9,7 @@ public class SmsSyncReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		
-		intent.setClass(context, SmsSyncService.class);
+		intent.setClass(context, SmsSyncAutoSyncService.class);
 		intent.putExtra("result", getResultCode());
 
 		SmsReceiverService.beginStartingService(context, intent);

@@ -44,6 +44,7 @@ import org.apache.http.message.BasicNameValuePair;
 public class SmsSyncHttpClient {
 
 	public static final DefaultHttpClient httpclient = new DefaultHttpClient();
+	
 	public static HttpResponse GetURL(String URL) throws IOException {
     	
 		try {
@@ -64,17 +65,17 @@ public class SmsSyncHttpClient {
     }
 
 	/**
-     * Upload sms to a webservice via HTTP POST
+     * Upload SMS to a web service via HTTP POST
      * @param address
-     * @return
      * @throws MalformedURLException
      * @throws IOException
-     * TODO Think through this method and make it more generic.
+     * 
+     * @return
      */
-    public static boolean postSmsToWebService(String URL, HashMap<String, String> params) {
+    public static boolean postSmsToWebService(String url, HashMap<String, String> params) {
     	// Create a new HttpClient and Post Header  
         HttpClient httpclient = new DefaultHttpClient();  
-        HttpPost httppost = new HttpPost(URL);  
+        HttpPost httppost = new HttpPost(url);  
       
         try {
         	
@@ -107,6 +108,37 @@ public class SmsSyncHttpClient {
         	return false;  
         }  
         
+    }
+    
+    
+    /**
+     * Does a HTTP GET request 
+     * @param String url - The Callback URL to do the HTTP GET
+     * @return String - the HTTP response
+     */
+    public static String getFromWebService(String url) {
+    	
+    	// Create a new HttpClient and Post Header  
+        HttpClient httpclient = new DefaultHttpClient();  
+        final HttpGet httpGet = new HttpGet(url);
+		httpGet.addHeader("User-Agent", "SMSSync-Android/1.0)");  
+        
+		try {        
+            // Execute HTTP Get Request  
+            HttpResponse response = httpclient.execute(httpGet);  
+            
+            if( response.getStatusLine().getStatusCode() == 200 ) {
+            	return getText(response);
+            	
+            } else {
+            	return "";
+            }
+            
+        } catch (ClientProtocolException e) {  
+            return null;
+        } catch (IOException e) {  
+        	return null;  
+        }
     }
     
     public static String getText(HttpResponse response) {

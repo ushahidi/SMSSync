@@ -34,7 +34,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
-import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 
 public class SmsReceiverService extends Service {
@@ -137,10 +136,10 @@ public class SmsReceiverService extends Service {
 	    if( SmsSyncPref.enabled) {
 	    	// send auto response
 	    	if (SmsSyncPref.enableReply) {
-	    		sendReply(messagesFrom,SmsSyncPref.reply);
+	    		Util.sendSms(messagesFrom,SmsSyncPref.reply);
 	    	}
 	    	
-	    	if( SmsSyncUtil.isConnected(SmsReceiverService.this) ){
+	    	if( Util.isConnected(SmsReceiverService.this) ){
 	    		
 	    		boolean posted = Util.postToAWebService(messagesFrom, messagesBody,
 	    				SmsReceiverService.this);
@@ -149,7 +148,7 @@ public class SmsReceiverService extends Service {
 	    		if(!SmsSyncPref.keyword.equals("")){
 	    			String [] keywords = SmsSyncPref.keyword.split(",");
 	    			
-	    			if( SmsSyncUtil.processString(messagesBody, keywords)){
+	    			if( Util.processString(messagesBody, keywords)){
 	    				if( !posted ) {
 		    				this.showNotification(messagesBody, getString(R.string.sending_failed));
 		    				this.postToOutbox();
@@ -235,12 +234,6 @@ public class SmsReceiverService extends Service {
 		
 		Util.processMessages(SmsReceiverService.this);
 	
-	}
-	
-	private void sendReply(String replyTo, String msg) {
-		 
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(replyTo, null, msg, null, null); 
 	}
 	
 	public static final SmsMessage[] getMessagesFromIntent(Intent intent) {

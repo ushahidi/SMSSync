@@ -4,6 +4,8 @@ Feature:
 
 Fixed:
 
+Known issue:
+ * Scheduler doesn't refreshes pending messages' list after it runs.
 
 1.0.4
 * Notification cannot be cleared untill SMSSync is stopped.

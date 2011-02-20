@@ -12,7 +12,7 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name" 
     	android:name="SmsSyncApplication">
     	<service android:name=".SmsReceiverService" />
-    	<service android:name=".SmsSyncService" />
+    	<service android:name="SmsSyncAutoSyncService" />
         <activity android:name=".Settings"
                   android:label="@string/app_name">
             <intent-filter>

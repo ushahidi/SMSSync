@@ -85,6 +85,22 @@
         
     </PreferenceCategory>
     <PreferenceCategory
+        android:title="@string/task_check_settings">
+     
+        <CheckBoxPreference
+            android:key="task_check_preference"
+            android:title="@string/chk_enable_task_check"
+            android:summary="@string/chk_enable_task_check_hint" />
+        
+        <ListPreference
+            android:key="task_check_times" 
+            android:title="@string/txt_task_check_delay"
+            android:summary="@string/txt_task_check_delay_hint"
+            android:dialogTitle="@string/txt_task_check_delay"
+            android:defaultValue="0" />
+        
+    </PreferenceCategory>
+    <PreferenceCategory
         android:title="@string/about_smssync"> 
   	    <Preference android:key="powered_preference"
     	   android:title="@string/sms_sync_powered_by"

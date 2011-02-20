@@ -20,19 +20,6 @@
 
 package org.addhen.smssync;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -44,24 +31,40 @@ import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Vector;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.SmsSyncDatabase;
 import org.addhen.smssync.net.SmsSyncHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import org.json.JSONArray;
 
 public class Util{
 
 	private static NetworkInfo networkInfo;
 	private static List<Messages> mMessages;
 	private static JSONObject jsonObject;
+	private static JSONArray jsonArray;
 	private static Pattern pattern;
 	private static Matcher matcher;
 	public static final Uri MMS_SMS_CONTENT_URI = Uri.parse("content://mms-sms/");
@@ -397,7 +400,7 @@ public class Util{
 	 * @param String fromAddress
 	 * @param String messageBody
 	 * 
-	 * @return
+	 * @return boolean
 	 */
 	public static boolean postToAWebService( String messagesFrom, String messagesBody, Context context) {
 		HashMap<String,String> params = new HashMap<String, String>();
@@ -485,5 +488,78 @@ public class Util{
 		cursor.close();
 		return deleted;
 		
+	}
+	
+	/**
+	 * Sends sms to a number
+	 * 
+	 * @param String sendTo - Number to send to
+	 * @param String msg - The message to be sent. 
+	 */
+	public static void sendSms(String sendTo, String msg) {
+		 
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(sendTo, null, msg, null, null); 
+	}
+	
+	/**
+	 * Performs a task based on what callback URL tells it.
+	 * 
+	 * @param Context context - the activity calling this method.
+	 */
+	public static void performTask( Context context) {
+		SmsSyncPref.loadPreferences( context );
+		
+		StringBuilder uriBuilder = new StringBuilder( SmsSyncPref.website );
+		uriBuilder.append("?task=sendsms");
+		
+		String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
+		
+		String task = "";
+		
+		if (!TextUtils.isEmpty(response) && response == null) {
+			try {
+				
+				jsonObject = new JSONObject(response);
+				JSONObject payloadObject = jsonObject.getJSONObject("payload");
+				
+				task = payloadObject.getString("task");
+				
+				if( task.equals("sendsms")) {
+					jsonArray = payloadObject.getJSONArray("messages");
+					
+					for (int index = 0; index > jsonArray.length(); ++index) {
+						jsonObject = jsonArray.getJSONObject(index);
+						sendSms(jsonObject.getString("to"),jsonObject.getString("message"));
+					}
+					
+				}
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 * Find words in a string
+	 * 
+	 * @param String message - The string to search by.
+	 * @param String keywords - The keywords to 
+	 * 
+	 * @return boolean
+	 */
+	public static boolean processString(String message, String [] keywords) {
+		Scanner scanner = new Scanner(message);
+		while (scanner.hasNext()) {
+			for (String keyword : keywords) {
+				if (scanner.nextLine().contentEquals(keyword)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 }

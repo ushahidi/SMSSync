@@ -62,6 +62,9 @@ public class Settings extends PreferenceActivity implements
 	public static final String HTTP_TEXT = "http://";
 	public static final String AUTO_SYNC = "auto_sync_preference";
 	public static final String AUTO_SYNC_TIMES = "auto_sync_times";
+	public static final String TASK_CHECK = "task_check_preference";
+	public static final String TASK_CHECK_TIMES = "task_check_times";
+	
 	
 	private EditTextPreference websitePref;
 	private EditTextPreference apiKeyPref;
@@ -72,8 +75,10 @@ public class Settings extends PreferenceActivity implements
 	private CheckBoxPreference enableAutoDelete;
 	private CheckBoxPreference enableReply;
 	private CheckBoxPreference autoSync;
+	private CheckBoxPreference taskCheck;
 	
 	private ListPreference autoSyncTimes;
+	private ListPreference taskCheckTimes;
 	
 	private SharedPreferences settings ;
 	private SharedPreferences.Editor editor;
@@ -107,12 +112,18 @@ public class Settings extends PreferenceActivity implements
         		KEY_ENABLE_REPLY);
         autoSync = (CheckBoxPreference)getPreferenceScreen().findPreference(AUTO_SYNC);
         
+        taskCheck =(CheckBoxPreference)getPreferenceScreen().findPreference(TASK_CHECK);
+        
         replyPref = (EditTextPreference)getPreferenceScreen().findPreference(
         		KEY_REPLY);
         
         autoSyncTimes = (ListPreference)getPreferenceScreen().findPreference(AUTO_SYNC_TIMES);
         autoSyncTimes.setEntries(autoSyncEntries);
         autoSyncTimes.setEntryValues(autoSyncValues);
+        
+        taskCheckTimes = (ListPreference)getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
+        taskCheckTimes.setEntries(autoSyncEntries);
+        taskCheckTimes.setEntryValues(autoSyncValues);
         
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
         poweredPreference.setOnPreferenceClickListener(
@@ -129,8 +140,12 @@ public class Settings extends PreferenceActivity implements
     }
 	
 	protected void savePreferences() {
-		settings = getSharedPreferences(PREFS_NAME, 0);
+		
 		int autoTime = 0;
+		int taskCheckTime = 0;
+		
+		settings = getSharedPreferences(PREFS_NAME, 0);
+	
 		if (websitePref.getText().equals("")) {
 			websitePref.setText(HTTP_TEXT);
 		}
@@ -151,17 +166,23 @@ public class Settings extends PreferenceActivity implements
 			autoSyncTimes.setEnabled(false);
 		}
 		
+		if (taskCheck.isChecked()) {
+			taskCheckTimes.setEnabled(true);
+		} else {
+			taskCheckTimes.setEnabled(false);
+		}
+		
 		//"5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes" 
 		if(autoSyncTimes.getValue().matches("5")){
-			autoTime = 5;
+			taskCheckTime = 5;
 		} else if(autoSyncTimes.getValue().matches("10")){
-			autoTime = 10;
+			taskCheckTime = 10;
 		} else if(autoSyncTimes.getValue().matches("15")){
-			autoTime = 15;
+			taskCheckTime = 15;
 		} else if(autoSyncTimes.getValue().matches("30")){
-			autoTime = 30;
+			taskCheckTime = 30;
 		} else if(autoSyncTimes.getValue().matches("60")){
-			autoTime = 60;
+			taskCheckTime = 60;
 		}
 		
 		editor = settings.edit();
@@ -174,6 +195,7 @@ public class Settings extends PreferenceActivity implements
 		editor.putBoolean("EnableReply", enableReply.isChecked());
 		editor.putBoolean("AutoSync",autoSync.isChecked());
 		editor.putInt("AutoTime",autoTime);
+		editor.putInt("taskCheck", taskCheckTime);
 		editor.commit();
 	}
 	
@@ -242,10 +264,22 @@ public class Settings extends PreferenceActivity implements
 			
 			if (sharedPreferences.getBoolean(AUTO_SYNC,false)) {
 				autoSyncTimes.setEnabled(true);
-				startService( new Intent( Settings.this,SmsSyncService.class));
+				startService( new Intent( Settings.this,SmsSyncAutoSyncService.class));
 			} else {
-				stopService( new Intent(Settings.this, SmsSyncService.class));
+				stopService( new Intent(Settings.this, SmsSyncAutoSyncService.class));
 				autoSyncTimes.setEnabled(false);
+			}
+		}
+		
+		// Enable task checking
+		if (key.equals(TASK_CHECK)) {
+			
+			if (sharedPreferences.getBoolean(TASK_CHECK,false)) {
+				taskCheckTimes.setEnabled(true);
+				startService( new Intent( Settings.this,SmsSyncTaskCheckService.class));
+			} else {
+				stopService( new Intent(Settings.this, SmsSyncTaskCheckService.class));
+				taskCheckTimes.setEnabled(false);
 			}
 		}
 		

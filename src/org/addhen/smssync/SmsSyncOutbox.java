@@ -49,8 +49,9 @@ public class SmsSyncOutbox extends Activity
 	private static ListMessagesAdapter ila;
 	private static TextView emptyListText;
 	private static final int SMSSYNC_SYNC = Menu.FIRST+1;
-	private static final int DELETE = Menu.FIRST+2;
-	private static final int SETTINGS = Menu.FIRST+3;
+	private static final int MESSAGES_IMPORT = Menu.FIRST+2;
+	private static final int DELETE = Menu.FIRST+3;
+	private static final int SETTINGS = Menu.FIRST+4;
 	private final Handler mHandler = new Handler();
 	public static SmsSyncDatabase mDb;	
   
@@ -191,6 +192,9 @@ public class SmsSyncOutbox extends Activity
 		i = menu.add(Menu.NONE, SMSSYNC_SYNC, Menu.NONE, R.string.menu_sync);
 		i.setIcon(android.R.drawable.ic_menu_send);
 		
+		i = menu.add(Menu.NONE, MESSAGES_IMPORT, Menu.NONE, R.string.menu_import);
+		i.setIcon(android.R.drawable.ic_input_get);
+		
 		i = menu.add( Menu.NONE, DELETE, Menu.NONE, R.string.menu_delete);
 		i.setIcon(android.R.drawable.ic_menu_delete);
 		  
@@ -205,6 +209,10 @@ public class SmsSyncOutbox extends Activity
     			syncTask.execute();
     			return(true); 
         
+    		case MESSAGES_IMPORT:
+    			//TODO: do the import here
+    			return(true);
+    			
     		case SETTINGS:
     			intent = new Intent( SmsSyncOutbox.this,  Settings.class);
     			startActivity(intent);
