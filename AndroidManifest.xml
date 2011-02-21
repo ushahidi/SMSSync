@@ -13,6 +13,7 @@
     	android:name="SmsSyncApplication">
     	<service android:name=".SmsReceiverService" />
     	<service android:name="SmsSyncAutoSyncService" />
+    	<service android:name="SmsSyncTaskCheckService" />
         <activity android:name=".Settings"
                   android:label="@string/app_name">
             <intent-filter>

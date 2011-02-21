@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -390,7 +391,7 @@ public class Util{
     	long threadId = getId(context, msg,"thread");
     	
     	if( threadId >= 0 ) {
-    		context.getContentResolver().delete(Uri.parse("content://sms/conversations/" + threadId), null, null);
+    		context.getContentResolver().delete(Uri.parse(SMS_CONTENT_URI + threadId), null, null);
     	}
     }
     
@@ -402,21 +403,22 @@ public class Util{
 	 * 
 	 * @return boolean
 	 */
-	public static boolean postToAWebService( String messagesFrom, String messagesBody, Context context) {
+	public static boolean postToAWebService( String messagesFrom, String messagesBody, 
+			Context context) {
+		
 		HashMap<String,String> params = new HashMap<String, String>();
 		SmsSyncPref.loadPreferences( context );
 		
-		if(!SmsSyncPref.website.equals("")) {
+		if (!SmsSyncPref.website.equals("")) {
+			
 			StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
 			params.put("secret",SmsSyncPref.apiKey);
 			params.put("from", messagesFrom); 
 			params.put("message",messagesBody);
-		
 			return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
 		}
 		
 		return false;
-		
 	}
 	
 	/**
@@ -430,14 +432,18 @@ public class Util{
 		
 		boolean status = false;
 		try {
+			
 		    URL url = new URL(callbackUrl);
 		    URLConnection conn = url.openConnection();
 		    conn.connect();
 		    status = true;
+		    
 		} catch (MalformedURLException e) {
-		    status = false;
+		    
+			status = false;
 		} catch (IOException e) {
-		    status = true;
+		    
+			status = true;
 		}
 
 		return status;
@@ -447,12 +453,13 @@ public class Util{
 	 * 
 	 */
 	public static int snycToWeb( Context context) {
+		
 		Cursor cursor;
 		cursor = SmsSyncApplication.mDb.fetchAllMessages();
 		String messagesFrom;
 		String messagesBody;
 		
-		if( cursor.getCount() == 0 ) {
+		if(cursor.getCount() == 0) {
 			return 2;
 		}
 		
@@ -516,20 +523,21 @@ public class Util{
 		String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
 		
 		String task = "";
-		
-		if (!TextUtils.isEmpty(response) && response == null) {
+		Log.i("SMSS", "Response" +response);
+		if (!TextUtils.isEmpty(response) && response != null) {
+			
 			try {
 				
 				jsonObject = new JSONObject(response);
 				JSONObject payloadObject = jsonObject.getJSONObject("payload");
 				
 				task = payloadObject.getString("task");
-				
 				if( task.equals("sendsms")) {
 					jsonArray = payloadObject.getJSONArray("messages");
 					
-					for (int index = 0; index > jsonArray.length(); ++index) {
+					for (int index = 0; index < jsonArray.length(); ++index) {
 						jsonObject = jsonArray.getJSONObject(index);
+						
 						sendSms(jsonObject.getString("to"),jsonObject.getString("message"));
 					}
 					
@@ -562,4 +570,40 @@ public class Util{
 		}
 		return false;
 	}
+	
+	/**
+     * Imports messages from messages app table and puts them in SmsSync outbox table
+     *
+     * @param Context context - the activity calling this method.
+     */
+    public static int importMessages(Context context) {
+    	
+		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
+		uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
+		String [] projection = {"_id","address","date","body"};	
+		String messageDate = "";
+		Cursor c = context.getContentResolver().query(uriSms, projection, null, null, "date DESC");
+		
+		if (c.getCount() > 0 && c != null ) {
+			if ( c.moveToFirst() ) {
+				
+				do {
+					
+					messageDate = Util.formatTimestamp(context, c.getLong(c.getColumnIndex("date")));	
+					Util.smsMap.put("messagesFrom", c.getString(c.getColumnIndex("address")));
+					Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
+					Util.smsMap.put("messagesDate", messageDate);
+					Util.smsMap.put("messagesId", c.getString(c.getColumnIndex("_id")));
+					Util.processMessages(context);
+				
+				} while(c.moveToNext());
+				
+			}
+			
+		} else {
+			return 1;
+		}
+		c.close();
+		return 0;
+    }
 }

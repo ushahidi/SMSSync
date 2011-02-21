@@ -85,4 +85,6 @@
     <string name="auto_sync_settings">Auto Sync Settings</string>
     <string name="task_check_settings">Task Settings</string>
     <string name="about_smssync">About Sync</string>
+    <string name="please_wait">Please wait</string>
+    <string name="import_messages">Importing messages...</string>
 </resources>

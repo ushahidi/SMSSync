@@ -31,7 +31,8 @@
     	android:paddingRight="5px"    
     	android:fadingEdge="none"
     	android:cacheColorHint="#00000000"
-    	android:scrollbars="none"/>
+    	android:scrollbars="vertical"
+        android:scrollbarStyle="insideOverlay"/>
  		
     <!-- Here is the view to show if the list is emtpy -->
     <TextView android:id="@+id/empty" 

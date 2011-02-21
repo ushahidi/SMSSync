@@ -59,6 +59,7 @@ public final class R {
         public static final int empty_list=0x7f050035;
         public static final int general_settings=0x7f05000e;
         public static final int http_text=0x7f050036;
+        public static final int import_messages=0x7f05003d;
         public static final int invalid_url=0x7f050038;
         public static final int menu_delete=0x7f05002e;
         public static final int menu_import=0x7f050030;
@@ -70,6 +71,7 @@ public final class R {
         public static final int no_messages_to_sync=0x7f050029;
         public static final int notification_summary=0x7f050026;
         public static final int outbox=0x7f050022;
+        public static final int please_wait=0x7f05003c;
         public static final int powered=0x7f05002c;
         public static final int powered_by=0x7f05002d;
         public static final int reply_settings=0x7f05000f;

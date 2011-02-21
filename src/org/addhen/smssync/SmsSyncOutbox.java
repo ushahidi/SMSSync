@@ -27,6 +27,8 @@ import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.SmsSyncDatabase;
  
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -198,31 +200,37 @@ public class SmsSyncOutbox extends Activity
 		i = menu.add( Menu.NONE, DELETE, Menu.NONE, R.string.menu_delete);
 		i.setIcon(android.R.drawable.ic_menu_delete);
 		  
-	  
 	}
   
 	private boolean applyMenuChoice(MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
     		case SMSSYNC_SYNC:
+    			
     			SyncTask syncTask = new SyncTask();
     			syncTask.execute();
     			return(true); 
         
     		case MESSAGES_IMPORT:
-    			//TODO: do the import here
+    			
+    			ImportMessagesTask importMessagesTask = new ImportMessagesTask();
+    			importMessagesTask.appContext = this;
+    			importMessagesTask.execute();
     			return(true);
     			
     		case SETTINGS:
+    			
     			intent = new Intent( SmsSyncOutbox.this,  Settings.class);
     			startActivity(intent);
     			return(true);
     			
     		case DELETE:
+    			
     			mHandler.post(mDeleteAllMessages);
     			return(true);
         
 		}
+		
 		return(false);
 	}
 	
@@ -268,8 +276,7 @@ public class SmsSyncOutbox extends Activity
 				messages.setMessageBody(messagesBody);
 
 				ila.addItem( new ListMessagesText(messagesFrom, messagesBody, messagesDate, id));
-				
-			  
+					  
 			} while (cursor.moveToNext());
 		}
     
@@ -352,7 +359,7 @@ public class SmsSyncOutbox extends Activity
 		super.onActivityResult(requestCode, resultCode, intent);
 	}
 	
-	 //Thread class
+	//Thread class
 	private class SyncTask extends AsyncTask <Void, Void, Integer> {
 		
 		protected Integer status;
@@ -364,6 +371,7 @@ public class SmsSyncOutbox extends Activity
 		
 		@Override 
 		protected Integer doInBackground(Void... params) {
+			
 			status = 0 ;
 			mHandler.post(mSyncMessages);
 			return status;
@@ -376,4 +384,35 @@ public class SmsSyncOutbox extends Activity
 			setProgressBarIndeterminateVisibility(false);
 		}
 	}
+	
+	//Thread class
+	private class ImportMessagesTask extends AsyncTask <Void, Void, Integer> {
+		
+		protected Integer status;
+		private ProgressDialog dialog;
+		protected Context appContext;
+		
+		@Override
+		protected void onPreExecute() {
+			this.dialog = ProgressDialog.show(appContext, getString(R.string.please_wait),
+					getString(R.string.import_messages), true);
+		}
+		
+		@Override 
+		protected Integer doInBackground(Void... params) {
+			
+			status = Util.importMessages(appContext);
+			return status;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result) {
+			if (result == 0) {
+				showMessages();
+				setProgressBarIndeterminateVisibility(false);
+				this.dialog.cancel();
+			}
+		}
+	}
+
 }
