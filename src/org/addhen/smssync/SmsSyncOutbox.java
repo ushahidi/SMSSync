@@ -69,6 +69,7 @@ public class SmsSyncOutbox extends Activity
 		}
 		
 		listMessages = (ListView) findViewById( R.id.view_messages );
+		listMessages.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		emptyListText = (TextView) findViewById(R.id.empty);
 		mOldMessages = new ArrayList<Messages>();
 		ila = new ListMessagesAdapter(SmsSyncOutbox.this);

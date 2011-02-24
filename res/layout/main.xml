@@ -15,12 +15,14 @@
 -->
 
 <!-- This is a primitive example showing the different types of preferences available. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Hello Henry"/>
-</LinearLayout>
+    <RelativeLayout android:id="@+id/relativeLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+        <LinearLayout android:id="@+id/linearLayout1" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_alignParentLeft="true">
+            <LinearLayout  android:orientation="horizontal" android:id="@+id/linearLayout1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true">
+                <TextView android:text="TextView" android:id="@+id/textView1"  android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true"></TextView>
+                <TextView android:text="TextView" android:layout_height="wrap_content" android:id="@+id/textView2" android:layout_width="wrap_content"></TextView>
+            </LinearLayout>
+            <TextView android:text="TextView" android:id="@+id/textView3" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+        </LinearLayout>
+        <CheckBox android:layout_height="wrap_content" android:layout_alignParentRight="true"  android:layout_width="wrap_content" android:id="@+id/checkBox1"></CheckBox>
+    </RelativeLayout>
+    
