@@ -81,7 +81,13 @@
     <string name="empty_list">No pending messages</string>
     <string name="http_text">http://</string>
     <string name="sms_failed">SMS failed</string>
-    <string name="invalid_url">Invalid URL was entered.</string>
+    
+    <!-- URL validation -->
+    <string name="invalid_url">Please the URL entered was invalid.</string>
+    <string name="no_configured_url">Please there is no configured URL.</string>
+    <string name="no_connection">Could not make connection to the URL.</string>
+    
+    <string name="no_task">No task is enabled on the configured callback URL.</string>
     <string name="auto_sync_settings">Auto Sync Settings</string>
     <string name="task_check_settings">Task Settings</string>
     <string name="about_smssync">About Sync</string>

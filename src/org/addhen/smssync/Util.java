@@ -34,7 +34,6 @@ import android.net.Uri;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -132,14 +131,13 @@ public class Util{
 	}
 	
 	/**
-	 * Is there internet connection
+	 * Is there Internet connection
 	 */
 	public static boolean isConnected(Context context )  {
 		  
 		ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		networkInfo = connectivity.getActiveNetworkInfo();
-		//NetworkInfo info
 		
 		if(networkInfo == null || !networkInfo.isConnected()){  
 	        return false;  
@@ -187,8 +185,6 @@ public class Util{
 		}
 		return formatted;
 	}
-	
-	
 	
 	/**
 	 * Extract Ushahidi payload JSON data
@@ -290,6 +286,7 @@ public class Util{
 	 * @return boolean
 	 */
 	public static boolean validateEmail( String emailAddress) {
+		
 		if( !emailAddress.equals("") ) {
 			pattern = Pattern.compile(EMAIL_PATTERN);
 			matcher = pattern.matcher(emailAddress);
@@ -303,6 +300,7 @@ public class Util{
      * thread id, the timestamp of the message.
      */
     public static long findMessageId(Context context, long threadId, long _timestamp) {
+    	
     	long id = 0;
     	long timestamp = _timestamp;
     	if (threadId > 0) {
@@ -424,33 +422,41 @@ public class Util{
 	/**
 	 * Validate an the callback URL
 	 * 
-	 * @param String - callbackURL to be validated.
+	 * @param String callbackURL - The callback URL to be validated.
 	 * 
-	 * @return boolean
+	 * @return int - 0 = well formed URL, 1 = no configured url, 2 = Malformed URL - 
+	 * 3 = can't make connection to it.
 	 */
-	public static boolean validateCallbackUrl( String callbackUrl ) {
+	public static int validateCallbackUrl(String callbackUrl) {
 		
-		boolean status = false;
+		if (TextUtils.isEmpty(callbackUrl)) {
+			
+			return 1;
+		}
+		
 		try {
 			
 		    URL url = new URL(callbackUrl);
 		    URLConnection conn = url.openConnection();
 		    conn.connect();
-		    status = true;
+		    return 0;
 		    
 		} catch (MalformedURLException e) {
-		    
-			status = false;
+			return 2;
+			
 		} catch (IOException e) {
-		    
-			status = true;
+			return 3;
+			
 		}
 
-		return status;
 	}
 	
 	/**
+	 * Pushes pending messages to the configured URL.
 	 * 
+	 *  @param Context context - The activity calling the method
+	 *  
+	 *  @return int
 	 */
 	public static int snycToWeb( Context context) {
 		
@@ -498,9 +504,9 @@ public class Util{
 	}
 	
 	/**
-	 * Sends sms to a number
+	 * Sends SMS to a number.
 	 * 
-	 * @param String sendTo - Number to send to
+	 * @param String sendTo - Number to send SMS to.
 	 * @param String msg - The message to be sent. 
 	 */
 	public static void sendSms(String sendTo, String msg) {
@@ -517,34 +523,54 @@ public class Util{
 	public static void performTask( Context context) {
 		SmsSyncPref.loadPreferences( context );
 		
-		StringBuilder uriBuilder = new StringBuilder( SmsSyncPref.website );
-		uriBuilder.append("?task=sendsms");
+		// validate configured url
+		int status = validateCallbackUrl(SmsSyncPref.website); 
+		if (status == 1){
+			showToast(context, R.string.no_configured_url);
+		}else if (status == 2) {
+			showToast(context, R.string.invalid_url);
+		}else if (status == 3) {
+			showToast(context, R.string.no_connection);
+		} else {
 		
-		String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
+			StringBuilder uriBuilder = new StringBuilder( SmsSyncPref.website );
+			uriBuilder.append("?task=sendsms");
 		
-		String task = "";
-		Log.i("SMSS", "Response" +response);
-		if (!TextUtils.isEmpty(response) && response != null) {
+			String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
+		
+			String task = "";
+			if (!TextUtils.isEmpty(response) && response != null) {
 			
-			try {
+				try {
 				
-				jsonObject = new JSONObject(response);
-				JSONObject payloadObject = jsonObject.getJSONObject("payload");
-				
-				task = payloadObject.getString("task");
-				if( task.equals("sendsms")) {
-					jsonArray = payloadObject.getJSONArray("messages");
+					jsonObject = new JSONObject(response);
+					JSONObject payloadObject = jsonObject.getJSONObject("payload");
 					
-					for (int index = 0; index < jsonArray.length(); ++index) {
-						jsonObject = jsonArray.getJSONObject(index);
+					if( payloadObject != null ) {
+						task = payloadObject.getString("task");
+						if( task.equals("sendsms")) {
+							jsonArray = payloadObject.getJSONArray("messages");
 						
-						sendSms(jsonObject.getString("to"),jsonObject.getString("message"));
+							for (int index = 0; index < jsonArray.length(); ++index) {
+								jsonObject = jsonArray.getJSONObject(index);
+						
+								sendSms(jsonObject.getString("to"),jsonObject.getString("message"));
+							}
+							
+						} else {
+							// no task enabled on the callback url.
+							showToast(context, R.string.no_task);
+						}
+						
+					} else{
+						// no task is enabled on the callback url.
+						showToast(context, R.string.no_task);
 					}
-					
-				}
 				
-			} catch (JSONException e) {
-				e.printStackTrace();
+				} catch (JSONException e) {
+					e.printStackTrace();
+					showToast(context, R.string.no_task);
+				}
 			}
 		}
 	}

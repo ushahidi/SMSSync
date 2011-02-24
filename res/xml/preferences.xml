@@ -82,7 +82,7 @@
             android:title="@string/txt_auto_sync_delay"
             android:summary="@string/auto_sync_delay_hint"
             android:dialogTitle="@string/txt_auto_sync_delay"
-            android:defaultValue="0" />
+            android:defaultValue="5" />
         
     </PreferenceCategory>
     <PreferenceCategory
@@ -98,7 +98,7 @@
             android:title="@string/txt_task_check_delay"
             android:summary="@string/txt_task_check_delay_hint"
             android:dialogTitle="@string/txt_task_check_delay"
-            android:defaultValue="0" />
+            android:defaultValue="5" />
         
     </PreferenceCategory>
     <PreferenceCategory

@@ -7,7 +7,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 public class SmsSyncTaskCheckService extends Service {
 	
@@ -24,8 +23,7 @@ public class SmsSyncTaskCheckService extends Service {
 	private void startService() {
 		
 		SmsSyncPref.loadPreferences(SmsSyncTaskCheckService.this);
-		Log.i("SMSSYnc", "time :"+SmsSyncPref.taskCheckTime);
-		long period = ( 3 * 60000) ;
+		long period = ( SmsSyncPref.taskCheckTime * 60000) ;
 		long delay = 500; 
 		
 		mDoTask = new TimerTask() {
@@ -34,7 +32,7 @@ public class SmsSyncTaskCheckService extends Service {
 				handler.post(new Runnable() {
 
 					public void run() {
-						Log.d("Hello", "Task servic started");
+						
 						Util.performTask(SmsSyncTaskCheckService.this);
 					}
 					

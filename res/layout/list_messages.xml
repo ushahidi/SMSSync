@@ -21,7 +21,7 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent">
   
-  <!-- List incidents -->
+    <!-- List incidents -->
 	<ListView android:id="@+id/view_messages"
  		android:layout_width="fill_parent"
  		android:layout_height="fill_parent"

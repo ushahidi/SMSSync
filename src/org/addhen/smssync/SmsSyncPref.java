@@ -26,8 +26,8 @@ import android.content.SharedPreferences;
 
 public class SmsSyncPref {
 	
-	public static int autoTime = 0;
-	public static int taskCheckTime = 0;
+	public static int autoTime = 5;
+	public static int taskCheckTime = 5;
 	
 	public static String website = "";
 	public static String keyword = "";

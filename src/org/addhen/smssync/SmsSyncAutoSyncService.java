@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,14 +17,13 @@ public class SmsSyncAutoSyncService extends Service {
 	
 	public void onCreate() {
 		super.onCreate();
-		
 		this.startService();
 	}
 	
 	private void startService() {
 		
 		SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
-		
+		Log.i("SMSSync","SmsSyncPref: "+SmsSyncPref.autoTime);
 		long period = (SmsSyncPref.autoTime * 60000) ;
 		long delay = 500; 
 		

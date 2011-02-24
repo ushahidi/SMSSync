@@ -1,11 +1,18 @@
 1.0.5
 Feature:
-  * Scheduler automatically Syncs pending messages to the configured Callback URL. 
+  * Scheduler automatically Syncs pending messages to the configured Callback URL.
+  * Now sends out messages from the configured callback URL as text message.
+  * Imports messages from Android messages app inbox for synchronizing to the configured callback 
+    URL.  
 
 Fixed:
+  * Improved callback URL validation process; Added more checks. Empty, malformed and connection 
+    checks.
+  * More sanity checks before SMSSync can be enabled. 
 
 Known issue:
- * Scheduler doesn't refreshes pending messages' list after it runs.
+ * Scheduler doesn't refresh pending messages' list after it runs. The pending messages screen needs
+   to be restarted. 
 
 1.0.4
 * Notification cannot be cleared untill SMSSync is stopped.

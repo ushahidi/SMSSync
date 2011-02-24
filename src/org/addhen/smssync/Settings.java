@@ -27,12 +27,14 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.util.Log;
 
 
 public class Settings extends PreferenceActivity implements 
@@ -85,8 +87,18 @@ public class Settings extends PreferenceActivity implements
 	private static final String URL = "http://smssync.ushahidi.com";
 	
 	private CharSequence[] autoSyncEntries = {"5 Minutes", "10 Minutes", "15 Minutes", "30 Minutes", "60 Minutes"}; 
-    private CharSequence[] autoSyncValues = {"0","5","10","15","30","60"};
+    private CharSequence[] autoSyncValues = {"5","10","15","30","60"};
+    
+    private int autoTime = 5;
+	private int taskCheckTime = 5;
 	
+	private int callbackUrlValidityStatus = 1;
+	
+	private final Handler mHandler = new Handler();
+	
+	private PackageManager pm;
+    private ComponentName cn;
+	    
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +137,9 @@ public class Settings extends PreferenceActivity implements
         taskCheckTimes.setEntries(autoSyncEntries);
         taskCheckTimes.setEntryValues(autoSyncValues);
         
+        pm = getPackageManager();
+        cn = new ComponentName(Settings.this, SmsReceiver.class);
+        
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
         poweredPreference.setOnPreferenceClickListener(
         		new OnPreferenceClickListener() {
@@ -139,10 +154,38 @@ public class Settings extends PreferenceActivity implements
         this.savePreferences();
     }
 	
-	protected void savePreferences() {
+	private int initializeAutoSyncTime() {
+		//Initialize the selected time to frequently sync pending messages
+		if(autoSyncTimes.getValue().matches("10")){
+			return 10;
+		} else if(autoSyncTimes.getValue().matches("15")){
+			return 15;
+		} else if(autoSyncTimes.getValue().matches("30")){
+			return 30;
+		} else if(autoSyncTimes.getValue().matches("60")){
+			return 60;
+		} else {
+			return 5;
+		}
+	}
+	
+	private int initializeAutoTaskTime() {
+		//"5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes" 
 		
-		int autoTime = 0;
-		int taskCheckTime = 0;
+		if(autoSyncTimes.getValue().matches("10")){
+			return 10;
+		} else if(autoSyncTimes.getValue().matches("15")){
+			return 15;
+		} else if(autoSyncTimes.getValue().matches("30")){
+			return 30;
+		} else if(autoSyncTimes.getValue().matches("60")){
+			return 60;
+		} else {
+			return 5;
+		}
+	}
+	
+	protected void savePreferences() {
 		
 		settings = getSharedPreferences(PREFS_NAME, 0);
 	
@@ -166,24 +209,17 @@ public class Settings extends PreferenceActivity implements
 			autoSyncTimes.setEnabled(false);
 		}
 		
+		//Initialize the selected time to frequently sync pending messages
+		autoTime = initializeAutoSyncTime();
+		
 		if (taskCheck.isChecked()) {
 			taskCheckTimes.setEnabled(true);
 		} else {
 			taskCheckTimes.setEnabled(false);
 		}
 		
-		//"5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes" 
-		if(autoSyncTimes.getValue().matches("5")){
-			taskCheckTime = 5;
-		} else if(autoSyncTimes.getValue().matches("10")){
-			taskCheckTime = 10;
-		} else if(autoSyncTimes.getValue().matches("15")){
-			taskCheckTime = 15;
-		} else if(autoSyncTimes.getValue().matches("30")){
-			taskCheckTime = 30;
-		} else if(autoSyncTimes.getValue().matches("60")){
-			taskCheckTime = 60;
-		}
+		//Initialize the selected time to frequently to auto check for tasks
+		taskCheckTime = initializeAutoTaskTime();
 		
 		editor = settings.edit();
 		editor.putString("WebsitePref", websitePref.getText());
@@ -193,8 +229,8 @@ public class Settings extends PreferenceActivity implements
 		editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
 		editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
 		editor.putBoolean("EnableReply", enableReply.isChecked());
-		editor.putBoolean("AutoSync",autoSync.isChecked());
-		editor.putInt("AutoTime",autoTime);
+		editor.putBoolean("AutoSync", autoSync.isChecked());
+		editor.putInt("AutoTime", autoTime);
 		editor.putInt("taskCheck", taskCheckTime);
 		editor.commit();
 	}
@@ -227,19 +263,11 @@ public class Settings extends PreferenceActivity implements
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		
-		PackageManager pm = getPackageManager();
-	    ComponentName cn = new ComponentName(Settings.this, SmsReceiver.class);
-	    
 		if(key.equals(KEY_ENABLE_SMS_SYNC_PREF)){
 			
 			if (sharedPreferences.getBoolean(KEY_ENABLE_SMS_SYNC_PREF,false))
 			{
-				pm.setComponentEnabledSetting(cn,
-			          PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
-			          PackageManager.DONT_KILL_APP);
-			
-				//show notification
-				Util.showNotification(this);
+				smssyncEnableCallbackUrlValidate(sharedPreferences.getString(KEY_WEBSITE_PREF, ""));
 			
 			} else {
 				pm.setComponentEnabledSetting(cn,
@@ -263,9 +291,16 @@ public class Settings extends PreferenceActivity implements
 		if (key.equals(AUTO_SYNC)) {
 			
 			if (sharedPreferences.getBoolean(AUTO_SYNC,false)) {
+				
+				//Initialize the selected time to frequently sync pending messages
+				SmsSyncPref.autoTime = initializeAutoSyncTime();				
 				autoSyncTimes.setEnabled(true);
-				startService( new Intent( Settings.this,SmsSyncAutoSyncService.class));
+				startService(new Intent(Settings.this,SmsSyncAutoSyncService.class));
+				
 			} else {
+				
+				//Initialize the selected time to frequently to auto check for tasks
+				SmsSyncPref.taskCheckTime = initializeAutoTaskTime();
 				stopService( new Intent(Settings.this, SmsSyncAutoSyncService.class));
 				autoSyncTimes.setEnabled(false);
 			}
@@ -275,25 +310,142 @@ public class Settings extends PreferenceActivity implements
 		if (key.equals(TASK_CHECK)) {
 			
 			if (sharedPreferences.getBoolean(TASK_CHECK,false)) {
-				taskCheckTimes.setEnabled(true);
-				startService( new Intent( Settings.this,SmsSyncTaskCheckService.class));
+				autoTaskCheckValidateCallbackURL(sharedPreferences.getString(KEY_WEBSITE_PREF, ""));
+				
 			} else {
+				
 				stopService( new Intent(Settings.this, SmsSyncTaskCheckService.class));
 				taskCheckTimes.setEnabled(false);
 			}
 		}
 		
-		if (key.equals(KEY_WEBSITE_PREF)) {
+		if (key.equals(AUTO_SYNC_TIMES)) {
 			
-			if (!Util.validateCallbackUrl(
-					sharedPreferences.getString(KEY_WEBSITE_PREF, ""))) {
-				Util.showToast(Settings.this, R.string.invalid_url);
-				websitePref.setText("");
-				SmsSyncPref.website = "";
+			//restart service
+			if (SmsSyncPref.enableAutoSync) {
+				
+				//Initialize the selected time to frequently sync pending messages
+				SmsSyncPref.autoTime = initializeAutoSyncTime();
+				stopService( new Intent(Settings.this, SmsSyncAutoSyncService.class));
+				startService( new Intent(Settings.this, SmsSyncAutoSyncService.class));
 			}
+		}
+		
+		if (key.equals(TASK_CHECK_TIMES)) {
+			
+			SmsSyncPref.taskCheckTime = initializeAutoTaskTime();
+			startService( new Intent( Settings.this,SmsSyncTaskCheckService.class));
+			stopService( new Intent(Settings.this, SmsSyncTaskCheckService.class));
+		}
+		
+		if (key.equals(KEY_WEBSITE_PREF)) {
+			Util.validateCallbackUrl(
+					sharedPreferences.getString(KEY_WEBSITE_PREF, ""));
 		}
 		
 		this.savePreferences();
 	}
-
+	
+	/**
+	 * Create runnable for validating callback URL.
+	 */
+	final Runnable mTaskCheckEnabled= new Runnable() {
+		public void run() {
+			
+			if (callbackUrlValidityStatus == 1) {
+				
+				Util.showToast(Settings.this, R.string.no_configured_url);
+				taskCheck.setChecked(false);
+				
+			} else if (callbackUrlValidityStatus == 2) {
+				
+				Util.showToast(Settings.this, R.string.invalid_url);
+				taskCheck.setChecked(false);
+			
+			} else if (callbackUrlValidityStatus == 3) {
+				
+				Util.showToast(Settings.this, R.string.no_connection);
+				taskCheck.setChecked(false);
+				
+			} else {
+				
+				taskCheck.setChecked(true);
+				startService( new Intent( Settings.this,SmsSyncTaskCheckService.class));
+				
+			}
+		}
+	};
+	
+	/**
+	 * Create a child thread and validate the callback URL in it when enabling autoTaskCheck.
+	 * 
+	 * @param String Url - The Callback Url to be validated.
+	 * 
+	 * @return void
+	 */
+	public void autoTaskCheckValidateCallbackURL(final String Url) {
+		
+		Thread t = new Thread() {
+			public void run() {
+				
+				callbackUrlValidityStatus = Util.validateCallbackUrl(Url);
+				mHandler.post(mTaskCheckEnabled);
+			}
+		};
+		t.start();
+	}
+	
+	/**
+	 * Create runnable for validating callback URL.
+	 */
+	Runnable mSmssyncEnabled= new Runnable() {
+		public void run() {
+			
+			if (callbackUrlValidityStatus == 1) {
+				
+				Util.showToast(Settings.this, R.string.no_configured_url);
+				enableSmsSync.setChecked(false);
+				
+			} else if (callbackUrlValidityStatus == 2) {
+				
+				Util.showToast(Settings.this, R.string.invalid_url);
+				enableSmsSync.setChecked(false);
+			
+			} else if (callbackUrlValidityStatus == 3) {
+				Log.i("URL","URL "+callbackUrlValidityStatus);
+				Util.showToast(Settings.this, R.string.no_connection);
+				enableSmsSync.setChecked(false);
+				
+			} else {
+				
+				//Enable background service.
+				pm.setComponentEnabledSetting(cn,
+				          PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
+				          PackageManager.DONT_KILL_APP);
+				
+				//show notification
+				Util.showNotification(Settings.this);
+				enableSmsSync.setChecked(true);
+			}
+		}
+	};
+	
+	/**
+	 * Create a child thread and validate the callback URL in it when enabling SMSSync.
+	 * 
+	 * @param String Url - The Callback Url to be validated.
+	 * 
+	 * @return void
+	 */
+	public void smssyncEnableCallbackUrlValidate(final String Url) {
+		
+		Thread t = new Thread() {
+			public void run() {
+				
+				callbackUrlValidityStatus = Util.validateCallbackUrl(Url);
+				mHandler.post(mSmssyncEnabled);
+			}
+		};
+		t.start();
+	}
 }
