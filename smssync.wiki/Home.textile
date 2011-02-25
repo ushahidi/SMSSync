@@ -13,34 +13,41 @@ h1.Instructions
 
 * In order for SMSSync to account for perfect transmission, the callback URL needs to give back a formatted JSON string such as its shown below to indicate if it received the message or not.
    * *Succeeded* 
-        {
-            - payload: {
-                success: "false"
-            }
-        }
+<pre><code>{
+      payload: {
+          success: "true"
+      }
+}</code></pre>
   
    * *Failed*
-        {
-            - payload: {
-                success: "false"
-            }
-        }
+<pre><code>{
+      payload: {
+          success: "false"
+      }
+}</code></pre>
         
 * SMSSync supports execution of task sent from the configured callback URL. At the moment, it supports sending messages sent from the callback URL as SMS. This feature is targeted towards developers. If you are developer and you want SMSSync to send an SMS send a JSON formatted string as below to SMSSync with the variable task=sendsms. When SMSSYnc does an HTTP GET request with the URL http://<callback url>/smssync?task=sendsms, it should bring back the JSON strinb below.
 
    * *Succeeded* 
-        {
-            - payload: {
-                success: "false"
+<pre><code>{
+    "payload": {
+        "task": "send",
+        "messages": [
+            {
+                "to": "000-000-0000",
+                "message": "the message goes here" 
+            },
+            {
+                "to": "000-000-0000",
+                "message": "the message goes here" 
+            },
+            {
+                "to": "000-000-0000",
+                "message": "the message goes here" 
             }
-        }
-  
-   * *Failed*
-        {
-            - payload: {
-                success: "false"
-            }
-        }
+        ]
+    }
+}</code></pre>
 
 *Scan the QR below to install SMSSync on your Android powered phone*
 [[http://qrcode.kaywa.com/img.php?s=6&#038;d=http%3A%2F%2Fmarket.android.com%2Fdetails%3Fid%3Dorg.addhen.smssync/whaever.png]]
