@@ -55,4 +55,3 @@ h1.Instructions
 *We appreciate your feedback*
 
 Copyright © 2010 [[Ushahidi.com|http://www.ushahidi.com]]
-
