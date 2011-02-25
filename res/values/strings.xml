@@ -70,8 +70,10 @@
     <string name="powered">Powered</string>
     <string name="powered_by">Created by Ushahidi</string>
     
+    <string name="menu_delete_all">Delete All</string>
+    <string name="menu_sync_all">Synchronize All</string>
     <string name="menu_delete">Delete</string>
-    <string name="menu_sync">Sync</string>
+    <string name="menu_sync">Synchronize</string>
     <string name="menu_import">Import</string>
     <string name="menu_settings">Settings</string>
     

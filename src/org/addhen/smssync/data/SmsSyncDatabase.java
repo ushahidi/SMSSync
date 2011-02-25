@@ -96,10 +96,14 @@ public class SmsSyncDatabase {
 	}
 
 	/**
+	 * Get the table columns in the database.
+	 * 
 	 * Credits http://goo.gl/7kOpU
-	 * @param db
-	 * @param tableName
-	 * @return
+	 * 
+	 * @param SQLiteDatabase db - The SQLiteDatabase to get the table columns
+	 * @param String tableName - The table to get the columns
+	 * 
+	 * @return List<String>
 	 */
 	public static List<String> getColumns(SQLiteDatabase db, String tableName) {
 		List<String> ar = null;
@@ -121,6 +125,7 @@ public class SmsSyncDatabase {
 		}
 		return ar;
 	}
+	
 	
 	public static String join(List<String> list, String delim) {
 		StringBuilder buf = new StringBuilder();
@@ -148,6 +153,15 @@ public class SmsSyncDatabase {
   		mDbHelper.close();
   	}
 
+  	/**
+  	 * Insert new message into the messages table.
+  	 * 
+  	 * TODO://Change the name of this function to insertMessages -- copy and paste is *evil*
+  	 * 
+  	 * @param Messages messages - The messages items.
+  	 * 
+  	 * @return long
+  	 */
   	public long createIncidents(Messages messages) {
   		ContentValues initialValues = new ContentValues();
   		
@@ -159,28 +173,58 @@ public class SmsSyncDatabase {
     	return mDb.insert(MESSAGES_TABLE, null, initialValues);
   	}
   	
-
+  	/**
+  	 * Fetch all messages in the database.
+  	 * 
+  	 * @return Cursor
+  	 */
   	public Cursor fetchAllMessages() {
   		return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, null, null, null, null, MESSAGES_DATE
   				+ " DESC");
   	}
-
-  	public boolean clearData() {
-  		deleteAllMessages();
-  		return true;
+  	
+  	/**
+  	 * Fetch messages by message id in the database.
+  	 * 
+  	 * @param int messageId - Message id to fetch by.
+  	 * 
+  	 * @return Cursor
+  	 */
+  	public Cursor fetchMessagesById(int messageId) {
+  		String selection = MESSAGES_ID+"= ?";
+  		String selectionArgs[] = {new Integer(messageId).toString()};
   		
+  		return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, selection, selectionArgs, null, null, MESSAGES_DATE
+  				+ " DESC");
   	}
 
+  	/**
+  	 * Delete all messages in the database.
+  	 * 
+  	 * @return boolean
+  	 */
   	public boolean deleteAllMessages() {
   		return mDb.delete(MESSAGES_TABLE, null, null) > 0;
   	}
   	
+  	/**
+  	 * Delete messages in the database by ID.
+  	 * 
+  	 * @param int messageId
+  	 * 
+  	 * @return boolean
+  	 */
   	public boolean deleteMessagesById( int messageId) {
   		String whereClause = MESSAGES_ID+"= ?";
   		String whereArgs[] = {new Integer(messageId).toString()};
   		return mDb.delete(MESSAGES_TABLE, whereClause, whereArgs) > 0;
   	}
-
+  	
+  	/**
+  	 * Add a new message to the database.
+  	 * 
+  	 * @param List<Messages> messages - The messages to be added to the database.
+  	 */
   	public void addMessages(List<Messages> messages) {
   		try {
   			mDb.beginTransaction();
@@ -195,6 +239,11 @@ public class SmsSyncDatabase {
   		}
   	}
   	
+  	/**
+  	 * Count the number of messages in the database.
+  	 * 
+  	 * @return int
+  	 */
   	public int fetchMessagesCount() {
   		Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + MESSAGES_ID + ") FROM "
   				+ MESSAGES_TABLE, null);

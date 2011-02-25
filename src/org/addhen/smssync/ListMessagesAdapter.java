@@ -38,12 +38,16 @@ public class ListMessagesAdapter extends BaseAdapter {
 		iContext = context;
 	}
 	
-	public void addItem( ListMessagesText it ){
+	public void addItem( ListMessagesText it ) {
 		iItems.add(it);
 	}
 	
 	public void removeItems() {
 		iItems.clear();
+	}
+	
+	public void removetItemAt( int location) {
+		iItems.remove(location);
 	}
 	
 	public void setListItems( List<ListMessagesText> lit ){

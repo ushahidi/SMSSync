@@ -195,12 +195,13 @@ public class Util{
 	public static boolean extractPayloadJSON( String json_data ) {
 	
 		try {
+			
 			jsonObject = new JSONObject(json_data);
 			return jsonObject.getJSONObject("payload").getBoolean("success");
 		
 		} catch (JSONException e) {
+			
 			return false;
-			//e.printStackTrace();
 		}
 		
 	}
@@ -221,7 +222,11 @@ public class Util{
 		int messageId = 0;
 		Messages messages = new Messages();
 		listMessages.add(messages);
-		if( smsMap.get("messagesId") != null) messageId = Integer.parseInt(smsMap.get("messagesId"));
+		
+		if( smsMap.get("messagesId") != null) {
+			messageId = Integer.parseInt(smsMap.get("messagesId"));
+		}
+		
 		messages.setMessageId(messageId);
 		messages.setMessageFrom(smsMap.get("messagesFrom"));
 		messages.setMessageBody(smsMap.get("messagesBody"));
@@ -521,6 +526,7 @@ public class Util{
 	 * @param Context context - the activity calling this method.
 	 */
 	public static void performTask( Context context) {
+		
 		SmsSyncPref.loadPreferences( context );
 		
 		// validate configured url

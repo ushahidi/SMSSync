@@ -3,7 +3,8 @@ Feature:
   * Scheduler automatically Syncs pending messages to the configured Callback URL.
   * Now sends out messages from the configured callback URL as text message.
   * Imports messages from Android messages app inbox for synchronizing to the configured callback 
-    URL.  
+    URL.
+  * Added context menu for deleting or synchronizing pending messages.   
 
 Fixed:
   * Improved callback URL validation process; Added more checks. Empty, malformed and connection 
