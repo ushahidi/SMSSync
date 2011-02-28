@@ -44,6 +44,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
+ * This class test various aspects of task that needs be executed for pending messages to show. 
+ * 1. The submits dummy messages to the pending database.
+ * 2. Shows the messages that failed to be sent
+ * 3. Synchronizes the pending messages. 
+ *
  * This class shows list of pending messages. Allows deletion and synchronization of pending 
  * messages.
  * 
@@ -429,7 +434,8 @@ public class SmsSyncOutbox extends Activity
 				messagesBody = cursor.getString(messagesBodyIndex);
 				messages.setMessageBody(messagesBody);
 
-				ila.addItem( new ListMessagesText(messagesFrom, messagesBody, messagesDate, messageId));
+				ila.addItem( new ListMessagesText(messagesFrom, messagesBody, messagesDate, 
+						messageId));
 					  
 			} while (cursor.moveToNext());
 		}
@@ -463,7 +469,7 @@ public class SmsSyncOutbox extends Activity
 		String messagesDate;
 		
 		if( cursor.getCount() == 0 ) {
-			return 2;
+			return 2; //no pending messages to synchronize
 		}
 		
 		int deleted = 0;
@@ -507,9 +513,9 @@ public class SmsSyncOutbox extends Activity
 					}
 					ila.notifyDataSetChanged();
 					SmsSyncApplication.mDb.deleteMessagesById(messageId);
-					deleted = 0;
+					deleted = 0; //successfully posted messages to the web service.
 				} else {
-					deleted = 1;
+					deleted = 1; // failed to post the messages to the web service.
 				}
 				
 			  
