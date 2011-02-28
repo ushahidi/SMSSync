@@ -42,7 +42,14 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
- 
+
+/**
+ * This class shows list of pending messages. Allows deletion and synchronization of pending 
+ * messages.
+ * 
+ * @author eyedol
+ *
+ */
 public class SmsSyncOutbox extends Activity
 {
   
@@ -54,12 +61,14 @@ public class SmsSyncOutbox extends Activity
 	private static List<Messages> mOldMessages;
 	private static ListMessagesAdapter ila;
 	private static TextView emptyListText;
+	
+	// Menu items
 	private static final int SMSSYNC_SYNC_ALL = Menu.FIRST+1;
 	private static final int MESSAGES_IMPORT = Menu.FIRST+2;
 	private static final int DELETE_ALL = Menu.FIRST+3;
 	private static final int SETTINGS = Menu.FIRST+4;
 	
-	//context menu
+	//Context menu items
 	private static final int DELETE = Menu.FIRST+5;
 	private static final int SMSSYNC_SYNC = Menu.FIRST+6;
 	
@@ -72,6 +81,7 @@ public class SmsSyncOutbox extends Activity
 		setTitle(R.string.outbox);
 		setContentView( R.layout.list_messages );
 		SmsSyncPref.loadPreferences(SmsSyncOutbox.this);
+		
 		//show notification
 		if (SmsSyncPref.enabled) {
 			Util.showNotification(SmsSyncOutbox.this);
@@ -86,14 +96,17 @@ public class SmsSyncOutbox extends Activity
 		
 		mHandler.post(mDisplayMessages);
 		displayEmptyListText();
+		
 	}
 	
 	public static void displayEmptyListText() {
+		
 		if(ila.getCount() == 0 ) {
 			emptyListText.setVisibility(View.VISIBLE);
 		} else {
 			emptyListText.setVisibility(View.GONE);
 		}
+		
 	}
   
 	@Override
@@ -112,7 +125,8 @@ public class SmsSyncOutbox extends Activity
 	public void onDestroy() {
 		super.onDestroy();
 	}
-  
+	
+	//Display pending messages.
 	final Runnable mDisplayMessages = new Runnable() {
 		public void run() {
 			setProgressBarIndeterminateVisibility(true);
@@ -125,6 +139,7 @@ public class SmsSyncOutbox extends Activity
 		}
 	};
 	
+	//Synchronize all pending messages.
 	final Runnable mSyncMessages = new Runnable() {
 		public void run() {
 			int result = syncMessages(false);
@@ -143,6 +158,10 @@ public class SmsSyncOutbox extends Activity
 		}
 	};
 	
+	/**
+	 * Synchronize all pending messages by message id. Which means it synchronizes 
+	 * messages individually.
+	 */
 	final Runnable mSyncMessagesById = new Runnable() {
 		public void run() {
 			int result = syncMessages(true);
@@ -242,7 +261,7 @@ public class SmsSyncOutbox extends Activity
 		}
 	};
 
-	//menu stuff
+	// menu stuff
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo) {
 		menu.add(Menu.NONE, SMSSYNC_SYNC, Menu.NONE, R.string.menu_sync);
@@ -251,12 +270,13 @@ public class SmsSyncOutbox extends Activity
 		menu.add(Menu.NONE,DELETE_ALL,Menu.NONE,R.string.menu_delete_all);
 	}
   
+	// context menu stuff.
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		populateMenu(menu);
 		return(super.onCreateOptionsMenu(menu));
 	}
- 
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return(applyMenuChoice(item) ||
@@ -298,6 +318,13 @@ public class SmsSyncOutbox extends Activity
 		 
 	}
   
+	/**
+	 * Generate menus
+	 * 
+	 * @param Menu menu
+	 * 
+	 * @return void
+	 */
 	private void populateMenu(Menu menu) {
 		MenuItem i;i = menu.add( Menu.NONE, SETTINGS, Menu.NONE, R.string.menu_settings );
 		i.setIcon(android.R.drawable.ic_menu_preferences);
@@ -313,6 +340,13 @@ public class SmsSyncOutbox extends Activity
 		  
 	}
   
+	/**
+	 * Execute a task upon selection of a menu item.
+	 * 
+	 * @param MenuItem item - The selected menu item.
+	 * 
+	 * @return boolean
+	 */
 	private boolean applyMenuChoice(MenuItem item) {
 		Intent intent;
 		switch (item.getItemId()) {
@@ -346,7 +380,11 @@ public class SmsSyncOutbox extends Activity
 		return(false);
 	}
 	
-	// Get messages from the db
+	/**
+	 * Get messages from the database.
+	 * 
+	 * @return void
+	 */
 	public static void showMessages() {
 		
 		Cursor cursor;
@@ -461,7 +499,7 @@ public class SmsSyncOutbox extends Activity
 				
 				// post to web service
 				if( Util.postToAWebService(messagesFrom, messagesBody,SmsSyncOutbox.this) ) {
-					//if it successfully pushes a message, delete message from db
+					//if it successfully pushes a message, delete message from the db.
 					if(byId){
 						ila.removetItemAt(listItemPosition);
 					} else {
@@ -484,7 +522,7 @@ public class SmsSyncOutbox extends Activity
 	}
 	
 	/**
-	 * Delete all messages from outbox
+	 * Delete all pending messages.
 	 * 
 	 * @return boolean
 	 */
@@ -510,7 +548,7 @@ public class SmsSyncOutbox extends Activity
 		super.onActivityResult(requestCode, resultCode, intent);
 	}
 	
-	//Thread class
+	//Thread class to handle asynchronous task execution.
 	private class SyncTask extends AsyncTask <Void, Void, Integer> {
 		
 		protected Integer status;
@@ -528,7 +566,6 @@ public class SmsSyncOutbox extends Activity
 			status = 0;
 			
 			if(byId) {
-				//TODO: sync messages by id.
 				mHandler.post(mSyncMessagesById);
 			}else{
 				mHandler.post(mSyncMessages);
@@ -544,7 +581,7 @@ public class SmsSyncOutbox extends Activity
 		}
 	}
 	
-	//Thread class
+	//Thread class to handle synchronous execution of message importation task.
 	private class ImportMessagesTask extends AsyncTask <Void, Void, Integer> {
 		
 		protected Integer status;

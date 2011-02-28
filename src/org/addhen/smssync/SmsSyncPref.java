@@ -23,7 +23,12 @@ package org.addhen.smssync;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-
+/**
+ * This class instantiate static variables to hold values of the settings / preference fields.
+ * 
+ * @author eyedol
+ *
+ */
 public class SmsSyncPref {
 	
 	public static int autoTime = 5;
@@ -42,6 +47,13 @@ public class SmsSyncPref {
 	
 	public static final String PREF_NAME = "SMS_SYNC_PREF";
 	
+	/**
+	 * Load the value of the settings / preference variable.
+	 * 
+	 * @param Context context - The context of the calling activity.
+	 * 
+	 * @return void
+	 */
 	public static void loadPreferences( Context context ) {
 		final SharedPreferences settings = context.getSharedPreferences(
 				PREF_NAME, 0);

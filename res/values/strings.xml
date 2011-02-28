@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<!-- This is a primitive example showing the different types of preferences available. -->
+<!-- This handles all the strings in the app. -->
 <resources>
     <string name="edittxt_website_pref">Enter The Sync URL</string>
     <string name="edittxt_website_pref_summary">This is the website that will receive the text messages.</string>

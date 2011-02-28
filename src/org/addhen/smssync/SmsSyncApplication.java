@@ -25,28 +25,34 @@ import org.addhen.smssync.net.SmsSyncHttpClient;
 
 import android.app.Application;
 
+/**
+ * This class is for maintaining global application state.  
+ * 
+ * @author eyedol
+ *
+ */
 public class SmsSyncApplication extends Application {
 	
 	public static final String TAG = "SmsSyncApplication";
-	  
 	public static SmsSyncDatabase mDb; 
 	public static SmsSyncHttpClient mApi;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
-	    mDb = new SmsSyncDatabase(this);
+		
+		//Open database connection when the application starts.
+		mDb = new SmsSyncDatabase(this);
 	    mDb.open();
 	    mApi = new SmsSyncHttpClient();
-	    
-	  }
+	}
 
-	  @Override
-	  public void onTerminate() {
-	    mDb.close();
-	    
-	    super.onTerminate();
-	  }
+	@Override
+	public void onTerminate() {
+		
+		// Close the database when the application terminates.
+		mDb.close();
+		super.onTerminate();
+	}
 	  
 }

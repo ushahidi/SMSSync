@@ -32,6 +32,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/**
+ * Handles all database activities.
+ * 
+ * @author eyedol
+ *
+ */
 public class SmsSyncDatabase {
 	private static final String TAG = "SmssyncDatabase";
 
@@ -51,7 +57,7 @@ public class SmsSyncDatabase {
 	private static final String MESSAGES_TABLE = "messages";
 	private static final int DATABASE_VERSION = 1;
 
-  // NOTE: the incident ID is used as the row ID.
+  // NOTE: the message ID is used as the row ID.
   // Furthermore, if a row already exists, an insert will replace
   // the old row upon conflict.
 	

@@ -189,7 +189,8 @@ public class SmsReceiverService extends Service {
 	    			}
 	    		}
 	    	
-	    	} else { // no internet
+	    	} else { 
+	    		// no internet
 	    		this.showNotification(messagesBody, getString(R.string.sending_failed));
 				this.postToOutbox();
 				handler.post(mDisplayMessages);
@@ -221,9 +222,17 @@ public class SmsReceiverService extends Service {
 		notificationManager.notify(1, notification);
 		
 	}
-
+	
+	/**
+	 * Put failed messages to be sent to the callback URL to the local database.
+	 * 
+	 * @return void
+	 */
 	private void postToOutbox() {
+		
+		//Get message id.
 		Long msgId = new Long(Util.getId(SmsReceiverService.this,sms,"id"));
+		
 		String messageId = msgId.toString();
 		
 		String messageDate = Util.formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
@@ -236,12 +245,21 @@ public class SmsReceiverService extends Service {
 	
 	}
 	
+	/**
+	 * Get the SMS message.
+	 * 
+	 * @param Intent intent - The SMS message intent.
+	 *  
+	 * @return SmsMessage
+	 */
 	public static final SmsMessage[] getMessagesFromIntent(Intent intent) {
 		
 		Object[] messages = (Object[]) intent.getSerializableExtra("pdus");
+		
 	    if (messages == null) {
 	    	return null;
 	    }
+	    
 	    if (messages.length == 0) {
 	    	return null;
 	    }
@@ -251,8 +269,10 @@ public class SmsReceiverService extends Service {
 	    for (int i = 0; i < messages.length; i++) {
 	      pduObjs[i] = (byte[]) messages[i];
 	    }
+	    
 	    byte[][] pdus = new byte[pduObjs.length][];
 	    int pduCount = pdus.length;
+	    
 	    SmsMessage[] msgs = new SmsMessage[pduCount];
 	    for (int i = 0; i < pduCount; i++) {
 	    	pdus[i] = pduObjs[i];
@@ -265,6 +285,11 @@ public class SmsReceiverService extends Service {
 	/**
 	 * Start the service to process the current event notifications, acquiring the
 	 * wake lock before returning to ensure that the service will run.
+	 * 
+	 * @param Context context - The context of the calling activity.
+	 * @param Intent intent - The calling intent.
+	 * 
+	 * @return void
 	 */
 	public static void beginStartingService(Context context, Intent intent) {
 		synchronized (mStartingServiceSync) {
@@ -284,8 +309,14 @@ public class SmsReceiverService extends Service {
 	/**
 	 * Called back by the service when it has finished processing notifications,
 	 * releasing the wake lock if the service is now stopping.
+	 * 
+	 * @param Service service - The calling service. 
+	 * @param int startId - The service start id.
+	 * 
+	 * @return void
 	 */
 	public static void finishStartingService(Service service, int startId) {
+		
 		synchronized (mStartingServiceSync) {
 	      
 			if (mStartingService != null) {
@@ -296,7 +327,9 @@ public class SmsReceiverService extends Service {
 		}
 	}
 	
+	//Display pending messages.
 	final Runnable mDisplayMessages = new Runnable() {
+		
 		public void run() {
 			SmsSyncOutbox.showMessages();
 		}

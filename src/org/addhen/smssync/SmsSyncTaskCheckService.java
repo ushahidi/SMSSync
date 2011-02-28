@@ -8,6 +8,14 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
 
+/**
+ * A this class handles background services for periodic checks of task that needs to be executed 
+ * by the app. Task for now is sending SMS. In the future, it will support other tasks. Maybe send 
+ * email.
+ * 
+ * @author eyedol
+ *
+ */
 public class SmsSyncTaskCheckService extends Service {
 	
 	private TimerTask mDoTask;
@@ -20,6 +28,11 @@ public class SmsSyncTaskCheckService extends Service {
 		this.startService();
 	}
 	
+	/**
+	 * Starts the background service
+	 * 
+	 * @return void
+	 */
 	private void startService() {
 		
 		SmsSyncPref.loadPreferences(SmsSyncTaskCheckService.this);
@@ -33,6 +46,7 @@ public class SmsSyncTaskCheckService extends Service {
 
 					public void run() {
 						
+						//Perform a task
 						Util.performTask(SmsSyncTaskCheckService.this);
 					}
 					
@@ -41,9 +55,15 @@ public class SmsSyncTaskCheckService extends Service {
 			
 		};
 		
+		//Schedule the task.
 		mT.scheduleAtFixedRate(mDoTask, delay, period);
 	}
 	
+	/**
+	 * Stop background service.
+	 * 
+	 * @return void
+	 */
 	private void stopService() {
 		if (mDoTask !=null) {
 			mDoTask.cancel();

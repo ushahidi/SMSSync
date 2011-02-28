@@ -59,14 +59,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+/**
+ * This class habours common util methods that are available for other classes to use.
+ * 
+ * @author eyedol
+ *
+ */
 public class Util{
-
-	private static NetworkInfo networkInfo;
-	private static List<Messages> mMessages;
-	private static JSONObject jsonObject;
-	private static JSONArray jsonArray;
-	private static Pattern pattern;
-	private static Matcher matcher;
+	
 	public static final Uri MMS_SMS_CONTENT_URI = Uri.parse("content://mms-sms/");
 	public static final Uri THREAD_ID_CONTENT_URI =
         Uri.withAppendedPath(MMS_SMS_CONTENT_URI, "threadID");
@@ -78,6 +78,13 @@ public class Util{
 	public static final String SMS_CONTENT_INBOX = "content://sms/inbox";
 	public static final int READ_THREAD = 1;
 	public static HashMap<String,String> smsMap = new HashMap<String,String>();
+	
+	private static NetworkInfo networkInfo;
+	private static List<Messages> mMessages;
+	private static JSONObject jsonObject;
+	private static JSONArray jsonArray;
+	private static Pattern pattern;
+	private static Matcher matcher;
 	private static final String TIME_FORMAT_12_HOUR = "h:mm a";
     private static final String TIME_FORMAT_24_HOUR = "H:mm";
 	private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@" +
@@ -86,56 +93,71 @@ public class Util{
 	private static final int NOTIFY_RUNNING = 100;
 	
 	/**
-	 * joins two strings together
-	 * @param first
-	 * @param second
-	 * @return
+	 * Joins two strings together.
+	 * 
+	 * @param String first - The first String to be joined to a second string. 
+	 * @param String second - The second String to join to the first string.
+	 * 
+	 * @return String
 	 */
 	public static String joinString(String first, String second ) {
 		return first.concat(second);
 	}
 	
 	/**
-	 * Converts a string integer 
-	 * @param value
-	 * @return
+	 * Converts a string into an int value.
+	 * 
+	 * @param String value - The string to be converted into int value.
+	 * 
+	 * @return int
 	 */
 	public static int toInt( String value){
 		return Integer.parseInt(value);
 	}
 	
 	/**
-	 * Capitalize any string given to it.
-	 * @param text
-	 * @return capitalized string
+	 * Capitalize any String given to it.
+	 * 
+	 * @param String text - The string to capitalized.
+	 * 
+	 * @return String
 	 */
 	public static String capitalizeString( String text ) {
 		return text.substring(0,1).toUpperCase() + text.substring(1);
 	}
 	
 	/**
-	 * Create csv
-	 * @param Vector<String> text
+	 * Create CSV from a given string in a Vector object. 
 	 * 
-	 * @return csv
+	 * @param Vector<String> text - The Vector object containing the Strings 
+	 * 
+	 * @return String
 	 */
 	public static String implode( Vector<String> text ) {
-		String implode = "";
+		
+		String implodedStr = "";
+		
 		int i = 0;
+		
 		for( String value : text ) {
-			implode += i == text.size() -1 ? value : value+",";
+			implodedStr += i == text.size() -1 ? value : value+",";
 			i++;
 		}
 		
-		return implode;
+		return implodedStr;
 	}
 	
 	/**
-	 * Is there Internet connection
+	 * Checks if there is Internet connection or data connection on the device.
+	 * 
+	 * @param Context context - The activity calling this method.
+	 * 
+	 * @return boolean
 	 */
 	public static boolean isConnected(Context context )  {
 		  
-		ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(
+				Context.CONNECTIVITY_SERVICE);
 
 		networkInfo = connectivity.getActiveNetworkInfo();
 		
@@ -147,10 +169,12 @@ public class Util{
 	}
 	
 	/**
-	 * Limit a string to defined length
+	 * Limit a string to a defined length.
 	 * 
-	 * @param int limit - the total length 
-	 * @param string limited - the limited string
+	 * @param int limit - the total length. 
+	 * @param string limited - the limited string.
+	 * 
+	 * @return String
 	 */
 	public static String limitString( String value, int length ) {
 		StringBuilder buf = new StringBuilder(value);
@@ -162,9 +186,9 @@ public class Util{
 	}
 	
 	/**
-	 * Format date into more readable format.
+	 * Format date into more human readable format.
 	 * 
-	 * @param  date - the date to be formatted.
+	 * @param  date - The date to be formatted.
 	 * @return String
 	 */
 	public static String formatDate( String dateFormat, String date, String toFormat ) {
@@ -189,7 +213,8 @@ public class Util{
 	/**
 	 * Extract Ushahidi payload JSON data
 	 * 
-	 * @apram json_data - the json data to be formatted.
+	 * @apram json_data - The json data to be formatted.
+	 * 
 	 * @return String 
 	 */
 	public static boolean extractPayloadJSON( String json_data ) {
@@ -207,13 +232,11 @@ public class Util{
 	}
 	
 	/**
-	 * process reports
+	 * Process messages as received from the
+	 *  
 	 * 0 - successful
 	 * 1 - failed fetching categories
-	 * 2 - failed fetching reports
-	 * 3 - non ushahidi instance
-	 * 4 - No internet connection
-	 * 
+	 *  
 	 * @return int - status
 	 */
 	public static int processMessages( Context context ) {
@@ -223,6 +246,7 @@ public class Util{
 		Messages messages = new Messages();
 		listMessages.add(messages);
 		
+		//check if messageId is actually initialized
 		if( smsMap.get("messagesId") != null) {
 			messageId = Integer.parseInt(smsMap.get("messagesId"));
 		}
@@ -284,6 +308,7 @@ public class Util{
 	
 	/**
 	 * Validates an email address
+	 * 
 	 * Credits: http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
 	 * 
 	 * @param String - email address to be validated
@@ -302,7 +327,11 @@ public class Util{
 		
 	/**
      * Tries to locate the message id (from the system database), given the message
-     * thread id, the timestamp of the message.
+     * thread id and the timestamp of the message.
+     * 
+     * @param Context context - The activity calling the method.
+     * @param long threadId - The message's thread ID.
+     * @param long _timestamp - The timestamp of the message.
      */
     public static long findMessageId(Context context, long threadId, long _timestamp) {
     	
@@ -330,8 +359,13 @@ public class Util{
     }
     
     /**
-     * Tries to locate the message id or thread id given the address (phone or email) of the
-     * message sender
+     * Tries to locate the message id or thread id given the address (phone number or email) of the
+     * message sender.
+     * 
+     * @param Context context - The activity calling this method.
+     * @param SmsMessage msg - The SMS object to get the address of the message from.
+     * 
+     * @return long.
      */
     public static long getId(Context context, SmsMessage msg , String idType ) {
     	
@@ -355,27 +389,51 @@ public class Util{
 		return 0;
     }
     
-    // Clear the standard notification alert
+    /**
+     * Clear the standard notification alert.
+     * 
+     * @param Context context - The context of the calling activity.
+     * 
+     * @return void
+     */
     public static void clear(Context context) {
     	clearAll(context);
     }
 
-    // Clear all notification
+    /**
+     * Clear all notifications shown
+     * 
+     * @param Context context - The context of the calling activity.
+     * 
+     * @return void.
+     */
     public static void clearAll(Context context) {
     	NotificationManager myNM =
     		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	myNM.cancelAll();
     }
     
+    /**
+     * Clear a running notification.
+     * 
+     * @param Context context - The context of the calling activity.
+     * 
+     * @return void
+     */
     public static void clearNotify(Context context) {
     	NotificationManager myNM =
     		(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     	myNM.cancel(NOTIFY_RUNNING);
     }
 	
-    /*
-     * Format a unix timestamp to a string suitable for display to the user according
-     * to their system settings (12 or 24 hour time)
+    /**
+     * Format an Unix timestamp to a string suitable for display to the user according
+     * to their system settings (12 or 24 hour time).
+     * 
+     * @param Context context - The context of the calling activity.
+     * @param long timestamp - The human unfriendly timestamp.
+     * 
+     * @return String
      */
     public static String formatTimestamp(Context context, long timestamp) {
     	String HOURS_24 = "24";
@@ -390,6 +448,11 @@ public class Util{
     	return mSDF.format(new Date(timestamp));
     }
     
+    /**
+     * 
+     * @param Context context - The calling 
+     * @param msg
+     */
     public static void delSmsFromInbox(Context context, SmsMessage msg) {   	
     	long threadId = getId(context, msg,"thread");
     	

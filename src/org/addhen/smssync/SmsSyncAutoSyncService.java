@@ -4,10 +4,16 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+/**
+ * A this class handles background services for periodic synchronization of pending messages.
+ * 
+ * @author eyedol
+ *
+ */
 
 public class SmsSyncAutoSyncService extends Service {
 	
@@ -20,10 +26,16 @@ public class SmsSyncAutoSyncService extends Service {
 		this.startService();
 	}
 	
+	/**
+	 * Start the background service.
+	 * 
+	 * @return void
+	 */
 	private void startService() {
 		
 		SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
-		Log.i("SMSSync","SmsSyncPref: "+SmsSyncPref.autoTime);
+		
+		//start background service based on selected period time.
 		long period = (SmsSyncPref.autoTime * 60000) ;
 		long delay = 500; 
 		
@@ -42,9 +54,15 @@ public class SmsSyncAutoSyncService extends Service {
 			
 		};
 		
+		//Start schedule
 		mT.scheduleAtFixedRate(mDoTask, delay, period);
 	}
 	
+	/**
+	 * Stop background service.
+	 * 
+	 * @return void
+	 */
 	private void stopService() {
 		if (mDoTask !=null) {
 			mDoTask.cancel();

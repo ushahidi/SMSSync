@@ -34,9 +34,13 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.util.Log;
 
-
+/**
+ * This class handles all related task for settings on SMSSync.
+ * 
+ * @author eyedol
+ *
+ */
 public class Settings extends PreferenceActivity implements 
 	OnSharedPreferenceChangeListener {
 	
@@ -140,6 +144,7 @@ public class Settings extends PreferenceActivity implements
         pm = getPackageManager();
         cn = new ComponentName(Settings.this, SmsReceiver.class);
         
+        //When the about us item is clicked at the Settings screen, open a URL
         Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
         poweredPreference.setOnPreferenceClickListener(
         		new OnPreferenceClickListener() {
@@ -151,10 +156,17 @@ public class Settings extends PreferenceActivity implements
         	}
         });
         
+        //Save settings changes.
         this.savePreferences();
     }
 	
+	/**
+	 * Get the time frequency selected by the user for auto synchronization. 
+	 * 
+	 * @return int
+	 */
 	private int initializeAutoSyncTime() {
+		
 		//Initialize the selected time to frequently sync pending messages
 		if(autoSyncTimes.getValue().matches("10")){
 			return 10;
@@ -169,9 +181,14 @@ public class Settings extends PreferenceActivity implements
 		}
 	}
 	
+	/**
+	 * Get the time frequency selected by the user for auto task checking.
+	 * 
+	 * @return int
+	 */
 	private int initializeAutoTaskTime() {
-		//"5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes" 
 		
+		//"5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes" 
 		if(autoSyncTimes.getValue().matches("10")){
 			return 10;
 		} else if(autoSyncTimes.getValue().matches("15")){
@@ -185,6 +202,11 @@ public class Settings extends PreferenceActivity implements
 		}
 	}
 	
+	/**
+	 * Save settings changes.
+	 * 
+	 * @return void
+	 */
 	protected void savePreferences() {
 		
 		settings = getSharedPreferences(PREFS_NAME, 0);
@@ -259,7 +281,14 @@ public class Settings extends PreferenceActivity implements
 		super.onDestroy();
 		finish();
 	}
-
+	
+	/**
+	 * Perform sanity checks on settings changes.
+	 * 
+	 * @param SharedPreferences sharedPreferences - 
+	 * 
+	 * @return void
+	 */
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		
@@ -348,8 +377,11 @@ public class Settings extends PreferenceActivity implements
 	
 	/**
 	 * Create runnable for validating callback URL.
+	 * 
+	 * Putting the validation process in it own thread provides efficiency.
 	 */
 	final Runnable mTaskCheckEnabled= new Runnable() {
+		
 		public void run() {
 			
 			if (callbackUrlValidityStatus == 1) {
@@ -377,9 +409,10 @@ public class Settings extends PreferenceActivity implements
 	};
 	
 	/**
-	 * Create a child thread and validate the callback URL in it when enabling autoTaskCheck.
+	 * Create a child thread and validate the callback URL in it when enabling auto task check 
+	 * preference.
 	 * 
-	 * @param String Url - The Callback Url to be validated.
+	 * @param String Url - The Callback URL to be validated.
 	 * 
 	 * @return void
 	 */
@@ -412,7 +445,7 @@ public class Settings extends PreferenceActivity implements
 				enableSmsSync.setChecked(false);
 			
 			} else if (callbackUrlValidityStatus == 3) {
-				Log.i("URL","URL "+callbackUrlValidityStatus);
+				
 				Util.showToast(Settings.this, R.string.no_connection);
 				enableSmsSync.setChecked(false);
 				
