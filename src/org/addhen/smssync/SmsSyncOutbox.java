@@ -147,18 +147,23 @@ public class SmsSyncOutbox extends Activity
 	//Synchronize all pending messages.
 	final Runnable mSyncMessages = new Runnable() {
 		public void run() {
-			int result = syncMessages(false);
-			try {
-				if (result == 0) {
-					Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
+			SmsSyncPref.loadPreferences(SmsSyncOutbox.this);
+			if (SmsSyncPref.enabled) {
+				int result = syncMessages(false);
+				try {
+					if (result == 0) {
+						Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
 					
-				}else if (result == 1) {
-					Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
-				} else if (result == 2) {
-					Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+					}else if (result == 1) {
+						Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+					} else if (result == 2) {
+						Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+					}
+				}catch(Exception e) {
+					return ; 
 				}
-			}catch(Exception e) {
-				return ; 
+			} else {
+				Util.showToast(SmsSyncOutbox.this, R.string.smssync_not_enabled);
 			}
 		}
 	};
@@ -169,18 +174,23 @@ public class SmsSyncOutbox extends Activity
 	 */
 	final Runnable mSyncMessagesById = new Runnable() {
 		public void run() {
-			int result = syncMessages(true);
-			try {
-				if (result == 0) {
-					Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
+			SmsSyncPref.loadPreferences(SmsSyncOutbox.this);
+			if (SmsSyncPref.enabled) {
+				int result = syncMessages(true);
+				try {
+					if (result == 0) {
+						Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
 					
-				}else if (result == 1) {
-					Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
-				} else if (result == 2) {
-					Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+					}else if (result == 1) {
+						Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+					} else if (result == 2) {
+						Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+					}
+				}catch(Exception e) {
+					return ; 
 				}
-			}catch(Exception e) {
-				return ; 
+			} else {
+				Util.showToast(SmsSyncOutbox.this, R.string.smssync_not_enabled);
 			}
 		}
 	};
@@ -598,7 +608,7 @@ public class SmsSyncOutbox extends Activity
 		protected void onPreExecute() {
 			
 			this.dialog = ProgressDialog.show(appContext, getString(R.string.please_wait),
-					getString(R.string.import_messages), true);
+					getString(R.string.import_messages),false);
 		}
 		
 		@Override 
@@ -612,9 +622,11 @@ public class SmsSyncOutbox extends Activity
 		protected void onPostExecute(Integer result) {
 			
 			if (result == 0) {
-				showMessages();
-				setProgressBarIndeterminateVisibility(false);
 				this.dialog.cancel();
+				showMessages();
+			} else if (result == 1) {
+				this.dialog.cancel();
+				Util.showToast(SmsSyncOutbox.this, R.string.nothing_to_import);
 			}
 		}
 	}

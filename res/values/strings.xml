@@ -46,7 +46,7 @@
     <string name="chk_auto_delete_hint">This will automatically delete messages from the Message app\'s inbox to save space on the phone.</string>
     
     <string name="chk_enable_auto_sync">Enable Auto Sync</string>
-    <string name="chk_enable_auto_sync_hint">This will allow SMSSync to periodically sync pending messages</string>
+    <string name="chk_enable_auto_sync_hint">This will allow SMSSync to periodically sync pending messages.</string>
     <string name="txt_auto_sync_delay">Auto sync frequency</string>
     <string name="auto_sync_delay_hint">Set how often SMSSync syncronizes with the configured callback URL.</string>
     
@@ -66,7 +66,7 @@
     <string name="sending_succeeded">SMSSync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to send.</string>
     <string name="no_messages_to_delete">There are no messages to delete.</string>
-    <string name="sync_failed">SMSSync message sending failed. Perhaps its not configured or there is no internet connectivity. Please double check your internet connectivity or your configuration</string>
+    <string name="sync_failed">SMSSync message sending failed. Perhaps its not configured or there is no Internet connectivity. Please double check your internet connectivity or your configuration.</string>
     <string name="powered">Powered</string>
     <string name="powered_by">Created by Ushahidi</string>
     
@@ -77,10 +77,10 @@
     <string name="menu_import">Import</string>
     <string name="menu_settings">Settings</string>
     
-    <string name="messages_deleted">Messages Successfully Deleted.</string>
-    <string name="messages_deleted_failed">Messages Couldn\'t Be Deleted.</string>
+    <string name="messages_deleted">Messages successfully deleted.</string>
+    <string name="messages_deleted_failed">Messages couldn\'t be deleted.</string>
     <string name="status">Status</string>
-    <string name="empty_list">No pending messages</string>
+    <string name="empty_list">No pending messages.</string>
     <string name="http_text">http://</string>
     <string name="sms_failed">SMS failed</string>
     
@@ -94,5 +94,7 @@
     <string name="task_check_settings">Task Settings</string>
     <string name="about_smssync">About Sync</string>
     <string name="please_wait">Please wait</string>
+    <string name="smssync_not_enabled">SMSSync is not enabled. Please enable it from the Settings screen.</string>
     <string name="import_messages">Importing messages...</string>
+    <string name="nothing_to_import">No messages to import. Make sure you have SMS messages in your SMS inbox.</string>
 </resources>

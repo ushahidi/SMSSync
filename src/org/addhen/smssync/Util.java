@@ -667,9 +667,11 @@ public class Util{
 	}
 	
 	/**
-     * Imports messages from messages app table and puts them in SmsSync outbox table
+     * Import messages from messages app table and puts them in SmsSync's outbox table.
      *
      * @param Context context - the activity calling this method.
+     * 
+     * @return int - 0 for success, 1 for failure.
      */
     public static int importMessages(Context context) {
     	
@@ -692,13 +694,13 @@ public class Util{
 					Util.processMessages(context);
 				
 				} while(c.moveToNext());
-				
 			}
+			c.close();
+			return 0;
 			
 		} else {
 			return 1;
 		}
-		c.close();
-		return 0;
+
     }
 }

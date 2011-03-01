@@ -65,7 +65,7 @@ public final class R {
         public static final int empty_list=0x7f050037;
         public static final int general_settings=0x7f05000e;
         public static final int http_text=0x7f050038;
-        public static final int import_messages=0x7f050042;
+        public static final int import_messages=0x7f050043;
         /**  URL validation 
          */
         public static final int invalid_url=0x7f05003a;
@@ -82,6 +82,7 @@ public final class R {
         public static final int no_messages_to_delete=0x7f05002a;
         public static final int no_messages_to_sync=0x7f050029;
         public static final int no_task=0x7f05003d;
+        public static final int nothing_to_import=0x7f050044;
         public static final int notification_summary=0x7f050026;
         public static final int outbox=0x7f050022;
         public static final int please_wait=0x7f050041;
@@ -96,6 +97,7 @@ public final class R {
         public static final int sms_sync_disabled=0x7f05000b;
         public static final int sms_sync_enabled=0x7f05000a;
         public static final int sms_sync_powered_by=0x7f050021;
+        public static final int smssync_not_enabled=0x7f050042;
         public static final int status=0x7f050036;
         public static final int sync_failed=0x7f05002b;
         public static final int task_check_settings=0x7f05003f;

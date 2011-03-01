@@ -55,18 +55,6 @@ public class SmsSyncOutboxTest extends ActivityInstrumentationTestCase2<SmsSyncO
 		byId = false;
 	}
 	
-	/*public void testPreconditions() {
-		assertNull(SmsSyncApplication.mDb.open());
-	}*/
-	
-	/*@LargeTest
-	public void testShowMessages() {
-		
-		//SmsSyncOutbox smsSyncOutbox = new SmsSyncOutbox();
-		
-		SmsSyncOutbox.showMessages();
-	}*/
-	
 	@LargeTest
 	public void testSyncMessages() {
 		
