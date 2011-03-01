@@ -29,65 +29,65 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class ListMessagesAdapter extends BaseAdapter {
-	
-	private Context iContext;
-	
-	private List<ListMessagesText> iItems = new ArrayList<ListMessagesText>();
-	
-	public ListMessagesAdapter( Context context ) {
-		iContext = context;
-	}
-	
-	public void addItem( ListMessagesText it ) {
-		iItems.add(it);
-	}
-	
-	public void removeItems() {
-		iItems.clear();
-	}
-	
-	public void removetItemAt( int location) {
-		iItems.remove(location);
-	}
-	
-	public void setListItems( List<ListMessagesText> lit ){
-		iItems = lit;
-	}
-	
-	public int getCount() {
-		return iItems.size();
-	}
-	
-	public Object getItem( int position ){
-		return iItems.get( position );
-	}
-	
-	public boolean areAllItemsSelectable(){
-		return false;
-	}
-	
-	public boolean isSelectable( int position ){
-		return iItems.get( position ).isSelectable();
-	}
-	
-	public long getItemId( int position ) {
-		return position;
-	}
-	
-	public View getView( int position, View convertView, ViewGroup parent ){
-		ListMessagesTextView iTv;
-		if( convertView == null ){
-			iTv = new ListMessagesTextView ( iContext, iItems.get( position ));
-		
-		} else {
-			
-			iTv = ( ListMessagesTextView  ) convertView;
-			iTv.setMessageFrom( iItems.get( position).getMessageFrom() );
-			iTv.setMessageBody(iItems.get(position).getMessageBody());
-			iTv.setMessageDate( iItems.get( position ).getMessageDate() );
-			
-		}
-		return iTv;
-	}
-	
+
+    private Context iContext;
+
+    private List<ListMessagesText> iItems = new ArrayList<ListMessagesText>();
+
+    public ListMessagesAdapter(Context context) {
+        iContext = context;
+    }
+
+    public void addItem(ListMessagesText it) {
+        iItems.add(it);
+    }
+
+    public void removeItems() {
+        iItems.clear();
+    }
+
+    public void removetItemAt(int location) {
+        iItems.remove(location);
+    }
+
+    public void setListItems(List<ListMessagesText> lit) {
+        iItems = lit;
+    }
+
+    public int getCount() {
+        return iItems.size();
+    }
+
+    public Object getItem(int position) {
+        return iItems.get(position);
+    }
+
+    public boolean areAllItemsSelectable() {
+        return false;
+    }
+
+    public boolean isSelectable(int position) {
+        return iItems.get(position).isSelectable();
+    }
+
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ListMessagesTextView iTv;
+        if (convertView == null) {
+            iTv = new ListMessagesTextView(iContext, iItems.get(position));
+
+        } else {
+
+            iTv = (ListMessagesTextView)convertView;
+            iTv.setMessageFrom(iItems.get(position).getMessageFrom());
+            iTv.setMessageBody(iItems.get(position).getMessageBody());
+            iTv.setMessageDate(iItems.get(position).getMessageDate());
+
+        }
+        return iTv;
+    }
+
 }

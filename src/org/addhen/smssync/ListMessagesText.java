@@ -21,61 +21,64 @@
 package org.addhen.smssync;
 
 public class ListMessagesText {
-	
-	private String messagesFrom;
-	private String messagesDate;
-	private String messagesBody;
-	private int messagesId;
-	boolean isSelectable;
-	
-	public ListMessagesText( 
-			String messagesFrom, String messagesBody, String messagesDate,  
-			int messagesId) {
-		
-		this.messagesFrom = messagesFrom;
-		this.messagesDate = messagesDate;
-		this.messagesBody = messagesBody;
-		this.messagesId = messagesId;
-	}
-	
-	public boolean isSelectable() {
-		return isSelectable;
-	}
-	
-	public void setSelectable( boolean selectable ){
-		isSelectable = selectable;
-	}
-	
-	public void setMessageFrom( String messagesFrom ) {
-		this.messagesFrom = messagesFrom;
-	}
-	
-	public String getMessageFrom() {
-		return this.messagesFrom;
-	}
-	
-	public void setMessageDate( String messagesDate ) {
-		
-		this.messagesDate = messagesDate;
-	}
-	
-	public String getMessageDate() {
-		return this.messagesDate;
-	}
-	
-	public void setMessageBody( String messagesBody ) {
-		this.messagesBody = messagesBody;
-	}
-	
-	public String getMessageBody() {
-		return this.messagesBody;
-	}
-	
-	public void setMessageId( int messagesId ) {
-		this.messagesId = messagesId;
-	}
-	
-	public int getMessageId() {
-		return this.messagesId;
-	}
+
+    private String messagesFrom;
+
+    private String messagesDate;
+
+    private String messagesBody;
+
+    private int messagesId;
+
+    boolean isSelectable;
+
+    public ListMessagesText(String messagesFrom, String messagesBody, String messagesDate,
+            int messagesId) {
+
+        this.messagesFrom = messagesFrom;
+        this.messagesDate = messagesDate;
+        this.messagesBody = messagesBody;
+        this.messagesId = messagesId;
+    }
+
+    public boolean isSelectable() {
+        return isSelectable;
+    }
+
+    public void setSelectable(boolean selectable) {
+        isSelectable = selectable;
+    }
+
+    public void setMessageFrom(String messagesFrom) {
+        this.messagesFrom = messagesFrom;
+    }
+
+    public String getMessageFrom() {
+        return this.messagesFrom;
+    }
+
+    public void setMessageDate(String messagesDate) {
+
+        this.messagesDate = messagesDate;
+    }
+
+    public String getMessageDate() {
+        return this.messagesDate;
+    }
+
+    public void setMessageBody(String messagesBody) {
+        this.messagesBody = messagesBody;
+    }
+
+    public String getMessageBody() {
+        return this.messagesBody;
+    }
+
+    public void setMessageId(int messagesId) {
+        this.messagesId = messagesId;
+    }
+
+    public int getMessageId() {
+        return this.messagesId;
+    }
 }

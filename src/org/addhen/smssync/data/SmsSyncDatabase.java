@@ -36,235 +36,235 @@ import android.util.Log;
  * Handles all database activities.
  * 
  * @author eyedol
- *
  */
 public class SmsSyncDatabase {
-	private static final String TAG = "SmssyncDatabase";
+    private static final String TAG = "SmssyncDatabase";
 
-	public static final String MESSAGES_ID = "_id";
-	public static final String MESSAGES_FROM = "messages_from";
-	public static final String MESSAGES_BODY = "messages_body";
-	public static final String MESSAGES_DATE = "messages_date";
- 	
-	public static final String[] MESSAGES_COLUMNS = new String[] {	MESSAGES_ID,
-		MESSAGES_FROM, MESSAGES_BODY, MESSAGES_DATE
-	};
-	
-	
-	private DatabaseHelper mDbHelper;
-	private SQLiteDatabase mDb;
-	private static final String DATABASE_NAME = "smssync_db";
-	private static final String MESSAGES_TABLE = "messages";
-	private static final int DATABASE_VERSION = 1;
+    public static final String MESSAGES_ID = "_id";
 
-  // NOTE: the message ID is used as the row ID.
-  // Furthermore, if a row already exists, an insert will replace
-  // the old row upon conflict.
-	
-	private static final String MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS " + MESSAGES_TABLE + " ("
-		+ MESSAGES_ID + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, "  
-		+ MESSAGES_FROM + " TEXT NOT NULL, "
-		+ MESSAGES_BODY + " TEXT, "
-		+ MESSAGES_DATE + " DATE NOT NULL "
-		+ ")";
-	
-	private final Context mContext;
+    public static final String MESSAGES_FROM = "messages_from";
 
-	private static class DatabaseHelper extends SQLiteOpenHelper {
-		DatabaseHelper(Context context) {
-			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		}
+    public static final String MESSAGES_BODY = "messages_body";
 
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			db.execSQL(MESSAGES_TABLE_CREATE);
-		}
+    public static final String MESSAGES_DATE = "messages_date";
 
-    	@Override
-    	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    		Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-    				+ newVersion + " which destroys all old data");
-    		List<String> messagesColumns;
-  
-    		// upgrade messages table
-    		db.execSQL(MESSAGES_TABLE_CREATE);
-    		messagesColumns = SmsSyncDatabase.getColumns(db, MESSAGES_TABLE);
-    		db.execSQL("ALTER TABLE "  + MESSAGES_TABLE + " RENAME TO temp_" + MESSAGES_TABLE);
-    		db.execSQL(MESSAGES_TABLE_CREATE);
-    		messagesColumns.retainAll(SmsSyncDatabase.getColumns(db, MESSAGES_TABLE));
-    		String cols = SmsSyncDatabase.join(messagesColumns, ",");
-    		db.execSQL(String.format( "INSERT INTO %s (%s) SELECT %s FROM temp_%s", MESSAGES_TABLE, cols, cols, MESSAGES_TABLE));
-    		db.execSQL("DROP TABLE IF EXISTS temp_" + MESSAGES_TABLE);
-      		onCreate(db);
-    	}
-    	
-    	
-	}
+    public static final String[] MESSAGES_COLUMNS = new String[] {
+            MESSAGES_ID, MESSAGES_FROM, MESSAGES_BODY, MESSAGES_DATE
+    };
 
-	/**
-	 * Get the table columns in the database.
-	 * 
-	 * Credits http://goo.gl/7kOpU
-	 * 
-	 * @param SQLiteDatabase db - The SQLiteDatabase to get the table columns
-	 * @param String tableName - The table to get the columns
-	 * 
-	 * @return List<String>
-	 */
-	public static List<String> getColumns(SQLiteDatabase db, String tableName) {
-		List<String> ar = null;
-		Cursor c = null;
-		
-		try {
-			c = db.rawQuery("SELECT * FROM "+tableName+" LIMIT 1", null);
-			
-			if ( c!= null) {
-				ar = new ArrayList<String>(Arrays.asList(c.getColumnNames()));
-			}
-			
-		}catch(Exception e){	
-			Log.v(tableName, e.getMessage(), e);
-			e.printStackTrace();
-		} finally {
-			if (c!= null)
-				c.close();
-		}
-		return ar;
-	}
-	
-	
-	public static String join(List<String> list, String delim) {
-		StringBuilder buf = new StringBuilder();
-		int num = list.size();
-		for ( int i = 0; i < num; i++){
-			if (i != 0)
-				buf.append(delim);
-			buf.append((String) list.get(i));
-		}
-		return buf.toString();
-	}
-	
-	public SmsSyncDatabase(Context context) {
-		this.mContext = context;
-	}
+    private DatabaseHelper mDbHelper;
 
-  	public SmsSyncDatabase open() throws SQLException {
-  		mDbHelper = new DatabaseHelper(mContext);
-	  	mDb = mDbHelper.getWritableDatabase();
+    private SQLiteDatabase mDb;
 
-	  	return this;
-  	}
+    private static final String DATABASE_NAME = "smssync_db";
 
-  	public void close() {
-  		mDbHelper.close();
-  	}
+    private static final String MESSAGES_TABLE = "messages";
 
-  	/**
-  	 * Insert new message into the messages table.
-  	 * 
-  	 * TODO://Change the name of this function to insertMessages -- copy and paste is *evil*
-  	 * 
-  	 * @param Messages messages - The messages items.
-  	 * 
-  	 * @return long
-  	 */
-  	public long createIncidents(Messages messages) {
-  		ContentValues initialValues = new ContentValues();
-  		
-    	initialValues.put(MESSAGES_ID, messages.getMessageId());
-    	initialValues.put(MESSAGES_FROM, messages.getMessageFrom());
-    	initialValues.put(MESSAGES_BODY, messages.getMessageBody());
-    	initialValues.put(MESSAGES_DATE, messages.getMessageDate());
-  
-    	return mDb.insert(MESSAGES_TABLE, null, initialValues);
-  	}
-  	
-  	/**
-  	 * Fetch all messages in the database.
-  	 * 
-  	 * @return Cursor
-  	 */
-  	public Cursor fetchAllMessages() {
-  		return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, null, null, null, null, MESSAGES_DATE
-  				+ " DESC");
-  	}
-  	
-  	/**
-  	 * Fetch messages by message id in the database.
-  	 * 
-  	 * @param int messageId - Message id to fetch by.
-  	 * 
-  	 * @return Cursor
-  	 */
-  	public Cursor fetchMessagesById(int messageId) {
-  		String selection = MESSAGES_ID+"= ?";
-  		String selectionArgs[] = {new Integer(messageId).toString()};
-  		
-  		return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, selection, selectionArgs, null, null, MESSAGES_DATE
-  				+ " DESC");
-  	}
+    private static final int DATABASE_VERSION = 1;
 
-  	/**
-  	 * Delete all messages in the database.
-  	 * 
-  	 * @return boolean
-  	 */
-  	public boolean deleteAllMessages() {
-  		return mDb.delete(MESSAGES_TABLE, null, null) > 0;
-  	}
-  	
-  	/**
-  	 * Delete messages in the database by ID.
-  	 * 
-  	 * @param int messageId
-  	 * 
-  	 * @return boolean
-  	 */
-  	public boolean deleteMessagesById( int messageId) {
-  		String whereClause = MESSAGES_ID+"= ?";
-  		String whereArgs[] = {new Integer(messageId).toString()};
-  		return mDb.delete(MESSAGES_TABLE, whereClause, whereArgs) > 0;
-  	}
-  	
-  	/**
-  	 * Add a new message to the database.
-  	 * 
-  	 * @param List<Messages> messages - The messages to be added to the database.
-  	 */
-  	public void addMessages(List<Messages> messages) {
-  		try {
-  			mDb.beginTransaction();
+    // NOTE: the message ID is used as the row ID.
+    // Furthermore, if a row already exists, an insert will replace
+    // the old row upon conflict.
 
-  			for (Messages message : messages) {
-  				createIncidents(message);
-  			}
-  			
-  			mDb.setTransactionSuccessful();
-  		} finally {
-  			mDb.endTransaction();
-  		}
-  	}
-  	
-  	/**
-  	 * Count the number of messages in the database.
-  	 * 
-  	 * @return int
-  	 */
-  	public int fetchMessagesCount() {
-  		Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + MESSAGES_ID + ") FROM "
-  				+ MESSAGES_TABLE, null);
+    private static final String MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + MESSAGES_TABLE + " (" + MESSAGES_ID + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, "
+            + MESSAGES_FROM + " TEXT NOT NULL, " + MESSAGES_BODY + " TEXT, " + MESSAGES_DATE
+            + " DATE NOT NULL " + ")";
 
-  		int result = 0;
+    private final Context mContext;
 
-  		if (mCursor == null) {
-  			return result;
-  		}
+    private static class DatabaseHelper extends SQLiteOpenHelper {
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        }
 
-  		mCursor.moveToFirst();
-    	result = mCursor.getInt(0);
-    	mCursor.close();
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(MESSAGES_TABLE_CREATE);
+        }
 
-    	return result;
-  	}
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.w(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion
+                    + " which destroys all old data");
+            List<String> messagesColumns;
+
+            // upgrade messages table
+            db.execSQL(MESSAGES_TABLE_CREATE);
+            messagesColumns = SmsSyncDatabase.getColumns(db, MESSAGES_TABLE);
+            db.execSQL("ALTER TABLE " + MESSAGES_TABLE + " RENAME TO temp_" + MESSAGES_TABLE);
+            db.execSQL(MESSAGES_TABLE_CREATE);
+            messagesColumns.retainAll(SmsSyncDatabase.getColumns(db, MESSAGES_TABLE));
+            String cols = SmsSyncDatabase.join(messagesColumns, ",");
+            db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM temp_%s", MESSAGES_TABLE,
+                    cols, cols, MESSAGES_TABLE));
+            db.execSQL("DROP TABLE IF EXISTS temp_" + MESSAGES_TABLE);
+            onCreate(db);
+        }
+
+    }
+
+    /**
+     * Get the table columns in the database. Credits http://goo.gl/7kOpU
+     * 
+     * @param SQLiteDatabase db - The SQLiteDatabase to get the table columns
+     * @param String tableName - The table to get the columns
+     * @return List<String>
+     */
+    public static List<String> getColumns(SQLiteDatabase db, String tableName) {
+        List<String> ar = null;
+        Cursor c = null;
+
+        try {
+            c = db.rawQuery("SELECT * FROM " + tableName + " LIMIT 1", null);
+
+            if (c != null) {
+                ar = new ArrayList<String>(Arrays.asList(c.getColumnNames()));
+            }
+
+        } catch (Exception e) {
+            Log.v(tableName, e.getMessage(), e);
+            e.printStackTrace();
+        } finally {
+            if (c != null)
+                c.close();
+        }
+        return ar;
+    }
+
+    public static String join(List<String> list, String delim) {
+        StringBuilder buf = new StringBuilder();
+        int num = list.size();
+        for (int i = 0; i < num; i++) {
+            if (i != 0)
+                buf.append(delim);
+            buf.append((String)list.get(i));
+        }
+        return buf.toString();
+    }
+
+    public SmsSyncDatabase(Context context) {
+        this.mContext = context;
+    }
+
+    public SmsSyncDatabase open() throws SQLException {
+        mDbHelper = new DatabaseHelper(mContext);
+        mDb = mDbHelper.getWritableDatabase();
+
+        return this;
+    }
+
+    public void close() {
+        mDbHelper.close();
+    }
+
+    /**
+     * Insert new message into the messages table. TODO://Change the name of
+     * this function to insertMessages -- copy and paste is *evil*
+     * 
+     * @param Messages messages - The messages items.
+     * @return long
+     */
+    public long createIncidents(Messages messages) {
+        ContentValues initialValues = new ContentValues();
+
+        initialValues.put(MESSAGES_ID, messages.getMessageId());
+        initialValues.put(MESSAGES_FROM, messages.getMessageFrom());
+        initialValues.put(MESSAGES_BODY, messages.getMessageBody());
+        initialValues.put(MESSAGES_DATE, messages.getMessageDate());
+
+        return mDb.insert(MESSAGES_TABLE, null, initialValues);
+    }
+
+    /**
+     * Fetch all messages in the database.
+     * 
+     * @return Cursor
+     */
+    public Cursor fetchAllMessages() {
+        return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, null, null, null, null, MESSAGES_DATE
+                + " DESC");
+    }
+
+    /**
+     * Fetch messages by message id in the database.
+     * 
+     * @param int messageId - Message id to fetch by.
+     * @return Cursor
+     */
+    public Cursor fetchMessagesById(int messageId) {
+        String selection = MESSAGES_ID + "= ?";
+        String selectionArgs[] = {
+            new Integer(messageId).toString()
+        };
+
+        return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, selection, selectionArgs, null, null,
+                MESSAGES_DATE + " DESC");
+    }
+
+    /**
+     * Delete all messages in the database.
+     * 
+     * @return boolean
+     */
+    public boolean deleteAllMessages() {
+        return mDb.delete(MESSAGES_TABLE, null, null) > 0;
+    }
+
+    /**
+     * Delete messages in the database by ID.
+     * 
+     * @param int messageId
+     * @return boolean
+     */
+    public boolean deleteMessagesById(int messageId) {
+        String whereClause = MESSAGES_ID + "= ?";
+        String whereArgs[] = {
+            new Integer(messageId).toString()
+        };
+        return mDb.delete(MESSAGES_TABLE, whereClause, whereArgs) > 0;
+    }
+
+    /**
+     * Add a new message to the database.
+     * 
+     * @param List<Messages> messages - The messages to be added to the
+     *            database.
+     */
+    public void addMessages(List<Messages> messages) {
+        try {
+            mDb.beginTransaction();
+
+            for (Messages message : messages) {
+                createIncidents(message);
+            }
+
+            mDb.setTransactionSuccessful();
+        } finally {
+            mDb.endTransaction();
+        }
+    }
+
+    /**
+     * Count the number of messages in the database.
+     * 
+     * @return int
+     */
+    public int fetchMessagesCount() {
+        Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + MESSAGES_ID + ") FROM " + MESSAGES_TABLE,
+                null);
+
+        int result = 0;
+
+        if (mCursor == null) {
+            return result;
+        }
+
+        mCursor.moveToFirst();
+        result = mCursor.getInt(0);
+        mCursor.close();
+
+        return result;
+    }
 
 }

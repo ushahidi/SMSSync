@@ -479,6 +479,6 @@ public class Settings extends PreferenceActivity implements
 				mHandler.post(mSmssyncEnabled);
 			}
 		};
-		t.start();
-	}
+        t.start();
+    }
 }
