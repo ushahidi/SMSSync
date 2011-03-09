@@ -86,7 +86,7 @@ public class Settings extends PreferenceActivity implements
 	private ListPreference autoSyncTimes;
 	private ListPreference taskCheckTimes;
 	
-	private SharedPreferences settings ;
+	private SharedPreferences settings;
 	private SharedPreferences.Editor editor;
 	private static final String URL = "http://smssync.ushahidi.com";
 	

@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -581,7 +582,7 @@ public class Util {
      * @param Context context - the activity calling this method.
      */
     public static void performTask(Context context) {
-
+        // load preferences
         SmsSyncPref.loadPreferences(context);
 
         // validate configured url
@@ -595,7 +596,7 @@ public class Util {
         } else {
 
             StringBuilder uriBuilder = new StringBuilder(SmsSyncPref.website);
-            uriBuilder.append("?task=sendsms");
+            uriBuilder.append("?task=send");
 
             String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
 
@@ -609,7 +610,7 @@ public class Util {
 
                     if (payloadObject != null) {
                         task = payloadObject.getString("task");
-                        if (task.equals("sendsms")) {
+                        if (task.equals("send")) {
                             jsonArray = payloadObject.getJSONArray("messages");
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
@@ -624,12 +625,12 @@ public class Util {
                         }
 
                     } else {
-                        // no task is enabled on the callback url.
+
                         showToast(context, R.string.no_task);
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
+
                     showToast(context, R.string.no_task);
                 }
             }
