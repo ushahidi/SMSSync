@@ -34,7 +34,6 @@ import android.net.Uri;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -404,7 +403,7 @@ public class Util {
     }
 
     /**
-     * Clear all notifications shown
+     * Clear all notifications shown to the user.
      * 
      * @param Context context - The context of the calling activity.
      * @return void.
@@ -461,7 +460,7 @@ public class Util {
     }
 
     /**
-     * Posts received sms to a configured web service.
+     * Posts received SMS to a configured callback URL.
      * 
      * @param String apiKey
      * @param String fromAddress
@@ -487,7 +486,7 @@ public class Util {
     }
 
     /**
-     * Validate an the callback URL
+     * Validate the callback URL
      * 
      * @param String callbackURL - The callback URL to be validated.
      * @return int - 0 = well formed URL, 1 = no configured url, 2 = Malformed
@@ -601,6 +600,7 @@ public class Util {
             String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
 
             String task = "";
+            String secret = "";
             if (!TextUtils.isEmpty(response) && response != null) {
 
                 try {
@@ -610,7 +610,8 @@ public class Util {
 
                     if (payloadObject != null) {
                         task = payloadObject.getString("task");
-                        if (task.equals("send")) {
+                        secret = payloadObject.getString("secret");
+                        if ((task.equals("send")) && (secret.equals(SmsSyncPref.apiKey))) {
                             jsonArray = payloadObject.getJSONArray("messages");
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
