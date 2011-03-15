@@ -108,6 +108,7 @@ public class SmsSyncOutbox extends Activity {
         displayEmptyListText();
 
     }
+    
 
     public static void displayEmptyListText() {
 
