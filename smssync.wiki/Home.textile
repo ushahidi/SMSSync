@@ -26,7 +26,7 @@ h1.Instructions
       }
 }</code></pre>
         
-* SMSSync supports execution of task sent from the configured callback URL. At the moment, it supports sending of messages sent from the callback URL as SMS. This feature is targeted towards developers. If you are a developer and you want SMSSync to send an SMS, send a JSON formatted string as shown below to SMSSync with the variable task=sendsms. When SMSSync does an HTTP GET request with a sample URL like this one, http://<callback url>/smssync?task=sendsms, it should bring back a JSON string below.
+* SMSSync supports execution of task sent from the configured callback URL. At the moment, it supports sending of messages sent from the callback URL as SMS. This feature is targeted towards developers. If you are a developer and you want SMSSync to send an SMS, send a JSON formatted string as shown below to SMSSync with the variable task=send. When SMSSync does an HTTP GET request with a sample URL like this one, http://<callback url>/smssync?task=send, it should bring back a JSON string below.
 
 **Note:** The secret key has to match the secret key configured with SMSSync, otherwise, SMSSync will not execute the task.
 
