@@ -572,7 +572,8 @@ public class Util {
     public static void sendSms(String sendTo, String msg) {
 
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(sendTo, null, msg, null, null);
+        ArrayList<String> parts = sms.divideMessage(msg);
+        sms.sendMultipartTextMessage(sendTo, null, parts, null, null);
     }
 
     /**
