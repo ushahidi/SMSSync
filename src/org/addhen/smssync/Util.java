@@ -10,8 +10,8 @@
  ** Foundation and appearing in the file LICENSE.LGPL included in the
  ** packaging of this file. Please review the following information to
  ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.	
- **	
+ ** will be met: http://www.gnu.org/licenses/lgpl.html. 
+ ** 
  **
  ** If you have questions regarding the use of this file, please contact
  ** Ushahidi developers at team@ushahidi.com.
@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.regex.Matcher;
@@ -107,6 +108,8 @@ public class Util {
             + "[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     private static final int NOTIFY_RUNNING = 100;
+
+    private static final String CLASS_TAG = Util.class.getCanonicalName();
 
     /**
      * Joins two strings together.
@@ -227,27 +230,28 @@ public class Util {
      * @return String
      */
     public static boolean extractPayloadJSON(String json_data) {
-
+        Log.i(CLASS_TAG, "extracPayloadJSON(): Extracting payload JSON data" + json_data);
         try {
 
             jsonObject = new JSONObject(json_data);
             return jsonObject.getJSONObject("payload").getBoolean("success");
 
         } catch (JSONException e) {
-
+            Log.e(CLASS_TAG, "JSONException " + e.getMessage());
             return false;
         }
 
     }
 
     /**
-     * Process messages as received from the 0 - successful 1 - failed fetching
-     * categories
+     * Process messages as received from the user; 0 - successful 1 - failed
+     * fetching categories
      * 
      * @return int - status
      */
     public static int processMessages(Context context) {
-
+        Log.i(CLASS_TAG,
+                "processMessages(): Process text messages as received from the user's phone");
         List<Messages> listMessages = new ArrayList<Messages>();
         int messageId = 0;
         Messages messages = new Messages();
@@ -319,7 +323,7 @@ public class Util {
      * @return boolean
      */
     public static boolean validateEmail(String emailAddress) {
-
+        Log.i(CLASS_TAG, "validateEmail(): Validate Email address");
         if (!emailAddress.equals("")) {
             pattern = Pattern.compile(EMAIL_PATTERN);
             matcher = pattern.matcher(emailAddress);
@@ -337,7 +341,9 @@ public class Util {
      * @param long _timestamp - The timestamp of the message.
      */
     public static long findMessageId(Context context, long threadId, long _timestamp) {
-
+        Log.i(CLASS_TAG,
+                "findMessageId(): get the message id using thread id and timestamp: threadId: "
+                        + threadId + " timestamp: " + _timestamp);
         long id = 0;
         long timestamp = _timestamp;
         if (threadId > 0) {
@@ -371,7 +377,7 @@ public class Util {
      * @return long.
      */
     public static long getId(Context context, SmsMessage msg, String idType) {
-
+        Log.i(CLASS_TAG, "getId(): Locate message id or thread id: idType:" + idType);
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
 
         StringBuilder sb = new StringBuilder();
@@ -448,10 +454,13 @@ public class Util {
     }
 
     /**
-     * @param Context context - The calling
+     * Delete SMS from the message app inbox.
+     * 
+     * @param Context context - The calling activity
      * @param msg
      */
     public static void delSmsFromInbox(Context context, SmsMessage msg) {
+        Log.i(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
         long threadId = getId(context, msg, "thread");
 
         if (threadId >= 0) {
@@ -469,7 +478,9 @@ public class Util {
      */
     public static boolean postToAWebService(String messagesFrom, String messagesBody,
             Context context) {
-
+        Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL: messagesFrom: "
+                + messagesFrom + " messagesBody: " + messagesBody);
+        
         HashMap<String, String> params = new HashMap<String, String>();
         SmsSyncPref.loadPreferences(context);
 
@@ -483,6 +494,32 @@ public class Util {
         }
 
         return false;
+    }
+
+    /**
+     * Posts received SMS to a configured callback URL.
+     * 
+     * @param String apiKey
+     * @param String fromAddress
+     * @param String messageBody
+     * @return boolean
+     */
+    public static String postToAWebService2(String messagesFrom, String messagesBody,
+            Context context) {
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        SmsSyncPref.loadPreferences(context);
+
+        if (!SmsSyncPref.website.equals("")) {
+
+            StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
+            params.put("secret", SmsSyncPref.apiKey);
+            params.put("from", messagesFrom);
+            params.put("message", messagesBody);
+            //return SmsSyncHttpClient.postSmsToWebService2(urlBuilder.toString(), params);
+        }
+
+        return "";
     }
 
     /**
@@ -571,11 +608,11 @@ public class Util {
      */
     public static void sendSms(String sendTo, String msg) {
 
-    	if (!msg.equals("")) {
-    		SmsManager sms = SmsManager.getDefault();
-    		ArrayList<String> parts = sms.divideMessage(msg);
-    		sms.sendMultipartTextMessage(sendTo, null, parts, null, null);
-    	}
+        if (!msg.equals("")) {
+            SmsManager sms = SmsManager.getDefault();
+            ArrayList<String> parts = sms.divideMessage(msg);
+            sms.sendMultipartTextMessage(sendTo, null, parts, null, null);
+        }
     }
 
     /**
@@ -604,6 +641,70 @@ public class Util {
 
             String task = "";
             String secret = "";
+            if (!TextUtils.isEmpty(response) && response != null) {
+
+                try {
+
+                    jsonObject = new JSONObject(response);
+                    JSONObject payloadObject = jsonObject.getJSONObject("payload");
+
+                    if (payloadObject != null) {
+                        task = payloadObject.getString("task");
+                        secret = payloadObject.getString("secret");
+                        if ((task.equals("send")) && (secret.equals(SmsSyncPref.apiKey))) {
+                            jsonArray = payloadObject.getJSONArray("messages");
+
+                            for (int index = 0; index < jsonArray.length(); ++index) {
+                                jsonObject = jsonArray.getJSONObject(index);
+
+                                sendSms(jsonObject.getString("to"), jsonObject.getString("message"));
+                            }
+
+                        } else {
+                            // no task enabled on the callback url.
+                            showToast(context, R.string.no_task);
+                        }
+
+                    } else {
+
+                        showToast(context, R.string.no_task);
+                    }
+
+                } catch (JSONException e) {
+
+                    showToast(context, R.string.no_task);
+                }
+            }
+        }
+    }
+
+    /**
+     * Performs a task based on what callback URL tells it.
+     * 
+     * @param Context context - the activity calling this method.
+     */
+    public static void performAutoResponse(Context context, String resp) {
+        // load preferences
+        SmsSyncPref.loadPreferences(context);
+
+        // validate configured url
+        int status = validateCallbackUrl(SmsSyncPref.website);
+        if (status == 1) {
+            showToast(context, R.string.no_configured_url);
+        } else if (status == 2) {
+            showToast(context, R.string.invalid_url);
+        } else if (status == 3) {
+            showToast(context, R.string.no_connection);
+        } else {
+
+            StringBuilder uriBuilder = new StringBuilder(SmsSyncPref.website);
+            uriBuilder.append("?task=send");
+
+            String response = resp;
+
+            String task = "";
+            String secret = "";
+
             if (!TextUtils.isEmpty(response) && response != null) {
 
                 try {
