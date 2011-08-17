@@ -175,10 +175,10 @@ public class Util {
 
         networkInfo = connectivity.getActiveNetworkInfo();
 
-        if (networkInfo == null || !networkInfo.isConnected()) {
-            return false;
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            return true;
         }
-        return true;
+        return false;
 
     }
 
@@ -480,7 +480,7 @@ public class Util {
             Context context) {
         Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL: messagesFrom: "
                 + messagesFrom + " messagesBody: " + messagesBody);
-        
+
         HashMap<String, String> params = new HashMap<String, String>();
         SmsSyncPref.loadPreferences(context);
 
@@ -497,30 +497,23 @@ public class Util {
     }
 
     /**
-     * Posts received SMS to a configured callback URL.
+     * Posts received SMS to a configured callback URL. TODO:// Improve on how
+     * to receive auto response message from the server.
      * 
      * @param String apiKey
      * @param String fromAddress
      * @param String messageBody
-     * @return boolean
+     * @return boolean public static String postToAWebService2(String
+     *         messagesFrom, String messagesBody, Context context) {
+     *         HashMap<String, String> params = new HashMap<String, String>();
+     *         SmsSyncPref.loadPreferences(context); if
+     *         (!SmsSyncPref.website.equals("")) { StringBuilder urlBuilder =
+     *         new StringBuilder(SmsSyncPref.website); params.put("secret",
+     *         SmsSyncPref.apiKey); params.put("from", messagesFrom);
+     *         params.put("message", messagesBody); // return //
+     *         SmsSyncHttpClient.postSmsToWebService2(urlBuilder.toString(), //
+     *         params); } return ""; }
      */
-    public static String postToAWebService2(String messagesFrom, String messagesBody,
-            Context context) {
-
-        HashMap<String, String> params = new HashMap<String, String>();
-        SmsSyncPref.loadPreferences(context);
-
-        if (!SmsSyncPref.website.equals("")) {
-
-            StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
-            params.put("secret", SmsSyncPref.apiKey);
-            params.put("from", messagesFrom);
-            params.put("message", messagesBody);
-            //return SmsSyncHttpClient.postSmsToWebService2(urlBuilder.toString(), params);
-        }
-
-        return "";
-    }
 
     /**
      * Validate the callback URL
@@ -560,42 +553,44 @@ public class Util {
      * @return int
      */
     public static int snycToWeb(Context context) {
-
+        Log.i(CLASS_TAG, "syncToWeb(): push pending messages to the configured URL");
         Cursor cursor;
         cursor = SmsSyncApplication.mDb.fetchAllMessages();
         String messagesFrom;
         String messagesBody;
-
-        if (cursor.getCount() == 0) {
-            return 2;
-        }
-
         int deleted = 0;
 
-        if (cursor.moveToFirst()) {
-            int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
-            int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
+        if (cursor != null) {
+            if (cursor.getCount() == 0) {
+                return 2;
+            }
 
-            int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
+            if (cursor.moveToFirst()) {
+                int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
+                int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
 
-            do {
+                int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
 
-                int messageId = Util.toInt(cursor.getString(messagesIdIndex));
-                messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
-                messagesBody = cursor.getString(messagesBodyIndex);
+                do {
 
-                // post to web service
-                if (Util.postToAWebService(messagesFrom, messagesBody, context)) {
-                    // if it successfully pushes message, delete message from db
-                    SmsSyncApplication.mDb.deleteMessagesById(messageId);
-                    deleted = 0;
-                } else {
-                    deleted = 1;
-                }
+                    int messageId = Util.toInt(cursor.getString(messagesIdIndex));
+                    messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
+                    messagesBody = cursor.getString(messagesBodyIndex);
 
-            } while (cursor.moveToNext());
+                    // post to web service
+                    if (Util.postToAWebService(messagesFrom, messagesBody, context)) {
+                        // if it successfully pushes message, delete message
+                        // from db
+                        SmsSyncApplication.mDb.deleteMessagesById(messageId);
+                        deleted = 0;
+                    } else {
+                        deleted = 1;
+                    }
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
         }
-        cursor.close();
         return deleted;
 
     }
@@ -607,7 +602,7 @@ public class Util {
      * @param String msg - The message to be sent.
      */
     public static void sendSms(String sendTo, String msg) {
-
+        Log.i(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: " + sendTo + " message: " + msg);
         if (!msg.equals("")) {
             SmsManager sms = SmsManager.getDefault();
             ArrayList<String> parts = sms.divideMessage(msg);
@@ -621,6 +616,7 @@ public class Util {
      * @param Context context - the activity calling this method.
      */
     public static void performTask(Context context) {
+        Log.i(CLASS_TAG, "performTask(): perform a task");
         // load preferences
         SmsSyncPref.loadPreferences(context);
 
@@ -671,7 +667,7 @@ public class Util {
                     }
 
                 } catch (JSONException e) {
-
+                    Log.e(CLASS_TAG, "Error: " + e.getMessage());
                     showToast(context, R.string.no_task);
                 }
             }
@@ -684,6 +680,7 @@ public class Util {
      * @param Context context - the activity calling this method.
      */
     public static void performAutoResponse(Context context, String resp) {
+        Log.i(CLASS_TAG, "performAutoResponse(): " + " response:" + resp);
         // load preferences
         SmsSyncPref.loadPreferences(context);
 
@@ -720,6 +717,8 @@ public class Util {
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
                                 jsonObject = jsonArray.getJSONObject(index);
+                                Log.i(CLASS_TAG, "Send sms: To: " + jsonObject.getString("to")
+                                        + "Message: " + jsonObject.getString("message"));
 
                                 sendSms(jsonObject.getString("to"), jsonObject.getString("message"));
                             }
@@ -735,7 +734,7 @@ public class Util {
                     }
 
                 } catch (JSONException e) {
-
+                    Log.i(CLASS_TAG, "Error: " + e.getMessage());
                     showToast(context, R.string.no_task);
                 }
             }
@@ -750,6 +749,7 @@ public class Util {
      * @return boolean
      */
     public static boolean processString(String message, String[] keywords) {
+        Log.i(CLASS_TAG, "processString(): find words in a string: " + message);
         Scanner scanner = new Scanner(message);
         while (scanner.hasNext()) {
             for (String keyword : keywords) {
@@ -771,7 +771,7 @@ public class Util {
      * @return int - 0 for success, 1 for failure.
      */
     public static int importMessages(Context context) {
-
+        Log.i(CLASS_TAG, "importMessages(): import messages from messages app");
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
         uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
         String[] projection = {

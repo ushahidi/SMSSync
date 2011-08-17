@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.addhen.smssync" android:versionCode="8"
-	android:versionName="1.0.7">
+	package="org.addhen.smssync" android:versionCode="7"
+	android:versionName="1.0.6">
 	<uses-permission android:name="android.permission.RECEIVE_SMS" />
 	<uses-permission android:name="android.permission.READ_SMS" />
 	<uses-permission android:name="android.permission.SEND_SMS" />
@@ -10,11 +10,12 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
-		android:name="SmsSyncApplication">
-		<service android:name=".SmsReceiverService" />
-		<service android:name="SmsSyncAutoSyncService" />
-		<service android:name="SmsSyncTaskCheckService" />
+		android:name=".SmsSyncApplication">
+		<service android:name=".services.SmsReceiverService" />
+		<service android:name="services.SmsSyncAutoSyncServicencService" />
+		<service android:name="services.SmsSyncTaskCheckService" />
 		<activity android:launchMode="singleTop" android:name=".Settings"
 			android:label="@string/app_name">
 			<intent-filter>
@@ -25,7 +26,7 @@
 
 		<!-- outbox -->
 		<activity android:configChanges="orientation|keyboardHidden"
-			android:name="SmsSyncOutbox" android:label="@string/app_name"
+			android:name=".SmsSyncOutbox" android:label="@string/app_name"
 			android:launchMode="singleTop">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -40,6 +41,29 @@
 				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
 			</intent-filter>
 		</receiver>
+
+		<!-- connectivity changed -->
+		<receiver android:name=".receivers.ConnectivityChangedReceiver"
+			enabled="false">
+			<intent-filter>
+				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+			</intent-filter>
+		</receiver>
+
+		<!-- power changed -->
+		<receiver android:name=".receivers.PowerStateChangedReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.ACTION_BATTERY_LOW" />
+				<action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
+			</intent-filter>
+		</receiver>
+
+		<!-- boot -->
+		<receiver android:name=".receivers.BootReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
 	</application>
-	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="10" />
+	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="11" />
 </manifest>  

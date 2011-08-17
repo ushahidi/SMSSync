@@ -18,7 +18,14 @@
  ** 
  **/
 
-package org.addhen.smssync;
+package org.addhen.smssync.services;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.SmsSyncOutbox;
+import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.Util;
+import org.addhen.smssync.R.drawable;
+import org.addhen.smssync.R.string;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -35,6 +42,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
+import android.util.Log;
 
 public class SmsReceiverService extends Service {
     private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -61,13 +69,15 @@ public class SmsReceiverService extends Service {
 
     private SmsMessage sms;
 
-    private static final String TAG = "SMSSync";
+    private static final String CLASS_TAG = SmsReceiverService.class.getCanonicalName();
 
     private Handler handler = new Handler();
+    
 
     @Override
     public void onCreate() {
-        HandlerThread thread = new HandlerThread(TAG, Process.THREAD_PRIORITY_BACKGROUND);
+        
+        HandlerThread thread = new HandlerThread(CLASS_TAG, Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
 
@@ -242,7 +252,7 @@ public class SmsReceiverService extends Service {
      * @return void
      */
     private void postToOutbox() {
-
+        Log.i(CLASS_TAG, "postToOutbox(): post failed messages to the outbox");
         // Get message id.
         Long msgId = new Long(Util.getId(SmsReceiverService.this, sms, "id"));
 
@@ -266,7 +276,7 @@ public class SmsReceiverService extends Service {
      * @return SmsMessage
      */
     public static final SmsMessage[] getMessagesFromIntent(Intent intent) {
-
+        Log.i(CLASS_TAG, "getMessagesFromIntent(): getting SMS message");
         Object[] messages = (Object[])intent.getSerializableExtra("pdus");
 
         if (messages == null) {

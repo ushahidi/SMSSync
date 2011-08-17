@@ -20,6 +20,8 @@
 
 package org.addhen.smssync;
 
+import org.addhen.smssync.services.SmsReceiverService;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

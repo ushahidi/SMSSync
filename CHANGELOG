@@ -1,3 +1,8 @@
+1.0.6
+Feature:
+  * Improved battery consumption.
+  * Enabled services automatically starts after the phone boots.
+
 1.0.5
 Feature:
   * Scheduler automatically Syncs pending messages to the configured Callback URL.

@@ -20,6 +20,9 @@
 
 package org.addhen.smssync;
 
+import org.addhen.smssync.services.SmsSyncAutoSyncService;
+import org.addhen.smssync.services.SmsSyncTaskCheckService;
+
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;

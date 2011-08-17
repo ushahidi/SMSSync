@@ -1,5 +1,5 @@
 
-package org.addhen.smssync;
+package org.addhen.smssync.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,6 +8,10 @@ import android.os.IBinder;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.addhen.smssync.SmsSyncApplication;
+import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.Util;
 
 /**
  * A this class handles background services for periodic synchronization of

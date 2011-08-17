@@ -1,13 +1,17 @@
 
-package org.addhen.smssync;
+package org.addhen.smssync.services;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.Util;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 /**
  * A this class handles background services for periodic checks of task that
@@ -23,6 +27,8 @@ public class SmsSyncTaskCheckService extends Service {
     private final Handler handler = new Handler();
 
     private Timer mT = new Timer();
+    
+    private final String CLASS_TAG = SmsSyncTaskCheckService.class.getCanonicalName();
 
     public void onCreate() {
         super.onCreate();
@@ -36,7 +42,7 @@ public class SmsSyncTaskCheckService extends Service {
      * @return void
      */
     private void startService() {
-
+        Log.i(CLASS_TAG, "importMessages(): import messages from messages app");
         SmsSyncPref.loadPreferences(SmsSyncTaskCheckService.this);
         long period = (SmsSyncPref.taskCheckTime * 60000);
         long delay = 500;
