@@ -25,11 +25,15 @@ import java.util.List;
 
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.SmsSyncDatabase;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,10 +49,9 @@ import android.widget.TextView;
 
 /**
  * This class test various aspects of task that needs be executed for pending
- * messages to show. 1. The submits dummy messages to the pending database. 2.
- * Shows the messages that failed to be sent 3. Synchronizes the pending
- * messages. This class shows list of pending messages. Allows deletion and
- * synchronization of pending messages.
+ * messages to show. Shows the messages that failed to be sent 3. Synchronizes
+ * the pending messages. This class shows list of pending messages. Allows
+ * deletion and synchronization of pending messages.
  * 
  * @author eyedol
  */
@@ -85,6 +88,8 @@ public class SmsSyncOutbox extends Activity {
 
     public static SmsSyncDatabase mDb;
 
+    public static String Pending_MESSAGE = "";
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -108,7 +113,6 @@ public class SmsSyncOutbox extends Activity {
         displayEmptyListText();
 
     }
-    
 
     public static void displayEmptyListText() {
 
@@ -123,12 +127,14 @@ public class SmsSyncOutbox extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
         mHandler.post(mDisplayMessages);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        unregisterReceiver(broadcastReceiver);
         mHandler.post(mDisplayMessages);
     }
 
@@ -150,6 +156,13 @@ public class SmsSyncOutbox extends Activity {
         }
     };
 
+    // Display pending messages.
+    final Runnable mUpdateListView = new Runnable() {
+        public void run() {
+            updateListView();
+        }
+    };
+
     // Synchronize all pending messages.
     final Runnable mSyncMessages = new Runnable() {
         public void run() {
@@ -158,8 +171,8 @@ public class SmsSyncOutbox extends Activity {
                 int result = syncMessages(false);
                 try {
                     if (result == 0) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
 
+                        Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
                     } else if (result == 1) {
                         Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
                     } else if (result == 2) {
@@ -401,6 +414,66 @@ public class SmsSyncOutbox extends Activity {
      * 
      * @return void
      */
+    public static void updateListView() {
+
+        Cursor cursor;
+        cursor = SmsSyncApplication.mDb.fetchAllMessages();
+
+        String messagesFrom;
+        String messagesDate;
+        String messagesBody;
+        int messageId;
+        if (cursor.getCount() == 0) {
+            ila.removeItems();
+        }
+
+        if (cursor.moveToFirst()) {
+            int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
+            int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
+            int messagesDateIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_DATE);
+
+            int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
+
+            if (ila != null) {
+                ila.removeItems();
+                ila.notifyDataSetChanged();
+            }
+
+            mOldMessages.clear();
+
+            do {
+
+                Messages messages = new Messages();
+                mOldMessages.add(messages);
+
+                messageId = Util.toInt(cursor.getString(messagesIdIndex));
+                messages.setMessageId(messageId);
+
+                messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
+                messages.setMessageFrom(messagesFrom);
+
+                messagesDate = cursor.getString(messagesDateIndex);
+                messages.setMessageDate(messagesDate);
+
+                messagesBody = cursor.getString(messagesBodyIndex);
+                messages.setMessageBody(messagesBody);
+
+                ila.addItem(new ListMessagesText(messagesFrom, messagesBody, messagesDate,
+                        messageId));
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        ila.notifyDataSetChanged();
+        displayEmptyListText();
+    }
+
+    /**
+     * Get messages from the database.
+     * 
+     * @return void
+     */
     public static void showMessages() {
 
         Cursor cursor;
@@ -475,6 +548,7 @@ public class SmsSyncOutbox extends Activity {
         String messagesDate;
 
         if (cursor.getCount() == 0) {
+            cursor.close();
             return 2; // no pending messages to synchronize
         }
 
@@ -625,5 +699,27 @@ public class SmsSyncOutbox extends Activity {
             }
         }
     }
+
+    /**
+     * This will refresh content of the listview aka the pending messages.
+     */
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                int status = intent.getIntExtra("status", 2);
+
+                if (status == 0) {
+
+                    Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
+                } else if (status == 1) {
+                    Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+                } else {
+                    Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+                }
+                mHandler.post(mUpdateListView);
+            }
+        }
+    };
 
 }

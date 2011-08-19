@@ -18,7 +18,34 @@
  ** 
  **/
 
-package org.addhen.smssync;
+package org.addhen.smssync.util;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.SmsSyncApplication;
+import org.addhen.smssync.SmsSyncOutbox;
+import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.data.Messages;
+import org.addhen.smssync.data.SmsSyncDatabase;
+import org.addhen.smssync.net.SmsSyncHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -36,29 +63,6 @@ import android.telephony.SmsMessage;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Vector;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import org.addhen.smssync.data.Messages;
-import org.addhen.smssync.data.SmsSyncDatabase;
-import org.addhen.smssync.net.SmsSyncHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 /**
  * This class habours common util methods that are available for other classes

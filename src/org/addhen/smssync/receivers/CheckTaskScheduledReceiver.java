@@ -10,37 +10,33 @@
  ** Foundation and appearing in the file LICENSE.LGPL included in the
  ** packaging of this file. Please review the following information to
  ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.	
- **	
+ ** will be met: http://www.gnu.org/licenses/lgpl.html. 
+ ** 
  **
  ** If you have questions regarding the use of this file, please contact
  ** Ushahidi developers at team@ushahidi.com.
  ** 
  **/
 
-package org.addhen.smssync;
+package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.services.SmsReceiverService;
+import org.addhen.smssync.services.SmsSyncServices;
+import org.addhen.smssync.services.CheckTaskScheduledService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 /**
- * This class handles SMS broadcast receiver.
- * 
- * @author eyedol
+ * This Receiver class is used to listen for Broadcast Intents from the 
+ * Alarm manager so it executes all task that exist.
  */
-
-public class SmsReceiver extends BroadcastReceiver {
-
+public class CheckTaskScheduledReceiver extends BroadcastReceiver{
+    
+    
     @Override
     public void onReceive(Context context, Intent intent) {
-
-        intent.setClass(context, SmsReceiverService.class);
-        intent.putExtra("result", getResultCode());
-
-        SmsReceiverService.beginStartingService(context, intent);
+        SmsSyncServices.sendWakefulTask(context, CheckTaskScheduledService.class);
     }
-
+    
 }

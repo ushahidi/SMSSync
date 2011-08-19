@@ -1,10 +1,13 @@
 
 package org.addhen.smssync.receivers;
 
+import org.addhen.smssync.ScheduleServices;
 import org.addhen.smssync.SmsSyncPref;
-import org.addhen.smssync.Util;
-import org.addhen.smssync.services.SmsSyncAutoSyncService;
-import org.addhen.smssync.services.SmsSyncTaskCheckService;
+import org.addhen.smssync.services.AutoSyncService;
+import org.addhen.smssync.services.CheckTaskService;
+import org.addhen.smssync.services.SmsSyncServices;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,10 +18,6 @@ import android.content.Intent;
  * the app.
  */
 public class BootReceiver extends BroadcastReceiver {
-
-    private Intent smsSyncAutoSyncServiceIntent;
-
-    private Intent smsSyncTaskCheckServiceIntent;
 
     private boolean isConnected;
 
@@ -41,15 +40,23 @@ public class BootReceiver extends BroadcastReceiver {
             if (isConnected) {
                 // Push any pending messages now that we have connectivity
                 if (SmsSyncPref.enableAutoSync) {
-                    smsSyncAutoSyncServiceIntent = new Intent(context, SmsSyncAutoSyncService.class);
-                    context.startService(smsSyncAutoSyncServiceIntent);
+                    
+                    SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
+                    // start the scheduler for auto sync service
+                    long interval = (SmsSyncPref.autoTime * 60000);
+                    new ScheduleServices(context, intent, AutoSyncScheduledReceiver.class,
+                            interval, ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE, 0);
                 }
 
                 // Check for tasks now that we have connectivity
                 if (SmsSyncPref.enableTaskCheck) {
-                    smsSyncTaskCheckServiceIntent = new Intent(context,
-                            SmsSyncTaskCheckService.class);
-                    context.startService(smsSyncTaskCheckServiceIntent);
+                    SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
+                    
+                    // start the scheduler for 'task check' service
+                    long interval = (SmsSyncPref.taskCheckTime * 60000);
+                    new ScheduleServices(context, intent, CheckTaskScheduledReceiver.class,
+                            interval, ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
+                            0);
                 }
             }
         }

@@ -23,9 +23,7 @@ package org.addhen.smssync.services;
 import org.addhen.smssync.R;
 import org.addhen.smssync.SmsSyncOutbox;
 import org.addhen.smssync.SmsSyncPref;
-import org.addhen.smssync.Util;
-import org.addhen.smssync.R.drawable;
-import org.addhen.smssync.R.string;
+import org.addhen.smssync.util.Util;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -69,14 +67,13 @@ public class SmsReceiverService extends Service {
 
     private SmsMessage sms;
 
-    private static final String CLASS_TAG = SmsReceiverService.class.getCanonicalName();
+    private static final String CLASS_TAG = SmsReceiverService.class.getSimpleName();
 
     private Handler handler = new Handler();
-    
 
     @Override
     public void onCreate() {
-        
+
         HandlerThread thread = new HandlerThread(CLASS_TAG, Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
@@ -252,7 +249,7 @@ public class SmsReceiverService extends Service {
      * @return void
      */
     private void postToOutbox() {
-        Log.i(CLASS_TAG, "postToOutbox(): post failed messages to the outbox");
+        Log.i(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
         // Get message id.
         Long msgId = new Long(Util.getId(SmsReceiverService.this, sms, "id"));
 
@@ -318,7 +315,7 @@ public class SmsReceiverService extends Service {
             if (mStartingService == null) {
                 PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
                 mStartingService = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                        "Sms messages .SmsReceiverService");
+                        CLASS_TAG);
                 mStartingService.setReferenceCounted(false);
             }
 

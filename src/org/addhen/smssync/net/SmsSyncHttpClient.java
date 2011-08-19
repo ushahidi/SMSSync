@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.addhen.smssync.Util;
+import org.addhen.smssync.util.Util;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
