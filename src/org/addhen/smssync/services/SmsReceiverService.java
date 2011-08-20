@@ -137,7 +137,7 @@ public class SmsReceiverService extends Service {
             sms = messages[0];
             if (messages != null) {
                 // extract message details. phone number and the message body
-                messagesFrom = sms.getDisplayOriginatingAddress();
+                messagesFrom = sms.getOriginatingAddress();
                 String body;
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
