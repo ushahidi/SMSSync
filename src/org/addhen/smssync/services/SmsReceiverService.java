@@ -23,14 +23,17 @@ package org.addhen.smssync.services;
 import org.addhen.smssync.R;
 import org.addhen.smssync.SmsSyncOutbox;
 import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.Util;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -157,6 +160,11 @@ public class SmsReceiverService extends Service {
             if (SmsSyncPref.enableReply) {
                 Util.sendSms(messagesFrom, SmsSyncPref.reply);
             }
+            
+            //get reply from server
+           if(SmsSyncPref.enableReplyFrmServer){
+               Util.performTask(this);
+            }
 
             if (Util.isConnected(SmsReceiverService.this)) {
 
@@ -216,6 +224,14 @@ public class SmsReceiverService extends Service {
                 this.postToOutbox();
                 handler.post(mDisplayMessages);
 
+                // Enable the Connectivity Changed Receiver to listen for
+                // connection to a network so we can send pending messages.
+                PackageManager pm = getPackageManager();
+                ComponentName connectivityReceiver = new ComponentName(this,
+                        ConnectivityChangedReceiver.class);
+                pm.setComponentEnabledSetting(connectivityReceiver,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP);
                 if (SmsSyncPref.autoDelete) {
                     Util.delSmsFromInbox(SmsReceiverService.this, sms);
                 }
@@ -314,8 +330,7 @@ public class SmsReceiverService extends Service {
 
             if (mStartingService == null) {
                 PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
-                mStartingService = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                        CLASS_TAG);
+                mStartingService = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, CLASS_TAG);
                 mStartingService.setReferenceCounted(false);
             }
 

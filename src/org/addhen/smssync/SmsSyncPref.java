@@ -49,6 +49,8 @@ public class SmsSyncPref {
 
     public static Boolean enableReply = false;
 
+    public static Boolean enableReplyFrmServer = false;
+    
     public static Boolean enableAutoSync = false;
 
     public static Boolean enableTaskCheck = false;
@@ -71,6 +73,7 @@ public class SmsSyncPref {
         enabled = settings.getBoolean("EnableSmsSync", false);
         autoDelete = settings.getBoolean("EnableAutoDelete", false);
         enableReply = settings.getBoolean("EnableReply", false);
+        enableReplyFrmServer = settings.getBoolean("EnableReplyFrmServer", false);
         enableAutoSync = settings.getBoolean("AutoSync", false);
         autoTime = settings.getInt("AutoTime", autoTime);
         taskCheckTime = settings.getInt("taskCheck", taskCheckTime);

@@ -21,7 +21,6 @@ package org.addhen.smssync.services;
  ** 
  **/
 
-import org.addhen.smssync.SmsSyncPref;
 import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
@@ -40,6 +39,5 @@ public class CheckTaskScheduledService extends SmsSyncServices {
         Log.i(CLASS_TAG, "checkin scheduled task services");
         // Perform a task
         Util.performTask(CheckTaskScheduledService.this);
-        SmsSyncPref.loadPreferences(CheckTaskScheduledService.this);
     }
 }

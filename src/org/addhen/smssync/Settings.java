@@ -69,6 +69,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
     public static final String KEY_ENABLE_REPLY = "enable_reply_preference";
 
+    public static final String KEY_ENABLE_REPLY_FRM_SERVER = "enable_reply_frm_server_preference";
+
     public static final String KEY_REPLY = "reply_preference";
 
     public static final String PREFS_NAME = "SMS_SYNC_PREF";
@@ -90,6 +92,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private EditTextPreference keywordPref;
 
     private EditTextPreference replyPref;
+
+    private CheckBoxPreference enableReplyFrmServer;
 
     private CheckBoxPreference enableSmsSync;
 
@@ -150,6 +154,9 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
                 KEY_AUTO_DELETE_MESSAGE);
 
         enableReply = (CheckBoxPreference)getPreferenceScreen().findPreference(KEY_ENABLE_REPLY);
+        enableReplyFrmServer = (CheckBoxPreference)getPreferenceScreen().findPreference(
+                KEY_ENABLE_REPLY_FRM_SERVER);
+
         autoSync = (CheckBoxPreference)getPreferenceScreen().findPreference(AUTO_SYNC);
 
         taskCheck = (CheckBoxPreference)getPreferenceScreen().findPreference(TASK_CHECK);
@@ -242,8 +249,18 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
         if (enableReply.isChecked()) {
             replyPref.setEnabled(true);
+            enableReplyFrmServer.setChecked(false);
+            enableReplyFrmServer.setEnabled(false);
         } else {
             replyPref.setEnabled(false);
+            enableReplyFrmServer.setEnabled(true);
+        }
+        
+        if( enableReplyFrmServer.isChecked()) {
+            enableReply.setChecked(false);
+            enableReply.setEnabled(false);
+        } else {
+            enableReply.setEnabled(true);
         }
 
         if (autoSync.isChecked()) {
@@ -272,6 +289,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
         editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
         editor.putBoolean("EnableReply", enableReply.isChecked());
+        editor.putBoolean("EnableReplyFrmServer",enableReplyFrmServer.isChecked());
         editor.putBoolean("AutoSync", autoSync.isChecked());
         editor.putInt("AutoTime", autoTime);
         editor.putInt("taskCheck", taskCheckTime);

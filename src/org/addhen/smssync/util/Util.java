@@ -58,6 +58,7 @@ import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
 import android.text.TextUtils;
@@ -610,7 +611,19 @@ public class Util {
         if (!msg.equals("")) {
             SmsManager sms = SmsManager.getDefault();
             ArrayList<String> parts = sms.divideMessage(msg);
-            sms.sendMultipartTextMessage(sendTo, null, parts, null, null);
+            try {
+                Log.d(CLASS_TAG,"extractNetworkPortion: " + PhoneNumberUtils.extractNetworkPortion(sendTo));
+                Log.d(CLASS_TAG," extractPostDialPortion: "
+                        + PhoneNumberUtils.extractPostDialPortion(sendTo));
+                Log.d(CLASS_TAG, " getStrippedReversed: "
+                                + PhoneNumberUtils.getStrippedReversed(sendTo));
+                Log.d(CLASS_TAG, " stripSeparators: " + PhoneNumberUtils.stripSeparators(sendTo));
+                Log.d(CLASS_TAG," toCallerIDMinMatch: "
+                                + PhoneNumberUtils.toCallerIDMinMatch(sendTo));
+                sms.sendMultipartTextMessage(sendTo, null, parts, null, null);
+            } catch (Exception e) {
+                Log.d(CLASS_TAG, e.getMessage());
+            }
         }
     }
 

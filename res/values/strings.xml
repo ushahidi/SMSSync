@@ -107,4 +107,7 @@
 	<string name="import_messages">Importing messages...</string>
 	<string name="nothing_to_import">No messages to import. Make sure you have SMS
 		messages in your SMS inbox.</string>
+	<string name="chk_enable_reply_frm_server">Get Reply From Server</string>
+	<string name="chk_reply_frm_server_hint">This will instantly send messages as recieved from
+		the server as SMS without waiting on a scheduler </string>
 </resources>

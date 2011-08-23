@@ -44,10 +44,12 @@ public final class R {
         public static final int chk_enable_auto_sync_hint=0x7f050019;
         public static final int chk_enable_gps_sync=0x7f050014;
         public static final int chk_enable_reply=0x7f050012;
+        public static final int chk_enable_reply_frm_server=0x7f050045;
         public static final int chk_enable_sms_sync=0x7f050010;
         public static final int chk_enable_task_check=0x7f05001c;
         public static final int chk_enable_task_check_hint=0x7f05001d;
         public static final int chk_gps_sync_hint=0x7f050015;
+        public static final int chk_reply_frm_server_hint=0x7f050046;
         public static final int chk_reply_hint=0x7f050013;
         public static final int chk_sms_sync_hint=0x7f050011;
         public static final int edittxt_api_key_pref=0x7f050003;

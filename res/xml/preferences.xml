@@ -34,7 +34,10 @@
 
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/reply_settings">
-
+        
+        <CheckBoxPreference android:key="enable_reply_frm_server_preference"
+            android:title="@string/chk_enable_reply_frm_server" android:summary="@string/chk_reply_frm_server_hint" />
+            
 		<CheckBoxPreference android:key="enable_reply_preference"
 			android:title="@string/chk_enable_reply" android:summary="@string/chk_reply_hint" />
 

@@ -83,7 +83,7 @@ public abstract class SmsSyncServices extends IntentService {
                 // Enable the Connectivity Changed Receiver to listen for
                 // connection
                 // to a network
-                // so we can commit the pending checkins.
+                // so we can execute pending messages.
                 PackageManager pm = getPackageManager();
                 ComponentName connectivityReceiver = new ComponentName(this,
                         ConnectivityChangedReceiver.class);
