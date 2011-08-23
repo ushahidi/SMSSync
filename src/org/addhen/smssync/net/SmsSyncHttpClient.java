@@ -40,6 +40,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.content.Context;
+
 public class SmsSyncHttpClient {
 
     public static final DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -93,6 +95,53 @@ public class SmsSyncHttpClient {
                 boolean success = Util.extractPayloadJSON(getText(response));
 
                 if (success) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            } else {
+                return false;
+            }
+
+        } catch (ClientProtocolException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
+
+    }
+    
+    /**
+     * Upload SMS to a web service via HTTP POST and instantly responds via SMS
+     * 
+     * @param address
+     * @throws MalformedURLException
+     * @throws IOException
+     * @return
+     */
+    public static boolean postSmsToWebService2(String url, HashMap<String, String> params, Context context) {
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(url);
+
+        try {
+
+            // Add your data
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+            nameValuePairs.add(new BasicNameValuePair("secret", params.get("secret")));
+            nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
+            nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                boolean success = Util.extractPayloadJSON(getText(response));
+
+                if (success) {
+                    Util.performResponseFromServer(context, getText(response));
                     return true;
                 } else {
                     return false;

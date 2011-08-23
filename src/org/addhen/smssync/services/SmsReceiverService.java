@@ -156,20 +156,24 @@ public class SmsReceiverService extends Service {
         }
 
         if (SmsSyncPref.enabled) {
-            // send auto response
             if (SmsSyncPref.enableReply) {
+                // send auto response
                 Util.sendSms(messagesFrom, SmsSyncPref.reply);
             }
-            
-            //get reply from server
-           if(SmsSyncPref.enableReplyFrmServer){
-               Util.performTask(this);
-            }
-
             if (Util.isConnected(SmsReceiverService.this)) {
 
-                boolean posted = Util.postToAWebService(messagesFrom, messagesBody,
-                        SmsReceiverService.this);
+                boolean posted = false;
+                if (SmsSyncPref.enableReplyFrmServer) {
+                    posted = Util.postToAWebService2(messagesFrom, messagesBody,
+                            SmsReceiverService.this);
+                } else {
+                    posted = Util.postToAWebService(messagesFrom, messagesBody,
+                            SmsReceiverService.this);
+
+                    // send auto response
+                    Util.sendSms(messagesFrom, SmsSyncPref.reply);
+
+                }
 
                 // if keywoard is enabled
                 if (!SmsSyncPref.keyword.equals("")) {
@@ -180,6 +184,9 @@ public class SmsReceiverService extends Service {
                             this.showNotification(messagesBody, getString(R.string.sending_failed));
                             this.postToOutbox();
                             handler.post(mDisplayMessages);
+
+                            // attempt to make a data connection
+                            connectToDataNetwork();
 
                             // Delete messages from message app's inbox only
                             // when smssync is turned on
@@ -206,6 +213,9 @@ public class SmsReceiverService extends Service {
                         this.postToOutbox();
                         handler.post(mDisplayMessages);
 
+                        // attempt to make a data connection
+                        connectToDataNetwork();
+
                         if (SmsSyncPref.autoDelete) {
                             Util.delSmsFromInbox(SmsReceiverService.this, sms);
                         }
@@ -224,14 +234,7 @@ public class SmsReceiverService extends Service {
                 this.postToOutbox();
                 handler.post(mDisplayMessages);
 
-                // Enable the Connectivity Changed Receiver to listen for
-                // connection to a network so we can send pending messages.
-                PackageManager pm = getPackageManager();
-                ComponentName connectivityReceiver = new ComponentName(this,
-                        ConnectivityChangedReceiver.class);
-                pm.setComponentEnabledSetting(connectivityReceiver,
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                        PackageManager.DONT_KILL_APP);
+                connectToDataNetwork();
                 if (SmsSyncPref.autoDelete) {
                     Util.delSmsFromInbox(SmsReceiverService.this, sms);
                 }
@@ -365,5 +368,19 @@ public class SmsReceiverService extends Service {
         public void run() {
             SmsSyncOutbox.showMessages();
         }
+
     };
+
+    /**
+     * Makes an attempt to connect to a data network.
+     */
+    public void connectToDataNetwork() {
+        // Enable the Connectivity Changed Receiver to listen for
+        // connection to a network so we can send pending messages.
+        PackageManager pm = getPackageManager();
+        ComponentName connectivityReceiver = new ComponentName(this,
+                ConnectivityChangedReceiver.class);
+        pm.setComponentEnabledSetting(connectivityReceiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+    }
 }

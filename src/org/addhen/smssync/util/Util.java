@@ -502,6 +502,35 @@ public class Util {
     }
 
     /**
+     * Posts received SMS to a configured callback URL. and instantly, sends
+     * message received from the server as SMS.
+     * 
+     * @param String apiKey
+     * @param String fromAddress
+     * @param String messageBody
+     * @return boolean
+     */
+    public static boolean postToAWebService2(String messagesFrom, String messagesBody,
+            Context context) {
+        Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL: messagesFrom: "
+                + messagesFrom + " messagesBody: " + messagesBody);
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        SmsSyncPref.loadPreferences(context);
+
+        if (!SmsSyncPref.website.equals("")) {
+
+            StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
+            params.put("secret", SmsSyncPref.apiKey);
+            params.put("from", messagesFrom);
+            params.put("message", messagesBody);
+            return SmsSyncHttpClient.postSmsToWebService2(urlBuilder.toString(), params, context);
+        }
+
+        return false;
+    }
+
+    /**
      * Posts received SMS to a configured callback URL. TODO:// Improve on how
      * to receive auto response message from the server.
      * 
@@ -611,15 +640,18 @@ public class Util {
         if (!msg.equals("")) {
             SmsManager sms = SmsManager.getDefault();
             ArrayList<String> parts = sms.divideMessage(msg);
+
+            Log.d(CLASS_TAG,
+                    "extractNetworkPortion: " + PhoneNumberUtils.extractNetworkPortion(sendTo));
+            Log.d(CLASS_TAG,
+                    " extractPostDialPortion: " + PhoneNumberUtils.extractPostDialPortion(sendTo));
+            Log.d(CLASS_TAG,
+                    " getStrippedReversed: " + PhoneNumberUtils.getStrippedReversed(sendTo));
+            Log.d(CLASS_TAG, " stripSeparators: " + PhoneNumberUtils.stripSeparators(sendTo));
+            Log.d(CLASS_TAG, " toCallerIDMinMatch: " + PhoneNumberUtils.toCallerIDMinMatch(sendTo));
+
             try {
-                Log.d(CLASS_TAG,"extractNetworkPortion: " + PhoneNumberUtils.extractNetworkPortion(sendTo));
-                Log.d(CLASS_TAG," extractPostDialPortion: "
-                        + PhoneNumberUtils.extractPostDialPortion(sendTo));
-                Log.d(CLASS_TAG, " getStrippedReversed: "
-                                + PhoneNumberUtils.getStrippedReversed(sendTo));
-                Log.d(CLASS_TAG, " stripSeparators: " + PhoneNumberUtils.stripSeparators(sendTo));
-                Log.d(CLASS_TAG," toCallerIDMinMatch: "
-                                + PhoneNumberUtils.toCallerIDMinMatch(sendTo));
+
                 sms.sendMultipartTextMessage(sendTo, null, parts, null, null);
             } catch (Exception e) {
                 Log.d(CLASS_TAG, e.getMessage());
@@ -698,6 +730,73 @@ public class Util {
      */
     public static void performAutoResponse(Context context, String resp) {
         Log.i(CLASS_TAG, "performAutoResponse(): " + " response:" + resp);
+        // load preferences
+        SmsSyncPref.loadPreferences(context);
+
+        // validate configured url
+        int status = validateCallbackUrl(SmsSyncPref.website);
+        if (status == 1) {
+            showToast(context, R.string.no_configured_url);
+        } else if (status == 2) {
+            showToast(context, R.string.invalid_url);
+        } else if (status == 3) {
+            showToast(context, R.string.no_connection);
+        } else {
+
+            StringBuilder uriBuilder = new StringBuilder(SmsSyncPref.website);
+            uriBuilder.append("?task=send");
+
+            String response = resp;
+
+            String task = "";
+            String secret = "";
+
+            if (!TextUtils.isEmpty(response) && response != null) {
+
+                try {
+
+                    jsonObject = new JSONObject(response);
+                    JSONObject payloadObject = jsonObject.getJSONObject("payload");
+
+                    if (payloadObject != null) {
+                        task = payloadObject.getString("task");
+                        secret = payloadObject.getString("secret");
+                        if ((task.equals("send")) && (secret.equals(SmsSyncPref.apiKey))) {
+                            jsonArray = payloadObject.getJSONArray("messages");
+
+                            for (int index = 0; index < jsonArray.length(); ++index) {
+                                jsonObject = jsonArray.getJSONObject(index);
+                                Log.i(CLASS_TAG, "Send sms: To: " + jsonObject.getString("to")
+                                        + "Message: " + jsonObject.getString("message"));
+
+                                sendSms(jsonObject.getString("to"), jsonObject.getString("message"));
+                            }
+
+                        } else {
+                            // no task enabled on the callback url.
+                            showToast(context, R.string.no_task);
+                        }
+
+                    } else {
+
+                        showToast(context, R.string.no_task);
+                    }
+
+                } catch (JSONException e) {
+                    Log.i(CLASS_TAG, "Error: " + e.getMessage());
+                    showToast(context, R.string.no_task);
+                }
+            }
+        }
+    }
+
+    /**
+     * Sends messages received from the server as SMS.
+     * 
+     * @param Context context - the activity calling this method.
+     */
+    public static void performResponseFromServer(Context context, String resp) {
+        Log.i(CLASS_TAG, "performResponseFromServer(): " + " response:" + resp);
         // load preferences
         SmsSyncPref.loadPreferences(context);
 
