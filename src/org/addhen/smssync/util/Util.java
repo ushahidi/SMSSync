@@ -635,28 +635,26 @@ public class Util {
      * @param String sendTo - Number to send SMS to.
      * @param String msg - The message to be sent.
      */
-    public static void sendSms(String sendTo, String msg) {
+    public static void sendSms(Context context, String sendTo, String msg) {
+
+        ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
+        ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
         Log.i(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: " + sendTo + " message: " + msg);
-        if (!msg.equals("")) {
-            SmsManager sms = SmsManager.getDefault();
-            ArrayList<String> parts = sms.divideMessage(msg);
 
-            Log.d(CLASS_TAG,
-                    "extractNetworkPortion: " + PhoneNumberUtils.extractNetworkPortion(sendTo));
-            Log.d(CLASS_TAG,
-                    " extractPostDialPortion: " + PhoneNumberUtils.extractPostDialPortion(sendTo));
-            Log.d(CLASS_TAG,
-                    " getStrippedReversed: " + PhoneNumberUtils.getStrippedReversed(sendTo));
-            Log.d(CLASS_TAG, " stripSeparators: " + PhoneNumberUtils.stripSeparators(sendTo));
-            Log.d(CLASS_TAG, " toCallerIDMinMatch: " + PhoneNumberUtils.toCallerIDMinMatch(sendTo));
+        SmsManager sms = SmsManager.getDefault();
+        ArrayList<String> parts = sms.divideMessage(msg);
+        for (int i = 0; i < parts.size(); i++) {
+            PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0, new Intent(
+                    ServicesConstants.SENT), 0);
 
-            try {
+            PendingIntent deliveryIntent = PendingIntent.getBroadcast(context, 0, new Intent(
+                    ServicesConstants.DELIVERED), 0);
+            sentIntents.add(sentIntent);
 
-                sms.sendMultipartTextMessage(sendTo, null, parts, null, null);
-            } catch (Exception e) {
-                Log.d(CLASS_TAG, e.getMessage());
-            }
+            deliveryIntents.add(deliveryIntent);
         }
+        if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo))
+            sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents, deliveryIntents);
     }
 
     /**
@@ -702,7 +700,8 @@ public class Util {
                             for (int index = 0; index < jsonArray.length(); ++index) {
                                 jsonObject = jsonArray.getJSONObject(index);
 
-                                sendSms(jsonObject.getString("to"), jsonObject.getString("message"));
+                                sendSms(context, jsonObject.getString("to"),
+                                        jsonObject.getString("message"));
                             }
 
                         } else {
@@ -769,7 +768,8 @@ public class Util {
                                 Log.i(CLASS_TAG, "Send sms: To: " + jsonObject.getString("to")
                                         + "Message: " + jsonObject.getString("message"));
 
-                                sendSms(jsonObject.getString("to"), jsonObject.getString("message"));
+                                sendSms(context, jsonObject.getString("to"),
+                                        jsonObject.getString("message"));
                             }
 
                         } else {
@@ -836,7 +836,8 @@ public class Util {
                                 Log.i(CLASS_TAG, "Send sms: To: " + jsonObject.getString("to")
                                         + "Message: " + jsonObject.getString("message"));
 
-                                sendSms(jsonObject.getString("to"), jsonObject.getString("message"));
+                                sendSms(context, jsonObject.getString("to"),
+                                        jsonObject.getString("message"));
                             }
 
                         } else {

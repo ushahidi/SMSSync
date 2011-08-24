@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.util.Log;
 
@@ -29,6 +30,8 @@ public abstract class SmsSyncServices extends IntentService {
 
     protected static PowerManager.WakeLock mStartingService = null;
 
+    protected static WifiManager.WifiLock wifilock = null;
+
     protected NotificationManager notificationManager;
 
     protected static final Object mStartingServiceSync = new Object();
@@ -36,7 +39,7 @@ public abstract class SmsSyncServices extends IntentService {
     public SmsSyncServices(String name) {
         super(name);
     }
-    
+
     synchronized private static PowerManager.WakeLock getPhoneWakeLock(Context context) {
         if (mStartingService == null) {
             PowerManager mgr = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
@@ -45,15 +48,24 @@ public abstract class SmsSyncServices extends IntentService {
         return mStartingService;
     }
 
+    synchronized private static WifiManager.WifiLock getPhoneWifiLock(Context context) {
+        if (wifilock == null) {
+
+            WifiManager manager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+            wifilock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL, CLASS_TAG);
+        }
+        return wifilock;
+    }
+
     protected static void sendWakefulTask(Context context, Intent i) {
         getPhoneWakeLock(context.getApplicationContext()).acquire();
+        getPhoneWifiLock(context.getApplicationContext()).acquire();
         context.startService(i);
     }
 
     public static void sendWakefulTask(Context context, Class<?> classService) {
         sendWakefulTask(context, new Intent(context, classService));
     }
-    
 
     /*
      * Subclasses must implement this method so it executes any tasks
@@ -92,12 +104,13 @@ public abstract class SmsSyncServices extends IntentService {
                         PackageManager.DONT_KILL_APP);
 
             } else {
-                
+
                 // execute the scheduled task
                 executeTask(intent);
             }
         } finally {
             getPhoneWakeLock(this.getApplicationContext()).release();
+            getPhoneWifiLock(this.getApplicationContext()).release();
         }
     }
 }

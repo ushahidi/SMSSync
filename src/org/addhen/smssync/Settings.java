@@ -26,6 +26,7 @@ import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.AutoSyncScheduledService;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
+import org.addhen.smssync.services.ScheduleServices;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 

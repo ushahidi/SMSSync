@@ -34,6 +34,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -61,6 +62,8 @@ public class SmsReceiverService extends Service {
     private static final Object mStartingServiceSync = new Object();
 
     private static PowerManager.WakeLock mStartingService;
+
+    private static WifiManager.WifiLock wifilock;
 
     public double latitude;
 
@@ -158,7 +161,7 @@ public class SmsReceiverService extends Service {
         if (SmsSyncPref.enabled) {
             if (SmsSyncPref.enableReply) {
                 // send auto response
-                Util.sendSms(messagesFrom, SmsSyncPref.reply);
+                Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
             }
             if (Util.isConnected(SmsReceiverService.this)) {
 
@@ -171,7 +174,7 @@ public class SmsReceiverService extends Service {
                             SmsReceiverService.this);
 
                     // send auto response
-                    Util.sendSms(messagesFrom, SmsSyncPref.reply);
+                    Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
 
                 }
 
@@ -336,15 +339,22 @@ public class SmsReceiverService extends Service {
                 mStartingService = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, CLASS_TAG);
                 mStartingService.setReferenceCounted(false);
             }
+            
+            // keep wifi alive
+            if (wifilock == null) {
+                WifiManager manager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+                wifilock = manager.createWifiLock(CLASS_TAG);
+            }
 
             mStartingService.acquire();
+            wifilock.acquire();
             context.startService(intent);
         }
     }
 
     /**
      * Called back by the service when it has finished processing notifications,
-     * releasing the wake lock if the service is now stopping.
+     * releasing the wake lock and wifi lock if the service is now stopping.
      * 
      * @param Service service - The calling service.
      * @param int startId - The service start id.
@@ -357,6 +367,13 @@ public class SmsReceiverService extends Service {
             if (mStartingService != null) {
                 if (service.stopSelfResult(startId)) {
                     mStartingService.release();
+                }
+            }
+
+            // release wifi lock
+            if (wifilock != null && wifilock.isHeld()) {
+                if (service.stopSelfResult(startId)) {
+                    wifilock.release();
                 }
             }
         }

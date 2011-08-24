@@ -1,10 +1,10 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.ScheduleServices;
 import org.addhen.smssync.SmsSyncPref;
 import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
+import org.addhen.smssync.services.ScheduleServices;
 import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;

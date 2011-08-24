@@ -19,4 +19,7 @@ public class ServicesConstants {
 
     public static String CHECT_TASK_SCHEDULED_ACTION = "org.addhen.smssync.syncservices.checktaskscheduled";
 
+    public static String SENT = "SMS_SENT";
+
+    public static String DELIVERED = "SMS_DELIVERED";
 }

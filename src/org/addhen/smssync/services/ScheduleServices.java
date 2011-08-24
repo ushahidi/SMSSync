@@ -1,5 +1,7 @@
 
-package org.addhen.smssync;
+package org.addhen.smssync.services;
+
+import org.addhen.smssync.SmsSyncPref;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

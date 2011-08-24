@@ -38,6 +38,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SmsManager;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This class test various aspects of task that needs be executed for pending
@@ -128,6 +130,8 @@ public class SmsSyncOutbox extends Activity {
     protected void onResume() {
         super.onResume();
         registerReceiver(broadcastReceiver, new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+        registerReceiver(smsSentReceiver, new IntentFilter(ServicesConstants.SENT));
+        registerReceiver(smsDeliveredReceiver, new IntentFilter(ServicesConstants.DELIVERED));
         mHandler.post(mDisplayMessages);
     }
 
@@ -135,6 +139,8 @@ public class SmsSyncOutbox extends Activity {
     protected void onPause() {
         super.onPause();
         unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(smsSentReceiver);
+        unregisterReceiver(smsDeliveredReceiver);
         mHandler.post(mDisplayMessages);
     }
 
@@ -718,6 +724,46 @@ public class SmsSyncOutbox extends Activity {
                     Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
                 }
                 mHandler.post(mUpdateListView);
+            }
+        }
+    };
+
+    // when sms has been sent
+    private BroadcastReceiver smsSentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            switch (getResultCode()) {
+                case Activity.RESULT_OK:
+                    Toast.makeText(getBaseContext(), "SMS sent", Toast.LENGTH_LONG).show();
+                    break;
+                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                    Toast.makeText(getBaseContext(), "Failed to send SMS -- Maybe insufficient credits on the phone", Toast.LENGTH_LONG).show();
+                    break;
+                case SmsManager.RESULT_ERROR_NO_SERVICE:
+                    Toast.makeText(getBaseContext(), "No service", Toast.LENGTH_LONG).show();
+                    break;
+                case SmsManager.RESULT_ERROR_NULL_PDU:
+                    Toast.makeText(getBaseContext(), "Null PDU", Toast.LENGTH_LONG).show();
+                    break;
+                case SmsManager.RESULT_ERROR_RADIO_OFF:
+                    Toast.makeText(getBaseContext(), "Radio off", Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    };
+
+    // when sms has been delivered
+    private BroadcastReceiver smsDeliveredReceiver = new BroadcastReceiver() {
+
+        public void onReceive(Context arg0, Intent arg1) {
+            switch (getResultCode()) {
+                case Activity.RESULT_OK:
+                    Toast.makeText(getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
+                    break;
+                case Activity.RESULT_CANCELED:
+                    Toast.makeText(getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT)
+                            .show();
+                    break;
             }
         }
     };
