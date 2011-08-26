@@ -39,7 +39,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     private static String CLASS_TAG = AutoSyncScheduledService.class.getSimpleName();
 
     private Intent statusIntent; // holds the status of the sync and sends it to
-                           // another smssyncoutbox activity to update the ui
+                           // smssyncoutbox activity to update the ui
     public AutoSyncScheduledService() {
         super(CLASS_TAG);
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
