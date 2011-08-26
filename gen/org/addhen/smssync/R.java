@@ -93,7 +93,15 @@ public final class R {
         public static final int reply_settings=0x7f05000f;
         public static final int sending_failed=0x7f050027;
         public static final int sending_succeeded=0x7f050028;
+        public static final int sms_delivered=0x7f05004b;
+        /**  SMS delivery status 
+         */
+        public static final int sms_delivery_status_failed=0x7f050047;
+        public static final int sms_delivery_status_no_service=0x7f050048;
+        public static final int sms_delivery_status_null_pdu=0x7f05004a;
+        public static final int sms_delivery_status_radio_off=0x7f050049;
         public static final int sms_failed=0x7f050039;
+        public static final int sms_not_delivered=0x7f05004c;
         public static final int sms_status_failed=0x7f050025;
         public static final int sms_status_success=0x7f050024;
         public static final int sms_sync_disabled=0x7f05000b;

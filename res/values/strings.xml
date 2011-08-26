@@ -110,4 +110,13 @@
 	<string name="chk_enable_reply_frm_server">Get Reply From Server</string>
 	<string name="chk_reply_frm_server_hint">This will instantly send messages as recieved from
 		the server as SMS without waiting on a scheduler </string>
+	
+	<!-- SMS delivery status -->
+	<string name="sms_delivery_status_failed">Failed to send SMS -- Maybe insufficient air time
+	on the phone</string>
+	<string name="sms_delivery_status_no_service">No service</string>
+	<string name="sms_delivery_status_radio_off">Radio off</string>
+	<string name="sms_delivery_status_null_pdu">No PDU</string>
+	<string name="sms_delivered">SMS delivered</string>
+	<string name="sms_not_delivered">SMS not delivered</string>
 </resources>

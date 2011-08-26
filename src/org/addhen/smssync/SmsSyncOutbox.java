@@ -47,7 +47,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * This class test various aspects of task that needs be executed for pending
@@ -734,19 +733,19 @@ public class SmsSyncOutbox extends Activity {
         public void onReceive(Context arg0, Intent arg1) {
             switch (getResultCode()) {
                 case Activity.RESULT_OK:
-                    Toast.makeText(getBaseContext(), "SMS sent", Toast.LENGTH_LONG).show();
+                    Util.showToast(getBaseContext(), R.string.sms_status_success);
                     break;
                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                    Toast.makeText(getBaseContext(), "Failed to send SMS -- Maybe insufficient credits on the phone", Toast.LENGTH_LONG).show();
+                    Util.showToast(getBaseContext(), R.string.sms_delivery_status_failed);
                     break;
                 case SmsManager.RESULT_ERROR_NO_SERVICE:
-                    Toast.makeText(getBaseContext(), "No service", Toast.LENGTH_LONG).show();
+                    Util.showToast(getBaseContext(), R.string.sms_delivery_status_no_service);
                     break;
                 case SmsManager.RESULT_ERROR_NULL_PDU:
-                    Toast.makeText(getBaseContext(), "Null PDU", Toast.LENGTH_LONG).show();
+                    Util.showToast(getBaseContext(), R.string.sms_delivery_status_null_pdu);
                     break;
                 case SmsManager.RESULT_ERROR_RADIO_OFF:
-                    Toast.makeText(getBaseContext(), "Radio off", Toast.LENGTH_LONG).show();
+                    Util.showToast(getBaseContext(), R.string.sms_delivery_status_radio_off);
                     break;
             }
         }
@@ -758,11 +757,10 @@ public class SmsSyncOutbox extends Activity {
         public void onReceive(Context arg0, Intent arg1) {
             switch (getResultCode()) {
                 case Activity.RESULT_OK:
-                    Toast.makeText(getBaseContext(), "SMS delivered", Toast.LENGTH_SHORT).show();
+                    Util.showToast(getBaseContext(), R.string.sms_delivered);
                     break;
                 case Activity.RESULT_CANCELED:
-                    Toast.makeText(getBaseContext(), "SMS not delivered", Toast.LENGTH_SHORT)
-                            .show();
+                    Util.showToast(getBaseContext(), R.string.sms_not_delivered);
                     break;
             }
         }
