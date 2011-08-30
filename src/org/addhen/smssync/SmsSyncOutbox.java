@@ -500,7 +500,8 @@ public class SmsSyncOutbox extends Activity {
                 ila.notifyDataSetChanged();
             }
 
-            mOldMessages.clear();
+            if (mOldMessages != null)
+                mOldMessages.clear();
 
             do {
 
@@ -558,7 +559,8 @@ public class SmsSyncOutbox extends Activity {
         }
 
         int deleted = 0;
-        mOldMessages.clear();
+        if (mOldMessages != null)
+            mOldMessages.clear();
         if (cursor.moveToFirst()) {
             int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
             int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);

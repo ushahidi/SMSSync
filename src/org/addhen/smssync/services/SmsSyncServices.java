@@ -114,11 +114,12 @@ public abstract class SmsSyncServices extends IntentService {
                     && getPhoneWakeLock(this.getApplicationContext()) != null) {
                 getPhoneWakeLock(this.getApplicationContext()).release();
             }
-
-            if (getPhoneWifiLock(this.getApplicationContext()).isHeld()
+            
+          //commenting this out for now to see if actually fixes the wifi issue.
+            /*if (getPhoneWifiLock(this.getApplicationContext()).isHeld()
                     && getPhoneWifiLock(this.getApplicationContext()) != null) {
                 getPhoneWifiLock(this.getApplicationContext()).release();
-            }
+            }*/
         }
     }
 }

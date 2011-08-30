@@ -371,11 +371,12 @@ public class SmsReceiverService extends Service {
             }
 
             // release wifi lock
-            if (wifilock != null && wifilock.isHeld()) {
-                if (service.stopSelfResult(startId)) {
-                    wifilock.release();
+            //commenting this out for now to see if actually fixes the wifi issue.
+            /**if (wifilock != null && wifilock.isHeld()) {
+               // if (service.stopSelfResult(startId)) {
+                  //  wifilock.release();
                 }
-            }
+            }**/
         }
     }
 
