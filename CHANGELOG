@@ -3,6 +3,7 @@ Feature:
   * Improved battery consumption by the app.
   * Enabled services automatically starts after the phone boots.
   * Locks Wifi when the phone is connected to wifi so it keeps the apps online.
+  * Added the ability for responses to be received from the server and not waiting on a scheduler.
   
   
 1.0.5
