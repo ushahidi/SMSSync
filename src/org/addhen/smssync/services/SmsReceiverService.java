@@ -102,6 +102,12 @@ public class SmsReceiverService extends Service {
     @Override
     public void onDestroy() {
         mServiceLooper.quit();
+
+        // release wifi lock
+        // commenting this out for now to see if actually fixes the wifi issue.
+        if (wifilock != null && wifilock.isHeld()) {
+            wifilock.release();
+        }
     }
 
     @Override
@@ -339,7 +345,7 @@ public class SmsReceiverService extends Service {
                 mStartingService = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, CLASS_TAG);
                 mStartingService.setReferenceCounted(false);
             }
-            
+
             // keep wifi alive
             if (wifilock == null) {
                 WifiManager manager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
@@ -370,13 +376,6 @@ public class SmsReceiverService extends Service {
                 }
             }
 
-            // release wifi lock
-            //commenting this out for now to see if actually fixes the wifi issue.
-            /**if (wifilock != null && wifilock.isHeld()) {
-               // if (service.stopSelfResult(startId)) {
-                  //  wifilock.release();
-                }
-            }**/
         }
     }
 

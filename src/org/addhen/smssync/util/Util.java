@@ -20,6 +20,9 @@
 
 package org.addhen.smssync.util;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,6 +61,7 @@ import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Environment;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -681,7 +685,8 @@ public class Util {
             uriBuilder.append("?task=send");
 
             String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
-
+            appendLog(response);
+            Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
             String task = "";
             String secret = "";
             if (!TextUtils.isEmpty(response) && response != null) {
@@ -778,12 +783,11 @@ public class Util {
                         }
 
                     } else {
-
                         showToast(context, R.string.no_task);
                     }
 
                 } catch (JSONException e) {
-                    Log.i(CLASS_TAG, "Error: " + e.getMessage());
+                    Log.d(CLASS_TAG, "Error: " + e.getMessage());
                     showToast(context, R.string.no_task);
                 }
             }
@@ -919,5 +923,32 @@ public class Util {
             return 1;
         }
 
+    }
+
+    /**
+     * For debugging purposes. Append content of a string to a file
+     * 
+     * @param text
+     */
+    public static void appendLog(String text) {
+        File logFile = new File(Environment.getExternalStorageDirectory(), "smssync.txt");
+        if (!logFile.exists()) {
+            try {
+                logFile.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        try {
+            // BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+            buf.append(text);
+            buf.newLine();
+            buf.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
