@@ -81,7 +81,7 @@
 	<string name="menu_sync_all">Synchronize All</string>
 	<string name="menu_delete">Delete</string>
 	<string name="menu_sync">Synchronize</string>
-	<string name="menu_import">Import</string>
+	<string name="menu_import">Import SMS</string>
 	<string name="menu_settings">Settings</string>
 
 	<string name="messages_deleted">Messages successfully deleted.</string>

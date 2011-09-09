@@ -230,7 +230,7 @@ msgid "Synchronize"
 msgstr ""
 
 #Key: menu_import
-msgid "Import"
+msgid "Import SMS"
 msgstr ""
 
 #Key: menu_settings
