@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
+	Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
+	This file may be used under the terms of the GNU Lesser General Public License 
+	version 3 as published by the Free Software Foundation and appearing in the 
+	file LICENSE.LGPL included in the packaging of this file. Please review the 
+	following information to ensure the GNU Lesser General Public License version 
+	3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
+	have questions regarding the use of this file, please contact Ushahidi developers 
+	at team@ushahidi.com. -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="320dip" android:layout_height="300dip"
+	android:orientation="horizontal" android:background="@drawable/appwidget_bg">
+	<Button android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_alignParentTop="true"
+		android:layout_alignParentLeft="true" android:layout_marginLeft="7dip"
+		android:paddingLeft="11dip" android:id="@+id/appwidget_item"
+		android:gravity="left" android:textColor="#000000" android:background="@drawable/icon"
+		android:maxLines="3" android:ellipsize="end" android:bufferType="spannable" />
+	<ImageButton android:id="@+id/appwidget_logo"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
+		android:layout_marginRight="7dip" android:src="@android:drawable/ic_menu_preferences"
+		android:background="@android:color/transparent" android:scaleType="center" />
+
+	<RelativeLayout android:id="@+id/relativeLayout1"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_marginTop="57dip" android:layout_gravity="center"
+		android:gravity="center">
+		<LinearLayout android:id="@+id/linear_pending_msg"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_alignParentLeft="true">
+			<LinearLayout android:orientation="horizontal"
+				android:id="@+id/linearLayout1" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_alignParentLeft="true">
+				<TextView android:id="@+id/msg_number"
+					android:layout_marginLeft="7dip" android:layout_width="wrap_content"
+					android:layout_height="wrap_content" android:gravity="left"
+					android:textColor="@color/text_dark" android:layout_weight="1" />
+				<TextView android:layout_height="wrap_content" android:id="@+id/msg_date"
+					android:layout_width="wrap_content" android:gravity="right"
+					android:layout_marginRight="15dip" android:textColor="@color/text_dark"
+					android:layout_weight="1" />
+			</LinearLayout>
+			<TextView android:id="@+id/msg_desc" android:layout_width="wrap_content"
+				android:textColor="@color/text_dark" android:layout_marginLeft="7dip"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+		<!-- Here is the view to show if the list is emtpy -->
+		<TextView android:id="@+id/appwidget_empty_list"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:text="@string/empty_list" android:textStyle="bold"
+			android:gravity="center_horizontal|center" />
+	</RelativeLayout>
+
+	<ImageButton android:id="@+id/appwidget_refresh"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:layout_gravity="center" android:gravity="center"
+		android:layout_alignParentTop="true" android:layout_marginTop="240dip"
+		android:src="@drawable/refresh" android:background="@android:color/transparent"
+		android:scaleType="center" />
+	<ImageButton android:id="@+id/appwidget_prev"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+		android:layout_marginLeft="14dip" android:layout_marginTop="240dip"
+		android:src="@drawable/arrow_left" android:background="@android:color/transparent"
+		android:scaleType="center" />
+	<ImageButton android:id="@+id/appwidget_next"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
+		android:layout_marginRight="14dip" android:layout_marginTop="240dip"
+		android:src="@drawable/arrow_right" android:background="@android:color/transparent"
+		android:scaleType="center" />
+</RelativeLayout>                                                     

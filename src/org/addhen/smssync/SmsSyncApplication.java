@@ -37,6 +37,7 @@ public class SmsSyncApplication extends Application {
     public static SmsSyncDatabase mDb;
 
     public static SmsSyncHttpClient mApi;
+    
 
     @Override
     public void onCreate() {

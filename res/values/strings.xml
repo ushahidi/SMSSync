@@ -119,4 +119,12 @@
 	<string name="sms_delivery_status_null_pdu">No PDU</string>
 	<string name="sms_delivered">SMS delivered</string>
 	<string name="sms_not_delivered">SMS not delivered</string>
+	
+	<string name="appwidget_configure_instructions">Customize SMSSync Widget message, shown in a case there is nothing new:</string>
+    <string name="appwidget_nothingnew_default">No pending message since:</string>
+    <string name="appwidget_new_pending_message_format">{0}</string>
+    <string name="appwidget_new_message_format">{0}</string>
+    <string name="appwidget_new_mention_format">{0}</string>
+    <string name="appwidget_nodata">No data yet.</string>
+	
 </resources>

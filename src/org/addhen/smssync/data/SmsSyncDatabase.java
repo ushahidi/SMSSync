@@ -185,6 +185,19 @@ public class SmsSyncDatabase {
         return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, null, null, null, null, MESSAGES_DATE
                 + " DESC");
     }
+    
+    /**
+     * Fetch all messages in the database.
+     * 
+     * @param int limit - The limit to stop fetching pending messages
+     * 
+     * @return Cursor
+     */
+    public Cursor fetchMessagesByLimit(int limit) {
+        String strLimit = String.valueOf(limit);
+        return mDb.query(MESSAGES_TABLE, MESSAGES_COLUMNS, null, null, null, null, MESSAGES_DATE
+                + " DESC",strLimit);
+    }
 
     /**
      * Fetch messages by message id in the database.

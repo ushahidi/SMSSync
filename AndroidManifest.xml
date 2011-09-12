@@ -16,8 +16,9 @@
 		<service android:name=".services.SmsReceiverService" />
 		<service android:name=".services.AutoSyncService" />
 		<service android:name=".services.AutoSyncScheduledService" />
-        <service android:name=".services.CheckTaskScheduledService" />
+		<service android:name=".services.CheckTaskScheduledService" />
 		<service android:name=".services.CheckTaskService" />
+		
 		<activity android:launchMode="singleTop" android:name=".Settings"
 			android:label="@string/app_name">
 			<intent-filter>
@@ -36,7 +37,7 @@
 					android:label="@string/app_name" />
 			</intent-filter>
 		</activity>
-
+        
 		<!-- sms -->
 		<receiver android:name=".receivers.SmsReceiver">
 			<intent-filter>
@@ -66,13 +67,22 @@
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
-		
+
 		<!-- task check scheduled -->
-		<receiver android:name=".receivers.CheckTaskScheduledReceiver"/>
-		
+		<receiver android:name=".receivers.CheckTaskScheduledReceiver" />
+
 		<!-- task check scheduled -->
-        <receiver android:name=".receivers.AutoSyncScheduledReceiver"/>
-        
+		<receiver android:name=".receivers.AutoSyncScheduledReceiver" />
+
+		<!-- app widget provider -->
+		<receiver android:name=".widget.SmsSyncAppWidgetProvider">
+			<intent-filter>
+				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data android:name="android.appwidget.provider"
+               android:resource="@xml/appwidget_info" />
+		</receiver>
+	   <service android:name=".widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService"/>
 	</application>
 	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="11" />
 </manifest>  

@@ -1,0 +1,4 @@
+<resources>
+	<color name="text_dark">#FF000000</color>
+	<color name="text_light">#FFFFFFFF</color>
+</resources>
