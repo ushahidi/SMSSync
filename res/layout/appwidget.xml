@@ -26,7 +26,7 @@
 
 	<RelativeLayout android:id="@+id/relativeLayout1"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_marginTop="57dip" android:layout_gravity="center"
+		android:layout_marginTop="70dip" android:layout_gravity="center"
 		android:gravity="center">
 		<LinearLayout android:id="@+id/linear_pending_msg"
 			android:orientation="vertical" android:layout_width="fill_parent"
@@ -37,7 +37,8 @@
 				<TextView android:id="@+id/msg_number"
 					android:layout_marginLeft="7dip" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:gravity="left"
-					android:textColor="@color/text_dark" android:layout_weight="1" />
+					android:textColor="@color/text_dark" android:textStyle="bold"
+					android:layout_weight="1"/>
 				<TextView android:layout_height="wrap_content" android:id="@+id/msg_date"
 					android:layout_width="wrap_content" android:gravity="right"
 					android:layout_marginRight="15dip" android:textColor="@color/text_dark"

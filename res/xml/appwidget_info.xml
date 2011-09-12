@@ -10,7 +10,6 @@
 <!-- This is a primitive example showing the different types of preferences 
 	available. -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-	android:minWidth="304dip"
-    android:minHeight="250dip"
-	android:updatePeriodMillis="0" 
-	android:initialLayout="@layout/appwidget"/>
+	android:minWidth="250dip"
+    android:updatePeriodMillis="1800000" 
+	android:initialLayout="@layout/appwidget" android:minHeight="160dip"/>

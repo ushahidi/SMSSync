@@ -4,7 +4,6 @@ package org.addhen.smssync.widget;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.addhen.smssync.ListMessagesText;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.SmsSyncApplication;
@@ -23,13 +22,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.IBinder;
-import android.text.SpannableStringBuilder;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -53,9 +47,9 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
     static Context mContext;
 
-    public static int WIDTH = 300;
+    public static int WIDTH = 250;
 
-    public static int HEIGHT = 400;
+    public static int HEIGHT = 160;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -173,7 +167,6 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             }
             if (mgs == null) {
                 Log.e(CLASS_TAG, "Error in getting pending messages");
-               return null;
             }
 
             // go to settings screen when configure icon is pressed
