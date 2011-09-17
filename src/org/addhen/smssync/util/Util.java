@@ -871,16 +871,19 @@ public class Util {
      */
     public static boolean processString(String message, String[] keywords) {
         Log.i(CLASS_TAG, "processString(): find words in a string: " + message);
-        Scanner scanner = new Scanner(message);
-        while (scanner.hasNext()) {
-            for (String keyword : keywords) {
-                if (scanner.nextLine().contentEquals(keyword)) {
-                    return true;
-                } else {
-                    return false;
-                }
+        /*
+         * Scanner scanner = new Scanner(message); while (scanner.hasNext()) {
+         * for (String keyword : keywords) { if
+         * (scanner.nextLine().contentEquals(keyword)) { return true; } } }
+         * return false;
+         */
+
+        for (int i = 0; i < keywords.length; i++) {
+            if (message.contains(keywords[i])) {
+                return true;
             }
         }
+
         return false;
     }
 

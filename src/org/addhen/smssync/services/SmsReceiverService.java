@@ -165,30 +165,32 @@ public class SmsReceiverService extends Service {
         }
 
         if (SmsSyncPref.enabled) {
-            if (SmsSyncPref.enableReply) {
-                // send auto response
-                Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
-            }
+            /*
+             * if (SmsSyncPref.enableReply) { // send auto response
+             * Util.sendSms(SmsReceiverService.this, messagesFrom,
+             * SmsSyncPref.reply); }
+             */
             if (Util.isConnected(SmsReceiverService.this)) {
 
                 boolean posted = false;
-                if (SmsSyncPref.enableReplyFrmServer) {
-                    posted = Util.postToAWebService2(messagesFrom, messagesBody,
-                            SmsReceiverService.this);
-                } else {
-                    posted = Util.postToAWebService(messagesFrom, messagesBody,
-                            SmsReceiverService.this);
-
-                    // send auto response
-                    Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
-
-                }
-
                 // if keywoard is enabled
                 if (!SmsSyncPref.keyword.equals("")) {
                     String[] keywords = SmsSyncPref.keyword.split(",");
-
+                    Log.i(CLASS_TAG, "Keyword enabled:" + SmsSyncPref.keyword);
                     if (Util.processString(messagesBody, keywords)) {
+
+                        if (SmsSyncPref.enableReplyFrmServer) {
+                            posted = Util.postToAWebService2(messagesFrom, messagesBody,
+                                    SmsReceiverService.this);
+                        } else {
+                            posted = Util.postToAWebService(messagesFrom, messagesBody,
+                                    SmsReceiverService.this);
+
+                            // send auto response
+                            Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
+
+                        }
+
                         if (!posted) {
                             this.showNotification(messagesBody, getString(R.string.sending_failed));
                             this.postToOutbox();
@@ -216,7 +218,18 @@ public class SmsReceiverService extends Service {
 
                     // keyword is not enabled
                 } else {
+                    if (SmsSyncPref.enableReplyFrmServer) {
+                        posted = Util.postToAWebService2(messagesFrom, messagesBody,
+                                SmsReceiverService.this);
+                    } else {
+                        posted = Util.postToAWebService(messagesFrom, messagesBody,
+                                SmsReceiverService.this);
 
+                        // send auto response
+                        Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
+
+                    }
+                    
                     if (!posted) {
                         this.showNotification(messagesBody, getString(R.string.sending_failed));
                         this.postToOutbox();
