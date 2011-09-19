@@ -99,7 +99,7 @@ public class SmsReceiverService extends Service {
         mServiceHandler.sendMessage(msg);
     }
 
-    @Override
+    /*@Override
     public void onDestroy() {
         mServiceLooper.quit();
 
@@ -108,7 +108,7 @@ public class SmsReceiverService extends Service {
         if (wifilock != null && wifilock.isHeld()) {
             wifilock.release();
         }
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {

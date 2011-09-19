@@ -117,8 +117,8 @@ public abstract class SmsSyncServices extends IntentService {
         }
     }
 
-    @Override
-    public void onDestroy() {
+   /* @Override
+   public void onDestroy() {
 
         if (getPhoneWifiLock(this.getApplicationContext()).isHeld()
                 && getPhoneWifiLock(this.getApplicationContext()) != null) {
@@ -130,5 +130,5 @@ public abstract class SmsSyncServices extends IntentService {
             getPhoneWakeLock(this.getApplicationContext()).release();
         }
 
-    }
+    }*/
 }
