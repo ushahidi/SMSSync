@@ -99,16 +99,10 @@ public class SmsReceiverService extends Service {
         mServiceHandler.sendMessage(msg);
     }
 
-    /*@Override
+    @Override
     public void onDestroy() {
         mServiceLooper.quit();
-
-        // release wifi lock
-        // commenting this out for now to see if actually fixes the wifi issue.
-        if (wifilock != null && wifilock.isHeld()) {
-            wifilock.release();
-        }
-    }*/
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -165,11 +159,7 @@ public class SmsReceiverService extends Service {
         }
 
         if (SmsSyncPref.enabled) {
-            /*
-             * if (SmsSyncPref.enableReply) { // send auto response
-             * Util.sendSms(SmsReceiverService.this, messagesFrom,
-             * SmsSyncPref.reply); }
-             */
+
             if (Util.isConnected(SmsReceiverService.this)) {
 
                 boolean posted = false;
@@ -179,16 +169,13 @@ public class SmsReceiverService extends Service {
                     Log.i(CLASS_TAG, "Keyword enabled:" + SmsSyncPref.keyword);
                     if (Util.processString(messagesBody, keywords)) {
 
-                        if (SmsSyncPref.enableReplyFrmServer) {
-                            posted = Util.postToAWebService2(messagesFrom, messagesBody,
-                                    SmsReceiverService.this);
-                        } else {
-                            posted = Util.postToAWebService(messagesFrom, messagesBody,
-                                    SmsReceiverService.this);
+                        posted = Util.postToAWebService(messagesFrom, messagesBody,
+                                SmsReceiverService.this);
 
+                        // send auto response from phone not server.
+                        if (SmsSyncPref.enableReply) {
                             // send auto response
                             Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
-
                         }
 
                         if (!posted) {
@@ -218,18 +205,15 @@ public class SmsReceiverService extends Service {
 
                     // keyword is not enabled
                 } else {
-                    if (SmsSyncPref.enableReplyFrmServer) {
-                        posted = Util.postToAWebService2(messagesFrom, messagesBody,
-                                SmsReceiverService.this);
-                    } else {
-                        posted = Util.postToAWebService(messagesFrom, messagesBody,
-                                SmsReceiverService.this);
 
+                    posted = Util.postToAWebService(messagesFrom, messagesBody,
+                            SmsReceiverService.this);
+                    // send auto response from phone not server.
+                    if (SmsSyncPref.enableReply) {
                         // send auto response
                         Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
-
                     }
-                    
+
                     if (!posted) {
                         this.showNotification(messagesBody, getString(R.string.sending_failed));
                         this.postToOutbox();

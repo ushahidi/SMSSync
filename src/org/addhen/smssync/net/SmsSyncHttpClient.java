@@ -25,10 +25,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 
+import org.addhen.smssync.SmsSyncPref;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -74,7 +75,8 @@ public class SmsSyncHttpClient {
      * @throws IOException
      * @return
      */
-    public static boolean postSmsToWebService(String url, HashMap<String, String> params) {
+    public static boolean postSmsToWebService(String url, HashMap<String, String> params,
+            Context context) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(url);
@@ -92,56 +94,16 @@ public class SmsSyncHttpClient {
             HttpResponse response = httpclient.execute(httppost);
 
             if (response.getStatusLine().getStatusCode() == 200) {
-                boolean success = Util.extractPayloadJSON(getText(response));
+                String resp = getText(response);
+                boolean success = Util.extractPayloadJSON(resp);
 
                 if (success) {
-                    return true;
-                } else {
-                    return false;
-                }
-
-            } else {
-                return false;
-            }
-
-        } catch (ClientProtocolException e) {
-            return false;
-        } catch (IOException e) {
-            return false;
-        }
-
-    }
-    
-    /**
-     * Upload SMS to a web service via HTTP POST and instantly responds via SMS
-     * 
-     * @param address
-     * @throws MalformedURLException
-     * @throws IOException
-     * @return
-     */
-    public static boolean postSmsToWebService2(String url, HashMap<String, String> params, Context context) {
-        // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(url);
-
-        try {
-
-            // Add your data
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-            nameValuePairs.add(new BasicNameValuePair("secret", params.get("secret")));
-            nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
-            nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
-
-            if (response.getStatusLine().getStatusCode() == 200) {
-                boolean success = Util.extractPayloadJSON(getText(response));
-
-                if (success) {
-                    Util.performResponseFromServer(context, getText(response));
+                    // auto response message is enabled to be received from the
+                    // server.
+                    if (SmsSyncPref.enableReplyFrmServer) {
+                        Util.sendResponseFromServer(context,resp);
+                    }
+                    
                     return true;
                 } else {
                     return false;

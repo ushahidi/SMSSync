@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -499,59 +498,11 @@ public class Util {
             params.put("secret", SmsSyncPref.apiKey);
             params.put("from", messagesFrom);
             params.put("message", messagesBody);
-            return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params);
+            return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params, context);
         }
 
         return false;
     }
-
-    /**
-     * Posts received SMS to a configured callback URL. and instantly, sends
-     * message received from the server as SMS.
-     * 
-     * @param String apiKey
-     * @param String fromAddress
-     * @param String messageBody
-     * @return boolean
-     */
-    public static boolean postToAWebService2(String messagesFrom, String messagesBody,
-            Context context) {
-        Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL: messagesFrom: "
-                + messagesFrom + " messagesBody: " + messagesBody);
-
-        HashMap<String, String> params = new HashMap<String, String>();
-        SmsSyncPref.loadPreferences(context);
-
-        if (!SmsSyncPref.website.equals("")) {
-
-            StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
-            params.put("secret", SmsSyncPref.apiKey);
-            params.put("from", messagesFrom);
-            params.put("message", messagesBody);
-            return SmsSyncHttpClient.postSmsToWebService2(urlBuilder.toString(), params, context);
-        }
-
-        return false;
-    }
-
-    /**
-     * Posts received SMS to a configured callback URL. TODO:// Improve on how
-     * to receive auto response message from the server.
-     * 
-     * @param String apiKey
-     * @param String fromAddress
-     * @param String messageBody
-     * @return boolean public static String postToAWebService2(String
-     *         messagesFrom, String messagesBody, Context context) {
-     *         HashMap<String, String> params = new HashMap<String, String>();
-     *         SmsSyncPref.loadPreferences(context); if
-     *         (!SmsSyncPref.website.equals("")) { StringBuilder urlBuilder =
-     *         new StringBuilder(SmsSyncPref.website); params.put("secret",
-     *         SmsSyncPref.apiKey); params.put("from", messagesFrom);
-     *         params.put("message", messagesBody); // return //
-     *         SmsSyncHttpClient.postSmsToWebService2(urlBuilder.toString(), //
-     *         params); } return ""; }
-     */
 
     /**
      * Validate the callback URL
@@ -665,6 +616,7 @@ public class Util {
      * Performs a task based on what callback URL tells it.
      * 
      * @param Context context - the activity calling this method.
+     * @return void
      */
     public static void performTask(Context context) {
         Log.i(CLASS_TAG, "performTask(): perform a task");
@@ -682,10 +634,10 @@ public class Util {
         } else {
 
             StringBuilder uriBuilder = new StringBuilder(SmsSyncPref.website);
+
             uriBuilder.append("?task=send");
 
             String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
-            appendLog(response);
             Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
             String task = "";
             String secret = "";
@@ -728,138 +680,41 @@ public class Util {
     }
 
     /**
-     * Performs a task based on what callback URL tells it.
-     * 
-     * @param Context context - the activity calling this method.
-     */
-    public static void performAutoResponse(Context context, String resp) {
-        Log.i(CLASS_TAG, "performAutoResponse(): " + " response:" + resp);
-        // load preferences
-        SmsSyncPref.loadPreferences(context);
-
-        // validate configured url
-        int status = validateCallbackUrl(SmsSyncPref.website);
-        if (status == 1) {
-            showToast(context, R.string.no_configured_url);
-        } else if (status == 2) {
-            showToast(context, R.string.invalid_url);
-        } else if (status == 3) {
-            showToast(context, R.string.no_connection);
-        } else {
-
-            StringBuilder uriBuilder = new StringBuilder(SmsSyncPref.website);
-            uriBuilder.append("?task=send");
-
-            String response = resp;
-
-            String task = "";
-            String secret = "";
-
-            if (!TextUtils.isEmpty(response) && response != null) {
-
-                try {
-
-                    jsonObject = new JSONObject(response);
-                    JSONObject payloadObject = jsonObject.getJSONObject("payload");
-
-                    if (payloadObject != null) {
-                        task = payloadObject.getString("task");
-                        secret = payloadObject.getString("secret");
-                        if ((task.equals("send")) && (secret.equals(SmsSyncPref.apiKey))) {
-                            jsonArray = payloadObject.getJSONArray("messages");
-
-                            for (int index = 0; index < jsonArray.length(); ++index) {
-                                jsonObject = jsonArray.getJSONObject(index);
-                                Log.i(CLASS_TAG, "Send sms: To: " + jsonObject.getString("to")
-                                        + "Message: " + jsonObject.getString("message"));
-
-                                sendSms(context, jsonObject.getString("to"),
-                                        jsonObject.getString("message"));
-                            }
-
-                        } else {
-                            // no task enabled on the callback url.
-                            showToast(context, R.string.no_task);
-                        }
-
-                    } else {
-                        showToast(context, R.string.no_task);
-                    }
-
-                } catch (JSONException e) {
-                    Log.d(CLASS_TAG, "Error: " + e.getMessage());
-                    showToast(context, R.string.no_task);
-                }
-            }
-        }
-    }
-
-    /**
      * Sends messages received from the server as SMS.
      * 
      * @param Context context - the activity calling this method.
+     * @param String response - the response from the server.
      */
-    public static void performResponseFromServer(Context context, String resp) {
-        Log.i(CLASS_TAG, "performResponseFromServer(): " + " response:" + resp);
-        // load preferences
-        SmsSyncPref.loadPreferences(context);
+    public static void sendResponseFromServer(Context context, String response) {
+        Log.i(CLASS_TAG, "performResponseFromServer(): " + " response:" + response);
 
-        // validate configured url
-        int status = validateCallbackUrl(SmsSyncPref.website);
-        if (status == 1) {
-            showToast(context, R.string.no_configured_url);
-        } else if (status == 2) {
-            showToast(context, R.string.invalid_url);
-        } else if (status == 3) {
-            showToast(context, R.string.no_connection);
-        } else {
+        if (!TextUtils.isEmpty(response) && response != null) {
 
-            StringBuilder uriBuilder = new StringBuilder(SmsSyncPref.website);
-            uriBuilder.append("?task=send");
+            try {
 
-            String response = resp;
+                jsonObject = new JSONObject(response);
+                JSONObject payloadObject = jsonObject.getJSONObject("payload");
 
-            String task = "";
-            String secret = "";
+                if (payloadObject != null) {
 
-            if (!TextUtils.isEmpty(response) && response != null) {
+                    jsonArray = payloadObject.getJSONArray("messages");
 
-                try {
+                    for (int index = 0; index < jsonArray.length(); ++index) {
+                        jsonObject = jsonArray.getJSONObject(index);
+                        Log.i(CLASS_TAG, "Send sms: To: " + jsonObject.getString("to")
+                                + "Message: " + jsonObject.getString("message"));
 
-                    jsonObject = new JSONObject(response);
-                    JSONObject payloadObject = jsonObject.getJSONObject("payload");
-
-                    if (payloadObject != null) {
-                        task = payloadObject.getString("task");
-                        secret = payloadObject.getString("secret");
-                        if ((task.equals("send")) && (secret.equals(SmsSyncPref.apiKey))) {
-                            jsonArray = payloadObject.getJSONArray("messages");
-
-                            for (int index = 0; index < jsonArray.length(); ++index) {
-                                jsonObject = jsonArray.getJSONObject(index);
-                                Log.i(CLASS_TAG, "Send sms: To: " + jsonObject.getString("to")
-                                        + "Message: " + jsonObject.getString("message"));
-
-                                sendSms(context, jsonObject.getString("to"),
-                                        jsonObject.getString("message"));
-                            }
-
-                        } else {
-                            // no task enabled on the callback url.
-                            showToast(context, R.string.no_task);
-                        }
-
-                    } else {
-
-                        showToast(context, R.string.no_task);
+                        sendSms(context, jsonObject.getString("to"),
+                                jsonObject.getString("message"));
                     }
 
-                } catch (JSONException e) {
-                    Log.i(CLASS_TAG, "Error: " + e.getMessage());
-                    showToast(context, R.string.no_task);
                 }
+            } catch (JSONException e) {
+                Log.i(CLASS_TAG, "Error: " + e.getMessage());
+                showToast(context, R.string.no_task);
             }
         }
+
     }
 
     /**
