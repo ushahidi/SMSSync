@@ -29,7 +29,7 @@ import android.content.SharedPreferences;
  * 
  * @author eyedol
  */
-public class SmsSyncPref {
+public class Prefrences {
 
     public static int autoTime = 5;
 

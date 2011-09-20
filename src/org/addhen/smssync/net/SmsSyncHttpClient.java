@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.Prefrences;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -100,7 +100,7 @@ public class SmsSyncHttpClient {
                 if (success) {
                     // auto response message is enabled to be received from the
                     // server.
-                    if (SmsSyncPref.enableReplyFrmServer) {
+                    if (Prefrences.enableReplyFrmServer) {
                         Util.sendResponseFromServer(context,resp);
                     }
                     

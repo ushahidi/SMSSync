@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
-import org.addhen.smssync.SmsSyncApplication;
-import org.addhen.smssync.SmsSyncOutbox;
+import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.PendingMessagesActivity;
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.SmsSyncDatabase;
 import org.addhen.smssync.util.Util;
@@ -175,7 +175,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             PendingIntent settingsAction = PendingIntent.getActivity(this, 0, settingsScreen, 0);
             views.setOnClickPendingIntent(R.id.appwidget_logo, settingsAction);
 
-            Intent pendingMessages = new Intent(this, SmsSyncOutbox.class);
+            Intent pendingMessages = new Intent(this, PendingMessagesActivity.class);
             pendingMessages.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent mainAction = PendingIntent.getActivity(this, 0, pendingMessages, 0);
             views.setOnClickPendingIntent(R.id.appwidget_item, mainAction);
@@ -262,7 +262,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
     public static ArrayList<Messages> showMessages() {
         
         Cursor cursor;
-        cursor = SmsSyncApplication.mDb.fetchMessagesByLimit(5);
+        cursor = MainApplication.mDb.fetchMessagesByLimit(5);
 
         int messageId;
         String messagesFrom;

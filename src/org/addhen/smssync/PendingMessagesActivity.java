@@ -56,7 +56,7 @@ import android.widget.TextView;
  * 
  * @author eyedol
  */
-public class SmsSyncOutbox extends Activity {
+public class PendingMessagesActivity extends Activity {
 
     /** Called when the activity is first created. */
     private int messageId = 0;
@@ -96,18 +96,18 @@ public class SmsSyncOutbox extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setTitle(R.string.outbox);
         setContentView(R.layout.list_messages);
-        SmsSyncPref.loadPreferences(SmsSyncOutbox.this);
+        Prefrences.loadPreferences(PendingMessagesActivity.this);
 
         // show notification
-        if (SmsSyncPref.enabled) {
-            Util.showNotification(SmsSyncOutbox.this);
+        if (Prefrences.enabled) {
+            Util.showNotification(PendingMessagesActivity.this);
         }
 
         listMessages = (ListView)findViewById(R.id.view_messages);
         emptyListText = (TextView)findViewById(R.id.empty);
 
         mOldMessages = new ArrayList<Messages>();
-        ila = new ListMessagesAdapter(SmsSyncOutbox.this);
+        ila = new ListMessagesAdapter(PendingMessagesActivity.this);
         registerForContextMenu(listMessages);
 
         mHandler.post(mDisplayMessages);
@@ -171,23 +171,23 @@ public class SmsSyncOutbox extends Activity {
     // Synchronize all pending messages.
     final Runnable mSyncMessages = new Runnable() {
         public void run() {
-            SmsSyncPref.loadPreferences(SmsSyncOutbox.this);
-            if (SmsSyncPref.enabled) {
+            Prefrences.loadPreferences(PendingMessagesActivity.this);
+            if (Prefrences.enabled) {
                 int result = syncMessages(false);
                 try {
                     if (result == 0) {
 
-                        Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
+                        Util.showToast(PendingMessagesActivity.this, R.string.sending_succeeded);
                     } else if (result == 1) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+                        Util.showToast(PendingMessagesActivity.this, R.string.sending_failed);
                     } else if (result == 2) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+                        Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_sync);
                     }
                 } catch (Exception e) {
                     return;
                 }
             } else {
-                Util.showToast(SmsSyncOutbox.this, R.string.smssync_not_enabled);
+                Util.showToast(PendingMessagesActivity.this, R.string.smssync_not_enabled);
             }
         }
     };
@@ -198,23 +198,23 @@ public class SmsSyncOutbox extends Activity {
      */
     final Runnable mSyncMessagesById = new Runnable() {
         public void run() {
-            SmsSyncPref.loadPreferences(SmsSyncOutbox.this);
-            if (SmsSyncPref.enabled) {
+            Prefrences.loadPreferences(PendingMessagesActivity.this);
+            if (Prefrences.enabled) {
                 int result = syncMessages(true);
                 try {
                     if (result == 0) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
+                        Util.showToast(PendingMessagesActivity.this, R.string.sending_succeeded);
 
                     } else if (result == 1) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+                        Util.showToast(PendingMessagesActivity.this, R.string.sending_failed);
                     } else if (result == 2) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+                        Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_sync);
                     }
                 } catch (Exception e) {
                     return;
                 }
             } else {
-                Util.showToast(SmsSyncOutbox.this, R.string.smssync_not_enabled);
+                Util.showToast(PendingMessagesActivity.this, R.string.smssync_not_enabled);
             }
         }
     };
@@ -230,7 +230,7 @@ public class SmsSyncOutbox extends Activity {
 
             int deleted = 0;
 
-            if (SmsSyncApplication.mDb.fetchMessagesCount() == 0) {
+            if (MainApplication.mDb.fetchMessagesCount() == 0) {
                 deleted = 1;
             } else {
                 result = deleteAllMessages();
@@ -238,15 +238,15 @@ public class SmsSyncOutbox extends Activity {
 
             try {
                 if (deleted == 1) {
-                    Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_delete);
+                    Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_delete);
                 } else {
                     if (result) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted);
+                        Util.showToast(PendingMessagesActivity.this, R.string.messages_deleted);
                         ila.removeItems();
                         ila.notifyDataSetChanged();
                         displayEmptyListText();
                     } else {
-                        Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted_failed);
+                        Util.showToast(PendingMessagesActivity.this, R.string.messages_deleted_failed);
                     }
                 }
                 setProgressBarIndeterminateVisibility(false);
@@ -267,7 +267,7 @@ public class SmsSyncOutbox extends Activity {
 
             int deleted = 0;
 
-            if (SmsSyncApplication.mDb.fetchMessagesCount() == 0) {
+            if (MainApplication.mDb.fetchMessagesCount() == 0) {
                 deleted = 1;
             } else {
                 result = deleteMessagesById(messageId);
@@ -275,18 +275,18 @@ public class SmsSyncOutbox extends Activity {
 
             try {
                 if (deleted == 1) {
-                    Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_delete);
+                    Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_delete);
                 } else {
 
                     if (result) {
-                        Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted);
+                        Util.showToast(PendingMessagesActivity.this, R.string.messages_deleted);
                         ila.removetItemAt(listItemPosition);
                         ila.notifyDataSetChanged();
                         showMessages();
                         displayEmptyListText();
 
                     } else {
-                        Util.showToast(SmsSyncOutbox.this, R.string.messages_deleted_failed);
+                        Util.showToast(PendingMessagesActivity.this, R.string.messages_deleted_failed);
                     }
                 }
                 setProgressBarIndeterminateVisibility(false);
@@ -400,7 +400,7 @@ public class SmsSyncOutbox extends Activity {
 
             case SETTINGS:
 
-                intent = new Intent(SmsSyncOutbox.this, Settings.class);
+                intent = new Intent(PendingMessagesActivity.this, Settings.class);
                 startActivity(intent);
                 return (true);
 
@@ -422,7 +422,7 @@ public class SmsSyncOutbox extends Activity {
     public static void updateListView() {
 
         Cursor cursor;
-        cursor = SmsSyncApplication.mDb.fetchAllMessages();
+        cursor = MainApplication.mDb.fetchAllMessages();
 
         String messagesFrom;
         String messagesDate;
@@ -482,7 +482,7 @@ public class SmsSyncOutbox extends Activity {
     public static void showMessages() {
 
         Cursor cursor;
-        cursor = SmsSyncApplication.mDb.fetchAllMessages();
+        cursor = MainApplication.mDb.fetchAllMessages();
 
         String messagesFrom;
         String messagesDate;
@@ -545,9 +545,9 @@ public class SmsSyncOutbox extends Activity {
 
         // check if it should sync by id
         if (byId) {
-            cursor = SmsSyncApplication.mDb.fetchMessagesById(messageId);
+            cursor = MainApplication.mDb.fetchMessagesById(messageId);
         } else {
-            cursor = SmsSyncApplication.mDb.fetchAllMessages();
+            cursor = MainApplication.mDb.fetchAllMessages();
         }
         String messagesFrom;
         String messagesBody;
@@ -587,7 +587,7 @@ public class SmsSyncOutbox extends Activity {
                 messages.setMessageBody(messagesBody);
 
                 // post to web service
-                if (Util.postToAWebService(messagesFrom, messagesBody, SmsSyncOutbox.this)) {
+                if (Util.postToAWebService(messagesFrom, messagesBody, PendingMessagesActivity.this)) {
                     // if it successfully pushes a message, delete message from
                     // the db.
                     if (byId) {
@@ -596,7 +596,7 @@ public class SmsSyncOutbox extends Activity {
                         ila.removeItems();
                     }
                     ila.notifyDataSetChanged();
-                    SmsSyncApplication.mDb.deleteMessagesById(messageId);
+                    MainApplication.mDb.deleteMessagesById(messageId);
                     deleted = 0; // successfully posted messages to the web
                                  // service.
                 } else {
@@ -619,7 +619,7 @@ public class SmsSyncOutbox extends Activity {
      */
     public boolean deleteAllMessages() {
 
-        return SmsSyncApplication.mDb.deleteAllMessages();
+        return MainApplication.mDb.deleteAllMessages();
     }
 
     /**
@@ -629,7 +629,7 @@ public class SmsSyncOutbox extends Activity {
      * @return boolean
      */
     public boolean deleteMessagesById(int messageId) {
-        return SmsSyncApplication.mDb.deleteMessagesById(messageId);
+        return MainApplication.mDb.deleteMessagesById(messageId);
     }
 
     @Override
@@ -702,7 +702,7 @@ public class SmsSyncOutbox extends Activity {
                 showMessages();
             } else if (result == 1) {
                 this.dialog.cancel();
-                Util.showToast(SmsSyncOutbox.this, R.string.nothing_to_import);
+                Util.showToast(PendingMessagesActivity.this, R.string.nothing_to_import);
             }
         }
     }
@@ -718,11 +718,11 @@ public class SmsSyncOutbox extends Activity {
 
                 if (status == 0) {
 
-                    Util.showToast(SmsSyncOutbox.this, R.string.sending_succeeded);
+                    Util.showToast(PendingMessagesActivity.this, R.string.sending_succeeded);
                 } else if (status == 1) {
-                    Util.showToast(SmsSyncOutbox.this, R.string.sending_failed);
+                    Util.showToast(PendingMessagesActivity.this, R.string.sending_failed);
                 } else {
-                    Util.showToast(SmsSyncOutbox.this, R.string.no_messages_to_sync);
+                    Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_sync);
                 }
                 mHandler.post(mUpdateListView);
             }

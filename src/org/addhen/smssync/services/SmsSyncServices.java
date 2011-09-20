@@ -1,7 +1,7 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.Prefrences;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.Util;
 
@@ -77,7 +77,7 @@ public abstract class SmsSyncServices extends IntentService {
     public void onCreate() {
         super.onCreate();
         // load setting. Just in case someone changes a setting
-        SmsSyncPref.loadPreferences(this);
+        Prefrences.loadPreferences(this);
     }
 
     /**

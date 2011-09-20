@@ -39,9 +39,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.SmsSyncApplication;
-import org.addhen.smssync.SmsSyncOutbox;
-import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.PendingMessagesActivity;
+import org.addhen.smssync.Prefrences;
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.SmsSyncDatabase;
 import org.addhen.smssync.net.SmsSyncHttpClient;
@@ -277,7 +277,7 @@ public class Util {
         mMessages = listMessages;
 
         if (mMessages != null) {
-            SmsSyncApplication.mDb.addMessages(mMessages);
+            MainApplication.mDb.addMessages(mMessages);
             return 0;
 
         } else {
@@ -304,7 +304,7 @@ public class Util {
         NotificationManager notificationManager = (NotificationManager)context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent baseIntent = new Intent(context, SmsSyncOutbox.class);
+        Intent baseIntent = new Intent(context, PendingMessagesActivity.class);
 
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -490,12 +490,12 @@ public class Util {
                 + messagesFrom + " messagesBody: " + messagesBody);
 
         HashMap<String, String> params = new HashMap<String, String>();
-        SmsSyncPref.loadPreferences(context);
+        Prefrences.loadPreferences(context);
 
-        if (!SmsSyncPref.website.equals("")) {
+        if (!Prefrences.website.equals("")) {
 
-            StringBuilder urlBuilder = new StringBuilder(SmsSyncPref.website);
-            params.put("secret", SmsSyncPref.apiKey);
+            StringBuilder urlBuilder = new StringBuilder(Prefrences.website);
+            params.put("secret", Prefrences.apiKey);
             params.put("from", messagesFrom);
             params.put("message", messagesBody);
             return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params, context);
@@ -544,7 +544,7 @@ public class Util {
     public static int snycToWeb(Context context) {
         Log.i(CLASS_TAG, "syncToWeb(): push pending messages to the configured URL");
         Cursor cursor;
-        cursor = SmsSyncApplication.mDb.fetchAllMessages();
+        cursor = MainApplication.mDb.fetchAllMessages();
         String messagesFrom;
         String messagesBody;
         int deleted = 0;
@@ -570,7 +570,7 @@ public class Util {
                     if (Util.postToAWebService(messagesFrom, messagesBody, context)) {
                         // if it successfully pushes message, delete message
                         // from db
-                        SmsSyncApplication.mDb.deleteMessagesById(messageId);
+                        MainApplication.mDb.deleteMessagesById(messageId);
                         deleted = 0;
                     } else {
                         deleted = 1;
@@ -621,10 +621,10 @@ public class Util {
     public static void performTask(Context context) {
         Log.i(CLASS_TAG, "performTask(): perform a task");
         // load preferences
-        SmsSyncPref.loadPreferences(context);
+        Prefrences.loadPreferences(context);
 
         // validate configured url
-        int status = validateCallbackUrl(SmsSyncPref.website);
+        int status = validateCallbackUrl(Prefrences.website);
         if (status == 1) {
             showToast(context, R.string.no_configured_url);
         } else if (status == 2) {
@@ -633,7 +633,7 @@ public class Util {
             showToast(context, R.string.no_connection);
         } else {
 
-            StringBuilder uriBuilder = new StringBuilder(SmsSyncPref.website);
+            StringBuilder uriBuilder = new StringBuilder(Prefrences.website);
 
             uriBuilder.append("?task=send");
 
@@ -651,7 +651,7 @@ public class Util {
                     if (payloadObject != null) {
                         task = payloadObject.getString("task");
                         secret = payloadObject.getString("secret");
-                        if ((task.equals("send")) && (secret.equals(SmsSyncPref.apiKey))) {
+                        if ((task.equals("send")) && (secret.equals(Prefrences.apiKey))) {
                             jsonArray = payloadObject.getJSONArray("messages");
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
@@ -687,7 +687,10 @@ public class Util {
      */
     public static void sendResponseFromServer(Context context, String response) {
         Log.i(CLASS_TAG, "performResponseFromServer(): " + " response:" + response);
-
+        /**
+         * The payload {"payload":{"success":"true","task":"send","messages":[{"to":"15555215556","message":"Olalala"}]}}
+         *  TODO:// remove this after documenting this
+         */
         if (!TextUtils.isEmpty(response) && response != null) {
 
             try {

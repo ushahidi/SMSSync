@@ -20,7 +20,7 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.SmsSyncApplication;
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
@@ -50,7 +50,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     protected void executeTask(Intent intent) {
         
         Log.i(CLASS_TAG, "executeTask() executing this scheduled task");
-        if (SmsSyncApplication.mDb.fetchMessagesCount() > 0) {
+        if (MainApplication.mDb.fetchMessagesCount() > 0) {
             Log.i(CLASS_TAG, "Sending pending messages");
             int status = Util.snycToWeb(AutoSyncScheduledService.this);
             statusIntent.putExtra("status", status);

@@ -30,7 +30,7 @@ import android.app.Application;
  * 
  * @author eyedol
  */
-public class SmsSyncApplication extends Application {
+public class MainApplication extends Application {
 
     public static final String TAG = "SmsSyncApplication";
 

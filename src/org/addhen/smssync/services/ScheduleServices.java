@@ -1,7 +1,7 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.Prefrences;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -31,7 +31,7 @@ public class ScheduleServices {
             int requestCode, int flags) {
         Log.i(CLASS_TAG, "ScheduleServices() executing scheduled services: interval:" + interval
                 + " requestCode: " + requestCode);
-        SmsSyncPref.loadPreferences(contxt);
+        Prefrences.loadPreferences(contxt);
         context = contxt;
         mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         i = new Intent(context, cls);

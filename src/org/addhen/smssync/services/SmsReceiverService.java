@@ -21,8 +21,8 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.SmsSyncOutbox;
-import org.addhen.smssync.SmsSyncPref;
+import org.addhen.smssync.PendingMessagesActivity;
+import org.addhen.smssync.Prefrences;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.Util;
 
@@ -84,7 +84,7 @@ public class SmsReceiverService extends Service {
         thread.start();
         mContext = getApplicationContext();
 
-        SmsSyncPref.loadPreferences(mContext);
+        Prefrences.loadPreferences(mContext);
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(mServiceLooper);
@@ -136,7 +136,7 @@ public class SmsReceiverService extends Service {
     private void handleSmsReceived(Intent intent) {
 
         Bundle bundle = intent.getExtras();
-        SmsSyncPref.loadPreferences(SmsReceiverService.this);
+        Prefrences.loadPreferences(SmsReceiverService.this);
 
         if (bundle != null) {
             SmsMessage[] messages = getMessagesFromIntent(intent);
@@ -158,24 +158,24 @@ public class SmsReceiverService extends Service {
             }
         }
 
-        if (SmsSyncPref.enabled) {
+        if (Prefrences.enabled) {
 
             if (Util.isConnected(SmsReceiverService.this)) {
 
                 boolean posted = false;
                 // if keywoard is enabled
-                if (!SmsSyncPref.keyword.equals("")) {
-                    String[] keywords = SmsSyncPref.keyword.split(",");
-                    Log.i(CLASS_TAG, "Keyword enabled:" + SmsSyncPref.keyword);
+                if (!Prefrences.keyword.equals("")) {
+                    String[] keywords = Prefrences.keyword.split(",");
+                    Log.i(CLASS_TAG, "Keyword enabled:" + Prefrences.keyword);
                     if (Util.processString(messagesBody, keywords)) {
 
                         posted = Util.postToAWebService(messagesFrom, messagesBody,
                                 SmsReceiverService.this);
 
                         // send auto response from phone not server.
-                        if (SmsSyncPref.enableReply) {
+                        if (Prefrences.enableReply) {
                             // send auto response
-                            Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
+                            Util.sendSms(SmsReceiverService.this, messagesFrom, Prefrences.reply);
                         }
 
                         if (!posted) {
@@ -188,13 +188,13 @@ public class SmsReceiverService extends Service {
 
                             // Delete messages from message app's inbox only
                             // when smssync is turned on
-                            if (SmsSyncPref.autoDelete) {
+                            if (Prefrences.autoDelete) {
                                 Util.delSmsFromInbox(SmsReceiverService.this, sms);
                             }
 
                         } else {
 
-                            if (SmsSyncPref.autoDelete) {
+                            if (Prefrences.autoDelete) {
                                 Util.delSmsFromInbox(SmsReceiverService.this, sms);
                             }
 
@@ -209,9 +209,9 @@ public class SmsReceiverService extends Service {
                     posted = Util.postToAWebService(messagesFrom, messagesBody,
                             SmsReceiverService.this);
                     // send auto response from phone not server.
-                    if (SmsSyncPref.enableReply) {
+                    if (Prefrences.enableReply) {
                         // send auto response
-                        Util.sendSms(SmsReceiverService.this, messagesFrom, SmsSyncPref.reply);
+                        Util.sendSms(SmsReceiverService.this, messagesFrom, Prefrences.reply);
                     }
 
                     if (!posted) {
@@ -222,12 +222,12 @@ public class SmsReceiverService extends Service {
                         // attempt to make a data connection
                         connectToDataNetwork();
 
-                        if (SmsSyncPref.autoDelete) {
+                        if (Prefrences.autoDelete) {
                             Util.delSmsFromInbox(SmsReceiverService.this, sms);
                         }
                     } else {
 
-                        if (SmsSyncPref.autoDelete) {
+                        if (Prefrences.autoDelete) {
                             Util.delSmsFromInbox(SmsReceiverService.this, sms);
                         }
                         this.showNotification(messagesBody, getString(R.string.sending_succeeded));
@@ -241,7 +241,7 @@ public class SmsReceiverService extends Service {
                 handler.post(mDisplayMessages);
 
                 connectToDataNetwork();
-                if (SmsSyncPref.autoDelete) {
+                if (Prefrences.autoDelete) {
                     Util.delSmsFromInbox(SmsReceiverService.this, sms);
                 }
             }
@@ -257,7 +257,7 @@ public class SmsReceiverService extends Service {
      */
     private void showNotification(String message, String notification_title) {
 
-        Intent baseIntent = new Intent(this, SmsSyncOutbox.class);
+        Intent baseIntent = new Intent(this, PendingMessagesActivity.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         Notification notification = new Notification(R.drawable.icon, getString(R.string.status),
@@ -380,7 +380,7 @@ public class SmsReceiverService extends Service {
     final Runnable mDisplayMessages = new Runnable() {
 
         public void run() {
-            SmsSyncOutbox.showMessages();
+            PendingMessagesActivity.showMessages();
         }
 
     };

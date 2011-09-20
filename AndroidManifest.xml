@@ -12,7 +12,7 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
-		android:name=".SmsSyncApplication">
+		android:name=".MainApplication">
 		<service android:name=".services.SmsReceiverService" />
 		<service android:name=".services.AutoSyncService" />
 		<service android:name=".services.AutoSyncScheduledService" />
@@ -29,7 +29,7 @@
 
 		<!-- outbox -->
 		<activity android:configChanges="orientation|keyboardHidden"
-			android:name=".SmsSyncOutbox" android:label="@string/app_name"
+			android:name=".PendingMessagesActivity" android:label="@string/app_name"
 			android:launchMode="singleTop">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

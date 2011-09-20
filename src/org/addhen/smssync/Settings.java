@@ -358,10 +358,10 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
                 // Initialize the selected time to frequently sync pending
                 // messages
-                SmsSyncPref.autoTime = initializeAutoSyncTime();
+                Prefrences.autoTime = initializeAutoSyncTime();
                 autoSyncTimes.setEnabled(true);
                 // start the scheduler for 'task check' service
-                long interval = (SmsSyncPref.autoTime * 60000);
+                long interval = (Prefrences.autoTime * 60000);
                 new ScheduleServices(this,
                         new Intent(Settings.this, AutoSyncScheduledService.class),
                         AutoSyncScheduledReceiver.class, interval,
@@ -371,11 +371,11 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
                 // Initialize the selected time to frequently to auto check for
                 // tasks
-                SmsSyncPref.taskCheckTime = initializeAutoTaskTime();
+                Prefrences.taskCheckTime = initializeAutoTaskTime();
                 stopService(new Intent(Settings.this, AutoSyncScheduledService.class));
 
                 // start the scheduler for 'task check' service
-                long interval = (SmsSyncPref.taskCheckTime * 60000);
+                long interval = (Prefrences.taskCheckTime * 60000);
                 new ScheduleServices(this, new Intent(Settings.this,
                         CheckTaskScheduledService.class), CheckTaskScheduledReceiver.class,
                         interval, ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE, 0);
@@ -400,15 +400,15 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         if (key.equals(AUTO_SYNC_TIMES)) {
 
             // restart service
-            if (SmsSyncPref.enableAutoSync) {
+            if (Prefrences.enableAutoSync) {
 
                 // Initialize the selected time to frequently sync pending
                 // messages
-                SmsSyncPref.autoTime = initializeAutoSyncTime();
+                Prefrences.autoTime = initializeAutoSyncTime();
                 stopService(new Intent(Settings.this, AutoSyncScheduledService.class));
 
                 // start the scheduler for 'task check' service
-                long interval = (SmsSyncPref.autoTime * 60000);
+                long interval = (Prefrences.autoTime * 60000);
                 new ScheduleServices(this,
                         new Intent(Settings.this, AutoSyncScheduledService.class),
                         AutoSyncScheduledReceiver.class, interval,
@@ -418,11 +418,11 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
         if (key.equals(TASK_CHECK_TIMES)) {
 
-            SmsSyncPref.taskCheckTime = initializeAutoTaskTime();
+            Prefrences.taskCheckTime = initializeAutoTaskTime();
             stopService(new Intent(Settings.this, CheckTaskScheduledService.class));
 
             // start the scheduler for 'task check' service
-            long interval = (SmsSyncPref.taskCheckTime * 60000);
+            long interval = (Prefrences.taskCheckTime * 60000);
             new ScheduleServices(this, new Intent(Settings.this, CheckTaskScheduledService.class),
                     CheckTaskScheduledReceiver.class, interval,
                     ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE, 0);
