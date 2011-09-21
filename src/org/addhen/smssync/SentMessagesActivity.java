@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.Database;
+import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.app.Activity;
@@ -14,6 +15,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -52,9 +54,9 @@ public class SentMessagesActivity extends Activity {
     private final Handler mHandler = new Handler();
 
     public static Database mDb;
-    
+
     public static final String CLASS_TAG = SentMessagesActivity.class.getSimpleName();
-    
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -69,7 +71,7 @@ public class SentMessagesActivity extends Activity {
 
         listMessages = (ListView)findViewById(R.id.view_sent_messages);
         emptyListText = (TextView)findViewById(R.id.empty_sent_messages);
-        
+
         mOldMessages = new ArrayList<Messages>();
         ila = new ListMessagesAdapter(this);
         registerForContextMenu(listMessages);
@@ -77,22 +79,18 @@ public class SentMessagesActivity extends Activity {
         mHandler.post(mDisplayMessages);
         displayEmptyListText();
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
-        //registerReceiver(broadcastReceiver, new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
-        //registerReceiver(smsSentReceiver, new IntentFilter(ServicesConstants.SENT));
-        //registerReceiver(smsDeliveredReceiver, new IntentFilter(ServicesConstants.DELIVERED));
+        registerReceiver(broadcastReceiver, new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
         mHandler.post(mDisplayMessages);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        //unregisterReceiver(broadcastReceiver);
-        //unregisterReceiver(smsSentReceiver);
-        //unregisterReceiver(smsDeliveredReceiver);
+        unregisterReceiver(broadcastReceiver);
         mHandler.post(mDisplayMessages);
     }
 
@@ -131,7 +129,7 @@ public class SentMessagesActivity extends Activity {
                 .getMenuInfo();
         messageId = mOldMessages.get(info.position).getMessageId();
         listItemPosition = info.position;
-        Log.i(CLASS_TAG, "delete sent messages by id via context menu "+messageId);
+        Log.i(CLASS_TAG, "delete sent messages by id via context menu " + messageId);
         switch (item.getItemId()) {
             // context menu selected
             case DELETE:
@@ -286,7 +284,7 @@ public class SentMessagesActivity extends Activity {
             }
         }
     };
-    
+
     /**
      * Delete all messages
      */
@@ -472,9 +470,9 @@ public class SentMessagesActivity extends Activity {
         ila.notifyDataSetChanged();
         displayEmptyListText();
     }
-    
+
     /**
-     * This will refresh content of the listview aka the pending messages when 
+     * This will refresh content of the listview aka the pending messages when
      * smssync syncs pending messages.
      */
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

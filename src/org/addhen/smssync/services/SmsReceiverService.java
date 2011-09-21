@@ -20,12 +20,14 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.MessagesTabActivity;
 import org.addhen.smssync.R;
 import org.addhen.smssync.PendingMessagesActivity;
 import org.addhen.smssync.Prefrences;
 import org.addhen.smssync.SentMessagesActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.SentMessagesUtil;
+import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.app.Notification;
@@ -79,13 +81,17 @@ public class SmsReceiverService extends Service {
 
     private Handler handler = new Handler();
 
+    // holds the status of the sync and sends it to smssyncoutbox activity to
+    // update the ui
+    private Intent statusIntent;
+
     @Override
     public void onCreate() {
 
         HandlerThread thread = new HandlerThread(CLASS_TAG, Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
-
+        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         Prefrences.loadPreferences(mContext);
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         mServiceLooper = thread.getLooper();
@@ -195,8 +201,9 @@ public class SmsReceiverService extends Service {
                             }
 
                         } else {
-                            //log sent messages
+                            // log sent messages
                             this.postToSentBox();
+
                             if (Prefrences.autoDelete) {
                                 Util.delSmsFromInbox(SmsReceiverService.this, sms);
                             }
@@ -260,7 +267,7 @@ public class SmsReceiverService extends Service {
      */
     private void showNotification(String message, String notification_title) {
 
-        Intent baseIntent = new Intent(this, PendingMessagesActivity.class);
+        Intent baseIntent = new Intent(this, MessagesTabActivity.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         Notification notification = new Notification(R.drawable.icon, getString(R.string.status),
@@ -293,7 +300,7 @@ public class SmsReceiverService extends Service {
         Util.processMessages(SmsReceiverService.this);
 
     }
-    
+
     /**
      * Put successfully sent messages to a local database for logging sake
      * 
@@ -308,12 +315,14 @@ public class SmsReceiverService extends Service {
 
         String messageDate = Util
                 .formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
-        Util.smsMap.put("messagesFrom", messagesFrom);
-        Util.smsMap.put("messagesBody", messagesBody);
-        Util.smsMap.put("messagesDate", messageDate);
-        Util.smsMap.put("messagesId", messageId);
+        SentMessagesUtil.smsMap.put("messagesFrom", messagesFrom);
+        SentMessagesUtil.smsMap.put("messagesBody", messagesBody);
+        SentMessagesUtil.smsMap.put("messagesDate", messageDate);
+        SentMessagesUtil.smsMap.put("messagesId", messageId);
 
-        SentMessagesUtil.processSentMessages(SmsReceiverService.this);
+        int status = SentMessagesUtil.processSentMessages(SmsReceiverService.this);
+        statusIntent.putExtra("status", status);
+        sendBroadcast(statusIntent);
 
     }
 
@@ -410,8 +419,8 @@ public class SmsReceiverService extends Service {
         }
 
     };
-    
- // Display pending messages.
+
+    // Display pending messages.
     final Runnable mDisplaySentMessages = new Runnable() {
 
         public void run() {
