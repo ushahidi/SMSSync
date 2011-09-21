@@ -1,4 +1,8 @@
 <resources>
 	<color name="text_dark">#FF000000</color>
 	<color name="text_light">#FFFFFFFF</color>
+	<color name="tab_selected">#8A1F03</color>
+    <color name="tab_unselected">#404041</color>
+    <color name="tab_text">#FFF</color>
+    <color name="title_separator">#AFAFAF</color>
 </resources>

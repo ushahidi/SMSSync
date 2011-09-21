@@ -20,7 +20,7 @@
 
 package org.addhen.smssync;
 
-import org.addhen.smssync.data.SmsSyncDatabase;
+import org.addhen.smssync.data.Database;
 import org.addhen.smssync.net.SmsSyncHttpClient;
 
 import android.app.Application;
@@ -34,7 +34,7 @@ public class MainApplication extends Application {
 
     public static final String TAG = "SmsSyncApplication";
 
-    public static SmsSyncDatabase mDb;
+    public static Database mDb;
 
     public static SmsSyncHttpClient mApi;
     
@@ -44,7 +44,7 @@ public class MainApplication extends Application {
         super.onCreate();
 
         // Open database connection when the application starts.
-        mDb = new SmsSyncDatabase(this);
+        mDb = new Database(this);
         mDb.open();
         mApi = new SmsSyncHttpClient();
     }

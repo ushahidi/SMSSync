@@ -38,12 +38,12 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.addhen.smssync.R;
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.PendingMessagesActivity;
+import org.addhen.smssync.MessagesTabActivity;
 import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.Database;
 import org.addhen.smssync.data.Messages;
-import org.addhen.smssync.data.SmsSyncDatabase;
 import org.addhen.smssync.net.SmsSyncHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -304,7 +304,7 @@ public class Util {
         NotificationManager notificationManager = (NotificationManager)context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Intent baseIntent = new Intent(context, PendingMessagesActivity.class);
+        Intent baseIntent = new Intent(context, MessagesTabActivity.class);
 
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -548,26 +548,40 @@ public class Util {
         String messagesFrom;
         String messagesBody;
         int deleted = 0;
-
+        
+        List<Messages> listMessages = new ArrayList<Messages>();
+       
+        
         if (cursor != null) {
             if (cursor.getCount() == 0) {
                 return 2;
             }
 
             if (cursor.moveToFirst()) {
-                int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
-                int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
+                int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
+                int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
 
-                int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
+                int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
 
                 do {
-
+                    Messages messages = new Messages();
+                    listMessages.add(messages);
+                    
                     int messageId = Util.toInt(cursor.getString(messagesIdIndex));
+                    messages.setMessageId(messageId);
+                    
                     messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
+                    messages.setMessageFrom(messagesFrom);
+                    
                     messagesBody = cursor.getString(messagesBodyIndex);
-
+                    messages.setMessageBody(messagesBody);
+                    
                     // post to web service
                     if (Util.postToAWebService(messagesFrom, messagesBody, context)) {
+                        
+                        //log sent messages
+                        MainApplication.mDb.addSentMessages(listMessages);
+                        
                         // if it successfully pushes message, delete message
                         // from db
                         MainApplication.mDb.deleteMessagesById(messageId);

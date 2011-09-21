@@ -11,9 +11,13 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int appwidget_text=0x7f050002;
+        public static final int appwidget_text=0x7f050006;
+        public static final int tab_selected=0x7f050002;
+        public static final int tab_text=0x7f050004;
+        public static final int tab_unselected=0x7f050003;
         public static final int text_dark=0x7f050000;
         public static final int text_light=0x7f050001;
+        public static final int title_separator=0x7f050005;
     }
     public static final class drawable {
         public static final int appwidget_bg=0x7f020000;
@@ -29,13 +33,15 @@ public final class R {
         public static final int refresh=0x7f02000a;
         public static final int smssync_48=0x7f02000b;
         public static final int smssync_72=0x7f02000c;
-        public static final int solid_white=0x7f020011;
-        public static final int widget_bg_default=0x7f02000d;
-        public static final int widget_bg_portrait=0x7f02000e;
-        public static final int widget_bg_selected=0x7f02000f;
-        public static final int widget_bg_small=0x7f020010;
+        public static final int solid_white=0x7f020012;
+        public static final int title_bar=0x7f02000d;
+        public static final int widget_bg_default=0x7f02000e;
+        public static final int widget_bg_portrait=0x7f02000f;
+        public static final int widget_bg_selected=0x7f020010;
+        public static final int widget_bg_small=0x7f020011;
     }
     public static final class id {
+        public static final int action_bar_icon=0x7f080012;
         public static final int appwidget_empty_list=0x7f080008;
         public static final int appwidget_item=0x7f080000;
         public static final int appwidget_logo=0x7f080001;
@@ -44,8 +50,10 @@ public final class R {
         public static final int appwidget_refresh=0x7f080009;
         public static final int checkBox1=0x7f080011;
         public static final int empty=0x7f08000d;
+        public static final int empty_sent_messages=0x7f080016;
         public static final int linearLayout1=0x7f080004;
         public static final int linear_pending_msg=0x7f080003;
+        public static final int menu_bar_separator=0x7f080014;
         public static final int msg_date=0x7f080006;
         public static final int msg_desc=0x7f080007;
         public static final int msg_number=0x7f080005;
@@ -53,23 +61,20 @@ public final class R {
         public static final int textView1=0x7f08000e;
         public static final int textView2=0x7f08000f;
         public static final int textView3=0x7f080010;
+        public static final int title_bar_text_lbl=0x7f080013;
         public static final int view_messages=0x7f08000c;
+        public static final int view_sent_messages=0x7f080015;
     }
     public static final class layout {
         public static final int appwidget=0x7f030000;
         public static final int list_messages=0x7f030001;
         public static final int main=0x7f030002;
-        public static final int outbox=0x7f030003;
+        public static final int messages_tab=0x7f030003;
+        public static final int sent_messages=0x7f030004;
     }
     public static final class string {
         public static final int about_smssync=0x7f060040;
         public static final int app_name=0x7f060020;
-        public static final int appwidget_configure_instructions=0x7f06004d;
-        public static final int appwidget_new_mention_format=0x7f060051;
-        public static final int appwidget_new_message_format=0x7f060050;
-        public static final int appwidget_new_pending_message_format=0x7f06004f;
-        public static final int appwidget_nodata=0x7f060052;
-        public static final int appwidget_nothingnew_default=0x7f06004e;
         public static final int auto_sync_delay_hint=0x7f06001b;
         public static final int auto_sync_settings=0x7f06003e;
         public static final int chk_auto_delete_hint=0x7f060017;
@@ -86,6 +91,11 @@ public final class R {
         public static final int chk_reply_frm_server_hint=0x7f060046;
         public static final int chk_reply_hint=0x7f060013;
         public static final int chk_sms_sync_hint=0x7f060011;
+        public static final int confirm_message=0x7f060053;
+        public static final int confirm_no=0x7f060052;
+        /**  confirmation dialog 
+         */
+        public static final int confirm_yes=0x7f060051;
         public static final int edittxt_api_key_pref=0x7f060003;
         public static final int edittxt_api_key_pref_summary=0x7f060004;
         public static final int edittxt_keyword_hint=0x7f06000c;
@@ -117,16 +127,21 @@ public final class R {
         public static final int no_connection=0x7f06003c;
         public static final int no_messages_to_delete=0x7f06002a;
         public static final int no_messages_to_sync=0x7f060029;
+        public static final int no_sent_messages=0x7f060050;
         public static final int no_task=0x7f06003d;
         public static final int nothing_to_import=0x7f060044;
         public static final int notification_summary=0x7f060026;
         public static final int outbox=0x7f060022;
+        /**  Pending and failed messages Tab 
+         */
+        public static final int pending_messages=0x7f06004d;
         public static final int please_wait=0x7f060041;
         public static final int powered=0x7f06002c;
         public static final int powered_by=0x7f06002d;
         public static final int reply_settings=0x7f06000f;
         public static final int sending_failed=0x7f060027;
         public static final int sending_succeeded=0x7f060028;
+        public static final int sent_messages=0x7f06004e;
         public static final int sms_delivered=0x7f06004b;
         /**  SMS delivery status 
          */
@@ -145,6 +160,7 @@ public final class R {
         public static final int status=0x7f060036;
         public static final int sync_failed=0x7f06002b;
         public static final int task_check_settings=0x7f06003f;
+        public static final int title_bar_text=0x7f06004f;
         public static final int txt_auto_sync_delay=0x7f06001a;
         public static final int txt_task_check_delay=0x7f06001e;
         public static final int txt_task_check_delay_hint=0x7f06001f;
@@ -153,6 +169,10 @@ public final class R {
     public static final class style {
         public static final int EmptyStyle=0x7f070001;
         public static final int WidgetStyle=0x7f070000;
+        /**  Title bar Text 
+         */
+        public static final int title_bar=0x7f070002;
+        public static final int title_bar_separator=0x7f070003;
     }
     public static final class xml {
         public static final int appwidget_info=0x7f040000;

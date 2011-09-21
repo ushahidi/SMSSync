@@ -24,14 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.addhen.smssync.data.Messages;
-import org.addhen.smssync.data.SmsSyncDatabase;
+import org.addhen.smssync.data.Database;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -87,9 +89,7 @@ public class PendingMessagesActivity extends Activity {
 
     private final Handler mHandler = new Handler();
 
-    public static SmsSyncDatabase mDb;
-
-    public static String Pending_MESSAGE = "";
+    public static Database mDb;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -246,7 +246,8 @@ public class PendingMessagesActivity extends Activity {
                         ila.notifyDataSetChanged();
                         displayEmptyListText();
                     } else {
-                        Util.showToast(PendingMessagesActivity.this, R.string.messages_deleted_failed);
+                        Util.showToast(PendingMessagesActivity.this,
+                                R.string.messages_deleted_failed);
                     }
                 }
                 setProgressBarIndeterminateVisibility(false);
@@ -286,7 +287,8 @@ public class PendingMessagesActivity extends Activity {
                         displayEmptyListText();
 
                     } else {
-                        Util.showToast(PendingMessagesActivity.this, R.string.messages_deleted_failed);
+                        Util.showToast(PendingMessagesActivity.this,
+                                R.string.messages_deleted_failed);
                     }
                 }
                 setProgressBarIndeterminateVisibility(false);
@@ -328,11 +330,11 @@ public class PendingMessagesActivity extends Activity {
             // context menu selected
             case DELETE:
                 // Delete by ID
-                mHandler.post(mDeleteMessagesById);
+                performDeleteById();
                 return (true);
 
             case DELETE_ALL:
-                mHandler.post(mDeleteAllMessages);
+                performDeleteAll();
                 return (true);
 
             case SMSSYNC_SYNC:
@@ -405,13 +407,60 @@ public class PendingMessagesActivity extends Activity {
                 return (true);
 
             case DELETE_ALL:
-
-                mHandler.post(mDeleteAllMessages);
+                performDeleteAll();
                 return (true);
 
         }
 
         return (false);
+    }
+
+    /**
+     * Delete all messages
+     */
+    public void performDeleteAll() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.confirm_message))
+                .setCancelable(false)
+                .setNegativeButton(getString(R.string.confirm_no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton(getString(R.string.confirm_yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // delete all messages
+                                mHandler.post(mDeleteAllMessages);
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    /**
+     * Delete message by it's id
+     */
+    public void performDeleteById() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.confirm_message))
+                .setCancelable(false)
+                .setNegativeButton(getString(R.string.confirm_no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton(getString(R.string.confirm_yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Delete by ID
+                                mHandler.post(mDeleteMessagesById);
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     /**
@@ -433,11 +482,11 @@ public class PendingMessagesActivity extends Activity {
         }
 
         if (cursor.moveToFirst()) {
-            int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
-            int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
-            int messagesDateIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_DATE);
+            int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
+            int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
+            int messagesDateIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
 
-            int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
+            int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
 
             if (ila != null) {
                 ila.removeItems();
@@ -489,11 +538,11 @@ public class PendingMessagesActivity extends Activity {
         String messagesBody;
         int messageId;
         if (cursor.moveToFirst()) {
-            int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
-            int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
-            int messagesDateIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_DATE);
+            int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
+            int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
+            int messagesDateIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
 
-            int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
+            int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
 
             if (ila != null) {
                 ila.removeItems();
@@ -562,12 +611,12 @@ public class PendingMessagesActivity extends Activity {
         if (mOldMessages != null)
             mOldMessages.clear();
         if (cursor.moveToFirst()) {
-            int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
-            int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
+            int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
+            int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
 
-            int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
+            int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
 
-            int messagesDateIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_DATE);
+            int messagesDateIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
 
             do {
 
@@ -588,6 +637,8 @@ public class PendingMessagesActivity extends Activity {
 
                 // post to web service
                 if (Util.postToAWebService(messagesFrom, messagesBody, PendingMessagesActivity.this)) {
+                    // log sent messages
+                    MainApplication.mDb.addSentMessages(mOldMessages);
                     // if it successfully pushes a message, delete message from
                     // the db.
                     if (byId) {
@@ -708,7 +759,8 @@ public class PendingMessagesActivity extends Activity {
     }
 
     /**
-     * This will refresh content of the listview aka the pending messages.
+     * This will refresh content of the listview aka the pending messages when
+     * smssync syncs pending messages.
      */
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override

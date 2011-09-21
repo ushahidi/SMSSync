@@ -4,12 +4,12 @@ package org.addhen.smssync.widget;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.addhen.smssync.MessagesTabActivity;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.PendingMessagesActivity;
 import org.addhen.smssync.data.Messages;
-import org.addhen.smssync.data.SmsSyncDatabase;
+import org.addhen.smssync.data.Database;
 import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
@@ -175,7 +175,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             PendingIntent settingsAction = PendingIntent.getActivity(this, 0, settingsScreen, 0);
             views.setOnClickPendingIntent(R.id.appwidget_logo, settingsAction);
 
-            Intent pendingMessages = new Intent(this, PendingMessagesActivity.class);
+            Intent pendingMessages = new Intent(this, MessagesTabActivity.class);
             pendingMessages.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent mainAction = PendingIntent.getActivity(this, 0, pendingMessages, 0);
             views.setOnClickPendingIntent(R.id.appwidget_item, mainAction);
@@ -272,11 +272,11 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
         if (cursor != null) {
             Log.d(CLASS_TAG,"Got messages from Inbox");
             if (cursor.moveToFirst()) {
-                int messagesIdIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_ID);
-                int messagesFromIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_FROM);
-                int messagesDateIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_DATE);
+                int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
+                int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
+                int messagesDateIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
 
-                int messagesBodyIndex = cursor.getColumnIndexOrThrow(SmsSyncDatabase.MESSAGES_BODY);
+                int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
                 do {
                     Messages messages = new Messages();
                     pendingMsgs.add(messages);

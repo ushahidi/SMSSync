@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
-	Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
-	This file may be used under the terms of the GNU Lesser General Public License 
-	version 3 as published by the Free Software Foundation and appearing in the 
-	file LICENSE.LGPL included in the packaging of this file. Please review the 
-	following information to ensure the GNU Lesser General Public License version 
-	3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
-	have questions regarding the use of this file, please contact Ushahidi developers 
-	at team@ushahidi.com. -->
+<!-- 
+  Copyright (c) 2010 - 2011 Ushahidi Inc
+  All rights reserved
+  Contact: team@ushahidi.com
+  Website: http://www.ushahidi.com
+  
+  GNU Lesser General Public License Usage
+  This file may be used under the terms of the GNU Lesser
+  General Public License version 3 as published by the Free Software
+  Foundation and appearing in the file LICENSE.LGPL included in the
+  packaging of this file. Please review the following information to
+  ensure the GNU Lesser General Public License version 3 requirements
+  will be met: http://www.gnu.org/licenses/lgpl.html.   
+    
+ 
+  If you have questions regarding the use of this file, please contact
+  Ushahidi developers at team@ushahidi.com. 
+ -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="320dip" android:layout_height="300dip"
+	android:layout_width="320dip" android:layout_height="280dip"
 	android:orientation="horizontal" android:background="@drawable/appwidget_bg">
 	<Button android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_alignParentTop="true"
@@ -37,15 +46,15 @@
 				<TextView android:id="@+id/msg_number"
 					android:layout_marginLeft="7dip" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:gravity="left"
-					android:textColor="@color/text_dark" android:textStyle="bold"
+					android:textColor="@color/text_light" android:textStyle="bold"
 					android:layout_weight="1"/>
 				<TextView android:layout_height="wrap_content" android:id="@+id/msg_date"
 					android:layout_width="wrap_content" android:gravity="right"
-					android:layout_marginRight="15dip" android:textColor="@color/text_dark"
+					android:layout_marginRight="15dip" android:textColor="@color/text_light"
 					android:layout_weight="1" />
 			</LinearLayout>
 			<TextView android:id="@+id/msg_desc" android:layout_width="wrap_content"
-				android:textColor="@color/text_dark" android:layout_marginLeft="7dip"
+				android:textColor="@color/text_light" android:layout_marginLeft="7dip"
 				android:layout_height="wrap_content" />
 		</LinearLayout>
 		<!-- Here is the view to show if the list is emtpy -->

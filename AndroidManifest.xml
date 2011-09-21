@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2010 - 2011 Ushahidi Inc All rights reserved Contact: 
+	team@ushahidi.com Website: http://www.ushahidi.com GNU Lesser General Public 
+	License Usage This file may be used under the terms of the GNU Lesser General 
+	Public License version 3 as published by the Free Software Foundation and 
+	appearing in the file LICENSE.LGPL included in the packaging of this file. 
+	Please review the following information to ensure the GNU Lesser General 
+	Public License version 3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. 
+	If you have questions regarding the use of this file, please contact Ushahidi 
+	developers at team@ushahidi.com. -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="org.addhen.smssync" android:versionCode="7"
 	android:versionName="1.0.6">
@@ -11,6 +20,10 @@
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<supports-screens android:largeScreens="true"
+		android:normalScreens="true" android:smallScreens="true"
+		android:anyDensity="true" />
+
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:name=".MainApplication">
 		<service android:name=".services.SmsReceiverService" />
@@ -18,7 +31,7 @@
 		<service android:name=".services.AutoSyncScheduledService" />
 		<service android:name=".services.CheckTaskScheduledService" />
 		<service android:name=".services.CheckTaskService" />
-		
+
 		<activity android:launchMode="singleTop" android:name=".Settings"
 			android:label="@string/app_name">
 			<intent-filter>
@@ -27,9 +40,9 @@
 			</intent-filter>
 		</activity>
 
-		<!-- outbox -->
+		<!-- messages tab -->
 		<activity android:configChanges="orientation|keyboardHidden"
-			android:name=".PendingMessagesActivity" android:label="@string/app_name"
+			android:name=".MessagesTabActivity" android:label="@string/app_name"
 			android:launchMode="singleTop">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -37,7 +50,27 @@
 					android:label="@string/app_name" />
 			</intent-filter>
 		</activity>
-        
+
+		<!-- pending messages -->
+		<activity android:configChanges="orientation|keyboardHidden"
+			android:name=".PendingMessagesActivity" android:label="@string/app_name"
+			android:launchMode="singleTop">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.ACTION_VIEW" />
+			</intent-filter>
+		</activity>
+
+		<!-- sent messages -->
+		<activity android:configChanges="orientation|keyboardHidden"
+			android:name=".SentMessagesActivity" android:label="@string/app_name"
+			android:launchMode="singleTop">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.ACTION_VIEW" />
+			</intent-filter>
+		</activity>
+
 		<!-- sms -->
 		<receiver android:name=".receivers.SmsReceiver">
 			<intent-filter>
@@ -80,9 +113,9 @@
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
 			</intent-filter>
 			<meta-data android:name="android.appwidget.provider"
-               android:resource="@xml/appwidget_info" />
+				android:resource="@xml/appwidget_info" />
 		</receiver>
-	   <service android:name=".widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService"/>
+		<service android:name=".widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService" />
 	</application>
 	<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="11" />
 </manifest>  

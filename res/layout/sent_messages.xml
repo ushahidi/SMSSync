@@ -12,17 +12,17 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent">
 
 	<!-- List incidents -->
-	<ListView android:id="@+id/view_messages"
+	<ListView android:id="@+id/view_sent_messages"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:paddingTop="11px" android:paddingLeft="5px"
 		android:paddingRight="5px" android:fadingEdge="none"
 		android:cacheColorHint="#00000000" android:smoothScrollbar="true"
 		android:scrollbars="vertical" android:scrollingCache="true"
-		android:fastScrollEnabled="true" />
+		android:scrollbarStyle="insideOverlay" />
 
 	<!-- Here is the view to show if the list is emtpy -->
-	<TextView android:id="@+id/empty" android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:text="@string/empty_list"
-		android:textStyle="bold" android:gravity="center_horizontal|center" />
-
+	<TextView android:id="@+id/empty_sent_messages"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:text="@string/no_sent_messages" android:textStyle="bold"
+		android:gravity="center_horizontal|center" />
 </RelativeLayout>

@@ -23,7 +23,9 @@ package org.addhen.smssync.services;
 import org.addhen.smssync.R;
 import org.addhen.smssync.PendingMessagesActivity;
 import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.SentMessagesActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
+import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.Util;
 
 import android.app.Notification;
@@ -180,7 +182,7 @@ public class SmsReceiverService extends Service {
 
                         if (!posted) {
                             this.showNotification(messagesBody, getString(R.string.sending_failed));
-                            this.postToOutbox();
+                            this.postToPendingBox();
                             handler.post(mDisplayMessages);
 
                             // attempt to make a data connection
@@ -193,7 +195,8 @@ public class SmsReceiverService extends Service {
                             }
 
                         } else {
-
+                            //log sent messages
+                            this.postToSentBox();
                             if (Prefrences.autoDelete) {
                                 Util.delSmsFromInbox(SmsReceiverService.this, sms);
                             }
@@ -216,7 +219,7 @@ public class SmsReceiverService extends Service {
 
                     if (!posted) {
                         this.showNotification(messagesBody, getString(R.string.sending_failed));
-                        this.postToOutbox();
+                        this.postToPendingBox();
                         handler.post(mDisplayMessages);
 
                         // attempt to make a data connection
@@ -226,7 +229,7 @@ public class SmsReceiverService extends Service {
                             Util.delSmsFromInbox(SmsReceiverService.this, sms);
                         }
                     } else {
-
+                        this.postToSentBox();
                         if (Prefrences.autoDelete) {
                             Util.delSmsFromInbox(SmsReceiverService.this, sms);
                         }
@@ -237,7 +240,7 @@ public class SmsReceiverService extends Service {
             } else {
                 // no internet
                 this.showNotification(messagesBody, getString(R.string.sending_failed));
-                this.postToOutbox();
+                this.postToPendingBox();
                 handler.post(mDisplayMessages);
 
                 connectToDataNetwork();
@@ -273,7 +276,7 @@ public class SmsReceiverService extends Service {
      * 
      * @return void
      */
-    private void postToOutbox() {
+    private void postToPendingBox() {
         Log.i(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
         // Get message id.
         Long msgId = new Long(Util.getId(SmsReceiverService.this, sms, "id"));
@@ -288,6 +291,29 @@ public class SmsReceiverService extends Service {
         Util.smsMap.put("messagesId", messageId);
 
         Util.processMessages(SmsReceiverService.this);
+
+    }
+    
+    /**
+     * Put successfully sent messages to a local database for logging sake
+     * 
+     * @return void
+     */
+    private void postToSentBox() {
+        Log.i(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
+        // Get message id.
+        Long msgId = new Long(Util.getId(SmsReceiverService.this, sms, "id"));
+
+        String messageId = msgId.toString();
+
+        String messageDate = Util
+                .formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
+        Util.smsMap.put("messagesFrom", messagesFrom);
+        Util.smsMap.put("messagesBody", messagesBody);
+        Util.smsMap.put("messagesDate", messageDate);
+        Util.smsMap.put("messagesId", messageId);
+
+        SentMessagesUtil.processSentMessages(SmsReceiverService.this);
 
     }
 
@@ -381,6 +407,15 @@ public class SmsReceiverService extends Service {
 
         public void run() {
             PendingMessagesActivity.showMessages();
+        }
+
+    };
+    
+ // Display pending messages.
+    final Runnable mDisplaySentMessages = new Runnable() {
+
+        public void run() {
+            SentMessagesActivity.showMessages();
         }
 
     };
