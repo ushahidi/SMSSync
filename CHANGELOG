@@ -3,8 +3,14 @@ Feature:
   * Improved battery consumption by the app.
   * Enabled services automatically starts after the phone boots.
   * Locks Wifi when the phone is connected to wifi so it keeps the apps online.
-  * Added the ability for responses to be received from the server and not waiting on a scheduler.
+  * Added the ability for response messages to be received from the server and not wait on a scheduler.
+  * Added confirmation dialog when performing delete actions.
+  * Added a tab that habours a pending messages view and sent messages view.
+  * Implemented the ability for the app to log recent sent messages. 20 Max.
   
+Fixed:
+  * Fixed a bug that when all messages are deleted, the it shows a failed message yet the messages are deleted.
+  * Fixed pending messages to be updated when a background service removes an item in the pending messages list.
   
 1.0.5
 Feature:
