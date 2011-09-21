@@ -35,6 +35,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -85,6 +86,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     public static final String TASK_CHECK = "task_check_preference";
 
     public static final String TASK_CHECK_TIMES = "task_check_times";
+    
+    public static final String ABOUT = "powered_preference";
 
     private EditTextPreference websitePref;
 
@@ -109,6 +112,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private ListPreference autoSyncTimes;
 
     private ListPreference taskCheckTimes;
+    
+    private Preference about;
 
     private SharedPreferences settings;
 
@@ -135,13 +140,29 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private PackageManager pm;
 
     private ComponentName cn;
-
+    
+    private String versionName;
+    
+    private StringBuilder versionLabel;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
+        try {
+            versionName = getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+            //add app name to verstion number
+            versionLabel = new StringBuilder(getString(R.string.app_name));
+            versionLabel.append(" ");
+            versionLabel.append(versionName);
+            versionLabel.append(" ");
+            versionLabel.append(getString(R.string.version_status));
+        } catch (NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         websitePref = (EditTextPreference)getPreferenceScreen().findPreference(KEY_WEBSITE_PREF);
 
         apiKeyPref = (EditTextPreference)getPreferenceScreen().findPreference(KEY_API_KEY_PREF);
@@ -171,7 +192,11 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         taskCheckTimes = (ListPreference)getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
         taskCheckTimes.setEntries(autoSyncEntries);
         taskCheckTimes.setEntryValues(autoSyncValues);
-
+        
+        about = (Preference)getPreferenceScreen().findPreference(ABOUT);
+        
+        about.setTitle(versionLabel.toString());
+        about.setSummary(R.string.powered_by);
         pm = getPackageManager();
         cn = new ComponentName(Settings.this, SmsReceiver.class);
 

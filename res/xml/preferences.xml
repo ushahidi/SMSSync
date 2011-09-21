@@ -69,7 +69,6 @@
 
 	</PreferenceCategory>
 	<PreferenceCategory android:title="@string/about_smssync">
-		<Preference android:key="powered_preference" android:title="@string/sms_sync_powered_by"
-			android:summary="@string/powered_by" />
+		<Preference android:key="powered_preference" />
 	</PreferenceCategory>
 </PreferenceScreen>

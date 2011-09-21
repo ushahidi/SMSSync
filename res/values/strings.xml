@@ -61,9 +61,8 @@
 		executed.</string>
 
 	<string name="app_name">SMSSync</string>
-	<string name="sms_sync_powered_by">SMSSync v1.0.6 beta</string>
 	<string name="outbox">SMSSync Pending Messages</string>
-	<string name="version">1.0.5</string>
+	<string name="version_status">Beta</string>
 	<string name="sms_status_success">SMSSync Message Sent</string>
 	<string name="sms_status_failed">SMSSync Message Sending failed</string>
 	<string name="notification_summary">SMSSync Gateway is Running</string>
