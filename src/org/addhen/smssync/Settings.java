@@ -156,6 +156,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
             //add app name to verstion number
             versionLabel = new StringBuilder(getString(R.string.app_name));
             versionLabel.append(" ");
+            versionLabel.append("v");
             versionLabel.append(versionName);
             versionLabel.append(" ");
             versionLabel.append(getString(R.string.version_status));
