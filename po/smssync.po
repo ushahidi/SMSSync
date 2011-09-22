@@ -161,16 +161,12 @@ msgstr ""
 msgid "SMSSync"
 msgstr ""
 
-#Key: sms_sync_powered_by
-msgid "SMSSync v1.0.6 beta"
-msgstr ""
-
 #Key: outbox
 msgid "SMSSync Pending Messages"
 msgstr ""
 
-#Key: version
-msgid "1.0.5"
+#Key: version_status
+msgid "Beta"
 msgstr ""
 
 #Key: sms_status_success
@@ -335,5 +331,33 @@ msgstr ""
 
 #Key: sms_not_delivered
 msgid "SMS not delivered"
+msgstr ""
+
+#Key: pending_messages
+msgid "Pending"
+msgstr ""
+
+#Key: sent_messages
+msgid "Sent"
+msgstr ""
+
+#Key: title_bar_text
+msgid "Messages"
+msgstr ""
+
+#Key: no_sent_messages
+msgid "No sent messages."
+msgstr ""
+
+#Key: confirm_yes
+msgid "Yes"
+msgstr ""
+
+#Key: confirm_no
+msgid "No"
+msgstr ""
+
+#Key: confirm_message
+msgid "Are you sure you want to perform this action?"
 msgstr ""
 
