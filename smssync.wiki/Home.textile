@@ -10,6 +10,7 @@ h1.Instructions
     * *from*
     * *message*
     * *secret*
+    * *sent_timestamp* (optional)
 
 * In order for SMSSync to account for perfect transmission, the callback URL needs to give back a formatted JSON string such as its shown below to indicate if it received the message or not.
    * *Succeeded* 
@@ -25,7 +26,35 @@ h1.Instructions
           success: "false"
       }
 }</code></pre>
-        
+
+* *Response from server*
+SMSSync allows auto response to be configured on the app itself or to be retrieved from the server. When the app makes an HTTP Post request to sync the incoming messages to the configured URL,  it can send a JSON string that has messages in it as opposed to sending a success or failed JSON string as stated above. The app then sends the messages as SMS to users.
+
+This makes it possible to have an instant response via SMS when an HTTP Post request is made. To leverage this feature, a JSON formatted string like the one below needs to be returned by the configured URL after the app makes the HTTP Post request. 
+
+* *Response JSON data from the callback URL* 
+<pre><code>{
+    "payload": {
+        "success": "true",
+        "task": "send",
+        "messages": [
+            {
+                "to": "000-000-0000",
+                "message": "the message goes here" 
+            },
+            {
+                "to": "000-000-0000",
+                "message": "the message goes here" 
+            },
+            {
+                "to": "000-000-0000",
+                "message": "the message goes here" 
+            }
+        ]
+    }
+}</code></pre>
+
+* *Task*        
 * SMSSync supports execution of task sent from the configured callback URL. At the moment, it supports sending of messages sent from the callback URL as SMS. This feature is targeted towards developers. If you are a developer and you want SMSSync to send an SMS, send a JSON formatted string as shown below to SMSSync with the variable task=send. When SMSSync does an HTTP GET request with a sample URL like this one, http://<callback url>/smssync?task=send, it should bring back a JSON string below.
 
 **Note:** The secret key has to match the secret key configured with SMSSync, otherwise, SMSSync will not execute the task.
