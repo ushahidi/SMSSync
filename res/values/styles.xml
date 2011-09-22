@@ -34,4 +34,9 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/title_separator</item>
     </style>
+    
+    <!-- Tab styling -->
+    <style name="MyTabStyle" parent="@android:style/TextAppearance.Widget.TabWidget">
+    <item name="android:textColor">#5DFC0A</item>
+</style>
 </resources>

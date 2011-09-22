@@ -11,13 +11,14 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int appwidget_text=0x7f050006;
+        public static final int appwidget_text=0x7f050007;
         public static final int tab_selected=0x7f050002;
         public static final int tab_text=0x7f050004;
         public static final int tab_unselected=0x7f050003;
         public static final int text_dark=0x7f050000;
         public static final int text_light=0x7f050001;
         public static final int title_separator=0x7f050005;
+        public static final int transparent=0x7f050006;
     }
     public static final class drawable {
         public static final int appwidget_bg=0x7f020000;
@@ -33,12 +34,17 @@ public final class R {
         public static final int refresh=0x7f02000a;
         public static final int smssync_48=0x7f02000b;
         public static final int smssync_72=0x7f02000c;
-        public static final int solid_white=0x7f020012;
-        public static final int title_bar=0x7f02000d;
-        public static final int widget_bg_default=0x7f02000e;
-        public static final int widget_bg_portrait=0x7f02000f;
-        public static final int widget_bg_selected=0x7f020010;
-        public static final int widget_bg_small=0x7f020011;
+        public static final int solid_white=0x7f020017;
+        public static final int tab_bg_selected=0x7f02000d;
+        public static final int tab_bg_selector=0x7f02000e;
+        public static final int tab_bg_unselected=0x7f02000f;
+        public static final int tab_divider=0x7f020010;
+        public static final int tab_text_selector=0x7f020011;
+        public static final int title_bar=0x7f020012;
+        public static final int widget_bg_default=0x7f020013;
+        public static final int widget_bg_portrait=0x7f020014;
+        public static final int widget_bg_selected=0x7f020015;
+        public static final int widget_bg_small=0x7f020016;
     }
     public static final class id {
         public static final int action_bar_icon=0x7f080012;
@@ -50,7 +56,7 @@ public final class R {
         public static final int appwidget_refresh=0x7f080009;
         public static final int checkBox1=0x7f080011;
         public static final int empty=0x7f08000d;
-        public static final int empty_sent_messages=0x7f080016;
+        public static final int empty_sent_messages=0x7f080017;
         public static final int linearLayout1=0x7f080004;
         public static final int linear_pending_msg=0x7f080003;
         public static final int menu_bar_separator=0x7f080014;
@@ -58,12 +64,15 @@ public final class R {
         public static final int msg_desc=0x7f080007;
         public static final int msg_number=0x7f080005;
         public static final int relativeLayout1=0x7f080002;
+        public static final int tabhost=0x7f080015;
+        public static final int tabsLayout=0x7f080018;
+        public static final int tabsText=0x7f080019;
         public static final int textView1=0x7f08000e;
         public static final int textView2=0x7f08000f;
         public static final int textView3=0x7f080010;
         public static final int title_bar_text_lbl=0x7f080013;
         public static final int view_messages=0x7f08000c;
-        public static final int view_sent_messages=0x7f080015;
+        public static final int view_sent_messages=0x7f080016;
     }
     public static final class layout {
         public static final int appwidget=0x7f030000;
@@ -71,6 +80,7 @@ public final class R {
         public static final int main=0x7f030002;
         public static final int messages_tab=0x7f030003;
         public static final int sent_messages=0x7f030004;
+        public static final int tabs_bg=0x7f030005;
     }
     public static final class string {
         public static final int about_smssync=0x7f06003f;
@@ -167,6 +177,9 @@ public final class R {
     }
     public static final class style {
         public static final int EmptyStyle=0x7f070001;
+        /**  Tab styling 
+         */
+        public static final int MyTabStyle=0x7f070004;
         public static final int WidgetStyle=0x7f070000;
         /**  Title bar Text 
          */

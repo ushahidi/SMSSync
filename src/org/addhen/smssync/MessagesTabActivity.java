@@ -20,77 +20,54 @@
 
 package org.addhen.smssync;
 
-import android.app.TabActivity;
+import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
-public class MessagesTabActivity extends TabActivity {
-    private TabHost tabHost;
+public class MessagesTabActivity extends ActivityGroup {
 
+    private TabHost mTabHost;
+
+    private void setupTabHost() {
+        mTabHost = (TabHost)findViewById(R.id.tabhost);
+        mTabHost.setup(getLocalActivityManager());
+    }
+
+    /** Called when the activity is first created. */
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // construct the tabhost
         setContentView(R.layout.messages_tab);
 
-        tabHost = getTabHost();
-        
-        loadTabContent();
+        setupTabHost();
 
-        tabHost.setCurrentTab(0);
+        mTabHost.getTabWidget().setDividerDrawable(R.drawable.tab_divider);
 
-        // set tab colors
-        final int tabSelectedColor = getResources().getColor(R.color.tab_selected);
-        final int tabUnselectedColor = getResources().getColor(R.color.tab_unselected);
-        setTabColor(tabHost, tabSelectedColor, tabUnselectedColor);
-
-        // set tab colors on tab change as well
-        tabHost.setOnTabChangedListener(new OnTabChangeListener() {
-            public void onTabChanged(String arg0) {
-                setTabColor(tabHost, tabSelectedColor, tabUnselectedColor);
-            }
-        });
+        setupTab(new TextView(this), getString(R.string.pending_messages), new Intent(
+                MessagesTabActivity.this, PendingMessagesActivity.class));
+        setupTab(new TextView(this), getString(R.string.sent_messages), new Intent(
+                MessagesTabActivity.this, SentMessagesActivity.class));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void setupTab(final View view, final String tag, final Intent intent) {
+        View tabview = createTabView(mTabHost.getContext(), tag);
+
+        TabSpec setContent = mTabHost.newTabSpec(tag).setIndicator(tabview).setContent(intent);
+        mTabHost.addTab(setContent);
 
     }
 
-    public void setTabColor(TabHost tabhost, int selectedColor, int unselectedColor) {
-        for (int i = 0; i < tabhost.getTabWidget().getChildCount(); i++) {
-            // unselected
-            tabhost.getTabWidget().getChildAt(i).setBackgroundColor(unselectedColor);
-            TextView tv = (TextView)tabhost.getTabWidget().getChildAt(i)
-                    .findViewById(android.R.id.title); // Unselected Tabs
-            tv.setTextColor(getResources().getColor(R.color.tab_text));
-            tv.setPadding(0, 0,0, 0);
-        }
-        // selected
-        tabhost.getTabWidget().getChildAt(tabhost.getCurrentTab())
-                .setBackgroundColor(selectedColor);
-        TextView tv = (TextView)tabhost.getCurrentTabView().findViewById(android.R.id.title);
-        tv.setTextColor(getResources().getColor(R.color.tab_text));
-        
-    }
-    
-    //load tab content
-    public void loadTabContent() {
-        //failed messages
-        tabHost.addTab(tabHost
-                .newTabSpec("pending_messages")
-                .setIndicator(getString(R.string.pending_messages),
-                        getResources().getDrawable(android.R.drawable.ic_menu_recent_history))
-                .setContent(new Intent(MessagesTabActivity.this, PendingMessagesActivity.class)));
-
-        //sent messages
-        tabHost.addTab(tabHost
-                .newTabSpec("sent_messages")
-                .setIndicator(getString(R.string.sent_messages),
-                        getResources().getDrawable(android.R.drawable.ic_menu_send))
-                .setContent(new Intent(MessagesTabActivity.this, SentMessagesActivity.class)));
+    private static View createTabView(final Context context, final String text) {
+        View view = LayoutInflater.from(context).inflate(R.layout.tabs_bg, null);
+        TextView tv = (TextView)view.findViewById(R.id.tabsText);
+        tv.setText(text);
+        return view;
     }
 }
