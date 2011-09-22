@@ -7,6 +7,7 @@ Feature:
   * Added confirmation dialog when performing delete actions.
   * Added a tab that habours a pending messages view and sent messages view.
   * Implemented the ability for the app to log recent sent messages. 20 Max.
+  * Added sent_timestamp post variable to send the timestamp of an SMS.
   
 Fixed:
   * Fixed a bug that when all messages are deleted, the it shows a failed message yet the messages are deleted.
