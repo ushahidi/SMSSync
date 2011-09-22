@@ -62,6 +62,8 @@ public class SmsReceiverService extends Service {
     private String messagesFrom = "";
 
     private String messagesBody = "";
+    
+    private String messagesTimestamp = "";
 
     private static final Object mStartingServiceSync = new Object();
 
@@ -81,7 +83,7 @@ public class SmsReceiverService extends Service {
 
     private Handler handler = new Handler();
 
-    // holds the status of the sync and sends it to smssyncoutbox activity to
+    // holds the status of the sync and sends it to pending messages activity to
     // update the ui
     private Intent statusIntent;
 
@@ -152,9 +154,12 @@ public class SmsReceiverService extends Service {
             if (messages != null) {
                 // extract message details. phone number and the message body
                 messagesFrom = sms.getOriginatingAddress();
+                messagesTimestamp = String.valueOf(sms.getTimestampMillis());
+                
                 String body;
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
+                    
                 } else {
                     StringBuilder bodyText = new StringBuilder();
                     for (int i = 0; i < messages.length; i++) {
@@ -177,7 +182,7 @@ public class SmsReceiverService extends Service {
                     Log.i(CLASS_TAG, "Keyword enabled:" + Prefrences.keyword);
                     if (Util.processString(messagesBody, keywords)) {
 
-                        posted = Util.postToAWebService(messagesFrom, messagesBody,
+                        posted = Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
                                 SmsReceiverService.this);
 
                         // send auto response from phone not server.
@@ -216,7 +221,7 @@ public class SmsReceiverService extends Service {
                     // keyword is not enabled
                 } else {
 
-                    posted = Util.postToAWebService(messagesFrom, messagesBody,
+                    posted = Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
                             SmsReceiverService.this);
                     // send auto response from phone not server.
                     if (Prefrences.enableReply) {

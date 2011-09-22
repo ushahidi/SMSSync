@@ -485,7 +485,7 @@ public class Util {
      * @return boolean
      */
     public static boolean postToAWebService(String messagesFrom, String messagesBody,
-            Context context) {
+            String messagesTimestamp, Context context) {
         Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL: messagesFrom: "
                 + messagesFrom + " messagesBody: " + messagesBody);
 
@@ -498,6 +498,7 @@ public class Util {
             params.put("secret", Prefrences.apiKey);
             params.put("from", messagesFrom);
             params.put("message", messagesBody);
+            params.put("sent_timestamp", messagesTimestamp);
             return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params, context);
         }
 
@@ -547,6 +548,7 @@ public class Util {
         cursor = MainApplication.mDb.fetchAllMessages();
         String messagesFrom;
         String messagesBody;
+        String messagesTimestamp;
         int deleted = 0;
         
         List<Messages> listMessages = new ArrayList<Messages>();
@@ -562,7 +564,7 @@ public class Util {
                 int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
 
                 int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
-
+                int messagesTimestampIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
                 do {
                     Messages messages = new Messages();
                     listMessages.add(messages);
@@ -576,8 +578,10 @@ public class Util {
                     messagesBody = cursor.getString(messagesBodyIndex);
                     messages.setMessageBody(messagesBody);
                     
+                    messagesTimestamp = cursor.getString(messagesTimestampIndex);
+                    messages.setMessageDate(messagesTimestamp);
                     // post to web service
-                    if (Util.postToAWebService(messagesFrom, messagesBody, context)) {
+                    if (Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp, context)) {
                         
                         //log sent messages
                         MainApplication.mDb.addSentMessages(listMessages);

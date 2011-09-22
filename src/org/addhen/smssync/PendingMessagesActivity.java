@@ -636,7 +636,7 @@ public class PendingMessagesActivity extends Activity {
                 messages.setMessageBody(messagesBody);
 
                 // post to web service
-                if (Util.postToAWebService(messagesFrom, messagesBody, PendingMessagesActivity.this)) {
+                if (Util.postToAWebService(messagesFrom, messagesBody, messagesDate, PendingMessagesActivity.this)) {
                     // log sent messages
                     MainApplication.mDb.addSentMessages(mOldMessages);
                     // if it successfully pushes a message, delete message from
