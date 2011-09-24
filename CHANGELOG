@@ -1,17 +1,18 @@
 1.0.6
 Feature:
-  * Improved battery consumption by the app.
-  * Enabled services automatically starts after the phone boots.
-  * Locks Wifi when the phone is connected to wifi so it keeps the apps online.
-  * Added the ability for response messages to be received from the server and not wait on a scheduler.
+  * Added improvement that makes th battery consumption by the app.
+  * Added the ability for enabled services to automatically start after the phone boots up.
+  * Added the ability for the App to lock WiFi connection when the phone is connected to a WiFi.
+  * Added the ability for 'response messages' to be received from the server and not wait on a scheduler.
   * Added confirmation dialog when performing delete actions.
-  * Added a tab that habours a pending messages view and sent messages view.
-  * Implemented the ability for the app to log recent sent messages. 20 Max.
-  * Added sent_timestamp post variable to send the timestamp of an SMS.
-  
+  * Added a tab that habours 'pending messages' view and 'sent messages' view.
+  * Added the ability for the app to log recent sent messages. Twenty is the Max.
+  * Added 'sent_timestamp' post variable in order to send the timestamp of an SMS.
+  * Added App widget support.
+
 Fixed:
-  * Fixed a bug that when all messages are deleted, the it shows a failed message yet the messages are deleted.
-  * Fixed pending messages to be updated when a background service removes an item in the pending messages list.
+  * Fixed a bug that when all messages are deleted, the app shows a failed message yet the messages are deleted.
+  * Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service.
   
 1.0.5
 Feature:
