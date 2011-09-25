@@ -40,6 +40,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
 
@@ -89,7 +90,7 @@ public class SmsSyncHttpClient {
             nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
             nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
             nameValuePairs.add(new BasicNameValuePair("sent_timestamp", params.get("sent_timestamp")));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,HTTP.UTF_8));
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
