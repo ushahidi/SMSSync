@@ -1,0 +1,19 @@
+* {margin: 0; padding: 0;}
+body { color: #333;	text-align: left; font: 80%/1.2  "Segoe UI","Lucida Grande", "Lucida Sans", "Trebuchet MS", Tahoma, Verdana, sans-serif; background: #fff;	}
+#header{
+	text-align:center;	
+	margin:15px;
+}
+#content {
+	padding:15px;
+}
+	#content h2{
+		margin-bottom:10px;	
+	}
+	#content ul {
+		padding-left:25px;
+		margin-top:10px;
+	}
+		#content li {
+			margin-bottom:10px;
+		}
