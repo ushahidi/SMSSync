@@ -1,0 +1,49 @@
+    This is at least a partial credits-file of people that have
+    contributed to the SMSSync project.  It is sorted by name and
+    formatted to allow easy grepping. The fields are: name (N), email (E), web-address
+    (W), description (D), and country (C).
+    Thanks,
+
+Maintain by Henry Addo aka eyedol
+
+P.S. This file was inspired by Linux credits-file
+
+----------
+
+N: Sándor Balikó
+W: https://www.transifex.net/accounts/profile/vo101sanyo/
+D: Helped translate the app into Hungarian
+C: Hungary
+
+N: Juergen Eichholz
+E: jkeichholz@gmail.com
+D: Helped translate the app into German
+C: Germany
+
+N: Alessandro Fanna
+W: https://www.transifex.net/accounts/profile/rospus/
+D: Translated the app into Italian.
+C: Italy
+
+N: Ebony Mathis
+E: mse.mathis@gmail.com
+D: Proofread the project's documentation and fixed typos.
+C: United Arab Emirates(UAE)
+
+N: Cliff Moffitt
+E: cliff.moffitt@gmail.com
+W: https://www.transifex.net/accounts/profile/anami/
+D: Helped translate the app into Swhaili
+C: Kenya
+
+N: Rasoah Mwilitsa
+E: rasoah@weareasilia.com
+W: https://www.transifex.net/accounts/profile/RazzL/
+D: Translated the app into Swhaili.
+C: Kenya
+
+N: Charl van Niekerk
+E: charl@ushahidi.com
+W: https://www.transifex.net/accounts/profile/charl/
+D: Translated the app into Dutch.
+C: South Africa
