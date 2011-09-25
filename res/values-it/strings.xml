@@ -1,0 +1,133 @@
+<?xml version="1.0" ?>
+<resources>
+	<string name="edittxt_website_pref">
+		Inserire URL di sincronizzazione
+  </string>
+	<string name="edittxt_website_pref_summary">
+		Sito che riceverà i messsaggi di testo.
+  </string>
+	<string name="edittxt_website_pref_dialog_title">
+		Inserire URL di sincronizzazione
+  </string>
+	<string name="edittxt_api_key_pref">
+		Inserire la chiave di sicurezza
+  </string>
+	<string name="edittxt_api_key_pref_summary">
+		Se una chiave di sicurezza è stata specificata nel sito, sarà richiesta.
+	</string>
+	<string name="edittxt_keyword_pref">
+		Inserire parola(e) chiave
+  </string>
+	<string name="edittxt_reply">
+		Inserire messaggio di risposta
+  </string>
+	<string name="edittxt_reply_title">
+		Messaggio di risposta
+  </string>
+	<string name="edittxt_reply_summary">
+		Messaggio da inviare agli utenti.
+  </string>
+	<string name="edittxt_reply_default">
+		Messaggio ricevuto, grazie.
+  </string>
+	<string name="sms_sync_enabled">
+		SMSSync abilitato
+  </string>
+	<string name="sms_sync_disabled">
+		SMSSync disabilitato
+  </string>
+	<string name="edittxt_keyword_hint">
+		incendio, crimine, aiuto, rapporto, ecc
+  </string>
+	<string name="editxt_keyword_pref_summary">
+		Specificare le parole chiave da usare per filtrare il messaggio inviato al
+		gateway.
+  </string>
+	<string name="general_settings">
+		Impostazioni generali
+  </string>
+	<string name="reply_settings">
+		Impostazioni messaggio di replica
+  </string>
+	<string name="chk_enable_sms_sync">
+		Avvia SMSSync
+  </string>
+	<string name="chk_sms_sync_hint">
+		Avvia e ferma SMSSync.
+  </string>
+	<string name="chk_enable_reply">
+		Messaggi di replica
+  </string>
+	<string name="chk_reply_hint">
+		Questa opzione risponde automaticamente ad ogni messaggio che arriva a
+		SMSSync.
+  </string>
+	<string name="chk_enable_gps_sync">
+		Aggiungere coordinate GPS
+  </string>
+	<string name="chk_gps_sync_hint">
+		Questa opzione include le coordinate GPS dell\'attuale posizione del
+		cellulare nei messaggi inviati al sito.
+  </string>
+	<string name="chk_enable_auto_delete">
+		Cancellazione automatica dei messaggi
+  </string>
+	<string name="chk_enable_auto_sync">
+		Abilitare sincronizzazione automatica
+  </string>
+	<string name="chk_enable_auto_sync_hint">
+		Questa opzione permette a SMSSync di sincronizzare periodicamente messaggi
+		pendenti.
+  </string>
+	<string name="txt_auto_sync_delay">
+		Frequenza di auto sincronizzazione
+  </string>
+	<string name="auto_sync_delay_hint">
+		Impostare la frequenza con cui SMSSync si sincronizza con l\'URL di callback
+		configurato.
+  </string>
+	<string name="chk_enable_task_check">
+		Abilitare controllo dei compiti
+  </string>
+	<string name="chk_enable_task_check_hint">
+		Questa opzione permette a SMSSync di controllare periodicamente i compiti
+		abilitati sull\'URL di callback. SMSSync esegue successivamente il
+		compito. Es. SMSSync invia SMS
+  </string>
+	<string name="txt_task_check_delay">
+		Frequenza
+  </string>
+	<string name="txt_task_check_delay_hint">
+		Imposta la frequenza con cui SMSSync controlla il compito da eseguire.
+	</string>
+	<string name="app_name">
+		SMSSync
+  </string>
+	<string name="outbox">
+		Messaggi SMSSync pendenti
+  </string>
+	<string name="version_status">
+		Beta
+  </string>
+	<string name="sms_status_success">
+		Messaggio SMSSync inviato
+  </string>
+	<string name="sms_status_failed">
+		Invio fallito messaggio SMSSync
+  </string>
+	<string name="notification_summary">
+		Gateway SMSSync operativo
+  </string>
+	<string name="sending_failed">
+		Invio fallito messaggio SMSSync.
+  </string>
+	<string name="sending_succeeded">
+		MEssaggio SMSSync inviato.
+  </string>
+	<string name="no_messages_to_sync">
+		Non ci sono messaggi da inviare.
+  </string>
+	<string name="no_messages_to_delete">
+		Non ci sono messaggi da cancellare.
+  </string>
+</resources>

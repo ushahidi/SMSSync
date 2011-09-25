@@ -1,0 +1,259 @@
+<?xml version="1.0" ?>
+<resources>
+	<string name="edittxt_website_pref">
+		Sync URL eingeben
+  </string>
+	<string name="edittxt_website_pref_summary">
+		Diese Website wird die Textnachrichten empfangen.
+  </string>
+	<string name="edittxt_website_pref_dialog_title">
+		Sync URL eingeben
+  </string>
+	<string name="edittxt_api_key_pref">
+		geheimen Schlüssel eingeben
+  </string>
+	<string name="edittxt_api_key_pref_summary">
+        geheimen Schlüssel eingeben
+	</string>
+	<string name="edittxt_keyword_pref">
+		Stichwort(e) eingeben
+  </string>
+	<string name="edittxt_reply">
+		Fügen Sie eine Antwortnachricht hinzu
+  </string>
+	<string name="edittxt_reply_title">
+		eine Antwort
+  </string>
+	<string name="edittxt_reply_summary">
+		Die Nachricht, die an die Benutzer verschickt werden soll.
+  </string>
+	<string name="edittxt_reply_default">
+		Ihre Nachricht wurden empfangen. Vielen Dank!
+  </string>
+	<string name="sms_sync_enabled">
+		SMSSync ist eingeschaltet
+  </string>
+	<string name="sms_sync_disabled">
+		SMSSync ist ausgeschaltet
+  </string>
+	<string name="edittxt_keyword_hint">
+		Feuer, Verbrechen, Hilfe, Statusmeldung, etc.
+  </string>
+	<string name="editxt_keyword_pref_summary">
+		Geben Sie Stichworte an, nach denen die Nachricht gefiltert werden soll.
+	</string>
+	<string name="general_settings">
+		Allgemeine Einstellungen
+  </string>
+	<string name="reply_settings">
+		Einstellungen für die Antwortnachricht
+  </string>
+	<string name="chk_enable_sms_sync">
+		SMSSync starten
+  </string>
+	<string name="chk_sms_sync_hint">
+		SMS Gateway starten und beenden.
+  </string>
+	<string name="chk_enable_reply">
+		Antwortnachricht
+  </string>
+	<string name="chk_reply_hint">
+		Diese Rückantwort wird an alle Benutzer des SMSSync Gateways verschickt.
+	</string>
+	<string name="chk_enable_gps_sync">
+		Füge GPS Koordinaten hinzu
+  </string>
+	<string name="chk_gps_sync_hint">
+		Diese Einstellung fügt die GPS Koordinaten des Aufenthaltsortes zu jeder
+		Nachricht hinzu.
+  </string>
+	<string name="chk_enable_auto_delete">
+		Nachrichten automatisch löschen
+  </string>
+	<string name="chk_auto_delete_hint">
+		Diese Einstellung löscht eingegangene Nachrichten automatisch aus dem
+		Posteingang, um Speicherplatz auf dem Telefon zu bewahren.
+  </string>
+	<string name="chk_enable_auto_sync">
+		Automatische Synchronisation aktivieren
+  </string>
+	<string name="chk_enable_auto_sync_hint">
+		Diese Einstellung ermöglicht SMSSync, Nachrichten automatisch zu
+		synchronisieren.
+  </string>
+	<string name="txt_auto_sync_delay">
+		Frequent der automatischen Synchronisation
+  </string>
+	<string name="auto_sync_delay_hint">
+		Stellen Sie ein, wie oft SMSSync mit der angegebenen URL synchronisiert
+		werden soll.
+  </string>
+	<string name="chk_enable_task_check">
+		Aufgabenplanung einschalten
+  </string>
+	<string name="chk_enable_task_check_hint">
+		Über diese Einstellung kann SMSSync automatisch Aufgaben mit der callback
+		URL verknüpfen und diese dann ausführen, z.B. den automatischen
+		Versand von SMS via SMSSync.
+  </string>
+	<string name="txt_task_check_delay_hint">
+		Stellen Sie ein, wie oft SMSSync eine Aufgabe durchführen soll.
+  </string>
+	<string name="app_name">
+		SMSSync
+  </string>
+	<string name="outbox">
+		SMSSync Warteschlange
+  </string>
+	<string name="version_status">
+		Beta
+  </string>
+	<string name="sms_status_success">
+		SMSSync gesendete Nachrichten
+  </string>
+	<string name="sms_status_failed">
+		SMSSync Senden der Nachricht fehlgeschlagen
+  </string>
+	<string name="notification_summary">
+		SMSSync Gateway aktiv
+  </string>
+	<string name="sending_failed">
+		SMSSync Senden der Nachricht fehlgeschlagen
+  </string>
+	<string name="sending_succeeded">
+		SMSSync Nachricht erfolgreich verschickt.
+  </string>
+	<string name="no_messages_to_sync">
+		Es gibt keine zu verschickende Nachrichten.
+  </string>
+	<string name="no_messages_to_delete">
+		Es gibt keine zu löschende Nachrichten.
+  </string>
+	<string name="sync_failed">
+		SMSSync Senden der Nachricht fehlgeschlagen. Bitte überprüfen Sie die
+		Internetverbindung und Einstellungen.
+  </string>
+	<string name="powered">
+		Powered
+  </string>
+	<string name="powered_by">
+		Created by Ushahidi
+  </string>
+	<string name="menu_delete_all">
+		Alles löschen
+  </string>
+	<string name="menu_sync_all">
+		Alles synchronisieren
+  </string>
+	<string name="menu_delete">
+		löschen
+  </string>
+	<string name="menu_sync">
+		synchronisieren
+  </string>
+	<string name="menu_import">
+		Importiere SMS
+  </string>
+	<string name="menu_settings">
+		Einstellungen
+  </string>
+	<string name="messages_deleted">
+		Nachrichten erfolgreich gelöscht.
+  </string>
+	<string name="messages_deleted_failed">
+		Nachrichten konnten nicht gelöscht werden.
+  </string>
+	<string name="status">
+		Status
+  </string>
+	<string name="empty_list">
+		Keine neuen Nachrichten.
+  </string>
+	<string name="http_text">
+		http://
+  </string>
+	<string name="sms_failed">
+		SMS fehlgeschlagen
+  </string>
+	<string name="invalid_url">
+		Die eingegebene URL ist fehlerhaft.
+  </string>
+	<string name="no_configured_url">
+		Es gibt keine konfigurierte URL.
+  </string>
+	<string name="no_connection">
+		Konnte keine Verbindung zur URL herstellen.
+  </string>
+	<string name="no_task">
+		Es ist (noch) keine Aufgabe mit der callback URL verknüpft.
+  </string>
+	<string name="auto_sync_settings">
+		Automatische Synchronisationseinstellungen
+  </string>
+	<string name="task_check_settings">
+		Aufgabeneinstellungen
+  </string>
+	<string name="about_smssync">
+		Über Sync
+  </string>
+	<string name="please_wait">
+		Bitte warten
+  </string>
+	<string name="smssync_not_enabled">
+		SMSSync ist nicht aktiviert. Bitte aktivieren Sie es in den Einstellungen.
+	</string>
+	<string name="import_messages">
+		Importiere Nachrichten...
+  </string>
+	<string name="nothing_to_import">
+		Keine Nachricht zu importieren. Bitte stellen Sie sicher, dass neue
+		Kurznachrichten im SMS Eingang vorhanden sind.
+  </string>
+	<string name="chk_enable_reply_frm_server">
+		Holen Sie Antwort von Server
+  </string>
+	<string name="chk_reply_frm_server_hint">
+		Dies verschickt die Nachrichten vom Server sofort als SMS, ohne auf einen
+		Auslöser zu warten
+  </string>
+	<string name="sms_delivery_status_failed">
+		SMS nicht verschickt -- vielleicht nicht genügend Guthaben aus dem
+		Telefon
+  </string>
+	<string name="sms_delivery_status_no_service">
+		kein Dienst
+  </string>
+	<string name="sms_delivery_status_radio_off">
+		Radio aus
+  </string>
+	<string name="sms_delivery_status_null_pdu">
+		kein PDU
+  </string>
+	<string name="sms_delivered">
+		SMS verschickt
+  </string>
+	<string name="sms_not_delivered">
+		SMS nicht verschickt
+  </string>
+	<string name="pending_messages">
+		Unerledigt
+  </string>
+	<string name="sent_messages">
+		Gesendet
+  </string>
+	<string name="title_bar_text">
+		Nachrichten
+  </string>
+	<string name="no_sent_messages">
+		keine verschickten Nachrichten.
+  </string>
+	<string name="confirm_yes">
+		Ja
+  </string>
+	<string name="confirm_no">
+		Nein
+  </string>
+	<string name="confirm_message">
+		Willst Du diese Aktion wirklich durchführen?
+  </string>
+</resources>

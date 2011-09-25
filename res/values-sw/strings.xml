@@ -1,0 +1,252 @@
+<?xml version="1.0" ?>
+<resources>
+  <string name="edittxt_website_pref">
+    Ingiza kisara cha ku sync
+  </string>
+  <string name="edittxt_website_pref_summary">
+    Hii ndio tovuti itakayopokea nakala ujumbe
+  </string>
+  <string name="edittxt_website_pref_dialog_title">
+    Ingiza kisara cha ku sync
+  </string>
+  <string name="edittxt_api_key_pref">
+    Ingiza siri
+  </string>
+  <string name="edittxt_api_key_pref_summary">
+    Kama siri/ufunguo umetajwa kwenye tovuti, itahitajika
+  </string>
+  <string name="edittxt_keyword_pref">
+    Ingiza maneno muhimu
+  </string>
+  <string name="edittxt_reply">
+    Ingiza ujumbe wa kujibu nakala jumbe
+  </string>
+  <string name="edittxt_reply_title">
+    Ujumbe wa kujibu
+  </string>
+  <string name="edittxt_reply_summary">
+    Ujumbe utakaotumwa kwa watumizi
+  </string>
+  <string name="edittxt_reply_default">
+    Ujumbe wako umepokelewa, Asante
+  </string>
+  <string name="sms_sync_enabled">
+    SMSSync imewezeshwa
+  </string>
+  <string name="sms_sync_disabled">
+    SMSSync haijawezeshwa
+  </string>
+  <string name="edittxt_keyword_hint">
+    Moto, uhalifu, usaidizi, ripoti na kadhalika
+  </string>
+  <string name="editxt_keyword_pref_summary">
+    Taja maneno muhimu yatakayo tumiwa kuchuja ujumbe wa maandishi utakaotumwa kwenye
+  </string>
+  <string name="general_settings">
+    Vipimo vya jumla
+  </string>
+  <string name="reply_settings">
+    Vipimo vya jumbe majibu
+  </string>
+  <string name="chk_enable_sms_sync">
+    Anzisha SMSSync
+  </string>
+  <string name="chk_sms_sync_hint">
+    Anzisha na achisha njia ya ujumbe
+  </string>
+  <string name="chk_enable_reply">
+    Jibu jumbe
+  </string>
+  <string name="chk_reply_hint">
+    Hii itajibu mara moja kwa jumbe zote zitakazokuja kwenye SMSSync
+  </string>
+  <string name="chk_enable_gps_sync">
+    Ongeza uratibu wa GPS
+  </string>
+  <string name="chk_gps_sync_hint">
+    Hii ni pamoja na uratibu wa GPS wa eneo la sasa la simu hadi jumbe zitakazotumwa kwenye tovuti
+  </string>
+  <string name="chk_enable_auto_delete">
+    Futa jumbe mara moja
+  </string>
+  <string name="chk_auto_delete_hint">
+    Hii itafuta jumbe mara moja na kuziweka kwenye nafasi ya ujumbe ulioko kwenye simu
+  </string>
+  <string name="chk_enable_auto_sync">
+    Wezesha Sync mara moja
+  </string>
+  <string name="chk_enable_auto_sync_hint">
+    Hii itawezesha SMSSync kuweka jumbe zinazosubiri
+  </string>
+  <string name="txt_auto_sync_delay">
+    mita bendi ya kuratibisha mara moja
+  </string>
+  <string name="auto_sync_delay_hint">
+    Weka ni mara ngapi SMSSync itaratibisha na kisara cha URL
+  </string>
+  <string name="chk_enable_task_check">
+    wezesha kazi kuangaliwa
+  </string>
+  <string name="chk_enable_task_check_hint">
+    Hii inawezesha SMSSync kuangalia kazi mara kwa mara kwenye kisara cha upokezaji. SMSSync
+  </string>
+  <string name="txt_task_check_delay">
+    mita bendi
+  </string>
+  <string name="txt_task_check_delay_hint">
+    Panga jinsi SMSSync itaangalia kazi za kutekeleza
+  </string>
+  <string name="app_name">
+    SMSSync
+  </string>
+  <string name="outbox">
+    jumbe zinazosubiri
+  </string>
+  <string name="version_status">
+    Beta
+  </string>
+  <string name="sms_status_success">
+    ujumbe wa SMSync umetumwa
+  </string>
+  <string name="sms_status_failed">
+    Ujumbe wa SMSSync haujafanikiwa kutumwa
+  </string>
+  <string name="notification_summary">
+    Njia ya SMSSync inafanya kazi
+  </string>
+  <string name="sending_failed">
+    Ujumbe wa SMSSync haujatumwa
+  </string>
+  <string name="sending_succeeded">
+    ujumbe wa SMSsync umetumwa
+  </string>
+  <string name="no_messages_to_sync">
+    Hakuna jumbe za kutuma
+  </string>
+  <string name="no_messages_to_delete">
+    Hakuna ujumbe wa kufuta
+  </string>
+  <string name="sync_failed">
+    Ujumbe wa SMSSync umeshindwa kutuma. Labda haujasanidiwa ama hakuna muunganisho wa mtandao
+  </string>
+  <string name="powered">
+    Imewezeshwa
+  </string>
+  <string name="powered_by">
+    Imeundwa na Ushahidi
+  </string>
+  <string name="menu_delete_all">
+    Futa zote
+  </string>
+  <string name="menu_sync_all">
+    Ratibisha zote
+  </string>
+  <string name="menu_delete">
+    futa
+  </string>
+  <string name="menu_sync">
+    Ratibisha
+  </string>
+  <string name="menu_import">
+    Agiza ujumbe mfupi
+  </string>
+  <string name="menu_settings">
+    Vipimo
+  </string>
+  <string name="messages_deleted">
+    Jumbe zimefanikiwa kufutwa
+  </string>
+  <string name="messages_deleted_failed">
+    Ujumbe haungeweza kufutwa
+  </string>
+  <string name="status">
+    Hali
+  </string>
+  <string name="empty_list">
+    Hakuna jumbe zinazosubiri
+  </string>
+  <string name="http_text">
+    http://
+  </string>
+  <string name="sms_failed">
+    Ujumbe mfupi haujafanikiwa
+  </string>
+  <string name="invalid_url">
+    URL uliyoingiza ni batili
+  </string>
+  <string name="no_configured_url">
+    Tafadhali hakuna URL iliyoratibishwa
+  </string>
+  <string name="no_connection">
+    Haingeweza kuungana na URL
+  </string>
+  <string name="no_task">
+    Hakuna kazi iliyowezeshwa kwenye URL ya majibu
+  </string>
+  <string name="auto_sync_settings">
+    Vipimo vya mara moja vya sync
+  </string>
+  <string name="task_check_settings">
+    Vipimo vya kazi
+  </string>
+  <string name="about_smssync">
+    Kuhusu Sync
+  </string>
+  <string name="please_wait">
+    Tafadhali subiri
+  </string>
+  <string name="smssync_not_enabled">
+    SSYNC haijawezeshwa. Tafadhali wezesha kutoka kwenye vipimo vya kisetiri
+  </string>
+  <string name="import_messages">
+    Jumbe zinaagizwa...
+  </string>
+  <string name="nothing_to_import">
+    Hakuna jumbe za kuagiza. Hakikisha una Jumbe fupi kwenye sanduku lako la jumbe
+  </string>
+  <string name="chk_enable_reply_frm_server">
+    Pata jibu kutoka kwa mtambo
+  </string>
+  <string name="chk_reply_frm_server_hint">
+    Hii itatuma jumbe mara moja vile zinavyopokelewa kama jumbe bila kungojea uratibishwaji
+  </string>
+  <string name="sms_delivery_status_failed">
+    Ujumbe mfupi haujatumwa -- Labda pesa zilizoko kwenye simu yako hazitoshi
+  </string>
+  <string name="sms_delivery_status_no_service">
+    Hakuna huduma
+  </string>
+  <string name="sms_delivery_status_radio_off">
+    Radio imezimwa
+  </string>
+  <string name="sms_delivery_status_null_pdu">
+    hakuna PDU
+  </string>
+  <string name="sms_delivered">
+    Ujumbe mfupi umetumwa
+  </string>
+  <string name="sms_not_delivered">
+    Ujumbe mfupi haujatumwa
+  </string>
+  <string name="pending_messages">
+    Inasubiri
+  </string>
+  <string name="sent_messages">
+    Imetumwa
+  </string>
+  <string name="title_bar_text">
+    Jumbe
+  </string>
+  <string name="no_sent_messages">
+    Hakuna jumbe zilizotumwa
+  </string>
+  <string name="confirm_yes">
+    Ndio
+  </string>
+  <string name="confirm_no">
+    La
+  </string>
+  <string name="confirm_message">
+    Una uhakikia wataka kufanya kitendo hiki?
+  </string>
+</resources>
