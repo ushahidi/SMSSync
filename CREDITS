@@ -47,3 +47,9 @@ E: charl@ushahidi.com
 W: https://www.transifex.net/accounts/profile/charl/
 D: Translated the app into Dutch.
 C: South Africa
+
+N: Tobias Quinn
+E: tobias@tobiasquinn.com
+W: https://github.com/tobiasquinn
+D: Removed the ability for the app to send blank messages which crashes the app. See http://goo.gl/T67VP
+C: England
