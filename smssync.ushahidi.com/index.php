@@ -11,10 +11,10 @@
 <div id="content">
 	<h2>Instructions</h2>
 	<ul>
-		<li>To start the SMSSync Gateway, you'll need to specify a callback URL. This URL is where all incoming text messages will be transmitted to.</li>
-		<li>For  security you can specify at secret at the callback URL. If the secret doesn't match, the callback URL will ignore the transmission.</li>
+		<li>To start the SMSSync Gateway, you'll need to specify a callback URL. This URL is where all incoming text messages will be transmitted to. Remember to enter the full URL including the filename. A typical example will be http://somedomain.com/index.php</li>
+		<li>For  security you can specify a secret key at the callback URL. If the secret key doesn't match, the callback URL will ignore the transmission.</li>
 		<li>Additionally, you can specify keywords with which to filter incoming messages. Only matching text messages will be sent to the SMSSync Gateway URL.</li>
-		<li>The SMSSync sends the following variables via the POST method:
+		<li>SMSSync sends the following variables via the POST method:
 			<ul>
 				<li><strong>from</strong></li>
 				<li><strong>message</strong></li>
