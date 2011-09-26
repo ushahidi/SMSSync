@@ -1,19 +1,21 @@
 * {margin: 0; padding: 0;}
 body { color: #333;	text-align: left; font: 80%/1.2  "Segoe UI","Lucida Grande", "Lucida Sans", "Trebuchet MS", Tahoma, Verdana, sans-serif; background: #fff;	}
-#header{
-	text-align:center;	
-	margin:15px;
+
+#logo h3{
+    float:left;
 }
-#content {
-	padding:15px;
+
+#logo a {
+    text-indent:30px;
+    background:transparent url(../images/logo.png) no-repeat 20px 9px;
+    display:block;
+    width:140px;
+    font-weight:bold;
+    color:#fff;
+    margin-right:5px;
+    outline:none;
 }
-	#content h2{
-		margin-bottom:10px;	
-	}
-	#content ul {
-		padding-left:25px;
-		margin-top:10px;
-	}
-		#content li {
-			margin-bottom:10px;
-		}
+
+.pull-right {
+    float:right;
+}
