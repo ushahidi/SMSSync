@@ -1,6 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<!DOCTYPE html> 
+<html lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>SMSSync by Ushahidi</title>
 <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
@@ -20,11 +19,12 @@
                 </h3>
             </div>
             <ul class="nav">
-                <li class="active"><a href="index.php">Home</a></li>
+                <li class="active"><a href="http://smssync.ushahidi.com/">Home</a></li>
                 <li><a href="#">News</a></li>
-                <li><a href="#">Download</a></li>
-                <li><a href="doc.php">Documentation</a></li>
+                <li><a href="http://smssync.ushahidi.com/download/">Download</a></li>
+                <li><a href="http://smssync.ushahidi.com/doc/">Documentation</a></li>
                 <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
+                <li><a href="http://smssync.ushahidi.com/contact/">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -54,20 +54,21 @@ any configured URL(web service).
             <div class="span-one-third"> 
                 <h3>License</h3>
                 <p>
-                SMSSync is licensed under <a href="http://www.gnu.org/licenses/gpl-3.0.txt">GPL</a> 
-                (GNU General Public License, v.3). To read detail about the 
-                LGPL <a href="">click here.</a> <!--TODO:// let this link to the license doc -->
+                SMSSync is licensed under <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">LGPL</a> 
+                (GNU Lesser General Public License, v.3). To read detail about the 
+                LGPL <a href="https://github.com/ushahidi/SMSSync/blob/master/LICENSE">click here.</a> 
+                <!--TODO:// let this link to the license doc -->
                 </p>
             </div> 
             <div class="span-one-third"> 
                 <h3>Participation</h3> 
                 <p>
-                    There are varieties of ways to actively participate on the project. 
-                    These range from writing documentation for the project to 
+                    There are a variety of ways to actively participate in the project. 
+                    These ranges from writing documentation for the project to 
                     translating the app into various 
-                    other languages. If you are a developer and wants to help write code 
+                    other languages. If you are a developer and want to help write code 
                     for the project, feel free to browse through our <a href="http://dev.ushahidi.com/projects/SMSSync/issues">issue 
-                    tracker</a> on redmine. <a href="#">Read more...</a>
+                    tracker</a> on our redmine install.
                 </p>            
             </div> 
         </div><!--end row-->
@@ -77,11 +78,21 @@ any configured URL(web service).
             <div class="span-one-third">
                 <h3>Release status</h3>
                 <p>
-                    SMSSync is a simple, yet powerful SMS to HTTP sync utility,
-that turns any Android phone into a local SMS
-gateway by sending incoming messages(SMS) to
-any configured URL(web service).
-
+                    <strong>Public release:</strong>
+                        <ul>
+                            <li>Released September 25, 2011</li>
+                            <li>Revision r8</li>
+                            <li>Version <a href="http://dev.ushahidi.com/versions/show/39">1.0.7</a></li>
+                        </ul>
+                    <strong>Stable branch:</strong>
+                        <ul>
+                            <li>None</li>
+                        </ul>
+                    <strong>Development branch:</strong>
+                        <ul>
+                        <li><a href="https://github.com/eyedol/smssync/">master branch</a> open for commit/contributions for SMSSync 1.0.8</li>
+                        </ul>
+                        <a href="http://dev.ushahidi.com/projects/SMSSync/news">More</a>
                 </p>
             </div>
             <div class="span-one-third"> 
@@ -90,16 +101,24 @@ any configured URL(web service).
                     SMSSync uses <a href="http://git-scm.com/">GIT</a> for source control management and the code 
                     is hosted on <a href="https://github.com/ushahidi/SMSSync/">github.com.</a> 
                 </p>
+                <p>
+                    It uses <a href="http://redmine.org">Redmine</a> 
+                    for project management and for tracking 
+                    <a href="http://dev.ushahidi.com/projects/SMSSync/issues">bugs and issues</a>. 
+                    Translation however, is accomplished using transifex. 
+                    The free and open source localization tool.
+                </p>
             </div> 
             <div class="span-one-third"> 
                 <h3>Translations</h3> 
                 <p>
-                    SMSSync as of now has been completely translated into 5 languages. We use 
-                    transifex for hosting our translation strings. 
+                    SMSSync, as of now, has been completely translated into 5 languages. We use 
+                    transifex for hosting our strings and to make translation much easier. 
 
-                    <p>To help translate SMSSync into other languages headover to 
-                    <a href="https://www.transifex.net/projects/p/smssync/resource/smssyncpo/">transifex</a>, add a language if it's not there. The feel free to translate 
-                    online or offline.
+                    <p>To help translate SMSSync into other languages, simply headover to 
+                    <a href="https://www.transifex.net/projects/p/smssync/resource/smssyncpo/">transifex.net</a>, 
+                    add a language if it's not there otherwise contribute to the uncompleted
+                    translations.
                 </p>            
             </div> 
         </div><!--end row-->
@@ -109,8 +128,10 @@ any configured URL(web service).
 <div class="container">
 <footer class="footer">
     <div class="container">
-        <p class="pull-right"><a href="#">Back to top</a></p> 
-	    <p>Copyright &copy; <?php echo date("Y"); ?> <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <div class="pull-right">
+            powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+        </div> 
+	    <p>Copyright &copy; 2010 - <?php echo date("Y"); ?> <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
     </div>
 </footer>
 </div>

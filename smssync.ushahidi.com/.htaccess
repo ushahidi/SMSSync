@@ -1,0 +1,26 @@
+# Turn on URL rewriting only when mod rewrite is turn on
+
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^/]+)/$ $1.php 
+
+# Forces a trailing slash to be added
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+RewriteRule (.*)$ /$1/ [R=301,L]
+</IfModule>
+
+# Protect the htaccess from being viewed
+<Files .htaccess>
+	order allow,deny
+	deny from all
+</Files>
+
+# Don't show directory listings for URLs which map to a directory.
+Options -Indexes
+
+#Follow symlinks
+Options +FollowSymlinks

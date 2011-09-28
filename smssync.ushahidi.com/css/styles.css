@@ -18,4 +18,21 @@ body { color: #333;	text-align: left; font: 80%/1.2  "Segoe UI","Lucida Grande",
 
 .pull-right {
     float:right;
+    font-size: 70%;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 20px 0 0;
 }
+
+label.error {
+    float: right;
+    font-size:10px; 
+    padding:5px 9px 6px 25px; 
+    margin-left:5px;
+    border:1px solid #cbcba2; 
+    -webkit-border-radius: 3px; 
+    -moz-border-radius: 3px; 
+    border-radius: 3px; 
+}
+
+input.error, select.error, textarea.error { border:1px solid #c00; background:#ffffea; }
