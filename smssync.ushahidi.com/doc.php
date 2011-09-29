@@ -21,7 +21,7 @@
             </div>
             <ul class="nav">
                 <li><a href="http://smssync.ushahidi.com/">Home</a></li>
-                <li><a href="#">News</a></li>
+                <li><a href="http://dev.ushahidi.com/projects/SMSSync/news">News</a></li>
                 <li><a href="http://smssync.ushahidi.com/download/">Download</a></li>
                 <li class="active"><a href="doc.php">Documentation</a></li>
                 <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
