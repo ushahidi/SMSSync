@@ -25,7 +25,7 @@
                 <li><a href="http://smssync.ushahidi.com/download/">Download</a></li>
                 <li class="active"><a href="doc.php">Documentation</a></li>
                 <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
-                <li class="active"><a href="http://smssync.ushahidi.com/contact/">Contact</a></li>
+                <li><a href="http://smssync.ushahidi.com/contact/">Contact</a></li>
             </ul>
         </div>
     </div>
