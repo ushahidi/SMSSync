@@ -46,8 +46,7 @@
                 <p>
                     SMSSync is a simple, yet powerful SMS to HTTP sync utility,
 that turns any Android phone into a local SMS
-gateway by sending incoming messages(SMS) to
-any configured URL(web service).
+gateway by sending incoming messages(SMS) to a configured URL(web service).
 
                 </p>
             </div>
@@ -55,7 +54,7 @@ any configured URL(web service).
                 <h3>License</h3>
                 <p>
                 SMSSync is licensed under <a href="http://www.gnu.org/licenses/lgpl-3.0.txt">LGPL</a> 
-                (GNU Lesser General Public License, v.3). To read detail about the 
+                (GNU Lesser General Public License, v.3). To read details about the 
                 LGPL <a href="https://github.com/ushahidi/SMSSync/blob/master/LICENSE">click here.</a> 
                 <!--TODO:// let this link to the license doc -->
                 </p>
@@ -64,7 +63,7 @@ any configured URL(web service).
                 <h3>Participation</h3> 
                 <p>
                     There are a variety of ways to actively participate in the project. 
-                    These ranges from writing documentation for the project to 
+                    These range from writing documentation for the project to 
                     translating the app into various 
                     other languages. If you are a developer and want to help write code 
                     for the project, feel free to browse through our <a href="http://dev.ushahidi.com/projects/SMSSync/issues">issue 
@@ -105,8 +104,7 @@ any configured URL(web service).
                     It uses <a href="http://redmine.org">Redmine</a> 
                     for project management and for tracking 
                     <a href="http://dev.ushahidi.com/projects/SMSSync/issues">bugs and issues</a>. 
-                    Translation however, is accomplished using transifex. 
-                    The free and open source localization tool.
+                    Transifex, the free and open source localization tool, is used for translations.
                 </p>
             </div> 
             <div class="span-one-third"> 
@@ -117,7 +115,7 @@ any configured URL(web service).
 
                     <p>To help translate SMSSync into other languages, simply headover to 
                     <a href="https://www.transifex.net/projects/p/smssync/resource/smssyncpo/">transifex.net</a>, 
-                    add a language if it's not there otherwise contribute to the uncompleted
+                    add a language if it's not there or contribute to the uncompleted
                     translations.
                 </p>            
             </div> 
