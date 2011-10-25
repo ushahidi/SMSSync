@@ -132,6 +132,7 @@ public class MainHttpClient {
             nameValuePairs.add(new BasicNameValuePair("secret", params.get("secret")));
             nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
             nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
+            nameValuePairs.add(new BasicNameValuePair("message_id",params.get("message_id")));
             nameValuePairs.add(new BasicNameValuePair("sent_timestamp", formatDate(params
                     .get("sent_timestamp"))));
             nameValuePairs.add(new BasicNameValuePair("sent_to", params.get("sent_to")));

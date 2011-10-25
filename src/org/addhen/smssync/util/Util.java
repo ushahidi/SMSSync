@@ -485,7 +485,7 @@ public class Util {
      * @return boolean
      */
     public static boolean postToAWebService(String messagesFrom, String messagesBody,
-            String messagesTimestamp, Context context) {
+            String messagesTimestamp, String messagesId, Context context) {
         Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL:"
                 + Prefrences.website + " messagesFrom: " + messagesFrom + " messagesBody: "
                 + messagesBody);
@@ -501,6 +501,7 @@ public class Util {
             params.put("message", messagesBody);
             params.put("sent_timestamp", messagesTimestamp);
             params.put("sent_to", getPhoneNumber(context));
+            params.put("message_id", messagesId);
             return MainHttpClient.postSmsToWebService(urlBuilder.toString(), params, context);
         }
 
@@ -574,7 +575,7 @@ public class Util {
                     messages.setMessageDate(messagesTimestamp);
                     // post to web service
                     if (Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
-                            context)) {
+                            String.valueOf(messageId),context)) {
 
                         // log sent messages
                         MainApplication.mDb.addSentMessages(listMessages);

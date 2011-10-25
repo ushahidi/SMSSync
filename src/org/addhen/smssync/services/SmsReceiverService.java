@@ -62,8 +62,10 @@ public class SmsReceiverService extends Service {
     private String messagesFrom = "";
 
     private String messagesBody = "";
-    
+
     private String messagesTimestamp = "";
+
+    private String messagesId = "";
 
     private static final Object mStartingServiceSync = new Object();
 
@@ -155,10 +157,11 @@ public class SmsReceiverService extends Service {
                 // extract message details. phone number and the message body
                 messagesFrom = sms.getOriginatingAddress();
                 messagesTimestamp = String.valueOf(sms.getTimestampMillis());
+                messagesId = String.valueOf(Util.getId(this, sms, "thread"));
                 String body;
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
-                    
+
                 } else {
                     StringBuilder bodyText = new StringBuilder();
                     for (int i = 0; i < messages.length; i++) {
@@ -181,8 +184,8 @@ public class SmsReceiverService extends Service {
                     Log.i(CLASS_TAG, "Keyword enabled:" + Prefrences.keyword);
                     if (Util.processString(messagesBody, keywords)) {
 
-                        posted = Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
-                                SmsReceiverService.this);
+                        posted = Util.postToAWebService(messagesFrom, messagesBody,
+                                messagesTimestamp, messagesId, SmsReceiverService.this);
 
                         // send auto response from phone not server.
                         if (Prefrences.enableReply) {
@@ -221,7 +224,7 @@ public class SmsReceiverService extends Service {
                 } else {
 
                     posted = Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
-                            SmsReceiverService.this);
+                            messagesId, SmsReceiverService.this);
                     // send auto response from phone not server.
                     if (Prefrences.enableReply) {
                         // send auto response
@@ -294,7 +297,7 @@ public class SmsReceiverService extends Service {
 
         String messageId = msgId.toString();
 
-        String messageDate = String.valueOf(sms.getTimestampMillis()); 
+        String messageDate = String.valueOf(sms.getTimestampMillis());
         Util.smsMap.put("messagesFrom", messagesFrom);
         Util.smsMap.put("messagesBody", messagesBody);
         Util.smsMap.put("messagesDate", messageDate);
