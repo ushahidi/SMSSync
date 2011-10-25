@@ -206,7 +206,7 @@ public class PendingMessagesActivity extends Activity {
                         Util.showToast(PendingMessagesActivity.this, R.string.sending_succeeded);
 
                     } else if (result == 1) {
-                        Util.showToast(PendingMessagesActivity.this, R.string.sending_failed);
+                        Util.showToast(PendingMessagesActivity.this, R.string.sync_failed);
                     } else if (result == 2) {
                         Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_sync);
                     }
@@ -772,7 +772,7 @@ public class PendingMessagesActivity extends Activity {
 
                     Util.showToast(PendingMessagesActivity.this, R.string.sending_succeeded);
                 } else if (status == 1) {
-                    Util.showToast(PendingMessagesActivity.this, R.string.sending_failed);
+                    Util.showToast(PendingMessagesActivity.this, R.string.sync_failed);
                 } else {
                     Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_sync);
                 }

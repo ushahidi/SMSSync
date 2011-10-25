@@ -71,8 +71,8 @@
 	<string name="no_messages_to_sync">There are no messages to send.</string>
 	<string name="no_messages_to_delete">There are no messages to delete.</string>
 	<string name="sync_failed">SMSSync message sending failed. Perhaps its not
-		configured or there is no Internet connectivity. Please double check
-		your internet connectivity or your configuration.</string>
+		configured or there is no Internet connection. Please double check
+		your Internet connection or your configuration.</string>
 	<string name="powered">Powered</string>
 	<string name="powered_by">Created by Ushahidi</string>
 

@@ -485,7 +485,7 @@ public class SentMessagesActivity extends Activity {
 
                     Util.showToast(SentMessagesActivity.this, R.string.sending_succeeded);
                 } else if (status == 1) {
-                    Util.showToast(SentMessagesActivity.this, R.string.sending_failed);
+                    Util.showToast(SentMessagesActivity.this, R.string.sync_failed);
                 } else {
                     Util.showToast(SentMessagesActivity.this, R.string.no_messages_to_sync);
                 }

@@ -292,7 +292,7 @@ public class Util {
      * @return void
      */
     public static void showToast(Context context, int i) {
-        int duration = Toast.LENGTH_SHORT;
+        int duration = Toast.LENGTH_LONG;
         Toast.makeText(context, i, duration).show();
     }
 
