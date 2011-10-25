@@ -61,6 +61,7 @@ import android.os.Environment;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -485,8 +486,9 @@ public class Util {
      */
     public static boolean postToAWebService(String messagesFrom, String messagesBody,
             String messagesTimestamp, Context context) {
-        Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL:"+Prefrences.website+" messagesFrom: "
-                + messagesFrom + " messagesBody: " + messagesBody);
+        Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL:"
+                + Prefrences.website + " messagesFrom: " + messagesFrom + " messagesBody: "
+                + messagesBody);
 
         HashMap<String, String> params = new HashMap<String, String>();
         Prefrences.loadPreferences(context);
@@ -498,6 +500,7 @@ public class Util {
             params.put("from", messagesFrom);
             params.put("message", messagesBody);
             params.put("sent_timestamp", messagesTimestamp);
+            params.put("sent_to", getPhoneNumber(context));
             return MainHttpClient.postSmsToWebService(urlBuilder.toString(), params, context);
         }
 
@@ -514,7 +517,6 @@ public class Util {
     public static int validateCallbackUrl(String callbackUrl) {
 
         if (TextUtils.isEmpty(callbackUrl)) {
-
             return 1;
         }
 
@@ -696,12 +698,7 @@ public class Util {
      */
     public static void sendResponseFromServer(Context context, String response) {
         Log.i(CLASS_TAG, "performResponseFromServer(): " + " response:" + response);
-        /**
-         * The payload
-         * {"payload":{"success":"true","task":"send","messages":[{"to"
-         * :"15555215556","message":"Olalala"}]}} TODO:// remove this after
-         * documenting this
-         */
+
         if (!TextUtils.isEmpty(response) && response != null) {
 
             try {
@@ -778,8 +775,7 @@ public class Util {
 
                 do {
 
-                    messageDate = Util
-                            .formatTimestamp(context, c.getLong(c.getColumnIndex("date")));
+                    messageDate = String.valueOf(c.getLong(c.getColumnIndex("date")));
                     Util.smsMap.put("messagesFrom", c.getString(c.getColumnIndex("address")));
                     Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
                     Util.smsMap.put("messagesDate", messageDate);
@@ -822,5 +818,29 @@ public class Util {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    private static String getMyPhoneNumber(Context context) {
+        TelephonyManager mTelephonyMgr;
+        mTelephonyMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        return mTelephonyMgr.getLine1Number();
+    }
+
+    public static String getPhoneNumber(Context context) {
+        String s = getMyPhoneNumber(context);
+        return s.substring(2);
+    }
+
+    public static String formatDateTime(long milliseconds, String dateTimeFormat) {
+        final Date date = new Date(milliseconds);
+        try {
+            if (date != null) {
+                SimpleDateFormat submitFormat = new SimpleDateFormat(dateTimeFormat);
+                return submitFormat.format(date);
+            }
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+        return null;
     }
 }

@@ -760,7 +760,7 @@ public class PendingMessagesActivity extends Activity {
 
     /**
      * This will refresh content of the listview aka the pending messages when
-     * smssync syncs pending messages.
+     * smssync successfully syncs pending messages.
      */
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override

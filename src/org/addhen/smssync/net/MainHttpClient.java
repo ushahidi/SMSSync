@@ -85,9 +85,10 @@ public class MainHttpClient {
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         // https scheme
         schemeRegistry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
+        ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(httpParameters,
+                schemeRegistry);
 
-        httpclient = new DefaultHttpClient(new ThreadSafeClientConnManager(httpParameters,
-                schemeRegistry), httpParameters);
+        httpclient = new DefaultHttpClient(manager, httpParameters);
     }
 
     public static HttpResponse GetURL(String URL) throws IOException {
@@ -130,8 +131,9 @@ public class MainHttpClient {
             nameValuePairs.add(new BasicNameValuePair("secret", params.get("secret")));
             nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
             nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
-            nameValuePairs.add(new BasicNameValuePair("sent_timestamp", params
-                    .get("sent_timestamp")));
+            nameValuePairs.add(new BasicNameValuePair("sent_timestamp", formatDate(params
+                    .get("sent_timestamp"))));
+            nameValuePairs.add(new BasicNameValuePair("sent_to", params.get("sent_to")));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
             // Execute HTTP Post Request
@@ -224,4 +226,13 @@ public class MainHttpClient {
         }
         return text;
     }
+
+    private static String formatDate(String date) {
+        try {
+            return Util.formatDateTime(Long.parseLong(date), "mm-dd-yy-hh:mm:");
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
 }

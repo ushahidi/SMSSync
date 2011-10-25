@@ -155,7 +155,6 @@ public class SmsReceiverService extends Service {
                 // extract message details. phone number and the message body
                 messagesFrom = sms.getOriginatingAddress();
                 messagesTimestamp = String.valueOf(sms.getTimestampMillis());
-                
                 String body;
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
@@ -295,8 +294,7 @@ public class SmsReceiverService extends Service {
 
         String messageId = msgId.toString();
 
-        String messageDate = Util
-                .formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
+        String messageDate = String.valueOf(sms.getTimestampMillis()); 
         Util.smsMap.put("messagesFrom", messagesFrom);
         Util.smsMap.put("messagesBody", messagesBody);
         Util.smsMap.put("messagesDate", messageDate);
@@ -318,8 +316,7 @@ public class SmsReceiverService extends Service {
 
         String messageId = msgId.toString();
 
-        String messageDate = Util
-                .formatTimestamp(SmsReceiverService.this, sms.getTimestampMillis());
+        String messageDate = String.valueOf(sms.getTimestampMillis());
         SentMessagesUtil.smsMap.put("messagesFrom", messagesFrom);
         SentMessagesUtil.smsMap.put("messagesBody", messagesBody);
         SentMessagesUtil.smsMap.put("messagesDate", messageDate);

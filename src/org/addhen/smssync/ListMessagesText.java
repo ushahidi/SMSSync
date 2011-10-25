@@ -20,6 +20,8 @@
 
 package org.addhen.smssync;
 
+import org.addhen.smssync.util.Util;
+
 public class ListMessagesText {
 
     private String messagesFrom;
@@ -34,11 +36,24 @@ public class ListMessagesText {
 
     public ListMessagesText(String messagesFrom, String messagesBody, String messagesDate,
             int messagesId) {
-
+        
         this.messagesFrom = messagesFrom;
-        this.messagesDate = messagesDate;
+        
+        if (formatDate(messagesDate) != null)
+            this.messagesDate = formatDate(messagesDate);
+        else
+            this.messagesDate = messagesDate;
+        
         this.messagesBody = messagesBody;
         this.messagesId = messagesId;
+    }
+
+    private String formatDate(String date) {
+        try {
+            return Util.formatDateTime(Long.parseLong(date), "MMM dd, yyyy 'at' hh:mm a");
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     public boolean isSelectable() {
@@ -59,10 +74,14 @@ public class ListMessagesText {
 
     public void setMessageDate(String messagesDate) {
 
-        this.messagesDate = messagesDate;
+        if (formatDate(messagesDate) != null)
+            this.messagesDate = formatDate(messagesDate);
+        else
+            this.messagesDate = messagesDate;
     }
 
     public String getMessageDate() {
+
         return this.messagesDate;
     }
 
