@@ -418,7 +418,7 @@ public class PendingMessagesActivity extends Activity {
     /**
      * Delete all messages
      */
-    public void performDeleteAll() {
+    private void performDeleteAll() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(getString(R.string.confirm_message))
                 .setCancelable(false)

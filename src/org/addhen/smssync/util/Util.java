@@ -24,9 +24,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +41,7 @@ import org.addhen.smssync.Prefrences;
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.Database;
 import org.addhen.smssync.data.Messages;
-import org.addhen.smssync.net.SmsSyncHttpClient;
+import org.addhen.smssync.net.MainHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -115,9 +112,11 @@ public class Util {
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+    private static final String URL_PATTERN = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
     private static final int NOTIFY_RUNNING = 100;
 
-    private static final String CLASS_TAG = Util.class.getCanonicalName();
+    private static final String CLASS_TAG = Util.class.getSimpleName();
 
     /**
      * Joins two strings together.
@@ -337,7 +336,7 @@ public class Util {
             matcher = pattern.matcher(emailAddress);
             return matcher.matches();
         }
-        return true;
+        return false;
     }
 
     /**
@@ -486,7 +485,7 @@ public class Util {
      */
     public static boolean postToAWebService(String messagesFrom, String messagesBody,
             String messagesTimestamp, Context context) {
-        Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL: messagesFrom: "
+        Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL:"+Prefrences.website+" messagesFrom: "
                 + messagesFrom + " messagesBody: " + messagesBody);
 
         HashMap<String, String> params = new HashMap<String, String>();
@@ -499,7 +498,7 @@ public class Util {
             params.put("from", messagesFrom);
             params.put("message", messagesBody);
             params.put("sent_timestamp", messagesTimestamp);
-            return SmsSyncHttpClient.postSmsToWebService(urlBuilder.toString(), params, context);
+            return MainHttpClient.postSmsToWebService(urlBuilder.toString(), params, context);
         }
 
         return false;
@@ -519,20 +518,12 @@ public class Util {
             return 1;
         }
 
-        try {
-
-            URL url = new URL(callbackUrl);
-            URLConnection conn = url.openConnection();
-            conn.connect();
+        pattern = Pattern.compile(URL_PATTERN);
+        matcher = pattern.matcher(callbackUrl);
+        if (matcher.matches()) {
             return 0;
-
-        } catch (MalformedURLException e) {
-            return 2;
-
-        } catch (IOException e) {
-            return 3;
-
         }
+        return 1;
 
     }
 
@@ -550,10 +541,9 @@ public class Util {
         String messagesBody;
         String messagesTimestamp;
         int deleted = 0;
-        
+
         List<Messages> listMessages = new ArrayList<Messages>();
-       
-        
+
         if (cursor != null) {
             if (cursor.getCount() == 0) {
                 return 2;
@@ -568,24 +558,25 @@ public class Util {
                 do {
                     Messages messages = new Messages();
                     listMessages.add(messages);
-                    
+
                     int messageId = Util.toInt(cursor.getString(messagesIdIndex));
                     messages.setMessageId(messageId);
-                    
+
                     messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
                     messages.setMessageFrom(messagesFrom);
-                    
+
                     messagesBody = cursor.getString(messagesBodyIndex);
                     messages.setMessageBody(messagesBody);
-                    
+
                     messagesTimestamp = cursor.getString(messagesTimestampIndex);
                     messages.setMessageDate(messagesTimestamp);
                     // post to web service
-                    if (Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp, context)) {
-                        
-                        //log sent messages
+                    if (Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
+                            context)) {
+
+                        // log sent messages
                         MainApplication.mDb.addSentMessages(listMessages);
-                        
+
                         // if it successfully pushes message, delete message
                         // from db
                         MainApplication.mDb.deleteMessagesById(messageId);
@@ -655,7 +646,7 @@ public class Util {
 
             uriBuilder.append("?task=send");
 
-            String response = SmsSyncHttpClient.getFromWebService(uriBuilder.toString());
+            String response = MainHttpClient.getFromWebService(uriBuilder.toString());
             Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
             String task = "";
             String secret = "";
@@ -706,8 +697,10 @@ public class Util {
     public static void sendResponseFromServer(Context context, String response) {
         Log.i(CLASS_TAG, "performResponseFromServer(): " + " response:" + response);
         /**
-         * The payload {"payload":{"success":"true","task":"send","messages":[{"to":"15555215556","message":"Olalala"}]}}
-         *  TODO:// remove this after documenting this
+         * The payload
+         * {"payload":{"success":"true","task":"send","messages":[{"to"
+         * :"15555215556","message":"Olalala"}]}} TODO:// remove this after
+         * documenting this
          */
         if (!TextUtils.isEmpty(response) && response != null) {
 

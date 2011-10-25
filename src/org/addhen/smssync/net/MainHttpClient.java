@@ -32,21 +32,63 @@ import java.util.List;
 import org.addhen.smssync.Prefrences;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.params.ConnManagerPNames;
+import org.apache.http.conn.params.ConnPerRouteBean;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
 
-public class SmsSyncHttpClient {
+public class MainHttpClient {
 
-    public static final DefaultHttpClient httpclient = new DefaultHttpClient();
+    private static DefaultHttpClient httpclient;
+
+    private HttpParams httpParameters;
+
+    private int timeoutConnection = 60000;
+
+    private int timeoutSocket = 60000;
+
+    public MainHttpClient() {
+        httpParameters = new BasicHttpParams();
+        httpParameters.setParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, 1);
+        httpParameters.setParameter(ConnManagerPNames.MAX_CONNECTIONS_PER_ROUTE,
+                new ConnPerRouteBean(1));
+
+        httpParameters.setParameter(HttpProtocolParams.USE_EXPECT_CONTINUE, false);
+        HttpProtocolParams.setVersion(httpParameters, HttpVersion.HTTP_1_1);
+        HttpProtocolParams.setContentCharset(httpParameters, "utf8");
+        // Set the timeout in milliseconds until a connection is established.
+        HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+
+        // in milliseconds which is the timeout for waiting for data.
+        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
+
+        // http scheme
+        schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+        // https scheme
+        schemeRegistry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
+
+        httpclient = new DefaultHttpClient(new ThreadSafeClientConnManager(httpParameters,
+                schemeRegistry), httpParameters);
+    }
 
     public static HttpResponse GetURL(String URL) throws IOException {
 
@@ -79,7 +121,6 @@ public class SmsSyncHttpClient {
     public static boolean postSmsToWebService(String url, HashMap<String, String> params,
             Context context) {
         // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(url);
 
         try {
@@ -89,8 +130,9 @@ public class SmsSyncHttpClient {
             nameValuePairs.add(new BasicNameValuePair("secret", params.get("secret")));
             nameValuePairs.add(new BasicNameValuePair("from", params.get("from")));
             nameValuePairs.add(new BasicNameValuePair("message", params.get("message")));
-            nameValuePairs.add(new BasicNameValuePair("sent_timestamp", params.get("sent_timestamp")));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,HTTP.UTF_8));
+            nameValuePairs.add(new BasicNameValuePair("sent_timestamp", params
+                    .get("sent_timestamp")));
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
@@ -103,9 +145,9 @@ public class SmsSyncHttpClient {
                     // auto response message is enabled to be received from the
                     // server.
                     if (Prefrences.enableReplyFrmServer) {
-                        Util.sendResponseFromServer(context,resp);
+                        Util.sendResponseFromServer(context, resp);
                     }
-                    
+
                     return true;
                 } else {
                     return false;
@@ -132,7 +174,6 @@ public class SmsSyncHttpClient {
     public static String getFromWebService(String url) {
 
         // Create a new HttpClient and Post Header
-        HttpClient httpclient = new DefaultHttpClient();
         final HttpGet httpGet = new HttpGet(url);
         httpGet.addHeader("User-Agent", "SMSSync-Android/1.0)");
 
