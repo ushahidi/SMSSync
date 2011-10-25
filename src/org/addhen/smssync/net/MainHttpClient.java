@@ -53,6 +53,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
+import android.util.Log;
 
 public class MainHttpClient {
 
@@ -229,7 +230,8 @@ public class MainHttpClient {
 
     private static String formatDate(String date) {
         try {
-            return Util.formatDateTime(Long.parseLong(date), "mm-dd-yy-hh:mm:");
+           
+            return Util.formatDateTime(Long.parseLong(date), "mm-dd-yy-hh:mm");
         } catch (NumberFormatException e) {
             return null;
         }
