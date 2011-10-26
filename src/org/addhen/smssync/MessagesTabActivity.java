@@ -20,12 +20,17 @@
 
 package org.addhen.smssync;
 
+import org.addhen.smssync.util.ServicesConstants;
+
 import android.app.ActivityGroup;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
@@ -44,6 +49,7 @@ public class MessagesTabActivity extends ActivityGroup {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // construct the tabhost
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.messages_tab);
 
         setupTabHost();
@@ -54,6 +60,27 @@ public class MessagesTabActivity extends ActivityGroup {
                 MessagesTabActivity.this, PendingMessagesActivity.class));
         setupTab(new TextView(this), getString(R.string.sent_messages), new Intent(
                 MessagesTabActivity.this, SentMessagesActivity.class));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    private void updateWindowTitle(int status) {
+        //means pending messages are being sync
+        if (status == 3) {
+            setProgressBarIndeterminateVisibility(true);
+        } else {
+            setProgressBarIndeterminateVisibility(false);
+        }
     }
 
     private void setupTab(final View view, final String tag, final Intent intent) {
@@ -70,4 +97,18 @@ public class MessagesTabActivity extends ActivityGroup {
         tv.setText(text);
         return view;
     }
+
+    /**
+     * This will cause the progress icon to show on the title bar
+     */
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                int status = intent.getIntExtra("status", 2);
+
+                updateWindowTitle(status);
+            }
+        }
+    };
 }

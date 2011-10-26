@@ -31,6 +31,9 @@ import org.addhen.smssync.util.Util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -93,6 +96,10 @@ public class PendingMessagesActivity extends Activity {
     public static Database mDb;
 
     private Intent syncPendingMessagesServiceIntent;
+    
+    private Intent statusIntent;
+    
+    private static final int NOTIFY_RUNNING = 101;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +107,7 @@ public class PendingMessagesActivity extends Activity {
         setTitle(R.string.outbox);
         setContentView(R.layout.list_messages);
         Prefrences.loadPreferences(PendingMessagesActivity.this);
-
+        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         // show notification
         if (Prefrences.enabled) {
             Util.showNotification(PendingMessagesActivity.this);
@@ -116,6 +123,34 @@ public class PendingMessagesActivity extends Activity {
         mHandler.post(mDisplayMessages);
         displayEmptyListText();
 
+    }
+
+    private static void showNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager)context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        
+        Intent baseIntent = new Intent(context, PendingMessagesActivity.class);
+
+        baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        
+        Notification notification = new Notification(android.R.drawable.stat_notify_sync,
+                context.getString(R.string.status), 0);
+
+        notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
+        
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, baseIntent, 0);
+        
+        notification.when = System.currentTimeMillis();
+        notification.setLatestEventInfo(context, context.getString(R.string.app_name),
+                context.getString(R.string.notification_summary), pendingIntent);
+        notificationManager.notify(NOTIFY_RUNNING, notification);
+
+    }
+
+    private static void clearNotify(Context context) {
+        NotificationManager myNM = (NotificationManager)context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        myNM.cancel(NOTIFY_RUNNING);
     }
 
     public static void displayEmptyListText() {
@@ -475,11 +510,11 @@ public class PendingMessagesActivity extends Activity {
         String messagesDate;
         String messagesBody;
         int messageId;
-        
+
         if (cursor.getCount() == 0) {
             ila.removeItems();
         }
-        
+
         if (cursor.moveToFirst()) {
             int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
             int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
@@ -532,6 +567,8 @@ public class PendingMessagesActivity extends Activity {
      */
 
     public void syncMessages(int messagesId) {
+        statusIntent.putExtra("status", 3);
+        sendBroadcast(statusIntent);
         syncPendingMessagesServiceIntent = new Intent(this, SyncPendingMessagesService.class);
         syncPendingMessagesServiceIntent.putExtra(ServicesConstants.MESSEAGE_ID, messagesId);
         startService(syncPendingMessagesServiceIntent);
@@ -618,9 +655,10 @@ public class PendingMessagesActivity extends Activity {
 
                 } else if (status == 1) {
                     Util.showToast(PendingMessagesActivity.this, R.string.sync_failed);
-                } else {
+                } else if (status == 2) {
                     Util.showToast(PendingMessagesActivity.this, R.string.no_messages_to_sync);
                 }
+                
                 mHandler.post(mUpdateListView);
             }
         }
