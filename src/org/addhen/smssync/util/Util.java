@@ -42,6 +42,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.data.Database;
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.net.MainHttpClient;
+import org.addhen.smssync.services.SmsReceiverService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -745,15 +746,8 @@ public class Util {
      */
     public static boolean processString(String message, String[] keywords) {
         Log.i(CLASS_TAG, "processString(): find words in a string: " + message);
-        /*
-         * Scanner scanner = new Scanner(message); while (scanner.hasNext()) {
-         * for (String keyword : keywords) { if
-         * (scanner.nextLine().contentEquals(keyword)) { return true; } } }
-         * return false;
-         */
-
         for (int i = 0; i < keywords.length; i++) {
-            if (message.contains(keywords[i])) {
+            if (message.contains(keywords[i].toLowerCase())) {
                 return true;
             }
         }
@@ -770,12 +764,14 @@ public class Util {
      */
     public static int importMessages(Context context) {
         Log.i(CLASS_TAG, "importMessages(): import messages from messages app");
+        Prefrences.loadPreferences(context);
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
         uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
         String[] projection = {
                 "_id", "address", "date", "body"
         };
         String messageDate = "";
+        String messageBody = "";
         Cursor c = context.getContentResolver().query(uriSms, projection, null, null, "date DESC");
 
         if (c.getCount() > 0 && c != null) {
@@ -785,9 +781,29 @@ public class Util {
 
                     messageDate = String.valueOf(c.getLong(c.getColumnIndex("date")));
                     Util.smsMap.put("messagesFrom", c.getString(c.getColumnIndex("address")));
-                    Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
-                    Util.smsMap.put("messagesDate", messageDate);
-                    Util.smsMap.put("messagesId", c.getString(c.getColumnIndex("_id")));
+
+                    // filter messages if keywoard is enabled
+                    if (!Prefrences.keyword.equals("")) {
+                        String[] keywords = Prefrences.keyword.split(",");
+                        messageBody = c.getString(c.getColumnIndex("body"));
+                        if (Util.processString(messageBody.toLowerCase(), keywords)) {
+                            Util.smsMap.put("messagesBody", messageBody);
+                            messageDate = String.valueOf(c.getLong(c.getColumnIndex("date")));
+                            Util.smsMap.put("messagesFrom",
+                                    c.getString(c.getColumnIndex("address")));
+                            Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
+                            Util.smsMap.put("messagesDate", messageDate);
+                            Util.smsMap.put("messagesId", c.getString(c.getColumnIndex("_id")));
+                        }
+
+                    } else {
+                        messageDate = String.valueOf(c.getLong(c.getColumnIndex("date")));
+                        Util.smsMap.put("messagesFrom", c.getString(c.getColumnIndex("address")));
+                        Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
+                        Util.smsMap.put("messagesDate", messageDate);
+                        Util.smsMap.put("messagesId", c.getString(c.getColumnIndex("_id")));
+                    }
+
                     Util.processMessages(context);
 
                 } while (c.moveToNext());
