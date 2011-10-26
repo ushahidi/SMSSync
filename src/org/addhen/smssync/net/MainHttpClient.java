@@ -53,7 +53,6 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
-import android.util.Log;
 
 public class MainHttpClient {
 

@@ -52,7 +52,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
         Log.i(CLASS_TAG, "executeTask() executing this scheduled task");
         if (MainApplication.mDb.fetchMessagesCount() > 0) {
             Log.i(CLASS_TAG, "Sending pending messages");
-            int status = Util.snycToWeb(AutoSyncScheduledService.this);
+            int status = Util.snycToWeb(AutoSyncScheduledService.this,0);
             statusIntent.putExtra("status", status);
             sendBroadcast(statusIntent);
         }

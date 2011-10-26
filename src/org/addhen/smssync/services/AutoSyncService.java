@@ -49,7 +49,7 @@ public class AutoSyncService extends SmsSyncServices {
         // SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
         Log.i(CLASS_TAG, "executeTask() executing this task");
         if (MainApplication.mDb.fetchMessagesCount() > 0) {
-            int status = Util.snycToWeb(AutoSyncService.this);
+            int status = Util.snycToWeb(AutoSyncService.this,0);
             statusIntent.putExtra("status", status);
             sendBroadcast(statusIntent);
         }

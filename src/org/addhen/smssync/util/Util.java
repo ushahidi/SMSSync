@@ -534,12 +534,19 @@ public class Util {
      * Pushes pending messages to the configured URL.
      * 
      * @param Context context - The activity calling the method
+     * @param int messageId - Sync by Id - 0 for no ID > 0 to for an id
      * @return int
      */
-    public static int snycToWeb(Context context) {
+    public static int snycToWeb(Context context, int messagesId) {
         Log.i(CLASS_TAG, "syncToWeb(): push pending messages to the configured URL");
         Cursor cursor;
-        cursor = MainApplication.mDb.fetchAllMessages();
+        // check if it should sync by id
+        if (messagesId > 0) {
+            cursor = MainApplication.mDb.fetchMessagesById(messagesId);
+        } else {
+            cursor = MainApplication.mDb.fetchAllMessages();
+        }
+
         String messagesFrom;
         String messagesBody;
         String messagesTimestamp;
@@ -575,7 +582,7 @@ public class Util {
                     messages.setMessageDate(messagesTimestamp);
                     // post to web service
                     if (Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
-                            String.valueOf(messageId),context)) {
+                            String.valueOf(messageId), context)) {
 
                         // log sent messages
                         MainApplication.mDb.addSentMessages(listMessages);

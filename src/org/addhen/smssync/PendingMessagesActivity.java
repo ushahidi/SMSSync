@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.Database;
+import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
@@ -90,6 +91,8 @@ public class PendingMessagesActivity extends Activity {
     private final Handler mHandler = new Handler();
 
     public static Database mDb;
+
+    private Intent syncPendingMessagesServiceIntent;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +167,7 @@ public class PendingMessagesActivity extends Activity {
     // Display pending messages.
     final Runnable mUpdateListView = new Runnable() {
         public void run() {
-            updateListView();
+            showMessages();
         }
     };
 
@@ -173,7 +176,7 @@ public class PendingMessagesActivity extends Activity {
         public void run() {
             Prefrences.loadPreferences(PendingMessagesActivity.this);
             if (Prefrences.enabled) {
-                int result = syncMessages(false);
+                int result = 0;
                 try {
                     if (result == 0) {
 
@@ -200,7 +203,7 @@ public class PendingMessagesActivity extends Activity {
         public void run() {
             Prefrences.loadPreferences(PendingMessagesActivity.this);
             if (Prefrences.enabled) {
-                int result = syncMessages(true);
+                int result = 0;
                 try {
                     if (result == 0) {
                         Util.showToast(PendingMessagesActivity.this, R.string.sending_succeeded);
@@ -339,15 +342,11 @@ public class PendingMessagesActivity extends Activity {
 
             case SMSSYNC_SYNC:
                 // Synchronize by ID
-                SyncTask syncTask = new SyncTask();
-                syncTask.byId = true;
-                syncTask.execute();
+                syncMessages(messageId);
                 return (true);
 
             case SMSSYNC_SYNC_ALL:
-                SyncTask syncAllTask = new SyncTask();
-                syncAllTask.byId = false;
-                syncAllTask.execute();
+                syncMessages(0);
                 return (true);
 
         }
@@ -389,8 +388,7 @@ public class PendingMessagesActivity extends Activity {
 
             case SMSSYNC_SYNC_ALL:
 
-                SyncTask syncTask = new SyncTask();
-                syncTask.execute();
+                syncMessages(0);
                 return (true);
 
             case MESSAGES_IMPORT:
@@ -468,66 +466,6 @@ public class PendingMessagesActivity extends Activity {
      * 
      * @return void
      */
-    public static void updateListView() {
-
-        Cursor cursor;
-        cursor = MainApplication.mDb.fetchAllMessages();
-
-        String messagesFrom;
-        String messagesDate;
-        String messagesBody;
-        int messageId;
-        if (cursor.getCount() == 0) {
-            ila.removeItems();
-        }
-
-        if (cursor.moveToFirst()) {
-            int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
-            int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
-            int messagesDateIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
-
-            int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
-
-            if (ila != null) {
-                ila.removeItems();
-                ila.notifyDataSetChanged();
-            }
-
-            mOldMessages.clear();
-
-            do {
-
-                Messages messages = new Messages();
-                mOldMessages.add(messages);
-
-                messageId = Util.toInt(cursor.getString(messagesIdIndex));
-                messages.setMessageId(messageId);
-
-                messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
-                messages.setMessageFrom(messagesFrom);
-
-                messagesDate = cursor.getString(messagesDateIndex);
-                messages.setMessageDate(messagesDate);
-
-                messagesBody = cursor.getString(messagesBodyIndex);
-                messages.setMessageBody(messagesBody);
-
-                ila.addItem(new ListMessagesText(messagesFrom, messagesBody, messagesDate,
-                        messageId));
-
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        ila.notifyDataSetChanged();
-        displayEmptyListText();
-    }
-
-    /**
-     * Get messages from the database.
-     * 
-     * @return void
-     */
     public static void showMessages() {
 
         Cursor cursor;
@@ -537,6 +475,11 @@ public class PendingMessagesActivity extends Activity {
         String messagesDate;
         String messagesBody;
         int messageId;
+        
+        if (cursor.getCount() == 0) {
+            ila.removeItems();
+        }
+        
         if (cursor.moveToFirst()) {
             int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
             int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
@@ -584,84 +527,14 @@ public class PendingMessagesActivity extends Activity {
     /**
      * Get messages from the db and push them to the configured callback URL
      * 
-     * @param boolean byId
+     * @param int messagesId
      * @return int
      */
 
-    public int syncMessages(boolean byId) {
-
-        Cursor cursor;
-
-        // check if it should sync by id
-        if (byId) {
-            cursor = MainApplication.mDb.fetchMessagesById(messageId);
-        } else {
-            cursor = MainApplication.mDb.fetchAllMessages();
-        }
-        String messagesFrom;
-        String messagesBody;
-        String messagesDate;
-
-        if (cursor.getCount() == 0) {
-            cursor.close();
-            return 2; // no pending messages to synchronize
-        }
-
-        int deleted = 0;
-        if (mOldMessages != null)
-            mOldMessages.clear();
-        if (cursor.moveToFirst()) {
-            int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
-            int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
-
-            int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
-
-            int messagesDateIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
-
-            do {
-
-                Messages messages = new Messages();
-                mOldMessages.add(messages);
-
-                int messageId = Util.toInt(cursor.getString(messagesIdIndex));
-                messages.setMessageId(messageId);
-
-                messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
-                messages.setMessageFrom(messagesFrom);
-
-                messagesDate = cursor.getString(messagesDateIndex);
-                messages.setMessageDate(messagesDate);
-
-                messagesBody = cursor.getString(messagesBodyIndex);
-                messages.setMessageBody(messagesBody);
-
-                // post to web service
-                if (Util.postToAWebService(messagesFrom, messagesBody, messagesDate,
-                        String.valueOf(messageId), PendingMessagesActivity.this)) {
-                    // log sent messages
-                    MainApplication.mDb.addSentMessages(mOldMessages);
-                    // if it successfully pushes a message, delete message from
-                    // the db.
-                    if (byId) {
-                        ila.removetItemAt(listItemPosition);
-                    } else {
-                        ila.removeItems();
-                    }
-                    ila.notifyDataSetChanged();
-                    MainApplication.mDb.deleteMessagesById(messageId);
-                    deleted = 0; // successfully posted messages to the web
-                                 // service.
-                } else {
-                    deleted = 1; // failed to post the messages to the web
-                                 // service.
-                }
-
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        ila.notifyDataSetChanged();
-        return deleted;
+    public void syncMessages(int messagesId) {
+        syncPendingMessagesServiceIntent = new Intent(this, SyncPendingMessagesService.class);
+        syncPendingMessagesServiceIntent.putExtra(ServicesConstants.MESSEAGE_ID, messagesId);
+        startService(syncPendingMessagesServiceIntent);
     }
 
     /**
@@ -670,7 +543,6 @@ public class PendingMessagesActivity extends Activity {
      * @return boolean
      */
     public boolean deleteAllMessages() {
-
         return MainApplication.mDb.deleteAllMessages();
     }
 
@@ -688,39 +560,6 @@ public class PendingMessagesActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
         super.onActivityResult(requestCode, resultCode, intent);
-    }
-
-    // Thread class to handle asynchronous task execution.
-    private class SyncTask extends AsyncTask<Void, Void, Integer> {
-
-        protected Integer status;
-
-        protected Boolean byId = false;
-
-        @Override
-        protected void onPreExecute() {
-
-            setProgressBarIndeterminateVisibility(true);
-        }
-
-        @Override
-        protected Integer doInBackground(Void... params) {
-
-            status = 0;
-
-            if (byId) {
-                mHandler.post(mSyncMessagesById);
-            } else {
-                mHandler.post(mSyncMessages);
-            }
-            return status;
-        }
-
-        @Override
-        protected void onPostExecute(Integer result) {
-            showMessages();
-            setProgressBarIndeterminateVisibility(false);
-        }
     }
 
     // Thread class to handle synchronous execution of message importation task.
@@ -771,7 +610,12 @@ public class PendingMessagesActivity extends Activity {
 
                 if (status == 0) {
 
+                    if (syncPendingMessagesServiceIntent != null) {
+                        stopService(syncPendingMessagesServiceIntent);
+                    }
+
                     Util.showToast(PendingMessagesActivity.this, R.string.sending_succeeded);
+
                 } else if (status == 1) {
                     Util.showToast(PendingMessagesActivity.this, R.string.sync_failed);
                 } else {
