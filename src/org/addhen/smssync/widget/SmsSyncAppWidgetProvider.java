@@ -77,7 +77,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context ctxt, Intent intent) {
         final String action = intent.getAction();
-        Log.v(CLASS_TAG, "onReceive:action=" + action);
+        Log.i(CLASS_TAG, "onReceive:action=" + action);
 
         if (INTENT_PREV.equals(action) || INTENT_NEXT.equals(action)
                 || INTENT_REFRESH.equals(action)) {
@@ -124,7 +124,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
     // implement current screen
     public static Messages getCurrentPendingMessages() {
-        
+
         if (pendingMsgs != null && pendingMsgs.size() > 0) {
             pendingMsgIndex = pendingMsgIndex < 0 ? 0 : pendingMsgIndex;
             return pendingMsgs.get(pendingMsgIndex);
@@ -140,7 +140,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
         @Override
         public void onHandleIntent(Intent intent) {
-            buildUpdate(null, null);
+            buildUpdate(intent, null);
         }
 
         private void buildUpdate(Intent intent, Integer startId) {
@@ -154,7 +154,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
         }
 
         private RemoteViews updateDisplay(Intent intent, Integer startId) {
-            Log.v(CLASS_TAG, "Updating display");
+            Log.i(CLASS_TAG, "Updating display");
             RemoteViews views = new RemoteViews(getPackageName(), R.layout.appwidget);
             Messages mgs;
             String action = intent.getAction();
@@ -165,10 +165,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             } else {
                 mgs = getCurrentPendingMessages();
             }
-            if (mgs == null) {
-                Log.e(CLASS_TAG, "Error in getting pending messages");
-            }
-
+            
             // go to settings screen when configure icon is pressed
             Intent settingsScreen = new Intent(this, Settings.class);
             settingsScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -181,7 +178,9 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.appwidget_item, mainAction);
 
             if (mgs != null) {
+                Log.i(CLASS_TAG, "messages are not null "+mgs.getMessageBody());
                 // set number
+                views.setViewVisibility(R.id.linear_pending_msg, View.VISIBLE);
                 views.setTextViewText(R.id.msg_number, mgs.getMessageFrom());
                 views.setTextViewText(R.id.msg_date, mgs.getMessageDate());
                 views.setTextViewText(R.id.msg_desc, mgs.getMessageBody());
@@ -192,7 +191,8 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
                 views.setOnClickPendingIntent(R.id.msg_desc, mainAction);
                 views.setViewVisibility(R.id.appwidget_empty_list, View.INVISIBLE);
 
-            } else { 
+            } else {
+                Log.i(CLASS_TAG, "messages are null ");
                 views.setViewVisibility(R.id.linear_pending_msg, View.INVISIBLE);
                 views.setViewVisibility(R.id.appwidget_empty_list, View.VISIBLE);
                 views.setOnClickPendingIntent(R.id.appwidget_empty_list, mainAction);
@@ -229,7 +229,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
                         if (INTENT_REFRESH.equals(action)) {
                             pendingMsgIndex = 0;
                         }
-                        pendingMsgs =showMessages();
+                        pendingMsgs = showMessages();
                         buildUpdate(intent, startId);
                     }
                 }
@@ -260,7 +260,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
     }
 
     public static ArrayList<Messages> showMessages() {
-        
+
         Cursor cursor;
         cursor = MainApplication.mDb.fetchMessagesByLimit(5);
 
@@ -270,7 +270,10 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
         String messagesBody;
 
         if (cursor != null) {
-            Log.d(CLASS_TAG,"Got messages from Inbox");
+            if (cursor.getCount() == 0) {
+                pendingMsgs.clear();
+            }
+            Log.d(CLASS_TAG, "Got messages from Inbox");
             if (cursor.moveToFirst()) {
                 int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
                 int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
