@@ -157,7 +157,7 @@ public class SmsReceiverService extends Service {
                 // extract message details. phone number and the message body
                 messagesFrom = sms.getOriginatingAddress();
                 messagesTimestamp = String.valueOf(sms.getTimestampMillis());
-                messagesId = String.valueOf(Util.getId(this, sms, "thread"));
+                messagesId = String.valueOf(Util.getId(this, sms, "id"));
                 String body;
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
