@@ -125,34 +125,6 @@ public class PendingMessagesActivity extends Activity {
 
     }
 
-    private static void showNotification(Context context) {
-        NotificationManager notificationManager = (NotificationManager)context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        
-        Intent baseIntent = new Intent(context, PendingMessagesActivity.class);
-
-        baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        
-        Notification notification = new Notification(android.R.drawable.stat_notify_sync,
-                context.getString(R.string.status), 0);
-
-        notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-        
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, baseIntent, 0);
-        
-        notification.when = System.currentTimeMillis();
-        notification.setLatestEventInfo(context, context.getString(R.string.app_name),
-                context.getString(R.string.notification_summary), pendingIntent);
-        notificationManager.notify(NOTIFY_RUNNING, notification);
-
-    }
-
-    private static void clearNotify(Context context) {
-        NotificationManager myNM = (NotificationManager)context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        myNM.cancel(NOTIFY_RUNNING);
-    }
-
     public static void displayEmptyListText() {
 
         if (ila.getCount() == 0) {

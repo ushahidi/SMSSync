@@ -71,6 +71,11 @@ public class MessagesTabActivity extends ActivityGroup {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         unregisterReceiver(broadcastReceiver);
     }
 

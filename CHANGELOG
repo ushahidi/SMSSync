@@ -1,3 +1,12 @@
+1.0.8:
+Feature:
+  * Added filtering when importing SMS.
+  * Added sent_to variable so the server can receive the phone number the SMS was sent to.
+  * 
+Bug:
+  * Fixed issue with app widget not updating  view when pending messages are in the view.
+  
+
 1.0.7:
 Feature:
   * Added 5 new languages. Swahili, Dutch, Hungarian, German and Italian.

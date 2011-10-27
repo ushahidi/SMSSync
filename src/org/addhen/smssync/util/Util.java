@@ -42,7 +42,6 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.data.Database;
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.net.MainHttpClient;
-import org.addhen.smssync.services.SmsReceiverService;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -852,7 +851,8 @@ public class Util {
 
     public static String getPhoneNumber(Context context) {
         String s = getMyPhoneNumber(context);
-        return s.substring(2);
+        //return s.substring(2);
+        return s;
     }
 
     public static String formatDateTime(long milliseconds, String dateTimeFormat) {
