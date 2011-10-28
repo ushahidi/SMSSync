@@ -44,9 +44,11 @@
             <h2>Instructions</h2>
             <ul>
                 <li>
-                    SMSSync uses the <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP protocol</a> for communication. For now HTTP is supported. Eventually HTTPS will be supported.
+                    SMSSync uses the <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">
+                    HTTP</a> and <a href="http://en.wikipedia.org/wiki/HTTPS">
+                    HTTPS</a> protocols for communication.
                     <p>To start the SMSSync Gateway, you'll need to specify a callback URL.
-                    This URL is where all incoming text messages will be transmitted to. 
+                    This URL is where all incoming SMS will be transmitted to. 
                     Remember to enter the full URL including the filename. A 
                     typical example will be <code>http://somedomain.com/index.php</code></p></li>
                 <li>
@@ -56,16 +58,18 @@
                 </li>
                 <li>
                     Additionally, you can specify keywords with which to filter 
-        incoming messages. Only matching text messages will be sent to 
+        incoming SMS. Only matching SMS will be sent to 
         the SMSSync Gateway URL.
                 </li>
 		        <li>
-                    SMSSync sends the following variables via the POST method:
+                    SMSSync uses the following variables to transmit the incoming SMS via the POST method:
 		            <ul>
-		                <li><strong>from</strong></li>
-			            <li><strong>message</strong></li>
-			            <li><strong>secret</strong></li>
-			            <li><strong>sent_timestamp</strong></li>
+		                <li><strong>from</strong> -- the number that sent the SMS</li>
+                        <li><strong>message</strong> -- the SMS sent</strong></li>
+                        <li><strong>message_id</strong> -- the unique ID of the SMS</li>
+			            <li><strong>secret</strong> -- the secret key set on the app</li>
+                        <li><strong>sent_timestamp</strong> -- the timestamp the SMS was sent. 
+                        In the format, mm-dd-yy-hh:mm  Eg. 11-27-11-07:11</strong></li>
 	                </ul>
 		        </li>
 	        </ul>
@@ -96,9 +100,9 @@
         <p>
         SMSSync allows auto response to be configured on the app itself or to be 
         retrieved from the server. When the app makes an HTTP Post request to sync the 
-        incoming messages to the configured URL,  it can send a JSON string that has 
+        incoming SMS to the configured URL, it can send a JSON string that has 
         messages in it as opposed to sending a success or failed JSON string as 
-        stated above. The app then sends the messages as SMS to users.
+        stated above. The app then sends the messages as SMS to users phone.
         <p>
         This makes it possible to have an instant response via SMS when an HTTP Post 
         request is made. To leverage this feature, a JSON formatted string like the one 
@@ -116,15 +120,15 @@
         "task": "send",
         "messages": [
             {
-                "to": "000-000-0000",
+                "to": "+000-000-0000",
                 "message": "the message goes here" 
             },
             {
-                "to": "000-000-0000",
+                "to": "+000-000-0000",
                 "message": "the message goes here" 
             },
             {
-                "to": "000-000-0000",
+                "to": "+000-000-0000",
                 "message": "the message goes here" 
             }
         ]
@@ -154,15 +158,15 @@
         "secret": "secret_key",
         "messages": [
             {
-                "to": "000-000-0000",
+                "to": "+000-000-0000",
                 "message": "the message goes here" 
             },
             {
-                "to": "000-000-0000",
+                "to": "+000-000-0000",
                 "message": "the message goes here" 
             },
             {
-                "to": "000-000-0000",
+                "to": "+000-000-0000",
                 "message": "the message goes here" 
             }
         ]
@@ -211,6 +215,18 @@ if(isset($_POST['sent_timestamp']))
     $sent_timestamp = $_POST['sent_timestamp'];
 }
 
+
+if (isset($_POST['sent_to'])) 
+{
+    $sent_to = $_POST['sent_to'];
+}
+
+if (isset($_POST['message_id']))
+{
+    $message_id = $_POST['message_id'];
+}
+
+
 /**
  * now we have retrieved the data sent over by SMSSync 
  * via HTTP. next thing to do is to do something with 
@@ -224,7 +240,8 @@ if(isset($_POST['sent_timestamp']))
  *
  */
 if ((strlen($from) > 0) AND (strlen($message) > 0) AND 
-    (strlen($sent_timestamp) > 0 ))
+    (strlen($sent_timestamp) > 0 ) AND (strlen($sent_to) > 0) 
+    AND (strlen($message_id) > 0))
 {
     //in case secret is set on both SMSSync and the web 
     //service. Let's make sure they match.
@@ -237,9 +254,12 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
         echo "Secret: ".$secret;
     }
 
-    echo "From: ".$from;
-    echo "Message: ".$message;
-    echo "Timestamp: ".$sent_timestamp;
+    echo "From: ".$from."<br />";
+    echo "Message: ".$message."<br />";
+    echo "Timestamp: ".$sent_timestamp."<br />";
+    echo "Messages Id:" .$message_id."<br />";
+    echo "Sent to: ".$sent_to."<br />";
+
     
 } 
 else 

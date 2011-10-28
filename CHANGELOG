@@ -2,10 +2,12 @@
 Feature:
   * Added filtering when importing SMS.
   * Added sent_to variable so the server can receive the phone number the SMS was sent to.
-  * 
+  * Added message_id variable so the server can receive the unique id of the SMS.
+  * Added full HTTPS support.
+  
 Bug:
   * Fixed issue with app widget not updating  view when pending messages are in the view.
-  
+  * Improved performance with syncing pending messages. 
 
 1.0.7:
 Feature:
