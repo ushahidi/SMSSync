@@ -143,7 +143,7 @@ public class Util {
     /**
      * Capitalize any String given to it.
      * 
-     * @param String text - The string to capitalized.
+     * @param String text - The string to be capitalized.
      * @return String
      */
     public static String capitalizeString(String text) {

@@ -23,17 +23,14 @@ package org.addhen.smssync;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.data.Database;
+import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -98,8 +95,6 @@ public class PendingMessagesActivity extends Activity {
     private Intent syncPendingMessagesServiceIntent;
     
     private Intent statusIntent;
-    
-    private static final int NOTIFY_RUNNING = 101;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -510,7 +505,7 @@ public class PendingMessagesActivity extends Activity {
                 messageId = Util.toInt(cursor.getString(messagesIdIndex));
                 messages.setMessageId(messageId);
 
-                messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
+                messagesFrom = cursor.getString(messagesFromIndex);
                 messages.setMessageFrom(messagesFrom);
 
                 messagesDate = cursor.getString(messagesDateIndex);
