@@ -89,7 +89,7 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                         </ul>
                     <strong>Development branch:</strong>
                         <ul>
-                        <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.0.8</li>
+                        <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.0.9</li>
                         </ul>
                         <a href="http://dev.ushahidi.com/projects/SMSSync/news">More</a>
                 </p>
