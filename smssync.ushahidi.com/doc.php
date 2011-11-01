@@ -67,6 +67,8 @@
 		                <li><strong>from</strong> -- the number that sent the SMS</li>
                         <li><strong>message</strong> -- the SMS sent</strong></li>
                         <li><strong>message_id</strong> -- the unique ID of the SMS</li>
+                        <li><strong>sent_to</strong> -- the phone number the SMS was sent to</li>
+
 			            <li><strong>secret</strong> -- the secret key set on the app</li>
                         <li><strong>sent_timestamp</strong> -- the timestamp the SMS was sent. 
                         In the format, mm-dd-yy-hh:mm  Eg. 11-27-11-07:11</strong></li>
