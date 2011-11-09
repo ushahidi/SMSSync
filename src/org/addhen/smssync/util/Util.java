@@ -245,7 +245,7 @@ public class Util {
             return jsonObject.getJSONObject("payload").getBoolean("success");
 
         } catch (JSONException e) {
-            Log.e(CLASS_TAG, "JSONException " + e.getMessage());
+            Log.e(CLASS_TAG, "JSONException: " + e.getMessage());
             return false;
         }
 

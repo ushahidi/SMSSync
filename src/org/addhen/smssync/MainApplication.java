@@ -37,13 +37,15 @@ public class MainApplication extends Application {
     public static Database mDb;
 
     public static MainHttpClient mApi;
-    
+
+    public static Application app = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         // Open database connection when the application starts.
+        app = this;
         mDb = new Database(this);
         mDb.open();
         mApi = new MainHttpClient();

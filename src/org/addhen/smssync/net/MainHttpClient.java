@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +86,15 @@ public class MainHttpClient {
         // http scheme
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         // https scheme
-        schemeRegistry.register(new Scheme("https", new EasySSLSocketFactory(), 443));
+        try {
+            schemeRegistry.register(new Scheme("https", new TrustedSocketFactory(Prefrences.website,false), 443));
+        } catch (KeyManagementException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(httpParameters,
                 schemeRegistry);
 
