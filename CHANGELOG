@@ -1,6 +1,6 @@
 1.0.9:
 Bug:
-  * 
+  * Fixed HTTPS not working on some devices. 
   
 1.0.8:
 Feature:
