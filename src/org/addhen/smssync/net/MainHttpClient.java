@@ -241,7 +241,7 @@ public class MainHttpClient {
     private static String formatDate(String date) {
         try {
            
-            return Util.formatDateTime(Long.parseLong(date), "mm-dd-yy-hh:mm");
+            return Util.formatDateTime(Long.parseLong(date), "MM-dd-yy-hh:mm");
         } catch (NumberFormatException e) {
             return null;
         }
