@@ -2,6 +2,7 @@
 Bug:
   * Fixed HTTPS not working on some devices. 
   * Fixed sent_to variable not sending the device's number. 
+  * Fixed formatting issue with sent_timestamp.
   
 1.0.8:
 Feature:
