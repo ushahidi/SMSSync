@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -87,7 +87,7 @@ public class MainHttpClient {
         schemeRegistry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
         // https scheme
         try {
-            schemeRegistry.register(new Scheme("https", new TrustedSocketFactory(Prefrences.website,false), 443));
+            schemeRegistry.register(new Scheme("https", new TrustedSocketFactory(Prefs.website,false), 443));
         } catch (KeyManagementException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -157,7 +157,7 @@ public class MainHttpClient {
                 if (success) {
                     // auto response message is enabled to be received from the
                     // server.
-                    if (Prefrences.enableReplyFrmServer) {
+                    if (Prefs.enableReplyFrmServer) {
                         Util.sendResponseFromServer(context, resp);
                     }
 

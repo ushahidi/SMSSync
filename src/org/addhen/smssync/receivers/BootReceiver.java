@@ -1,7 +1,7 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
@@ -25,10 +25,10 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         // load current settings
-        Prefrences.loadPreferences(context);
+        Prefs.loadPreferences(context);
 
         // is smssync enabled
-        if (Prefrences.enabled) {
+        if (Prefs.enabled) {
 
             // show notification
             Util.showNotification(context);
@@ -39,21 +39,21 @@ public class BootReceiver extends BroadcastReceiver {
             // do we have data network?
             if (isConnected) {
                 // Push any pending messages now that we have connectivity
-                if (Prefrences.enableAutoSync) {
+                if (Prefs.enableAutoSync) {
                     
                     SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
                     // start the scheduler for auto sync service
-                    long interval = (Prefrences.autoTime * 60000);
+                    long interval = (Prefs.autoTime * 60000);
                     new ScheduleServices(context, intent, AutoSyncScheduledReceiver.class,
                             interval, ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE, 0);
                 }
 
                 // Check for tasks now that we have connectivity
-                if (Prefrences.enableTaskCheck) {
+                if (Prefs.enableTaskCheck) {
                     SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
                     
                     // start the scheduler for 'task check' service
-                    long interval = (Prefrences.taskCheckTime * 60000);
+                    long interval = (Prefs.taskCheckTime * 60000);
                     new ScheduleServices(context, intent, CheckTaskScheduledReceiver.class,
                             interval, ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
                             0);

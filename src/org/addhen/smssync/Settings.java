@@ -45,9 +45,11 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.text.TextUtils;
 
 /**
- * This class handles all related task for settings on SMSSync.
+ * This class handles all related task for settings on SMSSync. TODO // move the
+ * UI code into it's own xml file
  * 
  * @author eyedol
  */
@@ -57,11 +59,9 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
     public static final String KEY_KEYWORD_PREF = "keyword_preference";
 
+    public static final String KEY_FILTER_BY_FROM = "filter_by_from_preference";
+
     public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
-
-    public static final String KEY_ENABLE_MMS_SYNC_PREF = "enable_mms_sync_preference";
-
-    public static final String KEY_ENABLE_GPS_SYNC_PREF = "enable_gps_sync_preference";
 
     public static final String KEY_API_KEY_PREF = "api_key_preference";
 
@@ -75,6 +75,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
     public static final String KEY_REPLY = "reply_preference";
 
+    public static final String KEY_UNIQUE_ID = "unique_id_preference";
+
     public static final String PREFS_NAME = "SMS_SYNC_PREF";
 
     public static final String HTTP_TEXT = "http://";
@@ -86,7 +88,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     public static final String TASK_CHECK = "task_check_preference";
 
     public static final String TASK_CHECK_TIMES = "task_check_times";
-    
+
     public static final String ABOUT = "powered_preference";
 
     private EditTextPreference websitePref;
@@ -94,6 +96,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private EditTextPreference apiKeyPref;
 
     private EditTextPreference keywordPref;
+
+    private EditTextPreference filterByFromPref;
 
     private EditTextPreference replyPref;
 
@@ -112,7 +116,9 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private ListPreference autoSyncTimes;
 
     private ListPreference taskCheckTimes;
-    
+
+    private EditTextPreference uniqueId;
+
     private Preference about;
 
     private SharedPreferences settings;
@@ -135,16 +141,18 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
     private int callbackUrlValidityStatus = 1;
 
+    private int uniqueIdValidityStatus = 1;
+
     private final Handler mHandler = new Handler();
 
     private PackageManager pm;
 
     private ComponentName cn;
-    
+
     private String versionName;
-    
+
     private StringBuilder versionLabel;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,7 +161,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         addPreferencesFromResource(R.xml.preferences);
         try {
             versionName = getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
-            //add app name to verstion number
+            // add app name to verstion number
             versionLabel = new StringBuilder(getString(R.string.app_name));
             versionLabel.append(" ");
             versionLabel.append("v");
@@ -169,6 +177,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         apiKeyPref = (EditTextPreference)getPreferenceScreen().findPreference(KEY_API_KEY_PREF);
 
         keywordPref = (EditTextPreference)getPreferenceScreen().findPreference(KEY_KEYWORD_PREF);
+        filterByFromPref = (EditTextPreference)getPreferenceScreen().findPreference(
+                KEY_FILTER_BY_FROM);
 
         enableSmsSync = (CheckBoxPreference)getPreferenceScreen().findPreference(
                 KEY_ENABLE_SMS_SYNC_PREF);
@@ -186,6 +196,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
         replyPref = (EditTextPreference)getPreferenceScreen().findPreference(KEY_REPLY);
 
+        uniqueId = (EditTextPreference)getPreferenceScreen().findPreference(KEY_UNIQUE_ID);
+
         autoSyncTimes = (ListPreference)getPreferenceScreen().findPreference(AUTO_SYNC_TIMES);
         autoSyncTimes.setEntries(autoSyncEntries);
         autoSyncTimes.setEntryValues(autoSyncValues);
@@ -193,9 +205,9 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         taskCheckTimes = (ListPreference)getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
         taskCheckTimes.setEntries(autoSyncEntries);
         taskCheckTimes.setEntryValues(autoSyncValues);
-        
+
         about = (Preference)getPreferenceScreen().findPreference(ABOUT);
-        
+
         about.setTitle(versionLabel.toString());
         about.setSummary(R.string.powered_by);
         pm = getPackageManager();
@@ -282,8 +294,8 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
             replyPref.setEnabled(false);
             enableReplyFrmServer.setEnabled(true);
         }
-        
-        if( enableReplyFrmServer.isChecked()) {
+
+        if (enableReplyFrmServer.isChecked()) {
             enableReply.setChecked(false);
             enableReply.setEnabled(false);
         } else {
@@ -312,14 +324,23 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         editor.putString("WebsitePref", websitePref.getText());
         editor.putString("ApiKey", apiKeyPref.getText());
         editor.putString("Keyword", keywordPref.getText());
+        editor.putString("FilterByFrom", filterByFromPref.getText());
         editor.putString("ReplyPref", replyPref.getText());
         editor.putBoolean("EnableSmsSync", enableSmsSync.isChecked());
         editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
         editor.putBoolean("EnableReply", enableReply.isChecked());
-        editor.putBoolean("EnableReplyFrmServer",enableReplyFrmServer.isChecked());
+        editor.putBoolean("EnableReplyFrmServer", enableReplyFrmServer.isChecked());
         editor.putBoolean("AutoSync", autoSync.isChecked());
         editor.putInt("AutoTime", autoTime);
         editor.putInt("taskCheck", taskCheckTime);
+
+        if (!TextUtils.isEmpty(uniqueId.getText())) {
+            uniqueIdValidate(uniqueId.getText());
+            editor.putString("UniqueId", "");
+            if (uniqueIdValidityStatus == 0) {
+                editor.putString("UniqueId", uniqueId.getText());
+            }
+        }
         editor.commit();
     }
 
@@ -368,6 +389,13 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
             }
         }
 
+        // Unique ID
+        if (key.equals(KEY_UNIQUE_ID)) {
+            final String savedId = sharedPreferences.getString(KEY_UNIQUE_ID, "");
+            if (!TextUtils.isEmpty(savedId))
+                uniqueIdValidate(savedId);
+        }
+
         if (key.equals(KEY_ENABLE_REPLY)) {
 
             if (sharedPreferences.getBoolean(KEY_ENABLE_REPLY, false)) {
@@ -384,10 +412,10 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
                 // Initialize the selected time to frequently sync pending
                 // messages
-                Prefrences.autoTime = initializeAutoSyncTime();
+                Prefs.autoTime = initializeAutoSyncTime();
                 autoSyncTimes.setEnabled(true);
                 // start the scheduler for 'task check' service
-                long interval = (Prefrences.autoTime * 60000);
+                long interval = (Prefs.autoTime * 60000);
                 new ScheduleServices(this,
                         new Intent(Settings.this, AutoSyncScheduledService.class),
                         AutoSyncScheduledReceiver.class, interval,
@@ -397,11 +425,11 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
                 // Initialize the selected time to frequently to auto check for
                 // tasks
-                Prefrences.taskCheckTime = initializeAutoTaskTime();
+                Prefs.taskCheckTime = initializeAutoTaskTime();
                 stopService(new Intent(Settings.this, AutoSyncScheduledService.class));
 
                 // start the scheduler for 'task check' service
-                long interval = (Prefrences.taskCheckTime * 60000);
+                long interval = (Prefs.taskCheckTime * 60000);
                 new ScheduleServices(this, new Intent(Settings.this,
                         CheckTaskScheduledService.class), CheckTaskScheduledReceiver.class,
                         interval, ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE, 0);
@@ -426,15 +454,15 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         if (key.equals(AUTO_SYNC_TIMES)) {
 
             // restart service
-            if (Prefrences.enableAutoSync) {
+            if (Prefs.enableAutoSync) {
 
                 // Initialize the selected time to frequently sync pending
                 // messages
-                Prefrences.autoTime = initializeAutoSyncTime();
+                Prefs.autoTime = initializeAutoSyncTime();
                 stopService(new Intent(Settings.this, AutoSyncScheduledService.class));
 
                 // start the scheduler for 'task check' service
-                long interval = (Prefrences.autoTime * 60000);
+                long interval = (Prefs.autoTime * 60000);
                 new ScheduleServices(this,
                         new Intent(Settings.this, AutoSyncScheduledService.class),
                         AutoSyncScheduledReceiver.class, interval,
@@ -444,11 +472,11 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
 
         if (key.equals(TASK_CHECK_TIMES)) {
 
-            Prefrences.taskCheckTime = initializeAutoTaskTime();
+            Prefs.taskCheckTime = initializeAutoTaskTime();
             stopService(new Intent(Settings.this, CheckTaskScheduledService.class));
 
             // start the scheduler for 'task check' service
-            long interval = (Prefrences.taskCheckTime * 60000);
+            long interval = (Prefs.taskCheckTime * 60000);
             new ScheduleServices(this, new Intent(Settings.this, CheckTaskScheduledService.class),
                     CheckTaskScheduledReceiver.class, interval,
                     ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE, 0);
@@ -564,4 +592,53 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
         };
         t.start();
     }
+
+    /**
+     * Create runnable to validate unique ID.
+     */
+    Runnable mUniqueId = new Runnable() {
+        public void run() {
+
+            if (uniqueIdValidityStatus == 1) {
+
+                Util.showToast(Settings.this, R.string.unique_id_length_error);
+                uniqueId.setText("");
+            } else if (uniqueIdValidityStatus == 2) {
+                Util.showToast(Settings.this, R.string.unique_id_numeric_error);
+                uniqueId.setText("");
+            }
+        }
+    };
+
+    /**
+     * Thread to validate unique id
+     * 
+     * @param String uniqueId - The Callback Url to be validated.
+     * @return void
+     */
+    public void uniqueIdValidate(final String uniqueId) {
+
+        Thread t = new Thread() {
+            public void run() {
+
+                // validate number of digits
+                if ((uniqueId.length() > 5) || (uniqueId.length() < 5)) {
+                    uniqueIdValidityStatus = 1;
+                    mHandler.post(mUniqueId);
+                } else {
+                    // validate if it's a numeric value
+                    try {
+                        Integer.parseInt(uniqueId);
+                        uniqueIdValidityStatus = 0;
+                    } catch (NumberFormatException ex) {
+                        uniqueIdValidityStatus = 2;
+                        mHandler.post(mUniqueId);
+                    }
+                    mHandler.post(mUniqueId);
+                }
+            }
+        };
+        t.start();
+    }
+
 }

@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessagesTabActivity;
-import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.Database;
 import org.addhen.smssync.data.Messages;
@@ -61,7 +61,6 @@ import android.os.Environment;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -487,16 +486,16 @@ public class Util {
     public static boolean postToAWebService(String messagesFrom, String messagesBody,
             String messagesTimestamp, String messagesId, Context context) {
         Log.i(CLASS_TAG, "postToAWebService(): Post received SMS to configured URL:"
-                + Prefrences.website + " messagesFrom: " + messagesFrom + " messagesBody: "
+                + Prefs.website + " messagesFrom: " + messagesFrom + " messagesBody: "
                 + messagesBody);
 
         HashMap<String, String> params = new HashMap<String, String>();
-        Prefrences.loadPreferences(context);
+        Prefs.loadPreferences(context);
 
-        if (!Prefrences.website.equals("")) {
+        if (!Prefs.website.equals("")) {
 
-            StringBuilder urlBuilder = new StringBuilder(Prefrences.website);
-            params.put("secret", Prefrences.apiKey);
+            StringBuilder urlBuilder = new StringBuilder(Prefs.website);
+            params.put("secret", Prefs.apiKey);
             params.put("from", messagesFrom);
             params.put("message", messagesBody);
             params.put("sent_timestamp", messagesTimestamp);
@@ -639,11 +638,11 @@ public class Util {
      */
     public static void performTask(Context context) {
         Log.i(CLASS_TAG, "performTask(): perform a task");
-        // load preferences
-        Prefrences.loadPreferences(context);
+        // load Prefs
+        Prefs.loadPreferences(context);
 
         // validate configured url
-        int status = validateCallbackUrl(Prefrences.website);
+        int status = validateCallbackUrl(Prefs.website);
         if (status == 1) {
             showToast(context, R.string.no_configured_url);
         } else if (status == 2) {
@@ -652,7 +651,7 @@ public class Util {
             showToast(context, R.string.no_connection);
         } else {
 
-            StringBuilder uriBuilder = new StringBuilder(Prefrences.website);
+            StringBuilder uriBuilder = new StringBuilder(Prefs.website);
 
             uriBuilder.append("?task=send");
 
@@ -670,7 +669,7 @@ public class Util {
                     if (payloadObject != null) {
                         task = payloadObject.getString("task");
                         secret = payloadObject.getString("secret");
-                        if ((task.equals("send")) && (secret.equals(Prefrences.apiKey))) {
+                        if ((task.equals("send")) && (secret.equals(Prefs.apiKey))) {
                             jsonArray = payloadObject.getJSONArray("messages");
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
@@ -763,7 +762,7 @@ public class Util {
      */
     public static int importMessages(Context context) {
         Log.i(CLASS_TAG, "importMessages(): import messages from messages app");
-        Prefrences.loadPreferences(context);
+        Prefs.loadPreferences(context);
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
         uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
         String[] projection = {
@@ -771,6 +770,7 @@ public class Util {
         };
         String messageDate = "";
         String messageBody = "";
+        String messageFrom = "";
         Cursor c = context.getContentResolver().query(uriSms, projection, null, null, "date DESC");
 
         if (c.getCount() > 0 && c != null) {
@@ -782,8 +782,8 @@ public class Util {
                     Util.smsMap.put("messagesFrom", c.getString(c.getColumnIndex("address")));
 
                     // filter messages if keywoard is enabled
-                    if (!Prefrences.keyword.equals("")) {
-                        String[] keywords = Prefrences.keyword.split(",");
+                    if (!Prefs.keyword.equals("")) {
+                        String[] keywords = Prefs.keyword.split(",");
                         messageBody = c.getString(c.getColumnIndex("body"));
                         if (Util.processString(messageBody.toLowerCase(), keywords)) {
                             Util.smsMap.put("messagesBody", messageBody);
@@ -793,6 +793,37 @@ public class Util {
                             Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
                             Util.smsMap.put("messagesDate", messageDate);
                             Util.smsMap.put("messagesId", c.getString(c.getColumnIndex("_id")));
+                        }
+                    } else if (!Prefs.filterByFrom.equals("")) {
+                        String[] phoneNumbers = Prefs.filterByFrom.split(",");
+                        messageFrom = c.getString(c.getColumnIndex("address"));
+                        if (Util.processString(messageFrom.toLowerCase(), phoneNumbers)) {
+                            Util.smsMap.put("messagesBody", messageBody);
+                            messageDate = String.valueOf(c.getLong(c.getColumnIndex("date")));
+                            Util.smsMap.put("messagesFrom",
+                                    c.getString(c.getColumnIndex("address")));
+                            Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
+                            Util.smsMap.put("messagesDate", messageDate);
+                            Util.smsMap.put("messagesId", c.getString(c.getColumnIndex("_id")));
+                        }
+
+                    } else if ((!Prefs.filterByFrom.equals(""))
+                            && (!Prefs.keyword.equals(""))) {
+                        String[] keywords = Prefs.keyword.split(",");
+                        String[] phoneNumbers = Prefs.filterByFrom.split(",");
+                        messageBody = c.getString(c.getColumnIndex("body"));
+                        messageFrom = c.getString(c.getColumnIndex("address"));
+                        if ((Util.processString(messageFrom.toLowerCase(), phoneNumbers))
+                                && (Util.processString(messageBody.toLowerCase(), keywords))) {
+
+                            Util.smsMap.put("messagesBody", messageBody);
+                            messageDate = String.valueOf(c.getLong(c.getColumnIndex("date")));
+                            Util.smsMap.put("messagesFrom",
+                                    c.getString(c.getColumnIndex("address")));
+                            Util.smsMap.put("messagesBody", c.getString(c.getColumnIndex("body")));
+                            Util.smsMap.put("messagesDate", messageDate);
+                            Util.smsMap.put("messagesId", c.getString(c.getColumnIndex("_id")));
+
                         }
 
                     } else {
@@ -843,16 +874,13 @@ public class Util {
         }
     }
 
-    private static String getMyPhoneNumber(Context context) {
-        TelephonyManager mTelephonyMgr;
-        mTelephonyMgr = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        return mTelephonyMgr.getLine1Number();
-    }
-
     public static String getPhoneNumber(Context context) {
-        String s = getMyPhoneNumber(context);
-        //return s.substring(2);
-        return s;
+
+        if (!TextUtils.isEmpty(Prefs.uniqueId)) {
+            return Prefs.uniqueId;
+        }
+        return "";
+
     }
 
     public static String formatDateTime(long milliseconds, String dateTimeFormat) {

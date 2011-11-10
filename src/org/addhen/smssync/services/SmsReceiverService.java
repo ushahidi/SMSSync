@@ -23,7 +23,7 @@ package org.addhen.smssync.services;
 import org.addhen.smssync.MessagesTabActivity;
 import org.addhen.smssync.R;
 import org.addhen.smssync.PendingMessagesActivity;
-import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.SentMessagesActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.SentMessagesUtil;
@@ -96,7 +96,7 @@ public class SmsReceiverService extends Service {
         thread.start();
         mContext = getApplicationContext();
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-        Prefrences.loadPreferences(mContext);
+        Prefs.loadPreferences(mContext);
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(mServiceLooper);
@@ -146,9 +146,10 @@ public class SmsReceiverService extends Service {
      * Handle receiving a SMS message
      */
     private void handleSmsReceived(Intent intent) {
-
+        
+        //TODO:: improve on this clutter. Especially when trying to filter messages.
         Bundle bundle = intent.getExtras();
-        Prefrences.loadPreferences(SmsReceiverService.this);
+        Prefs.loadPreferences(SmsReceiverService.this);
 
         if (bundle != null) {
             SmsMessage[] messages = getMessagesFromIntent(intent);
@@ -173,24 +174,24 @@ public class SmsReceiverService extends Service {
             }
         }
 
-        if (Prefrences.enabled) {
+        if (Prefs.enabled) {
 
             if (Util.isConnected(SmsReceiverService.this)) {
 
                 boolean posted = false;
                 // if keywoard is enabled
-                if (!Prefrences.keyword.equals("")) {
-                    String[] keywords = Prefrences.keyword.split(",");
-                    Log.i(CLASS_TAG, "Keyword enabled:" + Prefrences.keyword);
+                if (!Prefs.keyword.equals("")) {
+                    String[] keywords = Prefs.keyword.split(",");
+                    Log.i(CLASS_TAG, "Keyword enabled:" + Prefs.keyword);
                     if (Util.processString(messagesBody, keywords)) {
 
                         posted = Util.postToAWebService(messagesFrom, messagesBody,
                                 messagesTimestamp, messagesId, SmsReceiverService.this);
 
                         // send auto response from phone not server.
-                        if (Prefrences.enableReply) {
+                        if (Prefs.enableReply) {
                             // send auto response
-                            Util.sendSms(SmsReceiverService.this, messagesFrom, Prefrences.reply);
+                            Util.sendSms(SmsReceiverService.this, messagesFrom, Prefs.reply);
                         }
 
                         if (!posted) {
@@ -203,7 +204,7 @@ public class SmsReceiverService extends Service {
 
                             // Delete messages from message app's inbox only
                             // when smssync is turned on
-                            if (Prefrences.autoDelete) {
+                            if (Prefs.autoDelete) {
                                 Util.delSmsFromInbox(SmsReceiverService.this, sms);
                             }
 
@@ -211,7 +212,7 @@ public class SmsReceiverService extends Service {
                             // log sent messages
                             this.postToSentBox();
 
-                            if (Prefrences.autoDelete) {
+                            if (Prefs.autoDelete) {
                                 Util.delSmsFromInbox(SmsReceiverService.this, sms);
                             }
 
@@ -219,16 +220,99 @@ public class SmsReceiverService extends Service {
                                     getString(R.string.sending_succeeded));
                         }
                     }
+                
+                // filter by phone number is enabled
+                }else if (!Prefs.filterByFrom.equals("")) {
+                    String[] phoneNumbers = Prefs.filterByFrom.split(",");
+                    Log.i(CLASS_TAG, "Filter by phone number enabled:" + Prefs.filterByFrom);
+                    if (Util.processString(messagesFrom, phoneNumbers)) {
 
-                    // keyword is not enabled
+                        posted = Util.postToAWebService(messagesFrom, messagesBody,
+                                messagesTimestamp, messagesId, SmsReceiverService.this);
+
+                        // send auto response from phone not server.
+                        if (Prefs.enableReply) {
+                            // send auto response
+                            Util.sendSms(SmsReceiverService.this, messagesFrom, Prefs.reply);
+                        }
+
+                        if (!posted) {
+                            this.showNotification(messagesBody, getString(R.string.sending_failed));
+                            this.postToPendingBox();
+                            handler.post(mDisplayMessages);
+
+                            // attempt to make a data connection
+                            connectToDataNetwork();
+
+                            // Delete messages from message app's inbox only
+                            // when smssync is turned on
+                            if (Prefs.autoDelete) {
+                                Util.delSmsFromInbox(SmsReceiverService.this, sms);
+                            }
+
+                        } else {
+                            // log sent messages
+                            this.postToSentBox();
+
+                            if (Prefs.autoDelete) {
+                                Util.delSmsFromInbox(SmsReceiverService.this, sms);
+                            }
+
+                            this.showNotification(messagesBody,
+                                    getString(R.string.sending_succeeded));
+                        }
+                    }
+                
+                // both filter by phone number and keywords are enabled.
+                }else if((!Prefs.filterByFrom.equals("")) && (!Prefs.keyword.equals(""))) {
+                    String[] keywords = Prefs.keyword.split(",");
+                    String[] phoneNumbers = Prefs.filterByFrom.split(",");
+                    
+                    if ((Util.processString(messagesFrom, phoneNumbers)) && (Util.processString(messagesBody, keywords)) ) {
+                        posted = Util.postToAWebService(messagesFrom, messagesBody,
+                                messagesTimestamp, messagesId, SmsReceiverService.this);
+
+                        // send auto response from phone not server.
+                        if (Prefs.enableReply) {
+                            // send auto response
+                            Util.sendSms(SmsReceiverService.this, messagesFrom, Prefs.reply);
+                        }
+
+                        if (!posted) {
+                            this.showNotification(messagesBody, getString(R.string.sending_failed));
+                            this.postToPendingBox();
+                            handler.post(mDisplayMessages);
+
+                            // attempt to make a data connection
+                            connectToDataNetwork();
+
+                            // Delete messages from message app's inbox only
+                            // when smssync is turned on
+                            if (Prefs.autoDelete) {
+                                Util.delSmsFromInbox(SmsReceiverService.this, sms);
+                            }
+
+                        } else {
+                            // log sent messages
+                            this.postToSentBox();
+
+                            if (Prefs.autoDelete) {
+                                Util.delSmsFromInbox(SmsReceiverService.this, sms);
+                            }
+
+                            this.showNotification(messagesBody,
+                                    getString(R.string.sending_succeeded));
+                        }
+                    }
+                // keyword is not enabled
                 } else {
 
                     posted = Util.postToAWebService(messagesFrom, messagesBody, messagesTimestamp,
                             messagesId, SmsReceiverService.this);
                     // send auto response from phone not server.
-                    if (Prefrences.enableReply) {
+                    if (Prefs.enableReply) {
                         // send auto response
-                        Util.sendSms(SmsReceiverService.this, messagesFrom, Prefrences.reply);
+                        Util.sendSms(SmsReceiverService.this, messagesFrom, Prefs.reply);
                     }
 
                     if (!posted) {
@@ -239,12 +323,12 @@ public class SmsReceiverService extends Service {
                         // attempt to make a data connection
                         connectToDataNetwork();
 
-                        if (Prefrences.autoDelete) {
+                        if (Prefs.autoDelete) {
                             Util.delSmsFromInbox(SmsReceiverService.this, sms);
                         }
                     } else {
                         this.postToSentBox();
-                        if (Prefrences.autoDelete) {
+                        if (Prefs.autoDelete) {
                             Util.delSmsFromInbox(SmsReceiverService.this, sms);
                         }
                         this.showNotification(messagesBody, getString(R.string.sending_succeeded));
@@ -258,7 +342,7 @@ public class SmsReceiverService extends Service {
                 handler.post(mDisplayMessages);
 
                 connectToDataNetwork();
-                if (Prefrences.autoDelete) {
+                if (Prefs.autoDelete) {
                     Util.delSmsFromInbox(SmsReceiverService.this, sms);
                 }
             }

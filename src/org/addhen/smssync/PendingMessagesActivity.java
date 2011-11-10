@@ -101,10 +101,10 @@ public class PendingMessagesActivity extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setTitle(R.string.outbox);
         setContentView(R.layout.list_messages);
-        Prefrences.loadPreferences(PendingMessagesActivity.this);
+        Prefs.loadPreferences(PendingMessagesActivity.this);
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         // show notification
-        if (Prefrences.enabled) {
+        if (Prefs.enabled) {
             Util.showNotification(PendingMessagesActivity.this);
         }
 
@@ -176,8 +176,8 @@ public class PendingMessagesActivity extends Activity {
     // Synchronize all pending messages.
     final Runnable mSyncMessages = new Runnable() {
         public void run() {
-            Prefrences.loadPreferences(PendingMessagesActivity.this);
-            if (Prefrences.enabled) {
+            Prefs.loadPreferences(PendingMessagesActivity.this);
+            if (Prefs.enabled) {
                 int result = 0;
                 try {
                     if (result == 0) {
@@ -203,8 +203,8 @@ public class PendingMessagesActivity extends Activity {
      */
     final Runnable mSyncMessagesById = new Runnable() {
         public void run() {
-            Prefrences.loadPreferences(PendingMessagesActivity.this);
-            if (Prefrences.enabled) {
+            Prefs.loadPreferences(PendingMessagesActivity.this);
+            if (Prefs.enabled) {
                 int result = 0;
                 try {
                     if (result == 0) {

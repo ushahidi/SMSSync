@@ -1,74 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2008 The Android Open Source Project Licensed under the 
+<!--
+     Copyright (C) 2008 The Android Open Source Project Licensed under the 
 	Apache License, Version 2.0 (the "License"); you may not use this file except 
 	in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
 	Unless required by applicable law or agreed to in writing, software distributed 
 	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
 	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
-	the specific language governing permissions and limitations under the License. -->
+	the specific language governing permissions and limitations under the License.
+-->
 
-<!-- This is a primitive example showing the different types of preferences 
-	available. -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+     This is a primitive example showing the different types of preferences 
+	available.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<PreferenceCategory android:title="@string/general_settings">
+    <PreferenceCategory android:title="@string/general_settings" >
 
-		<EditTextPreference android:key="website_preference"
-			android:title="@string/edittxt_website_pref" android:summary="@string/edittxt_website_pref_summary"
-			android:defaultValue="@string/http_text" android:inputType="textUri"
-			android:dialogTitle="@string/edittxt_website_pref_dialog_title" />
+        <EditTextPreference
+            android:defaultValue="@string/http_text"
+            android:dialogTitle="@string/edittxt_website_pref_dialog_title"
+            android:inputType="textUri"
+            android:key="website_preference"
+            android:summary="@string/edittxt_website_pref_summary"
+            android:title="@string/edittxt_website_pref" />
 
-		<EditTextPreference android:key="api_key_preference"
-			android:title="@string/edittxt_api_key_pref" android:summary="@string/edittxt_api_key_pref_summary"
-			android:dialogTitle="@string/edittxt_api_key_pref" />
+        <EditTextPreference
+            android:dialogTitle="@string/edittxt_api_key_pref"
+            android:key="api_key_preference"
+            android:summary="@string/edittxt_api_key_pref_summary"
+            android:title="@string/edittxt_api_key_pref" />
 
-		<EditTextPreference android:key="keyword_preference"
-			android:title="@string/edittxt_keyword_pref" android:summary="@string/editxt_keyword_pref_summary"
-			android:dialogTitle="@string/edittxt_keyword_pref" android:hint="@string/edittxt_keyword_hint" />
+        <EditTextPreference
+            android:dialogTitle="@string/edittxt_unique_id_pref"
+            android:hint="@string/edittxt_unique_id_hint"
+            android:key="unique_id_preference"
+            android:summary="@string/edittxt_unique_id_pref_summary"
+            android:title="@string/edittxt_unique_id_pref" />
 
-		<CheckBoxPreference android:key="auto_delete_preference"
-			android:title="@string/chk_enable_auto_delete" android:summary="@string/chk_auto_delete_hint" />
+        <CheckBoxPreference
+            android:key="auto_delete_preference"
+            android:summary="@string/chk_auto_delete_hint"
+            android:title="@string/chk_enable_auto_delete" />
 
-		<CheckBoxPreference android:key="enable_sms_sync_preference"
-			android:title="@string/chk_enable_sms_sync" android:summary="@string/chk_sms_sync_hint" />
+        <CheckBoxPreference
+            android:key="enable_sms_sync_preference"
+            android:summary="@string/chk_sms_sync_hint"
+            android:title="@string/chk_enable_sms_sync" />
+    </PreferenceCategory>
 
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/reply_settings">
-        
-        <CheckBoxPreference android:key="enable_reply_frm_server_preference"
-            android:title="@string/chk_enable_reply_frm_server" android:summary="@string/chk_reply_frm_server_hint" />
-            
-		<CheckBoxPreference android:key="enable_reply_preference"
-			android:title="@string/chk_enable_reply" android:summary="@string/chk_reply_hint" />
+    <PreferenceCategory android:title="@string/filter_messages" >
 
-		<EditTextPreference android:key="reply_preference"
-			android:title="@string/edittxt_reply_title" android:summary="@string/edittxt_reply_summary"
-			android:dialogTitle="@string/edittxt_reply" android:defaultValue="@string/edittxt_reply_default" />
+        <EditTextPreference
+            android:dialogTitle="@string/edittxt_keyword_pref"
+            android:hint="@string/edittxt_keyword_hint"
+            android:key="keyword_preference"
+            android:summary="@string/editxt_keyword_pref_summary"
+            android:title="@string/edittxt_keyword_pref" />
 
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/auto_sync_settings">
+        <EditTextPreference
+            android:dialogTitle="@string/edittxt_filter_by_from_pref"
+            android:hint="@string/edittxt_filter_by_from_hint"
+            android:key="filter_by_from_preference"
+            android:summary="@string/edittxt_filter_by_from_pref_summary"
+            android:title="@string/edittxt_filter_by_from_pref" />
+    </PreferenceCategory>
 
-		<CheckBoxPreference android:key="auto_sync_preference"
-			android:title="@string/chk_enable_auto_sync" android:summary="@string/chk_enable_auto_sync_hint" />
+    <PreferenceCategory android:title="@string/reply_settings" >
 
-		<ListPreference android:key="auto_sync_times"
-			android:title="@string/txt_auto_sync_delay" android:summary="@string/auto_sync_delay_hint"
-			android:dialogTitle="@string/txt_auto_sync_delay"
-			android:defaultValue="5" />
+        <CheckBoxPreference
+            android:key="enable_reply_frm_server_preference"
+            android:summary="@string/chk_reply_frm_server_hint"
+            android:title="@string/chk_enable_reply_frm_server" />
 
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/task_check_settings">
+        <CheckBoxPreference
+            android:key="enable_reply_preference"
+            android:summary="@string/chk_reply_hint"
+            android:title="@string/chk_enable_reply" />
 
-		<CheckBoxPreference android:key="task_check_preference"
-			android:title="@string/chk_enable_task_check" android:summary="@string/chk_enable_task_check_hint" />
+        <EditTextPreference
+            android:defaultValue="@string/edittxt_reply_default"
+            android:dialogTitle="@string/edittxt_reply"
+            android:key="reply_preference"
+            android:summary="@string/edittxt_reply_summary"
+            android:title="@string/edittxt_reply_title" />
+    </PreferenceCategory>
 
-		<ListPreference android:key="task_check_times"
-			android:title="@string/txt_task_check_delay" android:summary="@string/txt_task_check_delay_hint"
-			android:dialogTitle="@string/txt_task_check_delay"
-			android:defaultValue="5" />
+    <PreferenceCategory android:title="@string/auto_sync_settings" >
 
-	</PreferenceCategory>
-	<PreferenceCategory android:title="@string/about_smssync">
-		<Preference android:key="powered_preference" />
-	</PreferenceCategory>
+        <CheckBoxPreference
+            android:key="auto_sync_preference"
+            android:summary="@string/chk_enable_auto_sync_hint"
+            android:title="@string/chk_enable_auto_sync" />
+
+        <ListPreference
+            android:defaultValue="5"
+            android:dialogTitle="@string/txt_auto_sync_delay"
+            android:key="auto_sync_times"
+            android:summary="@string/auto_sync_delay_hint"
+            android:title="@string/txt_auto_sync_delay" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/task_check_settings" >
+
+        <CheckBoxPreference
+            android:key="task_check_preference"
+            android:summary="@string/chk_enable_task_check_hint"
+            android:title="@string/chk_enable_task_check" />
+
+        <ListPreference
+            android:defaultValue="5"
+            android:dialogTitle="@string/txt_task_check_delay"
+            android:key="task_check_times"
+            android:summary="@string/txt_task_check_delay_hint"
+            android:title="@string/txt_task_check_delay" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about_smssync" >
+
+        <Preference android:key="powered_preference" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

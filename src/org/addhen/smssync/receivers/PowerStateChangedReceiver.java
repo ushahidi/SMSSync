@@ -1,7 +1,7 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.util.Util;
@@ -29,22 +29,22 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         batteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
         // load current settings
-        Prefrences.loadPreferences(context);
+        Prefs.loadPreferences(context);
         if (batteryLow) {
             // is smssync enabled
-            if (Prefrences.enabled) {
+            if (Prefs.enabled) {
 
                 // clear all notifications
                 Util.clearNotify(context);
 
                 // Stop the service that pushes pending messages
-                if (Prefrences.enableAutoSync) {
+                if (Prefs.enableAutoSync) {
                     smsSyncAutoSyncServiceIntent = new Intent(context, AutoSyncService.class);
                     context.stopService(smsSyncAutoSyncServiceIntent);
                 }
 
                 // Stop the service that checks for tasks
-                if (Prefrences.enableTaskCheck) {
+                if (Prefs.enableTaskCheck) {
                     smsSyncTaskCheckServiceIntent = new Intent(context,
                             CheckTaskService.class);
                     context.stopService(smsSyncTaskCheckServiceIntent);

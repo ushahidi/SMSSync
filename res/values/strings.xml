@@ -9,53 +9,76 @@
 
 <!-- This handles all the strings in the app. -->
 <resources>
+    <!--  preferences -->
+    <!--  sync URL -->
 	<string name="edittxt_website_pref">Enter The Sync URL</string>
 	<string name="edittxt_website_pref_summary">This is the website that will receive the text
 		messages.</string>
-	<string name="edittxt_website_pref_dialog_title">Enter the Sync URL</string>
+	
+	<!-- secret -->	
 	<string name="edittxt_api_key_pref">Enter the Secret</string>
 	<string name="edittxt_api_key_pref_summary">If a secret/key has been specified at the website,
 		it will be required.</string>
-	<string name="edittxt_keyword_pref">Enter Keyword(s)</string>
+	
+	<!-- filter by keywords -->
+	<string name="edittxt_keyword_pref">Enter Keyword - optional</string>
+	<string name="editxt_keyword_pref_summary">Specify what keywords that will be used to filter
+        the message sent to the gateway.</string>
+    <string name="edittxt_keyword_hint">fire, crime, help, report,etc</string>
+        
+    <!-- filter by phone numbers -->    
+	<string name="edittxt_filter_by_from_pref">Enter Phone Number - optional)</string>
+	<string name="edittxt_filter_by_from_pref_summary">Specify what phone numbers that will be used to filter the message sent to the gateway.</string>
+	<string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
+	
+	<!-- unique id -->    
+    <string name="edittxt_unique_id_pref">Enter Unique ID</string>
+    <string name="edittxt_unique_id_pref_summary">Specify a unique ID for this device. This will be used by the Sync URL to know exactly which device is sending it messages. It should be 5 digits</string>
+    <string name="edittxt_unique_id_hint">01234</string> 
+       
+	<!-- response message -->
 	<string name="edittxt_reply">Enter A Response Message</string>
 	<string name="edittxt_reply_title">A Response Message</string>
 	<string name="edittxt_reply_summary">The message to be sent to users.</string>
 	<string name="edittxt_reply_default">Your message has been received.Thank you.</string>
+	
+	<!-- enable/disable smssync -->
 	<string name="sms_sync_enabled">SMSSync Is Enabled</string>
 	<string name="sms_sync_disabled">SMSSync Disabled</string>
-	<string name="edittxt_keyword_hint">fire, crime, help, report,etc</string>
-	<string name="editxt_keyword_pref_summary">Specify what keywords that will be used to filter
-		the message sent to the gateway.</string>
-
+    
+	<!--  general settings -->
 	<string name="general_settings">General Settings</string>
-
+    
+	<!-- reply from server -->
 	<string name="reply_settings">Reply Message Settings</string>
 	<string name="chk_enable_sms_sync">Start SMSSync</string>
 	<string name="chk_sms_sync_hint">Start and Stop SMS gateway.</string>
 	<string name="chk_enable_reply">Reply Messages</string>
 	<string name="chk_reply_hint">This will auto respond to every message that comes
 		to SMSSync.</string>
-
-	<string name="chk_enable_gps_sync">Add GPS coordinates</string>
-	<string name="chk_gps_sync_hint">This will include GPS coordinates of the current
-		location of the phone to the messages to be sent to the website.
-	</string>
-
+    
+	<!-- auto delete messages -->
 	<string name="chk_enable_auto_delete">Auto Delete Messages</string>
 	<string name="chk_auto_delete_hint">This will automatically delete messages from the
 		Message app\'s inbox to save space on the phone.</string>
 
+	<!-- enable auto sync -->
 	<string name="chk_enable_auto_sync">Enable Auto Sync</string>
 	<string name="chk_enable_auto_sync_hint">This will allow SMSSync to periodically sync
 		pending messages.</string>
+	
+	<!-- auto sync delay  -->
 	<string name="txt_auto_sync_delay">Auto sync frequency</string>
 	<string name="auto_sync_delay_hint">Set how often SMSSync syncronizes with the
 		configured callback URL.</string>
 
+	<!-- enable task check -->
 	<string name="chk_enable_task_check">Enable Task Checking</string>
 	<string name="chk_enable_task_check_hint">This will allow SMSSync to periodically check for
 		tasks enabled on the callback URL.Smssync then executes the task. Eg.
 		SMSSync sends SMS</string>
+	
+	<!-- task check deply -->
 	<string name="txt_task_check_delay">Frequency</string>
 	<string name="txt_task_check_delay_hint">Set how often SMSSync checks for a task to be
 		executed.</string>
@@ -109,6 +132,7 @@
 	<string name="chk_enable_reply_frm_server">Get Reply From Server</string>
 	<string name="chk_reply_frm_server_hint">This will instantly send messages as recieved from
 		the server as SMS without waiting on a scheduler </string>
+	<string name="filter_messages">Filter messages</string>
 	
 	<!-- SMS delivery status -->
 	<string name="sms_delivery_status_failed">Failed to send SMS -- Maybe insufficient air time
@@ -129,4 +153,8 @@
 	<string name="confirm_yes">Yes</string>
 	<string name="confirm_no">No</string>
 	<string name="confirm_message">Are you sure you want to perform this action?</string>
+	
+    <!-- validate unique id -->
+    <string name="unique_id_length_error">Unique ID cannot be longer or less than 5 digits</string>
+    <string name="unique_id_numeric_error">Unique ID accepts only numbers</string>
 </resources>

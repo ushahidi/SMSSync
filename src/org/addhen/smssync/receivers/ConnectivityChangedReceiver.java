@@ -1,7 +1,7 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.Prefrences;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SmsSyncServices;
@@ -33,10 +33,10 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         // load current settings
-        Prefrences.loadPreferences(context);
+        Prefs.loadPreferences(context);
 
         // is smssync enabled
-        if (Prefrences.enabled) {
+        if (Prefs.enabled) {
 
             // check to see if we're connected to an active data network
             isConnected = Util.isConnected(context);
@@ -51,12 +51,12 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                         PackageManager.DONT_KILL_APP);
 
                 // Push any pending messages now that we have connectivity
-                if (Prefrences.enableAutoSync) {
+                if (Prefs.enableAutoSync) {
                     SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
                 }
 
                 // Check for tasks now that we have connectivity
-                if (Prefrences.enableTaskCheck) {
+                if (Prefs.enableTaskCheck) {
                     SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
                 }
             }

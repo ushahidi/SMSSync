@@ -62,10 +62,10 @@ public class SentMessagesActivity extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
         setContentView(R.layout.sent_messages);
-        Prefrences.loadPreferences(SentMessagesActivity.this);
+        Prefs.loadPreferences(SentMessagesActivity.this);
 
         // show notification
-        if (Prefrences.enabled) {
+        if (Prefs.enabled) {
             Util.showNotification(SentMessagesActivity.this);
         }
 
