@@ -79,9 +79,9 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                 <p>
                     <strong>Public release:</strong>
                         <ul>
-                            <li>Released October 27, 2011</li>
-                            <li>Revision r9</li>
-                            <li>Version <a href="http://dev.ushahidi.com/versions/show/42">1.0.8</a></li>
+                            <li>Released November 11, 2011</li>
+                            <li>Revision r10</li>
+                            <li>Version <a href="http://dev.ushahidi.com/versions/show/47">1.0.9</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -89,7 +89,7 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                         </ul>
                     <strong>Development branch:</strong>
                         <ul>
-                        <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.0.9</li>
+                        <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.1.1</li>
                         </ul>
                         <a href="http://dev.ushahidi.com/projects/SMSSync/news">More</a>
                 </p>
