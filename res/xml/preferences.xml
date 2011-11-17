@@ -19,7 +19,7 @@
 
         <EditTextPreference
             android:defaultValue="@string/http_text"
-            android:dialogTitle="@string/edittxt_website_pref_dialog_title"
+            android:dialogTitle="@string/edittxt_website_pref"
             android:inputType="textUri"
             android:key="website_preference"
             android:summary="@string/edittxt_website_pref_summary"
