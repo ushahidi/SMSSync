@@ -1,8 +1,8 @@
 1.1.9
 Bug:
   * Fixed missing title
-  * Made 
-  * Added 
+  * Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59
+  * Added 5 more languages - French, Japanese, Danish, Russian and Serbian
 
 1.0.9:
 Bug:
