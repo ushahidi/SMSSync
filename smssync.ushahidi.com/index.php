@@ -89,7 +89,7 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                         </ul>
                     <strong>Development branch:</strong>
                         <ul>
-                        <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.1.1</li>
+                        <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.1.9</li>
                         </ul>
                         <a href="http://dev.ushahidi.com/projects/SMSSync/news">More</a>
                 </p>
@@ -114,7 +114,7 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                     transifex for hosting our strings and to make translation much easier. 
 
                     <p>To help translate SMSSync into other languages, simply headover to 
-                    <a href="https://www.transifex.net/projects/p/smssync/resource/smssyncpo/">transifex.net</a>, 
+                    <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">transifex.net</a>, 
                     add a language if it's not there or contribute to the uncompleted
                     translations.
                 </p>            
