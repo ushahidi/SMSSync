@@ -136,8 +136,8 @@ public final class R {
          */
         public static final int edittxt_unique_id_pref=0x7f06000a;
         public static final int edittxt_unique_id_pref_summary=0x7f06000b;
-        /**   preferences 
-  sync URL 
+        /**  preferences 
+ sync URL 
          */
         public static final int edittxt_website_pref=0x7f060000;
         public static final int edittxt_website_pref_dialog_title=0x7f060059;
@@ -145,7 +145,7 @@ public final class R {
         public static final int editxt_keyword_pref_summary=0x7f060005;
         public static final int empty_list=0x7f060039;
         public static final int filter_messages=0x7f060049;
-        /**   general settings 
+        /**  general settings 
          */
         public static final int general_settings=0x7f060013;
         public static final int http_text=0x7f06003a;
@@ -202,7 +202,7 @@ public final class R {
         public static final int sync_failed=0x7f06002d;
         public static final int task_check_settings=0x7f060041;
         public static final int title_bar_text=0x7f060052;
-        /**  auto sync delay  
+        /**  auto sync delay 
          */
         public static final int txt_auto_sync_delay=0x7f06001d;
         /**  task check deply 

@@ -1,22 +1,20 @@
-<?xml version="1.0" ?>
-<!-- Copyright (C) 2008 The Android Open Source Project Licensed under the 
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+     Copyright (C) 2008 The Android Open Source Project Licensed under the 
     Apache License, Version 2.0 (the "License"); you may not use this file except 
     in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
     Unless required by applicable law or agreed to in writing, software distributed 
     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
     OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
-    the specific language governing permissions and limitations under the License. -->
+    the specific language governing permissions and limitations under the License.
+-->
 
-<!-- This handles all the strings in the app. -->
 <resources>
   <string name="edittxt_website_pref">
     URL для синхронизации
   </string>
   <string name="edittxt_website_pref_summary">
     Это сайт, на котором будут сохраняться текстовые сообщения.
-  </string>
-  <string name="edittxt_website_pref_dialog_title">
-    URL для синхронизации
   </string>
   <string name="edittxt_api_key_pref">
     Секретный код
@@ -27,6 +25,18 @@
   <string name="edittxt_keyword_pref">
     Ключевые слова (одно или несколько)
   </string>
+  <string name="editxt_keyword_pref_summary">
+    Укажите ключевые слова, используемые для фильтрации сообщений, отправляемых шлюзу.
+  </string>
+  <string name="edittxt_keyword_hint">
+    важно, помощь, запрос, прочее
+  </string>
+  <string name="edittxt_filter_by_from_pref">Введите телефонный номер (не обязательно)</string>
+  <string name="edittxt_filter_by_from_pref_summary">Укажите телефонные номера, используемые для фильтрации сообщений, отправленных шлюзу.</string>
+  <string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
+  <string name="edittxt_unique_id_pref">Уникальный номер</string>
+  <string name="edittxt_unique_id_pref_summary">Укажите уникальный номер для этого устройства. Это будет использоваться в синхронизации, для того чтобы наверняка определить, какое устройство отправляет сообщения. Укажите 5 цифр</string>
+  <string name="edittxt_unique_id_hint">01234</string>
   <string name="edittxt_reply">
     Ответное сообщение
   </string>
@@ -45,12 +55,6 @@
   <string name="sms_sync_disabled">
     SMSSync отключен
   </string>
-  <string name="edittxt_keyword_hint">
-    важно, помощь, запрос, прочее
-  </string>
-  <string name="editxt_keyword_pref_summary">
-    Укажите ключевые слова, используемые для фильтрации сообщений, отправляемых шлюзу.
-  </string>
   <string name="general_settings">
     Основные настройки
   </string>
@@ -68,12 +72,6 @@
   </string>
   <string name="chk_reply_hint">
     Автоматический ответ для каждого пришедшего сообщения.
-  </string>
-  <string name="chk_enable_gps_sync">
-    Добавить координаты GPS
-  </string>
-  <string name="chk_gps_sync_hint">
-    Включает и пересылает сайту GPS-координаты текущего местоположения телефона.
   </string>
   <string name="chk_enable_auto_delete">
     Автоматическое удаление сообщений
@@ -108,15 +106,10 @@
   <string name="app_name">
     SMSSync
   </string>
-  <string name="sms_sync_powered_by">
-    
-  </string>
   <string name="outbox">
     Ожидающие сообщения
   </string>
-  <string name="version">
-    
-  </string>
+  <string name="version_status">Бета</string>
   <string name="sms_status_success">
     Сообщение отправлено
   </string>
@@ -222,6 +215,7 @@
   <string name="chk_reply_frm_server_hint">
     Позволяет сразу передавать сообщения, полученные от сервера, не дожидаясь выполнения заданий
   </string>
+  <string name="filter_messages">Фильтрация сообщений</string>
   <string name="sms_delivery_status_failed">
     Ошибка отправки SMS. Вероятно, плохой сигнал?!
   </string>
@@ -261,4 +255,6 @@
   <string name="confirm_message">
     Уверены?
   </string>
+  <string name="unique_id_length_error">Уникальный номер должен состоять ровно из 5 цифр</string>
+  <string name="unique_id_numeric_error">Уникальный номер должен состоять только из цифр</string>
 </resources>

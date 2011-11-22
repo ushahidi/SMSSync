@@ -1,142 +1,183 @@
-<?xml version="1.0" ?>
-<!-- Copyright (C) 2008 The Android Open Source Project Licensed under the 
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+     Copyright (C) 2008 The Android Open Source Project Licensed under the 
     Apache License, Version 2.0 (the "License"); you may not use this file except 
     in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
     Unless required by applicable law or agreed to in writing, software distributed 
     under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
     OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
-    the specific language governing permissions and limitations under the License. -->
-
-<!-- This handles all the strings in the app. -->
+    the specific language governing permissions and limitations under the License.
+-->
 <resources>
-	<string name="edittxt_website_pref">
+  <string name="edittxt_website_pref">
 		Inserire URL di sincronizzazione
   </string>
-	<string name="edittxt_website_pref_summary">
+  <string name="edittxt_website_pref_summary">
 		Sito che riceverà i messsaggi di testo.
   </string>
-	<string name="edittxt_website_pref_dialog_title">
-		Inserire URL di sincronizzazione
-  </string>
-	<string name="edittxt_api_key_pref">
+  <string name="edittxt_api_key_pref">
 		Inserire la chiave di sicurezza
   </string>
-	<string name="edittxt_api_key_pref_summary">
+  <string name="edittxt_api_key_pref_summary">
 		Se una chiave di sicurezza è stata specificata nel sito, sarà richiesta.
 	</string>
-	<string name="edittxt_keyword_pref">
+  <string name="edittxt_keyword_pref">
 		Inserire parola(e) chiave
   </string>
-	<string name="edittxt_reply">
-		Inserire messaggio di risposta
-  </string>
-	<string name="edittxt_reply_title">
-		Messaggio di risposta
-  </string>
-	<string name="edittxt_reply_summary">
-		Messaggio da inviare agli utenti.
-  </string>
-	<string name="edittxt_reply_default">
-		Messaggio ricevuto, grazie.
-  </string>
-	<string name="sms_sync_enabled">
-		SMSSync abilitato
-  </string>
-	<string name="sms_sync_disabled">
-		SMSSync disabilitato
-  </string>
-	<string name="edittxt_keyword_hint">
-		incendio, crimine, aiuto, rapporto, ecc
-  </string>
-	<string name="editxt_keyword_pref_summary">
+  <string name="editxt_keyword_pref_summary">
 		Specificare le parole chiave da usare per filtrare il messaggio inviato al
 		gateway.
   </string>
-	<string name="general_settings">
+  <string name="edittxt_keyword_hint">
+		incendio, crimine, aiuto, rapporto, ecc
+  </string>
+  <string name="edittxt_filter_by_from_pref">Inserire numero di telefono (facoltativo)</string>
+  <string name="edittxt_filter_by_from_pref_summary">Specificare numero di telefono che verrà usato come filtro per i messaggi inviati al gateway.</string>
+  <string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
+  <string name="edittxt_unique_id_pref">Inserire ID univoco</string>
+  <string name="edittxt_unique_id_pref_summary">Specificare per questo dispositivo un ID univoco a 5 cifre. Verrà usato dall\'URL di sincronizzazione per sapere quale dispositivo sta spedendo i messaggi.</string>
+  <string name="edittxt_unique_id_hint">01234</string>
+  <string name="edittxt_reply">
+		Inserire messaggio di risposta
+  </string>
+  <string name="edittxt_reply_title">
+		Messaggio di risposta
+  </string>
+  <string name="edittxt_reply_summary">
+		Messaggio da inviare agli utenti.
+  </string>
+  <string name="edittxt_reply_default">
+		Messaggio ricevuto, grazie.
+  </string>
+  <string name="sms_sync_enabled">
+		SMSSync abilitato
+  </string>
+  <string name="sms_sync_disabled">
+		SMSSync disabilitato
+  </string>
+  <string name="general_settings">
 		Impostazioni generali
   </string>
-	<string name="reply_settings">
+  <string name="reply_settings">
 		Impostazioni messaggio di replica
   </string>
-	<string name="chk_enable_sms_sync">
+  <string name="chk_enable_sms_sync">
 		Avvia SMSSync
   </string>
-	<string name="chk_sms_sync_hint">
+  <string name="chk_sms_sync_hint">
 		Avvia e ferma SMSSync.
   </string>
-	<string name="chk_enable_reply">
+  <string name="chk_enable_reply">
 		Messaggi di replica
   </string>
-	<string name="chk_reply_hint">
+  <string name="chk_reply_hint">
 		Questa opzione risponde automaticamente ad ogni messaggio che arriva a
 		SMSSync.
   </string>
-	<string name="chk_enable_gps_sync">
-		Aggiungere coordinate GPS
-  </string>
-	<string name="chk_gps_sync_hint">
-		Questa opzione include le coordinate GPS dell\'attuale posizione del
-		cellulare nei messaggi inviati al sito.
-  </string>
-	<string name="chk_enable_auto_delete">
+  <string name="chk_enable_auto_delete">
 		Cancellazione automatica dei messaggi
   </string>
-	<string name="chk_enable_auto_sync">
+  <string name="chk_auto_delete_hint">Questa opzione cancellerà automaticamente i messaggi dalla inbox per risparmiare spazio sul cellulare.</string>
+  <string name="chk_enable_auto_sync">
 		Abilitare sincronizzazione automatica
   </string>
-	<string name="chk_enable_auto_sync_hint">
+  <string name="chk_enable_auto_sync_hint">
 		Questa opzione permette a SMSSync di sincronizzare periodicamente messaggi
 		pendenti.
   </string>
-	<string name="txt_auto_sync_delay">
+  <string name="txt_auto_sync_delay">
 		Frequenza di auto sincronizzazione
   </string>
-	<string name="auto_sync_delay_hint">
+  <string name="auto_sync_delay_hint">
 		Impostare la frequenza con cui SMSSync si sincronizza con l\'URL di callback
 		configurato.
   </string>
-	<string name="chk_enable_task_check">
+  <string name="chk_enable_task_check">
 		Abilitare controllo dei compiti
   </string>
-	<string name="chk_enable_task_check_hint">
+  <string name="chk_enable_task_check_hint">
 		Questa opzione permette a SMSSync di controllare periodicamente i compiti
 		abilitati sull\'URL di callback. SMSSync esegue successivamente il
 		compito. Es. SMSSync invia SMS
   </string>
-	<string name="txt_task_check_delay">
+  <string name="txt_task_check_delay">
 		Frequenza
   </string>
-	<string name="txt_task_check_delay_hint">
+  <string name="txt_task_check_delay_hint">
 		Imposta la frequenza con cui SMSSync controlla il compito da eseguire.
 	</string>
-	<string name="app_name">
+  <string name="app_name">
 		SMSSync
   </string>
-	<string name="outbox">
+  <string name="outbox">
 		Messaggi SMSSync pendenti
   </string>
-	<string name="version_status">
+  <string name="version_status">
 		Beta
   </string>
-	<string name="sms_status_success">
+  <string name="sms_status_success">
 		Messaggio SMSSync inviato
   </string>
-	<string name="sms_status_failed">
+  <string name="sms_status_failed">
 		Invio fallito messaggio SMSSync
   </string>
-	<string name="notification_summary">
+  <string name="notification_summary">
 		Gateway SMSSync operativo
   </string>
-	<string name="sending_failed">
+  <string name="sending_failed">
 		Invio fallito messaggio SMSSync.
   </string>
-	<string name="sending_succeeded">
+  <string name="sending_succeeded">
 		MEssaggio SMSSync inviato.
   </string>
-	<string name="no_messages_to_sync">
+  <string name="no_messages_to_sync">
 		Non ci sono messaggi da inviare.
   </string>
-	<string name="no_messages_to_delete">
+  <string name="no_messages_to_delete">
 		Non ci sono messaggi da cancellare.
   </string>
+  <string name="sync_failed">Invio messaggio da SMSSync. Potrebbe </string>
+  <string name="powered">Acceso</string>
+  <string name="powered_by">Creato da Ushahidi</string>
+  <string name="menu_delete_all">Cancella tutto</string>
+  <string name="menu_sync_all">Sincronizza tutto</string>
+  <string name="menu_delete">Cancella</string>
+  <string name="menu_sync">Sincronizza</string>
+  <string name="menu_import">Importa SMS</string>
+  <string name="menu_settings">Impostazioni</string>
+  <string name="messages_deleted">Messaggi cancellati con successo.</string>
+  <string name="messages_deleted_failed">I messaggi non sono stati cancellati.</string>
+  <string name="status">Status</string>
+  <string name="empty_list">Nessun messaggio in attesa.</string>
+  <string name="http_text">http://</string>
+  <string name="sms_failed">Fallito SMS</string>
+  <string name="invalid_url">L\'URL immesso non è valido.</string>
+  <string name="no_configured_url">Nessun URL configurato.</string>
+  <string name="no_connection">Impossibile effettuare connessione all\'URL.</string>
+  <string name="no_task">Nessun compito è attivato sul URL di richiamata configurato.</string>
+  <string name="auto_sync_settings">Impostazioni Sincronizzazione automatica</string>
+  <string name="task_check_settings">Impostazioni compito</string>
+  <string name="about_smssync">Informazioni su Sync</string>
+  <string name="please_wait">Attendere prego</string>
+  <string name="smssync_not_enabled">SMSSync disabilitato. Abilitarlo dalla schermata delle Impostazioni.</string>
+  <string name="import_messages">Messaggi in fase d\'importazione</string>
+  <string name="nothing_to_import">Nessun messaggio da importare. Verificare che ci siano messaggi SMS nella inbox.</string>
+  <string name="chk_enable_reply_frm_server">Ottieni risposta dal server</string>
+  <string name="chk_reply_frm_server_hint">Invia istantaneamente i messaggi SMS come ricevuti dal server, senza attendere alcuna lista</string>
+  <string name="filter_messages">Filtra i messaggi</string>
+  <string name="sms_delivery_status_failed">Impossibile inviare SMS - Forse il tempo in linea non è stato sufficiente.</string>
+  <string name="sms_delivery_status_no_service">Nessun servizio</string>
+  <string name="sms_delivery_status_radio_off">Radio spenta</string>
+  <string name="sms_delivery_status_null_pdu">Nessun PDU</string>
+  <string name="sms_delivered">SMS consegnato</string>
+  <string name="sms_not_delivered">SMS non consegnato</string>
+  <string name="pending_messages">In attesa</string>
+  <string name="sent_messages">Inviato</string>
+  <string name="title_bar_text">Messaggi</string>
+  <string name="no_sent_messages">Nessun messaggio inviato.</string>
+  <string name="confirm_yes">Si</string>
+  <string name="confirm_no">No</string>
+  <string name="confirm_message">Sei sicuro di voler eseguire questa azione?</string>
+  <string name="unique_id_length_error">L\'ID univoco deve avere 5 cifre</string>
+  <string name="unique_id_numeric_error">L\'ID univoco accetta solo numeri</string>
 </resources>
