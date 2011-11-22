@@ -370,14 +370,16 @@ public class Database {
                 + SENT_MESSAGES_TABLE, null);
 
         int result = 0;
+        try {
+            if (mCursor == null) {
+                return result;
+            }
 
-        if (mCursor == null) {
-            return result;
+            mCursor.moveToFirst();
+            result = mCursor.getInt(0);
+        } finally {
+            mCursor.close();
         }
-
-        mCursor.moveToFirst();
-        result = mCursor.getInt(0);
-        mCursor.close();
 
         return result;
     }
@@ -392,14 +394,17 @@ public class Database {
                 null);
 
         int result = 0;
+        try {
+            if (mCursor == null) {
+                return result;
+            }
 
-        if (mCursor == null) {
-            return result;
+            mCursor.moveToFirst();
+            result = mCursor.getInt(0);
+        } finally {
+            if (mCursor != null)
+                mCursor.close();
         }
-
-        mCursor.moveToFirst();
-        result = mCursor.getInt(0);
-        mCursor.close();
 
         return result;
     }
@@ -411,13 +416,17 @@ public class Database {
         });
 
         int deleted = 0;
+        try {
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    int limitId = cursor.getInt(0);
+                    deleted = mDb.delete(tablename, KEY_ID + "<" + limitId, null);
+                }
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int limitId = cursor.getInt(0);
-                deleted = mDb.delete(tablename, KEY_ID + "<" + limitId, null);
             }
-            cursor.close();
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
 
         return deleted;
