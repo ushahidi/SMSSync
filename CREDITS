@@ -1,5 +1,5 @@
     This is at least a partial credits-file of people that have
-    contributed to the SMSSync project.  It is sorted by name and
+    contributed to the SMSSync project.  It is sorted by last name and
     formatted to allow easy grepping. The fields are: name (N), email (E), web-address
     (W), description (D), and country (C).
     Thanks,
@@ -9,6 +9,12 @@ Maintain by Henry Addo aka eyedol
 P.S. This file was inspired by Linux credits-file
 
 ----------
+
+N: Artem
+E: a@saratovout.ru
+W: https://www.transifex.net/accounts/profile/ashowtimes/
+D: Translated the app into Russia and reports bugs for fixing.
+C: Russia
 
 N: Sándor Balikó
 W: https://www.transifex.net/accounts/profile/vo101sanyo/
