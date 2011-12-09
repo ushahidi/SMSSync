@@ -149,8 +149,9 @@ public class MainHttpClient {
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(httppost);
+            int statusCode = response.getStatusLine().getStatusCode();
 
-            if (response.getStatusLine().getStatusCode() == 200) {
+            if (statusCode == 200 || statusCode == 201) {
                 String resp = getText(response);
                 boolean success = Util.extractPayloadJSON(resp);
 
