@@ -4,4 +4,4 @@ bin/*
 tests/bin/*
 local.properties
 secure.properties
-ant.properties
+
