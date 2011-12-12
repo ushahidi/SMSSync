@@ -81,7 +81,7 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                         <ul>
                             <li>Released December 12, 2011</li>
                             <li>Revision r11</li>
-                            <li>Version <a href="http://dev.ushahidi.com/versions/show/47">1.0.9</a></li>
+                            <li>Version <a href="http://dev.ushahidi.com/versions/show/49">1.1.9</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
