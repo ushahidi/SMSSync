@@ -12,8 +12,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.addhen.smssync"
-    android:versionCode="11"
-    android:versionName="1.1.9">
+    android:versionCode="12"
+    android:versionName="1.1.10">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -59,7 +59,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:name=".MessagesTabActivity" >
+            android:name=".Settings" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
