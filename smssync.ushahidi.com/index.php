@@ -66,8 +66,8 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                     These range from writing documentation for the project to 
                     translating the app into various 
                     other languages. If you are a developer and want to help write code 
-                    for the project, feel free to browse through our <a href="http://dev.ushahidi.com/projects/SMSSync/issues">issue 
-                    tracker</a> on our redmine install.
+                    for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue 
+                    tracker</a> on github.
                 </p>            
             </div> 
         </div><!--end row-->
