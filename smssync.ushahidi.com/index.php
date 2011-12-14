@@ -81,7 +81,7 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                         <ul>
                             <li>Released December 12, 2011</li>
                             <li>Revision r11</li>
-                            <li>Version <a href="http://dev.ushahidi.com/versions/show/49">1.1.9</a></li>
+                            <li>Version 1.1.9</li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -101,9 +101,9 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                     is hosted on <a href="https://github.com/ushahidi/SMSSync/">github.com.</a> 
                 </p>
                 <p>
-                    It uses <a href="http://redmine.org">Redmine</a> 
+                    It uses <a href="http://github.com">Github</a> 
                     for project management and for tracking 
-                    <a href="http://dev.ushahidi.com/projects/SMSSync/issues">bugs and issues</a>. 
+                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. 
                     Transifex, the free and open source localization tool, is used for translations.
                 </p>
             </div> 
