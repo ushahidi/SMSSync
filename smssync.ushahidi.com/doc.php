@@ -255,12 +255,22 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
     {
         echo "Secret: ".$secret;
     }
+    
+    /**
+     * now let's write the info sent by SMSSync 
+     * to a file called test.txt
+     */
+    
+    $string = "From: ".$from."\n";
+    $string .= "Message: ".$message."\n";
+    $string .= "Timestamp: ".$sent_timestamp."\n";
+    $string .= "Messages Id:" .$message_id."\n";
+    $string .= "Sent to: ".$sent_to."\n\n\n";
+    $myFile = "test.txt";
+    $fh = fopen($myFile, 'a') or die("can't open file");
+    @fwrite($fh, $string);
+    @fclose($fh);
 
-    echo "From: ".$from."<br />";
-    echo "Message: ".$message."<br />";
-    echo "Timestamp: ".$sent_timestamp."<br />";
-    echo "Messages Id:" .$message_id."<br />";
-    echo "Sent to: ".$sent_to."<br />";
 
     
 } 
