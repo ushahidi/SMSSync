@@ -285,11 +285,30 @@ else
  */
 echo json_encode(array("payload"=>array(
     "success"=>$success)));
+
+/**
+ * Comment the code below out if you want to send reply an instant 
+ * reply as SMS to the user.
+ *
+ * This feature requires the "Get reply from server" check on SMSSync.
+ */
+    
+/**
+ * $msg = "Your message has been received";
+ *   
+ * $reply[0] = array("to" => $from, "message" => $msg);
+ *   
+ * echo json_encode(array("payload"=>array("success"=>$success,"task"=>"send","messages"=>array_values($reply))));
+ */
 </pre>
         <p>
             For a complete web service application, look at Ushahidi's <a href="https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync">SMSSync plugin</a>.
             It utilizes most of SMSSync features.
         </p>
+	
+	<p>
+		There is also SMSSync webservice for Django that implements most of the features of SMSSync. You can download it from <a href="https://github.com/cwanjau/SMSsync-Python-Django-webservice">github.com</a>. Thanks to <a href="https://github.com/cwanjau">Caine Wanjau</a>
+	</p>
     </div>
 </div>
 <div class="container">
