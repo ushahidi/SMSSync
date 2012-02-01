@@ -1,15 +1,20 @@
 <!DOCTYPE html> 
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>SMSSync by Ushahidi</title>
 <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="libs/js/google-code-prettify/prettify.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="js/fancybox/query.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript" src="js/screenshots.js"></script>
 <script src="libs/js/google-code-prettify/prettify.js"></script>
-
 </head>
-<body>
+<body style="padding-top:40px;" onload="prettyPrint()">
 <div class="topbar" data-scrollspy="scrollspy" >
     <div class="fill">
         <div class="container">
@@ -19,12 +24,14 @@
                 </h3>
             </div>
             <ul class="nav">
-                <li class="active"><a href="http://smssync.ushahidi.com/">Home</a></li>
-                <li><a href="http://dev.ushahidi.com/projects/SMSSync/news">News</a></li>
-                <li><a href="http://smssync.ushahidi.com/download/">Download</a></li>
-                <li><a href="http://smssync.ushahidi.com/doc/">Documentation</a></li>
+                <li class="active"><a href="index/">Home</a></li>
+                <li><a href="releases/">Releases</a></li>
+                <li><a href="download/">Download</a></li>
+                <li><a href="doc/">Documentation</a></li>
+                <li><a href="features/">Features</a></li>
+                <li><a href="screenshots/">Screenshots</a></li>
                 <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
-                <li><a href="http://smssync.ushahidi.com/contact/">Contact</a></li>
+                <li><a href="contact/">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -35,6 +42,7 @@
     </div>
 </div>
 <div class="container">
+<div class="container">
     <!-- About SMSSync -->
     <section id="about">
         <div class="page-header">
@@ -44,10 +52,7 @@
             <div class="span-one-third">
                 <h3>What is it</h3>
                 <p>
-                    SMSSync is a simple, yet powerful SMS to HTTP sync utility,
-that turns any Android phone into a local SMS
-gateway by sending incoming messages(SMS) to a configured URL(web service).
-
+                    SMSSync is a simple, yet powerful SMS to HTTP sync utility,that turns any Android phone into a local SMS gateway by sending incoming messages(SMS) to a configured URL(web service).
                 </p>
             </div>
             <div class="span-one-third"> 
@@ -106,45 +111,45 @@ gateway by sending incoming messages(SMS) to a configured URL(web service).
                     <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. 
                     Transifex, the free and open source localization tool, is used for translations.
                 </p>
-            </div> 
-            <div class="span-one-third"> 
-                <h3>Translations</h3> 
-                <p>
-                    SMSSync, as of now, has been completely translated into 5 languages. We use 
-                    transifex for hosting our strings and to make translation much easier. 
+            </div>
 
-                    <p>To help translate SMSSync into other languages, simply headover to 
-                    <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">transifex.net</a>, 
-                    add a language if it's not there or contribute to the uncompleted
-                    translations.
-                </p>            
-            </div> 
-        </div><!--end row-->
+<pre><code>        &lt;div class="span-one-third"&gt; 
+            &lt;h3&gt;Translations&lt;/h3&gt; 
+            &lt;p&gt;
+                SMSSync, as of now, has been completely translated into 5 languages. We use 
+                transifex for hosting our strings and to make translation much easier.
 
-    </section>
-</div>
+&lt;p&gt;To help translate SMSSync into other languages, simply headover to 
+                &lt;a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/"&gt;transifex.net&lt;/a&gt;, 
+                add a language if it's not there or contribute to the uncompleted
+                translations.
+            &lt;/p&gt;            
+        &lt;/div&gt; 
+    &lt;/div&gt;&lt;!--end row--&gt;
+
+&lt;/section&gt;
+</code></pre>
+</div></div>
 <div class="container">
 <footer class="footer">
     <div class="container">
         <div class="pull-right">
-            powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+          powered by <a href="http://www.ushahidi.com">Ushahidi</a>
         </div> 
-	    <p>Copyright &copy; 2010 - <?php echo date("Y"); ?> <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <p>Generated: 01-02-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
     </div>
 </footer>
 </div>
 <script type="text/javascript">
 
-  var _gaq = _gaq || [];
+<p>var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-12063676-22']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
+  _gaq.push(['_trackPageview']);</p>
+<p>(function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
+  })();</p>
+<p></script>
 </body>
-</html>
+</html></p>

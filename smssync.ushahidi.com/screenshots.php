@@ -42,23 +42,30 @@
     </div>
 </div>
 <div class="container">
-<pre><code>&lt;div class="page-header"&gt;
-    &lt;h1&gt;Downloads &lt;small&gt;Where to download the app.&lt;/small&gt;&lt;/h1&gt;
-&lt;/div&gt;
-&lt;div class="row"&gt;
-    &lt;div class="span8 columns"&gt;
-        &lt;h2&gt;QR Code&lt;/h2&gt;
-        &lt;p&gt;&lt;strong&gt;Scan the QR below to install SMSSync on your Android powered phone&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="http://qrcode.kaywa.com/img.php?s=6&amp;#038;d=http%3A%2F%2Fmarket.android.com%2Fdetails%3Fid%3Dorg.addhen.smssync" alt="qrcode" /&gt; 
-    &lt;/div&gt;
-    &lt;div class="span8 columns"&gt;
-        &lt;h2&gt;Android market&lt;/h2&gt;
-        &lt;p&gt;&lt;strong&gt;The app is available today on the Android market. You can download it on your phone by clicking on the image on the left or scanning the QR code on the right. Enjoy!&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://market.android.com/details?id=org.addhen.smssync"&gt;&lt;img class="size-thumbnail wp-image-4527  " title="ushahidi_android_on_the_market" src="http://blog.ushahidi.com/wp-content/uploads/2011/07/ushahidi_android_on_the_market-150x150.png" alt="Android market" width="200" height="200" /&gt;&lt;/a&gt;
-    &lt;/div&gt;
+<h2>Screenshots</h2>
+<p><table class="screenshots">
+<tr><td>
+<a rel="screenshots_group" href="images/screenshots/auto_reply.png" title="Auto Reply"><img alt="Auto Reply" src="images/screenshots/auto_reply.png" width="150" height="221" /></a>
+    <br/>Auto Reply</p>
+<p></td><td>
+    <a rel="screenshots_group" href="images/screenshots/auto_sync.png" title="Auto Sync"><img alt="Auto Sync" src="images/screenshots/auto_sync.png" width="150" height="221" /></a>
+    <br/>Auto Sync
+</td><td>
+    <a rel="screenshots_group" href="images/screenshots/filter_by_keyword.png" title="Filter By Keywords"><img alt="Filter By Keywords" src="images/screenshots/filter_by_keyword.png" width="150" height="221" /></a>
+    <br/>Filter By keyword
+</td></tr></p>
+<tr><td>
+    <a rel="screenshots_group" href="images/screenshots/no_pending_msgs.png" title="No pending Messages"><img alt="Filter By Keywords" src="images/screenshots/no_pending_msgs.png" width="150" height="221" /></a>
+    <br/>No Pending Messages
 
-&lt;/div&gt;
-</code></pre></div>
+</td><td>
+    <a rel="screenshots_group" href="images/screenshots/pending_messages.png" title="Pending Messages"><img alt="Pending Messages" src="images/screenshots/pending_messages.png" width="150" height="221" /></a>
+    <br/>Pending Messages
+</td><td>
+    <a rel="screenshots_group" href="images/screenshots/settings.png" title="Settings"><img alt="Settings" src="images/screenshots/settings.png" width="150" height="221" /></a>
+    <br/>Settings
+</td></tr>
+</table></div>
 <div class="container">
 <footer class="footer">
     <div class="container">

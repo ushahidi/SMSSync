@@ -1,0 +1,26 @@
+## Screenshots
+<table class="screenshots">
+<tr><td>
+<a rel="screenshots_group" href="images/screenshots/auto_reply.png" title="Auto Reply"><img alt="Auto Reply" src="images/screenshots/auto_reply.png" width="150" height="221" /></a>
+	<br/>Auto Reply
+
+</td><td>
+	<a rel="screenshots_group" href="images/screenshots/auto_sync.png" title="Auto Sync"><img alt="Auto Sync" src="images/screenshots/auto_sync.png" width="150" height="221" /></a>
+	<br/>Auto Sync
+</td><td>
+	<a rel="screenshots_group" href="images/screenshots/filter_by_keyword.png" title="Filter By Keywords"><img alt="Filter By Keywords" src="images/screenshots/filter_by_keyword.png" width="150" height="221" /></a>
+	<br/>Filter By keyword
+</td></tr>
+
+<tr><td>
+    <a rel="screenshots_group" href="images/screenshots/no_pending_msgs.png" title="No pending Messages"><img alt="Filter By Keywords" src="images/screenshots/no_pending_msgs.png" width="150" height="221" /></a>
+	<br/>No Pending Messages
+
+</td><td>
+	<a rel="screenshots_group" href="images/screenshots/pending_messages.png" title="Pending Messages"><img alt="Pending Messages" src="images/screenshots/pending_messages.png" width="150" height="221" /></a>
+	<br/>Pending Messages
+</td><td>
+	<a rel="screenshots_group" href="images/screenshots/settings.png" title="Settings"><img alt="Settings" src="images/screenshots/settings.png" width="150" height="221" /></a>
+	<br/>Settings
+</td></tr>
+</table>

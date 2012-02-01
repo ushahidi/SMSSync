@@ -79,7 +79,7 @@ class BuildSite:
 
         #read html stuff for the main content
         body = self.read_html_files(self.source)
-
+        mkdown_body = self.transform_markdown_from_string(body)
         #Get today's date
         d = date.today()
 
@@ -90,7 +90,7 @@ class BuildSite:
         #combine the different parts of the web page into a single one
         #TODO:// figure a better way of doing this.
 
-        page = header + body + footer
+        page = header + mkdown_body + footer
 
         mkdown = self.transform_markdown_from_string(page)
         
