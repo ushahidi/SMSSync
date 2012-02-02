@@ -1,83 +1,62 @@
 <div class="page-header">
-        <h1>Documentation <small>This documents how to integrate SMSSync into your project.</small></h1>
-    </div>
-    <div class="row">
-        <div class="span8 columns">
-            <h2>Instructions</h2>
-            <ul>
-                <li>
-                    SMSSync uses the <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">
-                    HTTP</a> and <a href="http://en.wikipedia.org/wiki/HTTPS">
-                    HTTPS</a> protocols for communication.
-                    <p>To start the SMSSync Gateway, you'll need to specify a callback URL.
-                    This URL is where all incoming SMS will be transmitted to. 
-                    Remember to enter the full URL including the filename. A 
-                    typical example will be <code>http://somedomain.com/index.php</code></p></li>
-                <li>
-                    For  security you can specify a secret key at the callback URL. If 
-                    the secret key doesn't match, the callback URL will ignore 
-                    the transmission.
-                </li>
-                <li>
-                    Additionally, you can specify keywords with which to filter 
-        incoming SMS. Only matching SMS will be sent to 
-        the SMSSync Gateway URL.
-                </li>
-		        <li>
-                    SMSSync uses the following variables to transmit the incoming SMS via the POST method:
-		            <ul>
-		                <li><strong>from</strong> -- the number that sent the SMS</li>
-                        <li><strong>message</strong> -- the SMS sent</strong></li>
-                        <li><strong>message_id</strong> -- the unique ID of the SMS</li>
-                        <li><strong>sent_to</strong> -- the phone number the SMS was sent to</li>
+<h1>Documentation <small>This documents how to integrate SMSSync into your project.</small></h1>
+</div>
+<div class="row">
+<div class="span8 columns">
+<h2>Instructions</h2>
+<ul>
+<li>
+SMSSync uses the <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP</a> and <a href="http://en.wikipedia.org/wiki/HTTPS">HTTPS</a> protocols for communication.
+                    <p>To start the SMSSync Gateway, you'll need to specify a callback URL. This URL is where all incoming SMS will be transmitted to. 
+                    Remember to enter the full URL including the filename. A typical example will be <code>http://somedomain.com/index.php</code></p></li>
+<li>
+For  security you can specify a secret key at the callback URL. If the secret key doesn't match, the callback URL will ignore the transmission.
+</li>
+<li>
+Additionally, you can specify keywords with which to filter incoming SMS. Only matching SMS will be sent to the SMSSync Gateway URL.
+</li>
+<li>
+SMSSync uses the following variables to transmit the incoming SMS via the POST method:
+<ul>
+<li><strong>from</strong> -- the number that sent the SMS</li>
+<li><strong>message</strong> -- the SMS sent</strong></li>
+<li><strong>message_id</strong> -- the unique ID of the SMS</li>
+<li><strong>sent_to</strong> -- the phone number the SMS was sent to</li>
 
-			            <li><strong>secret</strong> -- the secret key set on the app</li>
-                        <li><strong>sent_timestamp</strong> -- the timestamp the SMS was sent. 
-                        In the format, mm-dd-yy-hh:mm  Eg. 11-27-11-07:11</strong></li>
-	                </ul>
-		        </li>
-	        </ul>
-            <p>
-            In order for SMSSync to account for perfect transmission, the callback URL 
-            needs to give back a formatted JSON string such as its shown below to 
-            indicate if it received the message or not.
-            <br /><br />
-            <strong>Succeeded</strong> 
+<li><strong>secret</strong> -- the secret key set on the app</li>
+<li><strong>sent_timestamp</strong> -- the timestamp the SMS was sent. In the format, mm-dd-yy-hh:mm  Eg. 11-27-11-07:11</strong></li>
+</ul>
+</li>
+</ul>
+<p>
+In order for SMSSync to account for perfect transmission, the callback URL needs to give back a formatted JSON string such as its shown below to indicate if it received the message or not.
+<br /><br />
+<strong>Succeeded</strong> 
 <pre class="prettyprint linenums">
 {
     payload: {
         success: "true"
     }
 }</pre>
-  
-            <br /><br />
-            <strong>Failed</strong>
-            <br /><br />
+<br /><br />
+<strong>Failed</strong>
+<br /><br />
 <pre class="prettyprint linenums">{
     payload: {
         success: "false"
     }
 }</pre>
-        </p>
-	    <p>&nbsp;</p>
-	    <strong>Response from server</strong>
-        <p>
-        SMSSync allows auto response to be configured on the app itself or to be 
-        retrieved from the server. When the app makes an HTTP Post request to sync the 
-        incoming SMS to the configured URL, it can send a JSON string that has 
-        messages in it as opposed to sending a success or failed JSON string as 
-        stated above. The app then sends the messages as SMS to users phone.
-        <p>
-        This makes it possible to have an instant response via SMS when an HTTP Post 
-        request is made. To leverage this feature, a JSON formatted string like the one 
-        below needs to be returned by the configured URL after the app makes the 
-        HTTP Post request. 
-        </p>
-        <p>
-        Also, make sure <strong>*Get Reply From Server*</strong> is checked on 
-        SMSSync otherwise it will fail to send the SMS.<p>
-
-        <strong>Response JSON data from the callback URL</strong>
+</p>
+<p>&nbsp;</p>
+<strong>Response from server</strong>
+<p>
+SMSSync allows auto response to be configured on the app itself or to be retrieved from the server. When the app makes an HTTP Post request to sync the  incoming SMS to the configured URL, it can send a JSON string that has  messages in it as opposed to sending a success or failed JSON string as stated above. The app then sends the messages as SMS to users phone.
+<p>
+This makes it possible to have an instant response via SMS when an HTTP Post request is made. To leverage this feature, a JSON formatted string like the one below needs to be returned by the configured URL after the app makes the HTTP Post request. 
+</p>
+<p>
+Also, make sure <strong>*Get Reply From Server*</strong> is checked on SMSSync otherwise it will fail to send the SMS.<p>
+<strong>Response JSON data from the callback URL</strong>
 <pre class="prettyprint linenums">{
     "payload": {
         "success": "true",
@@ -98,23 +77,15 @@
         ]
     }
 }</pre>
-	</p>
-	<p>&nbsp;</p>
-    <strong>Task</strong>
-    <p>
-    SMSSync supports execution of task sent from the configured callback URL. At 
-    the moment, it supports sending of messages sent from the callback URL as SMS. 
-    This feature is targeted towards developers. If you are a developer and you want 
-    SMSSync to send an SMS, send a JSON formatted string as shown below to 
-    SMSSync with the variable task=send. When SMSSync does an HTTP GET request with 
-    a sample URL like this one, <code>http://callback_url/smssync?task=send</code>, it 
-    should bring back a JSON string below.</p>
-    <br /><br />		
-    <p><strong>Note:</strong> The secret key has to match the secret key 
-    configured with SMSSync, otherwise, SMSSync will not execute the task. To 
-    play it safe, add the country code to the phone number. Eg. +254700709142</p>
+</p>
+<p>&nbsp;</p>
+<strong>Task</strong>
+<p>
+SMSSync supports execution of task sent from the configured callback URL. At the moment, it supports sending of messages sent from the callback URL as SMS. This feature is targeted towards developers. If you are a developer and you want SMSSync to send an SMS, send a JSON formatted string as shown below to SMSSync with the variable task=send. When SMSSync does an HTTP GET request with a sample URL like this one, <code>http://callback_url/smssync?task=send</code>, it should bring back a JSON string below.</p>
+<br /><br />		
+<p><strong>Note:</strong> The secret key has to match the secret key configured with SMSSync, otherwise, SMSSync will not execute the task. To play it safe, add the country code to the phone number. Eg. +254700709142</p>
 
-    <p><strong>Response JSON data from the callback URL</strong></p>
+<p><strong>Response JSON data from the callback URL</strong></p>
     
 <pre class="prettyprint linenums">{
     "payload": {
@@ -136,12 +107,10 @@
         ]
     }
 }</pre>
-
-    </div>
-    <div class="span8 columns">
-        <h2>A sample web service</h2>
-        <p>This is a sample PHP script to demonstrate how to write a webservice to 
-        successfully communicate with SMSSync.</p>
+</div>
+<div class="span8 columns">
+<h2>A sample web service</h2>
+<p>This is a sample PHP script to demonstrate how to write a webservice to successfully communicate with SMSSync.</p>
 <pre class="prettyprint linenums">
 /**
  *  get the phone number that sent the SMS.
@@ -212,17 +181,9 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
     if ( ! ( $secret == '123456'))
     {
         $success = "false";
-    } 
-    else
-    {
-        echo "Secret: ".$secret;
     }
-    
-    /**
-     * now let's write the info sent by SMSSync 
-     * to a file called test.txt
-     */
-    
+    // now let's write the info sent by SMSSync
+    //to a file called test.txt
     $string = "From: ".$from."\n";
     $string .= "Message: ".$message."\n";
     $string .= "Timestamp: ".$sent_timestamp."\n";
@@ -233,8 +194,6 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
     @fwrite($fh, $string);
     @fclose($fh);
 
-
-    
 } 
 else 
 {
@@ -263,12 +222,11 @@ echo json_encode(array("payload"=>array(
  * echo json_encode(array("payload"=>array("success"=>$success,"task"=>"send","messages"=>array_values($reply))));
  */
 </pre>
-        <p>
-            For a complete web service application, look at Ushahidi's <a href="https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync">SMSSync plugin</a>.
-            It utilizes most of SMSSync features.
-        </p>
-	
-	<p>
-		There is also SMSSync webservice for Django that implements most of the features of SMSSync. You can download it from <a href="https://github.com/cwanjau/SMSsync-Python-Django-webservice">github.com</a>. Thanks to <a href="https://github.com/cwanjau">Caine Wanjau</a>
-	</p>
-    </div>
+<p>
+For a complete web service application, look at Ushahidi's <a href="https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync">SMSSync plugin</a>.It utilizes most of SMSSync features.
+</p>
+<p>
+There is also SMSSync webservice for Django that implements most of the features of SMSSync. You can download it from <a href="https://github.com/cwanjau/SMSsync-Python-Django-webservice">github.com</a>. Thanks to <a href="https://github.com/cwanjau">Caine Wanjau</a>
+</p>
+</div>
+</div>

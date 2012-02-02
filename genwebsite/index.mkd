@@ -1,11 +1,11 @@
 <div class="container">
-    <!-- About SMSSync -->
-    <section id="about">
-        <div class="page-header">
-            <h1>About</h1>
-        </div>
-        <div class="row"><!--start row-->
-            <div class="span-one-third">
+<!-- About SMSSync -->
+<section id="about">
+    <div class="page-header">
+        <h1>About</h1>
+    </div>
+    <div class="row"><!--start row-->
+        <div class="span-one-third">
                 <h3>What is it</h3>
                 <p>
                     SMSSync is a simple, yet powerful SMS to HTTP sync utility,that turns any Android phone into a local SMS gateway by sending incoming messages(SMS) to a configured URL(web service).
@@ -22,15 +22,9 @@
             </div> 
             <div class="span-one-third"> 
                 <h3>Participation</h3> 
-                <p>
-                    There are a variety of ways to actively participate in the project. 
-                    These range from writing documentation for the project to 
-                    translating the app into various 
-                    other languages. If you are a developer and want to help write code 
-                    for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue 
-                    tracker</a> on github.
-                </p>            
-            </div> 
+                <p>There are a variety of ways to actively participate in the project. These range from writing documentation for the project to  translating the app into various other languages. If you are a developer and want to help write code for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue tracker</a> on github.
+                </p>
+            </div>
         </div><!--end row-->
     </section>
     <section id="project-status">
@@ -41,8 +35,8 @@
                     <strong>Public release:</strong>
                         <ul>
                             <li>Released December 12, 2011</li>
-                            <li>Revision r11</li>
-                            <li>Version 1.1.9</li>
+                            <li>Revision <a href"https://github.com/ushahidi/SMSSync/tree/v1.1.9">r11</a></li>
+                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.1.9">1.1.9</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -52,7 +46,7 @@
                         <ul>
                         <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.1.10</li>
                         </ul>
-                        <a href="http://dev.ushahidi.com/projects/SMSSync/news">More</a>
+                        <a href="../releases/">More</a>
                 </p>
             </div>
             <div class="span-one-third"> 
@@ -64,16 +58,13 @@
                 <p>
                     It uses <a href="http://github.com">Github</a> 
                     for project management and for tracking 
-                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. 
-                    Transifex, the free and open source localization tool, is used for translations.
+                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. Transifex, the free and open source localization tool, is used for translations.
                 </p>
-            </div> 
+            </div>
             <div class="span-one-third"> 
-                <h3>Translations</h3> 
+                <h3>Translations</h3>
                 <p>
-                    SMSSync, as of now, has been completely translated into 5 languages. We use 
-                    transifex for hosting our strings and to make translation much easier. 
-
+                    SMSSync, as of now, has been completely translated into 5 languages. We use transifex for hosting our strings and to make translation much easier. 
                     <p>To help translate SMSSync into other languages, simply headover to 
                     <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">transifex.net</a>, 
                     add a language if it's not there or contribute to the uncompleted
@@ -81,6 +72,5 @@
                 </p>            
             </div> 
         </div><!--end row-->
-
     </section>
 </div>

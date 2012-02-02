@@ -3,9 +3,9 @@
 </div>
 # Current release
 
-* Released %release%
-* Revision [%revision%](https://github.com/ushahidi/SMSSync/tree/v1.1.9)
-* Version [%version%](https://github.com/ushahidi/SMSSync/zipball/v1.1.9)
+* Released December 12, 2011
+* Revision [r12](https://github.com/ushahidi/SMSSync/tree/v1.1.9)
+* Version [1.1.9](https://github.com/ushahidi/SMSSync/zipball/v1.1.9)
 ### Changelog
 
 * Bug:

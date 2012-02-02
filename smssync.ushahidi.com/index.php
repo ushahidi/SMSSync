@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>SMSSync by Ushahidi</title>
 <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
-<link href="css/styles.css" rel="stylesheet" type="text/css" />
-<link href="libs/js/google-code-prettify/prettify.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
+<link href="../css/bootstrap.css" rel="stylesheet" type="text/css"/>
+<link href="../css/styles.css" rel="stylesheet" type="text/css" />
+<link href="../libs/js/google-code-prettify/prettify.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="../js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-<script type="text/javascript" src="js/fancybox/query.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<script type="text/javascript" src="js/screenshots.js"></script>
+<script type="text/javascript" src="../js/fancybox/query.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="../js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript" src="../js/screenshots.js"></script>
 <script src="libs/js/google-code-prettify/prettify.js"></script>
 </head>
 <body style="padding-top:40px;" onload="prettyPrint()">
@@ -24,14 +24,13 @@
                 </h3>
             </div>
             <ul class="nav">
-                <li class="active"><a href="index/">Home</a></li>
-                <li><a href="releases/">Releases</a></li>
-                <li><a href="download/">Download</a></li>
-                <li><a href="doc/">Documentation</a></li>
-                <li><a href="features/">Features</a></li>
-                <li><a href="screenshots/">Screenshots</a></li>
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="../releases/">Releases</a></li>
+                <li><a href="../download/">Download</a></li>
+                <li><a href="../doc/">Documentation</a></li>
+                <li><a href="../features/">Features</a></li>
+                <li><a href="../screenshots/">Screenshots</a></li>
                 <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
-                <li><a href="contact/">Contact</a></li>
             </ul>
         </div>
     </div>
@@ -43,13 +42,13 @@
 </div>
 <div class="container">
 <div class="container">
-    <!-- About SMSSync -->
-    <section id="about">
-        <div class="page-header">
-            <h1>About</h1>
-        </div>
-        <div class="row"><!--start row-->
-            <div class="span-one-third">
+<!-- About SMSSync -->
+<section id="about">
+    <div class="page-header">
+        <h1>About</h1>
+    </div>
+    <div class="row"><!--start row-->
+        <div class="span-one-third">
                 <h3>What is it</h3>
                 <p>
                     SMSSync is a simple, yet powerful SMS to HTTP sync utility,that turns any Android phone into a local SMS gateway by sending incoming messages(SMS) to a configured URL(web service).
@@ -66,15 +65,9 @@
             </div> 
             <div class="span-one-third"> 
                 <h3>Participation</h3> 
-                <p>
-                    There are a variety of ways to actively participate in the project. 
-                    These range from writing documentation for the project to 
-                    translating the app into various 
-                    other languages. If you are a developer and want to help write code 
-                    for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue 
-                    tracker</a> on github.
-                </p>            
-            </div> 
+                <p>There are a variety of ways to actively participate in the project. These range from writing documentation for the project to  translating the app into various other languages. If you are a developer and want to help write code for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue tracker</a> on github.
+                </p>
+            </div>
         </div><!--end row-->
     </section>
     <section id="project-status">
@@ -85,8 +78,8 @@
                     <strong>Public release:</strong>
                         <ul>
                             <li>Released December 12, 2011</li>
-                            <li>Revision r11</li>
-                            <li>Version 1.1.9</li>
+                            <li>Revision <a href"https://github.com/ushahidi/SMSSync/tree/v1.1.9">r11</a></li>
+                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.1.9">1.1.9</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -96,7 +89,7 @@
                         <ul>
                         <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.1.10</li>
                         </ul>
-                        <a href="http://dev.ushahidi.com/projects/SMSSync/news">More</a>
+                        <a href="../releases/">More</a>
                 </p>
             </div>
             <div class="span-one-third"> 
@@ -108,27 +101,21 @@
                 <p>
                     It uses <a href="http://github.com">Github</a> 
                     for project management and for tracking 
-                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. 
-                    Transifex, the free and open source localization tool, is used for translations.
+                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. Transifex, the free and open source localization tool, is used for translations.
                 </p>
             </div>
-
-<pre><code>        &lt;div class="span-one-third"&gt; 
-            &lt;h3&gt;Translations&lt;/h3&gt; 
-            &lt;p&gt;
-                SMSSync, as of now, has been completely translated into 5 languages. We use 
-                transifex for hosting our strings and to make translation much easier.
-
-&lt;p&gt;To help translate SMSSync into other languages, simply headover to 
-                &lt;a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/"&gt;transifex.net&lt;/a&gt;, 
-                add a language if it's not there or contribute to the uncompleted
-                translations.
-            &lt;/p&gt;            
-        &lt;/div&gt; 
-    &lt;/div&gt;&lt;!--end row--&gt;
-
-&lt;/section&gt;
-</code></pre>
+            <div class="span-one-third"> 
+                <h3>Translations</h3>
+                <p>
+                    SMSSync, as of now, has been completely translated into 5 languages. We use transifex for hosting our strings and to make translation much easier. 
+                    <p>To help translate SMSSync into other languages, simply headover to 
+                    <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">transifex.net</a>, 
+                    add a language if it's not there or contribute to the uncompleted
+                    translations.
+                </p>            
+            </div> 
+        </div><!--end row-->
+    </section>
 </div></div>
 <div class="container">
 <footer class="footer">
@@ -136,20 +123,19 @@
         <div class="pull-right">
           powered by <a href="http://www.ushahidi.com">Ushahidi</a>
         </div> 
-        <p>Generated: 01-02-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
-    </div>
+        <p>Generated: 02-02-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+</div>
 </footer>
 </div>
 <script type="text/javascript">
-
-<p>var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-12063676-22']);
-  _gaq.push(['_trackPageview']);</p>
-<p>(function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();</p>
-<p></script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-12063676-22']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </body>
-</html></p>
+</html>
