@@ -1,0 +1,128 @@
+<div class="page-header">
+    <h1>Releases History</h1> <small>This page is about release information for SMSSync. Mainly, it documents the version numbers, current stable and development branches. It also states the release dates and where to download the app.</small>
+</div>
+# Current release
+
+* Released December 12, 2011
+* Revision [r12](https://github.com/ushahidi/SMSSync/tree/v1.1.9)
+* Version [1.1.9](https://github.com/ushahidi/SMSSync/zipball/v1.1.9)
+### Changelog
+
+* Bug:
+    * Fixed missing title
+    * Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59
+    * Added 5 more languages - French, Japanese, Danish, Russian and Serbian
+
+
+## Development branch:
+
+* [master branch](https://github.com/eyedol/smssync/) open for commit/contributions for SMSSync %release%
+
+# Previous releases
+
+* Released November 10, 2011
+* Revision [r10](https://github.com/ushahidi/SMSSync/tree/v1.0.9)
+* Version [1.0.9](https://github.com/ushahidi/SMSSync/zipball/v1.0.9)
+
+### Changelog
+
+* Bug:
+    * Fixed HTTPS not working on some devices.
+    * Fixed sent_to variable not sending the device's number. 
+    * Fixed formatting issue with sent_timestamp.
+
+* Released October 27, 2011
+* Revision [r9](https://github.com/ushahidi/SMSSync/tree/v1.0.8)
+* Version [1.0.8](https://github.com/ushahidi/SMSSync/zipball/v1.0.8)
+
+### Changelog
+
+* Feature:
+    * Added filtering when importing SMS.
+    * Added sent_to variable so the server can receive the phone number the SMS was sent to.
+    * Added message_id variable so the server can receive the unique id of the SMS.
+    * Added full HTTPS support.
+  
+* Bug:
+    * Fixed issue with app widget not updating  view when pending messages are in the view.
+    * Improved performance with syncing pending messages. 
+
+
+* Released September 25, 2011
+* Revision [r8](https://github.com/ushahidi/SMSSync/tree/v1.0.7)
+* Version [1.0.7](https://github.com/ushahidi/SMSSync/zipball/v1.0.7)
+
+### Changelog
+
+
+* Released September 23, 2011
+* Revision [r7](https://github.com/ushahidi/SMSSync/tree/v1.0.6)
+* Version [1.0.6](https://github.com/ushahidi/SMSSync/zipball/v1.0.6)
+
+### Changelog
+
+* Feature:
+    * Added improvement that makes th battery consumption by the app.
+    * Added the ability for enabled services to automatically start after the phone boots up.
+    * Added the ability for the App to lock WiFi connection when the phone is connected to a WiFi.
+    * Added the ability for 'response messages' to be received from the server and not wait on a scheduler.
+    * Added confirmation dialog when performing delete actions.
+    * Added a tab that habours 'pending messages' view and 'sent messages' view.
+    * Added the ability for the app to log recent sent messages. Twenty is the Max.
+    * Added 'sent_timestamp' post variable in order to send the timestamp of an SMS.
+    * Added App widget support.
+
+Bug:
+    * Fixed a bug that when all messages are deleted, the app shows a failed message yet the messages are deleted.
+    * Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service.
+
+
+* Released February 25, 2011
+* Revision [r6](https://github.com/ushahidi/SMSSync/tree/v1.0.5)
+* Version [1.0.5](https://github.com/ushahidi/SMSSync/zipball/v1.0.5)
+
+### Changelog
+
+* Feature:
+    * Scheduler automatically Syncs pending messages to the configured Callback URL.
+    * Now sends out messages from the configured callback URL as text message.
+    * Imports messages from Android messages app inbox for synchronizing to the configured callback URL.
+    * Added context menu for deleting or synchronizing pending messages.   
+
+* Bug:
+    * Improved callback URL validation process; Added more checks. Empty, malformed and connection checks.
+    * More sanity checks before SMSSync can be enabled. 
+
+* Known issue:
+    * Scheduler doesn't refresh pending messages' list after it runs. The pending messages screen needs to be restarted. 
+
+
+* Released January 31, 2011
+* Revision [r5](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
+* Version [1.0.4](https://github.com/ushahidi/SMSSync/zipball/v1.0.4)
+
+### Changelog
+
+* Bug:
+    * Notification cannot be cleared untill SMSSync is stopped.
+    * Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost.
+
+* Released January 31, 2011
+* Revision [r5](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
+* Version [1.0.3](https://github.com/ushahidi/SMSSync/zipball/v1.0.4)
+
+### Changelog
+
+* Bug:
+    * Downgraded to Android 1.6 so smssync works from 1.6 and above.
+    * Now sms can be deleted from the sms inbox. This is a configurable option. 
+    * Fixed issue with the secret variable.
+    * Better support for localization - All hardcoded strings have been moved to the string.xml file.
+    * Supports outbox -- for pending messages that manually needs to be synced.
+    * Improved SMS background service -- Now it starts and stops perfectly.
+    * Added version number to the powered by text on the Settings screen.
+    * Changed notification Icon to SMSSync's slick launch icon.
+    * Shows status of Pending messages. Whether there are pending messages or not.
+    * Prepopulates URL field with "http://" when setting up the sync URL.
+    * Sends an auto response once the SMS is recieved. This is a configurable option.
+    * Validates the callback URL 
