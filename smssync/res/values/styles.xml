@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
+	Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
+	This file may be used under the terms of the GNU Lesser General Public License 
+	version 3 as published by the Free Software Foundation and appearing in the 
+	file LICENSE.LGPL included in the packaging of this file. Please review the 
+	following information to ensure the GNU Lesser General Public License version 
+	3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
+	have questions regarding the use of this file, please contact Ushahidi developers 
+	at team@ushahidi.com.
+-->
+<resources>
+
+    <style name="WidgetStyle">
+        <item name="android:background">@drawable/appwidget_bg</item>
+    </style>
+
+    <style name="EmptyStyle">
+        <item name="android:background">#00000000</item>
+    </style>
+
+    <!-- Title bar Text -->
+    <style name="title_bar">
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:paddingTop">10dip</item>
+        <item name="android:paddingLeft">5sp</item>
+        <item name="android:shadowDx">1.0</item>
+        <item name="android:shadowDy">1.0</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:shadowColor">#DDD</item>
+    </style>
+
+    <style name="title_bar_separator">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/title_separator</item>
+    </style>
+
+    <style name="TitleBarProgressIndicator" parent="@android:style/Widget.ProgressBar.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">14dip</item>
+        <item name="android:layout_marginRight">15dip</item>
+        <item name="android:layout_marginTop">14dip</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <!-- Tab styling -->
+    <style name="MyTabStyle" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textColor">#5DFC0A</item>
+    </style> <!-- Android controls styling -->
+    <style name="LinearLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LinearLayout.Vertical">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LinearLayout.Vertical.Full">
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="LinearLayout.Vertical.Wrap">
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LinearLayout.Horizontal">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="LinearLayout.Horizontal.Full">
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="LinearLayout.Horizontal.Wrap">
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ListView" parent="@android:style/Widget.ListView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="TextView" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingLeft">1dp</item>
+        <item name="android:paddingRight">1dp</item>
+    </style>
+
+    <style name="TextView.Label">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextView.Description">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextView.Value">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextView.Empty">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+    </style>
+
+    <style name="ListBarProgressIndicator" parent="@android:style/Widget.ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:indeterminate">true</item>
+    </style>
+
+    <style name="EditText" parent="@android:style/Widget.EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">10sp</item>
+    </style>
+
+    <style name="EditText.Label">
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="EditText.Number">
+        <item name="android:inputType">number</item>
+    </style>
+
+    <style name="EditText.Number.Wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="EditText.Decimal">
+        <item name="android:inputType">numberDecimal</item>
+    </style>
+
+    <style name="EditText.Decimal.Wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="EditText.Phone">
+        <item name="android:inputType">phone</item>
+    </style>
+
+    <style name="EditText.Multiline">
+        <item name="android:inputType">textMultiLine|textCapSentences</item>
+        <item name="android:minLines">5</item>
+    </style>
+
+    <style name="EditText.URL">
+        <item name="android:inputType">textUri</item>
+    </style>
+
+    <style name="EditText.Password">
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <style name="EditText.Email">
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="EditText.Name">
+        <item name="android:inputType">textPersonName|textCapWords</item>
+    </style>
+
+    <style name="EditText.Search">
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="EditText.Title">
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="EditText.CapWords">
+        <item name="android:inputType">textCapWords</item>
+    </style>
+
+    <style name="EditText.CapCharacters">
+        <item name="android:inputType">textCapCharacters</item>
+    </style>
+
+    <style name="EditText.CapSentences">
+        <item name="android:inputType">textCapSentences</item>
+    </style>
+
+    <style name="EditText.PostalAddress">
+        <item name="android:inputType">textPostalAddress</item>
+    </style>
+
+    <style name="EditText.ReadOnly">
+        <item name="android:inputType">none</item>
+    </style>
+
+    <style name="Button" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10sp</item>
+    </style>
+
+    <style name="Button.Action">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="Button.Select">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">5dp</item>
+    </style>
+
+</resources>

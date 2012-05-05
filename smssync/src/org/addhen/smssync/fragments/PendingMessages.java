@@ -1,0 +1,496 @@
+package org.addhen.smssync.fragments;
+
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.Settings;
+import org.addhen.smssync.adapters.PendingMessagesAdapter;
+import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.services.SyncPendingMessagesService;
+import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
+import org.addhen.smssync.views.PendingMessagesView;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.telephony.SmsManager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.AdapterView;
+
+import com.actionbarsherlock.view.MenuItem;
+
+public class PendingMessages
+		extends
+		BaseListFragment<PendingMessagesView, MessagesModel, PendingMessagesAdapter> {
+
+	private Intent syncPendingMessagesServiceIntent;
+
+	private Intent statusIntent;
+
+	private final Handler mHandler;
+
+	private MessagesModel model;
+
+	private int messageId = 0;
+
+	private MenuItem refresh;
+
+	private boolean refreshState = false;
+
+	public PendingMessages() {
+		super(PendingMessagesView.class, PendingMessagesAdapter.class,
+				R.layout.list_messages, R.menu.pending_messages_menu,
+				android.R.id.list);
+		mHandler = new Handler();
+		model = new MessagesModel();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Prefs.loadPreferences(getActivity());
+		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+		// show notification
+		if (Prefs.enabled) {
+			Util.showNotification(getActivity());
+		}
+
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		setHasOptionsMenu(true);
+		registerForContextMenu(listView);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		getActivity().registerReceiver(broadcastReceiver,
+				new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+		getActivity().registerReceiver(smsSentReceiver,
+				new IntentFilter(ServicesConstants.SENT));
+		getActivity().registerReceiver(smsDeliveredReceiver,
+				new IntentFilter(ServicesConstants.DELIVERED));
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		getActivity().unregisterReceiver(broadcastReceiver);
+		getActivity().unregisterReceiver(smsSentReceiver);
+		getActivity().unregisterReceiver(smsDeliveredReceiver);
+
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}
+
+	// Context Menu Stuff
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		new MenuInflater(getActivity()).inflate(
+				R.menu.pending_messages_context_menu, menu);
+
+	}
+
+	@Override
+	public boolean onContextItemSelected(android.view.MenuItem item) {
+
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+				.getMenuInfo();
+		messageId = adapter.getItem(info.position).getMessageId();
+		boolean result = performAction(item, info.position);
+
+		if (!result) {
+			result = super.onContextItemSelected(item);
+		}
+
+		return result;
+	}
+
+	public boolean performAction(android.view.MenuItem item, int position) {
+
+		if (item.getItemId() == R.id.context_delete) {
+			// Delete by ID
+			performDeleteById();
+			return (true);
+		} else if (item.getItemId() == R.id.context_delete_all) {
+			performDeleteAll();
+			return (true);
+		} else if (item.getItemId() == R.id.context_sync) {
+			// Synchronize by ID
+			syncMessages(messageId);
+		} else if (item.getItemId() == R.id.context_delete_all) {
+			syncMessages(0);
+
+		}
+		return (false);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
+		if (item.getItemId() == R.id.sync) {
+			refresh = item;
+			refreshState = true;
+			updateRefreshStatus();
+			syncMessages(0);
+			return (true);
+		} else if (item.getItemId() == R.id.import_sms) {
+			ImportMessagesTask importMessagesTask = new ImportMessagesTask(
+					getActivity());
+			importMessagesTask.execute();
+		} else if (item.getItemId() == R.id.delete) {
+			performDeleteAll();
+		} else if (item.getItemId() == R.id.settings) {
+			intent = new Intent(getActivity(), Settings.class);
+			startActivity(intent);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void updateRefreshStatus() {
+		if (refresh != null) {
+			if (refreshState)
+				refresh.setActionView(R.layout.indeterminate_progress_action);
+			else
+				refresh.setActionView(null);
+		}
+
+	}
+
+	/**
+	 * Delete all messages
+	 */
+	private void performDeleteAll() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(getString(R.string.confirm_message))
+				.setCancelable(false)
+				.setNegativeButton(getString(R.string.confirm_no),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						})
+				.setPositiveButton(getString(R.string.confirm_yes),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// delete all messages
+								mHandler.post(mDeleteAllMessages);
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	/**
+	 * Delete message by it's id
+	 */
+	public void performDeleteById() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(getString(R.string.confirm_message))
+				.setCancelable(false)
+				.setNegativeButton(getString(R.string.confirm_no),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						})
+				.setPositiveButton(getString(R.string.confirm_yes),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// Delete by ID
+								mHandler.post(mDeleteMessagesById);
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	// Display pending messages.
+	final Runnable mUpdateListView = new Runnable() {
+		public void run() {
+			// showMessages();
+		}
+	};
+
+	// Synchronize all pending messages.
+	final Runnable mSyncMessages = new Runnable() {
+		public void run() {
+			Prefs.loadPreferences(getActivity());
+			if (Prefs.enabled) {
+				int result = 0;
+				try {
+					if (result == 0) {
+
+						toastLong(R.string.sending_succeeded);
+					} else if (result == 1) {
+						toastLong(R.string.sending_failed);
+					} else if (result == 2) {
+						toastLong(R.string.no_messages_to_sync);
+					}
+				} catch (Exception e) {
+					return;
+				}
+			} else {
+				toastLong(R.string.smssync_not_enabled);
+			}
+		}
+	};
+
+	/**
+	 * Synchronize all pending messages by message id. Which means it
+	 * synchronizes messages individually.
+	 */
+	final Runnable mSyncMessagesById = new Runnable() {
+		public void run() {
+			Prefs.loadPreferences(getActivity());
+			if (Prefs.enabled) {
+				int result = 0;
+				try {
+					if (result == 0) {
+						toastLong(R.string.sending_succeeded);
+
+					} else if (result == 1) {
+						toastLong(R.string.sync_failed);
+					} else if (result == 2) {
+						toastLong(R.string.no_messages_to_sync);
+					}
+				} catch (Exception e) {
+					return;
+				}
+			} else {
+				toastLong(R.string.smssync_not_enabled);
+			}
+		}
+	};
+
+	/**
+	 * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
+	 * deleted.
+	 */
+	final Runnable mDeleteAllMessages = new Runnable() {
+		public void run() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			boolean result = false;
+
+			int deleted = 0;
+
+			if (adapter.getCount() == 0) {
+				deleted = 1;
+			} else {
+				result = model.deleteAllMessages();
+			}
+
+			try {
+				if (deleted == 1) {
+					toastLong(R.string.no_messages_to_delete);
+				} else {
+					if (result) {
+
+						toastLong(R.string.messages_deleted);
+						adapter.refresh();
+					} else {
+						toastLong(R.string.messages_deleted_failed);
+					}
+				}
+				getActivity().setProgressBarIndeterminateVisibility(false);
+			} catch (Exception e) {
+				return;
+			}
+		}
+	};
+
+	/**
+	 * Delete individual messages 0 - Successfully deleted. 1 - There is nothing
+	 * to be deleted.
+	 */
+	final Runnable mDeleteMessagesById = new Runnable() {
+		public void run() {
+			getActivity().setProgressBarIndeterminateVisibility(true);
+			boolean result = false;
+
+			int deleted = 0;
+
+			if (adapter.getCount() == 0) {
+				deleted = 1;
+			} else {
+				result = model.deleteMessagesById(messageId);
+			}
+
+			try {
+				if (deleted == 1) {
+					toastLong(R.string.no_messages_to_delete);
+				} else {
+
+					if (result) {
+						toastLong(R.string.messages_deleted);
+						adapter.refresh();
+
+					} else {
+						toastLong(R.string.messages_deleted_failed);
+					}
+				}
+				getActivity().setProgressBarIndeterminateVisibility(false);
+			} catch (Exception e) {
+				return;
+			}
+		}
+	};
+
+	@Override
+	protected void onLoaded(boolean success) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	protected View headerView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * Get messages from the db and push them to the configured callback URL
+	 * 
+	 * @param int messagesId
+	 * @return int
+	 */
+
+	public void syncMessages(int messagesId) {
+		statusIntent.putExtra("status", 3);
+		getActivity().sendBroadcast(statusIntent);
+		syncPendingMessagesServiceIntent = new Intent(getActivity(),
+				SyncPendingMessagesService.class);
+		syncPendingMessagesServiceIntent.putExtra(
+				ServicesConstants.MESSEAGE_ID, messagesId);
+		getActivity().startService(syncPendingMessagesServiceIntent);
+	}
+
+	// Thread class to handle synchronous execution of message importation task.
+	private class ImportMessagesTask extends ProgressTask {
+
+		protected Integer status;
+
+		private ProgressDialog dialog;
+
+		protected Context appContext;
+
+		public ImportMessagesTask(Activity activity) {
+			super(activity, R.string.please_wait);
+			appContext = activity;
+		}
+
+		@Override
+		protected Boolean doInBackground(String... args) {
+
+			status = Util.importMessages(appContext);
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean success) {
+			super.onPostExecute(success);
+			if (success) {
+				if (status == 0) {
+					this.dialog.cancel();
+					adapter.refresh();
+				} else if (status == 1) {
+					toastLong(R.string.nothing_to_import);
+				}
+			}
+		}
+	}
+
+	/**
+	 * This will refresh content of the listview aka the pending messages when
+	 * smssync successfully syncs pending messages.
+	 */
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent != null) {
+				int status = intent.getIntExtra("status", 2);
+
+				if (status == 0) {
+
+					if (syncPendingMessagesServiceIntent != null) {
+						getActivity().stopService(
+								syncPendingMessagesServiceIntent);
+					}
+
+					toastLong(R.string.sending_succeeded);
+
+				} else if (status == 1) {
+					toastLong(R.string.sync_failed);
+				} else {
+					toastLong(R.string.no_messages_to_sync);
+				}
+				
+				refreshState = false;
+				updateRefreshStatus();
+				mHandler.post(mUpdateListView);
+			}
+		}
+	};
+
+	// when sms has been sent
+	private BroadcastReceiver smsSentReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context arg0, Intent arg1) {
+			switch (getResultCode()) {
+			case Activity.RESULT_OK:
+				toastLong(R.string.sms_status_success);
+				break;
+			case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+				toastLong(R.string.sms_delivery_status_failed);
+				break;
+			case SmsManager.RESULT_ERROR_NO_SERVICE:
+				toastLong(R.string.sms_delivery_status_no_service);
+				break;
+			case SmsManager.RESULT_ERROR_NULL_PDU:
+				toastLong(R.string.sms_delivery_status_null_pdu);
+				break;
+			case SmsManager.RESULT_ERROR_RADIO_OFF:
+				toastLong(R.string.sms_delivery_status_radio_off);
+				break;
+			}
+		}
+	};
+
+	// when sms has been delivered
+	private BroadcastReceiver smsDeliveredReceiver = new BroadcastReceiver() {
+
+		public void onReceive(Context arg0, Intent arg1) {
+			switch (getResultCode()) {
+			case Activity.RESULT_OK:
+				toastLong(R.string.sms_delivered);
+				break;
+			case Activity.RESULT_CANCELED:
+				toastLong(R.string.sms_not_delivered);
+				break;
+			}
+		}
+	};
+
+}
