@@ -56,22 +56,19 @@ public class PendingMessages
 		model = new MessagesModel();
 	}
 
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		setHasOptionsMenu(true);
+		// adapter = new PendingMessagesAdapter(getActivity());
 		Prefs.loadPreferences(getActivity());
 		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
 		// show notification
 		if (Prefs.enabled) {
 			Util.showNotification(getActivity());
 		}
-
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		setHasOptionsMenu(true);
 		registerForContextMenu(listView);
 	}
 
@@ -80,10 +77,13 @@ public class PendingMessages
 		super.onResume();
 		getActivity().registerReceiver(broadcastReceiver,
 				new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+		getActivity().registerReceiver(failedReceiver,
+				new IntentFilter(ServicesConstants.FAILED_ACTION));
 		getActivity().registerReceiver(smsSentReceiver,
 				new IntentFilter(ServicesConstants.SENT));
 		getActivity().registerReceiver(smsDeliveredReceiver,
 				new IntentFilter(ServicesConstants.DELIVERED));
+		mHandler.post(mUpdateListView);
 	}
 
 	@Override
@@ -95,8 +95,10 @@ public class PendingMessages
 	public void onPause() {
 		super.onPause();
 		getActivity().unregisterReceiver(broadcastReceiver);
+		getActivity().unregisterReceiver(failedReceiver);
 		getActivity().unregisterReceiver(smsSentReceiver);
 		getActivity().unregisterReceiver(smsDeliveredReceiver);
+		mHandler.post(mUpdateListView);
 
 	}
 
@@ -231,7 +233,7 @@ public class PendingMessages
 	// Display pending messages.
 	final Runnable mUpdateListView = new Runnable() {
 		public void run() {
-			// showMessages();
+			showMessages();
 		}
 	};
 
@@ -250,6 +252,7 @@ public class PendingMessages
 					} else if (result == 2) {
 						toastLong(R.string.no_messages_to_sync);
 					}
+
 				} catch (Exception e) {
 					return;
 				}
@@ -271,7 +274,7 @@ public class PendingMessages
 				try {
 					if (result == 0) {
 						toastLong(R.string.sending_succeeded);
-
+						showMessages();
 					} else if (result == 1) {
 						toastLong(R.string.sync_failed);
 					} else if (result == 2) {
@@ -310,7 +313,7 @@ public class PendingMessages
 					if (result) {
 
 						toastLong(R.string.messages_deleted);
-						adapter.refresh();
+						showMessages();
 					} else {
 						toastLong(R.string.messages_deleted_failed);
 					}
@@ -346,7 +349,7 @@ public class PendingMessages
 
 					if (result) {
 						toastLong(R.string.messages_deleted);
-						adapter.refresh();
+						showMessages();
 
 					} else {
 						toastLong(R.string.messages_deleted_failed);
@@ -359,16 +362,22 @@ public class PendingMessages
 		}
 	};
 
+	/**
+	 * Get messages from the database.
+	 * 
+	 * @return void
+	 */
+	public void showMessages() {
+		if (adapter != null) {
+			adapter.refresh();
+		}
+	}
+
 	@Override
 	protected void onLoaded(boolean success) {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
-	protected View headerView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	/**
 	 * Get messages from the db and push them to the configured callback URL
@@ -414,7 +423,7 @@ public class PendingMessages
 			if (success) {
 				if (status == 0) {
 					this.dialog.cancel();
-					adapter.refresh();
+					showMessages();
 				} else if (status == 1) {
 					toastLong(R.string.nothing_to_import);
 				}
@@ -446,10 +455,27 @@ public class PendingMessages
 				} else {
 					toastLong(R.string.no_messages_to_sync);
 				}
-				
+
 				refreshState = false;
 				updateRefreshStatus();
 				mHandler.post(mUpdateListView);
+			}
+		}
+	};
+
+	/**
+	 * This will refresh content of the listview aka the pending messages when
+	 * smssync successfully syncs pending messages.
+	 */
+	private BroadcastReceiver failedReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent != null) {
+				int status = intent.getIntExtra("failed", 2);
+
+				if (status == 0) {
+					mHandler.post(mUpdateListView);
+				}
 			}
 		}
 	};

@@ -48,14 +48,16 @@ public class SentMessages
 
 	}
 
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		Prefs.loadPreferences(getActivity());
 
 		// show notification
 		if (Prefs.enabled) {
 			Util.showNotification(getActivity());
 		}
+		registerForContextMenu(listView);
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class SentMessages
 	public void onCreateContextMenu(ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		new MenuInflater(getActivity()).inflate(
-				R.menu.pending_messages_context_menu, menu);
+				R.menu.sent_messages_context_menu, menu);
 
 	}
 
@@ -116,8 +118,6 @@ public class SentMessages
 
 		if (item.getItemId() == R.id.delete) {
 			refresh = item;
-			refreshState = true;
-			updateRefreshStatus();
 			performDeleteAll();
 		} else if (item.getItemId() == R.id.settings) {
 			intent = new Intent(getActivity(), Settings.class);
@@ -151,17 +151,19 @@ public class SentMessages
 			}
 
 			try {
+
 				if (deleted == 1) {
 					toastLong(R.string.no_messages_to_delete);
 				} else {
 					if (result) {
 						toastLong(R.string.messages_deleted);
 						adapter.refresh();
-						updateRefreshStatus();
 					} else {
 						toastLong(R.string.messages_deleted_failed);
 					}
 				}
+				refreshState = false;
+				updateRefreshStatus();
 
 			} catch (Exception e) {
 				return;
@@ -189,17 +191,20 @@ public class SentMessages
 			try {
 				if (deleted == 1) {
 					toastLong(R.string.no_messages_to_delete);
+
 				} else {
 
 					if (result) {
 						toastLong(R.string.messages_deleted);
-						adapter.refresh();
-						updateRefreshStatus();
+						refreshState = false;
+
 					} else {
 						toastLong(R.string.messages_deleted_failed);
+
 					}
 				}
-				getActivity().setProgressBarIndeterminateVisibility(false);
+				refreshState = true;
+				updateRefreshStatus();
 			} catch (Exception e) {
 				return;
 			}
@@ -223,6 +228,8 @@ public class SentMessages
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								// delete all messages
+								refreshState = true;
+								updateRefreshStatus();
 								mHandler.post(mDeleteAllSentMessages);
 							}
 						});
@@ -247,6 +254,8 @@ public class SentMessages
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								// Delete by ID
+								refreshState = true;
+								updateRefreshStatus();
 								mHandler.post(mDeleteMessagesById);
 							}
 						});
@@ -268,12 +277,6 @@ public class SentMessages
 	protected void onLoaded(boolean success) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	protected View headerView() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**

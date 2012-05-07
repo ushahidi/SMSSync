@@ -11,15 +11,13 @@
 	at team@ushahidi.com.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <!-- List incidents -->
-
+    <!-- List pending messages -->
     <ListView
         android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/ListView"
         android:cacheColorHint="#00000000"
         android:fadingEdge="none"
         android:fastScrollEnabled="true"
@@ -31,13 +29,9 @@
         android:smoothScrollbar="true" />
 
     <!-- Here is the view to show if the list is emtpy -->
-
     <TextView
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal|center"
+        android:id="@android:id/empty"
+        style="@style/TextView.Empty"
         android:text="@string/empty_list"
-        android:textStyle="bold" />
-
+        android:textStyle="bold"/>
 </RelativeLayout>

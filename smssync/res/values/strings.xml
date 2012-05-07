@@ -18,7 +18,7 @@
     <string name="edittxt_website_pref_summary">This is the website that will receive the text messages.</string>
 
     <!-- secret -->
-    <string name="edittxt_api_key_pref">Enter the Secret</string>
+    <string name="edittxt_api_key_pref">Enter the Secret Key</string>
     <string name="edittxt_api_key_pref_summary">If a secret/key has been specified at the website, it will be required.</string>
 
     <!-- filter by keywords -->
@@ -143,4 +143,13 @@
     <string name="unique_id_numeric_error">Unique ID accepts only numbers</string>
     
     <string name="loading">Loading</string>
+    <string name="add_sync_url">Add sync URL</string>
+    <string name="sync_url">Sync URL</string>
+    <string name="no_sync_url">No Sync URL.</string>
+    <string name="edit">Edit</string>
+    <string name="enter_sync_title">Enter Title For The Sync URL</string>
+    <string name="edittxt_keyword">Enter Keyword Eg. Fire, Crime, Help</string>
+    <string name="add_sync_url">Add Sync URL</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>

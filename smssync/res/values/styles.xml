@@ -138,7 +138,14 @@
         <item name="android:textSize">16sp</item>
         <item name="android:padding">10sp</item>
     </style>
-
+    
+    <style name="EditText.SyncUrl">
+        <item name="android:autoText">false</item>
+        <item name="android:capitalize">none</item>
+        <item name="android:gravity">fill_horizontal</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
     <style name="EditText.Label">
         <item name="android:layout_width">wrap_content</item>
     </style>

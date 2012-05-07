@@ -4,6 +4,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.TabAdapter;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.fragments.SentMessages;
+import org.addhen.smssync.fragments.SyncUrl;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -26,6 +27,9 @@ public class MessagesTabActivity extends SherlockFragmentActivity {
 				getString(R.string.pending_messages));
 		ActionBar.Tab sentTab = getSupportActionBar().newTab().setText(
 				getString(R.string.sent_messages));
+		
+		ActionBar.Tab syncTab = getSupportActionBar().newTab().setText(
+				getString(R.string.sync_url));
 
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 
@@ -33,6 +37,7 @@ public class MessagesTabActivity extends SherlockFragmentActivity {
 
 		mTabsAdapter.addTab(pendingTab, PendingMessages.class);
 		mTabsAdapter.addTab(sentTab, SentMessages.class);
+		mTabsAdapter.addTab(syncTab, SyncUrl.class);
 
 		if (savedInstanceState != null) {
 			getSupportActionBar().setSelectedNavigationItem(

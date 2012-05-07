@@ -48,7 +48,7 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 
 		// initialize view with content
 		widget.messageFrom.setText(getItem(position).getMessageFrom());
-		widget.messageDate.setText(getItem(position).getMessageFrom());
+		widget.messageDate.setText(getItem(position).getMessageDate());
 		widget.message.setText(getItem(position).getMessage());
 
 		return row;

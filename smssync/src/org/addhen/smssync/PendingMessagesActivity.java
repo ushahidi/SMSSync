@@ -109,7 +109,7 @@ public class PendingMessagesActivity extends Activity {
         }
 
         listMessages = (ListView)findViewById(android.R.id.list);
-        emptyListText = (TextView)findViewById(R.id.empty);
+        emptyListText = (TextView)findViewById(android.R.id.empty);
 
         mOldMessages = new ArrayList<Messages>();
         ila = new ListMessagesAdapter(PendingMessagesActivity.this);

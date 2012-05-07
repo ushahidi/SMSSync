@@ -25,7 +25,6 @@
         android:layout_alignParentLeft="true"
         android:lines="1"
         android:paddingLeft="3dp"
-        android:text="0243581806"
         android:textStyle="bold" />
 
     <TextView
@@ -33,12 +32,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/message_from"
-        android:layout_toLeftOf="@+id/report_arrow"
-        android:layout_toRightOf="@+id/report_thumbnail"
         android:ellipsize="end"
         android:lines="1"
-        android:padding="3dp"
-        android:text="There we go man" />
+        android:padding="3dp" />
 
     <TextView
         android:id="@+id/message_date"
@@ -47,7 +43,6 @@
         android:layout_below="@+id/message"
         android:lines="1"
         android:paddingLeft="3dp"
-        android:text="10:20pm"
         android:textStyle="bold" />
 
     <CheckBox

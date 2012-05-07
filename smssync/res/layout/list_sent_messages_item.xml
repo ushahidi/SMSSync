@@ -31,9 +31,7 @@
         android:id="@+id/sent_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/message_from"
-        android:layout_toLeftOf="@+id/report_arrow"
-        android:layout_toRightOf="@+id/report_thumbnail"
+        android:layout_below="@+id/sent_message_from"
         android:ellipsize="end"
         android:lines="1"
         android:padding="3dp" />
@@ -42,10 +40,8 @@
         android:id="@+id/sent_message_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/message"
+        android:layout_alignParentRight="true"
         android:lines="1"
-        android:paddingLeft="3dp"
-        android:text="10:20pm"
-        android:textStyle="bold" />
+        android:paddingLeft="3dp"/>
 
 </RelativeLayout>

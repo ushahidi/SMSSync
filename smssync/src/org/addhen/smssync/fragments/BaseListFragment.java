@@ -20,6 +20,7 @@
 
 package org.addhen.smssync.fragments;
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.BaseListAdapter;
 import org.addhen.smssync.models.Model;
 import org.addhen.smssync.tasks.ProgressTask;
@@ -36,12 +37,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-
-import org.addhen.smssync.R;
 
 /**
  * @author eyedol
@@ -115,21 +113,16 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setHasOptionsMenu(true);
-
+		
 		if (listViewId != 0) {
-
 			listView = getListView();
-			if (headerView() != null) {
-				listView.addHeaderView(headerView());
-			}
-			// listView.setOnItemClickListener(this);
 			android.view.View emptyView = getActivity().findViewById(
 					android.R.id.empty);
 			if (emptyView != null) {
 				listView.setEmptyView(emptyView);
 			}
 
-			view = Objects.createInstance(viewClass, SherlockActivity.class,
+			view = Objects.createInstance(viewClass, Activity.class,
 					getActivity());
 			adapter = Objects.createInstance(adapterClass, Context.class,
 					getActivity());
@@ -166,8 +159,6 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 	 *            true is successfully loaded
 	 */
 	protected abstract void onLoaded(boolean success);
-
-	protected abstract android.view.View headerView();
 
 	@SuppressWarnings("unchecked")
 	protected M getSelectedItem() {

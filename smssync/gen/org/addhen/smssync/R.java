@@ -791,29 +791,30 @@ containing a value of this type.
         public static final int abs__tab_selected_holo=0x7f020052;
         public static final int abs__tab_selected_pressed_holo=0x7f020053;
         public static final int abs__tab_unselected_pressed_holo=0x7f020054;
-        public static final int appwidget_bg=0x7f020055;
-        public static final int appwidget_portrait_bg=0x7f020056;
-        public static final int appwidget_portrait_text_push=0x7f020057;
-        public static final int appwidget_portrait_textbg=0x7f020058;
-        public static final int arrow_left=0x7f020059;
-        public static final int arrow_right=0x7f02005a;
-        public static final int delete=0x7f02005b;
-        public static final int icon=0x7f02005c;
-        public static final int import_sms=0x7f02005d;
-        public static final int noti_smssync=0x7f02005e;
-        public static final int refresh=0x7f02005f;
-        public static final int smssync=0x7f020060;
-        public static final int solid_white=0x7f02006b;
-        public static final int tab_bg_selected=0x7f020061;
-        public static final int tab_bg_selector=0x7f020062;
-        public static final int tab_bg_unselected=0x7f020063;
-        public static final int tab_divider=0x7f020064;
-        public static final int tab_text_selector=0x7f020065;
-        public static final int title_bar=0x7f020066;
-        public static final int widget_bg_default=0x7f020067;
-        public static final int widget_bg_portrait=0x7f020068;
-        public static final int widget_bg_selected=0x7f020069;
-        public static final int widget_bg_small=0x7f02006a;
+        public static final int add=0x7f020055;
+        public static final int appwidget_bg=0x7f020056;
+        public static final int appwidget_portrait_bg=0x7f020057;
+        public static final int appwidget_portrait_text_push=0x7f020058;
+        public static final int appwidget_portrait_textbg=0x7f020059;
+        public static final int arrow_left=0x7f02005a;
+        public static final int arrow_right=0x7f02005b;
+        public static final int delete=0x7f02005c;
+        public static final int icon=0x7f02005d;
+        public static final int import_sms=0x7f02005e;
+        public static final int noti_smssync=0x7f02005f;
+        public static final int refresh=0x7f020060;
+        public static final int smssync=0x7f020061;
+        public static final int solid_white=0x7f02006c;
+        public static final int tab_bg_selected=0x7f020062;
+        public static final int tab_bg_selector=0x7f020063;
+        public static final int tab_bg_unselected=0x7f020064;
+        public static final int tab_divider=0x7f020065;
+        public static final int tab_text_selector=0x7f020066;
+        public static final int title_bar=0x7f020067;
+        public static final int widget_bg_default=0x7f020068;
+        public static final int widget_bg_portrait=0x7f020069;
+        public static final int widget_bg_selected=0x7f02006a;
+        public static final int widget_bg_small=0x7f02006b;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f050022;
@@ -845,58 +846,66 @@ containing a value of this type.
         public static final int abs__title=0x7f05001b;
         public static final int abs__titleDivider=0x7f05001c;
         public static final int abs__up=0x7f05000b;
-        public static final int action_bar_icon=0x7f050044;
-        public static final int appwidget_empty_list=0x7f05002f;
-        public static final int appwidget_item=0x7f050027;
-        public static final int appwidget_logo=0x7f050028;
-        public static final int appwidget_next=0x7f050032;
-        public static final int appwidget_prev=0x7f050031;
-        public static final int appwidget_refresh=0x7f050030;
-        public static final int checkBox1=0x7f050043;
-        public static final int context_delete=0x7f05004c;
-        public static final int context_delete_all=0x7f05004d;
-        public static final int context_sync=0x7f05004a;
-        public static final int context_sync_all=0x7f05004b;
-        public static final int delete=0x7f050050;
+        public static final int action_bar_icon=0x7f050047;
+        public static final int add_sync_url=0x7f050057;
+        public static final int appwidget_empty_list=0x7f050033;
+        public static final int appwidget_item=0x7f05002b;
+        public static final int appwidget_logo=0x7f05002c;
+        public static final int appwidget_next=0x7f050036;
+        public static final int appwidget_prev=0x7f050035;
+        public static final int appwidget_refresh=0x7f050034;
+        public static final int checkBox1=0x7f050046;
+        public static final int context_delete=0x7f05004f;
+        public static final int context_delete_all=0x7f050050;
+        public static final int context_delete_sync_url=0x7f050056;
+        public static final int context_edit_sync_url=0x7f050055;
+        public static final int context_sync=0x7f05004d;
+        public static final int context_sync_all=0x7f05004e;
+        public static final int delete=0x7f050053;
+        public static final int delete_all_sync_url=0x7f050059;
+        public static final int delete_sync_url=0x7f050058;
         public static final int disableHome=0x7f050009;
-        public static final int empty=0x7f050034;
         public static final int homeAsUp=0x7f050006;
-        public static final int import_sms=0x7f05004f;
-        public static final int linearLayout1=0x7f05002b;
-        public static final int linear_pending_msg=0x7f05002a;
+        public static final int import_sms=0x7f050052;
+        public static final int linearLayout1=0x7f05002f;
+        public static final int linear_pending_msg=0x7f05002e;
         public static final int listMode=0x7f050002;
-        public static final int list_checkbox=0x7f05003a;
-        public static final int menu_bar_separator=0x7f050046;
-        public static final int message=0x7f050036;
-        public static final int message_date=0x7f050039;
-        public static final int message_from=0x7f050035;
-        public static final int msg_date=0x7f05002d;
-        public static final int msg_desc=0x7f05002e;
-        public static final int msg_number=0x7f05002c;
+        public static final int list_checkbox=0x7f05003b;
+        public static final int menu_bar_separator=0x7f050049;
+        public static final int message=0x7f050039;
+        public static final int message_date=0x7f05003a;
+        public static final int message_from=0x7f050038;
+        public static final int msg_date=0x7f050031;
+        public static final int msg_desc=0x7f050032;
+        public static final int msg_number=0x7f050030;
         public static final int normal=0x7f050001;
-        public static final int pager=0x7f05003b;
-        public static final int progress_action=0x7f050033;
-        public static final int relativeLayout1=0x7f050029;
-        public static final int report_arrow=0x7f050037;
-        public static final int report_thumbnail=0x7f050038;
+        public static final int pager=0x7f05003c;
+        public static final int progress_action=0x7f050037;
+        public static final int relativeLayout1=0x7f05002d;
         public static final int sent_message=0x7f05003e;
         public static final int sent_message_date=0x7f05003f;
         public static final int sent_message_from=0x7f05003d;
-        public static final int settings=0x7f050051;
+        public static final int settings=0x7f050054;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
-        public static final int sync=0x7f05004e;
+        public static final int start_checkbox=0x7f050040;
+        public static final int sync=0x7f050051;
+        public static final int sync_keyword=0x7f050042;
+        public static final int sync_title=0x7f050041;
+        public static final int sync_url=0x7f05002a;
+        public static final int sync_url_keyword=0x7f050029;
+        public static final int sync_url_secret=0x7f050028;
+        public static final int sync_url_title=0x7f050027;
         public static final int tabMode=0x7f050003;
-        public static final int tabhost=0x7f050047;
-        public static final int tabsLayout=0x7f050048;
-        public static final int tabsText=0x7f050049;
-        public static final int textView1=0x7f050040;
-        public static final int textView2=0x7f050041;
-        public static final int textView3=0x7f050042;
-        public static final int title_bar_text_lbl=0x7f050045;
+        public static final int tabhost=0x7f05004a;
+        public static final int tabsLayout=0x7f05004b;
+        public static final int tabsText=0x7f05004c;
+        public static final int textView1=0x7f050043;
+        public static final int textView2=0x7f050044;
+        public static final int textView3=0x7f050045;
+        public static final int title_bar_text_lbl=0x7f050048;
         public static final int useLogo=0x7f050004;
-        public static final int view_messages=0x7f05003c;
         public static final int wrap_content=0x7f050000;
     }
     public static final class integer {
@@ -923,25 +932,29 @@ containing a value of this type.
         public static final int abs__screen_action_bar_overlay=0x7f030011;
         public static final int abs__screen_simple=0x7f030012;
         public static final int abs__screen_simple_overlay_action_mode=0x7f030013;
-        public static final int appwidget=0x7f030014;
-        public static final int indeterminate_progress_action=0x7f030015;
-        public static final int list_messages=0x7f030016;
-        public static final int list_messages_item=0x7f030017;
-        public static final int list_messages_tab=0x7f030018;
-        public static final int list_pending_messages_item=0x7f030019;
+        public static final int add_sync_url=0x7f030014;
+        public static final int appwidget=0x7f030015;
+        public static final int indeterminate_progress_action=0x7f030016;
+        public static final int list_messages=0x7f030017;
+        public static final int list_messages_item=0x7f030018;
+        public static final int list_messages_tab=0x7f030019;
         public static final int list_sent_messages_item=0x7f03001a;
-        public static final int main=0x7f03001b;
-        public static final int messages_tab=0x7f03001c;
-        public static final int sent_messages=0x7f03001d;
-        public static final int sherlock_spinner_dropdown_item=0x7f03001e;
-        public static final int sherlock_spinner_item=0x7f03001f;
-        public static final int tabs_bg=0x7f030020;
+        public static final int list_sync_url=0x7f03001b;
+        public static final int list_sync_url_item=0x7f03001c;
+        public static final int main=0x7f03001d;
+        public static final int messages_tab=0x7f03001e;
+        public static final int sent_messages=0x7f03001f;
+        public static final int sherlock_spinner_dropdown_item=0x7f030020;
+        public static final int sherlock_spinner_item=0x7f030021;
+        public static final int tabs_bg=0x7f030022;
     }
     public static final class menu {
         public static final int pending_messages_context_menu=0x7f0c0000;
         public static final int pending_messages_menu=0x7f0c0001;
         public static final int sent_messages_context_menu=0x7f0c0002;
         public static final int sent_messages_menu=0x7f0c0003;
+        public static final int sync_url_context_menu=0x7f0c0004;
+        public static final int sync_url_menu=0x7f0c0005;
     }
     public static final class string {
         public static final int about_smssync=0x7f0a004c;
@@ -975,9 +988,11 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f0a0009;
+        public static final int add_sync_url=0x7f0a0064;
         public static final int app_name=0x7f0a002d;
         public static final int auto_sync_delay_hint=0x7f0a0028;
         public static final int auto_sync_settings=0x7f0a004a;
+        public static final int cancel=0x7f0a006b;
         public static final int chk_auto_delete_hint=0x7f0a0024;
         /**  auto delete messages 
          */
@@ -986,7 +1001,7 @@ containing a value of this type.
          */
         public static final int chk_enable_auto_sync=0x7f0a0025;
         public static final int chk_enable_auto_sync_hint=0x7f0a0026;
-        public static final int chk_enable_gps_sync=0x7f0a0065;
+        public static final int chk_enable_gps_sync=0x7f0a006d;
         public static final int chk_enable_reply=0x7f0a0021;
         public static final int chk_enable_reply_frm_server=0x7f0a0051;
         public static final int chk_enable_sms_sync=0x7f0a001f;
@@ -994,7 +1009,7 @@ containing a value of this type.
          */
         public static final int chk_enable_task_check=0x7f0a0029;
         public static final int chk_enable_task_check_hint=0x7f0a002a;
-        public static final int chk_gps_sync_hint=0x7f0a0066;
+        public static final int chk_gps_sync_hint=0x7f0a006e;
         public static final int chk_reply_frm_server_hint=0x7f0a0052;
         public static final int chk_reply_hint=0x7f0a0022;
         public static final int chk_sms_sync_hint=0x7f0a0020;
@@ -1003,6 +1018,7 @@ containing a value of this type.
         /**  confirmation dialog 
          */
         public static final int confirm_yes=0x7f0a005e;
+        public static final int edit=0x7f0a0067;
         /**  secret 
          */
         public static final int edittxt_api_key_pref=0x7f0a000c;
@@ -1012,6 +1028,7 @@ containing a value of this type.
          */
         public static final int edittxt_filter_by_from_pref=0x7f0a0011;
         public static final int edittxt_filter_by_from_pref_summary=0x7f0a0012;
+        public static final int edittxt_keyword=0x7f0a0069;
         public static final int edittxt_keyword_hint=0x7f0a0010;
         /**  filter by keywords 
          */
@@ -1031,10 +1048,11 @@ containing a value of this type.
  sync URL 
          */
         public static final int edittxt_website_pref=0x7f0a000a;
-        public static final int edittxt_website_pref_dialog_title=0x7f0a0064;
+        public static final int edittxt_website_pref_dialog_title=0x7f0a006c;
         public static final int edittxt_website_pref_summary=0x7f0a000b;
         public static final int editxt_keyword_pref_summary=0x7f0a000f;
         public static final int empty_list=0x7f0a0043;
+        public static final int enter_sync_title=0x7f0a0068;
         public static final int filter_messages=0x7f0a0053;
         /**  general settings 
          */
@@ -1058,9 +1076,11 @@ containing a value of this type.
         public static final int no_messages_to_delete=0x7f0a0036;
         public static final int no_messages_to_sync=0x7f0a0035;
         public static final int no_sent_messages=0x7f0a005d;
+        public static final int no_sync_url=0x7f0a0066;
         public static final int no_task=0x7f0a0049;
         public static final int nothing_to_import=0x7f0a0050;
         public static final int notification_summary=0x7f0a0032;
+        public static final int ok=0x7f0a006a;
         public static final int outbox=0x7f0a002e;
         /**  Pending and failed messages Tab 
          */
@@ -1092,6 +1112,7 @@ containing a value of this type.
         public static final int smssync_not_enabled=0x7f0a004e;
         public static final int status=0x7f0a0042;
         public static final int sync_failed=0x7f0a0037;
+        public static final int sync_url=0x7f0a0065;
         public static final int task_check_settings=0x7f0a004b;
         public static final int title_bar_text=0x7f0a005c;
         /**  auto sync delay 
@@ -1108,30 +1129,31 @@ containing a value of this type.
         public static final int version_status=0x7f0a002f;
     }
     public static final class style {
-        public static final int Button=0x7f0b0080;
-        public static final int Button_Action=0x7f0b0081;
-        public static final int Button_Select=0x7f0b0082;
+        public static final int Button=0x7f0b0081;
+        public static final int Button_Action=0x7f0b0082;
+        public static final int Button_Select=0x7f0b0083;
         public static final int DialogWindowTitle_Sherlock=0x7f0b0033;
         public static final int DialogWindowTitle_Sherlock_Light=0x7f0b0034;
         public static final int EditText=0x7f0b006d;
-        public static final int EditText_CapCharacters=0x7f0b007c;
-        public static final int EditText_CapSentences=0x7f0b007d;
-        public static final int EditText_CapWords=0x7f0b007b;
-        public static final int EditText_Decimal=0x7f0b0071;
-        public static final int EditText_Decimal_Wrap=0x7f0b0072;
-        public static final int EditText_Email=0x7f0b0077;
-        public static final int EditText_Label=0x7f0b006e;
-        public static final int EditText_Multiline=0x7f0b0074;
-        public static final int EditText_Name=0x7f0b0078;
-        public static final int EditText_Number=0x7f0b006f;
-        public static final int EditText_Number_Wrap=0x7f0b0070;
-        public static final int EditText_Password=0x7f0b0076;
-        public static final int EditText_Phone=0x7f0b0073;
-        public static final int EditText_PostalAddress=0x7f0b007e;
-        public static final int EditText_ReadOnly=0x7f0b007f;
-        public static final int EditText_Search=0x7f0b0079;
-        public static final int EditText_Title=0x7f0b007a;
-        public static final int EditText_URL=0x7f0b0075;
+        public static final int EditText_CapCharacters=0x7f0b007d;
+        public static final int EditText_CapSentences=0x7f0b007e;
+        public static final int EditText_CapWords=0x7f0b007c;
+        public static final int EditText_Decimal=0x7f0b0072;
+        public static final int EditText_Decimal_Wrap=0x7f0b0073;
+        public static final int EditText_Email=0x7f0b0078;
+        public static final int EditText_Label=0x7f0b006f;
+        public static final int EditText_Multiline=0x7f0b0075;
+        public static final int EditText_Name=0x7f0b0079;
+        public static final int EditText_Number=0x7f0b0070;
+        public static final int EditText_Number_Wrap=0x7f0b0071;
+        public static final int EditText_Password=0x7f0b0077;
+        public static final int EditText_Phone=0x7f0b0074;
+        public static final int EditText_PostalAddress=0x7f0b007f;
+        public static final int EditText_ReadOnly=0x7f0b0080;
+        public static final int EditText_Search=0x7f0b007a;
+        public static final int EditText_SyncUrl=0x7f0b006e;
+        public static final int EditText_Title=0x7f0b007b;
+        public static final int EditText_URL=0x7f0b0076;
         public static final int EmptyStyle=0x7f0b0059;
         /**  Android controls styling 
          */

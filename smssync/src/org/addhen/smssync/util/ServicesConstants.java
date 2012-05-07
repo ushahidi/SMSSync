@@ -19,6 +19,8 @@ public class ServicesConstants {
 
     public static String CHECT_TASK_SCHEDULED_ACTION = "org.addhen.smssync.syncservices.checktaskscheduled";
     
+    public static String FAILED_ACTION = "org.addhen.smssync.syncservices.failed";
+    
     public static String MESSEAGE_ID = "message_id";
 
     public static String SENT = "SMS_SENT";

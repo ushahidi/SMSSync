@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp" >
+
+    <EditText
+        android:id="@+id/sync_url_title"
+        style="@style/EditText"
+        android:hint="@string/enter_sync_title" />
+
+    <EditText
+        android:id="@+id/sync_url_secret"
+        style="@style/EditText.SyncUrl"
+        android:hint="@string/edittxt_api_key_pref" />
+
+    <EditText
+        android:id="@+id/sync_url_keyword"
+        style="@style/EditText.SyncUrl"
+        android:hint="@string/edittxt_keyword" />
+
+    <EditText
+        android:id="@+id/sync_url"
+        style="@style/EditText.SyncUrl"
+        android:hint="@string/edittxt_website_pref"
+        android:inputType="textMultiLine|textUri" />
+
+</LinearLayout>

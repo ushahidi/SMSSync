@@ -3,10 +3,8 @@ package org.addhen.smssync.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.addhen.smssync.ListMessagesText;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.data.Database;
-import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.util.Util;
 
 import android.database.Cursor;
@@ -72,7 +70,13 @@ public class SentMessagesModel extends Model {
 	 * @return void
 	 */
 	public void setMessageDate(String messageDate) {
-		this.messageDate = messageDate;
+		try {
+			this.messageDate = Util.formatDateTime(Long.parseLong(messageDate),
+					"MMM dd, yyyy 'at' hh:mm a");
+
+		} catch (NumberFormatException e) {
+			this.messageDate = messageDate;
+		}
 	}
 
 	/**
@@ -125,7 +129,7 @@ public class SentMessagesModel extends Model {
 
 	@Override
 	public boolean load() {
-		
+
 		listMessages = new ArrayList<SentMessagesModel>();
 		Cursor cursor;
 		cursor = MainApplication.mDb.fetchAllSentMessages();

@@ -53,7 +53,7 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 
 		// initialize view with content
 		widget.messageFrom.setText(getItem(position).getMessageFrom());
-		widget.messageDate.setText(getItem(position).getMessageFrom());
+		widget.messageDate.setText(getItem(position).getMessageDate());
 		widget.message.setText(getItem(position).getMessage());
 
 		return row;
@@ -61,10 +61,10 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 
 	@Override
 	public void refresh() {
+		messages = new MessagesModel();
 		if (messages.load()) {
 			this.setItems(messages.listMessages);
 		}
-
 	}
 
 }

@@ -55,6 +55,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
+import android.util.Log;
 
 public class MainHttpClient {
 
@@ -131,6 +132,7 @@ public class MainHttpClient {
      */
     public static boolean postSmsToWebService(String url, HashMap<String, String> params,
             Context context) {
+    	Log.i("MainHttpClient "," URL: "+url);
         // Create a new HttpClient and Post Header
         HttpPost httppost = new HttpPost(url);
 
@@ -175,6 +177,8 @@ public class MainHttpClient {
             return false;
         } catch (IOException e) {
             return false;
+        } catch(IllegalArgumentException e) {
+        	return false;
         }
 
     }

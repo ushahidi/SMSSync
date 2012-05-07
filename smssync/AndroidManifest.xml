@@ -13,7 +13,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.addhen.smssync"
     android:versionCode="12"
-    android:versionName="1.1.10">
+    android:versionName="1.1.10" >
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -32,9 +32,9 @@
         android:smallScreens="true" />
 
     <application
+        android:name=".MainApplication"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:name=".MainApplication"
         android:theme="@style/Theme.Sherlock" >
         <service android:name=".services.SmsReceiverService" />
         <service android:name=".services.AutoSyncService" />
@@ -44,39 +44,37 @@
         <service android:name=".services.SyncPendingMessagesService" />
 
         <activity
+            android:name=".Settings"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:name=".Settings" >
-            <intent-filter >
+            android:launchMode="singleTop" >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.PREFERENCE" />
             </intent-filter>
         </activity>
-        
+
         <!-- messages tab -->
         <activity
+            android:name=".activities.MessagesTabActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:name=".activities.MessagesTabActivity" >
-            <intent-filter >
+            android:launchMode="singleTop" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category
-                    android:label="@string/app_name"
-                    android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- pending messages -->
         <activity
+            android:name=".PendingMessagesActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:name=".PendingMessagesActivity" >
-            <intent-filter >
+            android:launchMode="singleTop" >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.ACTION_VIEW" />
@@ -85,11 +83,11 @@
 
         <!-- sent messages -->
         <activity
+            android:name=".SentMessagesActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:name=".SentMessagesActivity" >
-            <intent-filter >
+            android:launchMode="singleTop" >
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.ACTION_VIEW" />
@@ -98,23 +96,23 @@
 
         <!-- sms -->
         <receiver android:name=".receivers.SmsReceiver" >
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <!-- connectivity changed -->
         <receiver
-            enabled="false"
-            android:name=".receivers.ConnectivityChangedReceiver" >
-            <intent-filter >
+            android:name=".receivers.ConnectivityChangedReceiver"
+            enabled="false" >
+            <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <!-- power changed -->
         <receiver android:name=".receivers.PowerStateChangedReceiver" >
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
                 <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
             </intent-filter>
@@ -122,7 +120,7 @@
 
         <!-- boot -->
         <receiver android:name=".receivers.BootReceiver" >
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
@@ -135,7 +133,7 @@
 
         <!-- app widget provider -->
         <receiver android:name=".widget.SmsSyncAppWidgetProvider" >
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 

@@ -75,7 +75,14 @@ public class MessagesModel extends Model {
 	 * @return void
 	 */
 	public void setMessageDate(String messageDate) {
-		this.messageDate = messageDate;
+		try {
+			this.messageDate = Util.formatDateTime(Long.parseLong(messageDate),
+					"MMM dd, yyyy 'at' hh:mm a");
+
+		} catch (NumberFormatException e) {
+			this.messageDate = messageDate;
+		}
+
 	}
 
 	/**

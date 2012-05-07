@@ -15,14 +15,6 @@ import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.util.Log;
 
-/**
- * Service that queries the underlying web service to retrieve the full details
- * for the specified place / venue. This Service is called by the
- * {@link PlacesUpdateService} to prefetch details for the nearby venues, or by
- * the {@link PlacesActivity} and {@link PlaceDetailsFragment} to retrieve the
- * details for the selected place. TODO Replace the URL and XML parsing to match
- * the details available from your service.
- */
 
 public abstract class SmsSyncServices extends IntentService {
 
