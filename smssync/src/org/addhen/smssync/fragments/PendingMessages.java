@@ -13,7 +13,6 @@ import org.addhen.smssync.views.PendingMessagesView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,7 +54,6 @@ public class PendingMessages
 		mHandler = new Handler();
 		model = new MessagesModel();
 	}
-
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -378,7 +376,6 @@ public class PendingMessages
 		// TODO Auto-generated method stub
 	}
 
-
 	/**
 	 * Get messages from the db and push them to the configured callback URL
 	 * 
@@ -401,8 +398,6 @@ public class PendingMessages
 
 		protected Integer status;
 
-		private ProgressDialog dialog;
-
 		protected Context appContext;
 
 		public ImportMessagesTask(Activity activity) {
@@ -422,7 +417,6 @@ public class PendingMessages
 			super.onPostExecute(success);
 			if (success) {
 				if (status == 0) {
-					this.dialog.cancel();
 					showMessages();
 				} else if (status == 1) {
 					toastLong(R.string.nothing_to_import);
