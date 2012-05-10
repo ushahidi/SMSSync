@@ -14,7 +14,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- List incidents -->
+    <!-- List sent messages -->
 
     <ListView
         android:id="@android:id/list"

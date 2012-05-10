@@ -26,6 +26,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
 
@@ -47,6 +48,8 @@ public class PendingMessages
 
 	private boolean refreshState = false;
 
+	private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
+
 	public PendingMessages() {
 		super(PendingMessagesView.class, PendingMessagesAdapter.class,
 				R.layout.list_messages, R.menu.pending_messages_menu,
@@ -67,7 +70,24 @@ public class PendingMessages
 		if (Prefs.enabled) {
 			Util.showNotification(getActivity());
 		}
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		listView.setItemsCanFocus(false);
 		registerForContextMenu(listView);
+
+		if (savedInstanceState != null) {
+			int position = savedInstanceState.getInt(STATE_CHECKED, -1);
+
+			if (position > -1) {
+				listView.setItemChecked(position, true);
+			}
+		}
+
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle state) {
+		super.onSaveInstanceState(state);
+		state.putInt(STATE_CHECKED, listView.getCheckedItemPosition());
 	}
 
 	@Override

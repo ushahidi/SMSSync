@@ -27,8 +27,8 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 			messageDate = (TextView) convertView
 					.findViewById(R.id.message_date);
 			message = (TextView) convertView.findViewById(R.id.message);
-			listCheckBox = (CheckBox) convertView
-					.findViewById(R.id.list_checkbox);
+			//listCheckBox = (CheckBox) convertView
+				//	.findViewById(R.id.list_checkbox);
 		}
 	}
 

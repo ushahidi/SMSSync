@@ -43,16 +43,13 @@ public class SentMessages
 		super(SentMessagesView.class, SentMessagesAdapter.class,
 				R.layout.sent_messages, R.menu.sent_messages_menu,
 				android.R.id.list);
-
-		model = new SentMessagesModel();
-
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		Prefs.loadPreferences(getActivity());
-
+		model = new SentMessagesModel();
 		// show notification
 		if (Prefs.enabled) {
 			Util.showNotification(getActivity());
@@ -72,7 +69,6 @@ public class SentMessages
 	public void onPause() {
 		super.onPause();
 		getActivity().unregisterReceiver(broadcastReceiver);
-		mHandler.post(mDisplayMessages);
 	}
 
 	// Context Menu Stuff
@@ -164,7 +160,7 @@ public class SentMessages
 				}
 				refreshState = false;
 				updateRefreshStatus();
-
+				adapter.refresh();
 			} catch (Exception e) {
 				return;
 			}
@@ -205,6 +201,7 @@ public class SentMessages
 				}
 				refreshState = true;
 				updateRefreshStatus();
+				adapter.refresh();
 			} catch (Exception e) {
 				return;
 			}

@@ -113,7 +113,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setHasOptionsMenu(true);
-		
+
 		if (listViewId != 0) {
 			listView = getListView();
 			android.view.View emptyView = getActivity().findViewById(
@@ -128,8 +128,6 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 					getActivity());
 
 			listView.setAdapter(adapter);
-			listView.setFocusable(true);
-			listView.setFocusableInTouchMode(true);
 		}
 	}
 

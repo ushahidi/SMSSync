@@ -592,11 +592,12 @@ containing a value of this type.
         public static final int abs__bright_foreground_inverse_holo_dark=0x7f070006;
         public static final int abs__bright_foreground_inverse_holo_light=0x7f070007;
         public static final int abs__holo_blue_light=0x7f070008;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f070010;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f070011;
-        public static final int abs__primary_text_holo_dark=0x7f070012;
-        public static final int abs__primary_text_holo_light=0x7f070013;
-        public static final int appwidget_text=0x7f070014;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f070011;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f070012;
+        public static final int abs__primary_text_holo_dark=0x7f070013;
+        public static final int abs__primary_text_holo_light=0x7f070014;
+        public static final int appwidget_text=0x7f070015;
+        public static final int failed=0x7f070010;
         public static final int tab_selected=0x7f07000b;
         public static final int tab_text=0x7f07000d;
         public static final int tab_unselected=0x7f07000c;
@@ -865,15 +866,15 @@ containing a value of this type.
         public static final int delete_all_sync_url=0x7f05005a;
         public static final int delete_sync_url=0x7f050059;
         public static final int disableHome=0x7f050009;
+        public static final int failed_sync=0x7f05003b;
         public static final int homeAsUp=0x7f050006;
         public static final int import_sms=0x7f050053;
         public static final int linearLayout1=0x7f05002f;
         public static final int linear_pending_msg=0x7f05002e;
         public static final int listMode=0x7f050002;
-        public static final int list_checkbox=0x7f05003a;
         public static final int menu_bar_separator=0x7f05004a;
-        public static final int message=0x7f050039;
-        public static final int message_date=0x7f05003b;
+        public static final int message=0x7f05003a;
+        public static final int message_date=0x7f050039;
         public static final int message_from=0x7f050038;
         public static final int msg_date=0x7f050031;
         public static final int msg_desc=0x7f050032;
@@ -1130,31 +1131,31 @@ containing a value of this type.
         public static final int version_status=0x7f0a002f;
     }
     public static final class style {
-        public static final int Button=0x7f0b0081;
-        public static final int Button_Action=0x7f0b0082;
-        public static final int Button_Select=0x7f0b0083;
+        public static final int Button=0x7f0b0082;
+        public static final int Button_Action=0x7f0b0083;
+        public static final int Button_Select=0x7f0b0084;
         public static final int DialogWindowTitle_Sherlock=0x7f0b0033;
         public static final int DialogWindowTitle_Sherlock_Light=0x7f0b0034;
-        public static final int EditText=0x7f0b006d;
-        public static final int EditText_CapCharacters=0x7f0b007d;
-        public static final int EditText_CapSentences=0x7f0b007e;
-        public static final int EditText_CapWords=0x7f0b007c;
-        public static final int EditText_Decimal=0x7f0b0072;
-        public static final int EditText_Decimal_Wrap=0x7f0b0073;
-        public static final int EditText_Email=0x7f0b0078;
-        public static final int EditText_Label=0x7f0b006f;
-        public static final int EditText_Multiline=0x7f0b0075;
-        public static final int EditText_Name=0x7f0b0079;
-        public static final int EditText_Number=0x7f0b0070;
-        public static final int EditText_Number_Wrap=0x7f0b0071;
-        public static final int EditText_Password=0x7f0b0077;
-        public static final int EditText_Phone=0x7f0b0074;
-        public static final int EditText_PostalAddress=0x7f0b007f;
-        public static final int EditText_ReadOnly=0x7f0b0080;
-        public static final int EditText_Search=0x7f0b007a;
-        public static final int EditText_SyncUrl=0x7f0b006e;
-        public static final int EditText_Title=0x7f0b007b;
-        public static final int EditText_URL=0x7f0b0076;
+        public static final int EditText=0x7f0b006e;
+        public static final int EditText_CapCharacters=0x7f0b007e;
+        public static final int EditText_CapSentences=0x7f0b007f;
+        public static final int EditText_CapWords=0x7f0b007d;
+        public static final int EditText_Decimal=0x7f0b0073;
+        public static final int EditText_Decimal_Wrap=0x7f0b0074;
+        public static final int EditText_Email=0x7f0b0079;
+        public static final int EditText_Label=0x7f0b0070;
+        public static final int EditText_Multiline=0x7f0b0076;
+        public static final int EditText_Name=0x7f0b007a;
+        public static final int EditText_Number=0x7f0b0071;
+        public static final int EditText_Number_Wrap=0x7f0b0072;
+        public static final int EditText_Password=0x7f0b0078;
+        public static final int EditText_Phone=0x7f0b0075;
+        public static final int EditText_PostalAddress=0x7f0b0080;
+        public static final int EditText_ReadOnly=0x7f0b0081;
+        public static final int EditText_Search=0x7f0b007b;
+        public static final int EditText_SyncUrl=0x7f0b006f;
+        public static final int EditText_Title=0x7f0b007c;
+        public static final int EditText_URL=0x7f0b0077;
         public static final int EmptyStyle=0x7f0b0059;
         /**  Android controls styling 
          */
@@ -1165,7 +1166,7 @@ containing a value of this type.
         public static final int LinearLayout_Vertical=0x7f0b005f;
         public static final int LinearLayout_Vertical_Full=0x7f0b0060;
         public static final int LinearLayout_Vertical_Wrap=0x7f0b0061;
-        public static final int ListBarProgressIndicator=0x7f0b006c;
+        public static final int ListBarProgressIndicator=0x7f0b006d;
         public static final int ListView=0x7f0b0065;
         /**  Tab styling 
          */
@@ -1203,10 +1204,11 @@ containing a value of this type.
         public static final int TextAppearance_Sherlock_Widget_TextView_SpinnerItem=0x7f0b0043;
         public static final int TextView=0x7f0b0066;
         public static final int TextView_Description=0x7f0b0069;
-        public static final int TextView_Empty=0x7f0b006b;
+        public static final int TextView_Empty=0x7f0b006c;
+        public static final int TextView_Failed=0x7f0b006a;
         public static final int TextView_Label=0x7f0b0067;
         public static final int TextView_Title=0x7f0b0068;
-        public static final int TextView_Value=0x7f0b006a;
+        public static final int TextView_Value=0x7f0b006b;
         public static final int Theme_Sherlock=0x7f0b004e;
         public static final int Theme_Sherlock_Dialog=0x7f0b0056;
         public static final int Theme_Sherlock_ForceOverflow=0x7f0b0053;

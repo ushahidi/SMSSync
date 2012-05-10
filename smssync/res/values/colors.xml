@@ -6,4 +6,5 @@
     <color name="tab_text">#FFF</color>
     <color name="title_separator">#AFAFAF</color>
     <color name="transparent">#00000000</color>
+    <color name="failed">#FF0000</color>
 </resources>

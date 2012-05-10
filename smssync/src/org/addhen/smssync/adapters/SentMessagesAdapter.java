@@ -24,7 +24,7 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 			messageDate = (TextView) convertView
 					.findViewById(R.id.sent_message_date);
 			message = (TextView) convertView.findViewById(R.id.sent_message);
-			
+
 		}
 	}
 
@@ -32,13 +32,13 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 
 	public SentMessagesAdapter(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		messages = new SentMessagesModel();
 	}
 
 	@Override
 	public View getView(int position, View view, ViewGroup viewGroup) {
-		View row = inflater.inflate(R.layout.list_sent_messages_item, viewGroup,
-				false);
+		View row = inflater.inflate(R.layout.list_sent_messages_item,
+				viewGroup, false);
 		Widgets widget = (Widgets) row.getTag();
 
 		if (widget == null) {
@@ -56,7 +56,7 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 
 	@Override
 	public void refresh() {
-		 messages = new SentMessagesModel();
+
 		if (messages.load()) {
 			this.setItems(messages.listMessages);
 		}

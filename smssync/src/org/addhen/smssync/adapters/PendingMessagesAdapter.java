@@ -28,8 +28,8 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 			messageDate = (TextView) convertView
 					.findViewById(R.id.message_date);
 			message = (TextView) convertView.findViewById(R.id.message);
-			listCheckBox = (CheckBox) convertView
-					.findViewById(R.id.list_checkbox);
+			//listCheckBox = (CheckBox) convertView
+				//	.findViewById(R.id.list_checkbox);
 		}
 	}
 
