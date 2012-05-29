@@ -745,7 +745,7 @@ public class Util {
     public static boolean processString(String message, String[] keywords) {
         Log.i(CLASS_TAG, "processString(): find words in a string: " + message);
         for (int i = 0; i < keywords.length; i++) {
-            if (message.contains(keywords[i].toLowerCase())) {
+            if (message.toLowerCase().contains(keywords[i].toLowerCase())) {
                 return true;
             }
         }
