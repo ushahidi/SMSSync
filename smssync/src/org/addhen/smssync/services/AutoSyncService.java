@@ -34,27 +34,25 @@ import org.addhen.smssync.util.Util;
  */
 
 public class AutoSyncService extends SmsSyncServices {
-    
-    private static String CLASS_TAG = AutoSyncService.class.getSimpleName();
-    private Intent statusIntent; // holds the status of the sync and sends it to
-    // another smssyncoutbox activity to update the ui
-    
-    public AutoSyncService() {
-        super(CLASS_TAG);
-        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-    }
-    
-    @Override
-    protected void executeTask(Intent intent) {
-        // SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
-        Log.i(CLASS_TAG, "executeTask() executing this task");
-        if (MainApplication.mDb.fetchMessagesCount() > 0) {
-            int status = Util.snycToWeb(AutoSyncService.this,0);
-            statusIntent.putExtra("status", status);
-            sendBroadcast(statusIntent);
-        }
-        
-    }
 
+	private static String CLASS_TAG = AutoSyncService.class.getSimpleName();
+	private Intent statusIntent; // holds the status of the sync and sends it to
+
+	public AutoSyncService() {
+		super(CLASS_TAG);
+		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+	}
+
+	@Override
+	protected void executeTask(Intent intent) {
+		// SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
+		Log.i(CLASS_TAG, "executeTask() executing this task");
+		if (MainApplication.mDb.fetchMessagesCount() > 0) {
+			int status = Util.snycToWeb(AutoSyncService.this, 0);
+			statusIntent.putExtra("status", status);
+			sendBroadcast(statusIntent);
+		}
+
+	}
 
 }
