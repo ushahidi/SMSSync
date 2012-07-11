@@ -89,6 +89,12 @@
     <style name="ListView" parent="@android:style/Widget.ListView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:cacheColorHint">#00000000</item>
+        <item name="android:fadingEdge">none</item>
+        <item name="android:fastScrollEnabled">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollingCache">true</item>
+        <item name="android:smoothScrollbar">true</item>
     </style>
 
     <style name="TextView" parent="@android:style/Widget.TextView">
@@ -111,7 +117,7 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
     </style>
-    
+
     <style name="TextView.Failed">
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">normal</item>
@@ -142,7 +148,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:padding">10sp</item>
     </style>
-    
+
     <style name="EditText.SyncUrl">
         <item name="android:autoText">false</item>
         <item name="android:capitalize">none</item>
@@ -150,6 +156,7 @@
         <item name="android:scrollHorizontally">true</item>
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
     </style>
+
     <style name="EditText.Label">
         <item name="android:layout_width">wrap_content</item>
     </style>

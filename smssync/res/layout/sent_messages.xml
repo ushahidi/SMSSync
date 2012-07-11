@@ -21,9 +21,6 @@
         style="@style/ListView"
         android:cacheColorHint="#00000000"
         android:fadingEdge="none"
-        android:paddingLeft="5px"
-        android:paddingRight="5px"
-        android:paddingTop="11px"
         android:scrollbarStyle="insideOverlay"
         android:scrollbars="vertical"
         android:scrollingCache="true"
@@ -35,6 +32,6 @@
         android:id="@android:id/empty"
         style="@style/TextView.Empty"
         android:text="@string/no_sent_messages"
-        android:textStyle="bold" />
+        android:visibility="gone" />
 
 </RelativeLayout>

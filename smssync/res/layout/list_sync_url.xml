@@ -28,13 +28,7 @@
     <ListView
         android:id="@android:id/list"
         style="@style/ListView"
-        android:layout_below="@+id/start_checkbox"
-        android:cacheColorHint="#00000000"
-        android:fadingEdge="none"
-        android:fastScrollEnabled="true"
-        android:scrollbars="vertical"
-        android:scrollingCache="true"
-        android:smoothScrollbar="true" />
+        android:layout_below="@+id/start_checkbox"/>
 
     <!-- Here is the view to show if the list is emtpy -->
 
@@ -42,6 +36,6 @@
         android:id="@android:id/empty"
         style="@style/TextView.Empty"
         android:text="@string/no_sync_url"
-        android:textStyle="bold" />
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -44,8 +44,9 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
 import android.text.TextUtils;
+
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 /**
  * This class handles all related task for settings on SMSSync. TODO // move the
@@ -53,7 +54,7 @@ import android.text.TextUtils;
  * 
  * @author eyedol
  */
-public class Settings extends PreferenceActivity implements OnSharedPreferenceChangeListener {
+public class Settings extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener {
 
     public static final String KEY_WEBSITE_PREF = "website_preference";
 
@@ -128,7 +129,7 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private static final String URL = "http://smssync.ushahidi.com";
 
     private CharSequence[] autoSyncEntries = {
-            "5 Minutes", "10 Minutes", "15 Minutes", "30 Minutes", "60 Minutes"
+           "1 Minute", "2 Minutes", "3 Minutes", "4 Minutes", "5 Minutes", "10 Minutes", "15 Minutes", "30 Minutes", "60 Minutes"
     };
 
     private CharSequence[] autoSyncValues = {
@@ -235,7 +236,15 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
     private int initializeAutoSyncTime() {
 
         // Initialize the selected time to frequently sync pending messages
-        if (autoSyncTimes.getValue().matches("10")) {
+    	if(autoSyncTimes.getValue().matches("1")) {
+    		return 1;
+    	}else if (autoSyncTimes.getValue().matches("2")) {
+            return 2;
+        }else if (autoSyncTimes.getValue().matches("3")) {
+            return 3;
+        }else if (autoSyncTimes.getValue().matches("4")) {
+            return 4;
+        }else if (autoSyncTimes.getValue().matches("10")) {
             return 10;
         } else if (autoSyncTimes.getValue().matches("15")) {
             return 15;
@@ -255,8 +264,16 @@ public class Settings extends PreferenceActivity implements OnSharedPreferenceCh
      */
     private int initializeAutoTaskTime() {
 
-        // "5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes"
-        if (autoSyncTimes.getValue().matches("10")) {
+        //"1 Minutes", 2 Minutes", "3 Minutes", "4 Minutes", "5 Minutes", "10 Minutes", "15 Minutes", "30", "60 Minutes"
+    	if(autoSyncTimes.getValue().matches("1")) {
+    		return 1;
+    	}else if (autoSyncTimes.getValue().matches("2")) {
+            return 2;
+        }else if (autoSyncTimes.getValue().matches("3")) {
+            return 3;
+        }else if (autoSyncTimes.getValue().matches("4")) {
+            return 4;
+        }else if (autoSyncTimes.getValue().matches("10")) {
             return 10;
         } else if (autoSyncTimes.getValue().matches("15")) {
             return 15;
