@@ -32,8 +32,6 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.addhen.smssync.R;
-
 /**
  * BaseListActivity Add shared functionality that exists between all List
  * Activities

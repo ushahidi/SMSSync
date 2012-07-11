@@ -1,18 +1,15 @@
 package org.addhen.smssync.activities;
 
-import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.TabAdapter;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.fragments.SentMessages;
 import org.addhen.smssync.fragments.SyncUrl;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-public class MessagesTabActivity extends SherlockFragmentActivity {
+public class MessagesTabActivity extends FragmentActivity {
 
 	private ViewPager mViewPager;
 

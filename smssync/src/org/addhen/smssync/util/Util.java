@@ -38,7 +38,6 @@ import java.util.regex.Pattern;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessagesTabActivity2;
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
 import org.addhen.smssync.data.Database;
 import org.addhen.smssync.data.Messages;
 import org.addhen.smssync.net.MainHttpClient;
@@ -46,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
