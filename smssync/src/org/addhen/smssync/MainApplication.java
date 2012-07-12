@@ -20,7 +20,7 @@
 
 package org.addhen.smssync;
 
-import org.addhen.smssync.data.Database;
+import org.addhen.smssync.database.Database;
 import org.addhen.smssync.net.MainHttpClient;
 
 import android.app.Application;

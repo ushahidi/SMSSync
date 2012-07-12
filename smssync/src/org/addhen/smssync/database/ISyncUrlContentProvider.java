@@ -1,4 +1,4 @@
-package org.addhen.smssync.data;
+package org.addhen.smssync.database;
 
 public interface ISyncUrlContentProvider {
 

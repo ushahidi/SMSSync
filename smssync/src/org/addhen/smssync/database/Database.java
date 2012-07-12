@@ -18,7 +18,7 @@
  ** 
  **/
 
-package org.addhen.smssync.data;
+package org.addhen.smssync.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;

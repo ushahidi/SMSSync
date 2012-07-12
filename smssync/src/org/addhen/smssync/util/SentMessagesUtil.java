@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.data.Messages;
+import org.addhen.smssync.database.Messages;
 
 import android.content.Context;
 import android.util.Log;

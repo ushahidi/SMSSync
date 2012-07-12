@@ -1,5 +1,5 @@
 
-package org.addhen.smssync.data;
+package org.addhen.smssync.database;
 
 /**
  * Class to handle set and getters.

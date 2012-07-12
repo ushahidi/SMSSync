@@ -8,8 +8,8 @@ import org.addhen.smssync.MessagesTabActivity2;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.data.Messages;
-import org.addhen.smssync.data.Database;
+import org.addhen.smssync.database.Database;
+import org.addhen.smssync.database.Messages;
 import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
