@@ -11,72 +11,64 @@ import android.database.Cursor;
 
 public class SyncUrlModel extends Model {
 
-	private String message;
+	private String title;
 
-	private String messageFrom;
+	private String keywords;
 
-	private String messageDate;
+	private int status;
 
-	private int messageId;
+	private int id;
 
 	public List<SyncUrlModel> listMessages;
 
 	/**
-	 * Set the content of the message. More like the body of the SMS message.
+	 * Set the title of the sync URL.
 	 * 
-	 * @param String
-	 *            messageBody - The content of the SMS message.
+	 * @param String title - The title of the of the URL.
 	 * @return void
 	 */
-	public void setMessage(String message) {
-		this.message = message;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	/**
-	 * Get the content of the message.
+	 * Get the title of the sync URL.
 	 * 
 	 * @return String
 	 */
-	public String getMessage() {
-		return this.message;
+	public String getTitle() {
+		return this.title;
 	}
 
 	/**
 	 * Set the address of the SMS message.
 	 * 
-	 * @param String
-	 *            messageFrom
+	 * @param String keywords
+	 *           
 	 * @return void
 	 */
-	public void setMessageFrom(String messageFrom) {
-		this.messageFrom = messageFrom;
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
 	}
 
 	/**
-	 * Get the address of the SMS Message
+	 * Get the keywords for the sync URL
 	 * 
 	 * @return String
 	 */
-	public String getMessageFrom() {
-		return this.messageFrom;
+	public String getKeywords() {
+		return this.keywords;
 	}
 
 	/**
-	 * Set the date of the message.
+	 * Set the status of a sync url. Whether active or inactive
 	 * 
-	 * @param String
-	 *            messageDate - The timestamp of the message. To be changed into
-	 *            human readable.
+	 * @param int status 
+	 *            
 	 * @return void
 	 */
-	public void setMessageDate(String messageDate) {
-		try {
-			this.messageDate = Util.formatDateTime(Long.parseLong(messageDate),
-					"MMM dd, yyyy 'at' hh:mm a");
-
-		} catch (NumberFormatException e) {
-			this.messageDate = messageDate;
-		}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	/**
@@ -84,27 +76,27 @@ public class SyncUrlModel extends Model {
 	 * 
 	 * @return String
 	 */
-	public String getMessageDate() {
-		return this.messageDate;
+	public int getStatus() {
+		return this.status;
 	}
 
 	/**
-	 * Set the message ID.
+	 * Set the unique ID for the sync URL.
 	 * 
-	 * @param int messageId - The message ID.
+	 * @param int id - The sync URL ID.
 	 * @return void
 	 */
-	public void setMessageId(int messageId) {
-		this.messageId = messageId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**
-	 * Get the message ID.
+	 * Get the  unique ID for a particular sync URL.
 	 * 
 	 * @return int
 	 */
-	public int getMessageId() {
-		return this.messageId;
+	public int getId() {
+		return this.id;
 	}
 
 	/**
