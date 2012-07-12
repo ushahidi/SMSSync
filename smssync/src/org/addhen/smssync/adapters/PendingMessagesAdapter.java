@@ -1,25 +1,24 @@
 package org.addhen.smssync.adapters;
 
-import org.addhen.smssync.models.MessagesModel;
-
 import org.addhen.smssync.R;
+import org.addhen.smssync.models.MessagesModel;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 
-	public class Widgets extends org.addhen.smssync.views.View {
+	public class Widgets extends org.addhen.smssync.views.View implements View.OnClickListener{
 		TextView messageFrom;
 
 		TextView messageDate;
 
 		TextView message;
 
-		CheckBox listCheckBox;
+		CheckedTextView listCheckBox;
 
 		public Widgets(View convertView) {
 			super(convertView);
@@ -28,8 +27,14 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 			messageDate = (TextView) convertView
 					.findViewById(R.id.message_date);
 			message = (TextView) convertView.findViewById(R.id.message);
-			//listCheckBox = (CheckBox) convertView
-				//	.findViewById(R.id.list_checkbox);
+			listCheckBox = (CheckedTextView) convertView
+					.findViewById(R.id.pending_checkbox);
+			//listCheckBox.setOnClickListener(this);
+		}
+		
+		@Override
+		public void onClick(View v) {
+			//listCheckBox.setChecked(true);
 		}
 	}
 

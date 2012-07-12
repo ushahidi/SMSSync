@@ -116,18 +116,16 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 
 		if (listViewId != 0) {
 			listView = getListView();
-			android.view.View emptyView = getActivity().findViewById(
-					android.R.id.empty);
-			if (emptyView != null) {
-				listView.setEmptyView(emptyView);
-			}
+			setEmptyText(getString(R.string.empty_list));
 
 			view = Objects.createInstance(viewClass, Activity.class,
 					getActivity());
 			adapter = Objects.createInstance(adapterClass, Context.class,
 					getActivity());
-
-			listView.setAdapter(adapter);
+			
+			setListAdapter(adapter);
+			setListShown(true);
+			
 		}
 	}
 
@@ -138,16 +136,6 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 			inflater.inflate(this.menu, menu);
 		}
 
-	}
-
-	@Override
-	public android.view.View onCreateView(LayoutInflater inflater,
-			ViewGroup container, Bundle savedInstanceState) {
-		android.view.View root = null;
-		if (layout != 0) {
-			root = inflater.inflate(layout, container, false);
-		}
-		return root;
 	}
 
 	/**

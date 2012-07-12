@@ -46,16 +46,14 @@
         android:layout_below="@+id/message"
         android:layout_toLeftOf="@android:id/text1"
         android:ellipsize="end"
-        android:lines="1"
-        android:text="failed" />
+        android:lines="1"/>
 
     <CheckedTextView
-        android:id="@android:id/text1"
+        android:id="@+id/pending_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:layout_weight="1"
         android:gravity="center_vertical|center_horizontal"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:checkMark="?android:attr/listChoiceIndicatorMultiple" />

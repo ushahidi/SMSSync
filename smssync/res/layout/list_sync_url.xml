@@ -26,16 +26,8 @@
     <!-- List pending messages -->
 
     <ListView
-        android:id="@android:id/list"
+        android:id="@id/android:list"
         style="@style/ListView"
-        android:layout_below="@+id/start_checkbox"/>
-
-    <!-- Here is the view to show if the list is emtpy -->
-
-    <TextView
-        android:id="@android:id/empty"
-        style="@style/TextView.Empty"
-        android:text="@string/no_sync_url"
-        android:visibility="gone" />
+        android:layout_below="@+id/start_checkbox" />
 
 </RelativeLayout>

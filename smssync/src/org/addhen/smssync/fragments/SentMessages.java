@@ -50,6 +50,7 @@ public class SentMessages
 		super.onActivityCreated(savedInstanceState);
 		Prefs.loadPreferences(getActivity());
 		model = new SentMessagesModel();
+		setEmptyText(getString(R.string.no_sent_messages));
 		// show notification
 		if (Prefs.enabled) {
 			Util.showNotification(getActivity());

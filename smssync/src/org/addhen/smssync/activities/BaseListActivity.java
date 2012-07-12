@@ -88,13 +88,14 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
 
 		if (listViewId != 0) {
 			listView = findListViewById(listViewId);
-			if (headerView() != null) {
-				listView.addHeaderView(headerView());
-			}
+			
 			listView.setOnItemClickListener(this);
 			android.view.View emptyView = findViewById(android.R.id.empty);
 			if (emptyView != null) {
+				log("emptyview is set");
 				listView.setEmptyView(emptyView);
+			} else  {
+				log("emptyview is not empty");
 			}
 
 			adapter = Objects.createInstance(adapterClass, Context.class, this);
@@ -110,8 +111,6 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
 	 *            true is successfully loaded
 	 */
 	protected abstract void onLoaded(boolean success);
-
-	protected abstract android.view.View headerView();
 
 	@Override
 	protected void onResume() {

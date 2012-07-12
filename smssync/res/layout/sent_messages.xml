@@ -17,21 +17,7 @@
     <!-- List sent messages -->
 
     <ListView
-        android:id="@android:id/list"
-        style="@style/ListView"
-        android:cacheColorHint="#00000000"
-        android:fadingEdge="none"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="vertical"
-        android:scrollingCache="true"
-        android:smoothScrollbar="true" />
-
-    <!-- Here is the view to show if the list is emtpy -->
-
-    <TextView
-        android:id="@android:id/empty"
-        style="@style/TextView.Empty"
-        android:text="@string/no_sent_messages"
-        android:visibility="gone" />
+        android:id="@id/android:list"
+        style="@style/ListView"/>
 
 </RelativeLayout>

@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
 
@@ -51,9 +52,11 @@ public class SyncUrl extends
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
 		setHasOptionsMenu(true);
 		registerForContextMenu(listView);
+		setEmptyText(getString(R.string.no_sync_url));
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		listView.setItemsCanFocus(false);
 	}
 
 	@Override
