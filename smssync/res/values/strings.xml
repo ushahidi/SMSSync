@@ -153,4 +153,6 @@
     <string name="cancel">Cancel</string>
     <string name="failed_to_add_sync_url">Failed to add the sync URL</string>
     <string name="failed_to_update_sync_url">Failed to update sync URL</string>
+    <string name="sync_url_deleted">Sync URL successfully deleted.</string>
+    <string name="sync_url_deleted_failed">Sync URL couldn\'t be deleted.</string>
 </resources>

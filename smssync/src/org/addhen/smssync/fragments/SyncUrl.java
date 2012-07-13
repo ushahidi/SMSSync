@@ -43,7 +43,7 @@ public class SyncUrl extends
 	private MenuItem refresh;
 
 	private boolean refreshState = false;
-	
+
 	private boolean edit = false;
 
 	public SyncUrl() {
@@ -264,58 +264,6 @@ public class SyncUrl extends
 		}
 	};
 
-	// Synchronize all pending messages.
-	final Runnable mSyncMessages = new Runnable() {
-		public void run() {
-			Prefs.loadPreferences(getActivity());
-			if (Prefs.enabled) {
-				int result = 0;
-				try {
-					if (result == 0) {
-
-						toastLong(R.string.sending_succeeded);
-					} else if (result == 1) {
-						toastLong(R.string.sending_failed);
-					} else if (result == 2) {
-						toastLong(R.string.no_messages_to_sync);
-					}
-
-				} catch (Exception e) {
-					return;
-				}
-			} else {
-				toastLong(R.string.smssync_not_enabled);
-			}
-		}
-	};
-
-	/**
-	 * Synchronize all pending messages by message id. Which means it
-	 * synchronizes messages individually.
-	 */
-	final Runnable mSyncMessagesById = new Runnable() {
-		public void run() {
-			Prefs.loadPreferences(getActivity());
-			if (Prefs.enabled) {
-				int result = 0;
-				try {
-					if (result == 0) {
-						toastLong(R.string.sending_succeeded);
-						showSyncUrl();
-					} else if (result == 1) {
-						toastLong(R.string.sync_failed);
-					} else if (result == 2) {
-						toastLong(R.string.no_messages_to_sync);
-					}
-				} catch (Exception e) {
-					return;
-				}
-			} else {
-				toastLong(R.string.smssync_not_enabled);
-			}
-		}
-	};
-
 	/**
 	 * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
 	 * deleted.
@@ -339,10 +287,10 @@ public class SyncUrl extends
 				} else {
 					if (result) {
 
-						toastLong(R.string.messages_deleted);
+						toastLong(R.string.sync_url_deleted);
 						showSyncUrl();
 					} else {
-						toastLong(R.string.messages_deleted_failed);
+						toastLong(R.string.sync_url_deleted_failed);
 					}
 				}
 

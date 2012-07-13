@@ -26,7 +26,7 @@ public class AddSyncUrl {
 	 * 
 	 * @param dialogViews
 	 */
-	public AddSyncUrl(android.view.View dialogViews) {
+	public AddSyncUrl(final android.view.View dialogViews) {
 		title = (EditText) dialogViews.findViewById(R.id.sync_url_title);
 		keywords = (EditText) dialogViews.findViewById(R.id.sync_url_keyword);
 		secret = (EditText) dialogViews.findViewById(R.id.sync_url_secret);
@@ -36,7 +36,7 @@ public class AddSyncUrl {
 			public boolean onTouch(View v, MotionEvent event) {
 
 				if (TextUtils.isEmpty(url.getText().toString())) {
-					url.setText("http://");
+					url.setText(dialogViews.getContext().getString(R.string.http_text));
 				}
 
 				return false;
