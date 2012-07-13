@@ -1,27 +1,81 @@
-
 package org.addhen.smssync.views;
 
+import java.util.ArrayList;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.SyncUrlModel;
+
+import android.text.TextUtils;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.EditText;
 
 public class AddSyncUrl {
 
-    private EditText mMapName;
+	public EditText title;
 
-    private EditText mMapDescription;
+	public EditText keywords;
 
-    private EditText mMapUrl;
+	public EditText url;
 
-    private int mMapId;
+	public EditText secret;
 
+	/**
+	 * Handles views for the add dialog box
+	 * 
+	 * @param dialogViews
+	 */
+	public AddSyncUrl(android.view.View dialogViews) {
+		title = (EditText) dialogViews.findViewById(R.id.sync_url_title);
+		keywords = (EditText) dialogViews.findViewById(R.id.sync_url_keyword);
+		secret = (EditText) dialogViews.findViewById(R.id.sync_url_secret);
+		url = (EditText) dialogViews.findViewById(R.id.sync_url);
+		url.setOnTouchListener(new OnTouchListener() {
 
-    /**
-     * Handles views for the add dialog box
-     * 
-     * @param dialogViews
-     */
-    public AddSyncUrl(android.view.View dialogViews) {
-       
-    }
+			public boolean onTouch(View v, MotionEvent event) {
 
-   
+				if (TextUtils.isEmpty(url.getText().toString())) {
+					url.setText("http://");
+				}
+
+				return false;
+			}
+
+		});
+
+	}
+
+	/**
+	 * Add Sync URL to database
+	 * 
+	 * @return boolean
+	 */
+	public boolean addSyncUrl() {
+		SyncUrlModel syncUrl = new SyncUrlModel();
+		syncUrl.setKeywords(keywords.getText().toString());
+		syncUrl.setSecret(secret.getText().toString());
+		syncUrl.setTitle(title.getText().toString());
+		syncUrl.setUrl(url.getText().toString());
+		syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
+		syncUrl.listSyncUrl.add(syncUrl);
+		return syncUrl.save();
+	}
+
+	/**
+	 * Add Sync URL to database
+	 * 
+	 * @return boolean
+	 */
+	public boolean updateSyncUrl(int id) {
+		SyncUrlModel syncUrl = new SyncUrlModel();
+		syncUrl.setId(id);
+		syncUrl.setKeywords(keywords.getText().toString());
+		syncUrl.setSecret(secret.getText().toString());
+		syncUrl.setTitle(title.getText().toString());
+		syncUrl.setUrl(url.getText().toString());
+		syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
+		syncUrl.listSyncUrl.add(syncUrl);
+		return syncUrl.update(syncUrl);
+	}
 }

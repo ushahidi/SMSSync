@@ -74,7 +74,7 @@ public class Database {
 
     private static final String SENT_MESSAGES_TABLE = "sent_messages";
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // NOTE: the message ID is used as the row ID.
     // Furthermore, if a row already exists, an insert will replace
@@ -92,6 +92,8 @@ public class Database {
             + " DATE NOT NULL " + ")";
 
     private final Context mContext;
+    
+    public static SyncUrlContentProvider mSyncUrlContentProvider; // CP
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper(Context context) {
@@ -102,6 +104,7 @@ public class Database {
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(MESSAGES_TABLE_CREATE);
             db.execSQL(SENT_MESSAGES_TABLE_CREATE);
+            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
         }
 
         @Override
@@ -132,6 +135,9 @@ public class Database {
             db.execSQL(String.format("INSERT INTO %s (%s) SELECT %s FROM temp_%s",
                     SENT_MESSAGES_TABLE, sentMessagesCols, sentMessagesCols, SENT_MESSAGES_TABLE));
             db.execSQL("DROP TABLE IF EXISTS temp_" + SENT_MESSAGES_TABLE);
+            
+            //upgrade syncurl table
+            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
             onCreate(db);
         }
 
@@ -183,7 +189,7 @@ public class Database {
     public Database open() throws SQLException {
         mDbHelper = new DatabaseHelper(mContext);
         mDb = mDbHelper.getWritableDatabase();
-
+        mSyncUrlContentProvider = new SyncUrlContentProvider(mDb);
         return this;
     }
 

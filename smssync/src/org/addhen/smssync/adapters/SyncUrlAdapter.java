@@ -11,22 +11,25 @@ import android.widget.TextView;
 
 public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 
-	public class Widgets extends org.addhen.smssync.views.View implements View.OnClickListener {
-		TextView messageFrom;
+	public class Widgets extends org.addhen.smssync.views.View implements
+			View.OnClickListener {
 
-		TextView messageDate;
+		TextView title;
 
-		TextView message;
+		TextView keywords;
+
+		TextView url;
+
+		TextView secret;
 
 		CheckedTextView listCheckBox;
 
 		public Widgets(View convertView) {
 			super(convertView);
-			messageFrom = (TextView) convertView
-					.findViewById(R.id.sync_title);
-			messageDate = (TextView) convertView
-					.findViewById(R.id.sync_url);
-			message = (TextView) convertView.findViewById(R.id.sync_keyword);
+			title = (TextView) convertView.findViewById(R.id.sync_title);
+			url = (TextView) convertView.findViewById(R.id.sync_url);
+			keywords = (TextView) convertView.findViewById(R.id.sync_keyword);
+			secret = (TextView)convertView.findViewById(R.id.sync_secret);
 			listCheckBox = (CheckedTextView) convertView
 					.findViewById(R.id.sync_checkbox);
 			listCheckBox.setOnClickListener(this);
@@ -38,11 +41,10 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 		}
 	}
 
-	private SyncUrlModel messages;
+	private SyncUrlModel syncUrls;
 
 	public SyncUrlAdapter(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -57,18 +59,20 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 		}
 
 		// initialize view with content
-		widget.messageFrom.setText(getItem(position).getMessageFrom());
-		widget.messageDate.setText(getItem(position).getMessageDate());
-		widget.message.setText(getItem(position).getMessage());
-		
+		widget.title.setText(getItem(position).getTitle());
+		widget.keywords.setText(getItem(position).getKeywords());
+		log("URL: "+getItem(position).getUrl());
+		widget.url.setText(getItem(position).getUrl());
+		widget.secret.setText(getItem(position).getSecret());
+
 		return row;
 	}
 
 	@Override
 	public void refresh() {
-		messages = new SyncUrlModel();
-		if (messages.load()) {
-			this.setItems(messages.listMessages);
+		syncUrls = new SyncUrlModel();
+		if (syncUrls.load()) {
+			this.setItems(syncUrls.listSyncUrl);
 		}
 	}
 

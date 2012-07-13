@@ -1,5 +1,7 @@
 package org.addhen.smssync.fragments;
 
+import java.util.List;
+
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
@@ -36,11 +38,13 @@ public class SyncUrl extends
 
 	private SyncUrlModel model;
 
-	private int messageId = 0;
+	private int id = 0;
 
 	private MenuItem refresh;
 
 	private boolean refreshState = false;
+	
+	private boolean edit = false;
 
 	public SyncUrl() {
 		super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
@@ -96,7 +100,7 @@ public class SyncUrl extends
 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		messageId = adapter.getItem(info.position).getMessageId();
+		id = adapter.getItem(info.position).getId();
 		boolean result = performAction(item, info.position);
 
 		if (!result) {
@@ -110,10 +114,11 @@ public class SyncUrl extends
 
 		if (item.getItemId() == R.id.context_edit_sync_url) {
 			// Delete by ID
-			performDeleteById();
+			edit = true;
+			addSyncUrl();
 			return (true);
 		} else if (item.getItemId() == R.id.context_delete_sync_url) {
-			performDeleteAll();
+			performDeleteById();
 			return (true);
 		}
 		return (false);
@@ -123,6 +128,7 @@ public class SyncUrl extends
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
 		if (item.getItemId() == R.id.add_sync_url) {
+			edit = false;
 			addSyncUrl();
 			return (true);
 		} else if (item.getItemId() == R.id.delete_sync_url) {
@@ -197,12 +203,17 @@ public class SyncUrl extends
 	public void addSyncUrl() {
 		LayoutInflater factory = LayoutInflater.from(getActivity());
 		final View textEntryView = factory.inflate(R.layout.add_sync_url, null);
-		final AddSyncUrl addMapView = new AddSyncUrl(textEntryView);
-		final boolean edit = false;
+		final AddSyncUrl addSyncUrl = new AddSyncUrl(textEntryView);
 		// if edit was selected at the context menu, populate fields
-		// with existing map details
+		// with existing sync URL details
 		if (edit) {
-			// TODO edit stuff
+			final List<SyncUrlModel> listSyncUrl = model.loadById(id);
+			if (listSyncUrl != null && listSyncUrl.size() > 0) {
+				addSyncUrl.title.setText(listSyncUrl.get(0).getTitle());
+				addSyncUrl.url.setText(listSyncUrl.get(0).getUrl());
+				addSyncUrl.secret.setText(listSyncUrl.get(0).getSecret());
+				addSyncUrl.keywords.setText(listSyncUrl.get(0).getKeywords());
+			}
 		}
 
 		final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
@@ -217,10 +228,18 @@ public class SyncUrl extends
 									int whichButton) {
 								// edit was selected
 								if (edit) {
-
-									// update
+									if (addSyncUrl.updateSyncUrl(id)) {
+										mHandler.post(mUpdateListView);
+									} else {
+										toastLong(R.string.failed_to_update_sync_url);
+									}
 								} else {
 									// add a new entry
+									if (addSyncUrl.addSyncUrl()) {
+										mHandler.post(mUpdateListView);
+									} else {
+										toastLong(R.string.failed_to_add_sync_url);
+									}
 								}
 
 							}
@@ -347,7 +366,7 @@ public class SyncUrl extends
 			if (adapter.getCount() == 0) {
 				deleted = 1;
 			} else {
-				result = model.deleteSyncUrlById(messageId);
+				result = model.deleteSyncUrlById(id);
 			}
 
 			try {

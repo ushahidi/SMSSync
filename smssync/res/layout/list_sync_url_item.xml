@@ -44,6 +44,16 @@
         android:layout_toLeftOf="@+id/sync_checkbox"
         android:paddingLeft="3dp"
         android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/sync_secret"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/sync_keyword"
+        android:layout_toLeftOf="@+id/sync_checkbox"
+        android:paddingLeft="3dp"
+        android:textStyle="bold" />
 
     <CheckedTextView
         android:id="@+id/sync_checkbox"

@@ -1,13 +1,8 @@
 package org.addhen.smssync.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.database.Database;
-import org.addhen.smssync.util.Util;
-
-import android.database.Cursor;
 
 public class SyncUrlModel extends Model {
 
@@ -15,16 +10,21 @@ public class SyncUrlModel extends Model {
 
 	private String keywords;
 
+	private String url;
+
+	private String secret;
+
 	private int status;
 
 	private int id;
 
-	public List<SyncUrlModel> listMessages;
+	public List<SyncUrlModel> listSyncUrl;
 
 	/**
 	 * Set the title of the sync URL.
 	 * 
-	 * @param String title - The title of the of the URL.
+	 * @param String
+	 *            title - The title of the of the URL.
 	 * @return void
 	 */
 	public void setTitle(String title) {
@@ -41,10 +41,31 @@ public class SyncUrlModel extends Model {
 	}
 
 	/**
+	 * Set the sync URL.
+	 * 
+	 * @param String
+	 *            url The sync URL.
+	 * @return void
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	/**
+	 * Get the sync URL.
+	 * 
+	 * @return String
+	 */
+	public String getUrl() {
+		return this.url;
+	}
+
+	/**
 	 * Set the address of the SMS message.
 	 * 
-	 * @param String keywords
-	 *           
+	 * @param String
+	 *            keywords
+	 * 
 	 * @return void
 	 */
 	public void setKeywords(String keywords) {
@@ -61,10 +82,32 @@ public class SyncUrlModel extends Model {
 	}
 
 	/**
+	 * Set the secret key attached to the sync URL.
+	 * 
+	 * @param String
+	 *            secret
+	 * 
+	 * 
+	 * @return void
+	 */
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+
+	/**
+	 * Get the secret key attached to the sync URL.
+	 * 
+	 * @return String
+	 */
+	public String getSecret() {
+		return this.secret;
+	}
+
+	/**
 	 * Set the status of a sync url. Whether active or inactive
 	 * 
-	 * @param int status 
-	 *            
+	 * @param int status
+	 * 
 	 * @return void
 	 */
 	public void setStatus(int status) {
@@ -91,7 +134,7 @@ public class SyncUrlModel extends Model {
 	}
 
 	/**
-	 * Get the  unique ID for a particular sync URL.
+	 * Get the unique ID for a particular sync URL.
 	 * 
 	 * @return int
 	 */
@@ -105,8 +148,7 @@ public class SyncUrlModel extends Model {
 	 * @return boolean
 	 */
 	public boolean deleteAllSyncUrl() {
-
-		return MainApplication.mDb.deleteAllSentMessages();
+		return Database.mSyncUrlContentProvider.deleteAllSyncUrl();
 	}
 
 	/**
@@ -115,64 +157,37 @@ public class SyncUrlModel extends Model {
 	 * @param int messageId - Message to be deleted ID
 	 * @return boolean
 	 */
-	public boolean deleteSyncUrlById(int messageId) {
-		return MainApplication.mDb.deleteSentMessagesById(messageId);
+	public boolean deleteSyncUrlById(int id) {
+		return Database.mSyncUrlContentProvider.deleteSyncUrlById(id);
 	}
 
 	@Override
 	public boolean load() {
 
-		listMessages = new ArrayList<SyncUrlModel>();
-		Cursor cursor;
-		cursor = MainApplication.mDb.fetchAllSentMessages();
-
-		String messagesFrom;
-		String messagesDate;
-		String messagesBody;
-		int messageId;
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				int messagesIdIndex = cursor
-						.getColumnIndexOrThrow(Database.SENT_MESSAGES_ID);
-				int messagesFromIndex = cursor
-						.getColumnIndexOrThrow(Database.SENT_MESSAGES_FROM);
-				int messagesDateIndex = cursor
-						.getColumnIndexOrThrow(Database.SENT_MESSAGES_DATE);
-
-				int messagesBodyIndex = cursor
-						.getColumnIndexOrThrow(Database.SENT_MESSAGES_BODY);
-
-				do {
-
-					SyncUrlModel messages = new SyncUrlModel();
-
-					messageId = Util.toInt(cursor.getString(messagesIdIndex));
-					messages.setMessageId(messageId);
-
-					messagesFrom = Util.capitalizeString(cursor
-							.getString(messagesFromIndex));
-					messages.setMessageFrom(messagesFrom);
-
-					messagesDate = cursor.getString(messagesDateIndex);
-					messages.setMessageDate(messagesDate);
-
-					messagesBody = cursor.getString(messagesBodyIndex);
-					messages.setMessage(messagesBody);
-
-					listMessages.add(messages);
-
-				} while (cursor.moveToNext());
-			}
-
-			cursor.close();
+		listSyncUrl = Database.mSyncUrlContentProvider.fetchSyncUrl();
+		if (listSyncUrl != null && listSyncUrl.size() > 0)
 			return true;
-		}
+
 		return false;
+	}
+
+	public List<SyncUrlModel> loadById(int id) {
+		return Database.mSyncUrlContentProvider.fetchSyncUrlById(id);
+
 	}
 
 	@Override
 	public boolean save() {
-		// TODO Auto-generated method stub
+		if (listSyncUrl != null && listSyncUrl.size() > 0) {
+			return Database.mSyncUrlContentProvider.addSyncUrl(listSyncUrl);
+		}
+		return false;
+	}
+
+	public boolean update(SyncUrlModel syncUrl) {
+		if (syncUrl != null) {
+			return Database.mSyncUrlContentProvider.updateSyncUrl(syncUrl);
+		}
 		return false;
 	}
 

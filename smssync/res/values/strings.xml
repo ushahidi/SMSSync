@@ -151,4 +151,6 @@
     <string name="add_sync_url">Add Sync URL</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="failed_to_add_sync_url">Failed to add the sync URL</string>
+    <string name="failed_to_update_sync_url">Failed to update sync URL</string>
 </resources>
