@@ -1,3 +1,23 @@
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2012 Ushahidi Inc
+ ** All rights reserved
+ ** Contact: team@ushahidi.com
+ ** Website: http://www.ushahidi.com
+ **
+ ** GNU Lesser General Public License Usage
+ ** This file may be used under the terms of the GNU Lesser
+ ** General Public License version 3 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.LGPL included in the
+ ** packaging of this file. Please review the following information to
+ ** ensure the GNU Lesser General Public License version 3 requirements
+ ** will be met: http://www.gnu.org/licenses/lgpl.html.
+ **
+ **
+ ** If you have questions regarding the use of this file, please contact
+ ** Ushahidi developers at team@ushahidi.com.
+ **
+ *****************************************************************************/
+
 package org.addhen.smssync.models;
 
 import java.util.List;
@@ -152,9 +172,9 @@ public class SyncUrlModel extends Model {
 	}
 
 	/**
-	 * Delete sent messages by id
+	 * Delete sync URL by id
 	 * 
-	 * @param int messageId - Message to be deleted ID
+	 * @param int id The unique ID to use to delete the sync URL.
 	 * @return boolean
 	 */
 	public boolean deleteSyncUrlById(int id) {
@@ -173,7 +193,10 @@ public class SyncUrlModel extends Model {
 
 	public List<SyncUrlModel> loadById(int id) {
 		return Database.mSyncUrlContentProvider.fetchSyncUrlById(id);
+	}
 
+	public List<SyncUrlModel> loadByStatus(int status) {
+		return Database.mSyncUrlContentProvider.fetchSyncUrlByStatus(status);
 	}
 
 	@Override
@@ -184,11 +207,31 @@ public class SyncUrlModel extends Model {
 		return false;
 	}
 
+	/**
+	 * Update an existing sync URL
+	 * 
+	 * @param syncUrl
+	 * 
+	 * @return boolean
+	 */
 	public boolean update(SyncUrlModel syncUrl) {
 		if (syncUrl != null) {
 			return Database.mSyncUrlContentProvider.updateSyncUrl(syncUrl);
 		}
 		return false;
+	}
+
+	/**
+	 * Update status of a sync URL
+	 * 
+	 * @param int stauts The 0 for inactive and 1 for active. This determine
+	 *        whether the sync URL is active or not.
+	 * @param int id The unique id of the sync URL to update its status.
+	 * 
+	 * @return
+	 */
+	public boolean updateStatus(SyncUrlModel syncUrl) {
+		return Database.mSyncUrlContentProvider.updateStatus(syncUrl);
 	}
 
 }

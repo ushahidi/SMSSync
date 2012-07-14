@@ -1,5 +1,5 @@
-/**
- ** Copyright (c) 2010 Ushahidi Inc
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2012 Ushahidi Inc
  ** All rights reserved
  ** Contact: team@ushahidi.com
  ** Website: http://www.ushahidi.com
@@ -16,7 +16,7 @@
  ** If you have questions regarding the use of this file, please contact
  ** Ushahidi developers at team@ushahidi.com.
  **
- **/
+ *****************************************************************************/
 
 package org.addhen.smssync.adapters;
 

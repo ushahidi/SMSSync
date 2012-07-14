@@ -1,8 +1,27 @@
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2012 Ushahidi Inc
+ ** All rights reserved
+ ** Contact: team@ushahidi.com
+ ** Website: http://www.ushahidi.com
+ **
+ ** GNU Lesser General Public License Usage
+ ** This file may be used under the terms of the GNU Lesser
+ ** General Public License version 3 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.LGPL included in the
+ ** packaging of this file. Please review the following information to
+ ** ensure the GNU Lesser General Public License version 3 requirements
+ ** will be met: http://www.gnu.org/licenses/lgpl.html.
+ **
+ **
+ ** If you have questions regarding the use of this file, please contact
+ ** Ushahidi developers at team@ushahidi.com.
+ **
+ *****************************************************************************/
+
 package org.addhen.smssync.fragments;
 
 import java.util.List;
 
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
@@ -23,6 +42,7 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -122,6 +142,25 @@ public class SyncUrl extends
 			return (true);
 		}
 		return (false);
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		l.setItemChecked(position, true);
+		// is the view checkbox
+		if (v.getId() == R.id.sync_checkbox) {
+			//log("Hello world!");
+			CheckedTextView checkBox = (CheckedTextView) v;
+			// check if the checkbox is checked
+			if (checkBox.isChecked()) {
+				adapter.getItem(position).setStatus(1);
+				adapter.updateStatus(position);
+
+			} else {
+				adapter.getItem(position).setStatus(0);
+				adapter.updateStatus(position);
+			}
+		}
 	}
 
 	@Override
@@ -275,13 +314,13 @@ public class SyncUrl extends
 
 			int deleted = 0;
 
-			if (adapter.getCount() == 0) {
-				deleted = 1;
-			} else {
-				result = model.deleteAllSyncUrl();
-			}
-
 			try {
+				if (adapter.getCount() == 0) {
+					deleted = 1;
+				} else {
+					result = model.deleteAllSyncUrl();
+				}
+
 				if (deleted == 1) {
 					toastLong(R.string.no_messages_to_delete);
 				} else {
@@ -301,6 +340,21 @@ public class SyncUrl extends
 	};
 
 	/**
+	 * Update status of a sync URL.
+	 */
+	final Runnable mUpdateStatus = new Runnable() {
+		public void run() {
+
+			try {
+				// TODO:: update status.
+				showSelectedItems();
+			} catch (Exception e) {
+				return;
+			}
+		}
+	};
+
+	/**
 	 * Delete individual messages 0 - Successfully deleted. 1 - There is nothing
 	 * to be deleted.
 	 */
@@ -310,14 +364,13 @@ public class SyncUrl extends
 			boolean result = false;
 
 			int deleted = 0;
-
-			if (adapter.getCount() == 0) {
-				deleted = 1;
-			} else {
-				result = model.deleteSyncUrlById(id);
-			}
-
 			try {
+				if (adapter.getCount() == 0) {
+					deleted = 1;
+				} else {
+					result = model.deleteSyncUrlById(id);
+				}
+
 				if (deleted == 1) {
 					toastLong(R.string.no_messages_to_delete);
 				} else {
@@ -368,6 +421,14 @@ public class SyncUrl extends
 		syncPendingMessagesServiceIntent.putExtra(
 				ServicesConstants.MESSEAGE_ID, messagesId);
 		getActivity().startService(syncPendingMessagesServiceIntent);
+	}
+
+	private void showSelectedItems() {
+		// an array that contains all checked items
+		final long checkedItems[] = listView.getCheckItemIds();
+		for (int i = 0; i < checkedItems.length; i++) {
+			toastLong(adapter.getItem(i).getTitle());
+		}
 	}
 
 }

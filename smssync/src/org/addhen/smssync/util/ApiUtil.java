@@ -18,29 +18,26 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync.receivers;
+package org.addhen.smssync.util;
 
-import org.addhen.smssync.services.SmsReceiverService;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+public class ApiUtil {
+	
+	private JSONObject jsonObject;
 
-/**
- * This class handles SMS broadcast receiver.
- * 
- * @author eyedol
- */
+	private boolean processingResult;
+	
+	public ApiUtil(String jsonString) {
+		processingResult = true;
 
-public class SmsReceiver extends BroadcastReceiver {
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-
-        intent.setClass(context, SmsReceiverService.class);
-        intent.putExtra("result", getResultCode());
-
-        SmsReceiverService.beginStartingService(context, intent);
-    }
+		try {
+			jsonObject = new JSONObject(jsonString);
+		} catch (JSONException e) {
+			//new Util().log("JSONException", e);
+			processingResult = false;
+		}
+	}
 
 }

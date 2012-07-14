@@ -21,29 +21,25 @@
 package org.addhen.smssync.listeners;
 
 import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.fragments.SyncUrl;
 
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-/**
- * @author eyedol
- * 
- */
-public class PendingMessagesActionModeListener implements
+public class SyncUrlMultiChoiceListener implements
 		ListView.MultiChoiceModeListener {
-
+	
 	private int lastPosition = -1;
 
 	private ListView modeView;
 
-	private PendingMessages host;
-
-	public PendingMessagesActionModeListener(PendingMessages host,
-			ListView modeView) {
-		this.modeView = modeView;
+	private SyncUrl host;
+	
+	public SyncUrlMultiChoiceListener(SyncUrl host, ListView modeView) {
 		this.host = host;
+		this.modeView = modeView;
 	}
 
 	@Override
@@ -59,9 +55,9 @@ public class PendingMessagesActionModeListener implements
 	}
 
 	@Override
-	public void onDestroyActionMode(ActionMode mode) {
+	public void onDestroyActionMode(ActionMode arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -74,6 +70,7 @@ public class PendingMessagesActionModeListener implements
 	public void onItemCheckedStateChanged(ActionMode mode, int position,
 			long id, boolean checked) {
 		// TODO Auto-generated method stub
+		
 	}
 
 }

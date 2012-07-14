@@ -1,3 +1,23 @@
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2012 Ushahidi Inc
+ ** All rights reserved
+ ** Contact: team@ushahidi.com
+ ** Website: http://www.ushahidi.com
+ **
+ ** GNU Lesser General Public License Usage
+ ** This file may be used under the terms of the GNU Lesser
+ ** General Public License version 3 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.LGPL included in the
+ ** packaging of this file. Please review the following information to
+ ** ensure the GNU Lesser General Public License version 3 requirements
+ ** will be met: http://www.gnu.org/licenses/lgpl.html.
+ **
+ **
+ ** If you have questions regarding the use of this file, please contact
+ ** Ushahidi developers at team@ushahidi.com.
+ **
+ *****************************************************************************/
+
 package org.addhen.smssync.database;
 
 import java.util.ArrayList;
@@ -62,6 +82,28 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 	}
 
 	@Override
+	public List<SyncUrlModel> fetchSyncUrlByStatus(int status) {
+
+		final String selection = STATUS + " = ?";
+
+		final String selectionArgs[] = { String.valueOf(status) };
+
+		listSyncUrl = new ArrayList<SyncUrlModel>();
+		cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
+		if (cursor != null) {
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				SyncUrlModel syncUrl = cursorToEntity(cursor);
+				listSyncUrl.add(syncUrl);
+				cursor.moveToNext();
+			}
+			cursor.close();
+		}
+
+		return listSyncUrl;
+	}
+
+	@Override
 	public boolean addSyncUrl(SyncUrlModel syncUrl) {
 		// set values
 		setContentValue(syncUrl);
@@ -104,6 +146,29 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 		final String selection = ID + " = ?";
 
 		return super.delete(TABLE, selection, selectionArgs) > 0;
+	}
+
+	/**
+	 * Update the status of a sync url.
+	 * 
+	 * @param int status The status
+	 * @param int id The unique id of the sync URL
+	 * 
+	 * @return boolean
+	 */
+	public boolean updateStatus(SyncUrlModel syncUrl) {
+
+		initialValues = new ContentValues();
+		initialValues.put(TITLE, syncUrl.getTitle());
+		initialValues.put(URL, syncUrl.getUrl());
+		initialValues.put(KEYWORDS, syncUrl.getKeywords());
+		initialValues.put(SECRET, syncUrl.getSecret());
+		initialValues.put(STATUS, syncUrl.getStatus());
+
+		final String selectionArgs[] = { String.valueOf(syncUrl.getId()) };
+		final String selection = ID + " = ? ";
+
+		return super.update(TABLE, initialValues, selection, selectionArgs) > 0;
 	}
 
 	private void setContentValue(SyncUrlModel syncUrl) {

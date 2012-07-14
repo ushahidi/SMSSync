@@ -17,30 +17,32 @@
  ** Ushahidi developers at team@ushahidi.com.
  **
  *****************************************************************************/
+package org.addhen.smssync.util;
 
-package org.addhen.smssync.receivers;
+import android.util.Log;
 
-import org.addhen.smssync.services.SmsReceiverService;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+public class Logger {
+	
+	public static final boolean LOGGING_MODE = true;
+	
+	public Logger() {
+		
+	}
+	
+	public void log(String message) {
+		if (LOGGING_MODE)
+			Log.i(getClass().getName(), message);
+	}
 
-/**
- * This class handles SMS broadcast receiver.
- * 
- * @author eyedol
- */
+	public void log(String format, Object... args) {
+		if (LOGGING_MODE)
+			Log.i(getClass().getName(), String.format(format, args));
+	}
 
-public class SmsReceiver extends BroadcastReceiver {
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-
-        intent.setClass(context, SmsReceiverService.class);
-        intent.putExtra("result", getResultCode());
-
-        SmsReceiverService.beginStartingService(context, intent);
-    }
-
+	public void log(String message, Exception ex) {
+		if (LOGGING_MODE)
+			Log.e(getClass().getName(), message, ex);
+	}
 }
+
