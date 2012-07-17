@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -54,8 +53,11 @@ public class MainHttpClient {
 	private int timeoutConnection = 60000;
 
 	private int timeoutSocket = 60000;
+	
+	protected String url;
 
-	public MainHttpClient() {
+	public MainHttpClient(String url) {
+		this.url = url;
 		httpParameters = new BasicHttpParams();
 		httpParameters.setParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, 1);
 		httpParameters.setParameter(
@@ -81,7 +83,7 @@ public class MainHttpClient {
 		// https scheme
 		try {
 			schemeRegistry.register(new Scheme("https",
-					new TrustedSocketFactory(Prefs.website, false), 443));
+					new TrustedSocketFactory(url, false), 443));
 		} catch (KeyManagementException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,8 +116,6 @@ public class MainHttpClient {
 		}
 		return null;
 	}
-
-	
 
 	/**
 	 * Does a HTTP GET request

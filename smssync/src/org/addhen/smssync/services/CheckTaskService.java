@@ -20,7 +20,9 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.MessageSyncUtil;
+import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
 
@@ -35,9 +37,11 @@ public class CheckTaskService extends SmsSyncServices {
 
 	private final static String CLASS_TAG = CheckTaskService.class
 			.getSimpleName();
+	private SyncUrlModel model;
 
 	public CheckTaskService() {
 		super(CLASS_TAG);
+		model = new SyncUrlModel();
 	}
 
 	/**
@@ -48,7 +52,12 @@ public class CheckTaskService extends SmsSyncServices {
 	protected void executeTask(Intent intent) {
 		log("checkTaskService: check if a task has been enabled.");
 		// Perform a task
-		new MessageSyncUtil(CheckTaskService.this).performTask();
+		// get enabled Sync URL
+		for (SyncUrlModel syncUrl : model
+				.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+			new MessageSyncUtil(CheckTaskService.this, syncUrl.getUrl())
+					.performTask(syncUrl.getSecret());
+		}
 	}
 
 }

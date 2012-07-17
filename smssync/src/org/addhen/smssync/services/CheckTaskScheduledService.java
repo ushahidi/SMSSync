@@ -20,22 +20,31 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.MessageSyncUtil;
+import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
 
 public class CheckTaskScheduledService extends SmsSyncServices {
 
-    private static final String CLASS_TAG = CheckTaskScheduledService.class.getSimpleName();
+	private static final String CLASS_TAG = CheckTaskScheduledService.class
+			.getSimpleName();
 
-    public CheckTaskScheduledService() {
-        super(CLASS_TAG);
-    }
+	private SyncUrlModel model;
 
-    @Override
-    public void executeTask(Intent intent) {
-        log("checkin scheduled task services");
-        // Perform a task
-        new MessageSyncUtil(CheckTaskScheduledService.this).performTask();
-    }
+	public CheckTaskScheduledService() {
+		super(CLASS_TAG);
+	}
+
+	@Override
+	public void executeTask(Intent intent) {
+		log("checkin scheduled task services");
+		// Perform a task
+		for (SyncUrlModel syncUrl : model
+				.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+			new MessageSyncUtil(CheckTaskScheduledService.this,
+					syncUrl.getUrl()).performTask(syncUrl.getSecret());
+		}
+	}
 }

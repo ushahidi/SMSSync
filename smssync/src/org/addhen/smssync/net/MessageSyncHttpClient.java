@@ -46,7 +46,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
 	private Context context;
 
-	public MessageSyncHttpClient(Context context) {
+	public MessageSyncHttpClient(Context context, String url) {
+		super(url);
 		this.context = context;
 	}
 
@@ -58,9 +59,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
 	 * @throws IOException
 	 * @return
 	 */
-	public boolean postSmsToWebService(String url,
-			HashMap<String, String> params) {
-		new MainHttpClient().log("MainHttpClient  URL: " + url);
+	public boolean postSmsToWebService(HashMap<String, String> params) {
 		// Create a new HttpClient and Post Header
 		HttpPost httppost = new HttpPost(url);
 
@@ -99,7 +98,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
 					// auto response message is enabled to be received from the
 					// server.
 					if (Prefs.enableReplyFrmServer) {
-						new MessageSyncUtil(context).sendResponseFromServer(resp);
+						new MessageSyncUtil(context, url)
+								.sendResponseFromServer(resp);
 					}
 
 					return true;

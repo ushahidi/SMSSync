@@ -21,11 +21,12 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * This will sync pending messages as it's commanded by the user.
@@ -41,25 +42,34 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
 	private int messageId = 0;
 
+	private SyncUrlModel model;
+
 	public SyncPendingMessagesService() {
 		super(CLASS_TAG);
 		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+		model = new SyncUrlModel();
 	}
 
 	@Override
 	protected void executeTask(Intent intent) {
 		// SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
-		Log.i(CLASS_TAG, "executeTask() executing this task");
+		Logger.log(CLASS_TAG, "executeTask() executing this task");
 
 		if (intent != null) {
 			// get Id
 			messageId = intent.getIntExtra(ServicesConstants.MESSEAGE_ID,
 					messageId);
 			if (MainApplication.mDb.fetchMessagesCount() > 0) {
-				int status = new MessageSyncUtil(
-						SyncPendingMessagesService.this).snycToWeb(messageId);
-				statusIntent.putExtra("status", status);
-				sendBroadcast(statusIntent);
+				for (SyncUrlModel syncUrl : model
+						.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+					Logger.log(CLASS_TAG, " url: " + syncUrl.getUrl()
+							+ " Secret: " + syncUrl.getSecret());
+					int status = new MessageSyncUtil(
+							SyncPendingMessagesService.this, syncUrl.getUrl())
+							.snycToWeb(messageId, syncUrl.getSecret());
+					statusIntent.putExtra("status", status);
+					sendBroadcast(statusIntent);
+				}
 			}
 		}
 

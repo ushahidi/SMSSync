@@ -48,6 +48,8 @@ public class MessageSyncUtil extends Util {
 
 	private Context context;
 
+	private String url;
+
 	private static JSONObject jsonObject;
 
 	private static JSONArray jsonArray;
@@ -59,9 +61,10 @@ public class MessageSyncUtil extends Util {
 
 	private ProcessSms processSms;
 
-	public MessageSyncUtil(Context context) {
+	public MessageSyncUtil(Context context, String url) {
 		this.context = context;
-		this.msgSyncHttpClient = new MessageSyncHttpClient(context);
+		this.url = url;
+		this.msgSyncHttpClient = new MessageSyncHttpClient(context, url);
 		processSms = new ProcessSms(context);
 	}
 
@@ -77,7 +80,7 @@ public class MessageSyncUtil extends Util {
 	 * @return boolean
 	 */
 	public boolean postToAWebService(String messagesFrom, String messagesBody,
-			String messagesTimestamp, String messagesId) {
+			String messagesTimestamp, String messagesId, String secret) {
 		log("postToAWebService(): Post received SMS to configured URL:"
 				+ Prefs.website + " messagesFrom: " + messagesFrom
 				+ " messagesBody: " + messagesBody);
@@ -85,17 +88,14 @@ public class MessageSyncUtil extends Util {
 		HashMap<String, String> params = new HashMap<String, String>();
 		Prefs.loadPreferences(context);
 
-		if (!Prefs.website.equals("")) {
-
-			StringBuilder urlBuilder = new StringBuilder(Prefs.website);
-			params.put("secret", Prefs.apiKey);
+		if (!TextUtils.isEmpty(url)) {
+			params.put("secret", secret);
 			params.put("from", messagesFrom);
 			params.put("message", messagesBody);
 			params.put("sent_timestamp", messagesTimestamp);
 			params.put("sent_to", getPhoneNumber(context));
 			params.put("message_id", messagesId);
-			return msgSyncHttpClient.postSmsToWebService(urlBuilder.toString(),
-					params);
+			return msgSyncHttpClient.postSmsToWebService(params);
 		}
 
 		return false;
@@ -105,9 +105,14 @@ public class MessageSyncUtil extends Util {
 	 * Pushes pending messages to the configured URL.
 	 * 
 	 * @param int messageId - Sync by Id - 0 for no ID > 0 to for an id
+	 * @param String
+	 *            url The sync URL to push the message to.
+	 * @param String
+	 *            secret The secret key as set on the server.
+	 * 
 	 * @return int
 	 */
-	public int snycToWeb(int messagesId) {
+	public int snycToWeb(int messagesId, String secret) {
 		log("syncToWeb(): push pending messages to the configured URL");
 		Cursor cursor;
 		// check if it should sync by id
@@ -159,7 +164,8 @@ public class MessageSyncUtil extends Util {
 					messages.setMessageDate(messagesTimestamp);
 					// post to web service
 					if (postToAWebService(messagesFrom, messagesBody,
-							messagesTimestamp, String.valueOf(messageId))) {
+							messagesTimestamp, String.valueOf(messageId),
+							secret)) {
 
 						// log sent messages
 						MainApplication.mDb.addSentMessages(listMessages);
@@ -226,7 +232,7 @@ public class MessageSyncUtil extends Util {
 	 * 
 	 * @return int - status
 	 */
-	public  int processMessages() {
+	public static int processMessages() {
 		Logger.log(CLASS_TAG,
 				"processMessages(): Process text messages as received from the user's phone");
 		List<Messages> listMessages = new ArrayList<Messages>();
@@ -260,13 +266,13 @@ public class MessageSyncUtil extends Util {
 	 *            context - the activity calling this method.
 	 * @return void
 	 */
-	public void performTask() {
+	public void performTask(String urlSecret) {
 		Logger.log(CLASS_TAG, "performTask(): perform a task");
 		// load Prefs
 		Prefs.loadPreferences(context);
 
 		// validate configured url
-		int status = validateCallbackUrl(Prefs.website);
+		int status = validateCallbackUrl(url);
 		if (status == 1) {
 			showToast(context, R.string.no_configured_url);
 		} else if (status == 2) {
@@ -275,7 +281,7 @@ public class MessageSyncUtil extends Util {
 			showToast(context, R.string.no_connection);
 		} else {
 
-			StringBuilder uriBuilder = new StringBuilder(Prefs.website);
+			StringBuilder uriBuilder = new StringBuilder(url);
 
 			uriBuilder.append("?task=send");
 
@@ -296,7 +302,7 @@ public class MessageSyncUtil extends Util {
 						task = payloadObject.getString("task");
 						secret = payloadObject.getString("secret");
 						if ((task.equals("send"))
-								&& (secret.equals(Prefs.apiKey))) {
+								&& (secret.equals(urlSecret))) {
 							jsonArray = payloadObject.getJSONArray("messages");
 
 							for (int index = 0; index < jsonArray.length(); ++index) {

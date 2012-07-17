@@ -48,7 +48,7 @@ public class MainApplication extends Application {
         app = this;
         mDb = new Database(this);
         mDb.open();
-        mApi = new MainHttpClient();
+        //mApi = new MainHttpClient();
     }
 
     @Override

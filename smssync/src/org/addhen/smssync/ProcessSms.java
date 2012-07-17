@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.SentMessagesUtil;
@@ -63,6 +64,10 @@ public class ProcessSms {
 
 	private static final String CLASS_TAG = ProcessSms.class.getSimpleName();
 
+	private static final int ACTIVE_SYNC_URL = 1;
+
+	private SyncUrlModel model;
+
 	private Context context;
 
 	public static HashMap<String, String> smsMap;
@@ -73,8 +78,8 @@ public class ProcessSms {
 
 	public ProcessSms(Context context) {
 		this.context = context;
-		messageSyncUtil = new MessageSyncUtil(context);
 		smsMap = new HashMap<String, String>();
+		model = new SyncUrlModel();
 		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
 	}
 
@@ -98,57 +103,70 @@ public class ProcessSms {
 					sendSms(messagesFrom, Prefs.reply);
 				}
 
-				// process keyword
-				if (filterByKeywords(messagesBody, null)) {
-					posted = messageSyncUtil.postToAWebService(messagesFrom,
-							messagesBody, messagesTimestamp, messagesId);
-					if (!posted) {
-						Util.showFailNotification(context, messagesBody,
-								context.getString(R.string.sending_failed));
+				// get enabled Sync URL
+				for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
+					String keywords[] = syncUrl.getKeywords().split(",");
+					// process keyword
+					if (filterByKeywords(messagesBody, keywords)) {
+						messageSyncUtil = new MessageSyncUtil(context,
+								syncUrl.getUrl());
+						posted = messageSyncUtil.postToAWebService(
+								messagesFrom, messagesBody, messagesTimestamp,
+								messagesId, syncUrl.getSecret());
+						if (!posted) {
+							Util.showFailNotification(context, messagesBody,
+									context.getString(R.string.sending_failed));
 
-						postToPendingBox(messagesBody, messagesFrom, sms);
+							postToPendingBox(messagesBody, messagesFrom, sms);
 
-						// attempt to make a data connection so if it succeeds,
-						// it syncs the failed messages.
-						Util.connectToDataNetwork(context);
+							// attempt to make a data connection so if it
+							// succeeds,
+							// it syncs the failed messages.
+							Util.connectToDataNetwork(context);
 
-						// Delete messages from message app's inbox only
-						// when smssync is turned on
+						} else {
+							postToSentBox(messagesFrom, messagesBody, sms);
+							Util.showFailNotification(
+									context,
+									messagesBody,
+									context.getString(R.string.sending_succeeded));
+						}
 
-					} else {
-						postToSentBox(messagesFrom, messagesBody, sms);
-						Util.showFailNotification(context, messagesBody,
-								context.getString(R.string.sending_succeeded));
+					} else { // no keyword
+						if (!posted) {
+							Util.showFailNotification(context, messagesBody,
+									context.getString(R.string.sending_failed));
+
+							postToPendingBox(messagesBody, messagesFrom, sms);
+
+							// attempt to make a data connection so if it
+							// succeeds,
+							// it syncs the failed messages.
+							Util.connectToDataNetwork(context);
+
+							// Delete messages from message app's inbox only
+							// when smssync is turned on
+
+						} else {
+							postToSentBox(messagesFrom, messagesBody, sms);
+							Util.showFailNotification(
+									context,
+									messagesBody,
+									context.getString(R.string.sending_succeeded));
+						}
 					}
-
-				} else { // no keyword
-					if (!posted) {
-						Util.showFailNotification(context, messagesBody,
-								context.getString(R.string.sending_failed));
-
-						postToPendingBox(messagesBody, messagesFrom, sms);
-
-						// attempt to make a data connection so if it succeeds,
-						// it syncs the failed messages.
-						Util.connectToDataNetwork(context);
-
-						// Delete messages from message app's inbox only
-						// when smssync is turned on
-
-					} else {
-						postToSentBox(messagesFrom, messagesBody, sms);
-						Util.showFailNotification(context, messagesBody,
-								context.getString(R.string.sending_succeeded));
-					}
-				}
-				if (Prefs.autoDelete) {
-					delSmsFromInbox(sms);
 				}
 
 			} else { // no internet
 				Util.showFailNotification(context, messagesBody,
 						context.getString(R.string.sending_failed));
 				postToPendingBox(messagesBody, messagesFrom, sms);
+			}
+
+			// Delete messages from message app's inbox, only
+			// when smssync is turned on
+			if (Prefs.autoDelete) {
+				delSmsFromInbox(sms);
 			}
 		}
 
@@ -280,7 +298,8 @@ public class ProcessSms {
 								c.getString(c.getColumnIndex("_id")));
 					}
 
-					new MessageSyncUtil(context).processMessages();
+					//TODO::// implement filtering by keywords.
+					//new MessageSyncUtil(context).processMessages();
 
 				} while (c.moveToNext());
 			}
@@ -456,7 +475,8 @@ public class ProcessSms {
 		Util.smsMap.put("messagesDate", messageDate);
 		Util.smsMap.put("messagesId", messageId);
 		new PendingMessages().showMessages();
-		int status = new MessageSyncUtil(context).processMessages();
+		
+		int status = MessageSyncUtil.processMessages();
 		statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
 		statusIntent.putExtra("failed", status);
 		context.sendBroadcast(statusIntent);

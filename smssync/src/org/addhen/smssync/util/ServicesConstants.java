@@ -45,4 +45,8 @@ public class ServicesConstants {
     public static String SENT = "SMS_SENT";
 
     public static String DELIVERED = "SMS_DELIVERED";
+    
+    public static final int ACTIVE_SYNC_URL = 1;
+    
+    public static final int INACTIVE_SYNC_URL = 1;
 }
