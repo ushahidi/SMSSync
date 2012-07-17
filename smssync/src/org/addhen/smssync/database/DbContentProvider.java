@@ -21,6 +21,7 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Model;
+import org.addhen.smssync.util.Logger;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -90,6 +91,20 @@ public abstract class DbContentProvider {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	protected void log(String message) {
+		Logger.log(getClass().getName(), message);
+	}
+
+	protected void log(String format, Object... args) {
+
+		Logger.log(getClass().getName(), String.format(format, args));
+	}
+
+	protected void log(String message, Exception ex) {
+
+		Logger.log(getClass().getName(), message, ex);
 	}
 
 }

@@ -21,11 +21,10 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
-import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * A this class handles background services for periodic synchronization of
@@ -36,26 +35,29 @@ import android.util.Log;
 
 public class AutoSyncScheduledService extends SmsSyncServices {
 
-    private static String CLASS_TAG = AutoSyncScheduledService.class.getSimpleName();
+	private static String CLASS_TAG = AutoSyncScheduledService.class
+			.getSimpleName();
 
-    // holds the status of the sync and sends it to pending messages activity to update the ui
-    private Intent statusIntent; 
-    
-    public AutoSyncScheduledService() {
-        super(CLASS_TAG);
-        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-    }
+	// holds the status of the sync and sends it to pending messages activity to
+	// update the ui
+	private Intent statusIntent;
 
-    @Override
-    protected void executeTask(Intent intent) {
-        
-        Log.i(CLASS_TAG, "executeTask() executing this scheduled task");
-        if (MainApplication.mDb.fetchMessagesCount() > 0) {
-            Log.i(CLASS_TAG, "Sending pending messages");
-            int status = Util.snycToWeb(AutoSyncScheduledService.this,0);
-            statusIntent.putExtra("status", status);
-            sendBroadcast(statusIntent);
-        }
-    }
+	public AutoSyncScheduledService() {
+		super(CLASS_TAG);
+		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+	}
+
+	@Override
+	protected void executeTask(Intent intent) {
+
+		log(CLASS_TAG, "executeTask() executing this scheduled task");
+		if (MainApplication.mDb.fetchMessagesCount() > 0) {
+			log(CLASS_TAG, "Sending pending messages");
+			int status = new MessageSyncUtil(AutoSyncScheduledService.this)
+					.snycToWeb(0);
+			statusIntent.putExtra("status", status);
+			sendBroadcast(statusIntent);
+		}
+	}
 
 }

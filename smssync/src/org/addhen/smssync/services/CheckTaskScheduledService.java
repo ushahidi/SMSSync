@@ -20,10 +20,9 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.util.Util;
+import org.addhen.smssync.util.MessageSyncUtil;
 
 import android.content.Intent;
-import android.util.Log;
 
 public class CheckTaskScheduledService extends SmsSyncServices {
 
@@ -35,8 +34,8 @@ public class CheckTaskScheduledService extends SmsSyncServices {
 
     @Override
     public void executeTask(Intent intent) {
-        Log.i(CLASS_TAG, "checkin scheduled task services");
+        log("checkin scheduled task services");
         // Perform a task
-        Util.performTask(CheckTaskScheduledService.this);
+        new MessageSyncUtil(CheckTaskScheduledService.this).performTask();
     }
 }

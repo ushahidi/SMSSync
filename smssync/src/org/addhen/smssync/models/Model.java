@@ -20,13 +20,28 @@
 
 package org.addhen.smssync.models;
 
+import org.addhen.smssync.util.Logger;
+
 /**
  * BaseModel
- *
+ * 
  * Base class for all Models
  */
 public abstract class Model {
 
-    public abstract boolean load();
-    public abstract boolean save();
+	public abstract boolean load();
+
+	public abstract boolean save();
+
+	protected void log(String message) {
+		Logger.log(getClass().getName(), message);
+	}
+
+	protected void log(String format, Object... args) {
+		Logger.log(getClass().getName(), format, args);
+	}
+
+	protected void log(String message, Exception ex) {
+		Logger.log(getClass().getName(), message, ex);
+	}
 }

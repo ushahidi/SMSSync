@@ -20,12 +20,11 @@
 
 package org.addhen.smssync.services;
 
-import android.content.Intent;
-import android.util.Log;
-
 import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
-import org.addhen.smssync.util.Util;
+
+import android.content.Intent;
 
 /**
  * A this class handles background services for periodic synchronization of
@@ -46,10 +45,10 @@ public class AutoSyncService extends SmsSyncServices {
 
 	@Override
 	protected void executeTask(Intent intent) {
-		// SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
-		Log.i(CLASS_TAG, "executeTask() executing this task");
+
+		log("executeTask() executing this task");
 		if (MainApplication.mDb.fetchMessagesCount() > 0) {
-			int status = Util.snycToWeb(AutoSyncService.this, 0);
+			int status = new MessageSyncUtil(AutoSyncService.this).snycToWeb(0);
 			statusIntent.putExtra("status", status);
 			sendBroadcast(statusIntent);
 		}

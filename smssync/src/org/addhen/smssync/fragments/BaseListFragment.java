@@ -24,13 +24,13 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.BaseListAdapter;
 import org.addhen.smssync.models.Model;
 import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.views.View;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -189,17 +189,17 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 	}
 
 	protected void log(String message) {
-		Log.i(getClass().getName(), message);
+		Logger.log(getClass().getName(), message);
 	}
 
 	protected void log(String format, Object... args) {
 
-		Log.i(getClass().getName(), String.format(format, args));
+		Logger.log(getClass().getName(), String.format(format, args));
 	}
 
 	protected void log(String message, Exception ex) {
 
-		Log.e(getClass().getName(), message, ex);
+		Logger.log(getClass().getName(), message, ex);
 	}
 
 	protected void toastLong(String message) {

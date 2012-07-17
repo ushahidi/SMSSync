@@ -21,13 +21,13 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.util.Logger;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.util.Log;
 
 /**
  * This class schedules the various tasks that needs to be executed periodically
@@ -48,7 +48,7 @@ public class ScheduleServices {
 
     public ScheduleServices(Context contxt, Intent intent, Class<?> cls, long interval,
             int requestCode, int flags) {
-        Log.i(CLASS_TAG, "ScheduleServices() executing scheduled services: interval:" + interval
+        Logger.log(CLASS_TAG, "ScheduleServices() executing scheduled services: interval:" + interval
                 + " requestCode: " + requestCode);
         Prefs.loadPreferences(contxt);
         context = contxt;

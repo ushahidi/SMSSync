@@ -20,24 +20,15 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.MessagesTabActivity2;
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
+import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.SentMessagesActivity;
 import org.addhen.smssync.fragments.PendingMessages;
-import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
-import org.addhen.smssync.util.SentMessagesUtil;
-import org.addhen.smssync.util.ServicesConstants;
-import org.addhen.smssync.util.Util;
+import org.addhen.smssync.util.Logger;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,7 +39,6 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
-import android.util.Log;
 
 public class SmsReceiverService extends Service {
 	private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -73,22 +63,12 @@ public class SmsReceiverService extends Service {
 
 	private static WifiManager.WifiLock wifilock;
 
-	public double latitude;
-
-	public double longitude;
-
-	private NotificationManager notificationManager;
-
 	private SmsMessage sms;
 
 	private static final String CLASS_TAG = SmsReceiverService.class
 			.getSimpleName();
 
-	private Handler handler = new Handler();
-
-	// holds the status of the sync and sends it to pending messages activity to
-	// update the ui
-	private Intent statusIntent;
+	private ProcessSms processSms;
 
 	@Override
 	public void onCreate() {
@@ -97,9 +77,10 @@ public class SmsReceiverService extends Service {
 				Process.THREAD_PRIORITY_BACKGROUND);
 		thread.start();
 		mContext = getApplicationContext();
-		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+		processSms = new ProcessSms(mContext);
+
 		Prefs.loadPreferences(mContext);
-		notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		
 		mServiceLooper = thread.getLooper();
 		mServiceHandler = new ServiceHandler(mServiceLooper);
 
@@ -149,8 +130,7 @@ public class SmsReceiverService extends Service {
 	 */
 	private void handleSmsReceived(Intent intent) {
 
-		// TODO:: improve on this clutter. Especially when trying to filter
-		// messages.
+		String body;
 		Bundle bundle = intent.getExtras();
 		Prefs.loadPreferences(SmsReceiverService.this);
 
@@ -161,8 +141,8 @@ public class SmsReceiverService extends Service {
 				// extract message details. phone number and the message body
 				messagesFrom = sms.getOriginatingAddress();
 				messagesTimestamp = String.valueOf(sms.getTimestampMillis());
-				messagesId = String.valueOf(Util.getId(this, sms, "id"));
-				String body;
+				messagesId = String.valueOf(processSms.getId(sms, "id"));
+
 				if (messages.length == 1 || sms.isReplace()) {
 					body = sms.getDisplayMessageBody();
 
@@ -177,275 +157,9 @@ public class SmsReceiverService extends Service {
 			}
 		}
 
-		if (Prefs.enabled) {
-
-			if (Util.isConnected(SmsReceiverService.this)) {
-
-				boolean posted = false;
-				// if keywoard is enabled
-				if (!Prefs.keyword.equals("")) {
-					String[] keywords = Prefs.keyword.split(",");
-					Log.i(CLASS_TAG, "Keyword enabled:" + Prefs.keyword);
-					if (Util.processString(messagesBody, keywords)) {
-
-						posted = Util.postToAWebService(messagesFrom,
-								messagesBody, messagesTimestamp, messagesId,
-								SmsReceiverService.this);
-
-						// send auto response from phone not server.
-						if (Prefs.enableReply) {
-							// send auto response
-							Util.sendSms(SmsReceiverService.this, messagesFrom,
-									Prefs.reply);
-						}
-
-						if (!posted) {
-							this.showNotification(messagesBody,
-									getString(R.string.sending_failed));
-							this.postToPendingBox();
-							handler.post(mDisplayMessages);
-
-							// attempt to make a data connection
-							connectToDataNetwork();
-
-							// Delete messages from message app's inbox only
-							// when smssync is turned on
-							if (Prefs.autoDelete) {
-								Util.delSmsFromInbox(SmsReceiverService.this,
-										sms);
-							}
-
-						} else {
-							// log sent messages
-							this.postToSentBox();
-
-							if (Prefs.autoDelete) {
-								Util.delSmsFromInbox(SmsReceiverService.this,
-										sms);
-							}
-
-							this.showNotification(messagesBody,
-									getString(R.string.sending_succeeded));
-						}
-					}
-
-					// filter by phone number is enabled
-				} else if (!Prefs.filterByFrom.equals("")) {
-					String[] phoneNumbers = Prefs.filterByFrom.split(",");
-					Log.i(CLASS_TAG, "Filter by phone number enabled:"
-							+ Prefs.filterByFrom);
-					if (Util.processString(messagesFrom, phoneNumbers)) {
-
-						posted = Util.postToAWebService(messagesFrom,
-								messagesBody, messagesTimestamp, messagesId,
-								SmsReceiverService.this);
-
-						// send auto response from phone not server.
-						if (Prefs.enableReply) {
-							// send auto response
-							Util.sendSms(SmsReceiverService.this, messagesFrom,
-									Prefs.reply);
-						}
-
-						if (!posted) {
-							this.showNotification(messagesBody,
-									getString(R.string.sending_failed));
-							this.postToPendingBox();
-							handler.post(mDisplayMessages);
-
-							// attempt to make a data connection
-							connectToDataNetwork();
-
-							// Delete messages from message app's inbox only
-							// when smssync is turned on
-							if (Prefs.autoDelete) {
-								Util.delSmsFromInbox(SmsReceiverService.this,
-										sms);
-							}
-
-						} else {
-							// log sent messages
-							this.postToSentBox();
-
-							if (Prefs.autoDelete) {
-								Util.delSmsFromInbox(SmsReceiverService.this,
-										sms);
-							}
-
-							this.showNotification(messagesBody,
-									getString(R.string.sending_succeeded));
-						}
-					}
-
-					// both filter by phone number and keywords are enabled.
-				} else if ((!Prefs.filterByFrom.equals(""))
-						&& (!Prefs.keyword.equals(""))) {
-					String[] keywords = Prefs.keyword.split(",");
-					String[] phoneNumbers = Prefs.filterByFrom.split(",");
-
-					if ((Util.processString(messagesFrom, phoneNumbers))
-							&& (Util.processString(messagesBody, keywords))) {
-						posted = Util.postToAWebService(messagesFrom,
-								messagesBody, messagesTimestamp, messagesId,
-								SmsReceiverService.this);
-
-						// send auto response from phone not server.
-						if (Prefs.enableReply) {
-							// send auto response
-							Util.sendSms(SmsReceiverService.this, messagesFrom,
-									Prefs.reply);
-						}
-
-						if (!posted) {
-							this.showNotification(messagesBody,
-									getString(R.string.sending_failed));
-							this.postToPendingBox();
-							handler.post(mDisplayMessages);
-
-							// attempt to make a data connection
-							connectToDataNetwork();
-
-							// Delete messages from message app's inbox only
-							// when smssync is turned on
-							if (Prefs.autoDelete) {
-								Util.delSmsFromInbox(SmsReceiverService.this,
-										sms);
-							}
-
-						} else {
-							// log sent messages
-							this.postToSentBox();
-
-							if (Prefs.autoDelete) {
-								Util.delSmsFromInbox(SmsReceiverService.this,
-										sms);
-							}
-
-							this.showNotification(messagesBody,
-									getString(R.string.sending_succeeded));
-						}
-					}
-					// keyword is not enabled
-				} else {
-
-					posted = Util.postToAWebService(messagesFrom, messagesBody,
-							messagesTimestamp, messagesId,
-							SmsReceiverService.this);
-					// send auto response from phone not server.
-					if (Prefs.enableReply) {
-						// send auto response
-						Util.sendSms(SmsReceiverService.this, messagesFrom,
-								Prefs.reply);
-					}
-
-					if (!posted) {
-						this.showNotification(messagesBody,
-								getString(R.string.sending_failed));
-						this.postToPendingBox();
-						handler.post(mDisplayMessages);
-
-						// attempt to make a data connection
-						connectToDataNetwork();
-
-						if (Prefs.autoDelete) {
-							Util.delSmsFromInbox(SmsReceiverService.this, sms);
-						}
-					} else {
-						this.postToSentBox();
-						if (Prefs.autoDelete) {
-							Util.delSmsFromInbox(SmsReceiverService.this, sms);
-						}
-						this.showNotification(messagesBody,
-								getString(R.string.sending_succeeded));
-					}
-				}
-
-			} else {
-				// no internet
-				this.showNotification(messagesBody,
-						getString(R.string.sending_failed));
-				this.postToPendingBox();
-				handler.post(mDisplayMessages);
-
-				connectToDataNetwork();
-				if (Prefs.autoDelete) {
-					Util.delSmsFromInbox(SmsReceiverService.this, sms);
-				}
-			}
-
-		}
-	}
-
-	/**
-	 * Show a notification
-	 * 
-	 * @param String
-	 *            message to display
-	 * @param String
-	 *            notification title
-	 */
-	private void showNotification(String message, String notification_title) {
-
-		Intent baseIntent = new Intent(this, MessagesTabActivity2.class);
-		baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		Notification notification = new Notification(R.drawable.icon,
-				getString(R.string.status), System.currentTimeMillis());
-		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-				baseIntent, 0);
-		notification.setLatestEventInfo(this, notification_title, message,
-				pendingIntent);
-		notificationManager.notify(1, notification);
-
-	}
-
-	/**
-	 * Put failed messages to be sent to the callback URL to the local database.
-	 * 
-	 * @return void
-	 */
-	private void postToPendingBox() {
-		Log.i(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
-		// Get message id.
-		Long msgId = new Long(Util.getId(SmsReceiverService.this, sms, "id"));
-
-		String messageId = msgId.toString();
-
-		String messageDate = String.valueOf(sms.getTimestampMillis());
-		Util.smsMap.put("messagesFrom", messagesFrom);
-		Util.smsMap.put("messagesBody", messagesBody);
-		Util.smsMap.put("messagesDate", messageDate);
-		Util.smsMap.put("messagesId", messageId);
-
-		int status = Util.processMessages(SmsReceiverService.this);
-		statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
-		statusIntent.putExtra("failed", status);
-		sendBroadcast(statusIntent);
-
-	}
-
-	/**
-	 * Put successfully sent messages to a local database for logging sake
-	 * 
-	 * @return void
-	 */
-	private void postToSentBox() {
-		Log.i(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
-		// Get message id.
-		Long msgId = new Long(Util.getId(SmsReceiverService.this, sms, "id"));
-
-		String messageId = msgId.toString();
-
-		String messageDate = String.valueOf(sms.getTimestampMillis());
-		SentMessagesUtil.smsMap.put("messagesFrom", messagesFrom);
-		SentMessagesUtil.smsMap.put("messagesBody", messagesBody);
-		SentMessagesUtil.smsMap.put("messagesDate", messageDate);
-		SentMessagesUtil.smsMap.put("messagesId", messageId);
-
-		int status = SentMessagesUtil
-				.processSentMessages(SmsReceiverService.this);
-		statusIntent.putExtra("status", status);
-		sendBroadcast(statusIntent);
+		// route the sms
+		processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
+				messagesId, sms);
 
 	}
 
@@ -457,7 +171,10 @@ public class SmsReceiverService extends Service {
 	 * @return SmsMessage
 	 */
 	public static final SmsMessage[] getMessagesFromIntent(Intent intent) {
-		Log.i(CLASS_TAG, "getMessagesFromIntent(): getting SMS message");
+
+		new SmsReceiverService()
+				.log("getMessagesFromIntent(): getting SMS message");
+
 		Object[] messages = (Object[]) intent.getSerializableExtra("pdus");
 
 		if (messages == null) {
@@ -559,17 +276,16 @@ public class SmsReceiverService extends Service {
 
 	};
 
-	/**
-	 * Makes an attempt to connect to a data network.
-	 */
-	public void connectToDataNetwork() {
-		// Enable the Connectivity Changed Receiver to listen for
-		// connection to a network so we can send pending messages.
-		PackageManager pm = getPackageManager();
-		ComponentName connectivityReceiver = new ComponentName(this,
-				ConnectivityChangedReceiver.class);
-		pm.setComponentEnabledSetting(connectivityReceiver,
-				PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-				PackageManager.DONT_KILL_APP);
+	protected void log(String message) {
+		Logger.log(getClass().getName(), message);
 	}
+
+	protected void log(String format, Object... args) {
+		Logger.log(getClass().getName(), format, args);
+	}
+
+	protected void log(String message, Exception ex) {
+		Logger.log(getClass().getName(), message, ex);
+	}
+
 }

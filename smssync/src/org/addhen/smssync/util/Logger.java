@@ -21,28 +21,26 @@ package org.addhen.smssync.util;
 
 import android.util.Log;
 
-
 public class Logger {
-	
+
 	public static final boolean LOGGING_MODE = true;
-	
+
 	public Logger() {
-		
-	}
-	
-	public void log(String message) {
-		if (LOGGING_MODE)
-			Log.i(getClass().getName(), message);
+
 	}
 
-	public void log(String format, Object... args) {
+	public static void log(String tag, String message) {
 		if (LOGGING_MODE)
-			Log.i(getClass().getName(), String.format(format, args));
+			Log.i(tag, message);
 	}
 
-	public void log(String message, Exception ex) {
+	public static void log(String tag, String format, Object... args) {
 		if (LOGGING_MODE)
-			Log.e(getClass().getName(), message, ex);
+			Log.i(tag, String.format(format, args));
+	}
+
+	public static void log(String tag, String message, Exception ex) {
+		if (LOGGING_MODE)
+			Log.e(tag, message, ex);
 	}
 }
-

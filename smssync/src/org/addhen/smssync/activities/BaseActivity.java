@@ -20,12 +20,12 @@
 
 package org.addhen.smssync.activities;
 
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.views.View;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.EditText;
@@ -203,18 +203,17 @@ public abstract class BaseActivity<V extends View> extends SherlockActivity {
 	}
 
 	protected void log(String message) {
-
-		Log.i(getClass().getName(), message);
+		Logger.log(getClass().getName(), message);
 	}
 
 	protected void log(String format, Object... args) {
 
-		Log.i(getClass().getName(), String.format(format, args));
+		Logger.log(getClass().getName(), String.format(format, args));
 	}
 
 	protected void log(String message, Exception ex) {
 
-		Log.e(getClass().getName(), message, ex);
+		Logger.log(getClass().getName(), message, ex);
 	}
 
 	protected void toastLong(String message) {

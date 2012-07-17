@@ -638,6 +638,7 @@ public class Settings extends SherlockPreferenceActivity implements OnSharedPref
         Thread t = new Thread() {
             public void run() {
 
+            	
                 // validate number of digits
                 if ((uniqueId.length() > 5) || (uniqueId.length() < 5)) {
                     uniqueIdValidityStatus = 1;

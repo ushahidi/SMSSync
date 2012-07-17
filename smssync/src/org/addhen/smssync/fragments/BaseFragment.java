@@ -20,8 +20,9 @@
 
 package org.addhen.smssync.fragments;
 
+import org.addhen.smssync.util.Logger;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -79,18 +80,17 @@ public class BaseFragment extends SherlockFragment {
 	}
 
 	protected void log(String message) {
-
-		Log.i(getClass().getName(), message);
+		Logger.log(getClass().getName(), message);
 	}
 
 	protected void log(String format, Object... args) {
 
-		Log.i(getClass().getName(), String.format(format, args));
+		Logger.log(getClass().getName(), String.format(format, args));
 	}
 
 	protected void log(String message, Exception ex) {
 
-		Log.e(getClass().getName(), message, ex);
+		Logger.log(getClass().getName(), message, ex);
 	}
 
 	protected void toastLong(String message) {

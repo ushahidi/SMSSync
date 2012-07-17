@@ -20,10 +20,9 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.util.Util;
+import org.addhen.smssync.util.MessageSyncUtil;
 
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * A this class handles background services for periodic checks of task that
@@ -34,21 +33,22 @@ import android.util.Log;
  */
 public class CheckTaskService extends SmsSyncServices {
 
-    private final static String CLASS_TAG = CheckTaskService.class.getSimpleName();
+	private final static String CLASS_TAG = CheckTaskService.class
+			.getSimpleName();
 
-    public CheckTaskService() {
-        super(CLASS_TAG);
-    }
+	public CheckTaskService() {
+		super(CLASS_TAG);
+	}
 
-    /**
-     * Starts the background service
-     * 
-     * @return void
-     */
-    protected void executeTask(Intent intent) {
-        Log.i(CLASS_TAG, "checkTaskService: check if a task has been enabled.");
-        // Perform a task
-        Util.performTask(CheckTaskService.this);
-    }
+	/**
+	 * Starts the background service
+	 * 
+	 * @return void
+	 */
+	protected void executeTask(Intent intent) {
+		log("checkTaskService: check if a task has been enabled.");
+		// Perform a task
+		new MessageSyncUtil(CheckTaskService.this).performTask();
+	}
 
 }

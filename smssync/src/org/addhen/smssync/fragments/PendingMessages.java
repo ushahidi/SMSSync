@@ -21,6 +21,7 @@
 package org.addhen.smssync.fragments;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
@@ -448,7 +449,7 @@ public class PendingMessages
 		@Override
 		protected Boolean doInBackground(String... args) {
 
-			status = Util.importMessages(appContext);
+			status = new ProcessSms(appContext).importMessages();
 			return true;
 		}
 

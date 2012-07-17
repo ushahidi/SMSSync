@@ -1,0 +1,466 @@
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2012 Ushahidi Inc
+ ** All rights reserved
+ ** Contact: team@ushahidi.com
+ ** Website: http://www.ushahidi.com
+ **
+ ** GNU Lesser General Public License Usage
+ ** This file may be used under the terms of the GNU Lesser
+ ** General Public License version 3 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.LGPL included in the
+ ** packaging of this file. Please review the following information to
+ ** ensure the GNU Lesser General Public License version 3 requirements
+ ** will be met: http://www.gnu.org/licenses/lgpl.html.
+ **
+ **
+ ** If you have questions regarding the use of this file, please contact
+ ** Ushahidi developers at team@ushahidi.com.
+ **
+ *****************************************************************************/
+package org.addhen.smssync;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.MessageSyncUtil;
+import org.addhen.smssync.util.SentMessagesUtil;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
+
+import android.app.PendingIntent;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.net.Uri;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
+
+/**
+ * @author eyedol
+ * 
+ */
+public class ProcessSms {
+
+	public static final Uri MMS_SMS_CONTENT_URI = Uri
+			.parse("content://mms-sms/");
+
+	public static final Uri THREAD_ID_CONTENT_URI = Uri.withAppendedPath(
+			MMS_SMS_CONTENT_URI, "threadID");
+
+	public static final Uri CONVERSATION_CONTENT_URI = Uri.withAppendedPath(
+			MMS_SMS_CONTENT_URI, "conversations");
+
+	public static final String SMS_CONTENT_URI = "content://sms/conversations/";
+
+	public static final String SMS_ID = "_id";
+
+	public static final String SMS_CONTENT_INBOX = "content://sms/inbox";
+
+	private static final String CLASS_TAG = ProcessSms.class.getSimpleName();
+
+	private Context context;
+
+	public static HashMap<String, String> smsMap;
+
+	private MessageSyncUtil messageSyncUtil;
+
+	private Intent statusIntent;
+
+	public ProcessSms(Context context) {
+		this.context = context;
+		messageSyncUtil = new MessageSyncUtil(context);
+		smsMap = new HashMap<String, String>();
+		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+	}
+
+	/**
+	 * Processes the incoming SMS to figure out how to exactly route the
+	 * message. If it fails to be synced online, cache it and queue it up for
+	 * the scheduler to process it.
+	 */
+	public void routeSms(String messagesFrom, String messagesBody,
+			String messagesTimestamp, String messagesId, SmsMessage sms) {
+		// is smssync service running
+		if (Prefs.enabled) {
+
+			if (Util.isConnected(context)) {
+
+				boolean posted = false;
+
+				// send auto response from phone not server.
+				if (Prefs.enableReply) {
+					// send auto response
+					sendSms(messagesFrom, Prefs.reply);
+				}
+
+				// process keyword
+				if (filterByKeywords(messagesBody, null)) {
+					posted = messageSyncUtil.postToAWebService(messagesFrom,
+							messagesBody, messagesTimestamp, messagesId);
+					if (!posted) {
+						Util.showFailNotification(context, messagesBody,
+								context.getString(R.string.sending_failed));
+
+						postToPendingBox(messagesBody, messagesFrom, sms);
+
+						// attempt to make a data connection so if it succeeds,
+						// it syncs the failed messages.
+						Util.connectToDataNetwork(context);
+
+						// Delete messages from message app's inbox only
+						// when smssync is turned on
+
+					} else {
+						postToSentBox(messagesFrom, messagesBody, sms);
+						Util.showFailNotification(context, messagesBody,
+								context.getString(R.string.sending_succeeded));
+					}
+
+				} else { // no keyword
+					if (!posted) {
+						Util.showFailNotification(context, messagesBody,
+								context.getString(R.string.sending_failed));
+
+						postToPendingBox(messagesBody, messagesFrom, sms);
+
+						// attempt to make a data connection so if it succeeds,
+						// it syncs the failed messages.
+						Util.connectToDataNetwork(context);
+
+						// Delete messages from message app's inbox only
+						// when smssync is turned on
+
+					} else {
+						postToSentBox(messagesFrom, messagesBody, sms);
+						Util.showFailNotification(context, messagesBody,
+								context.getString(R.string.sending_succeeded));
+					}
+				}
+				if (Prefs.autoDelete) {
+					delSmsFromInbox(sms);
+				}
+
+			} else { // no internet
+				Util.showFailNotification(context, messagesBody,
+						context.getString(R.string.sending_failed));
+				postToPendingBox(messagesBody, messagesFrom, sms);
+			}
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param Array
+	 *            keywords
+	 * 
+	 * @return boolean
+	 */
+	public boolean filterByKeywords(String message, String[] keywords) {
+		for (int i = 0; i < keywords.length; i++) {
+			if (message.toLowerCase().contains(keywords[i].toLowerCase())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 
+	 * @param String
+	 *            number
+	 * 
+	 * @return void
+	 */
+	protected void filterByNumber(String number) {
+
+	}
+
+	/**
+	 * Import messages from messages app table and puts them in SmsSync's outbox
+	 * table.
+	 * 
+	 * @return int - 0 for success, 1 for failure.
+	 */
+	public int importMessages() {
+		Logger.log(CLASS_TAG,
+				"importMessages(): import messages from messages app");
+		Prefs.loadPreferences(context);
+		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
+		uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
+		String[] projection = { "_id", "address", "date", "body" };
+		String messageDate = "";
+		String messageBody = "";
+		String messageFrom = "";
+		Cursor c = context.getContentResolver().query(uriSms, projection, null,
+				null, "date DESC");
+
+		if (c.getCount() > 0 && c != null) {
+			if (c.moveToFirst()) {
+
+				do {
+
+					messageDate = String.valueOf(c.getLong(c
+							.getColumnIndex("date")));
+					Util.smsMap.put("messagesFrom",
+							c.getString(c.getColumnIndex("address")));
+
+					// filter messages if keywoard is enabled
+					if (!Prefs.keyword.equals("")) {
+						String[] keywords = Prefs.keyword.split(",");
+						messageBody = c.getString(c.getColumnIndex("body"));
+						if (filterByKeywords(messageBody.toLowerCase(),
+								keywords)) {
+							smsMap.put("messagesBody", messageBody);
+							messageDate = String.valueOf(c.getLong(c
+									.getColumnIndex("date")));
+							smsMap.put("messagesFrom",
+									c.getString(c.getColumnIndex("address")));
+							smsMap.put("messagesBody",
+									c.getString(c.getColumnIndex("body")));
+							smsMap.put("messagesDate", messageDate);
+							smsMap.put("messagesId",
+									c.getString(c.getColumnIndex("_id")));
+						}
+					} else if (!Prefs.filterByFrom.equals("")) {
+						String[] phoneNumbers = Prefs.filterByFrom.split(",");
+						messageFrom = c.getString(c.getColumnIndex("address"));
+						if (filterByKeywords(messageFrom.toLowerCase(),
+								phoneNumbers)) {
+							smsMap.put("messagesBody", messageBody);
+							messageDate = String.valueOf(c.getLong(c
+									.getColumnIndex("date")));
+							smsMap.put("messagesFrom",
+									c.getString(c.getColumnIndex("address")));
+							smsMap.put("messagesBody",
+									c.getString(c.getColumnIndex("body")));
+							smsMap.put("messagesDate", messageDate);
+							smsMap.put("messagesId",
+									c.getString(c.getColumnIndex("_id")));
+						}
+
+					} else if ((!Prefs.filterByFrom.equals(""))
+							&& (!Prefs.keyword.equals(""))) {
+						String[] keywords = Prefs.keyword.split(",");
+						String[] phoneNumbers = Prefs.filterByFrom.split(",");
+						messageBody = c.getString(c.getColumnIndex("body"));
+						messageFrom = c.getString(c.getColumnIndex("address"));
+						if ((filterByKeywords(messageFrom.toLowerCase(),
+								phoneNumbers))
+								&& (filterByKeywords(messageBody.toLowerCase(),
+										keywords))) {
+
+							smsMap.put("messagesBody", messageBody);
+							messageDate = String.valueOf(c.getLong(c
+									.getColumnIndex("date")));
+							smsMap.put("messagesFrom",
+									c.getString(c.getColumnIndex("address")));
+							smsMap.put("messagesBody",
+									c.getString(c.getColumnIndex("body")));
+							smsMap.put("messagesDate", messageDate);
+							smsMap.put("messagesId",
+									c.getString(c.getColumnIndex("_id")));
+
+						}
+
+					} else {
+						messageDate = String.valueOf(c.getLong(c
+								.getColumnIndex("date")));
+						smsMap.put("messagesFrom",
+								c.getString(c.getColumnIndex("address")));
+						smsMap.put("messagesBody",
+								c.getString(c.getColumnIndex("body")));
+						smsMap.put("messagesDate", messageDate);
+						smsMap.put("messagesId",
+								c.getString(c.getColumnIndex("_id")));
+					}
+
+					new MessageSyncUtil(context).processMessages();
+
+				} while (c.moveToNext());
+			}
+			c.close();
+			return 0;
+
+		} else {
+			return 1;
+		}
+
+	}
+
+	/**
+	 * Tries to locate the message id (from the system database), given the
+	 * message thread id and the timestamp of the message.
+	 * 
+	 * @param Context
+	 *            context - The activity calling the method.
+	 * @param long threadId - The message's thread ID.
+	 * @param long _timestamp - The timestamp of the message.
+	 */
+	public static long findMessageId(Context context, long threadId,
+			long _timestamp) {
+		Logger.log(CLASS_TAG,
+				"findMessageId(): get the message id using thread id and timestamp: threadId: "
+						+ threadId + " timestamp: " + _timestamp);
+		long id = 0;
+		long timestamp = _timestamp;
+		if (threadId > 0) {
+
+			Cursor cursor = context.getContentResolver().query(
+					ContentUris.withAppendedId(CONVERSATION_CONTENT_URI,
+							threadId),
+					new String[] { "_id", "date", "thread_id" },
+					"date=" + timestamp, null, "date desc");
+
+			if (cursor != null) {
+				try {
+					if (cursor.moveToFirst()) {
+						id = cursor.getLong(0);
+
+					}
+				} finally {
+					cursor.close();
+				}
+			}
+		}
+		return id;
+	}
+
+	/**
+	 * Tries to locate the message id or thread id given the address (phone
+	 * number or email) of the message sender.
+	 * 
+	 * @param Context
+	 *            context - The activity calling this method.
+	 * @param SmsMessage
+	 *            msg - The SMS object to get the address of the message from.
+	 * @return long.
+	 */
+	public long getId(SmsMessage msg, String idType) {
+		Logger.log(CLASS_TAG,
+				"getId(): Locate message id or thread id: idType:" + idType);
+		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
+		sb.append("body=" + DatabaseUtils.sqlEscapeString(msg.getMessageBody()));
+		Cursor c = context.getContentResolver().query(uriSms, null,
+				sb.toString(), null, null);
+
+		if (c.getCount() > 0 && c != null) {
+			c.moveToFirst();
+			if (idType.equals("id")) {
+				return c.getLong(c.getColumnIndex("_id"));
+
+			} else if (idType.equals("thread")) {
+				return c.getLong(c.getColumnIndex("thread_id"));
+			}
+			c.close();
+		}
+		return 0;
+	}
+
+	/**
+	 * Sends SMS to a number.
+	 * 
+	 * @param String
+	 *            sendTo - Number to send SMS to.
+	 * @param String
+	 *            msg - The message to be sent.
+	 */
+	public void sendSms(String sendTo, String msg) {
+
+		ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
+		ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
+		Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
+				+ sendTo + " message: " + msg);
+
+		SmsManager sms = SmsManager.getDefault();
+		ArrayList<String> parts = sms.divideMessage(msg);
+		for (int i = 0; i < parts.size(); i++) {
+			PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,
+					new Intent(ServicesConstants.SENT), 0);
+
+			PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
+					0, new Intent(ServicesConstants.DELIVERED), 0);
+			sentIntents.add(sentIntent);
+
+			deliveryIntents.add(deliveryIntent);
+		}
+		if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo))
+			sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+					deliveryIntents);
+	}
+
+	/**
+	 * Delete SMS from the message app inbox.
+	 * 
+	 * @param Context
+	 *            context - The calling activity
+	 * @param msg
+	 */
+	public void delSmsFromInbox(SmsMessage msg) {
+		Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
+		final long threadId = getId(msg, "thread");
+
+		if (threadId >= 0) {
+			context.getContentResolver().delete(
+					Uri.parse(SMS_CONTENT_URI + threadId), null, null);
+		}
+	}
+
+	/**
+	 * Put successfully sent messages to a local database for logging sake
+	 * 
+	 * @return void
+	 */
+	public void postToSentBox(String messagesFrom, String messagesBody,
+			SmsMessage sms) {
+		Logger.log(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
+
+		// Get message id.
+		final String messageId = String.valueOf(getId(sms, "id"));
+		final String messageDate = String.valueOf(sms.getTimestampMillis());
+
+		SentMessagesUtil.smsMap.put("messagesFrom", messagesFrom);
+		SentMessagesUtil.smsMap.put("messagesBody", messagesBody);
+		SentMessagesUtil.smsMap.put("messagesDate", messageDate);
+		SentMessagesUtil.smsMap.put("messagesId", messageId);
+
+		int status = SentMessagesUtil.processSentMessages(context);
+		statusIntent.putExtra("status", status);
+		context.sendBroadcast(statusIntent);
+
+	}
+
+	/**
+	 * Put failed messages to be sent to the callback URL to the local database.
+	 * 
+	 * @return void
+	 */
+	private void postToPendingBox(final String messagesFrom,
+			final String messagesBody, final SmsMessage sms) {
+		Logger.log(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
+
+		// Get message id.
+		String messageId = String.valueOf(getId(sms, "id"));
+
+		String messageDate = String.valueOf(sms.getTimestampMillis());
+		Util.smsMap.put("messagesFrom", messagesFrom);
+		Util.smsMap.put("messagesBody", messagesBody);
+		Util.smsMap.put("messagesDate", messageDate);
+		Util.smsMap.put("messagesId", messageId);
+		new PendingMessages().showMessages();
+		int status = new MessageSyncUtil(context).processMessages();
+		statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
+		statusIntent.putExtra("failed", status);
+		context.sendBroadcast(statusIntent);
+
+	}
+
+}
