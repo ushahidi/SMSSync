@@ -20,11 +20,18 @@
 
 package org.addhen.smssync.views;
 
+import org.addhen.smssync.R;
+
 import android.app.Activity;
+import android.widget.CheckBox;
 
 public class SyncUrlView extends View {
+	
+	public CheckBox enableSmsSync;
+			
 	public SyncUrlView(Activity activity) {
 		super(activity);
+		enableSmsSync = (CheckBox) activity.findViewById(R.id.start_checkbox);
 	}
 
 }

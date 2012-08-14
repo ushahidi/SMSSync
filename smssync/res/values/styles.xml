@@ -88,7 +88,7 @@
 
     <style name="ListView" parent="@android:style/Widget.ListView">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:cacheColorHint">#00000000</item>
         <item name="android:fadingEdge">none</item>
         <item name="android:fastScrollEnabled">true</item>

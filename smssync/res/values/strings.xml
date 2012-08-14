@@ -157,4 +157,5 @@
     <string name="sync_url_deleted_failed">Sync URL couldn\'t be deleted.</string>
     <string name="disable_to_delete_syncurl">You cannot delete this Sync URL because it is enabled. Disable it first before you can delete it.</string>
     <string name="disable_to_delete_all_syncurl">There are enabled Sync URLs so you cannot delete all of them. Disable all enabled Sync URLs then try this action again.</string>
+    <string name="no_enabled_sync_url">Enable at least one Sync URL to start the service.</string>
 </resources>

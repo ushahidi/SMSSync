@@ -22,6 +22,7 @@ package org.addhen.smssync;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 /**
  * This class instantiate static variables to hold values of the settings /
@@ -58,6 +59,10 @@ public class Prefs {
     public static Boolean enableAutoSync = false;
 
     public static Boolean enableTaskCheck = false;
+    
+    private static SharedPreferences settings;
+
+	private static SharedPreferences.Editor editor;
 
     public static final String PREF_NAME = "SMS_SYNC_PREF";
 
@@ -83,5 +88,25 @@ public class Prefs {
         autoTime = settings.getInt("AutoTime", autoTime);
         uniqueId = settings.getString("UniqueId", "");
         taskCheckTime = settings.getInt("taskCheck", taskCheckTime);
+    }
+    
+    /**
+     * Save settings changes.
+     * 
+     * @return void
+     */
+    public static void savePreferences(Context context) {
+
+    	 final SharedPreferences settings  = context.getSharedPreferences(PREF_NAME, 0);
+        editor = settings.edit();
+        editor.putBoolean("EnableSmsSync", enabled);
+        editor.putBoolean("EnableAutoDelete", autoDelete);
+        editor.putBoolean("EnableReply", enableReply);
+        editor.putBoolean("EnableReplyFrmServer", enableReplyFrmServer);
+        editor.putBoolean("AutoSync", enableAutoSync);
+        editor.putInt("AutoTime", autoTime);
+        editor.putInt("taskCheck", taskCheckTime);
+        editor.putString("UniqueId", uniqueId);
+        editor.commit();
     }
 }

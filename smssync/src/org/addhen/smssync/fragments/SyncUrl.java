@@ -22,20 +22,26 @@ package org.addhen.smssync.fragments;
 
 import java.util.List;
 
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.SyncUrlView;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.Preference;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -48,7 +54,8 @@ import android.widget.ListView;
 import com.actionbarsherlock.view.MenuItem;
 
 public class SyncUrl extends
-		BaseListFragment<SyncUrlView, SyncUrlModel, SyncUrlAdapter> {
+		BaseListFragment<SyncUrlView, SyncUrlModel, SyncUrlAdapter> implements
+		View.OnClickListener {
 
 	private Intent syncPendingMessagesServiceIntent;
 
@@ -68,6 +75,12 @@ public class SyncUrl extends
 
 	private List<SyncUrlModel> syncUrl;
 
+	private PackageManager pm;
+
+	private ComponentName cn;
+
+	private int callbackUrlValidityStatus = 1;
+
 	public SyncUrl() {
 		super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
 				R.menu.sync_url_menu, android.R.id.list);
@@ -82,9 +95,15 @@ public class SyncUrl extends
 		super.onActivityCreated(savedInstanceState);
 		setHasOptionsMenu(true);
 		registerForContextMenu(listView);
-		setEmptyText(getString(R.string.no_sync_url));
+		Prefs.loadPreferences(getActivity());
+		pm = getActivity().getPackageManager();
+		cn = new ComponentName(getActivity(), SmsReceiver.class);
+
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		listView.setItemsCanFocus(false);
+		view.enableSmsSync.setChecked(Prefs.enabled);
+		view.enableSmsSync.setOnClickListener(this);
+
 	}
 
 	@Override
@@ -436,6 +455,53 @@ public class SyncUrl extends
 		syncPendingMessagesServiceIntent.putExtra(
 				ServicesConstants.MESSEAGE_ID, messagesId);
 		getActivity().startService(syncPendingMessagesServiceIntent);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(View v) {
+
+		if (adapter.getCount() > 0) {
+			// check if there are any enabled sync urls
+			// load all checked syncurl
+			syncUrl = model.loadByStatus(1);
+			if (syncUrl != null && syncUrl.size() > 0) {
+				if (view.enableSmsSync.isChecked()) {
+					pm.setComponentEnabledSetting(cn,
+							PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
+							PackageManager.DONT_KILL_APP);
+
+					// show notification
+					Util.showNotification(getActivity());
+
+					Prefs.enabled = true;
+					view.enableSmsSync.setChecked(true);
+
+				} else {
+					pm.setComponentEnabledSetting(cn,
+							PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+							PackageManager.DONT_KILL_APP);
+
+					Util.clearNotify(getActivity());
+					Prefs.enabled = false;
+					view.enableSmsSync.setChecked(false);
+				}
+			} else {
+				toastLong(R.string.no_enabled_sync_url);
+				Prefs.enabled = false;
+				view.enableSmsSync.setChecked(false);
+			}
+
+		} else {
+			toastLong(R.string.no_configured_url);
+			Prefs.enabled = false;
+			view.enableSmsSync.setChecked(false);
+		}
+		Prefs.savePreferences(getActivity());
 	}
 
 }

@@ -16,21 +16,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/general_settings" >
-
-        <EditTextPreference
-            android:defaultValue="@string/http_text"
-            android:dialogTitle="@string/edittxt_website_pref"
-            android:inputType="textUri"
-            android:key="website_preference"
-            android:summary="@string/edittxt_website_pref_summary"
-            android:title="@string/edittxt_website_pref" />
-
-        <EditTextPreference
-            android:dialogTitle="@string/edittxt_api_key_pref"
-            android:key="api_key_preference"
-            android:summary="@string/edittxt_api_key_pref_summary"
-            android:title="@string/edittxt_api_key_pref" />
-
+       
         <EditTextPreference
             android:dialogTitle="@string/edittxt_unique_id_pref"
             android:hint="@string/edittxt_unique_id_hint"
@@ -42,11 +28,6 @@
             android:key="auto_delete_preference"
             android:summary="@string/chk_auto_delete_hint"
             android:title="@string/chk_enable_auto_delete" />
-
-        <CheckBoxPreference
-            android:key="enable_sms_sync_preference"
-            android:summary="@string/chk_sms_sync_hint"
-            android:title="@string/chk_enable_sms_sync" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/filter_messages" >

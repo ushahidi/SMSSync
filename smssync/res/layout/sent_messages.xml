@@ -18,6 +18,11 @@
 
     <ListView
         android:id="@id/android:list"
-        style="@style/ListView"/>
+        style="@style/ListView" />
+
+    <TextView
+        android:id="@id/android:empty"
+        style="@style/TextView.Empty"
+        android:text="@string/no_sent_messages" />
 
 </RelativeLayout>
