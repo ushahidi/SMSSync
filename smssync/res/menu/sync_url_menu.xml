@@ -19,20 +19,15 @@
         android:showAsAction="always"
         android:title="@string/add_sync_url"/>
     <item
-        android:id="@+id/delete_sync_url"
-        android:icon="@drawable/delete"
-        android:orderInCategory="1"
-        android:showAsAction="always"
-        android:title="@string/menu_delete"/>
-    <item
         android:id="@+id/delete_all_sync_url"
-        android:orderInCategory="2"
-        android:showAsAction="never"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:icon="@drawable/delete"
         android:title="@string/menu_delete_all"/>
     <item
         android:id="@+id/settings"
-        android:orderInCategory="3"
-        android:showAsAction="never"
+        android:orderInCategory="2"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_settings"/>
 
 </menu>

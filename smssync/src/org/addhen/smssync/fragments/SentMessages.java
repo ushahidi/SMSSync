@@ -106,7 +106,7 @@ public class SentMessages
 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		messageId = adapter.getItem(info.position).getMessageId();
+		//messageId = adapter.getItem(info.position).getMessageId();
 		boolean result = performAction(item, info.position);
 
 		if (!result) {

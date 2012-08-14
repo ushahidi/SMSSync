@@ -160,7 +160,8 @@ public class PendingMessages
 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		messageId = adapter.getItem(info.position).getMessageId();
+		log("position: "+adapter.getCount());
+		//messageId = adapter.getItem(info.position).getMessageId();
 		boolean result = performAction(item, info.position);
 
 		if (!result) {
@@ -173,7 +174,7 @@ public class PendingMessages
 	public boolean performAction(android.view.MenuItem item, int position) {
 
 		if (item.getItemId() == R.id.context_delete) {
-			// Delete by ID
+			
 			performDeleteById();
 			return (true);
 		} else if (item.getItemId() == R.id.context_delete_all) {
@@ -239,6 +240,7 @@ public class PendingMessages
 							public void onClick(DialogInterface dialog, int id) {
 								// delete all messages
 								mHandler.post(mDeleteAllMessages);
+								adapter.refresh();
 							}
 						});
 		AlertDialog alert = builder.create();
@@ -263,6 +265,7 @@ public class PendingMessages
 							public void onClick(DialogInterface dialog, int id) {
 								// Delete by ID
 								mHandler.post(mDeleteMessagesById);
+								adapter.refresh();
 							}
 						});
 		AlertDialog alert = builder.create();
@@ -388,12 +391,12 @@ public class PendingMessages
 
 					if (result) {
 						toastLong(R.string.messages_deleted);
-						showMessages();
-
+					
 					} else {
 						toastLong(R.string.messages_deleted_failed);
 					}
 				}
+				showMessages();
 				getActivity().setProgressBarIndeterminateVisibility(false);
 			} catch (Exception e) {
 				return;

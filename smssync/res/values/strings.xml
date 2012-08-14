@@ -155,4 +155,6 @@
     <string name="failed_to_update_sync_url">Failed to update sync URL</string>
     <string name="sync_url_deleted">Sync URL successfully deleted.</string>
     <string name="sync_url_deleted_failed">Sync URL couldn\'t be deleted.</string>
+    <string name="disable_to_delete_syncurl">You cannot delete this Sync URL because it is enabled. Disable it first before you can delete it.</string>
+    <string name="disable_to_delete_all_syncurl">There are enabled Sync URLs so you cannot delete all of them. Disable all enabled Sync URLs then try this action again.</string>
 </resources>

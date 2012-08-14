@@ -80,6 +80,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
 		return listSyncUrl;
 	}
+	
 
 	@Override
 	public List<SyncUrlModel> fetchSyncUrlByStatus(int status) {

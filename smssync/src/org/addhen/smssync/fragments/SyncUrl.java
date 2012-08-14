@@ -66,11 +66,15 @@ public class SyncUrl extends
 
 	private boolean edit = false;
 
+	private List<SyncUrlModel> syncUrl;
+
 	public SyncUrl() {
 		super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
 				R.menu.sync_url_menu, android.R.id.list);
 		mHandler = new Handler();
 		model = new SyncUrlModel();
+		// load all checked syncurl
+		syncUrl = model.loadByStatus(1);
 	}
 
 	@Override
@@ -133,47 +137,50 @@ public class SyncUrl extends
 	public boolean performAction(android.view.MenuItem item, int position) {
 
 		if (item.getItemId() == R.id.context_edit_sync_url) {
-			// Delete by ID
 			edit = true;
 			addSyncUrl();
 			return (true);
 		} else if (item.getItemId() == R.id.context_delete_sync_url) {
-			performDeleteById();
+			if (adapter.getItem(position).getStatus() == 1) {
+				showMessage(R.string.disable_to_delete_syncurl);
+			} else {
+				performDeleteById();
+			}
 			return (true);
 		}
 		return (false);
 	}
 
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		l.setItemChecked(position, true);
-		// is the view checkbox
-		if (v.getId() == R.id.sync_checkbox) {
-			//log("Hello world!");
-			CheckedTextView checkBox = (CheckedTextView) v;
-			// check if the checkbox is checked
-			if (checkBox.isChecked()) {
-				adapter.getItem(position).setStatus(1);
-				adapter.updateStatus(position);
-
-			} else {
-				adapter.getItem(position).setStatus(0);
-				adapter.updateStatus(position);
-			}
-		}
-	}
+	/*
+	 * @Override public void onListItemClick(ListView l, View v, int position,
+	 * long id) { l.setItemChecked(position, true); log("Item checked!"); // is
+	 * the view checkbox if (v.getId() == R.id.sync_checkbox) {
+	 * log("Hello world!"); CheckedTextView checkBox = (CheckedTextView) v; //
+	 * check if the checkbox is checked if (checkBox.isChecked()) {
+	 * adapter.getItem(position).setStatus(1); adapter.updateStatus(position);
+	 * 
+	 * } else { adapter.getItem(position).setStatus(0);
+	 * adapter.updateStatus(position); }
+	 * 
+	 * // load all checked syncurl syncUrl = model.loadByStatus(1); } }
+	 */
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
+
 		if (item.getItemId() == R.id.add_sync_url) {
 			edit = false;
 			addSyncUrl();
 			return (true);
-		} else if (item.getItemId() == R.id.delete_sync_url) {
-			performDeleteById();
 		} else if (item.getItemId() == R.id.delete_all_sync_url) {
-			performDeleteAll();
+			// load all checked syncurl
+			syncUrl = model.loadByStatus(1);
+			if (syncUrl != null && syncUrl.size() > 0) {
+				showMessage(R.string.disable_to_delete_all_syncurl);
+			} else {
+				performDeleteAll();
+			}
 		} else if (item.getItemId() == R.id.settings) {
 			intent = new Intent(getActivity(), Settings.class);
 			startActivity(intent);
@@ -233,6 +240,29 @@ public class SyncUrl extends
 							public void onClick(DialogInterface dialog, int id) {
 								// Delete by ID
 								mHandler.post(mDeleteSyncById);
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	/**
+	 * Show prompt message
+	 * 
+	 * @param int message The resource string which is the message to show to
+	 *        the user.
+	 * 
+	 * @return void
+	 */
+	public void showMessage(int message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(getString(message))
+				.setCancelable(false)
+				.setPositiveButton(getString(R.string.ok),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// Delete by ID
+								dialog.cancel();
 							}
 						});
 		AlertDialog alert = builder.create();
@@ -340,21 +370,6 @@ public class SyncUrl extends
 	};
 
 	/**
-	 * Update status of a sync URL.
-	 */
-	final Runnable mUpdateStatus = new Runnable() {
-		public void run() {
-
-			try {
-				// TODO:: update status.
-				showSelectedItems();
-			} catch (Exception e) {
-				return;
-			}
-		}
-	};
-
-	/**
 	 * Delete individual messages 0 - Successfully deleted. 1 - There is nothing
 	 * to be deleted.
 	 */
@@ -421,14 +436,6 @@ public class SyncUrl extends
 		syncPendingMessagesServiceIntent.putExtra(
 				ServicesConstants.MESSEAGE_ID, messagesId);
 		getActivity().startService(syncPendingMessagesServiceIntent);
-	}
-
-	private void showSelectedItems() {
-		// an array that contains all checked items
-		final long checkedItems[] = listView.getCheckItemIds();
-		for (int i = 0; i < checkedItems.length; i++) {
-			toastLong(adapter.getItem(i).getTitle());
-		}
 	}
 
 }
