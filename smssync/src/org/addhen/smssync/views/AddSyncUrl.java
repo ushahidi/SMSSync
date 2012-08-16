@@ -40,6 +40,8 @@ public class AddSyncUrl {
 	public EditText url;
 
 	public EditText secret;
+	
+	public int status = 0;
 
 	/**
 	 * Handles views for the add dialog box
@@ -94,6 +96,7 @@ public class AddSyncUrl {
 		syncUrl.setSecret(secret.getText().toString());
 		syncUrl.setTitle(title.getText().toString());
 		syncUrl.setUrl(url.getText().toString());
+		syncUrl.setStatus(status);
 		syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
 		syncUrl.listSyncUrl.add(syncUrl);
 		return syncUrl.update(syncUrl);

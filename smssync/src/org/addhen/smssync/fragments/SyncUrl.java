@@ -287,6 +287,8 @@ public class SyncUrl extends
 				addSyncUrl.url.setText(listSyncUrl.get(0).getUrl());
 				addSyncUrl.secret.setText(listSyncUrl.get(0).getSecret());
 				addSyncUrl.keywords.setText(listSyncUrl.get(0).getKeywords());
+				addSyncUrl.status = listSyncUrl.get(0).getStatus();
+						
 			}
 		}
 
