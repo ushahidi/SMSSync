@@ -33,7 +33,6 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.addhen.smssync.MessagesTabActivity2;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MessagesTabActivity;
@@ -255,7 +254,7 @@ public class Util {
 		NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		Intent baseIntent = new Intent(context, MessagesTabActivity2.class);
+		Intent baseIntent = new Intent(context, MessagesTabActivity.class);
 
 		baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

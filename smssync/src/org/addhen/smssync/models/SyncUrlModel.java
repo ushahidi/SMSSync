@@ -185,8 +185,9 @@ public class SyncUrlModel extends Model {
 	public boolean load() {
 
 		listSyncUrl = Database.mSyncUrlContentProvider.fetchSyncUrl();
-		if (listSyncUrl != null && listSyncUrl.size() > 0)
+		if (listSyncUrl != null) {
 			return true;
+		}
 
 		return false;
 	}

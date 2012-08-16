@@ -116,14 +116,6 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 
 		if (listViewId != 0) {
 			listView = getListView();
-
-			// listView.setOnItemClickListener(this);
-			android.view.View emptyView = getActivity().findViewById(
-					android.R.id.empty);
-			if (emptyView != null) {
-				listView.setEmptyView(emptyView);
-			}
-			
 			view = Objects.createInstance(viewClass, Activity.class,
 					getActivity());
 			adapter = Objects.createInstance(adapterClass, Context.class,

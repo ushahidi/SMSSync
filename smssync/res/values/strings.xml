@@ -103,10 +103,10 @@
     <string name="sms_failed">SMS failed</string>
 
     <!-- URL validation -->
-    <string name="invalid_url">Please the URL entered was invalid.</string>
-    <string name="no_configured_url">Please there is no configured URL.</string>
-    <string name="no_connection">Could not make connection to the URL.</string>
-    <string name="no_task">No task is enabled on the configured callback URL.
+    <string name="invalid_url">Please the Sync URL entered was invalid.</string>
+    <string name="no_configured_url">Please there is no configured Sync URL.</string>
+    <string name="no_connection">Could not make connection to the Sync URL.</string>
+    <string name="no_task">No task is enabled on the configured Sync URL.
 	</string>
     <string name="auto_sync_settings">Auto Sync Settings</string>
     <string name="task_check_settings">Task Settings</string>
@@ -158,4 +158,5 @@
     <string name="disable_to_delete_syncurl">You cannot delete this Sync URL because it is enabled. Disable it first before you can delete it.</string>
     <string name="disable_to_delete_all_syncurl">There are enabled Sync URLs so you cannot delete all of them. Disable all enabled Sync URLs then try this action again.</string>
     <string name="no_enabled_sync_url">Enable at least one Sync URL to start the service.</string>
+    <string name="disable_smssync_service">SMSSync service is running. You cannot perform a deletion until the service is stopped. Stop the service then try this action again.</string>
 </resources>

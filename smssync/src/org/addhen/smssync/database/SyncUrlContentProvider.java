@@ -131,7 +131,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
 	@Override
 	public boolean deleteAllSyncUrl() {
-		return super.delete(TABLE, null, null) > 0;
+		return super.delete(TABLE, "1", null) > 0;
 	}
 
 	/**

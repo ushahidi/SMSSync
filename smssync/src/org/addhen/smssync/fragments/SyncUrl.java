@@ -41,14 +41,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.Preference;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckedTextView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -67,10 +65,6 @@ public class SyncUrl extends
 
 	private int id = 0;
 
-	private MenuItem refresh;
-
-	private boolean refreshState = false;
-
 	private boolean edit = false;
 
 	private List<SyncUrlModel> syncUrl;
@@ -78,8 +72,6 @@ public class SyncUrl extends
 	private PackageManager pm;
 
 	private ComponentName cn;
-
-	private int callbackUrlValidityStatus = 1;
 
 	public SyncUrl() {
 		super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
@@ -197,7 +189,11 @@ public class SyncUrl extends
 			syncUrl = model.loadByStatus(1);
 			if (syncUrl != null && syncUrl.size() > 0) {
 				showMessage(R.string.disable_to_delete_all_syncurl);
-			} else {
+			
+				//check if a service is running
+			}else if(Prefs.enabled) {
+				showMessage(R.string.disable_smssync_service);
+			} else  {
 				performDeleteAll();
 			}
 		} else if (item.getItemId() == R.id.settings) {
@@ -205,16 +201,6 @@ public class SyncUrl extends
 			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	private void updateRefreshStatus() {
-		if (refresh != null) {
-			if (refreshState)
-				refresh.setActionView(R.layout.indeterminate_progress_action);
-			else
-				refresh.setActionView(null);
-		}
-
 	}
 
 	/**
@@ -473,8 +459,7 @@ public class SyncUrl extends
 				if (view.enableSmsSync.isChecked()) {
 					pm.setComponentEnabledSetting(cn,
 							PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
-							PackageManager.DONT_KILL_APP);
-
+							PackageManager.DONT_KILL_APP);	
 					// show notification
 					Util.showNotification(getActivity());
 
