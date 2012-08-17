@@ -87,6 +87,12 @@ public class ProcessSms {
 	 * Processes the incoming SMS to figure out how to exactly route the
 	 * message. If it fails to be synced online, cache it and queue it up for
 	 * the scheduler to process it.
+	 * 
+	 * @param String messagesFrom The number that sent the SMS
+	 * @param String messagesBody The message body. This is the message sent ot the phone.
+	 * @param String messagesTimestamp The timestamp of the message
+	 * @param String messagesId The unique ID of the messages. 
+	 * @param SmsMessages sms The SMS object as 	
 	 */
 	public void routeSms(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId, SmsMessage sms) {
@@ -107,9 +113,10 @@ public class ProcessSms {
 				for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
 					String keywords[] = syncUrl.getKeywords().split(",");
 					// process keyword
+					messageSyncUtil = new MessageSyncUtil(context,
+							syncUrl.getUrl());
 					if (filterByKeywords(messagesBody, keywords)) {
-						messageSyncUtil = new MessageSyncUtil(context,
-								syncUrl.getUrl());
+						
 						posted = messageSyncUtil.postToAWebService(
 								messagesFrom, messagesBody, messagesTimestamp,
 								messagesId, syncUrl.getSecret());
@@ -133,6 +140,10 @@ public class ProcessSms {
 						}
 
 					} else { // no keyword
+						
+						posted = messageSyncUtil.postToAWebService(
+								messagesFrom, messagesBody, messagesTimestamp,
+								messagesId, syncUrl.getSecret());
 						if (!posted) {
 							Util.showFailNotification(context, messagesBody,
 									context.getString(R.string.sending_failed));
@@ -298,8 +309,8 @@ public class ProcessSms {
 								c.getString(c.getColumnIndex("_id")));
 					}
 
-					//TODO::// implement filtering by keywords.
-					//new MessageSyncUtil(context).processMessages();
+					// TODO::// implement filtering by keywords.
+					// new MessageSyncUtil(context).processMessages();
 
 				} while (c.moveToNext());
 			}
@@ -475,7 +486,7 @@ public class ProcessSms {
 		Util.smsMap.put("messagesDate", messageDate);
 		Util.smsMap.put("messagesId", messageId);
 		new PendingMessages().showMessages();
-		
+
 		int status = MessageSyncUtil.processMessages();
 		statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
 		statusIntent.putExtra("failed", status);
