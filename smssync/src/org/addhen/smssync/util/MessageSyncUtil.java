@@ -301,15 +301,13 @@ public class MessageSyncUtil extends Util {
 					if (payloadObject != null) {
 						task = payloadObject.getString("task");
 						secret = payloadObject.getString("secret");
-						if ((task.equals("send"))
-								&& (secret.equals(urlSecret))) {
+						if ((task.equals("send")) && (secret.equals(urlSecret))) {
 							jsonArray = payloadObject.getJSONArray("messages");
 
 							for (int index = 0; index < jsonArray.length(); ++index) {
 								jsonObject = jsonArray.getJSONObject(index);
 
-								new ProcessSms(context).sendSms(
-										jsonObject.getString("to"),
+								processSms.sendSms(jsonObject.getString("to"),
 										jsonObject.getString("message"));
 							}
 
@@ -324,7 +322,7 @@ public class MessageSyncUtil extends Util {
 					}
 
 				} catch (JSONException e) {
-					Log.e(CLASS_TAG, "Error: " + e.getMessage());
+					log( "Error: " + e.getMessage());
 					showToast(context, R.string.no_task);
 				}
 			}

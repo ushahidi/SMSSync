@@ -35,6 +35,7 @@ public class CheckTaskScheduledService extends SmsSyncServices {
 
 	public CheckTaskScheduledService() {
 		super(CLASS_TAG);
+		model = new SyncUrlModel();
 	}
 
 	@Override

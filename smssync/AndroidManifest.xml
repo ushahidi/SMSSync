@@ -131,7 +131,7 @@
         <!-- task check scheduled -->
         <receiver android:name=".receivers.CheckTaskScheduledReceiver" />
 
-        <!-- task check scheduled -->
+        <!-- auto sync scheduled -->
         <receiver android:name=".receivers.AutoSyncScheduledReceiver" />
 
         <!-- app widget provider -->
