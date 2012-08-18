@@ -425,6 +425,9 @@ public class Settings extends SherlockPreferenceActivity implements
 				if (autoSyncService != null) {
 					autoSyncService.stopScheduler();
 				}
+				
+				stopService(new Intent(Settings.this,
+						AutoSyncScheduledService.class));
 
 				autoSyncTimes.setEnabled(false);
 			}
@@ -438,6 +441,7 @@ public class Settings extends SherlockPreferenceActivity implements
 				// Initialize the selected time to frequently sync pending
 				// messages
 				Prefs.autoTime = initializeAutoSyncTime();
+				
 				// start the scheduler for 'task check' service
 				long interval = (Prefs.autoTime * 60000);
 				if (autoSyncService != null) {
@@ -458,6 +462,8 @@ public class Settings extends SherlockPreferenceActivity implements
 				if (checkTaskService != null) {
 					checkTaskService.stopScheduler();
 				}
+				stopService(new Intent(Settings.this,
+						CheckTaskScheduledService.class));
 				taskCheckTimes.setEnabled(false);
 			}
 		}
