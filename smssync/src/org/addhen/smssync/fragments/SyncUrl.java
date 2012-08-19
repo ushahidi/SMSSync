@@ -28,7 +28,11 @@ import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.receivers.SmsReceiver;
+import org.addhen.smssync.services.CheckTaskScheduledService;
+import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SyncPendingMessagesService;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
@@ -71,7 +75,7 @@ public class SyncUrl extends
 
 	private PackageManager pm;
 
-	private ComponentName cn;
+	private ComponentName smsReceiverComponent;
 
 	public SyncUrl() {
 		super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
@@ -89,7 +93,8 @@ public class SyncUrl extends
 		registerForContextMenu(listView);
 		Prefs.loadPreferences(getActivity());
 		pm = getActivity().getPackageManager();
-		cn = new ComponentName(getActivity(), SmsReceiver.class);
+		smsReceiverComponent = new ComponentName(getActivity(),
+				SmsReceiver.class);
 
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		listView.setItemsCanFocus(false);
@@ -189,11 +194,11 @@ public class SyncUrl extends
 			syncUrl = model.loadByStatus(1);
 			if (syncUrl != null && syncUrl.size() > 0) {
 				showMessage(R.string.disable_to_delete_all_syncurl);
-			
-				//check if a service is running
-			}else if(Prefs.enabled) {
+
+				// check if a service is running
+			} else if (Prefs.enabled) {
 				showMessage(R.string.disable_smssync_service);
-			} else  {
+			} else {
 				performDeleteAll();
 			}
 		} else if (item.getItemId() == R.id.settings) {
@@ -288,7 +293,7 @@ public class SyncUrl extends
 				addSyncUrl.secret.setText(listSyncUrl.get(0).getSecret());
 				addSyncUrl.keywords.setText(listSyncUrl.get(0).getKeywords());
 				addSyncUrl.status = listSyncUrl.get(0).getStatus();
-						
+
 			}
 		}
 
@@ -459,19 +464,40 @@ public class SyncUrl extends
 			syncUrl = model.loadByStatus(1);
 			if (syncUrl != null && syncUrl.size() > 0) {
 				if (view.enableSmsSync.isChecked()) {
-					pm.setComponentEnabledSetting(cn,
-							PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
-							PackageManager.DONT_KILL_APP);	
-					// show notification
-					Util.showNotification(getActivity());
+					// start sms receiver
+					pm.setComponentEnabledSetting(smsReceiverComponent,
+							PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+							PackageManager.DONT_KILL_APP);
 
 					Prefs.enabled = true;
 					view.enableSmsSync.setChecked(true);
+					//because the services to be run depends on the save the changes first
+					Prefs.savePreferences(getActivity());
+					// run auto sync service
+					RunServicesUtil.runAutoSyncService(getActivity());
+
+					// run check task service
+					RunServicesUtil.runCheckTaskService(getActivity());
+
+					// show notification
+					Util.showNotification(getActivity());
 
 				} else {
-					pm.setComponentEnabledSetting(cn,
+
+					// stop sms receiver
+					pm.setComponentEnabledSetting(smsReceiverComponent,
 							PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
 							PackageManager.DONT_KILL_APP);
+
+					RunServicesUtil.stopCheckTaskService(getActivity());
+					RunServicesUtil.stopAutoSyncService(getActivity());
+
+					// stop check task schedule
+					getActivity().stopService(
+							new Intent(getActivity(),
+									CheckTaskScheduledService.class));
+					getActivity().stopService(
+							new Intent(getActivity(), CheckTaskService.class));
 
 					Util.clearNotify(getActivity());
 					Prefs.enabled = false;

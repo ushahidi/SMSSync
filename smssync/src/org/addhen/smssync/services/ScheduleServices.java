@@ -42,39 +42,38 @@ public class ScheduleServices {
 
 	private Intent i;
 
-	private Context context;
-
 	private static final String CLASS_TAG = ScheduleServices.class
 			.getSimpleName();
 
-	public ScheduleServices(Context contxt, Intent intent, Class<?> cls,
-			long interval, int requestCode, int flags) {
+	public ScheduleServices(Context context, Intent intent, Class<?> cls,
+			int requestCode, int flags) {
 		Logger.log(CLASS_TAG,
-				"ScheduleServices() executing scheduled services: interval:"
-						+ interval + " requestCode: " + requestCode);
-		Prefs.loadPreferences(contxt);
-		context = contxt;
+				"ScheduleServices() executing scheduled services ");
+		Prefs.loadPreferences(context);
+
 		mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		i = new Intent(context, cls);
 		pendingIntent = PendingIntent.getBroadcast(context, requestCode, i,
 				flags);
-
-		mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-				SystemClock.elapsedRealtime() + 60000, interval, pendingIntent);
-
 	}
 
 	/**
 	 * Stops the schedule service or task
+	 * 
+	 * @param context
+	 *            The calling context
 	 */
 	public void stopScheduler() {
 		if (mgr != null && pendingIntent != null) {
+			Logger.log(CLASS_TAG, "Stop scheduler");
 			mgr.cancel(pendingIntent);
 		}
 	}
 
 	public void updateScheduler(long interval) {
+		Logger.log(CLASS_TAG, "updating scheduler");
 		if (mgr != null && pendingIntent != null) {
+			Logger.log(CLASS_TAG, "Update scheduler to " + interval);
 			mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
 					SystemClock.elapsedRealtime() + 60000, interval,
 					pendingIntent);

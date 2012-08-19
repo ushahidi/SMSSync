@@ -28,6 +28,7 @@ import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
 import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
@@ -75,8 +76,6 @@ public class Settings extends SherlockPreferenceActivity implements
 
 	public static final String KEY_UNIQUE_ID = "unique_id_preference";
 
-	public static final String PREFS_NAME = "SMS_SYNC_PREF";
-
 	public static final String AUTO_SYNC = "auto_sync_preference";
 
 	public static final String AUTO_SYNC_TIMES = "auto_sync_times";
@@ -113,10 +112,6 @@ public class Settings extends SherlockPreferenceActivity implements
 
 	private SharedPreferences.Editor editor;
 
-	private ScheduleServices autoSyncService;
-
-	private ScheduleServices checkTaskService;
-
 	private static final String URL = "http://smssync.ushahidi.com";
 
 	private CharSequence[] autoSyncEntries = { "1 Minute", "2 Minutes",
@@ -130,15 +125,9 @@ public class Settings extends SherlockPreferenceActivity implements
 
 	private int taskCheckTime = 5;
 
-	private int callbackUrlValidityStatus = 1;
-
 	private int uniqueIdValidityStatus = 1;
 
 	private final Handler mHandler = new Handler();
-
-	private PackageManager pm;
-
-	private ComponentName cn;
 
 	private String versionName;
 
@@ -201,8 +190,6 @@ public class Settings extends SherlockPreferenceActivity implements
 
 		about.setTitle(versionLabel.toString());
 		about.setSummary(R.string.powered_by);
-		pm = getPackageManager();
-		cn = new ComponentName(Settings.this, SmsReceiver.class);
 
 		// When the about us item is clicked at the Settings screen, open a URL
 		Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
@@ -287,7 +274,7 @@ public class Settings extends SherlockPreferenceActivity implements
 	 */
 	protected void savePreferences() {
 
-		settings = getSharedPreferences(PREFS_NAME, 0);
+		settings = getSharedPreferences(Prefs.PREF_NAME, 0);
 
 		if (replyPref.getText().equals("")) {
 			replyPref.setText(getString(R.string.edittxt_reply_default));
@@ -334,6 +321,7 @@ public class Settings extends SherlockPreferenceActivity implements
 		editor.putBoolean("EnableReply", enableReply.isChecked());
 		editor.putBoolean("EnableReplyFrmServer",
 				enableReplyFrmServer.isChecked());
+		editor.putBoolean("EnableTaskCheck", taskCheck.isChecked());
 		editor.putBoolean("AutoSync", autoSync.isChecked());
 		editor.putInt("AutoTime", autoTime);
 		editor.putInt("taskCheck", taskCheckTime);
@@ -409,25 +397,12 @@ public class Settings extends SherlockPreferenceActivity implements
 				// messages
 				Prefs.autoTime = initializeAutoSyncTime();
 				autoSyncTimes.setEnabled(true);
-				// start the scheduler for 'task check' service
-				long interval = (Prefs.autoTime * 60000);
-				autoSyncService = new ScheduleServices(
-						this,
-						new Intent(Settings.this,
-								AutoSyncScheduledService.class),
-						AutoSyncScheduledReceiver.class,
-						interval,
-						ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE,
-						PendingIntent.FLAG_UPDATE_CURRENT);
+
+				RunServicesUtil.runAutoSyncService(Settings.this);
 
 			} else {
 				// stop scheduler
-				if (autoSyncService != null) {
-					autoSyncService.stopScheduler();
-				}
-				
-				stopService(new Intent(Settings.this,
-						AutoSyncScheduledService.class));
+				RunServicesUtil.stopAutoSyncService(Settings.this);
 
 				autoSyncTimes.setEnabled(false);
 			}
@@ -441,12 +416,8 @@ public class Settings extends SherlockPreferenceActivity implements
 				// Initialize the selected time to frequently sync pending
 				// messages
 				Prefs.autoTime = initializeAutoSyncTime();
-				
-				// start the scheduler for 'task check' service
-				long interval = (Prefs.autoTime * 60000);
-				if (autoSyncService != null) {
-					autoSyncService.updateScheduler(interval);
-				}
+
+				RunServicesUtil.runAutoSyncService(Settings.this);
 
 			}
 		}
@@ -459,11 +430,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
 			} else {
 
-				if (checkTaskService != null) {
-					checkTaskService.stopScheduler();
-				}
-				stopService(new Intent(Settings.this,
-						CheckTaskScheduledService.class));
+				RunServicesUtil.stopCheckTaskService(Settings.this);
 				taskCheckTimes.setEnabled(false);
 			}
 		}
@@ -472,14 +439,7 @@ public class Settings extends SherlockPreferenceActivity implements
 		if (key.equals(TASK_CHECK_TIMES)) {
 
 			Prefs.taskCheckTime = initializeAutoTaskTime();
-
-			// start the scheduler for 'task check' service
-			Logger.log("CheckTime", " CheckTime " + Prefs.taskCheckTime);
-			long interval = (Prefs.taskCheckTime * 60000);
-			Logger.log("Interval ", "Interval " + interval);
-			if (checkTaskService != null) {
-				checkTaskService.updateScheduler(interval);
-			}
+			RunServicesUtil.runCheckTaskService(Settings.this);
 		}
 
 		this.savePreferences();
@@ -501,21 +461,11 @@ public class Settings extends SherlockPreferenceActivity implements
 			} else {
 
 				taskCheck.setChecked(true);
+
 				Prefs.taskCheckTime = initializeAutoTaskTime();
 
-				// start the scheduler for 'task check' service
-				Logger.log("CheckTime", " CheckTime " + Prefs.taskCheckTime);
-				long interval = (Prefs.taskCheckTime * 60000);
-				Logger.log("Interval ", "Interval " + interval);
-				checkTaskService = new ScheduleServices(
-						Settings.this,
-						new Intent(Settings.this,
-								CheckTaskScheduledService.class),
-						CheckTaskScheduledReceiver.class,
-						interval,
-						ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
-						PendingIntent.FLAG_UPDATE_CURRENT);
-
+				// start the scheduler for task checking service
+				RunServicesUtil.runCheckTaskService(Settings.this);
 			}
 		}
 	};

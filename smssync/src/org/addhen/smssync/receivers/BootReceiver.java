@@ -28,6 +28,7 @@ import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -38,46 +39,57 @@ import android.content.Intent;
  */
 public class BootReceiver extends BroadcastReceiver {
 
-    private boolean isConnected;
+	private boolean isConnected;
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
+	@Override
+	public void onReceive(Context context, Intent intent) {
 
-        // load current settings
-        Prefs.loadPreferences(context);
+		// load current settings
+		Prefs.loadPreferences(context);
 
-        // is smssync enabled
-        if (Prefs.enabled) {
+		// is smssync enabled
+		if (Prefs.enabled) {
 
-            // show notification
-            Util.showNotification(context);
+			// show notification
+			Util.showNotification(context);
 
-            // start pushing pending messages
-            isConnected = Util.isConnected(context);
+			// start pushing pending messages
+			isConnected = Util.isConnected(context);
 
-            // do we have data network?
-            if (isConnected) {
-                // Push any pending messages now that we have connectivity
-                if (Prefs.enableAutoSync) {
-                    
-                    SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
-                    // start the scheduler for auto sync service
-                    long interval = (Prefs.autoTime * 60000);
-                    new ScheduleServices(context, intent, AutoSyncScheduledReceiver.class,
-                            interval, ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE, 0);
-                }
+			// do we have data network?
+			if (isConnected) {
+				// Push any pending messages now that we have connectivity
+				if (Prefs.enableAutoSync) {
 
-                // Check for tasks now that we have connectivity
-                if (Prefs.enableTaskCheck) {
-                    SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
-                    
-                    // start the scheduler for 'task check' service
-                    long interval = (Prefs.taskCheckTime * 60000);
-                    new ScheduleServices(context, intent, CheckTaskScheduledReceiver.class,
-                            interval, ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
-                            0);
-                }
-            }
-        }
-    }
+					SmsSyncServices.sendWakefulTask(context,
+							AutoSyncService.class);
+					// start the scheduler for auto sync service
+					long interval = (Prefs.autoTime * 60000);
+					new ScheduleServices(
+							context,
+							intent,
+							AutoSyncScheduledReceiver.class,
+							ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE,
+							PendingIntent.FLAG_UPDATE_CURRENT)
+							.updateScheduler(interval);
+				}
+
+				// Check for tasks now that we have connectivity
+				if (Prefs.enableTaskCheck) {
+					SmsSyncServices.sendWakefulTask(context,
+							CheckTaskService.class);
+
+					// start the scheduler for 'task check' service
+					long interval = (Prefs.taskCheckTime * 60000);
+					new ScheduleServices(
+							context,
+							intent,
+							CheckTaskScheduledReceiver.class,
+							ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
+							PendingIntent.FLAG_UPDATE_CURRENT)
+							.updateScheduler(interval);
+				}
+			}
+		}
+	}
 }

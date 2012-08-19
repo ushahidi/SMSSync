@@ -32,81 +32,87 @@ import android.text.TextUtils;
  */
 public class Prefs {
 
-    public static int autoTime = 5;
+	public static int autoTime = 5;
 
-    public static int taskCheckTime = 5;
+	public static int taskCheckTime = 5;
 
-    public static String website = "";
+	public static String website = "";
 
-    public static String keyword = "";
+	public static String keyword = "";
 
-    public static String filterByFrom = "";
+	public static String filterByFrom = "";
 
-    public static String apiKey = "";
+	public static String apiKey = "";
 
-    public static String reply = "";
+	public static String reply = "";
 
-    public static String uniqueId = "";
+	public static String uniqueId = "";
 
-    public static Boolean enabled = false;
+	public static Boolean enabled = false;
 
-    public static Boolean autoDelete = false;
+	public static Boolean autoDelete = false;
 
-    public static Boolean enableReply = false;
+	public static Boolean enableReply = false;
 
-    public static Boolean enableReplyFrmServer = false;
+	public static Boolean enableReplyFrmServer = false;
 
-    public static Boolean enableAutoSync = false;
+	public static Boolean enableAutoSync = false;
 
-    public static Boolean enableTaskCheck = false;
-    
-    private static SharedPreferences settings;
+	public static Boolean enableTaskCheck = false;
+
+	private static SharedPreferences settings;
 
 	private static SharedPreferences.Editor editor;
 
-    public static final String PREF_NAME = "SMS_SYNC_PREF";
+	public static final String PREF_NAME = "SMS_SYNC_PREF";
 
-    /**
-     * Load the value of the settings / preference variable.
-     * 
-     * @param Context context - The context of the calling activity.
-     * @return void
-     */
-    public static void loadPreferences(Context context) {
+	/**
+	 * Load the value of the settings / preference variable.
+	 * 
+	 * @param Context
+	 *            context - The context of the calling activity.
+	 * @return void
+	 */
+	public static void loadPreferences(Context context) {
 
-        final SharedPreferences settings = context.getSharedPreferences(PREF_NAME, 0);
-        website = settings.getString("WebsitePref", "");
-        keyword = settings.getString("Keyword", "");
-        filterByFrom = settings.getString("FilterByFrom", "");
-        apiKey = settings.getString("ApiKey", "");
-        reply = settings.getString("ReplyPref", context.getString(R.string.edittxt_reply_default));
-        enabled = settings.getBoolean("EnableSmsSync", false);
-        autoDelete = settings.getBoolean("EnableAutoDelete", false);
-        enableReply = settings.getBoolean("EnableReply", false);
-        enableReplyFrmServer = settings.getBoolean("EnableReplyFrmServer", false);
-        enableAutoSync = settings.getBoolean("AutoSync", false);
-        autoTime = settings.getInt("AutoTime", autoTime);
-        uniqueId = settings.getString("UniqueId", "");
-        taskCheckTime = settings.getInt("taskCheck", taskCheckTime);
-    }
-    
-    /**
-     * Save settings changes.
-     * 
-     * @return void
-     */
-    public static void savePreferences(Context context) {
+		final SharedPreferences settings = context.getSharedPreferences(
+				PREF_NAME, 0);
+		website = settings.getString("WebsitePref", "");
+		keyword = settings.getString("Keyword", "");
+		filterByFrom = settings.getString("FilterByFrom", "");
+		apiKey = settings.getString("ApiKey", "");
+		reply = settings.getString("ReplyPref",
+				context.getString(R.string.edittxt_reply_default));
+		enabled = settings.getBoolean("EnableSmsSync", false);
+		autoDelete = settings.getBoolean("EnableAutoDelete", false);
+		enableReply = settings.getBoolean("EnableReply", false);
+		enableReplyFrmServer = settings.getBoolean("EnableReplyFrmServer",
+				false);
+		enableAutoSync = settings.getBoolean("AutoSync", false);
+		enableTaskCheck = settings.getBoolean("EnableTaskCheck", false);
+		autoTime = settings.getInt("AutoTime", autoTime);
+		uniqueId = settings.getString("UniqueId", "");
+		taskCheckTime = settings.getInt("taskCheck", taskCheckTime);
+	}
 
-    	 final SharedPreferences settings  = context.getSharedPreferences(PREF_NAME, 0);
-        editor = settings.edit();
-        editor.putBoolean("EnableSmsSync", enabled);
-        editor.putBoolean("EnableAutoDelete", autoDelete);
-        editor.putBoolean("EnableReply", enableReply);
-        editor.putBoolean("EnableReplyFrmServer", enableReplyFrmServer);
-        editor.putBoolean("AutoSync", enableAutoSync);
-        editor.putInt("AutoTime", autoTime);
-        editor.putInt("taskCheck", taskCheckTime);
-        editor.putString("UniqueId", uniqueId);
-        editor.commit();
-    }
+	/**
+	 * Save settings changes.
+	 * 
+	 * @return void
+	 */
+	public static void savePreferences(Context context) {
+
+		final SharedPreferences settings = context.getSharedPreferences(
+				PREF_NAME, 0);
+		editor = settings.edit();
+		editor.putBoolean("EnableSmsSync", enabled);
+		editor.putBoolean("EnableAutoDelete", autoDelete);
+		editor.putBoolean("EnableReply", enableReply);
+		editor.putBoolean("EnableReplyFrmServer", enableReplyFrmServer);
+		editor.putBoolean("AutoSync", enableAutoSync);
+		editor.putInt("AutoTime", autoTime);
+		editor.putInt("taskCheck", taskCheckTime);
+		editor.putString("UniqueId", uniqueId);
+		editor.commit();
+	}
 }
