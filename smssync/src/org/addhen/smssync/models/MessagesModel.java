@@ -135,56 +135,36 @@ public class MessagesModel extends Model {
 
 	@Override
 	public boolean load() {
-		listMessages = new ArrayList<MessagesModel>();
-		Cursor cursor;
-		cursor = MainApplication.mDb.fetchAllMessages();
-
-		String messagesFrom;
-		String messagesDate;
-		String messagesBody;
-		int messageId;
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				int messagesIdIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_ID);
-				int messagesFromIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_FROM);
-				int messagesDateIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_DATE);
-
-				int messagesBodyIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_BODY);
-
-				do {
-
-					MessagesModel messages = new MessagesModel();
-
-					messageId = Util.toInt(cursor.getString(messagesIdIndex));
-					messages.setMessageId(messageId);
-
-					messagesFrom = cursor.getString(messagesFromIndex);
-					messages.setMessageFrom(messagesFrom);
-
-					messagesDate = cursor.getString(messagesDateIndex);
-					messages.setMessageDate(messagesDate);
-
-					messagesBody = cursor.getString(messagesBodyIndex);
-					messages.setMessage(messagesBody);
-					listMessages.add(messages);
-
-				} while (cursor.moveToNext());
-
-			}
-			cursor.close();
+		listMessages = Database.mMessagesContentProvider.fetchAllMessages();
+		if (listMessages != null) {
 			return true;
 		}
+		return false;
+	}
 
+	public boolean loadById(int messageId) {
+		listMessages = Database.mMessagesContentProvider
+				.fetchMessagesById(messageId);
+		if (listMessages != null) {
+			return true;
+		}
+		return false;
+	}
+
+	public boolean loadByLimit(int limit) {
+		listMessages = Database.mMessagesContentProvider
+				.fetchMessagesByLimit(limit);
+		if (listMessages != null) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean save() {
-		// TODO Auto-generated method stub
+		if (listMessages != null && listMessages.size() > 0) {
+			return Database.mMessagesContentProvider.addMessages(listMessages);
+		}
 		return false;
 	}
 
@@ -194,7 +174,7 @@ public class MessagesModel extends Model {
 	 * @return boolean
 	 */
 	public boolean deleteAllMessages() {
-		return MainApplication.mDb.deleteAllMessages();
+		return Database.mMessagesContentProvider.deleteAllMessages();
 	}
 
 	/**
@@ -204,7 +184,16 @@ public class MessagesModel extends Model {
 	 * @return boolean
 	 */
 	public boolean deleteMessagesById(int messageId) {
-		return MainApplication.mDb.deleteMessagesById(messageId);
+		return Database.mMessagesContentProvider.deleteMessagesById(messageId);
+	}
+
+	/**
+	 * Count total number of pending messages.
+	 * 
+	 * @return int
+	 */
+	public int totalMessages() {
+		return Database.mMessagesContentProvider.messagesCount();
 	}
 
 }

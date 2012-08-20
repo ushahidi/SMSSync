@@ -20,7 +20,7 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
@@ -44,10 +44,13 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
 	private SyncUrlModel model;
 
+	private MessagesModel messagesModel;
+
 	public SyncPendingMessagesService() {
 		super(CLASS_TAG);
 		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
 		model = new SyncUrlModel();
+		messagesModel = new MessagesModel();
 	}
 
 	@Override
@@ -59,7 +62,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 			// get Id
 			messageId = intent.getIntExtra(ServicesConstants.MESSEAGE_ID,
 					messageId);
-			if (MainApplication.mDb.fetchMessagesCount() > 0) {
+			if (messagesModel.totalMessages() > 0) {
 				for (SyncUrlModel syncUrl : model
 						.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
 					Logger.log(CLASS_TAG, " url: " + syncUrl.getUrl()

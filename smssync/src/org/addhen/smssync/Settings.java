@@ -393,12 +393,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
 			if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
 
-				// Initialize the selected time to frequently sync pending
-				// messages
-				Prefs.autoTime = initializeAutoSyncTime();
-				autoSyncTimes.setEnabled(true);
-
-				RunServicesUtil.runAutoSyncService(Settings.this);
+				autoSyncEnable();
 
 			} else {
 				// stop scheduler
@@ -471,6 +466,32 @@ public class Settings extends SherlockPreferenceActivity implements
 	};
 
 	/**
+	 * 
+	 */
+	final Runnable mAutoSyncEnabled = new Runnable() {
+
+		public void run() {
+
+			if (!Prefs.enabled) {
+
+				Util.showToast(Settings.this, R.string.no_configured_url);
+				autoSync.setChecked(false);
+
+			} else {
+
+				autoSync.setChecked(true);
+
+				// Initialize the selected time to frequently sync pending
+				// messages
+				Prefs.autoTime = initializeAutoSyncTime();
+				autoSyncTimes.setEnabled(true);
+
+				RunServicesUtil.runAutoSyncService(Settings.this);
+			}
+		}
+	};
+
+	/**
 	 * Create a child thread and validate the callback URL in it when enabling
 	 * auto task check preference.
 	 * 
@@ -483,6 +504,16 @@ public class Settings extends SherlockPreferenceActivity implements
 		Thread t = new Thread() {
 			public void run() {
 				mHandler.post(mTaskCheckEnabled);
+			}
+		};
+		t.start();
+	}
+
+	public void autoSyncEnable() {
+
+		Thread t = new Thread() {
+			public void run() {
+				mHandler.post(mAutoSyncEnabled);
 			}
 		};
 		t.start();

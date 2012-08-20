@@ -20,7 +20,7 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
@@ -44,18 +44,21 @@ public class AutoSyncScheduledService extends SmsSyncServices {
 	private Intent statusIntent;
 
 	private SyncUrlModel model;
+	
+	private MessagesModel messagesModel;
 
 	public AutoSyncScheduledService() {
 		super(CLASS_TAG);
 		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
 		model = new SyncUrlModel();
+		messagesModel = new MessagesModel();
 	}
 
 	@Override
 	protected void executeTask(Intent intent) {
 
 		log(CLASS_TAG, "executeTask() executing this scheduled task");
-		if (MainApplication.mDb.fetchMessagesCount() > 0) {
+		if (messagesModel.totalMessages() > 0) {
 			log(CLASS_TAG, "Sending pending messages");
 			for (SyncUrlModel syncUrl : model
 					.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {

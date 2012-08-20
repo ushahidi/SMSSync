@@ -33,7 +33,7 @@
 
     <!-- unique id -->
     <string name="edittxt_unique_id_pref">Enter Unique ID</string>
-    <string name="edittxt_unique_id_pref_summary">Specify a unique ID for this device. This will be used by the Sync URL to know exactly which device is sending it messages. It should be 5 digits</string>
+    <string name="edittxt_unique_id_pref_summary">Specify a unique ID for this device. This will be used by the Sync URL to know exactly which device is sending it messages.</string>
     <string name="edittxt_unique_id_hint">01234</string>
 
     <!-- response message -->
@@ -104,7 +104,7 @@
 
     <!-- URL validation -->
     <string name="invalid_url">Please the Sync URL entered was invalid.</string>
-    <string name="no_configured_url">Please there is no configured Sync URL.</string>
+    <string name="no_configured_url">The SMSSync service is not running.</string>
     <string name="no_connection">Could not make connection to the Sync URL.</string>
     <string name="no_task">No task is enabled on the configured Sync URL.
 	</string>

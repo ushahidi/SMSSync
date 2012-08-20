@@ -29,6 +29,8 @@ import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.database.Messages;
+import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.json.JSONArray;
@@ -112,76 +114,35 @@ public class MessageSyncUtil extends Util {
 	 * 
 	 * @return int
 	 */
-	public int snycToWeb(int messagesId, String secret) {
+	public int snycToWeb(int messageId, String secret) {
 		log("syncToWeb(): push pending messages to the configured URL");
-		Cursor cursor;
+		MessagesModel model = new MessagesModel();
+		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 		// check if it should sync by id
-		if (messagesId > 0) {
-			cursor = MainApplication.mDb.fetchMessagesById(messagesId);
+		if (messageId > 0) {
+			if (model.loadById(messageId)) {
+				listMessages = model.listMessages;
+			}
 		} else {
-			cursor = MainApplication.mDb.fetchAllMessages();
+			if (model.load()) {
+				listMessages = model.listMessages;
+			}
 		}
-
-		String messagesFrom;
-		String messagesBody;
-		String messagesTimestamp;
 		int deleted = 0;
 
-		List<Messages> listMessages = new ArrayList<Messages>();
-
-		if (cursor != null) {
-			if (cursor.getCount() == 0) {
+		if (listMessages != null) {
+			if (listMessages.size() == 0) {
 				return 2;
 			}
 
-			if (cursor.moveToFirst()) {
-				int messagesIdIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_ID);
-				int messagesFromIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_FROM);
-
-				int messagesBodyIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_BODY);
-				int messagesTimestampIndex = cursor
-						.getColumnIndexOrThrow(Database.MESSAGES_DATE);
-				do {
-					Messages messages = new Messages();
-					listMessages.add(messages);
-
-					int messageId = Util.toInt(cursor
-							.getString(messagesIdIndex));
-					messages.setMessageId(messageId);
-
-					messagesFrom = Util.capitalizeString(cursor
-							.getString(messagesFromIndex));
-					messages.setMessageFrom(messagesFrom);
-
-					messagesBody = cursor.getString(messagesBodyIndex);
-					messages.setMessageBody(messagesBody);
-
-					messagesTimestamp = cursor
-							.getString(messagesTimestampIndex);
-					messages.setMessageDate(messagesTimestamp);
-					// post to web service
-					if (postToAWebService(messagesFrom, messagesBody,
-							messagesTimestamp, String.valueOf(messageId),
-							secret)) {
-
-						// log sent messages
-						MainApplication.mDb.addSentMessages(listMessages);
-
-						// if it successfully pushes message, delete message
-						// from db
-						MainApplication.mDb.deleteMessagesById(messageId);
-						deleted = 0;
-					} else {
-						deleted = 1;
-					}
-
-				} while (cursor.moveToNext());
+			for (MessagesModel messages : listMessages) {
+				processSms.routePendingMessages(messages.getMessageFrom(),
+						messages.getMessage(), messages.getMessageDate(),
+						String.valueOf(messages.getMessageId()));
 			}
-			cursor.close();
+			deleted = 1;
 		}
+
 		return deleted;
 
 	}
@@ -235,10 +196,10 @@ public class MessageSyncUtil extends Util {
 	public static int processMessages() {
 		Logger.log(CLASS_TAG,
 				"processMessages(): Process text messages as received from the user's phone");
-		List<Messages> listMessages = new ArrayList<Messages>();
+		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 		int messageId = 0;
 		int status = 1;
-		Messages messages = new Messages();
+		MessagesModel messages = new MessagesModel();
 		listMessages.add(messages);
 
 		// check if messageId is actually initialized
@@ -248,11 +209,14 @@ public class MessageSyncUtil extends Util {
 
 		messages.setMessageId(messageId);
 		messages.setMessageFrom(smsMap.get("messagesFrom"));
-		messages.setMessageBody(smsMap.get("messagesBody"));
+		messages.setMessage(smsMap.get("messagesBody"));
 		messages.setMessageDate(smsMap.get("messagesDate"));
 
 		if (listMessages != null) {
-			MainApplication.mDb.addMessages(listMessages);
+			MessagesModel model = new MessagesModel();
+			model.listMessages = listMessages;
+			model.save();
+
 			status = 0;
 		}
 		return status;
@@ -322,7 +286,7 @@ public class MessageSyncUtil extends Util {
 					}
 
 				} catch (JSONException e) {
-					log( "Error: " + e.getMessage());
+					log("Error: " + e.getMessage());
 					showToast(context, R.string.no_task);
 				}
 			}

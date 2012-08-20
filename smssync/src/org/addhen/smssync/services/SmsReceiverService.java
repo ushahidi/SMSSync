@@ -22,7 +22,6 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
-import org.addhen.smssync.SentMessagesActivity;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.util.Logger;
 
@@ -271,7 +270,7 @@ public class SmsReceiverService extends Service {
 	final Runnable mDisplaySentMessages = new Runnable() {
 
 		public void run() {
-			SentMessagesActivity.showMessages();
+			//SentMessagesActivity.showMessages();
 		}
 
 	};

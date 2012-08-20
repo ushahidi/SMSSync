@@ -20,7 +20,7 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
@@ -39,18 +39,20 @@ public class AutoSyncService extends SmsSyncServices {
 	private static String CLASS_TAG = AutoSyncService.class.getSimpleName();
 	private Intent statusIntent; // holds the status of the sync and sends it to
 	private SyncUrlModel model;
+	private MessagesModel messagesModel;
 
 	public AutoSyncService() {
 		super(CLASS_TAG);
 		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
 		model = new SyncUrlModel();
+		messagesModel = new MessagesModel();
 	}
 
 	@Override
 	protected void executeTask(Intent intent) {
 
 		log("executeTask() executing this task");
-		if (MainApplication.mDb.fetchMessagesCount() > 0) {
+		if (messagesModel.totalMessages() > 0) {
 			for (SyncUrlModel syncUrl : model
 					.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
 				int status = new MessageSyncUtil(AutoSyncService.this,

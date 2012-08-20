@@ -88,11 +88,17 @@ public class ProcessSms {
 	 * message. If it fails to be synced online, cache it and queue it up for
 	 * the scheduler to process it.
 	 * 
-	 * @param String messagesFrom The number that sent the SMS
-	 * @param String messagesBody The message body. This is the message sent ot the phone.
-	 * @param String messagesTimestamp The timestamp of the message
-	 * @param String messagesId The unique ID of the messages. 
-	 * @param SmsMessages sms The SMS object as 	
+	 * @param String
+	 *            messagesFrom The number that sent the SMS
+	 * @param String
+	 *            messagesBody The message body. This is the message sent ot the
+	 *            phone.
+	 * @param String
+	 *            messagesTimestamp The timestamp of the message
+	 * @param String
+	 *            messagesId The unique ID of the messages.
+	 * @param SmsMessages
+	 *            sms The SMS object as
 	 */
 	public void routeSms(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId, SmsMessage sms) {
@@ -116,7 +122,7 @@ public class ProcessSms {
 					messageSyncUtil = new MessageSyncUtil(context,
 							syncUrl.getUrl());
 					if (filterByKeywords(messagesBody, keywords)) {
-						
+
 						posted = messageSyncUtil.postToAWebService(
 								messagesFrom, messagesBody, messagesTimestamp,
 								messagesId, syncUrl.getSecret());
@@ -132,7 +138,13 @@ public class ProcessSms {
 							Util.connectToDataNetwork(context);
 
 						} else {
-							postToSentBox(messagesFrom, messagesBody, sms);
+							// Get message id.
+							final String messageId = String.valueOf(getId(sms,
+									"id"));
+							final String messageDate = String.valueOf(sms
+									.getTimestampMillis());
+							postToSentBox(messagesFrom, messagesBody,
+									messageId, messageDate);
 							Util.showFailNotification(
 									context,
 									messagesBody,
@@ -140,7 +152,7 @@ public class ProcessSms {
 						}
 
 					} else { // no keyword
-						
+
 						posted = messageSyncUtil.postToAWebService(
 								messagesFrom, messagesBody, messagesTimestamp,
 								messagesId, syncUrl.getSecret());
@@ -159,7 +171,13 @@ public class ProcessSms {
 							// when smssync is turned on
 
 						} else {
-							postToSentBox(messagesFrom, messagesBody, sms);
+							// Get message id.
+							final String messageId = String.valueOf(getId(sms,
+									"id"));
+							final String messageDate = String.valueOf(sms
+									.getTimestampMillis());
+							postToSentBox(messagesFrom, messagesBody,
+									messageId, messageDate);
 							Util.showFailNotification(
 									context,
 									messagesBody,
@@ -178,6 +196,81 @@ public class ProcessSms {
 			// when smssync is turned on
 			if (Prefs.autoDelete) {
 				delSmsFromInbox(sms);
+			}
+		}
+
+	}
+
+	/**
+	 * Processes failed messages aka pending message to figure out how to
+	 * exactly route the message. If it fails to be synced online, cache it and
+	 * queue it up for the scheduler to process it.
+	 * 
+	 * @param String
+	 *            messagesFrom The number that sent the SMS
+	 * @param String
+	 *            messagesBody The message body. This is the message sent ot the
+	 *            phone.
+	 * @param String
+	 *            messagesTimestamp The timestamp of the message
+	 * @param String
+	 *            messagesId The unique ID of the messages.
+	 * @param SmsMessages
+	 *            sms The SMS object as
+	 */
+	public void routePendingMessages(String messagesFrom, String messagesBody,
+			String messagesTimestamp, String messagesId) {
+		// is smssync service running
+		if (Prefs.enabled) {
+
+			if (Util.isConnected(context)) {
+
+				boolean posted = false;
+
+				// send auto response from phone not server.
+				if (Prefs.enableReply) {
+					// send auto response
+					sendSms(messagesFrom, Prefs.reply);
+				}
+
+				// get enabled Sync URL
+				for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
+					String keywords[] = syncUrl.getKeywords().split(",");
+					// process keyword
+					messageSyncUtil = new MessageSyncUtil(context,
+							syncUrl.getUrl());
+					if (filterByKeywords(messagesBody, keywords)) {
+
+						posted = messageSyncUtil.postToAWebService(
+								messagesFrom, messagesBody, messagesTimestamp,
+								messagesId, syncUrl.getSecret());
+						if (posted) {
+							postToSentBox(messagesFrom, messagesBody,
+									messagesId, messagesTimestamp);
+							Util.showFailNotification(
+									context,
+									messagesBody,
+									context.getString(R.string.sending_succeeded));
+
+						}
+
+					} else { // no keyword
+
+						posted = messageSyncUtil.postToAWebService(
+								messagesFrom, messagesBody, messagesTimestamp,
+								messagesId, syncUrl.getSecret());
+						if (posted) {
+							postToSentBox(messagesFrom, messagesBody,
+									messagesId, messagesTimestamp);
+							Util.showFailNotification(
+									context,
+									messagesBody,
+									context.getString(R.string.sending_succeeded));
+
+						}
+					}
+				}
+
 			}
 		}
 
@@ -450,12 +543,8 @@ public class ProcessSms {
 	 * @return void
 	 */
 	public void postToSentBox(String messagesFrom, String messagesBody,
-			SmsMessage sms) {
+			String messageId, String messageDate) {
 		Logger.log(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
-
-		// Get message id.
-		final String messageId = String.valueOf(getId(sms, "id"));
-		final String messageDate = String.valueOf(sms.getTimestampMillis());
 
 		SentMessagesUtil.smsMap.put("messagesFrom", messagesFrom);
 		SentMessagesUtil.smsMap.put("messagesBody", messagesBody);

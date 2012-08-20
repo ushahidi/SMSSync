@@ -22,14 +22,12 @@ package org.addhen.smssync.widget;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
-import org.addhen.smssync.MessagesTabActivity2;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
-import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.database.Database;
-import org.addhen.smssync.database.Messages;
-import org.addhen.smssync.util.Util;
+import org.addhen.smssync.activities.MessagesTabActivity;
+import org.addhen.smssync.models.MessagesModel;
 
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -40,7 +38,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -116,14 +113,14 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static ArrayList<Messages> pendingMsgs = new ArrayList<Messages>();
+    public static List<MessagesModel> pendingMsgs = new ArrayList<MessagesModel>();
 
-    public static ArrayList<Integer> pendingMsgIds;
+    public static List<Integer> pendingMsgIds;
 
     public static int pendingMsgIndex = 0;
 
     // implement next screen
-    public static Messages getNextPendingMessages() {
+    public static MessagesModel getNextPendingMessages() {
         if (pendingMsgs != null && pendingMsgs.size() > 0) {
             pendingMsgIndex = (pendingMsgIndex + 1) % pendingMsgs.size();
             return pendingMsgs.get(pendingMsgIndex);
@@ -132,7 +129,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
     }
 
     // implement previous screen.
-    public static Messages getPrevPendingMessages() {
+    public static MessagesModel getPrevPendingMessages() {
         if (pendingMsgs != null && pendingMsgs.size() > 0) {
             pendingMsgIndex = pendingMsgIndex - 1;
             pendingMsgIndex = pendingMsgIndex < 0 ? pendingMsgs.size() - 1 : pendingMsgIndex;
@@ -142,7 +139,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
     }
 
     // implement current screen
-    public static Messages getCurrentPendingMessages() {
+    public static MessagesModel getCurrentPendingMessages() {
 
         if (pendingMsgs != null && pendingMsgs.size() > 0) {
             pendingMsgIndex = pendingMsgIndex < 0 ? 0 : pendingMsgIndex;
@@ -175,7 +172,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
         private RemoteViews updateDisplay(Intent intent, Integer startId) {
             Log.i(CLASS_TAG, "Updating display");
             RemoteViews views = new RemoteViews(getPackageName(), R.layout.appwidget);
-            Messages mgs;
+            MessagesModel mgs;
             String action = intent.getAction();
             if (INTENT_NEXT.equals(action)) {
                 mgs = getNextPendingMessages();
@@ -191,18 +188,18 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             PendingIntent settingsAction = PendingIntent.getActivity(this, 0, settingsScreen, 0);
             views.setOnClickPendingIntent(R.id.appwidget_logo, settingsAction);
 
-            Intent pendingMessages = new Intent(this, MessagesTabActivity2.class);
+			Intent pendingMessages = new Intent(this, MessagesTabActivity.class);
             pendingMessages.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent mainAction = PendingIntent.getActivity(this, 0, pendingMessages, 0);
             views.setOnClickPendingIntent(R.id.appwidget_item, mainAction);
 
             if (mgs != null) {
-                Log.i(CLASS_TAG, "messages are not null "+mgs.getMessageBody());
+                Log.i(CLASS_TAG, "messages are not null "+mgs.getMessage());
                 // set number
                 views.setViewVisibility(R.id.linear_pending_msg, View.VISIBLE);
                 views.setTextViewText(R.id.msg_number, mgs.getMessageFrom());
                 views.setTextViewText(R.id.msg_date, mgs.getMessageDate());
-                views.setTextViewText(R.id.msg_desc, mgs.getMessageBody());
+                views.setTextViewText(R.id.msg_desc, mgs.getMessage());
 
                 // make all the views clickable
                 views.setOnClickPendingIntent(R.id.msg_number, mainAction);
@@ -278,47 +275,17 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
         }
     }
 
-    public static ArrayList<Messages> showMessages() {
+    public static List<MessagesModel> showMessages() {
+    	
+    	MessagesModel model = new MessagesModel();
+    	model.loadByLimit(5);
 
-        Cursor cursor;
-        cursor = MainApplication.mDb.fetchMessagesByLimit(5);
-
-        int messageId;
-        String messagesFrom;
-        String messagesDate;
-        String messagesBody;
-
-        if (cursor != null) {
-            if (cursor.getCount() == 0) {
+        if (model.listMessages !=null) {
+            if (model.listMessages.size() == 0) {
                 pendingMsgs.clear();
             }
-            Log.d(CLASS_TAG, "Got messages from Inbox");
-            if (cursor.moveToFirst()) {
-                int messagesIdIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_ID);
-                int messagesFromIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_FROM);
-                int messagesDateIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_DATE);
-
-                int messagesBodyIndex = cursor.getColumnIndexOrThrow(Database.MESSAGES_BODY);
-                do {
-                    Messages messages = new Messages();
-                    pendingMsgs.add(messages);
-                    messageId = Util.toInt(cursor.getString(messagesIdIndex));
-                    messages.setMessageId(messageId);
-
-                    messagesFrom = Util.capitalizeString(cursor.getString(messagesFromIndex));
-                    messages.setMessageFrom(messagesFrom);
-
-                    messagesDate = cursor.getString(messagesDateIndex);
-                    messages.setMessageDate(messagesDate);
-
-                    messagesBody = cursor.getString(messagesBodyIndex);
-                    messages.setMessageBody(messagesBody);
-
-                } while (cursor.moveToNext());
-            }
-
-            cursor.close();
-
+            pendingMsgs = model.listMessages;
+            
         }
         return pendingMsgs;
     }
