@@ -31,7 +31,6 @@ import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SyncPendingMessagesService;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -40,6 +39,7 @@ import org.addhen.smssync.views.SyncUrlView;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -471,7 +471,8 @@ public class SyncUrl extends
 
 					Prefs.enabled = true;
 					view.enableSmsSync.setChecked(true);
-					//because the services to be run depends on the save the changes first
+					// because the services to be run depends on the save the
+					// changes first
 					Prefs.savePreferences(getActivity());
 					// run auto sync service
 					RunServicesUtil.runAutoSyncService(getActivity());

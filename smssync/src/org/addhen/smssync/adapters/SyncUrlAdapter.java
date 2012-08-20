@@ -21,6 +21,7 @@
 package org.addhen.smssync.adapters;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.fragments.SyncUrl;
 import org.addhen.smssync.models.SyncUrlModel;
 
 import android.content.Context;

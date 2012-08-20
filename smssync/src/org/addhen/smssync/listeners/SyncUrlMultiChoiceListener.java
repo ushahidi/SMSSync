@@ -20,7 +20,6 @@
 
 package org.addhen.smssync.listeners;
 
-import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.fragments.SyncUrl;
 
 import android.view.ActionMode;

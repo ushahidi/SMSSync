@@ -20,14 +20,10 @@
 
 package org.addhen.smssync.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.util.Util;
-
-import android.database.Cursor;
 
 /**
  * Class to handle set and getters.

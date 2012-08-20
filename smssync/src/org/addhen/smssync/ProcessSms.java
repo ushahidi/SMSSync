@@ -130,7 +130,7 @@ public class ProcessSms {
 							Util.showFailNotification(context, messagesBody,
 									context.getString(R.string.sending_failed));
 
-							postToPendingBox(messagesBody, messagesFrom, sms);
+							postToPendingBox(messagesFrom, messagesBody, sms);
 
 							// attempt to make a data connection so if it
 							// succeeds,
@@ -160,7 +160,7 @@ public class ProcessSms {
 							Util.showFailNotification(context, messagesBody,
 									context.getString(R.string.sending_failed));
 
-							postToPendingBox(messagesBody, messagesFrom, sms);
+							postToPendingBox(messagesFrom,messagesBody, sms);
 
 							// attempt to make a data connection so if it
 							// succeeds,
@@ -189,7 +189,7 @@ public class ProcessSms {
 			} else { // no internet
 				Util.showFailNotification(context, messagesBody,
 						context.getString(R.string.sending_failed));
-				postToPendingBox(messagesBody, messagesFrom, sms);
+				postToPendingBox(messagesFrom,messagesBody, sms);
 			}
 
 			// Delete messages from message app's inbox, only

@@ -22,7 +22,6 @@ package org.addhen.smssync;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 /**
  * This class instantiate static variables to hold values of the settings /
@@ -59,8 +58,6 @@ public class Prefs {
 	public static Boolean enableAutoSync = false;
 
 	public static Boolean enableTaskCheck = false;
-
-	private static SharedPreferences settings;
 
 	private static SharedPreferences.Editor editor;
 

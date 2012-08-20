@@ -21,6 +21,7 @@
         android:id="@+id/message_from"
         style="@style/TextView.Description"
         android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/message_date"
         android:lines="1"
         android:textStyle="bold" />
 
@@ -35,26 +36,6 @@
         android:id="@+id/message"
         style="@style/TextView.Description"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/message_from"
-        android:layout_toLeftOf="@android:id/text1" />
-
-    <TextView
-        android:id="@+id/failed_sync"
-        style="@style/TextView.Failed"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/message"
-        android:layout_toLeftOf="@android:id/text1"
-        android:ellipsize="end"
-        android:lines="1"/>
-
-    <CheckedTextView
-        android:id="@+id/pending_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerInParent="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceListItem"
-        android:checkMark="?android:attr/listChoiceIndicatorMultiple" />
+        android:layout_below="@+id/message_date" />
 
 </RelativeLayout>
