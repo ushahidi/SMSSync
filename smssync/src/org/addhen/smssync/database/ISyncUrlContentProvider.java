@@ -43,5 +43,7 @@ public interface ISyncUrlContentProvider {
 	public boolean updateSyncUrl(SyncUrlModel syncUrl);
 
 	public boolean updateStatus(SyncUrlModel syncUrl);
+	
+	public int totalActiveSyncUrl();
 
 }

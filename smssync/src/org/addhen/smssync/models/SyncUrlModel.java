@@ -235,4 +235,13 @@ public class SyncUrlModel extends Model {
 		return Database.mSyncUrlContentProvider.updateStatus(syncUrl);
 	}
 
+	/**
+	 * The total number of active or enabled Sync URLs.
+	 * 
+	 * @return int The total number of Sync URLs that have been enabled.
+	 */
+	public int totalActiveSynUrl() {
+		return Database.mSyncUrlContentProvider.totalActiveSyncUrl();
+	}
+
 }

@@ -20,8 +20,8 @@
 
 package org.addhen.smssync.adapters;
 
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.SyncUrl;
 import org.addhen.smssync.models.SyncUrlModel;
 
 import android.content.Context;
@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 
@@ -49,15 +50,15 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 
 		public Widgets(View convertView) {
 			super(convertView);
-			
+
 			title = (TextView) convertView.findViewById(R.id.sync_title);
 			url = (TextView) convertView.findViewById(R.id.sync_url);
 			keywords = (TextView) convertView.findViewById(R.id.sync_keyword);
 			secret = (TextView) convertView.findViewById(R.id.sync_secret);
-			
+
 			listCheckBox = (CheckedTextView) convertView
 					.findViewById(R.id.sync_checkbox);
-			
+
 			listCheckBox.setOnClickListener(this);
 
 		}
@@ -65,9 +66,20 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 		@Override
 		public void onClick(View v) {
 			if (listCheckBox.isChecked()) {
-				getItem(position).setStatus(0);
-				updateStatus(position);
-				listCheckBox.setChecked(false);
+				// prompt user to disable SMSSync service if this is the last
+				// enabled Sync URL
+				// this is to allow the user to disable the SMSSync service
+				// before the last Sync URL is disabled.
+				final int total = syncUrls.totalActiveSynUrl();
+				if ( ( total == 1) &&(Prefs.enabled) ) {
+					
+					Toast.makeText(context, R.string.disable_last_sync_url, Toast.LENGTH_LONG).show();
+				} else {
+					getItem(position).setStatus(0);
+
+					updateStatus(position);
+					listCheckBox.setChecked(false);
+				}
 			} else {
 				getItem(position).setStatus(1);
 				updateStatus(position);
@@ -81,6 +93,7 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 
 	public SyncUrlAdapter(Context context) {
 		super(context);
+		syncUrls = new SyncUrlModel();
 	}
 
 	@Override
@@ -112,14 +125,13 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 
 	@Override
 	public void refresh() {
-		syncUrls = new SyncUrlModel();
 		if (syncUrls.load()) {
 			this.setItems(syncUrls.listSyncUrl);
 		}
 	}
 
 	public boolean updateStatus(int position) {
-		syncUrls = new SyncUrlModel();
+
 		return syncUrls.updateStatus(this.getItem(position));
 	}
 

@@ -80,7 +80,6 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
 		return listSyncUrl;
 	}
-	
 
 	@Override
 	public List<SyncUrlModel> fetchSyncUrlByStatus(int status) {
@@ -194,6 +193,29 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 		final String selectionArgs[] = { String.valueOf(syncUrl.getId()) };
 		final String selection = ID + " = ?";
 		return super.update(TABLE, initialValues, selection, selectionArgs) > 0;
+	}
+
+	@Override
+	public int totalActiveSyncUrl() {
+		final String selectionArgs[] = { "1" };
+		Cursor mCursor = super.rawQuery("SELECT COUNT(" + ID + ") FROM "
+				+ TABLE+" WHERE "+STATUS + " =?", selectionArgs);
+
+		int result = 0;
+		try {
+			if (mCursor == null) {
+				return result;
+			}
+
+			mCursor.moveToFirst();
+			result = mCursor.getInt(0);
+		} finally {
+			if (mCursor != null)
+				mCursor.close();
+		}
+
+		return result;
+
 	}
 
 	private ContentValues getContentValue() {
