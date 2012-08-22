@@ -117,6 +117,7 @@ public class ProcessSms {
 
 				// get enabled Sync URL
 				for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
+					Logger.log(CLASS_TAG,"keywords: "+syncUrl.getKeywords());
 					String keywords[] = syncUrl.getKeywords().split(",");
 					// process keyword
 					messageSyncUtil = new MessageSyncUtil(context,
@@ -285,7 +286,7 @@ public class ProcessSms {
 	 */
 	public boolean filterByKeywords(String message, String[] keywords) {
 		for (int i = 0; i < keywords.length; i++) {
-			if (message.toLowerCase().contains(keywords[i].toLowerCase())) {
+			if (message.toLowerCase().contains(keywords[i].toLowerCase().trim())) {
 				return true;
 			}
 		}

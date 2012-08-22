@@ -39,7 +39,6 @@ import org.addhen.smssync.views.SyncUrlView;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -511,7 +510,7 @@ public class SyncUrl extends
 			}
 
 		} else {
-			toastLong(R.string.no_configured_url);
+			toastLong(R.string.no_sync_url_added);
 			Prefs.enabled = false;
 			view.enableSmsSync.setChecked(false);
 		}

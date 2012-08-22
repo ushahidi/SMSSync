@@ -160,4 +160,5 @@
     <string name="no_enabled_sync_url">Enable at least one Sync URL to start the service.</string>
     <string name="disable_smssync_service">SMSSync service is running. You cannot perform a deletion until the service is stopped. Stop the service then try this action again.</string>
     <string name="disable_last_sync_url">You cannot disable this last Sync URL because the SMSSync service is running.</string>
+    <string name="no_sync_url_added">Add at least one Sync URL to start the service.</string>
 </resources>
