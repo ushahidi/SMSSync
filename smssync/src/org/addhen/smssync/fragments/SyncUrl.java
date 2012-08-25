@@ -364,16 +364,16 @@ public class SyncUrl extends
 				}
 
 				if (deleted == 1) {
-					toastLong(R.string.no_messages_to_delete);
+					toastLong(R.string.no_sync_url_to_delete);
 				} else {
-
 					if (result) {
-						toastLong(R.string.messages_deleted);
-						showSyncUrl();
 
+						toastLong(R.string.sync_url_deleted);
+						showSyncUrl();
 					} else {
-						toastLong(R.string.messages_deleted_failed);
+						toastLong(R.string.sync_url_deleted_failed);
 					}
+
 				}
 
 			} catch (Exception e) {
