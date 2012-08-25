@@ -57,7 +57,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 	protected void executeTask(Intent intent) {
 		// SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
 		Logger.log(CLASS_TAG, "executeTask() executing this task");
-		int status = 2;
+		int status = 3;
 		if (intent != null) {
 			// get Id
 			messageId = intent.getIntExtra(ServicesConstants.MESSEAGE_ID, 0);
@@ -69,8 +69,8 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 							SyncPendingMessagesService.this, syncUrl.getUrl())
 							.snycToWeb(messageId, syncUrl.getSecret());
 				}
-
-				statusIntent.putExtra("status", status);
+				
+				statusIntent.putExtra("syncstatus", status);
 				sendBroadcast(statusIntent);
 			}
 		}

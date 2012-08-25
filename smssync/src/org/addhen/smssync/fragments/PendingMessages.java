@@ -43,11 +43,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -149,32 +144,6 @@ public class PendingMessages
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-	}
-
-	// Context Menu Stuff
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		new MenuInflater(getActivity()).inflate(
-				R.menu.pending_messages_context_menu, menu);
-
-	}
-
-	@Override
-	public boolean onContextItemSelected(android.view.MenuItem item) {
-
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-				.getMenuInfo();
-
-		messageId = adapter.getItem(info.position).getMessageId();
-		// boolean result = performAction(item, info.position);
-
-		/*
-		 * if (!result) { result = super.onContextItemSelected(item); }
-		 * 
-		 * return result;
-		 */
-		return true;
 	}
 
 	public boolean performAction(MenuItem item, int position) {
@@ -431,13 +400,16 @@ public class PendingMessages
 	 */
 
 	public void syncMessages(int messagesId) {
-		statusIntent.putExtra("status", 3);
-		getActivity().sendBroadcast(statusIntent);
-		syncPendingMessagesServiceIntent = new Intent(getActivity(),
-				SyncPendingMessagesService.class);
-		syncPendingMessagesServiceIntent.putExtra(
-				ServicesConstants.MESSEAGE_ID, messagesId);
-		getActivity().startService(syncPendingMessagesServiceIntent);
+		if (adapter != null && adapter.getCount() == 0) {
+			statusIntent.putExtra("syncstatus", 2);
+			getActivity().sendBroadcast(statusIntent);
+		} else {
+			syncPendingMessagesServiceIntent = new Intent(getActivity(),
+					SyncPendingMessagesService.class);
+			syncPendingMessagesServiceIntent.putExtra(
+					ServicesConstants.MESSEAGE_ID, messagesId);
+			getActivity().startService(syncPendingMessagesServiceIntent);
+		}
 	}
 
 	// Thread class to handle synchronous execution of message importation task.
@@ -480,7 +452,9 @@ public class PendingMessages
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent != null) {
-				int status = intent.getIntExtra("status", 2);
+
+				int status = intent.getIntExtra("syncstatus", 3);
+				log("Status: " + status);
 				if (status == 0) {
 					toastLong(R.string.sending_succeeded);
 				} else if (status == 1) {
