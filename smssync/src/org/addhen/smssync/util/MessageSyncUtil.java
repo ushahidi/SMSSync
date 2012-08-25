@@ -138,7 +138,8 @@ public class MessageSyncUtil extends Util {
 
 					// / if it successfully pushes message, delete message
 					// from db
-					new MessagesModel().deleteMessagesById(messageId);
+					new MessagesModel().deleteMessagesById(messages
+							.getMessageId());
 				} else {
 					deleted = 1;
 				}

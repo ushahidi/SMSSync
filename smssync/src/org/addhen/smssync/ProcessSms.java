@@ -21,8 +21,10 @@ package org.addhen.smssync;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
@@ -344,93 +346,29 @@ public class ProcessSms {
 		uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
 		String[] projection = { "_id", "address", "date", "body" };
 		String messageDate = "";
-		String messageBody = "";
-		String messageFrom = "";
+		
 		Cursor c = context.getContentResolver().query(uriSms, projection, null,
 				null, "date DESC");
-
+		
+		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
+	
 		if (c.getCount() > 0 && c != null) {
 			if (c.moveToFirst()) {
 
 				do {
-
+					MessagesModel messages = new MessagesModel();
+					listMessages.add(messages);
+					
 					messageDate = String.valueOf(c.getLong(c
 							.getColumnIndex("date")));
-					Util.smsMap.put("messagesFrom",
-							c.getString(c.getColumnIndex("address")));
+					messages.setMessageDate(messageDate);
+				
+					messages.setMessageFrom(c.getString(c.getColumnIndex("address")));
+					messages.setMessage(c.getString(c.getColumnIndex("body")));
+					messages.setMessageId(Integer.valueOf(c.getString(c.getColumnIndex("_id"))));
 
-					// filter messages if keywoard is enabled
-					if (!Prefs.keyword.equals("")) {
-						String[] keywords = Prefs.keyword.split(",");
-						messageBody = c.getString(c.getColumnIndex("body"));
-						if (filterByKeywords(messageBody.toLowerCase(),
-								keywords)) {
-							smsMap.put("messagesBody", messageBody);
-							messageDate = String.valueOf(c.getLong(c
-									.getColumnIndex("date")));
-							smsMap.put("messagesFrom",
-									c.getString(c.getColumnIndex("address")));
-							smsMap.put("messagesBody",
-									c.getString(c.getColumnIndex("body")));
-							smsMap.put("messagesDate", messageDate);
-							smsMap.put("messagesId",
-									c.getString(c.getColumnIndex("_id")));
-						}
-					} else if (!Prefs.filterByFrom.equals("")) {
-						String[] phoneNumbers = Prefs.filterByFrom.split(",");
-						messageFrom = c.getString(c.getColumnIndex("address"));
-						if (filterByKeywords(messageFrom.toLowerCase(),
-								phoneNumbers)) {
-							smsMap.put("messagesBody", messageBody);
-							messageDate = String.valueOf(c.getLong(c
-									.getColumnIndex("date")));
-							smsMap.put("messagesFrom",
-									c.getString(c.getColumnIndex("address")));
-							smsMap.put("messagesBody",
-									c.getString(c.getColumnIndex("body")));
-							smsMap.put("messagesDate", messageDate);
-							smsMap.put("messagesId",
-									c.getString(c.getColumnIndex("_id")));
-						}
-
-					} else if ((!Prefs.filterByFrom.equals(""))
-							&& (!Prefs.keyword.equals(""))) {
-						String[] keywords = Prefs.keyword.split(",");
-						String[] phoneNumbers = Prefs.filterByFrom.split(",");
-						messageBody = c.getString(c.getColumnIndex("body"));
-						messageFrom = c.getString(c.getColumnIndex("address"));
-						if ((filterByKeywords(messageFrom.toLowerCase(),
-								phoneNumbers))
-								&& (filterByKeywords(messageBody.toLowerCase(),
-										keywords))) {
-
-							smsMap.put("messagesBody", messageBody);
-							messageDate = String.valueOf(c.getLong(c
-									.getColumnIndex("date")));
-							smsMap.put("messagesFrom",
-									c.getString(c.getColumnIndex("address")));
-							smsMap.put("messagesBody",
-									c.getString(c.getColumnIndex("body")));
-							smsMap.put("messagesDate", messageDate);
-							smsMap.put("messagesId",
-									c.getString(c.getColumnIndex("_id")));
-
-						}
-
-					} else {
-						messageDate = String.valueOf(c.getLong(c
-								.getColumnIndex("date")));
-						smsMap.put("messagesFrom",
-								c.getString(c.getColumnIndex("address")));
-						smsMap.put("messagesBody",
-								c.getString(c.getColumnIndex("body")));
-						smsMap.put("messagesDate", messageDate);
-						smsMap.put("messagesId",
-								c.getString(c.getColumnIndex("_id")));
-					}
-
-					// TODO::// implement filtering by keywords.
-					// new MessageSyncUtil(context).processMessages();
+					messages.listMessages = listMessages;
+					messages.save();
 
 				} while (c.moveToNext());
 			}
