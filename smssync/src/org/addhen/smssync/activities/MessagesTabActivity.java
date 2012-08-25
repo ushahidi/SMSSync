@@ -28,6 +28,9 @@ import org.addhen.smssync.fragments.SyncUrl;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.View;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -47,7 +50,7 @@ public class MessagesTabActivity extends SherlockFragmentActivity {
 				getString(R.string.pending_messages));
 		ActionBar.Tab sentTab = getSupportActionBar().newTab().setText(
 				getString(R.string.sent_messages));
-		
+
 		ActionBar.Tab syncTab = getSupportActionBar().newTab().setText(
 				getString(R.string.sync_url));
 
@@ -72,5 +75,11 @@ public class MessagesTabActivity extends SherlockFragmentActivity {
 				.getSelectedNavigationIndex());
 	}
 
+	// Context Menu Stuff
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+
+	}
 
 }

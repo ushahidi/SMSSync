@@ -117,9 +117,9 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 		if (listViewId != 0) {
 			listView = getListView();
 			view = Objects.createInstance(viewClass, Activity.class,
-					getActivity());
+					getSherlockActivity());
 			adapter = Objects.createInstance(adapterClass, Context.class,
-					getActivity());
+					getSherlockActivity());
 
 			listView.setAdapter(adapter);
 			listView.setFocusable(true);

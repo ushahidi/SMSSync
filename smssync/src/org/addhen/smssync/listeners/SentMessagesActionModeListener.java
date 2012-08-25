@@ -21,7 +21,7 @@
 package org.addhen.smssync.listeners;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.fragments.SentMessages;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,10 +35,10 @@ import com.actionbarsherlock.view.MenuItem;
  * @author eyedol
  * 
  */
-public class PendingMessagesActionModeListener implements ActionMode.Callback,
+public class SentMessagesActionModeListener implements ActionMode.Callback,
 		AdapterView.OnItemLongClickListener {
 
-	private PendingMessages host;
+	private SentMessages host;
 
 	private ActionMode activeMode;
 
@@ -46,7 +46,7 @@ public class PendingMessagesActionModeListener implements ActionMode.Callback,
 
 	private int lastPosition = -1;
 
-	public PendingMessagesActionModeListener(final PendingMessages host,
+	public SentMessagesActionModeListener(final SentMessages host,
 			ListView modeView) {
 		this.host = host;
 		this.modeView = modeView;
@@ -78,7 +78,7 @@ public class PendingMessagesActionModeListener implements ActionMode.Callback,
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 		if (host != null) {
 			new com.actionbarsherlock.view.MenuInflater(host.getActivity())
-					.inflate(R.menu.pending_messages_context_menu, menu);
+					.inflate(R.menu.sent_messages_context_menu, menu);
 		}
 		return true;
 	}

@@ -23,14 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
-import org.addhen.smssync.database.Database;
-import org.addhen.smssync.database.Messages;
 import org.addhen.smssync.models.MessagesModel;
-import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.json.JSONArray;
@@ -38,7 +34,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -115,7 +110,7 @@ public class MessageSyncUtil extends Util {
 	 * @return int
 	 */
 	public int snycToWeb(int messageId, String secret) {
-		log("syncToWeb(): push pending messages to the configured URL");
+		log("syncToWeb(): push pending messages to the Sync URL");
 		MessagesModel model = new MessagesModel();
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 		// check if it should sync by id
@@ -136,11 +131,19 @@ public class MessageSyncUtil extends Util {
 			}
 
 			for (MessagesModel messages : listMessages) {
-				processSms.routePendingMessages(messages.getMessageFrom(),
+				log("processing");
+				if (processSms.routePendingMessages(messages.getMessageFrom(),
 						messages.getMessage(), messages.getMessageDate(),
-						String.valueOf(messages.getMessageId()));
+						String.valueOf(messages.getMessageId()))) {
+
+					// / if it successfully pushes message, delete message
+					// from db
+					new MessagesModel().deleteMessagesById(messageId);
+				} else {
+					deleted = 1;
+				}
+
 			}
-			deleted = 1;
 		}
 
 		return deleted;

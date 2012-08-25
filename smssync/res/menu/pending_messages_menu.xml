@@ -27,12 +27,12 @@
     <item
         android:id="@+id/delete"
         android:orderInCategory="2"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_delete_all"/>
     <item
         android:id="@+id/settings"
         android:orderInCategory="3"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_settings"/>
 
 </menu>

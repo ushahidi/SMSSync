@@ -25,6 +25,7 @@ import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
+import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
@@ -91,9 +92,12 @@ public class PendingMessages
 		if (Prefs.enabled) {
 			Util.showNotification(getActivity());
 		}
-		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
 		listView.setItemsCanFocus(false);
-		registerForContextMenu(listView);
+		listView.setLongClickable(true);
+		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listView.setOnItemLongClickListener(new PendingMessagesActionModeListener(
+				this, listView));
 
 		if (savedInstanceState != null) {
 			int position = savedInstanceState.getInt(STATE_CHECKED, -1);
@@ -116,6 +120,7 @@ public class PendingMessages
 		super.onResume();
 		getActivity().registerReceiver(broadcastReceiver,
 				new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+
 		getActivity().registerReceiver(failedReceiver,
 				new IntentFilter(ServicesConstants.FAILED_ACTION));
 		getActivity().registerReceiver(smsSentReceiver,
@@ -160,32 +165,28 @@ public class PendingMessages
 
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
-		log("position: "+adapter.getCount());
-		//messageId = adapter.getItem(info.position).getMessageId();
-		boolean result = performAction(item, info.position);
 
-		if (!result) {
-			result = super.onContextItemSelected(item);
-		}
+		messageId = adapter.getItem(info.position).getMessageId();
+		// boolean result = performAction(item, info.position);
 
-		return result;
+		/*
+		 * if (!result) { result = super.onContextItemSelected(item); }
+		 * 
+		 * return result;
+		 */
+		return true;
 	}
 
-	public boolean performAction(android.view.MenuItem item, int position) {
-
+	public boolean performAction(MenuItem item, int position) {
+		messageId = adapter.getItem(position).getMessageId();
 		if (item.getItemId() == R.id.context_delete) {
-			
+
 			performDeleteById();
 			return (true);
-		} else if (item.getItemId() == R.id.context_delete_all) {
-			performDeleteAll();
-			return (true);
+
 		} else if (item.getItemId() == R.id.context_sync) {
 			// Synchronize by ID
 			syncMessages(messageId);
-		} else if (item.getItemId() == R.id.context_delete_all) {
-			syncMessages(0);
-
 		}
 		return (false);
 	}
@@ -291,9 +292,10 @@ public class PendingMessages
 						toastLong(R.string.sending_succeeded);
 					} else if (result == 1) {
 						toastLong(R.string.sending_failed);
-					} else if (result == 2) {
-						toastLong(R.string.no_messages_to_sync);
-					}
+					}/*
+					 * else if (result == 2) {
+					 * toastLong(R.string.no_messages_to_sync); }
+					 */
 
 				} catch (Exception e) {
 					return;
@@ -319,9 +321,10 @@ public class PendingMessages
 						showMessages();
 					} else if (result == 1) {
 						toastLong(R.string.sync_failed);
-					} else if (result == 2) {
-						toastLong(R.string.no_messages_to_sync);
-					}
+					} /*
+					 * else if (result == 2) {
+					 * toastLong(R.string.no_messages_to_sync); }
+					 */
 				} catch (Exception e) {
 					return;
 				}
@@ -391,7 +394,7 @@ public class PendingMessages
 
 					if (result) {
 						toastLong(R.string.messages_deleted);
-					
+
 					} else {
 						toastLong(R.string.messages_deleted_failed);
 					}
@@ -478,20 +481,15 @@ public class PendingMessages
 		public void onReceive(Context context, Intent intent) {
 			if (intent != null) {
 				int status = intent.getIntExtra("status", 2);
-
 				if (status == 0) {
-
-					if (syncPendingMessagesServiceIntent != null) {
-						getActivity().stopService(
-								syncPendingMessagesServiceIntent);
-					}
-
 					toastLong(R.string.sending_succeeded);
-
 				} else if (status == 1) {
 					toastLong(R.string.sync_failed);
-				} else {
+				} else if (status == 2) {
 					toastLong(R.string.no_messages_to_sync);
+				}
+				if (syncPendingMessagesServiceIntent != null) {
+					getActivity().stopService(syncPendingMessagesServiceIntent);
 				}
 
 				refreshState = false;
@@ -521,7 +519,7 @@ public class PendingMessages
 	// when sms has been sent
 	private BroadcastReceiver smsSentReceiver = new BroadcastReceiver() {
 		@Override
-		public void onReceive(Context arg0, Intent arg1) {
+		public void onReceive(Context context, Intent intent) {
 			switch (getResultCode()) {
 			case Activity.RESULT_OK:
 				toastLong(R.string.sms_status_success);

@@ -26,6 +26,7 @@ import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
+import org.addhen.smssync.listeners.SyncUrlActionModeListener;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.CheckTaskScheduledService;
@@ -44,12 +45,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -89,16 +86,21 @@ public class SyncUrl extends
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		setHasOptionsMenu(true);
-		registerForContextMenu(listView);
+
 		Prefs.loadPreferences(getActivity());
 		pm = getActivity().getPackageManager();
 		smsReceiverComponent = new ComponentName(getActivity(),
 				SmsReceiver.class);
 
-		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 		listView.setItemsCanFocus(false);
+		listView.setLongClickable(true);
+		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listView.setOnItemLongClickListener(new SyncUrlActionModeListener(this,
+				listView));
 		view.enableSmsSync.setChecked(Prefs.enabled);
 		view.enableSmsSync.setOnClickListener(this);
+
+		// registerForContextMenu(listView);
 
 	}
 
@@ -125,37 +127,15 @@ public class SyncUrl extends
 		super.onDestroy();
 	}
 
-	// Context Menu Stuff
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		new MenuInflater(getActivity()).inflate(R.menu.sync_url_context_menu,
-				menu);
+	public boolean performAction(MenuItem item, int position) {
 
-	}
+		id = adapter.getItem(position).getId();
 
-	@Override
-	public boolean onContextItemSelected(android.view.MenuItem item) {
-
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-				.getMenuInfo();
-		id = adapter.getItem(info.position).getId();
-		boolean result = performAction(item, info.position);
-
-		if (!result) {
-			result = super.onContextItemSelected(item);
-		}
-
-		return result;
-	}
-
-	public boolean performAction(android.view.MenuItem item, int position) {
-
-		if (item.getItemId() == R.id.context_edit_sync_url) {
+		if (item.getItemId() == R.id.sync_url_context_edit_sync_url) {
 			edit = true;
 			addSyncUrl();
 			return (true);
-		} else if (item.getItemId() == R.id.context_delete_sync_url) {
+		} else if (item.getItemId() == R.id.sync_url_context_delete_sync_url) {
 			if (adapter.getItem(position).getStatus() == 1) {
 				showMessage(R.string.disable_to_delete_syncurl);
 			} else {
@@ -165,20 +145,6 @@ public class SyncUrl extends
 		}
 		return (false);
 	}
-
-	/*
-	 * @Override public void onListItemClick(ListView l, View v, int position,
-	 * long id) { l.setItemChecked(position, true); log("Item checked!"); // is
-	 * the view checkbox if (v.getId() == R.id.sync_checkbox) {
-	 * log("Hello world!"); CheckedTextView checkBox = (CheckedTextView) v; //
-	 * check if the checkbox is checked if (checkBox.isChecked()) {
-	 * adapter.getItem(position).setStatus(1); adapter.updateStatus(position);
-	 * 
-	 * } else { adapter.getItem(position).setStatus(0);
-	 * adapter.updateStatus(position); }
-	 * 
-	 * // load all checked syncurl syncUrl = model.loadByStatus(1); } }
-	 */
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -363,7 +329,7 @@ public class SyncUrl extends
 				}
 
 				if (deleted == 1) {
-					toastLong(R.string.no_messages_to_delete);
+					toastLong(R.string.no_sync_url_to_delete);
 				} else {
 					if (result) {
 

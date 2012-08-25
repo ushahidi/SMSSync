@@ -17,11 +17,10 @@
  ** Ushahidi developers at team@ushahidi.com.
  **
  *****************************************************************************/
-
 package org.addhen.smssync.listeners;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.fragments.SyncUrl;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,10 +34,10 @@ import com.actionbarsherlock.view.MenuItem;
  * @author eyedol
  * 
  */
-public class PendingMessagesActionModeListener implements ActionMode.Callback,
+public class SyncUrlActionModeListener implements ActionMode.Callback,
 		AdapterView.OnItemLongClickListener {
 
-	private PendingMessages host;
+	private SyncUrl host;
 
 	private ActionMode activeMode;
 
@@ -46,8 +45,7 @@ public class PendingMessagesActionModeListener implements ActionMode.Callback,
 
 	private int lastPosition = -1;
 
-	public PendingMessagesActionModeListener(final PendingMessages host,
-			ListView modeView) {
+	public SyncUrlActionModeListener(final SyncUrl host, ListView modeView) {
 		this.host = host;
 		this.modeView = modeView;
 	}
@@ -78,7 +76,7 @@ public class PendingMessagesActionModeListener implements ActionMode.Callback,
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 		if (host != null) {
 			new com.actionbarsherlock.view.MenuInflater(host.getActivity())
-					.inflate(R.menu.pending_messages_context_menu, menu);
+					.inflate(R.menu.sync_url_context_menu, menu);
 		}
 		return true;
 	}

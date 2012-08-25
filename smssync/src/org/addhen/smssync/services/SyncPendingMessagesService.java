@@ -57,22 +57,21 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 	protected void executeTask(Intent intent) {
 		// SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
 		Logger.log(CLASS_TAG, "executeTask() executing this task");
-
+		int status = 2;
 		if (intent != null) {
 			// get Id
-			messageId = intent.getIntExtra(ServicesConstants.MESSEAGE_ID,
-					messageId);
+			messageId = intent.getIntExtra(ServicesConstants.MESSEAGE_ID, 0);
 			if (messagesModel.totalMessages() > 0) {
 				for (SyncUrlModel syncUrl : model
 						.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-					Logger.log(CLASS_TAG, " url: " + syncUrl.getUrl()
-							+ " Secret: " + syncUrl.getSecret());
-					int status = new MessageSyncUtil(
+
+					status = new MessageSyncUtil(
 							SyncPendingMessagesService.this, syncUrl.getUrl())
 							.snycToWeb(messageId, syncUrl.getSecret());
-					statusIntent.putExtra("status", status);
-					sendBroadcast(statusIntent);
 				}
+
+				statusIntent.putExtra("status", status);
+				sendBroadcast(statusIntent);
 			}
 		}
 

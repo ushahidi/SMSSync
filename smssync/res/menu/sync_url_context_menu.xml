@@ -13,10 +13,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/context_edit_sync_url"
+        android:id="@+id/sync_url_context_edit_sync_url"
+        android:icon="@drawable/edit"
+        android:showAsAction="ifRoom"
         android:title="@string/edit"/>
     <item
-        android:id="@+id/context_delete_sync_url"
+        android:id="@+id/sync_url_context_delete_sync_url"
+        android:icon="@drawable/delete"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_delete"/>
 
 </menu>

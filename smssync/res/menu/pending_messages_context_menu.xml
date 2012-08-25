@@ -3,15 +3,13 @@
 
     <item
         android:id="@+id/context_sync"
+        android:icon="@drawable/refresh"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_sync"/>
     <item
-        android:id="@+id/context_sync_all"
-        android:title="@string/menu_sync_all"/>
-    <item
         android:id="@+id/context_delete"
+        android:icon="@drawable/delete"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_delete"/>
-    <item
-        android:id="@+id/context_delete_all"
-        android:title="@string/menu_delete_all"/>
 
 </menu>

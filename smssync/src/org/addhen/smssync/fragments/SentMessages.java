@@ -24,24 +24,17 @@ import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
+import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
-import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
 
@@ -70,60 +63,34 @@ public class SentMessages
 		super.onActivityCreated(savedInstanceState);
 		Prefs.loadPreferences(getActivity());
 		model = new SentMessagesModel();
-		//setEmptyText(getString(R.string.no_sent_messages));
 		// show notification
 		if (Prefs.enabled) {
 			Util.showNotification(getActivity());
 		}
-		registerForContextMenu(listView);
+		listView.setItemsCanFocus(false);
+		listView.setLongClickable(true);
+		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
+				this, listView));
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		getActivity().registerReceiver(broadcastReceiver,
-				new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
 		mHandler.post(mDisplayMessages);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		getActivity().unregisterReceiver(broadcastReceiver);
-	}
-
-	// Context Menu Stuff
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
-		new MenuInflater(getActivity()).inflate(
-				R.menu.sent_messages_context_menu, menu);
 
 	}
 
-	@Override
-	public boolean onContextItemSelected(android.view.MenuItem item) {
-
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-				.getMenuInfo();
-		//messageId = adapter.getItem(info.position).getMessageId();
-		boolean result = performAction(item, info.position);
-
-		if (!result) {
-			result = super.onContextItemSelected(item);
-		}
-
-		return result;
-	}
-
-	public boolean performAction(android.view.MenuItem item, int position) {
-
-		if (item.getItemId() == R.id.context_delete) {
+	public boolean performAction(MenuItem item, int position) {
+		messageId = adapter.getItem(position).getMessageId();
+		if (item.getItemId() == R.id.sent_messages_context_delete) {
 			// Delete by ID
 			performDeleteById();
-			return (true);
-		} else if (item.getItemId() == R.id.context_delete_all) {
-			performDeleteAll();
 			return (true);
 		}
 		return (false);
@@ -296,28 +263,5 @@ public class SentMessages
 		// TODO Auto-generated method stub
 
 	}
-
-	/**
-	 * This will refresh content of the listview aka the pending messages when
-	 * smssync syncs pending messages.
-	 */
-	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (intent != null) {
-				int status = intent.getIntExtra("status", 2);
-
-				if (status == 0) {
-
-					toastLong(R.string.sending_succeeded);
-				} else if (status == 1) {
-					toastLong(R.string.sync_failed);
-				} else {
-					toastLong(R.string.no_messages_to_sync);
-				}
-				adapter.refresh();
-			}
-		}
-	};
 
 }

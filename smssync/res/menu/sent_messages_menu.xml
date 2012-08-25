@@ -21,7 +21,7 @@
     <item
         android:id="@+id/settings"
         android:orderInCategory="1"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_settings"/>
 
 </menu>
