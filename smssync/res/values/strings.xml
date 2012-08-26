@@ -139,7 +139,7 @@
     <string name="confirm_message">Are you sure you want to perform this action?</string>
 
     <!-- validate unique id -->
-    <string name="unique_id_length_error">Unique ID cannot be longer or less than 5 digits</string>
+    <string name="unique_id_length_error">Unique ID cannot be less than one digits</string>
     <string name="unique_id_numeric_error">Unique ID accepts only numbers</string>
     
     <string name="loading">Loading</string>

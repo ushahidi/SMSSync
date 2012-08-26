@@ -20,24 +20,12 @@
 
 package org.addhen.smssync;
 
-import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
-import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
-import org.addhen.smssync.receivers.SmsReceiver;
-import org.addhen.smssync.services.AutoSyncScheduledService;
-import org.addhen.smssync.services.CheckTaskScheduledService;
-import org.addhen.smssync.services.CheckTaskService;
-import org.addhen.smssync.services.ScheduleServices;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
-import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
@@ -549,7 +537,7 @@ public class Settings extends SherlockPreferenceActivity implements
 			public void run() {
 
 				// validate number of digits
-				if ((uniqueId.length() > 5) || (uniqueId.length() < 5)) {
+				if ((uniqueId.length() == 0) || TextUtils.isEmpty(uniqueId)) {
 					uniqueIdValidityStatus = 1;
 					mHandler.post(mUniqueId);
 				} else {
