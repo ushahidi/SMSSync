@@ -1,3 +1,16 @@
+2.0.0
+Feature:
+  * Improved the UI. Optimized it to scale well on tablet devices.
+  * Added the ability to manage multiple Sync URLs and the ability to sync messages to them.
+  * Added icons to actionbar menu instead of just text.
+  * Cleaned up code based making it more modular and easier to maintain.
+  * Increased the frequency times for the various schedulers. Added 1 minute, 2 minutes, 3 minutes and 4 minutes.
+
+Bug:
+  * Fixed task checking issue. It now frequently pings client for tasks.
+  * sent_timestamp variable  now sends the raw timestamp instead of the preformatted one. This is to allow the client to have control of the formatting.
+  * Removed the characters contrains to Unique ID field.
+
 1.1.9
 Bug:
   * Fixed missing title
