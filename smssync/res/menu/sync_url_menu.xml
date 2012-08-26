@@ -16,7 +16,7 @@
         android:id="@+id/add_sync_url"
         android:icon="@drawable/add"
         android:orderInCategory="0"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/add_sync_url"/>
     <item
         android:id="@+id/delete_all_sync_url"

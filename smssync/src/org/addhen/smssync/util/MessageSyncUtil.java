@@ -79,8 +79,8 @@ public class MessageSyncUtil extends Util {
 	public boolean postToAWebService(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId, String secret) {
 		log("postToAWebService(): Post received SMS to configured URL:"
-				+ Prefs.website + " messagesFrom: " + messagesFrom
-				+ " messagesBody: " + messagesBody);
+				+ Prefs.website + " messagesTimestamp: " + messagesTimestamp
+				+ " messagesBody: " + messagesBody + " messagesFrom "+messagesFrom+" Secret "+secret);
 
 		HashMap<String, String> params = new HashMap<String, String>();
 		Prefs.loadPreferences(context);

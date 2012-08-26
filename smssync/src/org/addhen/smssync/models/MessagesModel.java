@@ -23,7 +23,6 @@ package org.addhen.smssync.models;
 import java.util.List;
 
 import org.addhen.smssync.database.Database;
-import org.addhen.smssync.util.Util;
 
 /**
  * Class to handle set and getters.
@@ -91,14 +90,7 @@ public class MessagesModel extends Model {
 	 * @return void
 	 */
 	public void setMessageDate(String messageDate) {
-		try {
-			this.messageDate = Util.formatDateTime(Long.parseLong(messageDate),
-					"MMM dd, yyyy 'at' hh:mm a");
-
-		} catch (NumberFormatException e) {
-			this.messageDate = messageDate;
-		}
-
+		this.messageDate = messageDate;
 	}
 
 	/**

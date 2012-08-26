@@ -78,7 +78,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
 			if (formatDate(params.get("sent_timestamp")) != null) {
 				nameValuePairs.add(new BasicNameValuePair("sent_timestamp",
-						formatDate(params.get("sent_timestamp"))));
+						params.get("sent_timestamp")));
 			}
 
 			nameValuePairs.add(new BasicNameValuePair("sent_to", params

@@ -16,13 +16,13 @@
         android:id="@+id/sync"
         android:icon="@drawable/refresh"
         android:orderInCategory="0"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_sync_all"/>
     <item
         android:id="@+id/import_sms"
         android:icon="@drawable/import_sms"
         android:orderInCategory="1"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/menu_import"/>
     <item
         android:id="@+id/delete"
