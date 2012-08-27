@@ -37,10 +37,6 @@ public class Prefs {
 
 	public static String website = "";
 
-	public static String keyword = "";
-
-	public static String filterByFrom = "";
-
 	public static String apiKey = "";
 
 	public static String reply = "";
@@ -75,8 +71,6 @@ public class Prefs {
 		final SharedPreferences settings = context.getSharedPreferences(
 				PREF_NAME, 0);
 		website = settings.getString("WebsitePref", "");
-		keyword = settings.getString("Keyword", "");
-		filterByFrom = settings.getString("FilterByFrom", "");
 		apiKey = settings.getString("ApiKey", "");
 		reply = settings.getString("ReplyPref",
 				context.getString(R.string.edittxt_reply_default));

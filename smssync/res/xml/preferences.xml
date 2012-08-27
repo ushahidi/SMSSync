@@ -16,7 +16,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/general_settings" >
-       
         <EditTextPreference
             android:dialogTitle="@string/edittxt_unique_id_pref"
             android:hint="@string/edittxt_unique_id_hint"
@@ -29,31 +28,11 @@
             android:summary="@string/chk_auto_delete_hint"
             android:title="@string/chk_enable_auto_delete" />
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/filter_messages" >
-
-        <EditTextPreference
-            android:dialogTitle="@string/edittxt_keyword_pref"
-            android:hint="@string/edittxt_keyword_hint"
-            android:key="keyword_preference"
-            android:summary="@string/editxt_keyword_pref_summary"
-            android:title="@string/edittxt_keyword_pref" />
-
-        <EditTextPreference
-            android:dialogTitle="@string/edittxt_filter_by_from_pref"
-            android:hint="@string/edittxt_filter_by_from_hint"
-            android:key="filter_by_from_preference"
-            android:summary="@string/edittxt_filter_by_from_pref_summary"
-            android:title="@string/edittxt_filter_by_from_pref" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/reply_settings" >
-
         <CheckBoxPreference
             android:key="enable_reply_frm_server_preference"
             android:summary="@string/chk_reply_frm_server_hint"
             android:title="@string/chk_enable_reply_frm_server" />
-
         <CheckBoxPreference
             android:key="enable_reply_preference"
             android:summary="@string/chk_reply_hint"
@@ -66,9 +45,7 @@
             android:summary="@string/edittxt_reply_summary"
             android:title="@string/edittxt_reply_title" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/auto_sync_settings" >
-
         <CheckBoxPreference
             android:key="auto_sync_preference"
             android:summary="@string/chk_enable_auto_sync_hint"
@@ -81,9 +58,7 @@
             android:summary="@string/auto_sync_delay_hint"
             android:title="@string/txt_auto_sync_delay" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/task_check_settings" >
-
         <CheckBoxPreference
             android:key="task_check_preference"
             android:summary="@string/chk_enable_task_check_hint"
@@ -96,9 +71,7 @@
             android:summary="@string/txt_task_check_delay_hint"
             android:title="@string/txt_task_check_delay" />
     </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/about_smssync" >
-
         <Preference android:key="powered_preference" />
     </PreferenceCategory>
 

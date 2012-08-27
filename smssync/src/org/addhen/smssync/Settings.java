@@ -48,8 +48,6 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 public class Settings extends SherlockPreferenceActivity implements
 		OnSharedPreferenceChangeListener {
 
-	public static final String KEY_FILTER_BY_FROM = "filter_by_from_preference";
-
 	public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
 
 	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
@@ -73,8 +71,6 @@ public class Settings extends SherlockPreferenceActivity implements
 	public static final String TASK_CHECK_TIMES = "task_check_times";
 
 	public static final String ABOUT = "powered_preference";
-
-	private EditTextPreference filterByFromPref;
 
 	private EditTextPreference replyPref;
 
@@ -141,8 +137,6 @@ public class Settings extends SherlockPreferenceActivity implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		filterByFromPref = (EditTextPreference) getPreferenceScreen()
-				.findPreference(KEY_FILTER_BY_FROM);
 
 		enableAutoDelete = (CheckBoxPreference) getPreferenceScreen()
 				.findPreference(KEY_AUTO_DELETE_MESSAGE);
@@ -303,7 +297,6 @@ public class Settings extends SherlockPreferenceActivity implements
 		taskCheckTime = initializeAutoTaskTime();
 
 		editor = settings.edit();
-		editor.putString("FilterByFrom", filterByFromPref.getText());
 		editor.putString("ReplyPref", replyPref.getText());
 		editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
 		editor.putBoolean("EnableReply", enableReply.isChecked());
