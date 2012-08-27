@@ -5,16 +5,16 @@
 	<br/>Auto Reply
 
 </td><td>
-	<a rel="screenshots_group" href="../images/screenshots/auto_sync.png" title="Auto Sync"><img alt="Auto Sync" src="../images/screenshots/auto_sync.png" width="150" height="221" /></a>
-	<br/>Auto Sync
+	<a rel="screenshots_group" href="../images/screenshots/sync_url.png" title="Manage Sync URL"><img alt="Manage Sync URL" src="../images/screenshots/sync_url.png" width="150" height="221" /></a>
+	<br/>Manage Sync URL
 </td><td>
-	<a rel="screenshots_group" href="../images/screenshots/filter_by_keyword.png" title="Filter By Keywords"><img alt="Filter By Keywords" src="../images/screenshots/filter_by_keyword.png" width="150" height="221" /></a>
-	<br/>Filter By keyword
+	<a rel="screenshots_group" href="../images/screenshots/add_sync_url.png" title="Add Sync URL"><img alt="Add Sync URL" src="../images/screenshots/add_sync_url.png" width="150" height="221" /></a>
+	<br/>Add Sync URL
 </td></tr>
 
 <tr><td>
-    <a rel="screenshots_group" href="../images/screenshots/no_pending_msgs.png" title="No pending Messages"><img alt="Filter By Keywords" src="../images/screenshots/no_pending_msgs.png" width="150" height="221" /></a>
-	<br/>No Pending Messages
+    <a rel="screenshots_group" href="../images/screenshots/sent_messages.png" title="Sent Messages"><img alt="Sent Messages" src="../images/screenshots/sent_messages.png" width="150" height="221" /></a>
+	<br/>Sent Messages
 
 </td><td>
 	<a rel="screenshots_group" href="../images/screenshots/pending_messages.png" title="Pending Messages"><img alt="Pending Messages" src="../images/screenshots/pending_messages.png" width="150" height="221" /></a>

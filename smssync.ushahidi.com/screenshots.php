@@ -6,13 +6,13 @@
 <meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/>
 <link href="../css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="../css/styles.css" rel="stylesheet" type="text/css" />
-<link href="../libs/js/google-code-prettify/prettify.css" rel="stylesheet">
+<link href="../css/sunburst.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="../js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-<script type="text/javascript" src="../js/fancybox/query.mousewheel-3.0.4.pack.js"></script>
+<script type="text/javascript" src="../js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript" src="../js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <script type="text/javascript" src="../js/screenshots.js"></script>
-<script src="libs/js/google-code-prettify/prettify.js"></script>
+<script src="../libs/js/google-code-prettify/prettify.js"></script>
 </head>
 <body style="padding-top:40px;" onload="prettyPrint()">
 <div class="topbar" data-scrollspy="scrollspy" >
@@ -47,15 +47,15 @@
 <a rel="screenshots_group" href="../images/screenshots/auto_reply.png" title="Auto Reply"><img alt="Auto Reply" src="../images/screenshots/auto_reply.png" width="150" height="221" /></a>
     <br/>Auto Reply</p>
 <p></td><td>
-    <a rel="screenshots_group" href="../images/screenshots/auto_sync.png" title="Auto Sync"><img alt="Auto Sync" src="../images/screenshots/auto_sync.png" width="150" height="221" /></a>
-    <br/>Auto Sync
+    <a rel="screenshots_group" href="../images/screenshots/sync_url.png" title="Manage Sync URL"><img alt="Manage Sync URL" src="../images/screenshots/sync_url.png" width="150" height="221" /></a>
+    <br/>Manage Sync URL
 </td><td>
-    <a rel="screenshots_group" href="../images/screenshots/filter_by_keyword.png" title="Filter By Keywords"><img alt="Filter By Keywords" src="../images/screenshots/filter_by_keyword.png" width="150" height="221" /></a>
-    <br/>Filter By keyword
+    <a rel="screenshots_group" href="../images/screenshots/add_sync_url.png" title="Add Sync URL"><img alt="Add Sync URL" src="../images/screenshots/add_sync_url.png" width="150" height="221" /></a>
+    <br/>Add Sync URL
 </td></tr></p>
 <tr><td>
-    <a rel="screenshots_group" href="../images/screenshots/no_pending_msgs.png" title="No pending Messages"><img alt="Filter By Keywords" src="../images/screenshots/no_pending_msgs.png" width="150" height="221" /></a>
-    <br/>No Pending Messages
+    <a rel="screenshots_group" href="../images/screenshots/sent_messages.png" title="Sent Messages"><img alt="Sent Messages" src="../images/screenshots/sent_messages.png" width="150" height="221" /></a>
+    <br/>Sent Messages
 
 </td><td>
     <a rel="screenshots_group" href="../images/screenshots/pending_messages.png" title="Pending Messages"><img alt="Pending Messages" src="../images/screenshots/pending_messages.png" width="150" height="221" /></a>
@@ -64,6 +64,7 @@
     <a rel="screenshots_group" href="../images/screenshots/settings.png" title="Settings"><img alt="Settings" src="../images/screenshots/settings.png" width="150" height="221" /></a>
     <br/>Settings
 </td></tr>
+
 </table></div>
 <div class="container">
 <footer class="footer">
@@ -71,7 +72,7 @@
         <div class="pull-right">
           powered by <a href="http://www.ushahidi.com">Ushahidi</a>
         </div> 
-        <p>Generated: 02-02-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <p>Generated: 27-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
 </div>
 </footer>
 </div>

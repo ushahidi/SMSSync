@@ -57,7 +57,7 @@ This makes it possible to have an instant response via SMS when an HTTP Post req
 <p>
 Also, make sure <strong>*Get Reply From Server*</strong> is checked on SMSSync otherwise it will fail to send the SMS.<p>
 <strong>Response JSON data from the callback URL</strong>
-<pre class="prettyprint linenums">{
+<pre id="code" class="prettyprint linenums">{
     "payload": {
         "success": "true",
         "task": "send",
