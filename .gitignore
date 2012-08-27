@@ -1,3 +1,3 @@
 *.swp
-abslib/bin/
+abslib/bin/*
 smssync/bin/
