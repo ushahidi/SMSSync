@@ -42,3 +42,35 @@
     </div>
 </div>
 <div class="container">
+<div class="page-header">
+    <h1>How to</h1> <small>This page is documents how to setup SMSSync on your Android device.</small>
+</div>
+
+<h1>Supported devices</h1>
+
+<p>SMSSync runs any device with Android 2.2 and above. However because SMSSync rely heavily on the SMS 
+capabilities of the device, the device needs to support SMS.</p>
+
+<p></div>
+<div class="container">
+<footer class="footer">
+    <div class="container">
+        <div class="pull-right">
+          powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+        </div> 
+        <p>Generated: 28-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+</div>
+</footer>
+</div>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-12063676-22']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+</body>
+</html></p>

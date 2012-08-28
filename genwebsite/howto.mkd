@@ -1,0 +1,8 @@
+<div class="page-header">
+    <h1>How to</h1> <small>This page is documents how to setup SMSSync on your Android device.</small>
+</div>
+
+# Supported devices
+
+SMSSync runs any device with Android 2.2 and above. However because SMSSync rely heavily on the SMS 
+capabilities of the device, the device needs to support SMS.

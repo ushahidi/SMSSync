@@ -5,6 +5,7 @@ Feature:
   * Added icons to actionbar menu instead of just text.
   * Cleaned up code based making it more modular and easier to maintain.
   * Increased the frequency times for the various schedulers. Added 1 minute, 2 minutes, 3 minutes and 4 minutes.
+  * Dropped support for devices running 1.6. This is to allow us to take advantage of the new Android APIs
 
 Bug:
   * Fixed task checking issue. It now frequently pings client for tasks.
@@ -88,4 +89,4 @@ Known issue:
 * Shows status of Pending messages. Whether there are pending messages or not.
 * Prepopulates URL field with "http://" when setting up the sync URL.
 * Sends an auto response once the SMS is recieved. This is a configurable option.
-* Validates the callback URL for 
+* Validates the callback URL
