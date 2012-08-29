@@ -112,7 +112,7 @@ def main(args,options,parser):
             build_site.transform_markdown_from_file(args)
         else:
             build_site.build_pages()
-usage = "usage: %prog <markdown string> <destination file>"
+usage = "usage: %prog <markdown string> <destination file> Eg. python ./build_site.py  ../genwebsite/download.mkd ../smssync.ushahidi.com/download.php "
 
 parser = OptionParser(usage=usage)
 parser.add_option("-f", "--mkfile",action="store_true", 
