@@ -11,6 +11,7 @@
 * Keyword based SMS filtering
 * Supports mutliple languages
 * Allows task scheduling
+* Support mutliple Sync URLs
 
 # Limitations
 

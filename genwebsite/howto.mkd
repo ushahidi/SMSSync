@@ -1,8 +1,186 @@
 <div class="page-header">
-    <h1>How to<small>This page documents how to setup SMSSync on your Android device.</small></h1>
+    <h1>How To<small> This page documents how to setup SMSSync on your Android device.</small></h1>
 </div>
 
-# Supported devices
+### Overview
 
-SMSSync runs any device with Android 2.2 and above. However because SMSSync rely heavily on the SMS 
-capabilities of the device, the device needs to support SMS.
+This how to covers the essential configuration to get SMSSync up and running. The application has been designed to be intuitive enough to easily get it running. 
+
+**Note** SMSSync runs on any device with Android 2.2 and above. However because it relies heavily on SMS, the device needs to support SMS.
+
+## Manage Sync URL
+Here you can manage multiple Sync URLs. Sync URLs are the URLs of your webservices. These are where the messages from SMSSync are actually pushed to.
+<div class="row-fluid">
+<div class="span6">
+#### Add new Sync URL
+To add a new Sync URL:
+
+1. Tap on the **_Sync URL_** tab.
+2. Tap on the ![Add icon](images/icons/new.png) icon on the actionbar. An input dialog should open.
+3. Enter a title for the Sync URL.
+4. Enter an optional secret key. If there is secret key on the webservices. Make sure you enter the exact key here.
+5. Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding.
+6. Enter the URL for your webservice. Don't forget to start with the **_HTTP_** or **_HTTPS_** protocol.
+7. Tap **_Ok_** to save the new entry or **_Cancel_** to cancel adding the new entry.
+
+</div>
+<div class="span6">
+#### Edit new Sync URL
+To edit an existing Sync URL:
+
+1. Long press on the Sync URL you want to edit by tapping and holding it untill the actionbar menu changes.
+2. Tap on the ![Edit icon](images/icons/edit.png) icon on the actionbar. An input dialog should opened repopulated with the details of the Sync URL.
+3. Edit the necessary field(s) accordinlgy.
+4. Tap **_Ok_** to save the edited entry or **_Cancel_** to cancel editing the existing entry.
+
+</div>
+<div class="span6">
+#### Delete All Existing Sync URL
+Delete all Sync URL by:
+
+1. If there are any Sync URL enabled(checked), disable(uncheck) them. Otherwise, move to the next item.
+2. Stop the SMSSync service if it's running(checked). Otherwise, move to the next point.
+3. Tap on the ![Delete icon](images/icons/delete.png) icon on the actionbar. A confirmation dialog should opened.
+4. Tap **_Yes_** to delete all Sync URL or **_No_** to cancel the deletion.
+
+</div>
+</div>
+<div class="row-fluid">
+<div class="span6">
+#### Delete An Existing Sync URL
+Delete an existing Sync URL by:
+
+1. If the Sync URL to be deleted is enabled(checked), disable it. Otherwise, move to the next item.
+2. Long press on the Sync URL you want to delete by tapping and holding it untill the actionbar menu changes.
+3. Tap on the ![Delete icon](images/icons/delete.png) icon on the actionbar. A confirmation dialog should opened.
+4. Tap **_Yes_** to delete it or **_No_** to cancel the deletion.
+
+</div>
+<div class="span6">
+#### Start SMSSync service
+To start the SMSSync service:
+
+1. Make sure you have added and enabled(checked) at least one Sync URL.
+2. On the **_SYNC URL_** tab, tap on the **_Start SMSSync service_** to start the service. You do this if the service is disabled.
+
+</div>
+<div class="span6">
+#### Stop SMSSync service
+To stop the SMSSync service:
+
+1. On the **_SYNC URL_** tab, tap on the **_Start SMSSync service_** to stop the service. You do this if the service is enabled.
+
+</div>
+</div>
+<div class="row-fluid">
+<div class="span12">
+### Configure
+With the options available on the app, you can configure it to behave to your preferences.
+</div>
+</div>
+<div class="row-fluid">
+<div class="span6">
+#### General Settings
+	
+1. Go to Settings screen by tapping the ![Settings icon](images/icons/settings.png) icon on the actionbar or option menu.
+2. Tap on **_Enter Unique ID_** to enter a Unique ID to identify the device SMSSync is installed on.
+
+</div>
+<div class="span6">
+#### Reply Message Settings
+This is where you set auto reply message to be sent to the user that sent SMS to SMSSync. You can specify a message on the phone or get the message from the server.
+To set a reply message:
+
+1. Go to Settings screen by tapping the ![Settings icon](images/icons/settings.png) icon on the actionbar or option menu.
+2. Tap on **_Get Reply From Server_** if you want to send an instant reply message from the Sync URL. Otherwise, tap on **_Reply Messages_** to set the instant reply message on the phone.
+
+</div>
+</div>
+<div class="row-fluid">
+<div class="span6">
+#### Auto Sync Settings
+This is where you enable SMSSync to periodically send pending messages to the enabled Sync URLs.
+To enable auto sync:
+
+1. Go to Settings screen by tapping the ![Settings icon](images/icons/settings.png) icon on the actionbar or option menu.
+2. Tap on **_Enable Auto Sync_** to enable the auto sync service.
+3. Tap on **_Auto sync frequency_** to set the frequency at which the auto sync should run.
+
+</div>
+<div class="span6">
+#### Task Settings
+The Task feature allows you to send SMS to users. All the messages to be sent to the users are configured on the server.
+To enable Task Checking feature:
+
+1. Go to Settings screen by tapping the ![Settings icon](images/icons/settings.png) icon on the actionbar or option menu.
+2. Tap on **_Enable Task Checking_** to enable the task service.
+3. Tap on **_Frequency_** to set the frequency at which the task checking service should run.
+
+</div>
+</div>
+<div class="row-fluid">
+<div class="span12">
+### Manage Pending Messages
+Pending messages are failed SMS that couldn't make it to any of the enabled Sync URLs. SMSSync allows you to manage these pending messages. You can either configure the app to automatically or manually sync these failed messages or delete them. This section of the how to is going to show you how to manage pending messages.
+</div>
+</div>
+<div class="row-fluid">
+<div class="span6">
+#### Manaully sync all pending messages
+Manully sync all pending messages by:
+
+1. Tap on the ![Sync icon](images/icons/refresh.png) icon on the actionbar. The sync icon should spin for a while.
+2. After the sync icon spins for a while, a Toast should show up with a status message.
+</div>
+<div class="span6">
+#### Manaully sync a pending message
+Manually sync a pending message by:
+
+1. Long press on the pending message you want to sync by tapping and holding it untill the actionbar menu changes.
+2. Tap on the ![Sync icon](images/icons/refresh.png) icon on the actionbar. The sync icon should spin for a while.
+3. After the sync icon spins for a while, a Toast should show with a status message.
+
+</div>
+<div class="row-fluid">
+<div class="span6">
+#### Delete pending messages
+Delete all pending messages saved on the device.
+
+1. Tap on the ![Delete icon](images/icons/delete.png) icon on the actionbar. A confirmation dialog should opened.
+2. Tap **_Yes_** to delete all pending messages or **_No_** to cancel the deletion.
+
+</div>
+<div class="span6">
+#### Import SMS
+Import SMS from the device's messages inbox.
+
+1. Tap on the ![Import icon](images/icons/import.png) icon on the actionbar. A progress dialog should opened. Leave it to run until it finishes. Depending on the messages in your inbox, this should take a while.
+
+</div>
+</div>
+<div class="row-fluid">
+<div class="span12">
+### Manage Sent Messages
+Sent messages are SMS or pending messages that have successfully been sync'd to the enabledSync URL. This is to allow you to see what messages were successfully sent. There is nothing much you can do here. You can only view and delete sent messages. This section will show you how to delete sent messages individually or all at the same time.
+</div>
+</div>
+<div class="row-fluid">
+<div class="span6">
+#### Delete a sent message
+Delete an individual message by:
+
+1. Long press on the sent message you want to delete by tapping and holding it until the actionbar menu changes.
+2. Tap on the ![Delete icon](images/icons/delete.png) icon on the actionbar. A confirmation dialog should opened.
+3. Tap **_Yes_** to delete it or **_No_** to cancel the deletion.
+
+</div>
+<div class="span6">
+#### Delete all sent messages
+Delete all saved sent messages by:
+
+1. Tap on the ![Delete icon](images/icons/delete.png) icon on the actionbar. A confirmation dialog should opened.
+2. Tap **_Yes_** to delete all sent messages or **_No_** to cancel the deletion.
+
+</div>
+</div>
+</div>

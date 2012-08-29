@@ -6,15 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="SMSSync the free and open source SMS gateway for Android">
 <meta name="author" content="Ushahidi Inc.">
-<link href="libs/bootsrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="libs/bootsrap/css/styles.css" rel="stylesheet" type="text/css" />
+<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="css/sunburst.css" rel="stylesheet"/>
+<link href='//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 
@@ -24,6 +25,8 @@
 
 <script src="libs/js/google-code-prettify/prettify.js"></script>
 
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+
 <p></head>
 <body style="padding-top:40px;" data-spy="scroll" onload="prettyPrint()"></p>
 <!-- nav bar -->
@@ -31,19 +34,21 @@
 <div class="navbar navbar-inverse navbar-fixed-top" data-spy="scroll" >
     <div class="navbar-inner">
         <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-                <a class="brand" href="#">SMSSync</a>
-            <div class="nav-collapse collapse">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".subnav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div id="logo">
+                <a class="brand" href="index">SMSSync</a>
+            </div>
+            <div class="nav-collapse subnav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="index">Home</a></li>
+                    <li><a href="index">Home</a></li>
                     <li><a href="releases">Releases</a></li>
                     <li><a href="download">Download</a></li>
                     <li><a href="howto">How To</a></li>
-                    <li><a href="doc">Documentation</a></li>
+                    <li class="active"><a href="doc">Documentation</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
                     <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
@@ -72,8 +77,8 @@
 <h1>Documentation <small>This documents how to integrate SMSSync into your project.</small></h1>
 </div>
 
-<div class="row">
-<div class="span8 columns">
+<div class="row-fluid">
+<div class="span6">
 <h2>Instructions</h2>
 <ul>
 <li>
@@ -95,7 +100,7 @@ SMSSync uses the following variables to transmit the incoming SMS via the POST m
 <li><strong>sent_to</strong> -- the phone number the SMS was sent to</li>
 
 <li><strong>secret</strong> -- the secret key set on the app</li>
-<li><strong>sent_timestamp</strong> -- the timestamp the SMS was sent. In the format, mm-dd-yy-hh:mm  Eg. 11-27-11-07:11</strong></li>
+<li><strong>sent_timestamp</strong> -- the timestamp the SMS was sent. In the UNIX timestamp format</strong></li>
 </ul>
 </li>
 </ul>
@@ -180,7 +185,7 @@ SMSSync supports execution of task sent from the configured Sync URL. At the mom
 }</pre>
 </div>
 
-<div class="span8 columns">
+<div class="span6">
 <h2>A sample web service</h2>
 <p>This is a sample PHP script to demonstrate how to write a webservice to successfully communicate with SMSSync.</p>
 <pre class="prettyprint linenums">
@@ -310,7 +315,7 @@ There is also SMSSync webservice for Django that implements most of the features
         <div class="pull-right">
           powered by <a href="http://www.ushahidi.com">Ushahidi</a>
         </div> 
-        <p>Generated: 28-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <p>Generated: 29-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
     </div>
 </footer>
 <script type="text/javascript">

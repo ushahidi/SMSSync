@@ -1,12 +1,17 @@
 * {margin: 0; padding: 0;}
-body { color: #333;	text-align: left; font: 80%/1.2  "Segoe UI","Lucida Grande", "Lucida Sans", "Trebuchet MS", Tahoma, Verdana, sans-serif; background: #fff;	}
-
-#logo h3{
-    float:left;
+body { 
+    color: #333;	
+    line-height:22px; 
+    font-size: 14px;
+    font-family:Lato,"Helvetica Neue",Helvetica,Arial,sans-serif; 
+    background: #fff;	}
+body > .navbar .brand:hover {
+  text-decoration: none;
+  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }
 
 #logo a {
-    text-indent:30px;
+    text-indent:35px;
     background:transparent url(../images/logo.png) no-repeat 20px 9px;
     display:block;
     width:140px;
@@ -14,6 +19,14 @@ body { color: #333;	text-align: left; font: 80%/1.2  "Segoe UI","Lucida Grande",
     color:#fff;
     margin-right:5px;
     outline:none;
+}
+
+.navbar .brand {
+   
+    text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    transition: all .2s linear;
 }
 
 .pull-right {
@@ -35,4 +48,7 @@ label.error {
     border-radius: 3px; 
 }
 
-input.error, select.error, textarea.error { border:1px solid #c00; background:#ffffea; }
+.footer .container {
+    border-top: 1px solid #e5e5e5;
+    padding-top: 10px;
+}

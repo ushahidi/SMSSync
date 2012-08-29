@@ -1,11 +1,37 @@
 <div class="page-header">
-    <h1>Releases History</h1> <small>This page is about release information for SMSSync. Mainly, it documents the version numbers, current stable and development branches. It also states the release dates and where to download the app.</small>
+    <h1>Releases History <small>This page is about release information for SMSSync. Mainly, it documents the version numbers, current stable and development branches. It also states the release dates and where to download the app.</small></h1>
 </div>
 # Current release
 
+* Released September 3rd, 2012
+* Version [r13](https://github.com/ushahidi/SMSSync/tree/v2.0.0)
+
+### Changelog
+
+* Feature:
+    * Improved the UI. Optimized it to scale well on tablet devices.
+    * Added the ability to manage multiple Sync URLs and the ability to sync messages to them.
+    * Added icons to actionbar menu instead of just text.
+    * Cleaned up code based making it more modular and easier to maintain.
+    * Increased the frequency times for the various schedulers. Added 1 minute, 2 minutes, 3 minutes and 4 minutes.
+    * Dropped support for devices running 1.6. This is to allow us to take advantage of the new Android APIs
+
+* Bug:
+    * Fixed task checking issue. It now frequently pings client for tasks.
+    * sent_timestamp variable  now sends the raw timestamp instead of the preformatted one. This is to allow the client to have control of the formatting.
+    * Removed the characters contrains to Unique ID field.
+
+## Development branch:
+
+* [master branch](https://github.com/eyedol/smssync/) open for commit/contributions for SMSSync 2.0.1
+
+## Stable branch:
+
+
+# Previous releases
+
 * Released December 12, 2011
-* Revision [r12](https://github.com/ushahidi/SMSSync/tree/v1.1.9)
-* Version [1.1.9](https://github.com/ushahidi/SMSSync/zipball/v1.1.9)
+* Version [v1.1.9](https://github.com/ushahidi/SMSSync/tree/v1.1.9)
 ### Changelog
 
 * Bug:
@@ -13,16 +39,8 @@
     * Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59
     * Added 5 more languages - French, Japanese, Danish, Russian and Serbian
 
-
-## Development branch:
-
-* [master branch](https://github.com/eyedol/smssync/) open for commit/contributions for SMSSync %release%
-
-# Previous releases
-
 * Released November 10, 2011
-* Revision [r10](https://github.com/ushahidi/SMSSync/tree/v1.0.9)
-* Version [1.0.9](https://github.com/ushahidi/SMSSync/zipball/v1.0.9)
+* Version [v1.0.9](https://github.com/ushahidi/SMSSync/tree/v1.0.9)
 
 ### Changelog
 
@@ -32,8 +50,7 @@
     * Fixed formatting issue with sent_timestamp.
 
 * Released October 27, 2011
-* Revision [r9](https://github.com/ushahidi/SMSSync/tree/v1.0.8)
-* Version [1.0.8](https://github.com/ushahidi/SMSSync/zipball/v1.0.8)
+* Version [v1.0.8](https://github.com/ushahidi/SMSSync/tree/v1.0.8)
 
 ### Changelog
 
@@ -49,15 +66,13 @@
 
 
 * Released September 25, 2011
-* Revision [r8](https://github.com/ushahidi/SMSSync/tree/v1.0.7)
-* Version [1.0.7](https://github.com/ushahidi/SMSSync/zipball/v1.0.7)
+* Version [v1.0.7](https://github.com/ushahidi/SMSSync/tree/v1.0.7)
 
 ### Changelog
 
 
 * Released September 23, 2011
-* Revision [r7](https://github.com/ushahidi/SMSSync/tree/v1.0.6)
-* Version [1.0.6](https://github.com/ushahidi/SMSSync/zipball/v1.0.6)
+* Version [v1.0.6](https://github.com/ushahidi/SMSSync/tree/v1.0.6)
 
 ### Changelog
 
@@ -78,8 +93,7 @@ Bug:
 
 
 * Released February 25, 2011
-* Revision [r6](https://github.com/ushahidi/SMSSync/tree/v1.0.5)
-* Version [1.0.5](https://github.com/ushahidi/SMSSync/zipball/v1.0.5)
+* Version [v1.0.5](https://github.com/ushahidi/SMSSync/tree/v1.0.5)
 
 ### Changelog
 
@@ -98,8 +112,7 @@ Bug:
 
 
 * Released January 31, 2011
-* Revision [r5](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
-* Version [1.0.4](https://github.com/ushahidi/SMSSync/zipball/v1.0.4)
+* Version [v1.0.4](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
 
 ### Changelog
 
@@ -108,8 +121,7 @@ Bug:
     * Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost.
 
 * Released January 31, 2011
-* Revision [r5](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
-* Version [1.0.3](https://github.com/ushahidi/SMSSync/zipball/v1.0.4)
+* Version [v1.0.3](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
 
 ### Changelog
 

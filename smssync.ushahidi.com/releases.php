@@ -6,15 +6,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="SMSSync the free and open source SMS gateway for Android">
 <meta name="author" content="Ushahidi Inc.">
-<link href="libs/bootsrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="libs/bootsrap/css/styles.css" rel="stylesheet" type="text/css" />
+<link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="css/sunburst.css" rel="stylesheet"/>
+<link href='//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
 <script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 
@@ -24,6 +25,8 @@
 
 <script src="libs/js/google-code-prettify/prettify.js"></script>
 
+<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+
 <p></head>
 <body style="padding-top:40px;" data-spy="scroll" onload="prettyPrint()"></p>
 <!-- nav bar -->
@@ -31,16 +34,18 @@
 <div class="navbar navbar-inverse navbar-fixed-top" data-spy="scroll" >
     <div class="navbar-inner">
         <div class="container">
-            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-                <a class="brand" href="#">SMSSync</a>
-            <div class="nav-collapse collapse">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".subnav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div id="logo">
+                <a class="brand" href="index">SMSSync</a>
+            </div>
+            <div class="nav-collapse subnav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="index">Home</a></li>
-                    <li><a href="releases">Releases</a></li>
+                    <li><a href="index">Home</a></li>
+                    <li class="active"><a href="releases">Releases</a></li>
                     <li><a href="download">Download</a></li>
                     <li><a href="howto">How To</a></li>
                     <li><a href="doc">Documentation</a></li>
@@ -69,33 +74,60 @@
 
 <div class="container">
 <div class="page-header">
-    <h1>Releases History</h1> <small>This page is about release information for SMSSync. Mainly, it documents the version numbers, current stable and development branches. It also states the release dates and where to download the app.</small>
+    <h1>Releases History <small>This page is about release information for SMSSync. Mainly, it documents the version numbers, current stable and development branches. It also states the release dates and where to download the app.</small></h1>
 </div>
 
 <h1>Current release</h1>
 <ul>
-<li>Released December 12, 2011</li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.1.9">r12</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.1.9">1.1.9</a></li>
+<li>Released September 3rd, 2012</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.0">r13</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
-<li>Bug:<ul>
-<li>Fixed missing title</li>
-<li>Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59</li>
-<li>Added 5 more languages - French, Japanese, Danish, Russian and Serbian</li>
+<li>
+<p>Feature:</p>
+<ul>
+<li>Improved the UI. Optimized it to scale well on tablet devices.</li>
+<li>Added the ability to manage multiple Sync URLs and the ability to sync messages to them.</li>
+<li>Added icons to actionbar menu instead of just text.</li>
+<li>Cleaned up code based making it more modular and easier to maintain.</li>
+<li>Increased the frequency times for the various schedulers. Added 1 minute, 2 minutes, 3 minutes and 4 minutes.</li>
+<li>Dropped support for devices running 1.6. This is to allow us to take advantage of the new Android APIs</li>
+</ul>
+</li>
+<li>
+<p>Bug:</p>
+<ul>
+<li>Fixed task checking issue. It now frequently pings client for tasks.</li>
+<li>sent_timestamp variable  now sends the raw timestamp instead of the preformatted one. This is to allow the client to have control of the formatting.</li>
+<li>Removed the characters contrains to Unique ID field.</li>
 </ul>
 </li>
 </ul>
 <h2>Development branch:</h2>
 <ul>
-<li><a href="https://github.com/eyedol/smssync/">master branch</a> open for commit/contributions for SMSSync %release%</li>
+<li><a href="https://github.com/eyedol/smssync/">master branch</a> open for commit/contributions for SMSSync 2.0.1</li>
 </ul>
+<h2>Stable branch:</h2>
 <h1>Previous releases</h1>
 <ul>
-<li>Released November 10, 2011</li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.9">r10</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.0.9">1.0.9</a></li>
+<li>Released December 12, 2011</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.1.9">v1.1.9</a></li>
+</ul>
+<h3>Changelog</h3>
+<ul>
+<li>
+<p>Bug:</p>
+<ul>
+<li>Fixed missing title</li>
+<li>Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59</li>
+<li>Added 5 more languages - French, Japanese, Danish, Russian and Serbian</li>
+</ul>
+</li>
+<li>
+<p>Released November 10, 2011</p>
+</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.9">v1.0.9</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -110,8 +142,7 @@
 <li>
 <p>Released October 27, 2011</p>
 </li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.8">r9</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.0.8">1.0.8</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.8">v1.0.8</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -134,14 +165,12 @@
 <li>
 <p>Released September 25, 2011</p>
 </li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.7">r8</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.0.7">1.0.7</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.7">v1.0.7</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
 <li>Released September 23, 2011</li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.6">r7</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.0.6">1.0.6</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.6">v1.0.6</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -163,8 +192,7 @@
     * Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service.</p>
 <ul>
 <li>Released February 25, 2011</li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.5">r6</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.0.5">1.0.5</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.5">v1.0.5</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -194,8 +222,7 @@
 <li>
 <p>Released January 31, 2011</p>
 </li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">r5</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.0.4">1.0.4</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.4</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -209,8 +236,7 @@
 <li>
 <p>Released January 31, 2011</p>
 </li>
-<li>Revision <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">r5</a></li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.0.4">1.0.3</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.3</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -236,7 +262,7 @@
         <div class="pull-right">
           powered by <a href="http://www.ushahidi.com">Ushahidi</a>
         </div> 
-        <p>Generated: 28-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <p>Generated: 29-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
     </div>
 </footer>
 
