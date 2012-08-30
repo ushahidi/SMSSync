@@ -3,8 +3,8 @@
 </div>
 # Current release
 
-* Released September 3rd, 2012
-* Version [r13](https://github.com/ushahidi/SMSSync/tree/v2.0.0)
+* Released September 3<sup>rd</sup>, 2012
+* Version [v2.0.0](https://github.com/ushahidi/SMSSync/tree/v2.0.0)
 
 ### Changelog
 
@@ -30,7 +30,7 @@
 
 # Previous releases
 
-* Released December 12, 2011
+* Released December 12<sup>th</sup>, 2011
 * Version [v1.1.9](https://github.com/ushahidi/SMSSync/tree/v1.1.9)
 ### Changelog
 
@@ -39,7 +39,7 @@
     * Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59
     * Added 5 more languages - French, Japanese, Danish, Russian and Serbian
 
-* Released November 10, 2011
+* Released November 10<sup>th</sup>, 2011
 * Version [v1.0.9](https://github.com/ushahidi/SMSSync/tree/v1.0.9)
 
 ### Changelog
@@ -49,7 +49,7 @@
     * Fixed sent_to variable not sending the device's number. 
     * Fixed formatting issue with sent_timestamp.
 
-* Released October 27, 2011
+* Released October 27<sup>th</sup>, 2011
 * Version [v1.0.8](https://github.com/ushahidi/SMSSync/tree/v1.0.8)
 
 ### Changelog
@@ -65,13 +65,13 @@
     * Improved performance with syncing pending messages. 
 
 
-* Released September 25, 2011
+* Released September 25<sup>th</sup>, 2011
 * Version [v1.0.7](https://github.com/ushahidi/SMSSync/tree/v1.0.7)
 
 ### Changelog
 
 
-* Released September 23, 2011
+* Released September 23<sup>rd</sup>, 2011
 * Version [v1.0.6](https://github.com/ushahidi/SMSSync/tree/v1.0.6)
 
 ### Changelog
@@ -92,7 +92,7 @@ Bug:
     * Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service.
 
 
-* Released February 25, 2011
+* Released February 25<sup>th</sup>, 2011
 * Version [v1.0.5](https://github.com/ushahidi/SMSSync/tree/v1.0.5)
 
 ### Changelog
@@ -111,7 +111,7 @@ Bug:
     * Scheduler doesn't refresh pending messages' list after it runs. The pending messages screen needs to be restarted. 
 
 
-* Released January 31, 2011
+* Released January 31<sup>st</sup>, 2011
 * Version [v1.0.4](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
 
 ### Changelog
@@ -120,7 +120,7 @@ Bug:
     * Notification cannot be cleared untill SMSSync is stopped.
     * Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost.
 
-* Released January 31, 2011
+* Released January 31<sup>st<sup>, 2011
 * Version [v1.0.3](https://github.com/ushahidi/SMSSync/tree/v1.0.4)
 
 ### Changelog

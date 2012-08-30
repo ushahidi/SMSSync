@@ -1,24 +1,35 @@
 * {margin: 0; padding: 0;}
 body { 
-    color: #333;	
+    color: #222	
     line-height:22px; 
+    letter-spacing:.1;
     font-size: 14px;
     font-family:Lato,"Helvetica Neue",Helvetica,Arial,sans-serif; 
-    background: #fff;	}
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+    background-color:#F9F9F9;	
+}
 body > .navbar .brand:hover {
   text-decoration: none;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }
 
 #logo a {
+    font-family: 'Racing Sans One', cursive;
     text-indent:35px;
     background:transparent url(../images/logo.png) no-repeat 20px 9px;
     display:block;
-    width:140px;
-    font-weight:bold;
     color:#fff;
-    margin-right:5px;
     outline:none;
+}
+
+.smssync {
+    font-family: 'Racing Sans One', cursive;
+}
+
+strong, em {
+    color:#009900;
 }
 
 .navbar .brand {

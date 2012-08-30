@@ -1,12 +1,12 @@
 <div class="page-header">
-    <h1>How To<small> This page documents how to setup SMSSync on your Android device.</small></h1>
+    <h1>How To Configure SMSSync<small> This page documents how to configure SMSSync on your Android device.</small></h1>
 </div>
 
 ### Overview
 
 This how to covers the essential configuration to get SMSSync up and running. The application has been designed to be intuitive enough to easily get it running. 
 
-**Note** SMSSync runs on any device with Android 2.2 and above. However because it relies heavily on SMS, the device needs to support SMS.
+**Note:** SMSSync runs on any device with Android 2.2 and above. However because it relies heavily on SMS, the device needs to support SMS.
 
 ## Manage Sync URL
 Here you can manage multiple Sync URLs. Sync URLs are the URLs of your webservices. These are where the messages from SMSSync are actually pushed to.

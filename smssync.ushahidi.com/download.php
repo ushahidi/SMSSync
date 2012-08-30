@@ -9,7 +9,8 @@
 <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="css/sunburst.css" rel="stylesheet"/>
-<link href='//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 
@@ -47,8 +48,8 @@
                     <li><a href="index">Home</a></li>
                     <li><a href="releases">Releases</a></li>
                     <li class="active"><a href="download">Download</a></li>
-                    <li><a href="howto">How To</a></li>
-                    <li><a href="doc">Documentation</a></li>
+                    <li><a href="howto">Configure</a></li>
+                    <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
                     <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
@@ -92,10 +93,19 @@
 
 <footer class="footer">
     <div class="container">
-        <div class="pull-right">
-          powered by <a href="http://www.ushahidi.com">Ushahidi</a>
-        </div> 
-        <p>Generated: 29-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <div class="row-fluid">
+            <div class="span4">
+                Generated: 30-08-2012
+            </div>
+            <div class="span4">
+                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+            </div>
+            <div class="span4">
+                <p class="pull-right">
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                </p>
+            </div>
+        </div>  
     </div>
 </footer>
 

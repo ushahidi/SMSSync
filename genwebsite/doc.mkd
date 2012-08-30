@@ -1,5 +1,5 @@
 <div class="page-header">
-<h1>Documentation <small>This documents how to integrate SMSSync into your project.</small></h1>
+<h1>Developers Documentation <small>This documents how to integrate SMSSync into your project.</small></h1>
 </div>
 <div class="row-fluid">
 <div class="span6">

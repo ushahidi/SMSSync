@@ -9,7 +9,8 @@
 <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="css/sunburst.css" rel="stylesheet"/>
-<link href='//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 
@@ -47,8 +48,8 @@
                     <li class="active"><a href="index">Home</a></li>
                     <li><a href="releases">Releases</a></li>
                     <li><a href="download">Download</a></li>
-                    <li><a href="howto">How To</a></li>
-                    <li><a href="doc">Documentation</a></li>
+                    <li><a href="howto">Configure</a></li>
+                    <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
                     <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
@@ -109,17 +110,19 @@
                 <p>
                     <strong>Public release:</strong>
                         <ul>
-                            <li>Released December 12, 2011</li>
-                            <li>Revision <a href"https://github.com/ushahidi/SMSSync/tree/v1.1.9">r11</a></li>
-                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v1.1.9">1.1.9</a></li>
+                            <li>Released September 3<sup>rd</sup>, 2012</li>
+                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.0.0">v2.0.0</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
-                            <li>None</li>
+                            <li>
+                                <a href="https://github.com/ushahidi/SMSSync/tree/master">master branch</a>
+                            </li>
                         </ul>
                     <strong>Development branch:</strong>
                         <ul>
-                        <li><a href="https://github.com/ushahidi/SMSsync/">master branch</a> open for commit/contributions for SMSSync 1.1.10</li>
+                        <li>
+                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.0.1</li>
                         </ul>
                         <a href="releases">More</a>
                 </p>
@@ -152,10 +155,19 @@
 
 <footer class="footer">
     <div class="container">
-        <div class="pull-right">
-          powered by <a href="http://www.ushahidi.com">Ushahidi</a>
-        </div> 
-        <p>Generated: 29-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <div class="row-fluid">
+            <div class="span4">
+                Generated: 30-08-2012
+            </div>
+            <div class="span4">
+                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+            </div>
+            <div class="span4">
+                <p class="pull-right">
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                </p>
+            </div>
+        </div>  
     </div>
 </footer>
 

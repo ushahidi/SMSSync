@@ -9,7 +9,8 @@
 <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="css/styles.css" rel="stylesheet" type="text/css" />
 <link href="css/sunburst.css" rel="stylesheet"/>
-<link href='//fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Racing+Sans+One' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 
@@ -47,8 +48,8 @@
                     <li><a href="index">Home</a></li>
                     <li class="active"><a href="releases">Releases</a></li>
                     <li><a href="download">Download</a></li>
-                    <li><a href="howto">How To</a></li>
-                    <li><a href="doc">Documentation</a></li>
+                    <li><a href="howto">Configure</a></li>
+                    <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
                     <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
@@ -79,8 +80,8 @@
 
 <h1>Current release</h1>
 <ul>
-<li>Released September 3rd, 2012</li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.0">r13</a></li>
+<li>Released September 3<sup>rd</sup>, 2012</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.0">v2.0.0</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -111,7 +112,7 @@
 <h2>Stable branch:</h2>
 <h1>Previous releases</h1>
 <ul>
-<li>Released December 12, 2011</li>
+<li>Released December 12<sup>th</sup>, 2011</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.1.9">v1.1.9</a></li>
 </ul>
 <h3>Changelog</h3>
@@ -125,7 +126,7 @@
 </ul>
 </li>
 <li>
-<p>Released November 10, 2011</p>
+<p>Released November 10<sup>th</sup>, 2011</p>
 </li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.9">v1.0.9</a></li>
 </ul>
@@ -140,7 +141,7 @@
 </ul>
 </li>
 <li>
-<p>Released October 27, 2011</p>
+<p>Released October 27<sup>th</sup>, 2011</p>
 </li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.8">v1.0.8</a></li>
 </ul>
@@ -163,13 +164,13 @@
 </ul>
 </li>
 <li>
-<p>Released September 25, 2011</p>
+<p>Released September 25<sup>th</sup>, 2011</p>
 </li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.7">v1.0.7</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
-<li>Released September 23, 2011</li>
+<li>Released September 23<sup>rd</sup>, 2011</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.6">v1.0.6</a></li>
 </ul>
 <h3>Changelog</h3>
@@ -191,7 +192,7 @@
     * Fixed a bug that when all messages are deleted, the app shows a failed message yet the messages are deleted.
     * Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service.</p>
 <ul>
-<li>Released February 25, 2011</li>
+<li>Released February 25<sup>th</sup>, 2011</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.5">v1.0.5</a></li>
 </ul>
 <h3>Changelog</h3>
@@ -220,7 +221,7 @@
 </ul>
 </li>
 <li>
-<p>Released January 31, 2011</p>
+<p>Released January 31<sup>st</sup>, 2011</p>
 </li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.4</a></li>
 </ul>
@@ -234,7 +235,7 @@
 </ul>
 </li>
 <li>
-<p>Released January 31, 2011</p>
+<p>Released January 31<sup>st<sup>, 2011</p>
 </li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.3</a></li>
 </ul>
@@ -259,10 +260,19 @@
 
 <footer class="footer">
     <div class="container">
-        <div class="pull-right">
-          powered by <a href="http://www.ushahidi.com">Ushahidi</a>
-        </div> 
-        <p>Generated: 29-08-2012 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a></p>
+        <div class="row-fluid">
+            <div class="span4">
+                Generated: 30-08-2012
+            </div>
+            <div class="span4">
+                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+            </div>
+            <div class="span4">
+                <p class="pull-right">
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                </p>
+            </div>
+        </div>  
     </div>
 </footer>
 
