@@ -30,27 +30,29 @@
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true" />
-<uses-sdk
+
+    <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="16" />
+
     <application
         android:name=".MainApplication"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock">
-         
+        android:theme="@style/Theme.Sherlock" >
         <service android:name=".services.SmsReceiverService" />
         <service android:name=".services.AutoSyncService" />
         <service android:name=".services.AutoSyncScheduledService" />
         <service android:name=".services.CheckTaskScheduledService" />
         <service android:name=".services.CheckTaskService" />
         <service android:name=".services.SyncPendingMessagesService" />
-        
+
         <activity
             android:name=".Settings"
-            android:configChanges="orientation|keyboardHidden"
+            android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
             android:label="@string/app_name"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -61,7 +63,7 @@
         <!-- messages tab -->
         <activity
             android:name=".activities.MessagesTabActivity"
-            android:configChanges="orientation|keyboardHidden"
+            android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
             <intent-filter>
@@ -71,34 +73,10 @@
             </intent-filter>
         </activity>
 
-        <!-- pending messages -->
-        <activity
-            android:name=".PendingMessagesActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
-            android:launchMode="singleTop" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.ACTION_VIEW" />
-            </intent-filter>
-        </activity>
-
-        <!-- sent messages -->
-        <activity
-            android:name=".SentMessagesActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:label="@string/app_name"
-            android:launchMode="singleTop" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.ACTION_VIEW" />
-            </intent-filter>
-        </activity>
-
         <!-- sms -->
-        <receiver android:name=".receivers.SmsReceiver" >
+        <receiver
+            android:name=".receivers.SmsReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -107,7 +85,8 @@
         <!-- connectivity changed -->
         <receiver
             android:name=".receivers.ConnectivityChangedReceiver"
-            enabled="false" >
+            enabled="false"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -135,7 +114,9 @@
         <receiver android:name=".receivers.AutoSyncScheduledReceiver" />
 
         <!-- app widget provider -->
-        <receiver android:name=".widget.SmsSyncAppWidgetProvider" >
+        <receiver
+            android:name=".widget.SmsSyncAppWidgetProvider"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
