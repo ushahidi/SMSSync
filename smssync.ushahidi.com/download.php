@@ -47,7 +47,7 @@
                 <ul class="nav">
                     <li><a href="index">Home</a></li>
                     <li><a href="releases">Releases</a></li>
-                    <li class="active"><a href="download">Download</a></li>
+                    <li><a href="download">Download</a></li>
                     <li><a href="howto">Configure</a></li>
                     <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
@@ -82,12 +82,16 @@
 <div class="span6">
 <h2>QR Code</h2>
 <p><strong>Scan the QR below to install SMSSync on your Android powered phone</strong></p>
-<p><img src="http://qrcode.kaywa.com/img.php?s=6&#038;d=http%3A%2F%2Fmarket.android.com%2Fdetails%3Fid%3Dorg.addhen.smssync" alt="qrcode" /> 
+<div class="thumbnails">
+ <img class="thumbnail" width="200" src="http://qr.kaywa.com/?s=8&d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync" alt="Scan to download SMSSync" title="Scan to download SMSSync"/>
+</div>
 </div>
 <div class="span6">
 <h2>Android market</h2>
-<p><strong>The app is available today on the Android market. You can download it on your phone by clicking on the image on the left or scanning the QR code on the right. Enjoy!</strong></p>
-<p><a href="https://market.android.com/details?id=org.addhen.smssync"><img class="size-thumbnail wp-image-4527  " title="ushahidi_android_on_the_market" src="http://blog.ushahidi.com/wp-content/uploads/2011/07/ushahidi_android_on_the_market-150x150.png" alt="Android market" width="200" height="200" /></a>
+<p><strong>The app is available today on the Android market. You can download it on your phone by clicking on the image on the below or scanning the QR code on the left. Enjoy!</strong></p>
+<div class="thumbnails">
+<a href="https://play.google.com/store/apps/details?id=org.addhen.smssync"><img class="thumbnail" title="ushahidi_android_on_the_market" src="http://blog.ushahidi.com/wp-content/uploads/2011/07/ushahidi_android_on_the_market-150x150.png" alt="Android market" width="200" height="200" /></a>
+</div>
 </div>
 </div></div>
 
@@ -95,7 +99,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 30-08-2012
+                Generated: 31-08-2012
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>

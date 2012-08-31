@@ -27,8 +27,13 @@
 <script src="libs/js/google-code-prettify/prettify.js"></script>
 
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
 
-<p></head>
+    $(function() {
+        $('#myCarousel').carousel();
+    });
+</script>
+</head>
 <body style="padding-top:40px;" data-spy="scroll" onload="prettyPrint()"></p>
 <!-- nav bar -->
 
@@ -64,16 +69,44 @@
 <!-- header starts -->
 
 <div class="container">
-    <div class="hero-unit">
-        <h2>The free and open source SMS gateway for Android</h2>
+    <div class="row-fluid">
+        <div class="span6">
+            <br/><br />
+            <h4>The free and open source SMS gateway for Android</h4>
+            <p>It's one of the <strong><em>best</em></strong> SMS gateway for Android
+            <p>The app is available today on the Android market. You can download it on your phone by scanning the QR code below.</p>
+            <div class="thumbnails">
+                <img class="thumbnail" width="150" src="http://qr.kaywa.com/?s=8&d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync" alt="Scan to download SMSSync" title="Scan to download SMSSync"/>
+            </div>
+        </div>
+        <div class="span6">
+            <div id="myCarousel" class="carousel slide slid">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="images/promo/tablet_phone.png" alt="manage Sync URL" title="manage Sync URL">
+                    </div>
+                
+                    <div class="item">
+                        <img src="images/promo/pending.png" alt="pending" title="Pending Messages">
+                    </div>
+                
+                    <div class="item">
+                        <img src="images/promo/import.png" alt="import sms" title="Import SMS">
+                    </div>
+                
+                    <div class="item">
+                        <img src="images/promo/settings.png" alt="settings" title="Settings">
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
-
 <!-- header ends -->
 
 <!-- body starts -->
 
-<div class="container">
 <div class="container">
 <!-- About SMSSync -->
 <section id="about">
