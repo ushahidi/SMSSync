@@ -26,12 +26,16 @@ import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
+import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ListView;
@@ -77,12 +81,17 @@ public class SentMessages
 	@Override
 	public void onResume() {
 		super.onResume();
+		getActivity().registerReceiver(broadcastReceiver,
+				new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
 		mHandler.post(mDisplayMessages);
+
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
+		getActivity().unregisterReceiver(broadcastReceiver);
+		mHandler.post(mDisplayMessages);
 
 	}
 
@@ -263,5 +272,28 @@ public class SentMessages
 		// TODO Auto-generated method stub
 
 	}
+
+	/**
+	 * This will refresh content of the listview aka the pending messages when
+	 * smssync syncs pending messages.
+	 */
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent != null) {
+				int status = intent.getIntExtra("sentstatus", 2);
+
+				if (status == 0) {
+
+					toastLong(R.string.sending_succeeded);
+				} else if (status == 1) {
+					toastLong(R.string.sync_failed);
+				} else {
+					toastLong(R.string.no_messages_to_sync);
+				}
+				mHandler.post(mDisplayMessages);
+			}
+		}
+	};
 
 }

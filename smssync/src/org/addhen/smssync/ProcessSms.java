@@ -105,8 +105,12 @@ public class ProcessSms {
 	 */
 	public boolean routeMessages(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId) {
+
+		// load prefrences.
+		Prefs.loadPreferences(context);
+
 		// is smssync service running
-		boolean posted = false;
+		boolean posted = true;
 		if (Prefs.enabled) {
 
 			if (Util.isConnected(context)) {
@@ -139,16 +143,16 @@ public class ProcessSms {
 								// succeeds,
 								// it syncs the failed messages.
 								Util.connectToDataNetwork(context);
+							} else {
+
+								postToSentBox(messagesFrom, messagesBody,
+										messagesId, messagesTimestamp);
+								Util.showFailNotification(
+										context,
+										messagesBody,
+										context.getString(R.string.sending_succeeded));
 							}
 
-						} else {
-
-							postToSentBox(messagesFrom, messagesBody,
-									messagesId, messagesTimestamp);
-							Util.showFailNotification(
-									context,
-									messagesBody,
-									context.getString(R.string.sending_succeeded));
 						}
 
 					} else { // no keyword
@@ -168,6 +172,10 @@ public class ProcessSms {
 							// when smssync is turned on
 
 						} else {
+							
+							postToSentBox(messagesFrom, messagesBody,
+									messagesId, messagesTimestamp);
+							
 							Util.showFailNotification(
 									context,
 									messagesBody,
@@ -204,7 +212,7 @@ public class ProcessSms {
 	 */
 	public void routeSms(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId, SmsMessage sms) {
-
+		
 		if (routeMessages(messagesFrom, messagesBody, messagesTimestamp,
 				messagesId)) {
 			// Delete messages from message app's inbox, only
@@ -284,26 +292,28 @@ public class ProcessSms {
 		uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
 		String[] projection = { "_id", "address", "date", "body" };
 		String messageDate = "";
-		
+
 		Cursor c = context.getContentResolver().query(uriSms, projection, null,
 				null, "date DESC");
-		
+
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-	
+
 		if (c.getCount() > 0 && c != null) {
 			if (c.moveToFirst()) {
 
 				do {
 					MessagesModel messages = new MessagesModel();
 					listMessages.add(messages);
-					
+
 					messageDate = String.valueOf(c.getLong(c
 							.getColumnIndex("date")));
 					messages.setMessageDate(messageDate);
-				
-					messages.setMessageFrom(c.getString(c.getColumnIndex("address")));
+
+					messages.setMessageFrom(c.getString(c
+							.getColumnIndex("address")));
 					messages.setMessage(c.getString(c.getColumnIndex("body")));
-					messages.setMessageId(Integer.valueOf(c.getString(c.getColumnIndex("_id"))));
+					messages.setMessageId(Integer.valueOf(c.getString(c
+							.getColumnIndex("_id"))));
 
 					messages.listMessages = listMessages;
 					messages.save();
@@ -455,7 +465,7 @@ public class ProcessSms {
 		SentMessagesUtil.smsMap.put("messagesId", messageId);
 
 		int status = SentMessagesUtil.processSentMessages(context);
-		statusIntent.putExtra("status", status);
+		statusIntent.putExtra("sentstatus", status);
 		context.sendBroadcast(statusIntent);
 
 	}

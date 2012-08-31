@@ -130,6 +130,12 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 		}
 	}
 
+	/**
+	 * Update the status of a Sync URL. Making it enabled or disabled.
+	 * 
+	 * @param position 1 for enabled and 0 for disabled.
+	 * @return boolean
+	 */
 	public boolean updateStatus(int position) {
 
 		return syncUrls.updateStatus(this.getItem(position));

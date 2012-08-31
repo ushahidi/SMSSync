@@ -50,9 +50,9 @@
         <activity
             android:name=".Settings"
             android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
+            android:exported="false"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:exported="false" >
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -74,19 +74,14 @@
         </activity>
 
         <!-- sms -->
-        <receiver
-            android:name=".receivers.SmsReceiver"
-            android:exported="false" >
+        <receiver android:name=".receivers.SmsReceiver" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <!-- connectivity changed -->
-        <receiver
-            android:name=".receivers.ConnectivityChangedReceiver"
-            enabled="false"
-            android:exported="false" >
+        <receiver android:name=".receivers.ConnectivityChangedReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
