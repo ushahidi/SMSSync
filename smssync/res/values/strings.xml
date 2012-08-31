@@ -162,4 +162,6 @@
     <string name="disable_last_sync_url">You cannot disable this last Sync URL because the SMSSync service is running.</string>
     <string name="no_sync_url_added">Add at least one Sync URL to start the SMSSync service.</string>
     <string name="no_sync_url_to_delete">There are no Sync URL to delete.</string>
+    <string name="empty_sync_url_title">Please enter a title for the Sync URL</string>
+    <string name="valid_sync_url">Please enter a valid URL</string>
 </resources>

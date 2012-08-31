@@ -39,12 +39,14 @@ import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.SyncUrlView;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
@@ -198,6 +200,29 @@ public class SyncUrl extends
 	}
 
 	/**
+	 * Validates the Sync URL to be added
+	 * 
+	 * @param AddSyncUrl
+	 *            addSyncUrl
+	 * 
+	 * @return boolean
+	 */
+	public boolean validateSyncUrlEntry(AddSyncUrl addSyncUrl) {
+		boolean noError = false;
+		if (addSyncUrl != null) {
+			if (TextUtils.isEmpty(addSyncUrl.title.getText().toString())) {
+				toastLong(R.string.empty_sync_url_title);
+			} else if (Util.validateCallbackUrl(addSyncUrl.url.getText()
+					.toString()) == 1) {
+				toastLong(R.string.valid_sync_url);
+			} else {
+				noError = true;
+			}
+		}
+		return noError;
+	}
+
+	/**
 	 * Delete message by it's id
 	 */
 	public void performDeleteById() {
@@ -264,7 +289,6 @@ public class SyncUrl extends
 
 		final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
 				getActivity());
-
 		addBuilder
 				.setTitle(R.string.add_sync_url)
 				.setView(textEntryView)
@@ -272,34 +296,48 @@ public class SyncUrl extends
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-								// edit was selected
-								if (edit) {
-									if (addSyncUrl.updateSyncUrl(id)) {
-										mHandler.post(mUpdateListView);
-									} else {
-										toastLong(R.string.failed_to_update_sync_url);
-									}
-								} else {
-									// add a new entry
-									if (addSyncUrl.addSyncUrl()) {
-										mHandler.post(mUpdateListView);
-									} else {
-										toastLong(R.string.failed_to_add_sync_url);
-									}
-								}
-
+								
 							}
 						})
 				.setNegativeButton(R.string.cancel,
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-								dialog.cancel();
+								dialog.dismiss();
 							}
 						});
 
-		AlertDialog deploymentDialog = addBuilder.create();
+		final AlertDialog deploymentDialog = addBuilder.create();
 		deploymentDialog.show();
+
+		deploymentDialog.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener(
+				new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// validate entry
+						if (validateSyncUrlEntry(addSyncUrl)) {
+							// edit was selected
+							if (edit) {
+
+								if (addSyncUrl.updateSyncUrl(id)) {
+									mHandler.post(mUpdateListView);
+								} else {
+									toastLong(R.string.failed_to_update_sync_url);
+								}
+							} else {
+								// add a new entry
+								if (addSyncUrl.addSyncUrl()) {
+									mHandler.post(mUpdateListView);
+								} else {
+									toastLong(R.string.failed_to_add_sync_url);
+								}
+							}
+							deploymentDialog.dismiss();
+						}
+
+					}
+				});
 
 	}
 
