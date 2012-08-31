@@ -48,7 +48,7 @@
                     <li><a href="index">Home</a></li>
                     <li><a href="releases">Releases</a></li>
                     <li><a href="download">Download</a></li>
-                    <li class="active"><a href="howto">Configure</a></li>
+                    <li><a href="howto">Configure</a></li>
                     <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
@@ -80,7 +80,7 @@
 
 <h3>Overview</h3>
 <p>This how to covers the essential configuration to get SMSSync up and running. The application has been designed to be intuitive enough to easily get it running. </p>
-<p><strong>Note:</strong> SMSSync runs on any device with Android 2.2 and above. However because it relies heavily on SMS, the device needs to support SMS.</p>
+<p><strong>Note:</strong> SMSSync runs on any device with Android 2.1 and above. However because it relies heavily on SMS, the device needs to support SMS.</p>
 <h2>Manage Sync URL</h2>
 <p>Here you can manage multiple Sync URLs. Sync URLs are the URLs of your webservices. These are where the messages from SMSSync are actually pushed to.
 <div class="row-fluid">
@@ -263,7 +263,7 @@ To enable Task Checking feature:</p>
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 30-08-2012
+                Generated: 31-08-2012
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
