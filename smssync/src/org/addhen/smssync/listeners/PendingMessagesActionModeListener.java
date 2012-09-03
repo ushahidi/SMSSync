@@ -105,10 +105,11 @@ public class PendingMessagesActionModeListener implements ActionMode.Callback,
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		boolean result = false;
-		if (host != null)
-			result = host.performAction(item, lastPosition);
 		if (activeMode != null)
 			activeMode.finish();
+		
+		if (host != null)
+			result = host.performAction(item, lastPosition);
 		return result;
 	}
 

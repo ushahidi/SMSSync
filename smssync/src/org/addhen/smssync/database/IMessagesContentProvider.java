@@ -23,8 +23,6 @@ import java.util.List;
 
 import org.addhen.smssync.models.MessagesModel;
 
-import android.database.Cursor;
-
 /**
  * @author eyedol
  * 

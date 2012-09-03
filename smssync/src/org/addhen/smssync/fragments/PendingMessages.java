@@ -155,6 +155,9 @@ public class PendingMessages
 
 		} else if (item.getItemId() == R.id.context_sync) {
 			// Synchronize by ID
+			refresh = item;
+			refreshState = true;
+			updateRefreshStatus();
 			syncMessages(messageId);
 		}
 		return (false);

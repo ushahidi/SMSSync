@@ -24,12 +24,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.SyncUrlModel;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -80,8 +86,10 @@ public class Database {
 	public static MessagesContentProvider mMessagesContentProvider;
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
+		private Context sContext ;
 		DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
+			sContext = context;
 		}
 
 		@Override
@@ -128,6 +136,9 @@ public class Database {
 
 			// upgrade syncurl table
 			db.execSQL(ISyncUrlSchema.CREATE_TABLE);
+
+			// add old sync url configuration to the database,
+			syncLegacySyncUrl(sContext);
 			onCreate(db);
 		}
 
@@ -308,4 +319,24 @@ public class Database {
 		return deleted;
 	}
 
+	public  static void syncLegacySyncUrl(Context context) {
+		// saved preferences
+		final SharedPreferences settings = context.getSharedPreferences(
+				Prefs.PREF_NAME, 0);
+		final String website = settings.getString("WebsitePref", "");
+		final String apiKey = settings.getString("ApiKey", "");
+		final String keyword = settings.getString("Keyword", "");
+		SyncUrlModel syncUrl = new SyncUrlModel();
+		if (!TextUtils.isEmpty(website)) {
+			syncUrl.setKeywords(keyword);
+			syncUrl.setSecret(apiKey);
+			syncUrl.setTitle(context.getString(R.id.sync_url));
+			syncUrl.setUrl(website);
+			syncUrl.setStatus(1);
+			syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
+			syncUrl.listSyncUrl.add(syncUrl);
+			syncUrl.save();
+		}
+
+	}
 }
