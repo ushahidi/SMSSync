@@ -66,7 +66,7 @@ public class Database {
 
 	private static final String SENT_MESSAGES_TABLE = "sent_messages";
 
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 3;
 
 	private static final String SENT_MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
 			+ SENT_MESSAGES_TABLE
@@ -86,7 +86,8 @@ public class Database {
 	public static MessagesContentProvider mMessagesContentProvider;
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
-		private Context sContext ;
+		private Context sContext;
+
 		DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 			sContext = context;
@@ -138,7 +139,7 @@ public class Database {
 			db.execSQL(ISyncUrlSchema.CREATE_TABLE);
 
 			// add old sync url configuration to the database,
-			syncLegacySyncUrl(sContext);
+			syncLegacySyncUrl(sContext,db);
 			onCreate(db);
 		}
 
@@ -271,6 +272,35 @@ public class Database {
 			mDb.endTransaction();
 		}
 	}
+	
+
+	public static boolean addSyncUrl(SyncUrlModel syncUrl, SQLiteDatabase db) {
+		// set values
+		ContentValues initialValues = new ContentValues();
+		initialValues.put(ISyncUrlSchema.TITLE, syncUrl.getTitle());
+		initialValues.put(ISyncUrlSchema.URL, syncUrl.getUrl());
+		initialValues.put(ISyncUrlSchema.KEYWORDS, syncUrl.getKeywords());
+		initialValues.put(ISyncUrlSchema.SECRET, syncUrl.getSecret());
+		initialValues.put(ISyncUrlSchema.STATUS, syncUrl.getStatus());
+		return db.insert(ISyncUrlSchema.TABLE,null, initialValues) > 0;
+	}
+
+	public static boolean addSyncUrl(List<SyncUrlModel> syncUrls, SQLiteDatabase db ) {
+
+		try {
+			db.beginTransaction();
+
+			for (SyncUrlModel syncUrl : syncUrls) {
+
+				addSyncUrl(syncUrl,db);
+			}
+
+			db.setTransactionSuccessful();
+		} finally {
+			db.endTransaction();
+		}
+		return true;
+	}
 
 	/**
 	 * Count the number of sent messages in the database.
@@ -319,10 +349,11 @@ public class Database {
 		return deleted;
 	}
 
-	public  static void syncLegacySyncUrl(Context context) {
+	public static void syncLegacySyncUrl(Context context,SQLiteDatabase db) {
 		// saved preferences
 		final SharedPreferences settings = context.getSharedPreferences(
 				Prefs.PREF_NAME, 0);
+		
 		final String website = settings.getString("WebsitePref", "");
 		final String apiKey = settings.getString("ApiKey", "");
 		final String keyword = settings.getString("Keyword", "");
@@ -330,12 +361,12 @@ public class Database {
 		if (!TextUtils.isEmpty(website)) {
 			syncUrl.setKeywords(keyword);
 			syncUrl.setSecret(apiKey);
-			syncUrl.setTitle(context.getString(R.id.sync_url));
+			syncUrl.setTitle(context.getString(R.string.sync_url));
 			syncUrl.setUrl(website);
 			syncUrl.setStatus(1);
 			syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
 			syncUrl.listSyncUrl.add(syncUrl);
-			syncUrl.save();
+			addSyncUrl(syncUrl.listSyncUrl,db );
 		}
 
 	}
