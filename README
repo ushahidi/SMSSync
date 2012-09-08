@@ -7,15 +7,19 @@ h1.Instructions
 * Additionally, you can specify keywords with which to filter incoming messages. Only matching text messages will be sent to the SMSSync Gateway URL.
 
 * The SMSSync sends the following variables via the POST method: 
-    * *from*
-    * *message*
-    * *secret*
+   * *secret* 
+   * *from*
+   * *message*
+   * *message_id*
+   * *sent_timestamp*
+   * *sent_to*
+    
 
 * In order for SMSSync to account for perfect transmission, the callback URL needs to give back a formatted JSON string such as its shown below to indicate if it received the message or not.
    * *Succeeded* 
         {
             - payload: {
-                success: "false"
+                success: "true"
             }
         }
   
