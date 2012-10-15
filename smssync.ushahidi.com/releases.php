@@ -107,9 +107,12 @@
 </ul>
 <h2>Development branch:</h2>
 <ul>
-<li><a href="https://github.com/eyedol/smssync/">master branch</a> open for commit/contributions for SMSSync 2.0.1</li>
+<li><a href="https://github.com/eyedol/smssync/">develop branch</a> open for commit/contributions for SMSSync 2.0.1</li>
 </ul>
 <h2>Stable branch:</h2>
+<ul>
+<li><a href="https://github.com/ushahidi/SMSSync/tree/master">master branch</a></li>
+</ul>
 <h1>Previous releases</h1>
 <ul>
 <li>Released December 12<sup>th</sup>, 2011</li>
