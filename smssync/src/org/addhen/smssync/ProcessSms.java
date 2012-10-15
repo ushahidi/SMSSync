@@ -45,6 +45,11 @@ import android.telephony.SmsMessage;
 import android.text.TextUtils;
 
 /**
+ * This class has the main logic to dispatch the messages that comes to the device. It decides 
+ * where to post the messages to, depending on the status of the device. If the message fails 
+ * to send to the configured web service, it saves them in the pending list and when it succeeds
+ * it saves them in the sent list.
+ * 
  * @author eyedol
  * 
  */
@@ -87,7 +92,7 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Routes both SMS and pending messages taking
+	 * Routes both SMS and pending messages taking forever to load.
 	 * 
 	 * @param String
 	 *            messagesFrom The number that sent the SMS
@@ -187,6 +192,7 @@ public class ProcessSms {
 			} else { // no internet
 				Util.showFailNotification(context, messagesBody,
 						context.getString(R.string.sending_failed));
+				posted = false;
 
 			}
 		}

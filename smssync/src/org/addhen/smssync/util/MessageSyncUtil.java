@@ -80,7 +80,8 @@ public class MessageSyncUtil extends Util {
 			String messagesTimestamp, String messagesId, String secret) {
 		log("postToAWebService(): Post received SMS to configured URL:"
 				+ Prefs.website + " messagesTimestamp: " + messagesTimestamp
-				+ " messagesBody: " + messagesBody + " messagesFrom "+messagesFrom+" Secret "+secret);
+				+ " messagesBody: " + messagesBody + " messagesFrom "
+				+ messagesFrom + " Secret " + secret);
 
 		HashMap<String, String> params = new HashMap<String, String>();
 		Prefs.loadPreferences(context);
@@ -115,13 +116,13 @@ public class MessageSyncUtil extends Util {
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 		// check if it should sync by id
 		if (messageId > 0) {
-			if (model.loadById(messageId)) {
-				listMessages = model.listMessages;
-			}
+			model.loadById(messageId);
+			listMessages = model.listMessages;
+
 		} else {
-			if (model.load()) {
-				listMessages = model.listMessages;
-			}
+			model.load();
+			listMessages = model.listMessages;
+
 		}
 		int deleted = 0;
 
@@ -140,6 +141,7 @@ public class MessageSyncUtil extends Util {
 					// from db
 					new MessagesModel().deleteMessagesById(messages
 							.getMessageId());
+					deleted = 0;
 				} else {
 					deleted = 1;
 				}

@@ -92,9 +92,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
 			if (statusCode == 200 || statusCode == 201) {
 				String resp = getText(response);
-				boolean success = Util.extractPayloadJSON(resp);
 
-				if (success) {
+				if (Util.extractPayloadJSON(resp)) {
 					// auto response message is enabled to be received from the
 					// server.
 					if (Prefs.enableReplyFrmServer) {
@@ -103,13 +102,11 @@ public class MessageSyncHttpClient extends MainHttpClient {
 					}
 
 					return true;
-				} else {
-					return false;
 				}
 
-			} else {
 				return false;
 			}
+			return false;
 
 		} catch (ClientProtocolException e) {
 			return false;

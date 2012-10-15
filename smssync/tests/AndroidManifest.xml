@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.addhen.smssync.test"
-      android:versionCode="1"
-      android:versionName="1.0">
-    <uses-sdk android:minSdkVersion="4" />
-    <instrumentation android:targetPackage="org.addhen.smssync" android:name="android.test.InstrumentationTestRunner" />
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    package="org.addhen.smssync.test"
+    android:versionCode="13"
+    android:versionName="2.0.1" >
 
-    <uses-library android:name="android.test.runner" />
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="16" />
+
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:targetPackage="org.addhen.smssync" />
+
+    <application
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <uses-library android:name="android.test.runner" />
     </application>
+
 </manifest>
