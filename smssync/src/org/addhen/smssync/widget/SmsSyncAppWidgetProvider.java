@@ -27,6 +27,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.activities.MessagesTabActivity;
 import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -56,6 +57,8 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 	public static final String INTENT_NEXT = "NEXT";
 
 	public static final String INTENT_REFRESH = "REFRESH";
+
+	private static final int LIMIT = 5;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -187,8 +190,11 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 				views.setViewVisibility(R.id.msg_desc, View.VISIBLE);
 
 				// initialize views
+
 				views.setTextViewText(R.id.msg_number, mgs.getMessageFrom());
-				views.setTextViewText(R.id.msg_date, mgs.getMessageDate());
+				views.setTextViewText(R.id.msg_date, Util.formatDateTime(
+						Long.parseLong(mgs.getMessageDate()),
+						"hh:mm a"));
 				views.setTextViewText(R.id.msg_desc, mgs.getMessage());
 
 				// make all the views clickable
@@ -283,7 +289,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 	public static List<MessagesModel> showMessages() {
 
 		MessagesModel model = new MessagesModel();
-		model.loadByLimit(5);
+		model.loadByLimit(LIMIT);
 
 		if (model.listMessages != null) {
 			if (model.listMessages.size() == 0) {
