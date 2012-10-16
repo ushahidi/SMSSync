@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
+<!--
   Copyright (c) 2010 - 2011 Ushahidi Inc
   All rights reserved
   Contact: team@ushahidi.com
@@ -16,70 +16,134 @@
  
   If you have questions regarding the use of this file, please contact
   Ushahidi developers at team@ushahidi.com. 
- -->
+-->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="320dip" android:layout_height="280dip"
-	android:orientation="horizontal" android:background="@drawable/appwidget_bg">
-	<Button android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true" android:layout_marginLeft="7dip"
-		android:paddingLeft="11dip" android:id="@+id/appwidget_item"
-		android:gravity="left" android:textColor="#000000" android:background="@drawable/icon"
-		android:maxLines="3" android:ellipsize="end" android:bufferType="spannable" />
-	<ImageButton android:id="@+id/appwidget_logo"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
-		android:layout_marginRight="7dip" android:src="@android:drawable/ic_menu_preferences"
-		android:background="@android:color/transparent" android:scaleType="center" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appwidget_bg"
+    android:orientation="horizontal" >
 
-	<RelativeLayout android:id="@+id/relativeLayout1"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_marginTop="70dip" android:layout_gravity="center"
-		android:gravity="center">
-		<LinearLayout android:id="@+id/linear_pending_msg"
-			android:orientation="vertical" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_alignParentLeft="true">
-			<LinearLayout android:orientation="horizontal"
-				android:id="@+id/linearLayout1" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:layout_alignParentLeft="true">
-				<TextView android:id="@+id/msg_number"
-					android:layout_marginLeft="7dip" android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:gravity="left"
-					android:textColor="@color/text_light" android:textStyle="bold"
-					android:layout_weight="1"/>
-				<TextView android:layout_height="wrap_content" android:id="@+id/msg_date"
-					android:layout_width="wrap_content" android:gravity="right"
-					android:layout_marginRight="15dip" android:textColor="@color/text_light"
-					android:layout_weight="1" />
-			</LinearLayout>
-			<TextView android:id="@+id/msg_desc" android:layout_width="wrap_content"
-				android:textColor="@color/text_light" android:layout_marginLeft="7dip"
-				android:layout_height="wrap_content" />
-		</LinearLayout>
-		<!-- Here is the view to show if the list is emtpy -->
-		<TextView android:id="@+id/appwidget_empty_list"
-			android:layout_width="fill_parent" android:layout_height="fill_parent"
-			android:text="@string/empty_list" android:textStyle="bold"
-			android:gravity="center_horizontal|center" />
-	</RelativeLayout>
+    <ImageButton
+        android:id="@+id/appwidget_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:background="?android:selectableItemBackground"
+        android:contentDescription="@string/app_name"
+        android:paddingBottom="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/icon" />
 
-	<ImageButton android:id="@+id/appwidget_refresh"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_gravity="center" android:gravity="center"
-		android:layout_alignParentTop="true" android:layout_marginTop="240dip"
-		android:src="@drawable/refresh" android:background="@android:color/transparent"
-		android:scaleType="center" />
-	<ImageButton android:id="@+id/appwidget_prev"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
-		android:layout_marginLeft="14dip" android:layout_marginTop="240dip"
-		android:src="@drawable/arrow_left" android:background="@android:color/transparent"
-		android:scaleType="center" />
-	<ImageButton android:id="@+id/appwidget_next"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_alignParentRight="true" android:layout_alignParentTop="true"
-		android:layout_marginRight="14dip" android:layout_marginTop="240dip"
-		android:src="@drawable/arrow_right" android:background="@android:color/transparent"
-		android:scaleType="center" />
-</RelativeLayout>                                                     
+    <TextView
+        android:id="@+id/text_title"
+        style="@style/TextView.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:paddingTop="15dip"
+        android:text="@string/pending_messages" />
+
+    <ImageButton
+        android:id="@+id/appwidget_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical|left"
+        android:background="?android:selectableItemBackground"
+        android:contentDescription="@string/app_name"
+        android:paddingBottom="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/settings" />
+
+    <!-- horizontal rule aka separator -->
+
+    <ImageButton
+        android:id="@+id/horizontal_rule"
+        style="@style/title_bar_separator"
+        android:layout_below="@+id/appwidget_settings"
+        android:contentDescription="@string/app_name" />
+
+    <!-- List pending messages -->
+
+    <TextView
+        android:id="@+id/msg_number"
+        style="@style/TextView.Description"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/msg_date"
+        android:lines="1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/msg_date"
+        style="@style/TextView.Description"
+        android:layout_alignParentRight="true"
+        android:lines="1"
+        android:textColor="@color/title_separator" />
+
+    <TextView
+        android:id="@+id/msg_desc"
+        style="@style/TextView.Description"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/msg_date" />
+
+    <TextView
+        android:id="@+id/appwidget_empty_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center"
+        android:text="@string/empty_list"
+        android:textStyle="bold" />
+
+    <!-- buttom controls -->
+
+    <ImageButton
+        android:id="@+id/appwidget_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="240dip"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/refresh" />
+
+    <ImageButton
+        android:id="@+id/appwidget_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/msg_desc"
+        android:layout_marginLeft="14dip"
+        android:layout_marginTop="240dip"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/arrow_left" />
+
+    <ImageButton
+        android:id="@+id/appwidget_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/msg_desc"
+        android:layout_marginRight="14dip"
+        android:layout_marginTop="240dip"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/arrow_right" />
+
+</RelativeLayout>

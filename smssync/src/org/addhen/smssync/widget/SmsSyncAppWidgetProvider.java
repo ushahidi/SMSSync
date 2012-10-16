@@ -20,7 +20,6 @@
 
 package org.addhen.smssync.widget;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,253 +40,259 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.RemoteViews;
 
 public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
-    // log CLASS_TAG
-    private static final String CLASS_TAG = SmsSyncAppWidgetProvider.class.getSimpleName();
+	// log CLASS_TAG
+	private static final String CLASS_TAG = SmsSyncAppWidgetProvider.class
+			.getSimpleName();
 
-    public static final String INTENT_TYPE = "type";
+	public static final String INTENT_TYPE = "type";
 
-    public static final String INTENT_PREV = "PREV";
+	public static final String INTENT_PREV = "PREV";
 
-    public static final String INTENT_NEXT = "NEXT";
+	public static final String INTENT_NEXT = "NEXT";
 
-    public static final String INTENT_REFRESH = "REFRESH";
+	public static final String INTENT_REFRESH = "REFRESH";
 
-    public static File CACHE_DIR = null;
+	@Override
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+			int[] appWidgetIds) {
 
-    static Context mContext;
+		// why is appWidgetIds > 1
+		for (int i = 0; i < appWidgetIds.length; ++i) {
+			final int id = appWidgetIds[i];
+			Intent intent = new Intent(context, SmsSyncAppWidgetService.class);
+			intent.putExtra("id", id);
+			context.startService(intent);
+		}
+	}
 
-    public static int WIDTH = 250;
+	@Override
+	public void onReceive(Context ctxt, Intent intent) {
+		final String action = intent.getAction();
+		Log.i(CLASS_TAG, "onReceive:action=" + action);
 
-    public static int HEIGHT = 160;
+		if (INTENT_PREV.equals(action) || INTENT_NEXT.equals(action)
+				|| INTENT_REFRESH.equals(action)) {
+			Intent prevNextIntent = new Intent(ctxt,
+					SmsSyncAppWidgetService.class);
+			prevNextIntent.setAction(action);
+			ctxt.startService(prevNextIntent);
+		} else if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
+			final int appWidgetId = intent.getExtras().getInt(
+					AppWidgetManager.EXTRA_APPWIDGET_ID,
+					AppWidgetManager.INVALID_APPWIDGET_ID);
+			if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+				this.onDeleted(ctxt, new int[] { appWidgetId });
+			}
+		} else {
+			super.onReceive(ctxt, intent);
+		}
+	}
 
-    @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+	public static List<MessagesModel> pendingMsgs = new ArrayList<MessagesModel>();
 
-        // why is appWidgetIds > 1
-        for (int i = 0; i < appWidgetIds.length; ++i) {
-            final int id = appWidgetIds[i];
-            Intent intent = new Intent(context, SmsSyncAppWidgetService.class);
-            intent.putExtra("id", id);
-            context.startService(intent);
-        }
+	public static List<Integer> pendingMsgIds;
 
-        mContext = context;
-        CACHE_DIR = context.getCacheDir();
-        Display display = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE))
-                .getDefaultDisplay();
-        WIDTH = display.getWidth();
-        WIDTH = WIDTH - (WIDTH / 16); // tiles are 300/320 wide, so subtract a
-                                      // sixteenth of the width to fetch right
-                                      // image
-        HEIGHT = display.getHeight();
+	public static int pendingMsgIndex = 0;
 
-    }
+	// implement next screen
+	public static MessagesModel getNextPendingMessages() {
+		if (pendingMsgs != null && pendingMsgs.size() > 0) {
+			pendingMsgIndex = (pendingMsgIndex + 1) % pendingMsgs.size();
+			return pendingMsgs.get(pendingMsgIndex);
+		}
+		return null;
+	}
 
-    @Override
-    public void onReceive(Context ctxt, Intent intent) {
-        final String action = intent.getAction();
-        Log.i(CLASS_TAG, "onReceive:action=" + action);
+	// implement previous screen.
+	public static MessagesModel getPrevPendingMessages() {
+		if (pendingMsgs != null && pendingMsgs.size() > 0) {
+			pendingMsgIndex = pendingMsgIndex - 1;
+			pendingMsgIndex = pendingMsgIndex < 0 ? pendingMsgs.size() - 1
+					: pendingMsgIndex;
+			return pendingMsgs.get(pendingMsgIndex);
+		}
+		return null;
+	}
 
-        if (INTENT_PREV.equals(action) || INTENT_NEXT.equals(action)
-                || INTENT_REFRESH.equals(action)) {
-            Intent prevNextIntent = new Intent(ctxt, SmsSyncAppWidgetService.class);
-            prevNextIntent.setAction(action);
-            ctxt.startService(prevNextIntent);
-        } else if (AppWidgetManager.ACTION_APPWIDGET_DELETED.equals(action)) {
-            final int appWidgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-            if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
-                this.onDeleted(ctxt, new int[] {
-                    appWidgetId
-                });
-            }
-        } else {
-            super.onReceive(ctxt, intent);
-        }
-    }
+	// implement current screen
+	public static MessagesModel getCurrentPendingMessages() {
 
-    public static List<MessagesModel> pendingMsgs = new ArrayList<MessagesModel>();
+		if (pendingMsgs != null && pendingMsgs.size() > 0) {
+			pendingMsgIndex = pendingMsgIndex < 0 ? 0 : pendingMsgIndex;
+			return pendingMsgs.get(pendingMsgIndex);
+		}
+		return null;
+	}
 
-    public static List<Integer> pendingMsgIds;
+	public static class SmsSyncAppWidgetService extends IntentService {
 
-    public static int pendingMsgIndex = 0;
+		public SmsSyncAppWidgetService() {
+			super(CLASS_TAG);
+		}
 
-    // implement next screen
-    public static MessagesModel getNextPendingMessages() {
-        if (pendingMsgs != null && pendingMsgs.size() > 0) {
-            pendingMsgIndex = (pendingMsgIndex + 1) % pendingMsgs.size();
-            return pendingMsgs.get(pendingMsgIndex);
-        }
-        return null;
-    }
+		@Override
+		public void onHandleIntent(Intent intent) {
+			buildUpdate(intent, null);
+		}
 
-    // implement previous screen.
-    public static MessagesModel getPrevPendingMessages() {
-        if (pendingMsgs != null && pendingMsgs.size() > 0) {
-            pendingMsgIndex = pendingMsgIndex - 1;
-            pendingMsgIndex = pendingMsgIndex < 0 ? pendingMsgs.size() - 1 : pendingMsgIndex;
-            return pendingMsgs.get(pendingMsgIndex);
-        }
-        return null;
-    }
+		private void buildUpdate(Intent intent, Integer startId) {
+			ComponentName me = new ComponentName(this,
+					SmsSyncAppWidgetProvider.class);
+			AppWidgetManager mgr = AppWidgetManager.getInstance(this);
+			mgr.updateAppWidget(me, updateDisplay(intent, startId));
 
-    // implement current screen
-    public static MessagesModel getCurrentPendingMessages() {
+			if (startId != null) {
+				stopSelfResult(startId);
+			}
+		}
 
-        if (pendingMsgs != null && pendingMsgs.size() > 0) {
-            pendingMsgIndex = pendingMsgIndex < 0 ? 0 : pendingMsgIndex;
-            return pendingMsgs.get(pendingMsgIndex);
-        }
-        return null;
-    }
+		private RemoteViews updateDisplay(Intent intent, Integer startId) {
+			Log.i(CLASS_TAG, "Updating display");
+			RemoteViews views = new RemoteViews(getPackageName(),
+					R.layout.appwidget);
+			MessagesModel mgs;
+			String action = intent.getAction();
+			if (INTENT_NEXT.equals(action)) {
+				mgs = getNextPendingMessages();
+			} else if (INTENT_PREV.equals(action)) {
+				mgs = getPrevPendingMessages();
+			} else {
+				mgs = getCurrentPendingMessages();
+			}
 
-    public static class SmsSyncAppWidgetService extends IntentService {
-
-        public SmsSyncAppWidgetService() {
-            super(CLASS_TAG);
-        }
-
-        @Override
-        public void onHandleIntent(Intent intent) {
-            buildUpdate(intent, null);
-        }
-
-        private void buildUpdate(Intent intent, Integer startId) {
-            ComponentName me = new ComponentName(this, SmsSyncAppWidgetProvider.class);
-            AppWidgetManager mgr = AppWidgetManager.getInstance(this);
-            mgr.updateAppWidget(me, updateDisplay(intent, startId));
-
-            if (startId != null) {
-                stopSelfResult(startId);
-            }
-        }
-
-        private RemoteViews updateDisplay(Intent intent, Integer startId) {
-            Log.i(CLASS_TAG, "Updating display");
-            RemoteViews views = new RemoteViews(getPackageName(), R.layout.appwidget);
-            MessagesModel mgs;
-            String action = intent.getAction();
-            if (INTENT_NEXT.equals(action)) {
-                mgs = getNextPendingMessages();
-            } else if (INTENT_PREV.equals(action)) {
-                mgs = getPrevPendingMessages();
-            } else {
-                mgs = getCurrentPendingMessages();
-            }
-            
-            // go to settings screen when configure icon is pressed
-            Intent settingsScreen = new Intent(this, Settings.class);
-            settingsScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent settingsAction = PendingIntent.getActivity(this, 0, settingsScreen, 0);
-            views.setOnClickPendingIntent(R.id.appwidget_logo, settingsAction);
+			// go to settings screen when configure icon is pressed
+			Intent settingsScreen = new Intent(this, Settings.class);
+			settingsScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			PendingIntent settingsAction = PendingIntent.getActivity(this, 0,
+					settingsScreen, 0);
+			views.setOnClickPendingIntent(R.id.appwidget_settings,
+					settingsAction);
 
 			Intent pendingMessages = new Intent(this, MessagesTabActivity.class);
-            pendingMessages.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent mainAction = PendingIntent.getActivity(this, 0, pendingMessages, 0);
-            views.setOnClickPendingIntent(R.id.appwidget_item, mainAction);
+			pendingMessages.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			PendingIntent mainAction = PendingIntent.getActivity(this, 0,
+					pendingMessages, 0);
+			views.setOnClickPendingIntent(R.id.appwidget_logo, mainAction);
 
-            if (mgs != null) {
-                Log.i(CLASS_TAG, "messages are not null "+mgs.getMessage());
-                // set number
-                views.setViewVisibility(R.id.linear_pending_msg, View.VISIBLE);
-                views.setTextViewText(R.id.msg_number, mgs.getMessageFrom());
-                views.setTextViewText(R.id.msg_date, mgs.getMessageDate());
-                views.setTextViewText(R.id.msg_desc, mgs.getMessage());
+			if (mgs != null) {
+				Log.i(CLASS_TAG, "messages are not null " + mgs.getMessage());
+				// make views visible
+				views.setViewVisibility(R.id.msg_number, View.VISIBLE);
+				views.setViewVisibility(R.id.msg_date, View.VISIBLE);
+				views.setViewVisibility(R.id.msg_desc, View.VISIBLE);
 
-                // make all the views clickable
-                views.setOnClickPendingIntent(R.id.msg_number, mainAction);
-                views.setOnClickPendingIntent(R.id.msg_date, mainAction);
-                views.setOnClickPendingIntent(R.id.msg_desc, mainAction);
-                views.setViewVisibility(R.id.appwidget_empty_list, View.INVISIBLE);
+				// initialize views
+				views.setTextViewText(R.id.msg_number, mgs.getMessageFrom());
+				views.setTextViewText(R.id.msg_date, mgs.getMessageDate());
+				views.setTextViewText(R.id.msg_desc, mgs.getMessage());
 
-            } else {
-                Log.i(CLASS_TAG, "messages are null ");
-                views.setViewVisibility(R.id.linear_pending_msg, View.INVISIBLE);
-                views.setViewVisibility(R.id.appwidget_empty_list, View.VISIBLE);
-                views.setOnClickPendingIntent(R.id.appwidget_empty_list, mainAction);
-            }
+				// make all the views clickable
+				views.setOnClickPendingIntent(R.id.msg_number, mainAction);
+				views.setOnClickPendingIntent(R.id.msg_date, mainAction);
+				views.setOnClickPendingIntent(R.id.msg_desc, mainAction);
+				views.setViewVisibility(R.id.appwidget_empty_list,
+						View.INVISIBLE);
 
-            Intent prevIntent = new Intent(this, SmsSyncAppWidgetProvider.class);
-            prevIntent.setAction(INTENT_PREV);
-            PendingIntent pendingPrevIntent = PendingIntent.getBroadcast(this, 0, prevIntent, 0);
-            views.setOnClickPendingIntent(R.id.appwidget_prev, pendingPrevIntent);
+			} else {
+				Log.i(CLASS_TAG, "messages are null ");
+				views.setViewVisibility(R.id.msg_number, View.INVISIBLE);
+				views.setViewVisibility(R.id.msg_date, View.INVISIBLE);
+				views.setViewVisibility(R.id.msg_desc, View.INVISIBLE);
+				views.setViewVisibility(R.id.appwidget_empty_list, View.VISIBLE);
+				views.setOnClickPendingIntent(R.id.appwidget_empty_list,
+						mainAction);
+			}
 
-            Intent nextIntent = new Intent(this, SmsSyncAppWidgetProvider.class);
-            nextIntent.setAction(INTENT_NEXT);
-            PendingIntent pendingNextIntent = PendingIntent.getBroadcast(this, 0, nextIntent, 0);
-            views.setOnClickPendingIntent(R.id.appwidget_next, pendingNextIntent);
+			Intent prevIntent = new Intent(this, SmsSyncAppWidgetProvider.class);
+			prevIntent.setAction(INTENT_PREV);
+			PendingIntent pendingPrevIntent = PendingIntent.getBroadcast(this,
+					0, prevIntent, 0);
+			views.setOnClickPendingIntent(R.id.appwidget_prev,
+					pendingPrevIntent);
 
-            Intent refreshIntent = new Intent(this, SmsSyncAppWidgetProvider.class);
-            refreshIntent.setAction(INTENT_REFRESH);
-            PendingIntent pendingRefreshIntent = PendingIntent.getBroadcast(this, 0, refreshIntent,
-                    0);
-            views.setOnClickPendingIntent(R.id.appwidget_refresh, pendingRefreshIntent);
+			Intent nextIntent = new Intent(this, SmsSyncAppWidgetProvider.class);
+			nextIntent.setAction(INTENT_NEXT);
+			PendingIntent pendingNextIntent = PendingIntent.getBroadcast(this,
+					0, nextIntent, 0);
+			views.setOnClickPendingIntent(R.id.appwidget_next,
+					pendingNextIntent);
 
-            return views;
-        }
+			Intent refreshIntent = new Intent(this,
+					SmsSyncAppWidgetProvider.class);
+			refreshIntent.setAction(INTENT_REFRESH);
+			PendingIntent pendingRefreshIntent = PendingIntent.getBroadcast(
+					this, 0, refreshIntent, 0);
+			views.setOnClickPendingIntent(R.id.appwidget_refresh,
+					pendingRefreshIntent);
 
-        @Override
-        public void onStart(final Intent intent, final int startId) {
-            final Runnable updateUI = new Runnable() {
-                public void run() {
-                    String action = intent.getAction();
+			return views;
+		}
 
-                    if (INTENT_PREV.equals(action) || INTENT_NEXT.equals(action)) {
-                        buildUpdate(intent, startId);
-                    } else {
-                        if (INTENT_REFRESH.equals(action)) {
-                            pendingMsgIndex = 0;
-                        }
-                        pendingMsgs = showMessages();
-                        buildUpdate(intent, startId);
-                    }
-                }
-            };
-            ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
-            if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()) {
-                new Thread(updateUI).start();
-            } else {
-                BroadcastReceiver networkChange = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        try {
-                            NetworkInfo ni = intent
-                                    .getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-                            if (ni != null && ni.isConnected()) {
-                                new Thread(updateUI).start();
-                                SmsSyncAppWidgetService.this.unregisterReceiver(this);
-                            }
-                        } catch (Exception e) {
-                            Log.e(CLASS_TAG, "receiver error", e);
-                        }
-                    }
-                };
-                registerReceiver(networkChange, new IntentFilter(
-                        ConnectivityManager.CONNECTIVITY_ACTION));
-            }
-        }
-    }
+		@Override
+		public void onStart(final Intent intent, final int startId) {
+			final Runnable updateUI = new Runnable() {
+				public void run() {
+					String action = intent.getAction();
 
-    public static List<MessagesModel> showMessages() {
-    	
-    	MessagesModel model = new MessagesModel();
-    	model.loadByLimit(5);
+					if (INTENT_PREV.equals(action)
+							|| INTENT_NEXT.equals(action)) {
+						buildUpdate(intent, startId);
+					} else {
+						if (INTENT_REFRESH.equals(action)) {
+							pendingMsgIndex = 0;
+						}
+						pendingMsgs = showMessages();
+						buildUpdate(intent, startId);
+					}
+				}
+			};
+			ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+			if (cm.getActiveNetworkInfo() != null
+					&& cm.getActiveNetworkInfo().isConnected()) {
+				new Thread(updateUI).start();
+			} else {
+				BroadcastReceiver networkChange = new BroadcastReceiver() {
+					@Override
+					public void onReceive(Context context, Intent intent) {
+						try {
+							ConnectivityManager connectivityManager = (ConnectivityManager) context
+									.getSystemService(Context.CONNECTIVITY_SERVICE);
+							NetworkInfo ni = connectivityManager
+									.getActiveNetworkInfo();
+							if (ni != null && ni.isConnected()) {
+								new Thread(updateUI).start();
+								SmsSyncAppWidgetService.this
+										.unregisterReceiver(this);
+							}
+						} catch (Exception e) {
+							Log.e(CLASS_TAG, "receiver error", e);
+						}
+					}
+				};
+				registerReceiver(networkChange, new IntentFilter(
+						ConnectivityManager.CONNECTIVITY_ACTION));
+			}
+		}
+	}
 
-        if (model.listMessages !=null) {
-            if (model.listMessages.size() == 0) {
-                pendingMsgs.clear();
-            }
-            pendingMsgs = model.listMessages;
-            
-        }
-        return pendingMsgs;
-    }
+	public static List<MessagesModel> showMessages() {
+
+		MessagesModel model = new MessagesModel();
+		model.loadByLimit(5);
+
+		if (model.listMessages != null) {
+			if (model.listMessages.size() == 0) {
+				pendingMsgs.clear();
+			}
+			pendingMsgs = model.listMessages;
+
+		}
+		return pendingMsgs;
+	}
 
 }
