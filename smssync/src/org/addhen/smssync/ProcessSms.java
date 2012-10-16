@@ -45,10 +45,11 @@ import android.telephony.SmsMessage;
 import android.text.TextUtils;
 
 /**
- * This class has the main logic to dispatch the messages that comes to the device. It decides 
- * where to post the messages to, depending on the status of the device. If the message fails 
- * to send to the configured web service, it saves them in the pending list and when it succeeds
- * it saves them in the sent list.
+ * This class has the main logic to dispatch the messages that comes to the
+ * device. It decides where to post the messages to, depending on the status of
+ * the device. If the message fails to send to the configured web service, it
+ * saves them in the pending list and when it succeeds it saves them in the sent
+ * list.
  * 
  * @author eyedol
  * 
@@ -92,7 +93,7 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Routes both SMS and pending messages taking forever to load.
+	 * Routes both incoming SMS and pending messages.
 	 * 
 	 * @param String
 	 *            messagesFrom The number that sent the SMS
@@ -114,23 +115,26 @@ public class ProcessSms {
 		// load prefrences.
 		Prefs.loadPreferences(context);
 
-		// is smssync service running
 		boolean posted = true;
+		// is smssync service running
 		if (Prefs.enabled) {
 
 			if (Util.isConnected(context)) {
 
 				// send auto response from phone not server.
 				if (Prefs.enableReply) {
-					// send auto response
+
+					// send auto response as SMS to user's phone
 					sendSms(messagesFrom, Prefs.reply);
 				}
 
-				// get enabled Sync URL
+				// get enabled Sync URLs
 				for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
-					// process keyword
+
 					messageSyncUtil = new MessageSyncUtil(context,
 							syncUrl.getUrl());
+
+					// process keyword
 					if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
 						String keywords[] = syncUrl.getKeywords().split(",");
 						if (filterByKeywords(messagesBody, keywords)) {
@@ -144,9 +148,8 @@ public class ProcessSms {
 										messagesBody,
 										context.getString(R.string.sending_failed));
 
-								// attempt to make a data connection so if it
-								// succeeds,
-								// it syncs the failed messages.
+								// attempt to make a data connection to sync
+								// the failed messages.
 								Util.connectToDataNetwork(context);
 							} else {
 
@@ -160,7 +163,7 @@ public class ProcessSms {
 
 						}
 
-					} else { // no keyword
+					} else { // there is no keyword set up on a sync URL
 						posted = messageSyncUtil.postToAWebService(
 								messagesFrom, messagesBody, messagesTimestamp,
 								messagesId, syncUrl.getSecret());
@@ -168,19 +171,15 @@ public class ProcessSms {
 							Util.showFailNotification(context, messagesBody,
 									context.getString(R.string.sending_failed));
 
-							// attempt to make a data connection so if it
-							// succeeds,
-							// it syncs the failed messages.
+							// attempt to make a data connection so to sync
+							// the failed messages.
 							Util.connectToDataNetwork(context);
 
-							// Delete messages from message app's inbox only
-							// when smssync is turned on
-
 						} else {
-							
+
 							postToSentBox(messagesFrom, messagesBody,
 									messagesId, messagesTimestamp);
-							
+
 							Util.showFailNotification(
 									context,
 									messagesBody,
@@ -189,7 +188,7 @@ public class ProcessSms {
 					}
 				}
 
-			} else { // no internet
+			} else { // no internet on the device.
 				Util.showFailNotification(context, messagesBody,
 						context.getString(R.string.sending_failed));
 				posted = false;
@@ -218,14 +217,16 @@ public class ProcessSms {
 	 */
 	public void routeSms(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId, SmsMessage sms) {
-		
+
 		if (routeMessages(messagesFrom, messagesBody, messagesTimestamp,
 				messagesId)) {
+
 			// Delete messages from message app's inbox, only
-			// when smssync is turned on
+			// when smssync has that feature turned on
 			if (Prefs.autoDelete) {
 				delSmsFromInbox(sms);
 			}
+
 		} else {
 			postToPendingBox(messagesFrom, messagesBody, sms);
 		}
@@ -257,9 +258,12 @@ public class ProcessSms {
 	}
 
 	/**
+	 * Filter CSV strings for particular
 	 * 
-	 * @param Array
-	 *            keywords
+	 * @param message
+	 *            The CSV string to be filtered for the keywords
+	 * @param keywords
+	 *            An array that contains the keywords to be filtered
 	 * 
 	 * @return boolean
 	 */
@@ -274,19 +278,9 @@ public class ProcessSms {
 	}
 
 	/**
-	 * 
-	 * @param String
-	 *            number
-	 * 
-	 * @return void
-	 */
-	protected void filterByNumber(String number) {
-
-	}
-
-	/**
-	 * Import messages from messages app table and puts them in SmsSync's outbox
-	 * table.
+	 * Import messages from the messages app's table and puts them in SMSSync's
+	 * outbox table. This will allow messages the imported messages to be sync'd
+	 * to the configured Sync URL.
 	 * 
 	 * @return int - 0 for success, 1 for failure.
 	 */
@@ -343,6 +337,8 @@ public class ProcessSms {
 	 *            context - The activity calling the method.
 	 * @param long threadId - The message's thread ID.
 	 * @param long _timestamp - The timestamp of the message.
+	 * 
+	 * @return the message id
 	 */
 	public static long findMessageId(Context context, long threadId,
 			long _timestamp) {
@@ -377,11 +373,13 @@ public class ProcessSms {
 	 * Tries to locate the message id or thread id given the address (phone
 	 * number or email) of the message sender.
 	 * 
-	 * @param Context
-	 *            context - The activity calling this method.
 	 * @param SmsMessage
 	 *            msg - The SMS object to get the address of the message from.
-	 * @return long.
+	 * @param idType
+	 *            The type it use to fetch the ID of the message. Either id type
+	 *            or thread type
+	 * 
+	 * @return the message id
 	 */
 	public long getId(SmsMessage msg, String idType) {
 		Logger.log(CLASS_TAG,
@@ -445,6 +443,7 @@ public class ProcessSms {
 	 * @param Context
 	 *            context - The calling activity
 	 * @param msg
+	 *            The {@link android.telephony.SmsMessage }
 	 */
 	public void delSmsFromInbox(SmsMessage msg) {
 		Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
@@ -457,7 +456,7 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Put successfully sent messages to a local database for logging sake
+	 * Put successfully sent messages to a local database.
 	 * 
 	 * @return void
 	 */
@@ -477,7 +476,7 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Put failed messages to be sent to the callback URL to the local database.
+	 * Put failed messages to be sent to the Sync URL to a local database.
 	 * 
 	 * @return void
 	 */
