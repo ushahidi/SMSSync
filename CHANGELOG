@@ -1,3 +1,15 @@
+2.0.1
+Feature:
+  * Resizable widgets to fit on most screens.
+  * Upgraded ABS library to 4.2.2.
+  * Added Korean translation
+
+Bug:
+  * Fixed an issue with pending messages. See issue #44
+  * Removed screen restriction support from manifest file. This is to allow 
+  it to show up on the Google play store for most devices.
+  
+
 2.0.0
 Feature:
   * Improved the UI. Optimized it to scale well on tablet devices.
