@@ -80,6 +80,29 @@
 
 <h1>Current release</h1>
 <ul>
+<li>Released October 22<sup>nd</sup>, 2012</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.1">v2.0.1</a></li>
+</ul>
+<h3>Changelog</h3>
+<ul>
+<li>
+<p>Feature:</p>
+<ul>
+<li>Resizable widgets to fit on most screens.</li>
+<li>Upgraded ABS library to 4.2.2.</li>
+<li>Added Korean translation</li>
+</ul>
+</li>
+<li>
+<p>Bug:</p>
+<ul>
+<li>Fixed an issue with pending messages. See issue <a href="https://github.com/ushahidi/SMSSync/issues/44">#44</a></li>
+<li>Removed screen restriction support from manifest file. This is to allow it to show up on the Google play store for most devices.</li>
+</ul>
+</li>
+</ul>
+<h1>Previous releases</h1>
+<ul>
 <li>Released September 3<sup>rd</sup>, 2012</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.0">v2.0.0</a></li>
 </ul>
@@ -104,18 +127,9 @@
 <li>Removed the characters contrains to Unique ID field.</li>
 </ul>
 </li>
-</ul>
-<h2>Development branch:</h2>
-<ul>
-<li><a href="https://github.com/eyedol/smssync/">develop branch</a> open for commit/contributions for SMSSync 2.0.1</li>
-</ul>
-<h2>Stable branch:</h2>
-<ul>
-<li><a href="https://github.com/ushahidi/SMSSync/tree/master">master branch</a></li>
-</ul>
-<h1>Previous releases</h1>
-<ul>
-<li>Released December 12<sup>th</sup>, 2011</li>
+<li>
+<p>Released December 12<sup>th</sup>, 2011</p>
+</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.1.9">v1.1.9</a></li>
 </ul>
 <h3>Changelog</h3>
@@ -265,7 +279,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 30-08-2012
+                Generated: 22-10-2012
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>

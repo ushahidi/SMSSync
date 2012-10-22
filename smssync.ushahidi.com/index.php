@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; char.uset=UTF-8" />
 <title>SMSSync by Ushahidi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="SMSSync the free and open source SMS gateway for Android">
@@ -73,7 +73,7 @@
         <div class="span6">
             <br/><br />
             <h4>The free and open source SMS gateway for Android</h4>
-            <p>It's one of the <strong><em>best</em></strong> SMS gateway for Android
+            <p>It's one of the <strong><em>best</em></strong> SMS gateways for Android
             <p>The app is available today on the Android market. You can download it on your phone by scanning the QR code below.</p>
             <div class="thumbnails">
                 <img class="thumbnail" width="150" src="http://qr.kaywa.com/?s=8&d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync" alt="Scan to download SMSSync" title="Scan to download SMSSync"/>
@@ -104,9 +104,9 @@
     </div>
 </div>
 <!-- header ends -->
-
 <!-- body starts -->
 
+<div class="container">
 <div class="container">
 <!-- About SMSSync -->
 <section id="about">
@@ -143,8 +143,8 @@
                 <p>
                     <strong>Public release:</strong>
                         <ul>
-                            <li>Released September 3<sup>rd</sup>, 2012</li>
-                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.0.0">v2.0.0</a></li>
+                            <li>Released October 22<sup>nd</sup>, 2012</li>
+                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.0.1">v2.0.1</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -155,7 +155,7 @@
                     <strong>Development branch:</strong>
                         <ul>
                         <li>
-                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.0.1</li>
+                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.0.2</li>
                         </ul>
                         <a href="releases">More</a>
                 </p>
@@ -190,7 +190,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 30-08-2012
+                Generated: 22-10-2012
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>

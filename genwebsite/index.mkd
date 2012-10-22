@@ -34,8 +34,8 @@
                 <p>
                     <strong>Public release:</strong>
                         <ul>
-                            <li>Released September 3<sup>rd</sup>, 2012</li>
-                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.0.0">v2.0.0</a></li>
+                            <li>Released October 22<sup>nd</sup>, 2012</li>
+                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.0.1">v2.0.1</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -46,7 +46,7 @@
                     <strong>Development branch:</strong>
                         <ul>
                         <li>
-                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.0.1</li>
+                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.0.2</li>
                         </ul>
                         <a href="releases">More</a>
                 </p>
