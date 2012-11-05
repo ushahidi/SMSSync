@@ -69,6 +69,17 @@ public class SmsReceiverService extends Service {
 
 	private ProcessSms processSms;
 
+	synchronized protected static WifiManager.WifiLock getWifiLock(Context context) {
+		// keep wifi alive
+		if (wifilock == null) {
+			WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			wifilock = manager.createWifiLock(CLASS_TAG);
+			wifilock.setReferenceCounted(true);
+		}
+		return wifilock;
+	}
+
+
 	@Override
 	public void onCreate() {
 
@@ -222,15 +233,9 @@ public class SmsReceiverService extends Service {
 				mStartingService.setReferenceCounted(false);
 			}
 
-			// keep wifi alive
-			if (wifilock == null) {
-				WifiManager manager = (WifiManager) context
-						.getSystemService(Context.WIFI_SERVICE);
-				wifilock = manager.createWifiLock(CLASS_TAG);
-			}
-
 			mStartingService.acquire();
-			wifilock.acquire();
+			if (!getWifiLock(context).isHeld()) 
+				getWifiLock(context).acquire();
 			context.startService(intent);
 		}
 	}
