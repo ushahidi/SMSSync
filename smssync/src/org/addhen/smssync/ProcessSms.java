@@ -26,6 +26,8 @@ import java.util.List;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.services.CheckTaskScheduledService;
+import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.SentMessagesUtil;
@@ -184,8 +186,14 @@ public class ProcessSms {
 									context,
 									messagesBody,
 									context.getString(R.string.sending_succeeded));
+							
 						}
 					}
+				}
+				
+				if (Prefs.enableTaskCheck) {
+					// Trigger task
+					SmsSyncServices.sendWakefulTask(context, CheckTaskScheduledService.class);
 				}
 
 			} else { // no internet on the device.
