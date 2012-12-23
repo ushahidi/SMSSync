@@ -1,19 +1,19 @@
 <div class="page-header">
-<h1>Developers Documentation <small>This documents how to integrate SMSSync into your project.</small></h1>
+<h1>Developers Documentation <small>This shows how to integrate SMSSync into your project.</small></h1>
 </div>
 <div class="row-fluid">
 <div class="span6">
 <h2>Instructions</h2>
 <ul>
 <li>
-SMSSync uses the <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP</a> and <a href="http://en.wikipedia.org/wiki/HTTPS">HTTPS</a> protocols for communication.
-                    <p>To start the SMSSync Gateway, you'll need to specify a Sync URL. This URL is where all incoming SMS will be transmitted to. 
-                    Remember to enter the full URL including the filename. A typical example will be <code>http://somedomain.com/index.php</code></p></li>
-<li>
-For  security you can specify a secret key at the Sync URL. If the secret key doesn't match, the Sync URL will ignore the transmission.
+SMSSync uses the <a href="http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP</a> and <a href="http://en.wikipedia.org/wiki/HTTPS">HTTPS</a> protocols for communication.<br />
+To start the SMSSync Gateway, you'll need to specify a Sync URL. This URL is where all incoming SMS will be transmitted to. Remember to enter the full URL including the filename. A typical example will be <code>http://somedomain.com/index.php</code>
 </li>
 <li>
-Additionally, you can specify keywords with which to filter incoming SMS. Only matching SMS will be sent to the SMSSync Gateway URL.
+For security you can specify a secret key to be sent to the Sync URL. If the secret key doesn't match on the server, the Sync URL can ignore the transmission.
+</li>
+<li>
+Additionally, you can specify keywords with which to filter incoming SMS. Only matching messages will be forwarded to the SMSSync Gateway URL.
 </li>
 <li>
 SMSSync uses the following variables to transmit the incoming SMS via the POST method:
@@ -29,7 +29,7 @@ SMSSync uses the following variables to transmit the incoming SMS via the POST m
 </li>
 </ul>
 <p>
-In order for SMSSync to account for perfect transmission, the Sync URL needs to give back a formatted JSON string such as its shown below to indicate if it received the message or not.
+In order for SMSSync to ensure perfect transmission, the Sync URL must return a JSON-formatted status message, as shown below.
 <br /><br />
 <strong>Succeeded</strong> 
 <pre class="prettyprint linenums">
@@ -40,7 +40,7 @@ In order for SMSSync to account for perfect transmission, the Sync URL needs to 
 }</pre>
 <br /><br />
 <strong>Failed</strong>
-<br /><br />
+<br />
 <pre class="prettyprint linenums">{
     payload: {
         success: "false"
@@ -50,12 +50,14 @@ In order for SMSSync to account for perfect transmission, the Sync URL needs to 
 <p>&nbsp;</p>
 <strong>Response from server</strong>
 <p>
-SMSSync allows auto response to be configured on the app itself or to be retrieved from the server. When the app makes an HTTP Post request to sync the  incoming SMS to the configured URL, it can send a JSON string that has  messages in it as opposed to sending a success or failed JSON string as stated above. The app then sends the messages as SMS to users phone.
-<p>
-This makes it possible to have an instant response via SMS when an HTTP Post request is made. To leverage this feature, a JSON formatted string like the one below needs to be returned by the configured URL after the app makes the HTTP Post request. 
+SMSSync allows either an auto-response message to be configured on the app itself, or to be retrieved from the server. When the app makes an HTTP Post request to sync the incoming SMS to the configured URL, the server can respond with JSON-encoded messages alongside the success message. The app then sends these messages by SMS to the specified users phone.
 </p>
 <p>
-Also, make sure <strong>*Get Reply From Server*</strong> is checked on SMSSync otherwise it will fail to send the SMS.<p>
+This makes it possible to have an instant response via SMS when an HTTP Post request is made. To leverage this feature, a JSON formatted string like the one below needs to be returned by the configured URL in response to the app's HTTP Post request. 
+</p>
+<p>
+In the app itself, ensure <strong>*Get Reply from Server*</strong> is checked to enable this feature.
+<p>
 <strong>Response JSON data from the Sync URL</strong>
 <pre id="code" class="prettyprint linenums">{
     "payload": {
@@ -81,9 +83,9 @@ Also, make sure <strong>*Get Reply From Server*</strong> is checked on SMSSync o
 <p>&nbsp;</p>
 <strong>Task</strong>
 <p>
-SMSSync supports execution of task sent from the configured Sync URL. At the moment, it supports sending of messages sent from the Sync URL as SMS. This feature is targeted towards developers. If you are a developer and you want SMSSync to send an SMS, send a JSON formatted string as shown below to SMSSync with the variable task=send. When SMSSync does an HTTP GET request with a sample URL like this one, <code>http://callback_url/smssync?task=send</code>, it should bring back a JSON string below.</p>
+SMSSync supports execution of tasks defined on the server. Currently it supports sending of messages sent from the Sync URL as SMS. This feature is targeted towards developers. The app can be configured to poll the server for new tasks at a given frequency. The server then needs to respond to HTTP GET requests with <code>?task=send</code> (for example <code>http://callback_url/smssync?task=send</code>). The format of this response is shown below.
+</p>
 <br /><br />		
-<p><strong>Note:</strong> The secret key has to match the secret key configured with SMSSync, otherwise, SMSSync will not execute the task. To play it safe, add the country code to the phone number. Eg. +254700709142</p>
 
 <p><strong>Response JSON data from the Sync URL</strong></p>
     
@@ -107,6 +109,19 @@ SMSSync supports execution of task sent from the configured Sync URL. At the mom
         ]
     }
 }</pre>
+
+<br /><br />
+
+<strong>Notes:</strong>
+<ul>
+<li>
+The secret key provided by the server must match the secret key configured within SMSSync, otherwise SMSSync will not execute the task.
+</li>
+<li>
+To ensure the message is sent to the correct recipient, add the country code to the phone number. Eg. <strong>+254</strong>700709142. Without this, the message is sent to the number in the country where the phone is.
+</li>
+</ul>
+
 </div>
 <div class="span6">
 <h2>A sample web service</h2>
@@ -227,10 +242,10 @@ echo json_encode(array("payload"=>array(
  */
 </pre>
 <p>
-For a complete web service application, look at Ushahidi's <a href="https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync">SMSSync plugin</a>.It utilizes most of SMSSync features.
+For a complete web service application, look at Ushahidi's <a href="https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync">SMSSync plugin</a> which utilizes most of SMSSync's features.
 </p>
 <p>
-There is also SMSSync webservice for Django that implements most of the features of SMSSync. You can download it from <a href="https://github.com/cwanjau/SMSsync-Python-Django-webservice">github.com</a>. Thanks to <a href="https://github.com/cwanjau">Caine Wanjau</a>
+There is also a SMSSync webservice for Django that implements most features. You can download it from <a href="https://github.com/cwanjau/SMSsync-Python-Django-webservice">GitHub.com</a>. Thanks to <a href="https://github.com/cwanjau">Caine Wanjau</a>
 </p>
 </div>
 </div>
