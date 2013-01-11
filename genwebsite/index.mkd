@@ -6,9 +6,9 @@
     </div>
     <div class="row"><!--start row-->
         <div class="span4">
-                <h3>What is it</h3>
+                <h3>What is it?</h3>
                 <p>
-                    SMSSync is a simple, yet powerful SMS to HTTP sync utility,that turns any Android phone into a local SMS gateway by sending incoming messages(SMS) to a configured URL(web service).
+                    SMSSync is a simple, yet powerful SMS to HTTP sync utility that turns any Android phone into a local SMS gateway by sending incoming messages(SMS) to a configured URL (web service).
                 </p>
             </div>
             <div class="span4"> 
@@ -22,7 +22,7 @@
             </div> 
             <div class="span4"> 
                 <h3>Participation</h3> 
-                <p>There are a variety of ways to actively participate in the project. These range from writing documentation for the project to  translating the app into various other languages. If you are a developer and want to help write code for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue tracker</a> on github.
+                <p>There are a variety of ways to actively participate in the project. These range from writing documentation for the project to translating the app into other languages. If you are a developer and want to help write code for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue tracker</a> on github.
                 </p>
             </div>
         </div><!--end row-->
@@ -30,7 +30,7 @@
     <section id="project-status">
         <div class="row"><!--start row-->
             <div class="span4">
-                <h3>Release status</h3>
+                <h3>Release Status</h3>
                 <p>
                     <strong>Public release:</strong>
                         <ul>
@@ -54,23 +54,20 @@
             <div class="span4"> 
                 <h3>Tools</h3>
                 <p>
-                    SMSSync uses <a href="http://git-scm.com/">GIT</a> for source control management and the code 
-                    is hosted on <a href="https://github.com/ushahidi/SMSSync/">github.com.</a> 
+                    SMSSync uses <a href="http://git-scm.com/">GIT</a> for source control management and the code is hosted on <a href="https://github.com/ushahidi/SMSSync/">github.com.</a> 
                 </p>
                 <p>
-                    It uses <a href="http://github.com">Github</a> 
-                    for project management and for tracking 
-                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. Transifex, the free and open source localization tool, is used for translations.
+                    It uses <a href="http://github.com">Github</a> for project management and for tracking 
+                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">Transifex</a>, the free and open source localization tool, is used for translations.
                 </p>
             </div>
             <div class="span4"> 
                 <h3>Translations</h3>
                 <p>
-                    SMSSync, as of now, has been completely translated into 5 languages. We use transifex for hosting our strings and to make translation much easier. 
+                    SMSSync, as of now, has been completely translated into 5 languages. We use Transifex for hosting our strings and to make translation much easier. 
                     <p>To help translate SMSSync into other languages, simply headover to 
                     <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">transifex.net</a>, 
-                    add a language if it's not there or contribute to the uncompleted
-                    translations.
+                    add a language if it's not there or contribute to the incomplete translations.
                 </p>            
             </div> 
         </div><!--end row-->

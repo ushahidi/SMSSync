@@ -16,7 +16,7 @@
 			<a class="thumbnail" rel="screenshots_group" href="images/screenshots/sync_url.png" title="Manage Sync URL"><img alt="Manage Sync URL" src="images/screenshots/sync_url.png" width="200" height="221" /></a>
 		</div>
 		<div class="caption">
-			<h5>Manage Sync URL</h5>
+			<h5>Manage Sync URLs</h5>
 		</div>
 	</li>
 	<li class="span2">

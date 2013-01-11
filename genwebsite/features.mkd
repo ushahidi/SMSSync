@@ -3,20 +3,19 @@
 </div>
 
 * Scheduler to auto sync pending messages
-* Pending messages view
-* Sent messages view
-* Configurable auto reply messages
-* Instant auto reply messages from server
-* Imports existing SMS
+* Pending and sent message views
+* Configurable auto-reply messages
+* Instant auto-reply messages from server
+* Import existing messages from inbox
 * Keyword based SMS filtering
-* Supports mutliple languages
-* Allows task scheduling
-* Support mutliple Sync URLs
+* Multiple languages
+* Task scheduling
+* Multiple Sync URLs
 
 # Limitations
 
-* Android enforces an outgoing limit of 100 SMS messages per hour.However, there are ways to override this limitation. Check [this](http://www.xda-developers.com/android/increase-the-sms-limit-on-android) thread for details.
+* Android enforces an outgoing limit of 100 SMS messages per hour. However, there are ways to override this limitation. Check [this](http://www.xda-developers.com/android/increase-the-sms-limit-on-android) thread for details.
 
 ## Caveats
-* There maybe security holes. Patches are humbly accepted.
+* There may be security holes. Patches are humbly accepted.
 
