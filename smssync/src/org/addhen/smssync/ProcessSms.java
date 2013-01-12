@@ -22,7 +22,6 @@ package org.addhen.smssync;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
@@ -39,6 +38,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Message;
+import android.os.RemoteException;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -404,6 +406,17 @@ public class ProcessSms {
 		}
 		return 0;
 	}
+	/*
+	 * Determine whether to use SMSSync or to use SMSPortals
+	 */
+	private MessengerConnection getCurrentMessengerConnection(){
+		ArrayList<MessengerConnection> availableConnections = MainApplication.availableConnections;
+		int s = availableConnections.size();
+		int c = MainApplication.currentConnectionIndex;
+		MainApplication.currentConnectionIndex++;
+		int nextIndex = (c + 1) % s;
+		return availableConnections.get(nextIndex);
+	}
 
 	/**
 	 * Sends SMS to a number.
@@ -414,27 +427,40 @@ public class ProcessSms {
 	 *            msg - The message to be sent.
 	 */
 	public void sendSms(String sendTo, String msg) {
+		MessengerConnection connectionToUse = getCurrentMessengerConnection();
+		if(connectionToUse.equals(null)){
+			ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
+			ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
+			Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
+					+ sendTo + " message: " + msg);
 
-		ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
-		ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
-		Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
-				+ sendTo + " message: " + msg);
+			SmsManager sms = SmsManager.getDefault();
+			ArrayList<String> parts = sms.divideMessage(msg);
+			for (int i = 0; i < parts.size(); i++) {
+				PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,
+						new Intent(ServicesConstants.SENT), 0);
 
-		SmsManager sms = SmsManager.getDefault();
-		ArrayList<String> parts = sms.divideMessage(msg);
-		for (int i = 0; i < parts.size(); i++) {
-			PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,
-					new Intent(ServicesConstants.SENT), 0);
+				PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
+						0, new Intent(ServicesConstants.DELIVERED), 0);
+				sentIntents.add(sentIntent);
 
-			PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
-					0, new Intent(ServicesConstants.DELIVERED), 0);
-			sentIntents.add(sentIntent);
-
-			deliveryIntents.add(deliveryIntent);
+				deliveryIntents.add(deliveryIntent);
+			}
+			if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo))
+				sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+						deliveryIntents);
+		} else {
+	        Message message = Message.obtain(null, 1, 0, 0);
+	        try {
+				Bundle data = new Bundle();
+				data.putString("sendTo", sendTo);
+				data.putString("msg", msg);
+				message.setData(data);
+				connectionToUse.messenger.send(message);
+	        } catch (RemoteException e) {
+	            e.printStackTrace();
+	        }
 		}
-		if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo))
-			sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-					deliveryIntents);
 	}
 
 	/**
