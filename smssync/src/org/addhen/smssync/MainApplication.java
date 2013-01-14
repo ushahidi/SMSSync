@@ -48,7 +48,7 @@ public class MainApplication extends Application {
 
 	public static Application app = null;
 
-	public static int currentConnectionIndex;
+	public static int currentConnectionIndex = -1;
 	public static ArrayList<MessengerConnection> availableConnections = new ArrayList<MessengerConnection>();
 
 	public static MessengerConnection[] messengerConnectionList = new MessengerConnection[5];

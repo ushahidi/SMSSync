@@ -428,7 +428,7 @@ public class ProcessSms {
 	 */
 	public void sendSms(String sendTo, String msg) {
 		MessengerConnection connectionToUse = getCurrentMessengerConnection();
-		if(connectionToUse.equals(null)){
+		if(connectionToUse == null){
 			ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
 			ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
 			Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
