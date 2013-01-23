@@ -5,3 +5,7 @@ tests/bin/*
 local.properties
 secure.properties
 ushahidi-key.keystore
+build.xml
+ant.properties
+gen/R.java.d
+
