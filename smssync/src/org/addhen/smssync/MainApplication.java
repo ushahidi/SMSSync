@@ -85,6 +85,7 @@ public class MainApplication extends Application {
 			availableConnections.add(null);
 		}
 		// connect to the sms-portals when the application starts
+		Prefs.loadPreferences(getApplicationContext());
 		if(Prefs.useSmsPortals) {
 			bindToSmsPortals(getApplicationContext());
 		}
