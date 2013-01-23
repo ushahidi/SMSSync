@@ -91,10 +91,16 @@ public class MainApplication extends Application {
 	}
 
 	public static void bindToSmsPortals(Context applicationContext) {
-		Intent senderIntent_0 = new Intent("com.smssync.portal.action.SEND_SMS");
+		Intent senderIntent_0 = new Intent("com.smssync.portal.one.action.SEND_SMS");
 		messengerConnectionList[0] = new MessengerConnection();
 		serviceConnectionList[0] = getServiceConnection(messengerConnectionList[0]);
 		applicationContext.bindService(senderIntent_0, serviceConnectionList[0],
+				Context.BIND_AUTO_CREATE);
+
+		Intent senderIntent_1 = new Intent("com.smssync.portal.two.action.SEND_SMS");
+		messengerConnectionList[1] = new MessengerConnection();
+		serviceConnectionList[1] = getServiceConnection(messengerConnectionList[1]);
+		applicationContext.bindService(senderIntent_1, serviceConnectionList[1],
 				Context.BIND_AUTO_CREATE);
 	}
 
