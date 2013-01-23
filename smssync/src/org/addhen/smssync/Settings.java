@@ -68,6 +68,8 @@ public class Settings extends SherlockPreferenceActivity implements
 
 	public static final String TASK_CHECK = "task_check_preference";
 
+	public static final String USE_SMS_PORTALS = "use_sms_portals";
+
 	public static final String TASK_CHECK_TIMES = "task_check_times";
 
 	public static final String ABOUT = "powered_preference";
@@ -83,6 +85,8 @@ public class Settings extends SherlockPreferenceActivity implements
 	private CheckBoxPreference autoSync;
 
 	private CheckBoxPreference taskCheck;
+
+	private CheckBoxPreference useSmsPortals;
 
 	private ListPreference autoSyncTimes;
 
@@ -151,6 +155,9 @@ public class Settings extends SherlockPreferenceActivity implements
 
 		taskCheck = (CheckBoxPreference) getPreferenceScreen().findPreference(
 				TASK_CHECK);
+
+		useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
+				.findPreference(USE_SMS_PORTALS);
 
 		replyPref = (EditTextPreference) getPreferenceScreen().findPreference(
 				KEY_REPLY);
@@ -304,6 +311,7 @@ public class Settings extends SherlockPreferenceActivity implements
 				enableReplyFrmServer.isChecked());
 		editor.putBoolean("EnableTaskCheck", taskCheck.isChecked());
 		editor.putBoolean("AutoSync", autoSync.isChecked());
+		editor.putBoolean("UseSmsPortals", useSmsPortals.isChecked());
 		editor.putInt("AutoTime", autoTime);
 		editor.putInt("taskCheck", taskCheckTime);
 
@@ -416,6 +424,15 @@ public class Settings extends SherlockPreferenceActivity implements
 
 			Prefs.taskCheckTime = initializeAutoTaskTime();
 			RunServicesUtil.runCheckTaskService(Settings.this);
+		}
+
+		// Enable/Disable SMS Portals
+		if(key.equals(USE_SMS_PORTALS)) {
+			if(sharedPreferences.getBoolean(USE_SMS_PORTALS, false)) {
+				MainApplication.bindToSmsPortals(getApplicationContext());
+			} else {
+				MainApplication.unbindFromSmsPortals(getApplicationContext());
+			}
 		}
 
 		this.savePreferences();

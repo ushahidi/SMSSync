@@ -71,6 +71,12 @@
             android:summary="@string/txt_task_check_delay_hint"
             android:title="@string/txt_task_check_delay" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/use_sms_portals_settings" >
+		<CheckBoxPreference
+            android:key="use_sms_portals"
+            android:summary="@string/use_sms_portals_hint"
+            android:title="@string/use_sms_portals_delay" />
+	</PreferenceCategory>
     <PreferenceCategory android:title="@string/about_smssync" >
         <Preference android:key="powered_preference" />
     </PreferenceCategory>

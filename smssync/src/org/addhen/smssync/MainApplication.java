@@ -54,7 +54,7 @@ public class MainApplication extends Application {
 	public static MessengerConnection[] messengerConnectionList = new MessengerConnection[5];
 	public static ServiceConnection[] serviceConnectionList = new ServiceConnection[5];
 
-	public ServiceConnection getServiceConnection(final MessengerConnection m) {
+	public static ServiceConnection getServiceConnection(final MessengerConnection m) {
 		ServiceConnection mConnection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName className,
 					IBinder service) {
@@ -84,11 +84,27 @@ public class MainApplication extends Application {
 		if (!availableConnections.contains(null)) {
 			availableConnections.add(null);
 		}
+		// connect to the sms-portals when the application starts
+		if(Prefs.useSmsPortals) {
+			bindToSmsPortals(getApplicationContext());
+		}
+	}
+
+	public static void bindToSmsPortals(Context applicationContext) {
 		Intent senderIntent_0 = new Intent("com.smssync.portal.action.SEND_SMS");
 		messengerConnectionList[0] = new MessengerConnection();
 		serviceConnectionList[0] = getServiceConnection(messengerConnectionList[0]);
-		bindService(senderIntent_0, serviceConnectionList[0],
+		applicationContext.bindService(senderIntent_0, serviceConnectionList[0],
 				Context.BIND_AUTO_CREATE);
+	}
+
+	public static void unbindFromSmsPortals(Context applicationContext) {
+		for (int x = 0; x < messengerConnectionList.length; x++) {
+			if (messengerConnectionList[x] != null && messengerConnectionList[x].isBound) {
+				applicationContext.unbindService(serviceConnectionList[x]);
+				messengerConnectionList[x].isBound = false;
+			}
+		}
 	}
 
 	@Override
@@ -96,12 +112,7 @@ public class MainApplication extends Application {
 		// Close the database when the application terminates.
 		mDb.close();
 		super.onTerminate();
-		// UnBind from all the SMS senders
-		for (int x = 0; x < messengerConnectionList.length; x++) {
-			if (messengerConnectionList[x].isBound) {
-				unbindService(serviceConnectionList[x]);
-				messengerConnectionList[x].isBound = false;
-			}
-		}
+		// Unbind from all the sms-portals
+		unbindFromSmsPortals(getApplicationContext());
 	}
 }

@@ -55,6 +55,8 @@ public class Prefs {
 
 	public static Boolean enableTaskCheck = false;
 
+	public static Boolean useSmsPortals = false;
+
 	private static SharedPreferences.Editor editor;
 
 	public static final String PREF_NAME = "SMS_SYNC_PREF";
@@ -84,6 +86,7 @@ public class Prefs {
 		autoTime = settings.getInt("AutoTime", autoTime);
 		uniqueId = settings.getString("UniqueId", "");
 		taskCheckTime = settings.getInt("taskCheck", taskCheckTime);
+		useSmsPortals =  settings.getBoolean("UseSmsPortals", false);
 	}
 
 	/**
@@ -101,6 +104,7 @@ public class Prefs {
 		editor.putBoolean("EnableReply", enableReply);
 		editor.putBoolean("EnableReplyFrmServer", enableReplyFrmServer);
 		editor.putBoolean("AutoSync", enableAutoSync);
+		editor.putBoolean("UseSmsPortals", useSmsPortals);
 		editor.putInt("AutoTime", autoTime);
 		editor.putInt("taskCheck", taskCheckTime);
 		editor.putString("UniqueId", uniqueId);
