@@ -167,4 +167,7 @@
     <string name="use_sms_portals_settings">Increase sms sending through-put</string>
     <string name="use_sms_portals_hint">Use Sms-Portals</string>
     <string name="use_sms_portals_delay">Android maintains a limit on the number of sms that an applcation can send(100 sms per app per hour). But SmsSync allows you to by pass this limit. All you have to do is download some extra power packs.</string>
+    <string name="sms_portal_1">Sms Portal 1</string>
+    <string name="sms_portal_2">Sms Portal 2</string>
+    <string name="sms_portal_3">Sms Portal 3</string>
 </resources>

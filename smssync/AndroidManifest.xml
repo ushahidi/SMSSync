@@ -116,6 +116,13 @@
         </receiver>
 
         <service android:name=".widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService" />
+
+        <activity android:name=".activities.SmsPortalSettingsActivity" >
+            <intent-filter>
+                <action android:name=".activities.SmsPortalSettingsActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

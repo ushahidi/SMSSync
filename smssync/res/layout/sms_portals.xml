@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <android.widget.TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TableRow
+            android:id="@+id/row1"
+            android:padding="5dp" >
+
+            <android.widget.TextView
+                android:id="@+id/sms_portal_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/sms_portal_1"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/sms_portal_1_installed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/sms_portal_installed" />
+
+            <ImageButton
+                android:id="@+id/install_sms_portal_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/import_sms" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/row2"
+            android:padding="5dp" >
+
+            <android.widget.TextView
+                android:id="@+id/sms_portal_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sms_portal_2"
+                android:layout_gravity="left|center_vertical"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/sms_portal_2_installed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/sms_portal_installed" />
+
+            <ImageButton
+                android:id="@+id/install_sms_portal_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/import_sms" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/row3"
+            android:padding="5dp" >
+
+            <android.widget.TextView
+                android:id="@+id/sms_portal_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:text="@string/sms_portal_3"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/sms_portal_3_installed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/sms_portal_installed" />
+
+            <ImageButton
+                android:id="@+id/install_sms_portal_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/import_sms" />
+        </TableRow>
+    </android.widget.TableLayout>
+
+</RelativeLayout>
