@@ -281,12 +281,13 @@ public class MessageSyncUtil extends Util {
 										jsonObject.getString("message"));
 							}
 
-						} else {
-							// no task enabled on the callback url.
-							showToast(context, R.string.no_task);
-						}
+						} //else {
+							// no task enabled on the callback URL.
+							// don't bother hassling user with another notification.
+							//showToast(context, R.string.no_task);
+						//}
 
-					} else {
+					} else { // 'payload' data may not be present in JSON response
 
 						showToast(context, R.string.no_task);
 					}
