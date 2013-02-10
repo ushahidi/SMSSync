@@ -104,8 +104,6 @@ public class ProcessSms {
 	 *            messagesTimestamp The timestamp of the message
 	 * @param String
 	 *            messagesId The unique ID of the messages.
-	 * @param SmsMessages
-	 *            sms The SMS object as
 	 * 
 	 * @return boolean The status of the message routing.
 	 */
@@ -218,6 +216,7 @@ public class ProcessSms {
 	public void routeSms(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId, SmsMessage sms) {
 
+		// Cash it first
 		if (routeMessages(messagesFrom, messagesBody, messagesTimestamp,
 				messagesId)) {
 
@@ -387,12 +386,14 @@ public class ProcessSms {
 		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("address='" + msg.getOriginatingAddress() + "' AND ");
+		sb.append("address=" + DatabaseUtils.sqlEscapeString(msg.getOriginatingAddress())+ " AND ");
 		sb.append("body=" + DatabaseUtils.sqlEscapeString(msg.getMessageBody()));
+		sb.append("ORDER _id limit 1");
 		Cursor c = context.getContentResolver().query(uriSms, null,
 				sb.toString(), null, null);
 
 		if (c.getCount() > 0 && c != null) {
+			Logger.log("message ID: ", "count: "+c.getCount());
 			c.moveToFirst();
 			if (idType.equals("id")) {
 				return c.getLong(c.getColumnIndex("_id"));
@@ -402,6 +403,7 @@ public class ProcessSms {
 			}
 			c.close();
 		}
+		
 		return 0;
 	}
 

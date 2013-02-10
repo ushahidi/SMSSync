@@ -67,7 +67,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
 					status = new MessageSyncUtil(
 							SyncPendingMessagesService.this, syncUrl.getUrl())
-							.snycToWeb(messageId, syncUrl.getSecret());
+							.snycToWeb(messageId);
 				}
 				
 				statusIntent.putExtra("syncstatus", status);

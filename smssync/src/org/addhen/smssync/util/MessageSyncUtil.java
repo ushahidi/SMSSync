@@ -105,12 +105,10 @@ public class MessageSyncUtil extends Util {
 	 * @param int messageId - Sync by Id - 0 for no ID > 0 to for an id
 	 * @param String
 	 *            url The sync URL to push the message to.
-	 * @param String
-	 *            secret The secret key as set on the server.
 	 * 
 	 * @return int
 	 */
-	public int snycToWeb(int messageId, String secret) {
+	public int snycToWeb(int messageId) {
 		log("syncToWeb(): push pending messages to the Sync URL");
 		MessagesModel model = new MessagesModel();
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();

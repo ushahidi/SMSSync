@@ -136,7 +136,7 @@ public class SmsReceiverService extends Service {
 	}
 
 	/**
-	 * Handle receiving a SMS message
+	 * Handle receiving SMS message
 	 */
 	private void handleSmsReceived(Intent intent) {
 
