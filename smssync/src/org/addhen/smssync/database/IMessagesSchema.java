@@ -25,24 +25,24 @@ package org.addhen.smssync.database;
  */
 public interface IMessagesSchema {
 	
-	public static final String ID = "_id";
-
 	public static final String FROM = "messages_from";
 
 	public static final String BODY = "messages_body";
 
 	public static final String DATE = "messages_date";
+	
+	public static final String MESSAGE_UUID = "message_id";
 
 	public static final String TABLE = "messages";
 
-	public static final String[] COLUMNS = new String[] { ID, FROM, BODY, DATE };
+	public static final String[] COLUMNS = new String[] { MESSAGE_UUID, FROM, BODY, DATE };
 
 	// NOTE: the message ID is used as the row ID.
 	// Furthermore, if a row already exists, an insert will replace
 	// the old row upon conflict.
 
 	public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE + " (" + ID + " INTEGER PRIMARY KEY ON CONFLICT REPLACE, "
+			+ TABLE + " (" + MESSAGE_UUID + " TEXT NOT NULL, "
 			+ FROM + " TEXT NOT NULL, " + BODY + " TEXT, " + DATE
 			+ " DATE NOT NULL " + ")";
 

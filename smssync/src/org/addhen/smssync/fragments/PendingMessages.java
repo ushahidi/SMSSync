@@ -59,7 +59,7 @@ public class PendingMessages
 
 	private MessagesModel model;
 
-	private int messageId = 0;
+	private String messageUuid;
 
 	private MenuItem refresh;
 
@@ -147,7 +147,7 @@ public class PendingMessages
 	}
 
 	public boolean performAction(MenuItem item, int position) {
-		messageId = adapter.getItem(position).getMessageId();
+		messageUuid = adapter.getItem(position).getMessageUuid();
 		if (item.getItemId() == R.id.context_delete) {
 
 			performDeleteById();
@@ -158,7 +158,7 @@ public class PendingMessages
 			refresh = item;
 			refreshState = true;
 			updateRefreshStatus();
-			syncMessages(messageId);
+			syncMessages(messageUuid);
 		}
 		return (false);
 	}
@@ -170,7 +170,7 @@ public class PendingMessages
 			refresh = item;
 			refreshState = true;
 			updateRefreshStatus();
-			syncMessages(0);
+			syncMessages("");
 			return (true);
 		} else if (item.getItemId() == R.id.import_sms) {
 			ImportMessagesTask importMessagesTask = new ImportMessagesTask(
@@ -356,7 +356,7 @@ public class PendingMessages
 			if (adapter.getCount() == 0) {
 				deleted = 1;
 			} else {
-				result = model.deleteMessagesById(messageId);
+				result = model.deleteMessagesByUuid(messageUuid);
 			}
 
 			try {
@@ -398,11 +398,11 @@ public class PendingMessages
 	/**
 	 * Get messages from the db and push them to the configured callback URL
 	 * 
-	 * @param int messagesId
+	 * @param int messagesUuid
 	 * @return int
 	 */
 
-	public void syncMessages(int messagesId) {
+	public void syncMessages(String messagesUuid) {
 		if (adapter != null && adapter.getCount() == 0) {
 			statusIntent.putExtra("syncstatus", 2);
 			getActivity().sendBroadcast(statusIntent);
@@ -410,7 +410,7 @@ public class PendingMessages
 			syncPendingMessagesServiceIntent = new Intent(getActivity(),
 					SyncPendingMessagesService.class);
 			syncPendingMessagesServiceIntent.putExtra(
-					ServicesConstants.MESSEAGE_ID, messagesId);
+					ServicesConstants.MESSEAGE_UUID, messagesUuid);
 			getActivity().startService(syncPendingMessagesServiceIntent);
 		}
 	}

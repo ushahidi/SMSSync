@@ -56,7 +56,7 @@ public class MessagesContentProvider extends DbContentProvider implements
 	 */
 	@Override
 	public int messagesCount() {
-		Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + ID + ") FROM " + TABLE,
+		Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + MESSAGE_UUID + ") FROM " + TABLE,
 				null);
 
 		int result = 0;
@@ -111,17 +111,17 @@ public class MessagesContentProvider extends DbContentProvider implements
 		return super.insert(TABLE, getContentValue()) > 0;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Delete message by UUID
 	 * 
 	 * @see
 	 * org.addhen.smssync.database.IMessagesContentProvider#deleteMessagesById
 	 * (int)
 	 */
 	@Override
-	public boolean deleteMessagesById(int messageId) {
-		String whereClause = ID + "= ?";
-		String whereArgs[] = { String.valueOf(messageId) };
+	public boolean deleteMessagesByUuid(String messageUuid) {
+		String whereClause =MESSAGE_UUID + "= ?";
+		String whereArgs[] = { messageUuid };
 		return super.delete(TABLE, whereClause, whereArgs) > 0;
 	}
 
@@ -144,10 +144,10 @@ public class MessagesContentProvider extends DbContentProvider implements
 	 * (int)
 	 */
 	@Override
-	public List<MessagesModel> fetchMessagesById(int messageId) {
+	public List<MessagesModel> fetchMessagesByUuid(String messageUuid) {
 		listMessages = new ArrayList<MessagesModel>();
-		String selection = ID + "= ?";
-		String selectionArgs[] = { String.valueOf(messageId) };
+		String selection = MESSAGE_UUID + "= ?";
+		String selectionArgs[] = { messageUuid };
 		cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, DATE
 				+ " DESC");
 
@@ -198,7 +198,7 @@ public class MessagesContentProvider extends DbContentProvider implements
 	@Override
 	public List<MessagesModel> fetchMessagesByLimit(int limit) {
 		listMessages = new ArrayList<MessagesModel>();
-		cursor = super.query(TABLE, COLUMNS, null, null, ID + " DESC",
+		cursor = super.query(TABLE, COLUMNS, null, null, MESSAGE_UUID + " DESC",
 				String.valueOf(limit));
 		if (cursor != null) {
 			cursor.moveToFirst();
@@ -221,7 +221,7 @@ public class MessagesContentProvider extends DbContentProvider implements
 	 */
 	private void setContentValue(MessagesModel messages) {
 		initialValues = new ContentValues();
-		initialValues.put(ID, messages.getMessageId());
+		initialValues.put(MESSAGE_UUID, messages.getMessageUuid());
 		initialValues.put(FROM, messages.getMessageFrom());
 		initialValues.put(BODY, messages.getMessage());
 		initialValues.put(DATE, messages.getMessageDate());
@@ -242,15 +242,15 @@ public class MessagesContentProvider extends DbContentProvider implements
 	@Override
 	protected MessagesModel cursorToEntity(Cursor cursor) {
 		MessagesModel messages = new MessagesModel();
-		int idIndex;
+		int messageUuidIndex;
 		int fromIndex;
 		int messageIndex;
 		int dateIndex;
 
 		if (cursor != null) {
-			if (cursor.getColumnIndex(ID) != -1) {
-				idIndex = cursor.getColumnIndexOrThrow(ID);
-				messages.setMessageId(cursor.getInt(idIndex));
+			if (cursor.getColumnIndex(MESSAGE_UUID) != -1) {
+				messageUuidIndex = cursor.getColumnIndexOrThrow(MESSAGE_UUID);
+				messages.setMessageUuid(cursor.getString(messageUuidIndex));
 			}
 
 			if (cursor.getColumnIndex(FROM) != -1) {

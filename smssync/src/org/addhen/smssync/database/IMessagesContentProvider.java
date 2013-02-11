@@ -35,11 +35,11 @@ public interface IMessagesContentProvider {
 
 	public boolean addMessages(MessagesModel messages);
 
-	public boolean deleteMessagesById(int messageId);
+	public boolean deleteMessagesByUuid(String messageUuid);
 
 	public boolean deleteAllMessages();
 
-	public List<MessagesModel> fetchMessagesById(int messageId);
+	public List<MessagesModel> fetchMessagesByUuid(String messageUuid);
 
 	public List<MessagesModel> fetchAllMessages();
 

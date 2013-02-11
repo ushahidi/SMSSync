@@ -54,7 +54,7 @@ public class SmsReceiverService extends Service {
 
 	private String messagesTimestamp = "";
 
-	private String messagesId = "";
+	private String messagesUuid = "";
 
 	private static final Object mStartingServiceSync = new Object();
 
@@ -164,14 +164,13 @@ public class SmsReceiverService extends Service {
 					body = bodyText.toString();
 				}
 				messagesBody = body;
-				messagesId = String.valueOf(processSms.getId(messagesBody,
-						messagesFrom, "id"));
+				messagesUuid = String.valueOf(processSms.getUuid());
 			}
 		}
 
 		// route the sms
 		processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
-				messagesId, sms);
+				messagesUuid, sms);
 
 	}
 

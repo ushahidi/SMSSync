@@ -22,7 +22,9 @@ package org.addhen.smssync;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
+import org.addhen.smssync.database.IMessagesSchema;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
@@ -300,14 +302,15 @@ public class ProcessSms {
 					listMessages.add(messages);
 
 					messageDate = String.valueOf(c.getLong(c
-							.getColumnIndex("date")));
+							.getColumnIndex(IMessagesSchema.DATE)));
 					messages.setMessageDate(messageDate);
 
 					messages.setMessageFrom(c.getString(c
-							.getColumnIndex("address")));
-					messages.setMessage(c.getString(c.getColumnIndex("body")));
-					messages.setMessageId(Integer.valueOf(c.getString(c
-							.getColumnIndex("_id"))));
+							.getColumnIndex(IMessagesSchema.FROM)));
+					messages.setMessage(c.getString(c
+							.getColumnIndex(IMessagesSchema.BODY)));
+					messages.setMessageUuid(c.getString(c
+							.getColumnIndex(IMessagesSchema.MESSAGE_UUID)));
 
 					messages.listMessages = listMessages;
 					messages.save();
@@ -364,21 +367,18 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Tries to locate the message id or thread id given the address (phone
-	 * number or email) of the message sender.
+	 * Tries to locate the thread id given the address (phone number or email)
+	 * of the message sender.
 	 * 
-	 * @param SmsMessage
-	 *            msg - The SMS object to get the address of the message from.
-	 * @param idType
-	 *            The type it use to fetch the ID of the message. Either id type
-	 *            or thread type
+	 * @param String
+	 *            body
+	 * @param String
+	 *            address
 	 * 
-	 * @return the message id
+	 * @return the thread id
 	 */
-	//TODO: replace this implementation with UUID.randomUUID().toString()
-	public long getId(String body, String address, String idType) {
-		Logger.log(CLASS_TAG,
-				"getId(): Locate message id or thread id: idType:" + idType);
+	public long getThreadId(String body, String address) {
+		Logger.log(CLASS_TAG, "getId(): thread id");
 		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
 
 		StringBuilder sb = new StringBuilder();
@@ -386,21 +386,22 @@ public class ProcessSms {
 		sb.append("body=" + DatabaseUtils.sqlEscapeString(body));
 
 		Cursor c = context.getContentResolver().query(uriSms, null, null, null,
-				"date DESC LIMIT 1");
+				"date DESC ");
 
 		if (c.getCount() > 0 && c != null) {
 
 			c.moveToFirst();
-			if (idType.equals("id")) {
-				return c.getLong(c.getColumnIndex("_id"));
-
-			} else if (idType.equals("thread")) {
-				return c.getLong(c.getColumnIndex("thread_id"));
-			}
+			long threadId = c.getLong(c.getColumnIndex("thread_id"));
 			c.close();
+
+			return threadId;
 		}
 
 		return 0;
+	}
+
+	public String getUuid() {
+		return UUID.randomUUID().toString();
 	}
 
 	/**
@@ -445,7 +446,7 @@ public class ProcessSms {
 	 */
 	public void delSmsFromInbox(String body, String address) {
 		Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
-		final long threadId = getId(body, address, "thread");
+		final long threadId = getThreadId(body, address);
 
 		if (threadId >= 0) {
 			context.getContentResolver().delete(
@@ -483,14 +484,13 @@ public class ProcessSms {
 		Logger.log(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
 
 		// Get message id.
-		String messageId = String.valueOf(getId(messagesBody, messagesFrom,
-				"id"));
+		String messageUuid = getUuid();
 
 		String messageDate = String.valueOf(sms.getTimestampMillis());
 		Util.smsMap.put("messagesFrom", messagesFrom);
 		Util.smsMap.put("messagesBody", messagesBody);
 		Util.smsMap.put("messagesDate", messageDate);
-		Util.smsMap.put("messagesId", messageId);
+		Util.smsMap.put("messagesUuid", messageUuid);
 		new PendingMessages().showMessages();
 
 		int status = MessageSyncUtil.processMessages();
