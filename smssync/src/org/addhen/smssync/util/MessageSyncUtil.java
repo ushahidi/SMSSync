@@ -279,17 +279,17 @@ public class MessageSyncUtil extends Util {
 										jsonObject.getString("message"));
 							}
 
+						} else {
+							log(context.getString(R.string.no_task));
 						}
 
 					} else { // 'payload' data may not be present in JSON
 								// response
-
-						showToast(context, R.string.no_task);
+						log(context.getString(R.string.no_task));
 					}
 
 				} catch (JSONException e) {
 					log("Error: " + e.getMessage());
-					showToast(context, R.string.no_task);
 				}
 			}
 		}
