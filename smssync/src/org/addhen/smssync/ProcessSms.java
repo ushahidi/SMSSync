@@ -206,24 +206,19 @@ public class ProcessSms {
 	 * @param String
 	 *            messagesBody The message body. This is the message sent ot the
 	 *            phone.
-	 * @param String
-	 *            messagesTimestamp The timestamp of the message
-	 * @param String
-	 *            messagesId The unique ID of the messages.
 	 * @param SmsMessages
 	 *            sms The SMS object as
 	 */
 	public void routeSms(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesId, SmsMessage sms) {
-
-		// Cash it first
+		Logger.log(CLASS_TAG, "messageID: " + messagesId);
 		if (routeMessages(messagesFrom, messagesBody, messagesTimestamp,
 				messagesId)) {
 
 			// Delete messages from message app's inbox, only
 			// when smssync has that feature turned on
 			if (Prefs.autoDelete) {
-				delSmsFromInbox(sms);
+				delSmsFromInbox(messagesBody, messagesFrom);
 			}
 
 		} else {
@@ -281,7 +276,7 @@ public class ProcessSms {
 	 * outbox table. This will allow messages the imported messages to be sync'd
 	 * to the configured Sync URL.
 	 * 
-	 * @return int - 0 for success, 1 for failure.
+	 * @return int 0 for success, 1 for failure.
 	 */
 	public int importMessages() {
 		Logger.log(CLASS_TAG,
@@ -380,20 +375,21 @@ public class ProcessSms {
 	 * 
 	 * @return the message id
 	 */
-	public long getId(SmsMessage msg, String idType) {
+	//TODO: replace this implementation with UUID.randomUUID().toString()
+	public long getId(String body, String address, String idType) {
 		Logger.log(CLASS_TAG,
 				"getId(): Locate message id or thread id: idType:" + idType);
 		Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("address=" + DatabaseUtils.sqlEscapeString(msg.getOriginatingAddress())+ " AND ");
-		sb.append("body=" + DatabaseUtils.sqlEscapeString(msg.getMessageBody()));
-		sb.append("ORDER _id limit 1");
-		Cursor c = context.getContentResolver().query(uriSms, null,
-				sb.toString(), null, null);
+		sb.append("address=" + DatabaseUtils.sqlEscapeString(address) + " AND ");
+		sb.append("body=" + DatabaseUtils.sqlEscapeString(body));
+
+		Cursor c = context.getContentResolver().query(uriSms, null, null, null,
+				"date DESC LIMIT 1");
 
 		if (c.getCount() > 0 && c != null) {
-			Logger.log("message ID: ", "count: "+c.getCount());
+
 			c.moveToFirst();
 			if (idType.equals("id")) {
 				return c.getLong(c.getColumnIndex("_id"));
@@ -403,7 +399,7 @@ public class ProcessSms {
 			}
 			c.close();
 		}
-		
+
 		return 0;
 	}
 
@@ -447,9 +443,9 @@ public class ProcessSms {
 	 * @param msg
 	 *            The {@link android.telephony.SmsMessage }
 	 */
-	public void delSmsFromInbox(SmsMessage msg) {
+	public void delSmsFromInbox(String body, String address) {
 		Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
-		final long threadId = getId(msg, "thread");
+		final long threadId = getId(body, address, "thread");
 
 		if (threadId >= 0) {
 			context.getContentResolver().delete(
@@ -487,7 +483,8 @@ public class ProcessSms {
 		Logger.log(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
 
 		// Get message id.
-		String messageId = String.valueOf(getId(sms, "id"));
+		String messageId = String.valueOf(getId(messagesBody, messagesFrom,
+				"id"));
 
 		String messageDate = String.valueOf(sms.getTimestampMillis());
 		Util.smsMap.put("messagesFrom", messagesFrom);
