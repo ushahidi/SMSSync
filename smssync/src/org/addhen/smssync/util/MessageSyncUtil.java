@@ -113,7 +113,7 @@ public class MessageSyncUtil extends Util {
 		MessagesModel model = new MessagesModel();
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 		// check if it should sync by id
-		if (messageUuid != null && TextUtils.isEmpty(messageUuid)) {
+		if (messageUuid != null && !TextUtils.isEmpty(messageUuid)) {
 			model.loadByUuid(messageUuid);
 			listMessages = model.listMessages;
 
