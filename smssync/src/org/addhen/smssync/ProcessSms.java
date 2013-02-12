@@ -105,12 +105,12 @@ public class ProcessSms {
 	 * @param String
 	 *            messagesTimestamp The timestamp of the message
 	 * @param String
-	 *            messagesId The unique ID of the messages.
+	 *            messagesId The universal unique ID of the messages.
 	 * 
 	 * @return boolean The status of the message routing.
 	 */
 	public boolean routeMessages(String messagesFrom, String messagesBody,
-			String messagesTimestamp, String messagesId) {
+			String messagesTimestamp, String messagesUuid) {
 
 		// load prefrences.
 		Prefs.loadPreferences(context);
@@ -140,7 +140,7 @@ public class ProcessSms {
 						if (filterByKeywords(messagesBody, keywords)) {
 							posted = messageSyncUtil.postToAWebService(
 									messagesFrom, messagesBody,
-									messagesTimestamp, messagesId,
+									messagesTimestamp, messagesUuid,
 									syncUrl.getSecret());
 							if (!posted) {
 								Util.showFailNotification(
@@ -154,7 +154,7 @@ public class ProcessSms {
 							} else {
 
 								postToSentBox(messagesFrom, messagesBody,
-										messagesId, messagesTimestamp);
+										messagesUuid, messagesTimestamp);
 								Util.showFailNotification(
 										context,
 										messagesBody,
@@ -166,7 +166,7 @@ public class ProcessSms {
 					} else { // there is no keyword set up on a sync URL
 						posted = messageSyncUtil.postToAWebService(
 								messagesFrom, messagesBody, messagesTimestamp,
-								messagesId, syncUrl.getSecret());
+								messagesUuid, syncUrl.getSecret());
 						if (!posted) {
 							Util.showFailNotification(context, messagesBody,
 									context.getString(R.string.sending_failed));
@@ -178,7 +178,7 @@ public class ProcessSms {
 						} else {
 
 							postToSentBox(messagesFrom, messagesBody,
-									messagesId, messagesTimestamp);
+									messagesUuid, messagesTimestamp);
 
 							Util.showFailNotification(
 									context,
@@ -460,13 +460,13 @@ public class ProcessSms {
 	 * @return void
 	 */
 	public void postToSentBox(String messagesFrom, String messagesBody,
-			String messageId, String messageDate) {
+			String messageUuid, String messageDate) {
 		Logger.log(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
 
 		SentMessagesUtil.smsMap.put("messagesFrom", messagesFrom);
 		SentMessagesUtil.smsMap.put("messagesBody", messagesBody);
 		SentMessagesUtil.smsMap.put("messagesDate", messageDate);
-		SentMessagesUtil.smsMap.put("messagesId", messageId);
+		SentMessagesUtil.smsMap.put("messagesUuid", messageUuid);
 
 		int status = SentMessagesUtil.processSentMessages(context);
 		statusIntent.putExtra("sentstatus", status);

@@ -164,7 +164,7 @@ public class SmsReceiverService extends Service {
 					body = bodyText.toString();
 				}
 				messagesBody = body;
-				messagesUuid = String.valueOf(processSms.getUuid());
+				messagesUuid = processSms.getUuid();
 			}
 		}
 

@@ -46,7 +46,7 @@ public class SentMessages
 		extends
 		BaseListFragment<SentMessagesView, SentMessagesModel, SentMessagesAdapter> {
 
-	private int messageId = 0;
+	private String messageUuid = "";
 
 	private final Handler mHandler = new Handler();
 
@@ -96,7 +96,7 @@ public class SentMessages
 	}
 
 	public boolean performAction(MenuItem item, int position) {
-		messageId = adapter.getItem(position).getMessageId();
+		messageUuid = adapter.getItem(position).getMessageUuid();
 		if (item.getItemId() == R.id.sent_messages_context_delete) {
 			// Delete by ID
 			performDeleteById();
@@ -178,7 +178,7 @@ public class SentMessages
 			if (adapter.getCount() == 0) {
 				deleted = 1;
 			} else {
-				result = model.deleteSentMessagesById(messageId);
+				result = model.deleteSentMessagesByUuid(messageUuid);
 			}
 
 			try {
