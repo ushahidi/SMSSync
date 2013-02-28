@@ -211,13 +211,14 @@ public class Util {
 	}
 
 	/**
-	 * Extract Ushahidi payload JSON data
+	 * Get true/false status of JSON payload "success"
 	 * 
-	 * @apram json_data - The json data to be formatted.
-	 * @return String
+	 * @param json_data - The JSON string.
+	 * 
+	 * @return boolean - value of "success" JSON parameter
 	 */
-	public static boolean extractPayloadJSON(String json_data) {
-		Log.i(CLASS_TAG, "extracPayloadJSON(): Extracting payload JSON data"
+	public static boolean getJsonSuccessStatus(String json_data) {
+		Log.i(CLASS_TAG, "getJsonSuccessStatus(): Extracting payload JSON data"
 				+ json_data);
 		try {
 
@@ -230,21 +231,55 @@ public class Util {
 		}
 
 	}
-
 	
+	/**
+	 * Get JSON payload "error" string
+	 * 
+	 * @param json_data - The JSON string.
+	 * 
+	 * @return string - value of "error" JSON parameter
+	 */
+	public static String getJsonError(String json_data) {
+		Log.i(CLASS_TAG, "getJsonError(): Extracting payload JSON data"
+				+ json_data);
+		try {
+
+			jsonObject = new JSONObject(json_data);
+			return jsonObject.getJSONObject("payload").getString("error");
+
+		} catch (JSONException e) {
+			// Could not find "error" in JSON response
+			Log.e(CLASS_TAG, "JSONException: " + e.getMessage());
+			return "";
+		}
+
+	}	
 
 	/**
-	 * Show toast
+	 * Show toast (int version)
 	 * 
-	 * @param Context
+	 * @param context
 	 *            - the application's context
-	 * @param Int
-	 *            - string resource id
+	 * @param resId
+	 *            - ID of string resource
 	 * @return void
 	 */
-	public static void showToast(Context context, int i) {
+	public static void showToast(Context context, int resId) {
 		int duration = Toast.LENGTH_LONG;
-		Toast.makeText(context, i, duration).show();
+		Toast.makeText(context, resId, duration).show();
+	}
+	
+	/**
+	 * Show toast (string version)
+	 * 
+	 * @param context
+	 *            - the application's context
+	 * @param text
+	 *            - message to display in toast pop-up
+	 */
+	public static void showToast(Context context, String text) {
+		int duration = Toast.LENGTH_LONG;
+		Toast.makeText(context, text, duration).show();
 	}
 
 	/**
