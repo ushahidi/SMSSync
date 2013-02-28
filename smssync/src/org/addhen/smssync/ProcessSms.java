@@ -146,6 +146,7 @@ public class ProcessSms {
 									messagesTimestamp, messagesUuid,
 									syncUrl.getSecret());
 							if (!posted) {
+								// Note: HTTP Error code or custom error message will have been shown already
 								Util.showFailNotification(
 										context,
 										messagesBody,

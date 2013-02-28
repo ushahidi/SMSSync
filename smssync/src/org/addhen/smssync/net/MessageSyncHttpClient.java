@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpResponse;
@@ -37,6 +38,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 /**
  * @author eyedol
@@ -93,7 +95,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
 			if (statusCode == 200 || statusCode == 201) {
 				String resp = getText(response);
 
-				if (Util.extractPayloadJSON(resp)) {
+				// Check JSON "success" status
+				if (Util.getJsonSuccessStatus(resp)) {
 					// auto response message is enabled to be received from the
 					// server.
 					if (Prefs.enableReplyFrmServer) {
@@ -103,9 +106,23 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
 					return true;
 				}
+				
+				// Display error from server, if any
+				// see https://github.com/ushahidi/SMSSync/issues/68
+				String payloadError = Util.getJsonError(resp);
+				if (payloadError != "") {
+					Resources res = context.getResources();
+					Util.showToast(context, String.format(res.getString(R.string.sending_failed_custom_error), payloadError));
+				}
 
 				return false;
 			}
+
+			// HTTP Status code error
+			// see https://github.com/ushahidi/SMSSync/issues/69
+			Resources res = context.getResources();
+			Util.showToast(context, String.format(res.getString(R.string.sending_failed_http_code), statusCode));
+
 			return false;
 
 		} catch (ClientProtocolException e) {
