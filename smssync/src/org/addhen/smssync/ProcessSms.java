@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import org.addhen.smssync.database.IMessagesSchema;
 import org.addhen.smssync.fragments.PendingMessages;
@@ -112,11 +115,11 @@ public class ProcessSms {
 	public boolean routeMessages(String messagesFrom, String messagesBody,
 			String messagesTimestamp, String messagesUuid) {
 
-		// load prefrences.
+		// load preferences
 		Prefs.loadPreferences(context);
 
 		boolean posted = true;
-		// is smssync service running
+		// is SMSSync service running?
 		if (Prefs.enabled) {
 
 			if (Util.isConnected(context)) {
@@ -134,15 +137,16 @@ public class ProcessSms {
 					messageSyncUtil = new MessageSyncUtil(context,
 							syncUrl.getUrl());
 
-					// process keyword
+					// process filter text (keyword or RegEx)
 					if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
-						String keywords[] = syncUrl.getKeywords().split(",");
-						if (filterByKeywords(messagesBody, keywords)) {
+						String filterText = syncUrl.getKeywords();
+						if (filterByKeywords(messagesBody, filterText) || filterByRegex(messagesBody, filterText)) {
 							posted = messageSyncUtil.postToAWebService(
 									messagesFrom, messagesBody,
 									messagesTimestamp, messagesUuid,
 									syncUrl.getSecret());
 							if (!posted) {
+								// Note: HTTP Error code or custom error message will have been shown already
 								Util.showFailNotification(
 										context,
 										messagesBody,
@@ -163,7 +167,7 @@ public class ProcessSms {
 
 						}
 
-					} else { // there is no keyword set up on a sync URL
+					} else { // there is no filter text set up on a sync URL
 						posted = messageSyncUtil.postToAWebService(
 								messagesFrom, messagesBody, messagesTimestamp,
 								messagesUuid, syncUrl.getSecret());
@@ -199,14 +203,14 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Processes the incoming SMS to figure out how to exactly route the
+	 * Processes the incoming SMS to figure out how to exactly to route the
 	 * message. If it fails to be synced online, cache it and queue it up for
 	 * the scheduler to process it.
 	 * 
 	 * @param String
 	 *            messagesFrom The number that sent the SMS
 	 * @param String
-	 *            messagesBody The message body. This is the message sent ot the
+	 *            messagesBody The message body. This is the message sent to the
 	 *            phone.
 	 * @param SmsMessages
 	 *            sms The SMS object as
@@ -218,7 +222,7 @@ public class ProcessSms {
 				messagesId)) {
 
 			// Delete messages from message app's inbox, only
-			// when smssync has that feature turned on
+			// when SMSSync has that feature turned on
 			if (Prefs.autoDelete) {
 				delSmsFromInbox(messagesBody, messagesFrom);
 			}
@@ -230,14 +234,14 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Processes failed messages aka pending message to figure out how to
+	 * Processes failed messages AKA pending message to figure out how to
 	 * exactly route the message. If it fails to be synced online, cache it and
 	 * queue it up for the scheduler to process it.
 	 * 
 	 * @param String
 	 *            messagesFrom The number that sent the SMS
 	 * @param String
-	 *            messagesBody The message body. This is the message sent ot the
+	 *            messagesBody The message body. This is the message sent to the
 	 *            phone.
 	 * @param String
 	 *            messagesTimestamp The timestamp of the message
@@ -254,16 +258,17 @@ public class ProcessSms {
 	}
 
 	/**
-	 * Filter CSV strings for particular
+	 * Filter message string for particular keywords
 	 * 
 	 * @param message
-	 *            The CSV string to be filtered for the keywords
-	 * @param keywords
-	 *            An array that contains the keywords to be filtered
+	 *            The message to be tested against the keywords
+	 * @param filterText
+	 *            A CSV string listing keywords to match against message
 	 * 
 	 * @return boolean
 	 */
-	public boolean filterByKeywords(String message, String[] keywords) {
+	public boolean filterByKeywords(String message, String filterText) {
+		String[] keywords = filterText.split(",");
 		for (int i = 0; i < keywords.length; i++) {
 			if (message.toLowerCase()
 					.contains(keywords[i].toLowerCase().trim())) {
@@ -271,6 +276,28 @@ public class ProcessSms {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Filter message string for RegEx match
+	 * 
+	 * @param message
+	 *            The message to be tested against the RegEx
+	 * @param filterText
+	 *            A string representing the regular expression to test against.
+	 * 
+	 * @return boolean
+	 */
+	public boolean filterByRegex(String message, String filterText) {
+		Pattern pattern = null;
+		try {
+			pattern = Pattern.compile(filterText, Pattern.CASE_INSENSITIVE);
+		} catch (PatternSyntaxException e) {
+			// invalid RegEx
+			return false;
+		}
+		Matcher matcher = pattern.matcher(message);
+		return (matcher.find());
 	}
 
 	/**

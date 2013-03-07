@@ -83,6 +83,8 @@
     <string name="sms_status_failed">SMSSync Message Sending failed</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="sending_failed">SMSSync Message Sending failed.</string>
+    <string name="sending_failed_http_code">SMSSync message sending failed. Server returned HTTP status code %1$d.</string>
+    <string name="sending_failed_custom_error">SMSSync message sending failed. Server error: %1$s.</string>
     <string name="sending_succeeded">SMSSync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to send.</string>
     <string name="no_messages_to_delete">There are no messages to delete.</string>
@@ -143,7 +145,7 @@
     
     <string name="loading">Loading</string>
     <string name="sync_url">Sync URL</string>
-    <string name="no_sync_url">No Sync URL.</string>
+    <string name="no_sync_url">No Sync URL.\nUse the "+" button above to add one.</string>
     <string name="edit">Edit</string>
     <string name="enter_sync_title">Enter Title for the Sync URL</string>
     <string name="edittxt_keyword">Enter Keyword eg. Fire, Crime, Help</string>
