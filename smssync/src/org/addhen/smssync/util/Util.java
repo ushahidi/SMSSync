@@ -40,7 +40,6 @@ import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -50,6 +49,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -213,7 +213,8 @@ public class Util {
 	/**
 	 * Get true/false status of JSON payload "success"
 	 * 
-	 * @param json_data - The JSON string.
+	 * @param json_data
+	 *            - The JSON string.
 	 * 
 	 * @return boolean - value of "success" JSON parameter
 	 */
@@ -231,11 +232,12 @@ public class Util {
 		}
 
 	}
-	
+
 	/**
 	 * Get JSON payload "error" string
 	 * 
-	 * @param json_data - The JSON string.
+	 * @param json_data
+	 *            - The JSON string.
 	 * 
 	 * @return string - value of "error" JSON parameter
 	 */
@@ -253,7 +255,7 @@ public class Util {
 			return "";
 		}
 
-	}	
+	}
 
 	/**
 	 * Show toast (int version)
@@ -268,7 +270,7 @@ public class Util {
 		int duration = Toast.LENGTH_LONG;
 		Toast.makeText(context, resId, duration).show();
 	}
-	
+
 	/**
 	 * Show toast (string version)
 	 * 
@@ -286,29 +288,16 @@ public class Util {
 	 * Show notification
 	 */
 	public static void showNotification(Context context) {
-		NotificationManager notificationManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
 
 		Intent baseIntent = new Intent(context, MessagesTabActivity.class);
-
 		baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		Notification notification = new Notification(R.drawable.icon,
-				context.getString(R.string.status), System.currentTimeMillis());
-
-		notification.flags |= Notification.FLAG_ONGOING_EVENT
-				| Notification.FLAG_NO_CLEAR;
 
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
 				baseIntent, 0);
 
-		notification
-				.setLatestEventInfo(context,
-						context.getString(R.string.app_name),
-						context.getString(R.string.notification_summary),
-						pendingIntent);
-
-		notificationManager.notify(NOTIFY_RUNNING, notification);
+		buildNotification(context, R.drawable.icon,
+				context.getString(R.string.notification_summary),
+				context.getString(R.string.app_name), pendingIntent, true);
 
 	}
 
@@ -321,22 +310,47 @@ public class Util {
 	 *            notification title
 	 */
 	public static void showFailNotification(Context context, String message,
-			String notification_title) {
-
-		NotificationManager notificationManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
+			String notificationTitle) {
 
 		Intent baseIntent = new Intent(context, MessagesTabActivity.class);
 		baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		Notification notification = new Notification(R.drawable.icon,
-				context.getString(R.string.status), System.currentTimeMillis());
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
 				baseIntent, 0);
-		notification.setLatestEventInfo(context, notification_title, message,
-				pendingIntent);
-		notificationManager.notify(NOTIFY_RUNNING, notification);
 
+		buildNotification(context, R.drawable.icon, message, notificationTitle,
+				pendingIntent, false);
+
+	}
+	
+	/**
+	 * Build notification info
+	 * 
+	 * @param context The calling activity
+	 * @param drawable The notification icon
+	 * @param message The message
+	 * @param title The title for the notification
+	 * @param intent The pending intent
+	 * @param ongoing True if you don't want the user to clear the notification
+	 */
+	public static void buildNotification(Context context, int drawable,
+			String message, String title, PendingIntent intent, boolean ongoing) {
+
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
+				context);
+		builder.setContentTitle(title);
+		builder.setContentText(message);
+		builder.setSmallIcon(drawable);
+		builder.setContentIntent(intent);
+
+		if (ongoing) {
+			builder.setOngoing(ongoing);
+		}
+
+		notificationManager.notify(NOTIFY_RUNNING, builder.getNotification());
 	}
 
 	/**
@@ -501,7 +515,7 @@ public class Util {
 				return submitFormat.format(date);
 			}
 		} catch (IllegalArgumentException e) {
-			new Util().log("IllegalArgumentException",e);
+			new Util().log("IllegalArgumentException", e);
 		}
 		return null;
 	}
