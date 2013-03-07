@@ -24,7 +24,7 @@
     <!-- filter by keywords -->
     <string name="edittxt_keyword_pref">Enter Keyword - optional</string>
     <string name="editxt_keyword_pref_summary">Specify keywords to use to filter incoming messages.</string>
-    <string name="edittxt_keyword_hint">fire, crime, help, report, etc.</string>
+    <string name="edittxt_keyword_hint">fire, crime, help, report, or a RegEx.</string>
 
     <!-- filter by phone numbers -->
     <string name="edittxt_filter_by_from_pref">Enter Phone Number - optional</string>
