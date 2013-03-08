@@ -39,7 +39,24 @@ public class SentMessagesModel extends Model {
 
 	private String messageUuid;
 
+	private int messageType;
+
 	public List<SentMessagesModel> listMessages;
+
+	/**
+	 * @return the messageType
+	 */
+	public int getMessageType() {
+		return messageType;
+	}
+
+	/**
+	 * @param messageType
+	 *            the messageType to set
+	 */
+	public void setMessageType(int messageType) {
+		this.messageType = messageType;
+	}
 
 	/**
 	 * Set the content of the message. More like the body of the SMS message.
@@ -158,6 +175,8 @@ public class SentMessagesModel extends Model {
 		String messagesDate;
 		String messagesBody;
 		String messageUuid;
+		int messageType;
+
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				int messagesIdIndex = cursor
@@ -169,6 +188,8 @@ public class SentMessagesModel extends Model {
 
 				int messagesBodyIndex = cursor
 						.getColumnIndexOrThrow(Database.SENT_MESSAGES_BODY);
+				int messagesTypeIndex = cursor
+						.getColumnIndexOrThrow(Database.SENT_MESSAGE_TYPE);
 
 				do {
 
@@ -186,6 +207,8 @@ public class SentMessagesModel extends Model {
 
 					messagesBody = cursor.getString(messagesBodyIndex);
 					messages.setMessage(messagesBody);
+					messageType = cursor.getInt(messagesTypeIndex);
+					messages.setMessageType(messageType);
 
 					listMessages.add(messages);
 

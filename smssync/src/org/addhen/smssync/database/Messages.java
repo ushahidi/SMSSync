@@ -34,12 +34,29 @@ public class Messages {
 	private String messageDate;
 
 	private String messageUuid;
+	
+	private int messageType;
 
 	public Messages() {
 		this.messageBody = "";
 		this.messageFrom = "";
 		this.messageDate = "";
 		this.messageUuid = "";
+		this.messageType = 0;
+	}
+
+	/**
+	 * @return the messageType
+	 */
+	public int getMessageType() {
+		return messageType;
+	}
+
+	/**
+	 * @param messageType the messageType to set
+	 */
+	public void setMessageType(int messageType) {
+		this.messageType = messageType;
 	}
 
 	/**

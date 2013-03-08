@@ -165,4 +165,5 @@
     <string name="no_sync_url_to_delete">There are no Sync URLs to delete.</string>
     <string name="empty_sync_url_title">Please enter a title for the Sync URL</string>
     <string name="valid_sync_url">Please enter a valid URL</string>
+    <string name="task">Task</string>
 </resources>

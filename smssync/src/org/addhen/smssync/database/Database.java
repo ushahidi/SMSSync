@@ -54,9 +54,11 @@ public class Database {
 
 	public static final String SENT_MESSAGES_DATE = "messages_date";
 
+	public static final String SENT_MESSAGE_TYPE = "message_type";
+
 	public static final String[] SENT_MESSAGES_COLUMNS = new String[] {
 			SENT_MESSAGES_UUID, SENT_MESSAGES_FROM, SENT_MESSAGES_BODY,
-			SENT_MESSAGES_DATE };
+			SENT_MESSAGES_DATE, SENT_MESSAGE_TYPE };
 
 	private DatabaseHelper mDbHelper;
 
@@ -76,7 +78,11 @@ public class Database {
 			+ SENT_MESSAGES_FROM
 			+ " TEXT NOT NULL, "
 			+ SENT_MESSAGES_BODY
-			+ " TEXT, " + SENT_MESSAGES_DATE + " DATE NOT NULL " + ")";
+			+ " INT, "
+			+ SENT_MESSAGE_TYPE
+			+ " TEXT, "
+			+ SENT_MESSAGES_DATE
+			+ " DATE NOT NULL " + ")";
 
 	private final Context mContext;
 
@@ -220,7 +226,7 @@ public class Database {
 		initialValues.put(SENT_MESSAGES_FROM, messages.getMessageFrom());
 		initialValues.put(SENT_MESSAGES_BODY, messages.getMessageBody());
 		initialValues.put(SENT_MESSAGES_DATE, messages.getMessageDate());
-
+		initialValues.put(SENT_MESSAGE_TYPE, messages.getMessageType());
 		return mDb.insert(SENT_MESSAGES_TABLE, null, initialValues);
 	}
 
