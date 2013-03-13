@@ -166,4 +166,5 @@
     <string name="empty_sync_url_title">Please enter a title for the Sync URL</string>
     <string name="valid_sync_url">Please enter a valid URL</string>
     <string name="task">Task</string>
+    <string name="confirm_sms_import">This will import all SMS in the messaging inbox. This may take a while to finish.</string>
 </resources>
