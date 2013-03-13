@@ -520,8 +520,9 @@ public class PendingMessages
 	// when sms has been delivered
 	private BroadcastReceiver smsDeliveredReceiver = new BroadcastReceiver() {
 
-		public void onReceive(Context arg0, Intent arg1) {
+		public void onReceive(Context context, Intent intent) {
 			switch (getResultCode()) {
+			
 			case Activity.RESULT_OK:
 				toastLong(R.string.sms_delivered);
 				break;

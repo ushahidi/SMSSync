@@ -68,7 +68,7 @@ public class Database {
 
 	private static final String SENT_MESSAGES_TABLE = "sent_messages";
 
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	private static final String SENT_MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
 			+ SENT_MESSAGES_TABLE

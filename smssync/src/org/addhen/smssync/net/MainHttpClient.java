@@ -102,7 +102,7 @@ public class MainHttpClient {
 		try {
 			// wrap try around because this constructor can throw Error
 			final HttpGet httpget = new HttpGet(URL);
-			httpget.addHeader("User-Agent", "SmsSync-Android/1.0)");
+			httpget.addHeader("User-Agent", "SMSSync-Android/1.0)");
 
 			// Post, check and show the result (not really spectacular, but
 			// works):

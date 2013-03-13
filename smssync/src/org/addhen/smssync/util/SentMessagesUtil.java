@@ -67,6 +67,8 @@ public class SentMessagesUtil {
 		messages.setMessageFrom(smsMap.get("messagesFrom"));
 		messages.setMessageBody(smsMap.get("messagesBody"));
 		messages.setMessageDate(smsMap.get("messagesDate"));
+		messages.setMessageType(Integer.valueOf(smsMap.get("messagesType")));
+		
 		mMessages = listMessages;
 
 		if (mMessages != null) {

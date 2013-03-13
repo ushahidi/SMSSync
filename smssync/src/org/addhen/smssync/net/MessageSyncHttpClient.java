@@ -106,13 +106,17 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
 					return true;
 				}
-				
+
 				// Display error from server, if any
 				// see https://github.com/ushahidi/SMSSync/issues/68
 				String payloadError = Util.getJsonError(resp);
 				if (payloadError != "") {
 					Resources res = context.getResources();
-					Util.showToast(context, String.format(res.getString(R.string.sending_failed_custom_error), payloadError));
+					Util.showToast(
+							context,
+							String.format(
+									res.getString(R.string.sending_failed_custom_error),
+									payloadError));
 				}
 
 				return false;
@@ -121,7 +125,9 @@ public class MessageSyncHttpClient extends MainHttpClient {
 			// HTTP Status code error
 			// see https://github.com/ushahidi/SMSSync/issues/69
 			Resources res = context.getResources();
-			Util.showToast(context, String.format(res.getString(R.string.sending_failed_http_code), statusCode));
+			Util.showToast(context, String.format(
+					res.getString(R.string.sending_failed_http_code),
+					statusCode));
 
 			return false;
 

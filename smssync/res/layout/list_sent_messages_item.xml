@@ -44,6 +44,7 @@
         android:textIsSelectable="true"
         android:layout_below="@+id/sent_message"
         android:ellipsize="end"
+        android:layout_alignParentRight="true"
         android:lines="1"
         android:padding="3dp" />
 

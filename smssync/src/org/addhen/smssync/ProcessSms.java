@@ -89,6 +89,10 @@ public class ProcessSms {
 	private MessageSyncUtil messageSyncUtil;
 
 	private Intent statusIntent;
+	
+	private int PENDING = 0;
+
+	private int TASK = 1;
 
 	public ProcessSms(Context context) {
 		this.context = context;
@@ -140,13 +144,15 @@ public class ProcessSms {
 					// process filter text (keyword or RegEx)
 					if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
 						String filterText = syncUrl.getKeywords();
-						if (filterByKeywords(messagesBody, filterText) || filterByRegex(messagesBody, filterText)) {
+						if (filterByKeywords(messagesBody, filterText)
+								|| filterByRegex(messagesBody, filterText)) {
 							posted = messageSyncUtil.postToAWebService(
 									messagesFrom, messagesBody,
 									messagesTimestamp, messagesUuid,
 									syncUrl.getSecret());
 							if (!posted) {
-								// Note: HTTP Error code or custom error message will have been shown already
+								// Note: HTTP Error code or custom error message
+								// will have been shown already
 								Util.showFailNotification(
 										context,
 										messagesBody,
@@ -158,7 +164,8 @@ public class ProcessSms {
 							} else {
 
 								postToSentBox(messagesFrom, messagesBody,
-										messagesUuid, messagesTimestamp);
+										messagesUuid, messagesTimestamp,
+										PENDING);
 								Util.showFailNotification(
 										context,
 										messagesBody,
@@ -182,7 +189,7 @@ public class ProcessSms {
 						} else {
 
 							postToSentBox(messagesFrom, messagesBody,
-									messagesUuid, messagesTimestamp);
+									messagesUuid, messagesTimestamp, PENDING);
 
 							Util.showFailNotification(
 									context,
@@ -277,7 +284,7 @@ public class ProcessSms {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Filter message string for RegEx match
 	 * 
@@ -448,6 +455,7 @@ public class ProcessSms {
 
 		SmsManager sms = SmsManager.getDefault();
 		ArrayList<String> parts = sms.divideMessage(msg);
+
 		for (int i = 0; i < parts.size(); i++) {
 			PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,
 					new Intent(ServicesConstants.SENT), 0);
@@ -458,9 +466,16 @@ public class ProcessSms {
 
 			deliveryIntents.add(deliveryIntent);
 		}
-		if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo))
+
+		if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo)) {
 			sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
 					deliveryIntents);
+
+			// Get current Time Millis
+			final Long timeMills = System.currentTimeMillis() / 1000;
+			// Log to sent table
+			postToSentBox(sendTo, msg, getUuid(), timeMills.toString(), TASK);
+		}
 	}
 
 	/**
@@ -487,13 +502,15 @@ public class ProcessSms {
 	 * @return void
 	 */
 	public void postToSentBox(String messagesFrom, String messagesBody,
-			String messageUuid, String messageDate) {
+			String messageUuid, String messageDate, int messageType) {
 		Logger.log(CLASS_TAG, "postToOutbox(): post failed messages to outbox");
 
 		SentMessagesUtil.smsMap.put("messagesFrom", messagesFrom);
 		SentMessagesUtil.smsMap.put("messagesBody", messagesBody);
 		SentMessagesUtil.smsMap.put("messagesDate", messageDate);
 		SentMessagesUtil.smsMap.put("messagesUuid", messageUuid);
+		SentMessagesUtil.smsMap
+				.put("messagesType", String.valueOf(messageType));
 
 		int status = SentMessagesUtil.processSentMessages(context);
 		statusIntent.putExtra("sentstatus", status);
