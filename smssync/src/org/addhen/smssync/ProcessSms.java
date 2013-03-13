@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import org.addhen.smssync.database.IMessagesSchema;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
@@ -89,7 +88,7 @@ public class ProcessSms {
 	private MessageSyncUtil messageSyncUtil;
 
 	private Intent statusIntent;
-	
+
 	private int PENDING = 0;
 
 	private int TASK = 1;
@@ -336,15 +335,13 @@ public class ProcessSms {
 					listMessages.add(messages);
 
 					messageDate = String.valueOf(c.getLong(c
-							.getColumnIndex(IMessagesSchema.DATE)));
+							.getColumnIndex("date")));
 					messages.setMessageDate(messageDate);
 
 					messages.setMessageFrom(c.getString(c
-							.getColumnIndex(IMessagesSchema.FROM)));
-					messages.setMessage(c.getString(c
-							.getColumnIndex(IMessagesSchema.BODY)));
-					messages.setMessageUuid(c.getString(c
-							.getColumnIndex(IMessagesSchema.MESSAGE_UUID)));
+							.getColumnIndex("address")));
+					messages.setMessage(c.getString(c.getColumnIndex("body")));
+					messages.setMessageUuid(getUuid());
 
 					messages.listMessages = listMessages;
 					messages.save();

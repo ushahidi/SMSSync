@@ -173,9 +173,7 @@ public class PendingMessages
 			syncMessages("");
 			return (true);
 		} else if (item.getItemId() == R.id.import_sms) {
-			ImportMessagesTask importMessagesTask = new ImportMessagesTask(
-					getActivity());
-			importMessagesTask.execute();
+			importAllSms();
 		} else if (item.getItemId() == R.id.delete) {
 			performDeleteAll();
 		} else if (item.getItemId() == R.id.settings) {
@@ -221,6 +219,32 @@ public class PendingMessages
 	}
 
 	/**
+	 * Import all messages from the Android messaging inbox
+	 */
+	private void importAllSms() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(getString(R.string.confirm_sms_import))
+				.setCancelable(false)
+				.setNegativeButton(getString(R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						})
+				.setPositiveButton(getString(R.string.ok),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								ImportMessagesTask importMessagesTask = new ImportMessagesTask(
+										getActivity());
+								importMessagesTask.execute();
+
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	/**
 	 * Delete message by it's id
 	 */
 	public void performDeleteById() {
@@ -259,16 +283,13 @@ public class PendingMessages
 			if (Prefs.enabled) {
 				int result = 0;
 				try {
+
 					if (result == 0) {
 
 						toastLong(R.string.sending_succeeded);
 					} else if (result == 1) {
 						toastLong(R.string.sending_failed);
-					}/*
-					 * else if (result == 2) {
-					 * toastLong(R.string.no_messages_to_sync); }
-					 */
-
+					}
 				} catch (Exception e) {
 					return;
 				}
@@ -293,10 +314,7 @@ public class PendingMessages
 						showMessages();
 					} else if (result == 1) {
 						toastLong(R.string.sync_failed);
-					} /*
-					 * else if (result == 2) {
-					 * toastLong(R.string.no_messages_to_sync); }
-					 */
+					}
 				} catch (Exception e) {
 					return;
 				}
@@ -522,7 +540,7 @@ public class PendingMessages
 
 		public void onReceive(Context context, Intent intent) {
 			switch (getResultCode()) {
-			
+
 			case Activity.RESULT_OK:
 				toastLong(R.string.sms_delivered);
 				break;
