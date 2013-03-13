@@ -26,12 +26,12 @@ import android.app.Activity;
 import android.widget.CheckBox;
 
 public class SyncUrlView extends View {
-	
+
+	@Widget(R.id.start_checkbox)
 	public CheckBox enableSmsSync;
-			
+
 	public SyncUrlView(Activity activity) {
 		super(activity);
-		enableSmsSync = (CheckBox) activity.findViewById(R.id.start_checkbox);
 	}
 
 }
