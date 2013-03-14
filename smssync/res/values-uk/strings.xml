@@ -17,7 +17,7 @@
   <string name="edittxt_filter_by_from_hint">+79990000000,+79873387778</string>
   <!--unique id-->
   <string name="edittxt_unique_id_pref">Унікальний номер</string>
-  <string name="edittxt_unique_id_pref_summary">Вкажіть унікальний номер цього пристрою. Це використовується для ідентифікації пристрою, що відправляється. Вкажіть 5 цифр</string>
+  <string name="edittxt_unique_id_pref_summary">Вкажіть унікальний номер, який використовується для ідентифікації пристрою, що відправляється. Вкажіть 5 цифр</string>
   <string name="edittxt_unique_id_hint">01234</string>
   <!--response message-->
   <string name="edittxt_reply">Відповідь повідомлення</string>
@@ -46,7 +46,7 @@
   <string name="auto_sync_delay_hint">Частота синхронізації SmsSync з веб-адресою зворотного виклику.</string>
   <!--enable task check-->
   <string name="chk_enable_task_check">Перевірка завдань</string>
-  <string name="chk_enable_task_check_hint">Дозволяє періодично перевіряти завдання за адресою зворотного виклику. SmsSync виконає завдання, напр., відправить Sms.</string>
+  <string name="chk_enable_task_check_hint">Дозволяє періодично перевіряти завдання по веб-адресою. SmsSync виконає завдання, відправить Sms.</string>
   <!--task check delay-->
   <string name="txt_task_check_delay">Частота перевірок</string>
   <string name="txt_task_check_delay_hint">Частота, з якою SmsSync буде перевіряти завдання.</string>
@@ -57,6 +57,8 @@
   <string name="sms_status_failed">Помилка відправлення повідомлення</string>
   <string name="notification_summary">Шлюз запущений</string>
   <string name="sending_failed">Помилка відправлення повідомлення від SmsSync\'а.</string>
+  <string name="sending_failed_http_code">SMSSync\'у не вдалося відправити повідомлення через помилку HTTP - %1$d.</string>
+  <string name="sending_failed_custom_error">SMSSync\'у не вдалося відправити повідомлення через помилку cервера - %1$s.</string>
   <string name="sending_succeeded">Повідомлення від SmsSync\'а надіслано.</string>
   <string name="no_messages_to_sync">Немає повідомлень для відправки.</string>
   <string name="no_messages_to_delete">Немає повідомлень для видалення.</string>
@@ -88,7 +90,7 @@
   <string name="import_messages">Імпорт повідомлень..</string>
   <string name="nothing_to_import">Немає повідомлень для імпорту. Переконайтеся, що в телефоні є входять Sms.</string>
   <string name="chk_enable_reply_frm_server">Відповіді з сервера</string>
-  <string name="chk_reply_frm_server_hint">Дозволяє відразу передавати повідомлення, отримані від сервера, не чекаючи виконання завдань</string>
+  <string name="chk_reply_frm_server_hint">Дозволяє відразу передавати повідомлення, отримані від сервера, не чекаючи виконання завдань.</string>
   <string name="filter_messages">Фільтрація повідомлень</string>
   <!--SMS delivery status-->
   <string name="sms_delivery_status_failed">Помилка відправки Sms. Ймовірно, поганий сигнал?!</string>
@@ -98,7 +100,7 @@
   <string name="sms_delivered">Sms доставлено</string>
   <string name="sms_not_delivered">Sms не може бути доставлене</string>
   <!--Pending and failed messages Tab-->
-  <string name="pending_messages">Очікувані</string>
+  <string name="pending_messages">Очікують</string>
   <string name="sent_messages">Відправлені</string>
   <string name="title_bar_text">Повідомлення</string>
   <string name="no_sent_messages">Ні відправлених повідомлень.</string>
@@ -110,7 +112,7 @@
   <string name="unique_id_length_error">Унікальний номер має складатися рівно з 5 цифр</string>
   <string name="unique_id_numeric_error">Унікальний номер має складатися лише з цифр</string>
   <string name="loading">Завантаження..</string>
-  <string name="sync_url">Веб-адреса синхронізації</string>
+  <string name="sync_url">Веб-адреса</string>
   <string name="no_sync_url">Немає веб-адреси.</string>
   <string name="edit">Редагувати</string>
   <string name="enter_sync_title">Назва для веб-адреси</string>
@@ -131,4 +133,6 @@
   <string name="no_sync_url_to_delete">Видалення веб-адреси не вдалося.</string>
   <string name="empty_sync_url_title">Будь ласка, вкажіть заголовок веб-адреси</string>
   <string name="valid_sync_url">Будь ласка, вкажіть дійсний веб-адресу.</string>
+  <string name="task">Завдання</string>
+  <string name="confirm_sms_import">Імпортування всіх повідомлень у вхідні. Це може зайняти деякий час.</string>
 </resources>
