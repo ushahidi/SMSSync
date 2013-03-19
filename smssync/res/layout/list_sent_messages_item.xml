@@ -33,8 +33,6 @@
         android:layout_height="wrap_content"
         android:textIsSelectable="true"
         android:layout_below="@+id/sent_message_from"
-        android:ellipsize="end"
-        android:lines="1"
         android:padding="3dp" />
     
     <TextView

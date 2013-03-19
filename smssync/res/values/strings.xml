@@ -148,7 +148,7 @@
     <string name="no_sync_url">No Sync URL.\nUse the "+" button above to add one.</string>
     <string name="edit">Edit</string>
     <string name="enter_sync_title">Enter Title for the Sync URL</string>
-    <string name="edittxt_keyword">Enter Keyword eg. Fire, Crime, Help</string>
+    <string name="edittxt_keyword">Enter Keyword eg. Fire, Crime or a RegEx</string>
     <string name="add_sync_url">Add Sync URL</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
