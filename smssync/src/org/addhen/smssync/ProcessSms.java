@@ -326,7 +326,7 @@ public class ProcessSms {
 				null, "date DESC");
 
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-
+		MessagesModel msgs = new MessagesModel();
 		if (c.getCount() > 0 && c != null) {
 			if (c.moveToFirst()) {
 
@@ -343,12 +343,11 @@ public class ProcessSms {
 					messages.setMessage(c.getString(c.getColumnIndex("body")));
 					messages.setMessageUuid(getUuid());
 
-					messages.listMessages = listMessages;
-					messages.save();
-
 				} while (c.moveToNext());
 			}
 			c.close();
+			msgs.listMessages = listMessages;
+			msgs.save();
 			return 0;
 
 		} else {
