@@ -79,9 +79,9 @@
 </div>
 
 <h3>Overview</h3>
-<p>This how to covers the essential configuration to get SMSSync up and running. The application has been designed to be intuitive enough to easily get it running. </p>
-<p><strong>Note:</strong> SMSSync runs on any device with Android 2.1 and above. However because it relies heavily on SMS, the device needs to support SMS.</p>
-<h2>Manage Sync URL</h2>
+<p>This how to covers the essential configuration to get SMSSync up and running. The application has been designed to be intuitive enough to easily get it running.</p>
+<p><strong>Note:</strong> SMSSync works on any <acronym title="Short Message Service">SMS</acronym>-enabled device running Android 2.1 and above.</p>
+<h2>Manage Sync URLs</h2>
 <p>Here you can manage multiple Sync URLs. Sync URLs are the URLs of your webservices. These are where the messages from SMSSync are actually pushed to.
 <div class="row-fluid">
 <div class="span6"></p>
@@ -91,29 +91,29 @@
 <li>Tap on the <strong><em>Sync URL</em></strong> tab.</li>
 <li>Tap on the <img alt="Add icon" src="images/icons/new.png" /> icon on the actionbar. An input dialog should open.</li>
 <li>Enter a title for the Sync URL.</li>
-<li>Enter an optional secret key. If there is secret key on the webservices. Make sure you enter the exact key here.</li>
-<li>Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding.</li>
+<li>Enter a secret key if required by the webservices. Make sure you enter the exact key here.</li>
+<li>Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding. As of v2.0.2. You can now add Regular Expresssion code for filtering. This means, it can either be CSV or RegExp. It cannot be both.</li>
 <li>Enter the URL for your webservice. Don't forget to start with the <strong><em>HTTP</em></strong> or <strong><em>HTTPS</em></strong> protocol.</li>
-<li>Tap <strong><em>Ok</em></strong> to save the new entry or <strong><em>Cancel</em></strong> to cancel adding the new entry.</li>
+<li>Tap <strong><em>OK</em></strong> to save the new entry.</li>
 </ol>
 <p></div>
 <div class="span6"></p>
-<h4>Edit new Sync URL</h4>
+<h4>Edit a Sync URL</h4>
 <p>To edit an existing Sync URL:</p>
 <ol>
-<li>Long press on the Sync URL you want to edit by tapping and holding it untill the actionbar menu changes.</li>
-<li>Tap on the <img alt="Edit icon" src="images/icons/edit.png" /> icon on the actionbar. An input dialog should opened repopulated with the details of the Sync URL.</li>
+<li>Long press on the Sync URL you want to edit by tapping and holding it until the actionbar menu changes.</li>
+<li>Tap on the <img alt="Edit icon" src="images/icons/edit.png" /> icon on the actionbar. An input dialog should open repopulated with the details of the Sync URL.</li>
 <li>Edit the necessary field(s) accordinlgy.</li>
-<li>Tap <strong><em>Ok</em></strong> to save the edited entry or <strong><em>Cancel</em></strong> to cancel editing the existing entry.</li>
+<li>Tap <strong><em>OK</em></strong> to save the edited entry.</li>
 </ol>
 <p></div>
 <div class="span6"></p>
-<h4>Delete All Existing Sync URL</h4>
+<h4>Delete All Existing Sync URLs</h4>
 <p>Delete all Sync URL by:</p>
 <ol>
-<li>If there are any Sync URL enabled(checked), disable(uncheck) them. Otherwise, move to the next item.</li>
-<li>Stop the SMSSync service if it's running(checked). Otherwise, move to the next point.</li>
-<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should opened.</li>
+<li>If there are any Sync URLs enabled&nbsp;(checked), disable&nbsp;(uncheck) them.</li>
+<li>Stop the SMSSync service if it's running&nbsp;(checked).</li>
+<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should open.</li>
 <li>Tap <strong><em>Yes</em></strong> to delete all Sync URL or <strong><em>No</em></strong> to cancel the deletion.</li>
 </ol>
 <p></div>
@@ -123,9 +123,9 @@
 <h4>Delete An Existing Sync URL</h4>
 <p>Delete an existing Sync URL by:</p>
 <ol>
-<li>If the Sync URL to be deleted is enabled(checked), disable it. Otherwise, move to the next item.</li>
-<li>Long press on the Sync URL you want to delete by tapping and holding it untill the actionbar menu changes.</li>
-<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should opened.</li>
+<li>If the Sync URL to be deleted is enabled&nbsp;(checked), disable it. Otherwise, move to the next item.</li>
+<li>Long press on the Sync URL you want to delete by tapping and holding it until the actionbar menu changes.</li>
+<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should open.</li>
 <li>Tap <strong><em>Yes</em></strong> to delete it or <strong><em>No</em></strong> to cancel the deletion.</li>
 </ol>
 <p></div>
@@ -133,7 +133,7 @@
 <h4>Start SMSSync service</h4>
 <p>To start the SMSSync service:</p>
 <ol>
-<li>Make sure you have added and enabled(checked) at least one Sync URL.</li>
+<li>Make sure you have added and enabled&nbsp;(checked) at least one Sync URL.</li>
 <li>On the <strong><em>SYNC URL</em></strong> tab, tap on the <strong><em>Start SMSSync service</em></strong> to start the service. You do this if the service is disabled.</li>
 </ol>
 <p></div>
@@ -141,14 +141,14 @@
 <h4>Stop SMSSync service</h4>
 <p>To stop the SMSSync service:</p>
 <ol>
-<li>On the <strong><em>SYNC URL</em></strong> tab, tap on the <strong><em>Start SMSSync service</em></strong> to stop the service. You do this if the service is enabled.</li>
+<li>On the <strong><em>SYNC URL</em></strong> tab, uncheck the <strong><em>Start SMSSync service</em></strong> option to stop the service.</li>
 </ol>
 <p></div>
 </div>
 <div class="row-fluid">
 <div class="span12"></p>
 <h3>Configure</h3>
-<p>With the options available on the app, you can configure it to behave to your preferences.
+<p>Using the options available in the app settings, you can configure the behaviour however you like.
 </div>
 </div>
 <div class="row-fluid">
@@ -182,7 +182,7 @@ To enable auto sync:</p>
 <p></div>
 <div class="span6"></p>
 <h4>Task Settings</h4>
-<p>The Task feature allows you to send SMS to users. All the messages to be sent to the users are configured on the server.
+<p>The Task feature allows you to send SMS to users as defined by the server. It works by regularly checking the server for new messages to be sent.
 To enable Task Checking feature:</p>
 <ol>
 <li>Go to Settings screen by tapping the <img alt="Settings icon" src="images/icons/settings.png" /> icon on the actionbar or option menu.</li>
@@ -194,25 +194,25 @@ To enable Task Checking feature:</p>
 <div class="row-fluid">
 <div class="span12"></p>
 <h3>Manage Pending Messages</h3>
-<p>Pending messages are failed SMS that couldn't make it to any of the enabled Sync URLs. SMSSync allows you to manage these pending messages. You can either configure the app to automatically or manually sync these failed messages or delete them. This section of the how to is going to show you how to manage pending messages.
+<p>Pending messages are failed SMS that couldn't make it to any of the enabled Sync URLs. 
+SMSSync allows you to manage these pending messages. 
+You can either configure the app to automatically or manually sync these failed messages or delete them.
 </div>
 </div>
 <div class="row-fluid">
 <div class="span6"></p>
-<h4>Manaully sync all pending messages</h4>
-<p>Manully sync all pending messages by:</p>
+<h4>Manually sync all pending messages</h4>
 <ol>
 <li>Tap on the <img alt="Sync icon" src="images/icons/refresh.png" /> icon on the actionbar. The sync icon should spin for a while.</li>
-<li>After the sync icon spins for a while, a Toast should show up with a status message.
-</div>
-<div class="span6"></li>
+<li>After the sync icon spins for a while, a Toast should show up with a status message.</li>
 </ol>
-<h4>Manaully sync a pending message</h4>
-<p>Manually sync a pending message by:</p>
+<p></div>
+<div class="span6"></p>
+<h4>Manaully sync a single pending message</h4>
 <ol>
-<li>Long press on the pending message you want to sync by tapping and holding it untill the actionbar menu changes.</li>
+<li>Long press on the pending message you want to sync by tapping and holding it until the actionbar menu changes.</li>
 <li>Tap on the <img alt="Sync icon" src="images/icons/refresh.png" /> icon on the actionbar. The sync icon should spin for a while.</li>
-<li>After the sync icon spins for a while, a Toast should show with a status message.</li>
+<li>After the sync icon stops spinning, a popup should appear with a status message.</li>
 </ol>
 <p></div>
 <div class="row-fluid">
@@ -220,7 +220,7 @@ To enable Task Checking feature:</p>
 <h4>Delete pending messages</h4>
 <p>Delete all pending messages saved on the device.</p>
 <ol>
-<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should opened.</li>
+<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should open.</li>
 <li>Tap <strong><em>Yes</em></strong> to delete all pending messages or <strong><em>No</em></strong> to cancel the deletion.</li>
 </ol>
 <p></div>
@@ -228,31 +228,29 @@ To enable Task Checking feature:</p>
 <h4>Import SMS</h4>
 <p>Import SMS from the device's messages inbox.</p>
 <ol>
-<li>Tap on the <img alt="Import icon" src="images/icons/import.png" /> icon on the actionbar. A progress dialog should opened. Leave it to run until it finishes. Depending on the messages in your inbox, this should take a while.</li>
+<li>Tap on the <img alt="Import icon" src="images/icons/import.png" /> icon on the actionbar. A progress dialog should open. Leave it to run until it finishes. Depending on the number of messages in your inbox, this could take a while.</li>
 </ol>
 <p></div>
 </div>
 <div class="row-fluid">
 <div class="span12"></p>
 <h3>Manage Sent Messages</h3>
-<p>Sent messages are SMS or pending messages that have successfully been sync'd to the enabledSync URL. This is to allow you to see what messages were successfully sent. There is nothing much you can do here. You can only view and delete sent messages. This section will show you how to delete sent messages individually or all at the same time.
+<p>Sent messages are SMS or pending messages that have successfully been sync'd to the enabled Sync URL. This is to allow you to see which messages were successfully sent. Here you can view and delete these sent messages. This section will show you how to delete sent messages individually or all at the same time.
 </div>
 </div>
 <div class="row-fluid">
 <div class="span6"></p>
-<h4>Delete a sent message</h4>
-<p>Delete an individual message by:</p>
+<h4>Delete an individual sent message</h4>
 <ol>
 <li>Long press on the sent message you want to delete by tapping and holding it until the actionbar menu changes.</li>
-<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should opened.</li>
+<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should open.</li>
 <li>Tap <strong><em>Yes</em></strong> to delete it or <strong><em>No</em></strong> to cancel the deletion.</li>
 </ol>
 <p></div>
 <div class="span6"></p>
 <h4>Delete all sent messages</h4>
-<p>Delete all saved sent messages by:</p>
 <ol>
-<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should opened.</li>
+<li>Tap on the <img alt="Delete icon" src="images/icons/delete.png" /> icon on the actionbar. A confirmation dialog should open.</li>
 <li>Tap <strong><em>Yes</em></strong> to delete all sent messages or <strong><em>No</em></strong> to cancel the deletion.</li>
 </ol>
 <p></div>
@@ -263,7 +261,7 @@ To enable Task Checking feature:</p>
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 31-08-2012
+                Generated: 19-03-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>

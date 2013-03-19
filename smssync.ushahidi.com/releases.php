@@ -46,7 +46,7 @@
             <div class="nav-collapse subnav-collapse">
                 <ul class="nav">
                     <li><a href="index">Home</a></li>
-                    <li class="active"><a href="releases">Releases</a></li>
+                    <li><a href="releases">Releases</a></li>
                     <li><a href="download">Download</a></li>
                     <li><a href="howto">Configure</a></li>
                     <li><a href="doc">Developers</a></li>
@@ -75,10 +75,36 @@
 
 <div class="container">
 <div class="page-header">
-    <h1>Releases History <small>This page is about release information for SMSSync. Mainly, it documents the version numbers, current stable and development branches. It also states the release dates and where to download the app.</small></h1>
+    <h1>Releases History <small>This page is about release information for SMSSync. It provides changelogs and version numbers of old releases, and details of current stable and development branches.</small></h1>
 </div>
 
-<h1>Current release</h1>
+<h1>Current Release</h1>
+<ul>
+<li>Released March 20<sup>th</sup>, 2013</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.2">v2.0.2</a></li>
+</ul>
+<h3>Changelog</h3>
+<ul>
+<li>Feature:</li>
+<li>Show confirmation prompt when attempting to import SMS</li>
+<li>Added RegExp support to keyword filtering.</li>
+<li>Added more useful HTTP and server error messages</li>
+<li>Simplified the actionbar menu. Only show the relevant menus</li>
+<li>Updated notification code to make use the notification.compact library</li>
+<li>
+<p>Add Urkainian language</p>
+</li>
+<li>
+<p>Bug:</p>
+</li>
+<li>Fix wifi lock issue <a href="https://github.com/ushahidi/SMSSync/issues/56">#56</a></li>
+<li>Improved wording and typos in the strings file</li>
+<li>Disable excessive "no task enabled" notifications</li>
+<li>Upgrade abs library to 4.2.0</li>
+<li>Fix ID issue <a href="https://github.com/ushahidi/SMSSync/issues/60">#60</a>. Now uses UUID instead</li>
+<li>Fix issue with auto sync failing</li>
+</ul>
+<h1>Previous releases</h1>
 <ul>
 <li>Released October 22<sup>nd</sup>, 2012</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.1">v2.0.1</a></li>
@@ -90,7 +116,7 @@
 <ul>
 <li>Resizable widgets to fit on most screens.</li>
 <li>Upgraded ABS library to 4.2.2.</li>
-<li>Added Korean translation</li>
+<li>Added Korean translation.</li>
 </ul>
 </li>
 <li>
@@ -100,10 +126,9 @@
 <li>Removed screen restriction support from manifest file. This is to allow it to show up on the Google play store for most devices.</li>
 </ul>
 </li>
-</ul>
-<h1>Previous releases</h1>
-<ul>
-<li>Released September 3<sup>rd</sup>, 2012</li>
+<li>
+<p>Released September 3<sup>rd</sup>, 2012</p>
+</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.0">v2.0.0</a></li>
 </ul>
 <h3>Changelog</h3>
@@ -115,8 +140,8 @@
 <li>Added the ability to manage multiple Sync URLs and the ability to sync messages to them.</li>
 <li>Added icons to actionbar menu instead of just text.</li>
 <li>Cleaned up code based making it more modular and easier to maintain.</li>
-<li>Increased the frequency times for the various schedulers. Added 1 minute, 2 minutes, 3 minutes and 4 minutes.</li>
-<li>Dropped support for devices running 1.6. This is to allow us to take advantage of the new Android APIs</li>
+<li>Increased the frequency options for the various schedulers. Added 1 minute, 2 minutes, 3 minutes and 4 minutes.</li>
+<li>Dropped support for devices running 1.6. This is to allow us to take advantage of the new Android APIs.</li>
 </ul>
 </li>
 <li>
@@ -124,7 +149,7 @@
 <ul>
 <li>Fixed task checking issue. It now frequently pings client for tasks.</li>
 <li>sent_timestamp variable  now sends the raw timestamp instead of the preformatted one. This is to allow the client to have control of the formatting.</li>
-<li>Removed the characters contrains to Unique ID field.</li>
+<li>Removed the characters constraints to Unique ID field.</li>
 </ul>
 </li>
 <li>
@@ -138,7 +163,7 @@
 <p>Bug:</p>
 <ul>
 <li>Fixed missing title</li>
-<li>Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59</li>
+<li>Reformatted sent_timestamp to <code>13.11.11 14:59</code> instead of <code>11-13-11-02:59</code></li>
 <li>Added 5 more languages - French, Japanese, Danish, Russian and Serbian</li>
 </ul>
 </li>
@@ -153,7 +178,7 @@
 <p>Bug:</p>
 <ul>
 <li>Fixed HTTPS not working on some devices.</li>
-<li>Fixed sent_to variable not sending the device's number. </li>
+<li>Fixed sent_to variable not sending the device's phone number. </li>
 <li>Fixed formatting issue with sent_timestamp.</li>
 </ul>
 </li>
@@ -176,7 +201,7 @@
 <li>
 <p>Bug:</p>
 <ul>
-<li>Fixed issue with app widget not updating  view when pending messages are in the view.</li>
+<li>Fixed issue with app widget not refreshing when pending messages are in the view.</li>
 <li>Improved performance with syncing pending messages. </li>
 </ul>
 </li>
@@ -193,12 +218,12 @@
 <h3>Changelog</h3>
 <ul>
 <li>Feature:<ul>
-<li>Added improvement that makes th battery consumption by the app.</li>
+<li>Added improvement to the app's battery consumption.</li>
 <li>Added the ability for enabled services to automatically start after the phone boots up.</li>
-<li>Added the ability for the App to lock WiFi connection when the phone is connected to a WiFi.</li>
+<li>Added the ability for the App to lock WiFi connection.</li>
 <li>Added the ability for 'response messages' to be received from the server and not wait on a scheduler.</li>
 <li>Added confirmation dialog when performing delete actions.</li>
-<li>Added a tab that habours 'pending messages' view and 'sent messages' view.</li>
+<li>Added a tab that harbours 'pending messages' view and 'sent messages' view.</li>
 <li>Added the ability for the app to log recent sent messages. Twenty is the Max.</li>
 <li>Added 'sent_timestamp' post variable in order to send the timestamp of an SMS.</li>
 <li>Added App widget support.</li>
@@ -206,8 +231,8 @@
 </li>
 </ul>
 <p>Bug:
-    * Fixed a bug that when all messages are deleted, the app shows a failed message yet the messages are deleted.
-    * Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service.</p>
+    * Fixed a bug that when all messages are deleted, the app shows a failure message yet the messages are deleted.
+    * Fixed the issue of 'pending messages' view not updating after pending messages are deleted by a background service.</p>
 <ul>
 <li>Released February 25<sup>th</sup>, 2011</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.5">v1.0.5</a></li>
@@ -217,7 +242,7 @@
 <li>
 <p>Feature:</p>
 <ul>
-<li>Scheduler automatically Syncs pending messages to the configured Callback URL.</li>
+<li>Scheduler automatically syncs pending messages to the configured Callback URL.</li>
 <li>Now sends out messages from the configured callback URL as text message.</li>
 <li>Imports messages from Android messages app inbox for synchronizing to the configured callback URL.</li>
 <li>Added context menu for deleting or synchronizing pending messages. <br />
@@ -247,7 +272,7 @@
 <li>
 <p>Bug:</p>
 <ul>
-<li>Notification cannot be cleared untill SMSSync is stopped.</li>
+<li>Notification cannot be cleared until SMSSync is stopped.</li>
 <li>Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost.</li>
 </ul>
 </li>
@@ -259,18 +284,18 @@
 <h3>Changelog</h3>
 <ul>
 <li>Bug:<ul>
-<li>Downgraded to Android 1.6 so smssync works from 1.6 and above.</li>
-<li>Now sms can be deleted from the sms inbox. This is a configurable option. </li>
+<li>Downgraded to Android 1.6 so SMSSync works from 1.6 and above.</li>
+<li>Now SMS can be deleted from the SMS inbox. This is a configurable option. </li>
 <li>Fixed issue with the secret variable.</li>
 <li>Better support for localization - All hardcoded strings have been moved to the string.xml file.</li>
-<li>Supports outbox -- for pending messages that manually needs to be synced.</li>
-<li>Improved SMS background service -- Now it starts and stops perfectly.</li>
+<li>Supports outbox for pending messages that need to be synced manually.</li>
+<li>Improved SMS background service - now it starts and stops perfectly.</li>
 <li>Added version number to the powered by text on the Settings screen.</li>
 <li>Changed notification Icon to SMSSync's slick launch icon.</li>
 <li>Shows status of Pending messages. Whether there are pending messages or not.</li>
 <li>Prepopulates URL field with "http://" when setting up the sync URL.</li>
 <li>Sends an auto response once the SMS is recieved. This is a configurable option.</li>
-<li>Validates the callback URL </li>
+<li>Validates the callback URL.</li>
 </ul>
 </li>
 </ul></div>
@@ -279,7 +304,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 22-10-2012
+                Generated: 19-03-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
