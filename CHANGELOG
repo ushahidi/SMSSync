@@ -11,7 +11,6 @@ Bug:
   * Fix wifi lock issue. See #56
   * Improved wording and typos in the strings file
   * Disable excessive "no task enabled" notifications
-  * Upgrade abs library to 4.2.0
   * Fix ID issue. Now uses UUID instead. See #60
   * Fix issue with auto sync failing.
 
@@ -21,7 +20,7 @@ Bug:
 2.0.1
 Feature:
   * Resizable widgets to fit on most screens.
-  * Upgraded ABS library to 4.2.2.
+  * Upgraded ABS library to 4.2.0.
   * Added Korean translation
 
 Bug:

@@ -14,16 +14,15 @@
   * Added RegExp support to keyword filtering.
   * Added more useful HTTP and server error messages
   * Simplified the actionbar menu. Only show the relevant menus
-  * Updated notification code to make use the notification.compact library
-  * Add Urkainian language
+  * Updated notification code to make use of the notification.compact library
+  * Add Russian, Ukrainian, Belarusian languages
 
 * Bug:
-  * Fix wifi lock issue [#56](https://github.com/ushahidi/SMSSync/issues/56)
+  * Fix wifi lock issue. See [#56](https://github.com/ushahidi/SMSSync/issues/56)
   * Improved wording and typos in the strings file
   * Disable excessive "no task enabled" notifications
-  * Upgrade abs library to 4.2.0
-  * Fix ID issue [#60](https://github.com/ushahidi/SMSSync/issues/60). Now uses UUID instead
-  * Fix issue with auto sync failing
+  * Fix ID issue. Now uses UUID instead. See [#60](https://github.com/ushahidi/SMSSync/issues/60).
+  * Fix issue with auto sync failing.
 
 # Previous releases
 
@@ -34,7 +33,7 @@
 
 * Feature:
     * Resizable widgets to fit on most screens.
-    * Upgraded ABS library to 4.2.2.
+    * Upgraded ABS library to 4.2.0.
     * Added Korean translation.
 
 * Bug:
