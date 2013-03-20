@@ -1,3 +1,6 @@
 *.swp
 bin
 gen
+local.properties
+secure.properties
+
