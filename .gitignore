@@ -1,4 +1,5 @@
 *.swp
 abslib/bin/
+abslib/gen/
 smssync/bin/
 smssync/gen/
