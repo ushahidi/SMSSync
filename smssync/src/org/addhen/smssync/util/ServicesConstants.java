@@ -40,7 +40,7 @@ public class ServicesConstants {
     
     public static String FAILED_ACTION = "org.addhen.smssync.syncservices.failed";
     
-    public static String MESSEAGE_ID = "message_id";
+    public static String MESSEAGE_UUID = "message_uuid";
 
     public static String SENT = "SMS_SENT";
 

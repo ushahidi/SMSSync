@@ -46,7 +46,7 @@ import android.util.Log;
 public class Database {
 	private static final String TAG = "SmssyncDatabase";
 
-	public static final String SENT_MESSAGES_ID = "_id";
+	public static final String SENT_MESSAGES_UUID = "_id";
 
 	public static final String SENT_MESSAGES_FROM = "messages_from";
 
@@ -54,9 +54,11 @@ public class Database {
 
 	public static final String SENT_MESSAGES_DATE = "messages_date";
 
+	public static final String SENT_MESSAGE_TYPE = "message_type";
+
 	public static final String[] SENT_MESSAGES_COLUMNS = new String[] {
-			SENT_MESSAGES_ID, SENT_MESSAGES_FROM, SENT_MESSAGES_BODY,
-			SENT_MESSAGES_DATE };
+			SENT_MESSAGES_UUID, SENT_MESSAGES_FROM, SENT_MESSAGES_BODY,
+			SENT_MESSAGES_DATE, SENT_MESSAGE_TYPE };
 
 	private DatabaseHelper mDbHelper;
 
@@ -66,18 +68,21 @@ public class Database {
 
 	private static final String SENT_MESSAGES_TABLE = "sent_messages";
 
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	private static final String SENT_MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
 			+ SENT_MESSAGES_TABLE
 			+ " ("
-			+ SENT_MESSAGES_ID
-			+ " INTEGER PRIMARY KEY ON CONFLICT REPLACE, "
+			+ SENT_MESSAGES_UUID
+			+ " TEXT, "
 			+ SENT_MESSAGES_FROM
 			+ " TEXT NOT NULL, "
 			+ SENT_MESSAGES_BODY
+			+ " INT, "
+			+ SENT_MESSAGE_TYPE
 			+ " TEXT, "
-			+ SENT_MESSAGES_DATE + " DATE NOT NULL " + ")";
+			+ SENT_MESSAGES_DATE
+			+ " DATE NOT NULL " + ")";
 
 	private final Context mContext;
 
@@ -104,45 +109,49 @@ public class Database {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
 					+ newVersion + " which destroys all old data");
-			List<String> messagesColumns;
-			List<String> sentMessagesColumns;
+
 			// upgrade messages table
-			db.execSQL(IMessagesSchema.CREATE_TABLE);
-			messagesColumns = Database.getColumns(db, IMessagesSchema.TABLE);
-			db.execSQL("ALTER TABLE " + IMessagesSchema.TABLE
-					+ " RENAME TO temp_" + IMessagesSchema.TABLE);
-			db.execSQL(IMessagesSchema.CREATE_TABLE);
-			messagesColumns.retainAll(Database.getColumns(db,
-					IMessagesSchema.TABLE));
-			String cols = Database.join(messagesColumns, ",");
-			db.execSQL(String.format(
-					"INSERT INTO %s (%s) SELECT %s FROM temp_%s",
-					IMessagesSchema.TABLE, cols, cols, IMessagesSchema.TABLE));
-			db.execSQL("DROP TABLE IF EXISTS temp_" + IMessagesSchema.TABLE);
+			// drop the column to deleted
+			dropColumn(db, IMessagesSchema.CREATE_TABLE, IMessagesSchema.TABLE,
+					new String[] { "_id" });
 
 			// upgrade sent messages table
-			db.execSQL(SENT_MESSAGES_TABLE_CREATE);
-			sentMessagesColumns = Database.getColumns(db, SENT_MESSAGES_TABLE);
-			db.execSQL("ALTER TABLE " + SENT_MESSAGES_TABLE
-					+ " RENAME TO temp_" + SENT_MESSAGES_TABLE);
-			db.execSQL(SENT_MESSAGES_TABLE_CREATE);
-			messagesColumns.retainAll(Database.getColumns(db,
-					SENT_MESSAGES_TABLE));
-			String sentMessagesCols = Database.join(sentMessagesColumns, ",");
-			db.execSQL(String.format(
-					"INSERT INTO %s (%s) SELECT %s FROM temp_%s",
-					SENT_MESSAGES_TABLE, sentMessagesCols, sentMessagesCols,
-					SENT_MESSAGES_TABLE));
-			db.execSQL("DROP TABLE IF EXISTS temp_" + SENT_MESSAGES_TABLE);
+			dropColumn(db, SENT_MESSAGES_TABLE_CREATE, SENT_MESSAGES_TABLE,
+					new String[] { "_id" });
+
+			// TODO:: write code to populate UUID field
 
 			// upgrade syncurl table
 			db.execSQL(ISyncUrlSchema.CREATE_TABLE);
 
 			// add old sync url configuration to the database,
-			syncLegacySyncUrl(sContext,db);
+			syncLegacySyncUrl(sContext, db);
 			onCreate(db);
 		}
 
+	}
+
+	private static void dropColumn(SQLiteDatabase db, String createTableCmd,
+			String tableName, String[] colsToRemove) {
+
+		List<String> updatedTableColumns = getColumns(db, tableName);
+		// Remove the columns we don't want anymore from the table's list of
+		// columns
+		updatedTableColumns.removeAll(Arrays.asList(colsToRemove));
+
+		String columnsSeperated = TextUtils.join(",", updatedTableColumns);
+
+		db.execSQL("ALTER TABLE " + tableName + " RENAME TO " + tableName
+				+ "_old;");
+
+		// Creating the table with its new format (no redundant columns)
+		db.execSQL(createTableCmd);
+
+		// Populating the table with the data
+		db.execSQL("INSERT INTO " + tableName + "(" + columnsSeperated
+				+ ") SELECT " + columnsSeperated + " FROM " + tableName
+				+ "_old;");
+		db.execSQL("DROP TABLE " + tableName + "_old;");
 	}
 
 	/**
@@ -213,11 +222,11 @@ public class Database {
 	public long createSentMessages(Messages messages) {
 		ContentValues initialValues = new ContentValues();
 
-		initialValues.put(SENT_MESSAGES_ID, messages.getMessageId());
+		initialValues.put(SENT_MESSAGES_UUID, messages.getMessageUuid());
 		initialValues.put(SENT_MESSAGES_FROM, messages.getMessageFrom());
 		initialValues.put(SENT_MESSAGES_BODY, messages.getMessageBody());
 		initialValues.put(SENT_MESSAGES_DATE, messages.getMessageDate());
-
+		initialValues.put(SENT_MESSAGE_TYPE, messages.getMessageType());
 		return mDb.insert(SENT_MESSAGES_TABLE, null, initialValues);
 	}
 
@@ -246,9 +255,9 @@ public class Database {
 	 * @param int messageId
 	 * @return boolean
 	 */
-	public boolean deleteSentMessagesById(int messageId) {
-		String whereClause = SENT_MESSAGES_ID + "= ?";
-		String whereArgs[] = { String.valueOf(messageId) };
+	public boolean deleteSentMessagesByUuid(String messageId) {
+		String whereClause = SENT_MESSAGES_UUID + "= ?";
+		String whereArgs[] = { messageId };
 		return mDb.delete(SENT_MESSAGES_TABLE, whereClause, whereArgs) > 0;
 	}
 
@@ -266,13 +275,12 @@ public class Database {
 			for (Messages message : messages) {
 				createSentMessages(message);
 			}
-			limitRows(SENT_MESSAGES_TABLE, 20, SENT_MESSAGES_ID);
+			limitRows(SENT_MESSAGES_TABLE, 20, SENT_MESSAGES_UUID);
 			mDb.setTransactionSuccessful();
 		} finally {
 			mDb.endTransaction();
 		}
 	}
-	
 
 	public static boolean addSyncUrl(SyncUrlModel syncUrl, SQLiteDatabase db) {
 		// set values
@@ -282,17 +290,18 @@ public class Database {
 		initialValues.put(ISyncUrlSchema.KEYWORDS, syncUrl.getKeywords());
 		initialValues.put(ISyncUrlSchema.SECRET, syncUrl.getSecret());
 		initialValues.put(ISyncUrlSchema.STATUS, syncUrl.getStatus());
-		return db.insert(ISyncUrlSchema.TABLE,null, initialValues) > 0;
+		return db.insert(ISyncUrlSchema.TABLE, null, initialValues) > 0;
 	}
 
-	public static boolean addSyncUrl(List<SyncUrlModel> syncUrls, SQLiteDatabase db ) {
+	public static boolean addSyncUrl(List<SyncUrlModel> syncUrls,
+			SQLiteDatabase db) {
 
 		try {
 			db.beginTransaction();
 
 			for (SyncUrlModel syncUrl : syncUrls) {
 
-				addSyncUrl(syncUrl,db);
+				addSyncUrl(syncUrl, db);
 			}
 
 			db.setTransactionSuccessful();
@@ -308,7 +317,7 @@ public class Database {
 	 * @return int
 	 */
 	public int fetchSentMessagesCount() {
-		Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + SENT_MESSAGES_ID
+		Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + SENT_MESSAGES_UUID
 				+ ") FROM " + SENT_MESSAGES_TABLE, null);
 
 		int result = 0;
@@ -349,11 +358,11 @@ public class Database {
 		return deleted;
 	}
 
-	public static void syncLegacySyncUrl(Context context,SQLiteDatabase db) {
+	public static void syncLegacySyncUrl(Context context, SQLiteDatabase db) {
 		// saved preferences
 		final SharedPreferences settings = context.getSharedPreferences(
 				Prefs.PREF_NAME, 0);
-		
+
 		final String website = settings.getString("WebsitePref", "");
 		final String apiKey = settings.getString("ApiKey", "");
 		final String keyword = settings.getString("Keyword", "");
@@ -366,7 +375,7 @@ public class Database {
 			syncUrl.setStatus(1);
 			syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
 			syncUrl.listSyncUrl.add(syncUrl);
-			addSyncUrl(syncUrl.listSyncUrl,db );
+			addSyncUrl(syncUrl.listSyncUrl, db);
 		}
 
 	}

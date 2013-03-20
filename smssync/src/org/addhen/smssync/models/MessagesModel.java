@@ -37,7 +37,7 @@ public class MessagesModel extends Model {
 
 	private String messageDate;
 
-	private int messageId;
+	private String messageUuid;
 
 	public List<MessagesModel> listMessages;
 
@@ -103,22 +103,22 @@ public class MessagesModel extends Model {
 	}
 
 	/**
-	 * Set the message ID.
+	 * Set the message UUID.
 	 * 
-	 * @param int messageId - The message ID.
+	 * @param int messageUuid - The message UUID.
 	 * @return void
 	 */
-	public void setMessageId(int messageId) {
-		this.messageId = messageId;
+	public void setMessageUuid(String messageUuid) {
+		this.messageUuid = messageUuid;
 	}
 
 	/**
-	 * Get the message ID.
+	 * Get the message UUID.
 	 * 
-	 * @return int
+	 * @return String
 	 */
-	public int getMessageId() {
-		return this.messageId;
+	public String getMessageUuid() {
+		return this.messageUuid;
 	}
 
 	@Override
@@ -130,9 +130,9 @@ public class MessagesModel extends Model {
 		return false;
 	}
 
-	public boolean loadById(int messageId) {
+	public boolean loadByUuid(String messageUuid) {
 		listMessages = Database.mMessagesContentProvider
-				.fetchMessagesById(messageId);
+				.fetchMessagesByUuid(messageUuid);
 		if (listMessages != null) {
 			return true;
 		}
@@ -166,13 +166,14 @@ public class MessagesModel extends Model {
 	}
 
 	/**
-	 * Delete messages by id
+	 * Delete messages by UUID
 	 * 
-	 * @param int messageId - Message to be deleted ID
+	 * @param int messageId - Message to be deleted UUID
 	 * @return boolean
 	 */
-	public boolean deleteMessagesById(int messageId) {
-		return Database.mMessagesContentProvider.deleteMessagesById(messageId);
+	public boolean deleteMessagesByUuid(String messageUuid) {
+		return Database.mMessagesContentProvider
+				.deleteMessagesByUuid(messageUuid);
 	}
 
 	/**

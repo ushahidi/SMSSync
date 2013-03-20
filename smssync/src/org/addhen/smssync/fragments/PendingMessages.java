@@ -59,7 +59,7 @@ public class PendingMessages
 
 	private MessagesModel model;
 
-	private int messageId = 0;
+	private String messageUuid;
 
 	private MenuItem refresh;
 
@@ -147,7 +147,7 @@ public class PendingMessages
 	}
 
 	public boolean performAction(MenuItem item, int position) {
-		messageId = adapter.getItem(position).getMessageId();
+		messageUuid = adapter.getItem(position).getMessageUuid();
 		if (item.getItemId() == R.id.context_delete) {
 
 			performDeleteById();
@@ -158,7 +158,7 @@ public class PendingMessages
 			refresh = item;
 			refreshState = true;
 			updateRefreshStatus();
-			syncMessages(messageId);
+			syncMessages(messageUuid);
 		}
 		return (false);
 	}
@@ -170,12 +170,10 @@ public class PendingMessages
 			refresh = item;
 			refreshState = true;
 			updateRefreshStatus();
-			syncMessages(0);
+			syncMessages("");
 			return (true);
 		} else if (item.getItemId() == R.id.import_sms) {
-			ImportMessagesTask importMessagesTask = new ImportMessagesTask(
-					getActivity());
-			importMessagesTask.execute();
+			importAllSms();
 		} else if (item.getItemId() == R.id.delete) {
 			performDeleteAll();
 		} else if (item.getItemId() == R.id.settings) {
@@ -221,6 +219,32 @@ public class PendingMessages
 	}
 
 	/**
+	 * Import all messages from the Android messaging inbox
+	 */
+	private void importAllSms() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(getString(R.string.confirm_sms_import))
+				.setCancelable(false)
+				.setNegativeButton(getString(R.string.cancel),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						})
+				.setPositiveButton(getString(R.string.ok),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								ImportMessagesTask importMessagesTask = new ImportMessagesTask(
+										getActivity());
+								importMessagesTask.execute();
+
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+
+	/**
 	 * Delete message by it's id
 	 */
 	public void performDeleteById() {
@@ -259,16 +283,13 @@ public class PendingMessages
 			if (Prefs.enabled) {
 				int result = 0;
 				try {
+
 					if (result == 0) {
 
 						toastLong(R.string.sending_succeeded);
 					} else if (result == 1) {
 						toastLong(R.string.sending_failed);
-					}/*
-					 * else if (result == 2) {
-					 * toastLong(R.string.no_messages_to_sync); }
-					 */
-
+					}
 				} catch (Exception e) {
 					return;
 				}
@@ -293,10 +314,7 @@ public class PendingMessages
 						showMessages();
 					} else if (result == 1) {
 						toastLong(R.string.sync_failed);
-					} /*
-					 * else if (result == 2) {
-					 * toastLong(R.string.no_messages_to_sync); }
-					 */
+					}
 				} catch (Exception e) {
 					return;
 				}
@@ -356,7 +374,7 @@ public class PendingMessages
 			if (adapter.getCount() == 0) {
 				deleted = 1;
 			} else {
-				result = model.deleteMessagesById(messageId);
+				result = model.deleteMessagesByUuid(messageUuid);
 			}
 
 			try {
@@ -398,11 +416,11 @@ public class PendingMessages
 	/**
 	 * Get messages from the db and push them to the configured callback URL
 	 * 
-	 * @param int messagesId
+	 * @param int messagesUuid
 	 * @return int
 	 */
 
-	public void syncMessages(int messagesId) {
+	public void syncMessages(String messagesUuid) {
 		if (adapter != null && adapter.getCount() == 0) {
 			statusIntent.putExtra("syncstatus", 2);
 			getActivity().sendBroadcast(statusIntent);
@@ -410,7 +428,7 @@ public class PendingMessages
 			syncPendingMessagesServiceIntent = new Intent(getActivity(),
 					SyncPendingMessagesService.class);
 			syncPendingMessagesServiceIntent.putExtra(
-					ServicesConstants.MESSEAGE_ID, messagesId);
+					ServicesConstants.MESSEAGE_UUID, messagesUuid);
 			getActivity().startService(syncPendingMessagesServiceIntent);
 		}
 	}
@@ -520,8 +538,9 @@ public class PendingMessages
 	// when sms has been delivered
 	private BroadcastReceiver smsDeliveredReceiver = new BroadcastReceiver() {
 
-		public void onReceive(Context arg0, Intent arg1) {
+		public void onReceive(Context context, Intent intent) {
 			switch (getResultCode()) {
+
 			case Activity.RESULT_OK:
 				toastLong(R.string.sms_delivered);
 				break;

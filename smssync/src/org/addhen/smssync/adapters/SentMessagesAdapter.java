@@ -37,6 +37,8 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 
 		TextView message;
 
+		TextView messageType;
+
 		public Widgets(View convertView) {
 			super(convertView);
 			messageFrom = (TextView) convertView
@@ -45,6 +47,8 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 					.findViewById(R.id.sent_message_date);
 			message = (TextView) convertView.findViewById(R.id.sent_message);
 
+			messageType = (TextView) convertView
+					.findViewById(R.id.sent_message_type);
 		}
 	}
 
@@ -70,7 +74,20 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 		widget.messageFrom.setText(getItem(position).getMessageFrom());
 		widget.messageDate.setText(getItem(position).getMessageDate());
 		widget.message.setText(getItem(position).getMessage());
-
+		
+		// Pending messages
+		if ( getItem(position).getMessageType() == 0 ) {
+			widget.messageType.setText(R.string.pending_messages);
+			widget.messageType.setTextColor(context.getResources().getColor(
+					R.color.pending_color));
+			
+		} else {
+			// Task messages
+			widget.messageType.setText(R.string.task);
+			widget.messageType.setTextColor(context.getResources().getColor(
+					R.color.task_color));
+		}
+	
 		return row;
 	}
 

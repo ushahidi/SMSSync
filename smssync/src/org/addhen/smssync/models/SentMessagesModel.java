@@ -37,9 +37,26 @@ public class SentMessagesModel extends Model {
 
 	private String messageDate;
 
-	private int messageId;
+	private String messageUuid;
+
+	private int messageType;
 
 	public List<SentMessagesModel> listMessages;
+
+	/**
+	 * @return the messageType
+	 */
+	public int getMessageType() {
+		return messageType;
+	}
+
+	/**
+	 * @param messageType
+	 *            the messageType to set
+	 */
+	public void setMessageType(int messageType) {
+		this.messageType = messageType;
+	}
 
 	/**
 	 * Set the content of the message. More like the body of the SMS message.
@@ -109,22 +126,22 @@ public class SentMessagesModel extends Model {
 	}
 
 	/**
-	 * Set the message ID.
+	 * Set the message UUID.
 	 * 
-	 * @param int messageId - The message ID.
+	 * @param int messageId - The message UuiD.
 	 * @return void
 	 */
-	public void setMessageId(int messageId) {
-		this.messageId = messageId;
+	public void setMessageUuid(String messageUuid) {
+		this.messageUuid = messageUuid;
 	}
 
 	/**
-	 * Get the message ID.
+	 * Get the message UUID.
 	 * 
-	 * @return int
+	 * @return String
 	 */
-	public int getMessageId() {
-		return this.messageId;
+	public String getMessageUuid() {
+		return this.messageUuid;
 	}
 
 	/**
@@ -138,13 +155,13 @@ public class SentMessagesModel extends Model {
 	}
 
 	/**
-	 * Delete sent messages by id
+	 * Delete sent messages by uuid
 	 * 
 	 * @param int messageId - Message to be deleted ID
 	 * @return boolean
 	 */
-	public boolean deleteSentMessagesById(int messageId) {
-		return MainApplication.mDb.deleteSentMessagesById(messageId);
+	public boolean deleteSentMessagesByUuid(String messageUuid) {
+		return MainApplication.mDb.deleteSentMessagesByUuid(messageUuid);
 	}
 
 	@Override
@@ -157,11 +174,13 @@ public class SentMessagesModel extends Model {
 		String messagesFrom;
 		String messagesDate;
 		String messagesBody;
-		int messageId;
+		String messageUuid;
+		int messageType;
+
 		if (cursor != null) {
 			if (cursor.moveToFirst()) {
 				int messagesIdIndex = cursor
-						.getColumnIndexOrThrow(Database.SENT_MESSAGES_ID);
+						.getColumnIndexOrThrow(Database.SENT_MESSAGES_UUID);
 				int messagesFromIndex = cursor
 						.getColumnIndexOrThrow(Database.SENT_MESSAGES_FROM);
 				int messagesDateIndex = cursor
@@ -169,13 +188,15 @@ public class SentMessagesModel extends Model {
 
 				int messagesBodyIndex = cursor
 						.getColumnIndexOrThrow(Database.SENT_MESSAGES_BODY);
+				int messagesTypeIndex = cursor
+						.getColumnIndexOrThrow(Database.SENT_MESSAGE_TYPE);
 
 				do {
 
 					SentMessagesModel messages = new SentMessagesModel();
 
-					messageId = Util.toInt(cursor.getString(messagesIdIndex));
-					messages.setMessageId(messageId);
+					messageUuid = cursor.getString(messagesIdIndex);
+					messages.setMessageUuid(messageUuid);
 
 					messagesFrom = Util.capitalizeString(cursor
 							.getString(messagesFromIndex));
@@ -186,6 +207,8 @@ public class SentMessagesModel extends Model {
 
 					messagesBody = cursor.getString(messagesBodyIndex);
 					messages.setMessage(messagesBody);
+					messageType = cursor.getInt(messagesTypeIndex);
+					messages.setMessageType(messageType);
 
 					listMessages.add(messages);
 

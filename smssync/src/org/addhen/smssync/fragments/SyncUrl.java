@@ -443,13 +443,13 @@ public class SyncUrl extends
 	 * @return int
 	 */
 
-	public void syncMessages(int messagesId) {
+	public void syncMessages(String messagesUuid) {
 		statusIntent.putExtra("status", 3);
 		getActivity().sendBroadcast(statusIntent);
 		syncPendingMessagesServiceIntent = new Intent(getActivity(),
 				SyncPendingMessagesService.class);
 		syncPendingMessagesServiceIntent.putExtra(
-				ServicesConstants.MESSEAGE_ID, messagesId);
+				ServicesConstants.MESSEAGE_UUID, messagesUuid);
 		getActivity().startService(syncPendingMessagesServiceIntent);
 	}
 

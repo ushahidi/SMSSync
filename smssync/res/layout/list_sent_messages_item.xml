@@ -24,14 +24,25 @@
         android:layout_alignParentLeft="true"
         android:lines="1"
         android:paddingLeft="3dp"
+        android:textIsSelectable="true"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/sent_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textIsSelectable="true"
         android:layout_below="@+id/sent_message_from"
+        android:padding="3dp" />
+    
+    <TextView
+        android:id="@+id/sent_message_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_below="@+id/sent_message"
         android:ellipsize="end"
+        android:layout_alignParentRight="true"
         android:lines="1"
         android:padding="3dp" />
 
@@ -39,6 +50,7 @@
         android:id="@+id/sent_message_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textIsSelectable="true"
         android:layout_alignParentRight="true"
         android:lines="1"
         android:paddingLeft="3dp"/>

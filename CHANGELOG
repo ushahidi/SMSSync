@@ -1,7 +1,26 @@
+2.0.2
+Feature:
+  * Show confirmation prompt when attempting to import SMS
+  * Added RegExp support to keyword filtering.
+  * Added more useful HTTP and server error messages
+  * Simplified the actionbar menu. Only show the relevant menus
+  * Updated notification code to make use of the notification.compact library
+  * Add Russian, Ukrainian, Belarusian languages
+
+Bug:
+  * Fix wifi lock issue. See #56
+  * Improved wording and typos in the strings file
+  * Disable excessive "no task enabled" notifications
+  * Fix ID issue. Now uses UUID instead. See #60
+  * Fix issue with auto sync failing.
+
+
+Bug:
+
 2.0.1
 Feature:
   * Resizable widgets to fit on most screens.
-  * Upgraded ABS library to 4.2.2.
+  * Upgraded ABS library to 4.2.0.
   * Added Korean translation
 
 Bug:

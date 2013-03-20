@@ -40,7 +40,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
 	private Intent statusIntent; // holds the status of the sync and sends it to
 
-	private int messageId = 0;
+	private String messageUuid = "";
 
 	private SyncUrlModel model;
 
@@ -60,14 +60,14 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 		int status = 3;
 		if (intent != null) {
 			// get Id
-			messageId = intent.getIntExtra(ServicesConstants.MESSEAGE_ID, 0);
+			messageUuid = intent.getStringExtra(ServicesConstants.MESSEAGE_UUID);
 			if (messagesModel.totalMessages() > 0) {
 				for (SyncUrlModel syncUrl : model
 						.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
 
 					status = new MessageSyncUtil(
 							SyncPendingMessagesService.this, syncUrl.getUrl())
-							.snycToWeb(messageId, syncUrl.getSecret());
+							.snycToWeb(messageUuid);
 				}
 				
 				statusIntent.putExtra("syncstatus", status);

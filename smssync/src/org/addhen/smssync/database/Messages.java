@@ -27,96 +27,116 @@ package org.addhen.smssync.database;
  */
 public class Messages {
 
-    private String messageBody;
+	private String messageBody;
 
-    private String messageFrom;
+	private String messageFrom;
 
-    private String messageDate;
+	private String messageDate;
 
-    private int messageId;
+	private String messageUuid;
+	
+	private int messageType;
 
-    public Messages() {
-        this.messageBody = "";
-        this.messageFrom = "";
-        this.messageDate = "";
-        this.messageId = 0;
-    }
+	public Messages() {
+		this.messageBody = "";
+		this.messageFrom = "";
+		this.messageDate = "";
+		this.messageUuid = "";
+		this.messageType = 0;
+	}
 
-    /**
-     * Set the content of the message. More like the body of the SMS message.
-     * 
-     * @param String messageBody - The content of the SMS message.
-     * @return void
-     */
-    public void setMessageBody(String messageBody) {
-        this.messageBody = messageBody;
-    }
+	/**
+	 * @return the messageType
+	 */
+	public int getMessageType() {
+		return messageType;
+	}
 
-    /**
-     * Get the content of the message.
-     * 
-     * @return String
-     */
-    public String getMessageBody() {
-        return this.messageBody;
-    }
+	/**
+	 * @param messageType the messageType to set
+	 */
+	public void setMessageType(int messageType) {
+		this.messageType = messageType;
+	}
 
-    /**
-     * Set the address of the SMS message.
-     * 
-     * @param String messageFrom
-     * @return void
-     */
-    public void setMessageFrom(String messageFrom) {
-        this.messageFrom = messageFrom;
-    }
+	/**
+	 * Set the content of the message. More like the body of the SMS message.
+	 * 
+	 * @param String
+	 *            messageBody - The content of the SMS message.
+	 * @return void
+	 */
+	public void setMessageBody(String messageBody) {
+		this.messageBody = messageBody;
+	}
 
-    /**
-     * Get the address of the SMS Message
-     * 
-     * @return String
-     */
-    public String getMessageFrom() {
-        return this.messageFrom;
-    }
+	/**
+	 * Get the content of the message.
+	 * 
+	 * @return String
+	 */
+	public String getMessageBody() {
+		return this.messageBody;
+	}
 
-    /**
-     * Set the date of the message.
-     * 
-     * @param String messageDate - The timestamp of the message. To be changed
-     *            into human readable.
-     * @return void
-     */
-    public void setMessageDate(String messageDate) {
-        this.messageDate = messageDate;
-    }
+	/**
+	 * Set the address of the SMS message.
+	 * 
+	 * @param String
+	 *            messageFrom
+	 * @return void
+	 */
+	public void setMessageFrom(String messageFrom) {
+		this.messageFrom = messageFrom;
+	}
 
-    /**
-     * Get the message date
-     * 
-     * @return String
-     */
-    public String getMessageDate() {
-        return this.messageDate;
-    }
+	/**
+	 * Get the address of the SMS Message
+	 * 
+	 * @return String
+	 */
+	public String getMessageFrom() {
+		return this.messageFrom;
+	}
 
-    /**
-     * Set the message ID.
-     * 
-     * @param int messageId - The message ID.
-     * @return void
-     */
-    public void setMessageId(int messageId) {
-        this.messageId = messageId;
-    }
+	/**
+	 * Set the date of the message.
+	 * 
+	 * @param String
+	 *            messageDate - The timestamp of the message. To be changed into
+	 *            human readable.
+	 * @return void
+	 */
+	public void setMessageDate(String messageDate) {
+		this.messageDate = messageDate;
+	}
 
-    /**
-     * Get the message ID.
-     * 
-     * @return int
-     */
-    public int getMessageId() {
-        return this.messageId;
-    }
+	/**
+	 * Get the message date
+	 * 
+	 * @return String
+	 */
+	public String getMessageDate() {
+		return this.messageDate;
+	}
+
+	/**
+	 * Set the message UUID.
+	 * 
+	 * @param int messageId - The message UUID.
+	 * @return void
+	 */
+	public void setMessageUuid(String messageUuid) {
+		this.messageUuid = messageUuid;
+	}
+
+	/**
+	 * Get the message UUID.
+	 * 
+	 * @return String
+	 */
+	public String getMessageUuid() {
+		return this.messageUuid;
+	}
 
 }

@@ -77,7 +77,7 @@ public class MessageSyncUtil extends Util {
 	 * @return boolean
 	 */
 	public boolean postToAWebService(String messagesFrom, String messagesBody,
-			String messagesTimestamp, String messagesId, String secret) {
+			String messagesTimestamp, String messagesUuid, String secret) {
 		log("postToAWebService(): Post received SMS to configured URL:"
 				+ Prefs.website + " messagesTimestamp: " + messagesTimestamp
 				+ " messagesBody: " + messagesBody + " messagesFrom "
@@ -92,7 +92,7 @@ public class MessageSyncUtil extends Util {
 			params.put("message", messagesBody);
 			params.put("sent_timestamp", messagesTimestamp);
 			params.put("sent_to", getPhoneNumber(context));
-			params.put("message_id", messagesId);
+			params.put("message_id", messagesUuid);
 			return msgSyncHttpClient.postSmsToWebService(params);
 		}
 
@@ -105,18 +105,16 @@ public class MessageSyncUtil extends Util {
 	 * @param int messageId - Sync by Id - 0 for no ID > 0 to for an id
 	 * @param String
 	 *            url The sync URL to push the message to.
-	 * @param String
-	 *            secret The secret key as set on the server.
 	 * 
 	 * @return int
 	 */
-	public int snycToWeb(int messageId, String secret) {
+	public int snycToWeb(String messageUuid) {
 		log("syncToWeb(): push pending messages to the Sync URL");
 		MessagesModel model = new MessagesModel();
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 		// check if it should sync by id
-		if (messageId > 0) {
-			model.loadById(messageId);
+		if (messageUuid != null && !TextUtils.isEmpty(messageUuid)) {
+			model.loadByUuid(messageUuid);
 			listMessages = model.listMessages;
 
 		} else {
@@ -135,12 +133,12 @@ public class MessageSyncUtil extends Util {
 				log("processing");
 				if (processSms.routePendingMessages(messages.getMessageFrom(),
 						messages.getMessage(), messages.getMessageDate(),
-						String.valueOf(messages.getMessageId()))) {
+						messages.getMessageUuid())) {
 
 					// / if it successfully pushes message, delete message
 					// from db
-					new MessagesModel().deleteMessagesById(messages
-							.getMessageId());
+					new MessagesModel().deleteMessagesByUuid(messages
+							.getMessageUuid());
 					deleted = 0;
 				} else {
 					deleted = 1;
@@ -203,17 +201,17 @@ public class MessageSyncUtil extends Util {
 		Logger.log(CLASS_TAG,
 				"processMessages(): Process text messages as received from the user's phone");
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-		int messageId = 0;
+		String messageUuid ="";
 		int status = 1;
 		MessagesModel messages = new MessagesModel();
 		listMessages.add(messages);
 
 		// check if messageId is actually initialized
-		if (smsMap.get("messagesId") != null) {
-			messageId = Integer.parseInt(smsMap.get("messagesId"));
+		if (smsMap.get("messagesUuid") != null) {
+			messageUuid = smsMap.get("messagesUuid");
 		}
 
-		messages.setMessageId(messageId);
+		messages.setMessageUuid(messageUuid);
 		messages.setMessageFrom(smsMap.get("messagesFrom"));
 		messages.setMessage(smsMap.get("messagesBody"));
 		messages.setMessageDate(smsMap.get("messagesDate"));
@@ -282,18 +280,16 @@ public class MessageSyncUtil extends Util {
 							}
 
 						} else {
-							// no task enabled on the callback url.
-							showToast(context, R.string.no_task);
+							log(context.getString(R.string.no_task));
 						}
 
-					} else {
-
-						showToast(context, R.string.no_task);
+					} else { // 'payload' data may not be present in JSON
+								// response
+						log(context.getString(R.string.no_task));
 					}
 
 				} catch (JSONException e) {
 					log("Error: " + e.getMessage());
-					showToast(context, R.string.no_task);
 				}
 			}
 		}

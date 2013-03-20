@@ -54,19 +54,21 @@ public class SentMessagesUtil {
 				"processMessages(): Process text messages as received from the user's phone");
 
 		List<Messages> listMessages = new ArrayList<Messages>();
-		int messageId = 0;
+		String messageUuid = "";
 		Messages messages = new Messages();
 		listMessages.add(messages);
 
 		// check if messageId is actually initialized
-		if (smsMap.get("messagesId") != null) {
-			messageId = Integer.parseInt(smsMap.get("messagesId"));
+		if (smsMap.get("messagesUuid") != null) {
+			messageUuid = smsMap.get("messagesUuid");
 		}
 
-		messages.setMessageId(messageId);
+		messages.setMessageUuid(messageUuid);
 		messages.setMessageFrom(smsMap.get("messagesFrom"));
 		messages.setMessageBody(smsMap.get("messagesBody"));
 		messages.setMessageDate(smsMap.get("messagesDate"));
+		messages.setMessageType(Integer.valueOf(smsMap.get("messagesType")));
+		
 		mMessages = listMessages;
 
 		if (mMessages != null) {

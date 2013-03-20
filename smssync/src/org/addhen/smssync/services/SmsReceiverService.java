@@ -54,7 +54,7 @@ public class SmsReceiverService extends Service {
 
 	private String messagesTimestamp = "";
 
-	private String messagesId = "";
+	private String messagesUuid = "";
 
 	private static final Object mStartingServiceSync = new Object();
 
@@ -69,16 +69,17 @@ public class SmsReceiverService extends Service {
 
 	private ProcessSms processSms;
 
-	synchronized protected static WifiManager.WifiLock getWifiLock(Context context) {
+	synchronized protected static WifiManager.WifiLock getWifiLock(
+			Context context) {
 		// keep wifi alive
 		if (wifilock == null) {
-			WifiManager manager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+			WifiManager manager = (WifiManager) context
+					.getSystemService(Context.WIFI_SERVICE);
 			wifilock = manager.createWifiLock(CLASS_TAG);
 			wifilock.setReferenceCounted(true);
 		}
 		return wifilock;
 	}
-
 
 	@Override
 	public void onCreate() {
@@ -90,7 +91,7 @@ public class SmsReceiverService extends Service {
 		processSms = new ProcessSms(mContext);
 
 		Prefs.loadPreferences(mContext);
-		
+
 		mServiceLooper = thread.getLooper();
 		mServiceHandler = new ServiceHandler(mServiceLooper);
 
@@ -136,7 +137,7 @@ public class SmsReceiverService extends Service {
 	}
 
 	/**
-	 * Handle receiving a SMS message
+	 * Handle receiving SMS message
 	 */
 	private void handleSmsReceived(Intent intent) {
 
@@ -151,7 +152,6 @@ public class SmsReceiverService extends Service {
 				// extract message details. phone number and the message body
 				messagesFrom = sms.getOriginatingAddress();
 				messagesTimestamp = String.valueOf(sms.getTimestampMillis());
-				messagesId = String.valueOf(processSms.getId(sms, "id"));
 
 				if (messages.length == 1 || sms.isReplace()) {
 					body = sms.getDisplayMessageBody();
@@ -164,12 +164,13 @@ public class SmsReceiverService extends Service {
 					body = bodyText.toString();
 				}
 				messagesBody = body;
+				messagesUuid = processSms.getUuid();
 			}
 		}
 
 		// route the sms
 		processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
-				messagesId, sms);
+				messagesUuid, sms);
 
 	}
 
@@ -234,7 +235,7 @@ public class SmsReceiverService extends Service {
 			}
 
 			mStartingService.acquire();
-			if (!getWifiLock(context).isHeld()) 
+			if (!getWifiLock(context).isHeld())
 				getWifiLock(context).acquire();
 			context.startService(intent);
 		}
@@ -275,7 +276,7 @@ public class SmsReceiverService extends Service {
 	final Runnable mDisplaySentMessages = new Runnable() {
 
 		public void run() {
-			//SentMessagesActivity.showMessages();
+			// SentMessagesActivity.showMessages();
 		}
 
 	};

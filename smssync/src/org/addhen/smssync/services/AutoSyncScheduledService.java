@@ -63,7 +63,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
 			for (SyncUrlModel syncUrl : model
 					.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
 				int status = new MessageSyncUtil(AutoSyncScheduledService.this,
-						syncUrl.getUrl()).snycToWeb(0, syncUrl.getSecret());
+						syncUrl.getUrl()).snycToWeb("");
 				statusIntent.putExtra("status", status);
 				sendBroadcast(statusIntent);
 			}

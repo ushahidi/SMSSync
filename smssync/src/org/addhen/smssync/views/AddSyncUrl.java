@@ -40,7 +40,7 @@ public class AddSyncUrl {
 	public EditText url;
 
 	public EditText secret;
-	
+
 	public int status = 0;
 
 	/**
@@ -58,7 +58,8 @@ public class AddSyncUrl {
 			public boolean onTouch(View v, MotionEvent event) {
 
 				if (TextUtils.isEmpty(url.getText().toString())) {
-					url.setText(dialogViews.getContext().getString(R.string.http_text));
+					url.setText(dialogViews.getContext().getString(
+							R.string.http_text));
 				}
 
 				return false;

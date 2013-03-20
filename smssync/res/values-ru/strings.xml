@@ -17,7 +17,7 @@
   <string name="edittxt_filter_by_from_hint">+79990000000,+79873387778</string>
   <!--unique id-->
   <string name="edittxt_unique_id_pref">Уникальный номер</string>
-  <string name="edittxt_unique_id_pref_summary">Укажите уникальный номер этого устройства. Это используется для идентификации устройства, отправляемого сообщения. Укажите 5 цифр</string>
+  <string name="edittxt_unique_id_pref_summary">Укажите уникальный номер, используемый для идентификации устройства, отправляемого сообщения. Укажите 5 цифр</string>
   <string name="edittxt_unique_id_hint">01234</string>
   <!--response message-->
   <string name="edittxt_reply">Ответное сообщение</string>
@@ -29,10 +29,10 @@
   <string name="sms_sync_disabled">SmsSync отключен</string>
   <!--general settings-->
   <string name="general_settings">Основные настройки</string>
-  <!--reply from server-->
-  <string name="reply_settings">Настройка ответов</string>
   <string name="chk_enable_sms_sync">Запустить SmsSync</string>
   <string name="chk_sms_sync_hint">Запуск или остановка службы.</string>
+  <!--reply from server-->
+  <string name="reply_settings">Настройка ответов</string>
   <string name="chk_enable_reply">Отвечать</string>
   <string name="chk_reply_hint">Автоматический ответ для каждого пришедшего сообщения.</string>
   <!--auto delete messages-->
@@ -46,8 +46,8 @@
   <string name="auto_sync_delay_hint">Частота синхронизации SmsSync с веб-адресом обратного вызова.</string>
   <!--enable task check-->
   <string name="chk_enable_task_check">Проверка заданий</string>
-  <string name="chk_enable_task_check_hint">Позволяет периодически проверять задания по адресу обратного вызова. SmsSync выполнит задание, напр., отправит Sms.</string>
-  <!--task check deply-->
+  <string name="chk_enable_task_check_hint">Позволяет периодически проверять задания по веб-адресу. SmsSync выполнит задание, отправит Sms.</string>
+  <!--task check delay-->
   <string name="txt_task_check_delay">Частота проверок</string>
   <string name="txt_task_check_delay_hint">Частота, с которой SmsSync будет проверять задания.</string>
   <string name="app_name">SmsSync</string>
@@ -57,9 +57,11 @@
   <string name="sms_status_failed">Ошибка отправки сообщения</string>
   <string name="notification_summary">Шлюз запущен</string>
   <string name="sending_failed">Ошибка отправки сообщения от SmsSync\'а.</string>
+  <string name="sending_failed_http_code">SMSSync\'у не удалось отправить сообщение из-за ошибки HTTP - %1$d.</string>
+  <string name="sending_failed_custom_error">SMSSync\'у не удалось отправить сообщение из-за ошибки cервера - %1$s.</string>
   <string name="sending_succeeded">Сообщение от SmsSync\'а отправлено.</string>
   <string name="no_messages_to_sync">Нет сообщений для отправки.</string>
-  <string name="no_messages_to_delete">Нет сообщений для удаления,</string>
+  <string name="no_messages_to_delete">Нет сообщений для удаления.</string>
   <string name="sync_failed">Ошибка отправки. Вероятно, неправильные настройки или отсутствует подключение к сети Интернет. Пожалуйста, проверьте доступность сети и настройки.</string>
   <string name="powered">Вкл.</string>
   <string name="powered_by">Создано Ushahidi</string>
@@ -88,7 +90,7 @@
   <string name="import_messages">Импорт сообщений..</string>
   <string name="nothing_to_import">Нет сообщений для импорта. Убедитесь, что в телефоне есть входящие Sms.</string>
   <string name="chk_enable_reply_frm_server">Ответы с сервера</string>
-  <string name="chk_reply_frm_server_hint">Позволяет сразу передавать сообщения, полученные от сервера, не дожидаясь выполнения заданий</string>
+  <string name="chk_reply_frm_server_hint">Позволяет сразу передавать сообщения, полученные от сервера, не дожидаясь выполнения заданий.</string>
   <string name="filter_messages">Фильтрация сообщений</string>
   <!--SMS delivery status-->
   <string name="sms_delivery_status_failed">Ошибка отправки Sms. Вероятно, плохой сигнал?!</string>
@@ -98,8 +100,8 @@
   <string name="sms_delivered">Sms доставлено</string>
   <string name="sms_not_delivered">Sms не может быть доставлено</string>
   <!--Pending and failed messages Tab-->
-  <string name="pending_messages">Ожидаемые</string>
-  <string name="sent_messages">Отправленные</string>
+  <string name="pending_messages">Ожидают</string>
+  <string name="sent_messages">Отправлены</string>
   <string name="title_bar_text">Сообщения</string>
   <string name="no_sent_messages">Нет отправленных сообщений.</string>
   <!--confirmation dialog-->
@@ -110,7 +112,7 @@
   <string name="unique_id_length_error">Уникальный номер должен состоять ровно из 5 цифр</string>
   <string name="unique_id_numeric_error">Уникальный номер должен состоять только из цифр</string>
   <string name="loading">Загрузка..</string>
-  <string name="sync_url">Веб-адрес синхронизации</string>
+  <string name="sync_url">Веб-адрес</string>
   <string name="no_sync_url">Нет веб-адреса.</string>
   <string name="edit">Редактировать</string>
   <string name="enter_sync_title">Название для веб-адреса</string>
@@ -131,4 +133,6 @@
   <string name="no_sync_url_to_delete">Удаление веб-адреса не удалось.</string>
   <string name="empty_sync_url_title">Пожалуйста, укажите заголовок веб-адреса</string>
   <string name="valid_sync_url">Пожалуйста, укажите действительный веб-адрес.</string>
+  <string name="task">Задания</string>
+  <string name="confirm_sms_import">Импортирование всех сообщений во входящие. Это может занять некоторое время.</string>
 </resources>
