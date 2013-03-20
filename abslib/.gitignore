@@ -1,5 +1,0 @@
-*.swp
-gen
-bin
-tests/bin
-local.properties
