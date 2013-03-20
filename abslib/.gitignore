@@ -1,5 +1,5 @@
 *.swp
-gen/
-bin/
-tests/bin/
+gen
+bin
+tests/bin
 local.properties

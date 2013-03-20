@@ -1,7 +1,7 @@
 *.swp
-gen/*
-bin/*
-tests/bin/*
+gen
+bin
+tests/bin
 local.properties
 secure.properties
 ushahidi-key.keystore
