@@ -8,11 +8,12 @@ then
   exit 1
 fi
 
-TAG_NAME=$2
-TAG_MESSAGE=$1
+TAG_NAME=$1
+TAG_MESSAGE=$2
 DEVELOP='develop'
 MASTER='master'
 RELEASE='release'
+echo $TAG_MESSAGE
 
 # SMSSync source code
 SMSSYNC='smssync'
@@ -57,7 +58,7 @@ pushd $SMSSYNC
 
 # Create a release apk
 echo "Building a release apk"
-ant release
+ant clean release
 
 # Back to where we were before
 popd
