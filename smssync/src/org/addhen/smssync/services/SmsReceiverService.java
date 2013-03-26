@@ -145,6 +145,8 @@ public class SmsReceiverService extends Service {
 		Bundle bundle = intent.getExtras();
 		Prefs.loadPreferences(SmsReceiverService.this);
 
+		log("handleSmsReceived() bundle "+bundle);
+
 		if (bundle != null) {
 			SmsMessage[] messages = getMessagesFromIntent(intent);
 			sms = messages[0];
@@ -167,6 +169,8 @@ public class SmsReceiverService extends Service {
 				messagesUuid = processSms.getUuid();
 			}
 		}
+
+		log("handleSmsReceived() messagesUuid: "+messagesUuid);
 
 		// route the sms
 		processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
