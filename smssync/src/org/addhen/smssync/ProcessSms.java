@@ -121,91 +121,86 @@ public class ProcessSms {
 		// load preferences
 		Prefs.loadPreferences(context);
 
-		boolean posted = true;
+		boolean posted = false;
 
 		// is SMSSync service running?
-		if (Prefs.enabled) {
+		if (!Prefs.enabled || !Util.isConnected(context)) {
+			Util.showFailNotification(context, messagesBody,
+					context.getString(R.string.sending_failed));
+			return posted;
+		}
 
-			if (Util.isConnected(context)) {
+		// send auto response from phone not server.
+		if (Prefs.enableReply) {
+			// send auto response as SMS to user's phone
+			sendSms(messagesFrom, Prefs.reply);
+		}
 
-				// send auto response from phone not server.
-				if (Prefs.enableReply) {
+		// get enabled Sync URLs
+		for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
 
-					// send auto response as SMS to user's phone
-					sendSms(messagesFrom, Prefs.reply);
-				}
+			messageSyncUtil = new MessageSyncUtil(context,
+					syncUrl.getUrl());
 
-				// get enabled Sync URLs
-				for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
+			// process filter text (keyword or RegEx)
+			if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
+				String filterText = syncUrl.getKeywords();
+				if (filterByKeywords(messagesBody, filterText)
+						|| filterByRegex(messagesBody, filterText)) {
+					posted = messageSyncUtil.postToAWebService(
+							messagesFrom, messagesBody,
+							messagesTimestamp, messagesUuid,
+							syncUrl.getSecret());
+					if (!posted) {
+						// Note: HTTP Error code or custom error message
+						// will have been shown already
+						Util.showFailNotification(
+								context,
+								messagesBody,
+								context.getString(R.string.sending_failed));
 
-					messageSyncUtil = new MessageSyncUtil(context,
-							syncUrl.getUrl());
+						// attempt to make a data connection to sync
+						// the failed messages.
+						Util.connectToDataNetwork(context);
+					} else {
 
-					// process filter text (keyword or RegEx)
-					if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
-						String filterText = syncUrl.getKeywords();
-						if (filterByKeywords(messagesBody, filterText)
-								|| filterByRegex(messagesBody, filterText)) {
-							posted = messageSyncUtil.postToAWebService(
-									messagesFrom, messagesBody,
-									messagesTimestamp, messagesUuid,
-									syncUrl.getSecret());
-							if (!posted) {
-								// Note: HTTP Error code or custom error message
-								// will have been shown already
-								Util.showFailNotification(
-										context,
-										messagesBody,
-										context.getString(R.string.sending_failed));
-
-								// attempt to make a data connection to sync
-								// the failed messages.
-								Util.connectToDataNetwork(context);
-							} else {
-
-								postToSentBox(messagesFrom, messagesBody,
-										messagesUuid, messagesTimestamp,
-										PENDING);
-								Util.showFailNotification(
-										context,
-										messagesBody,
-										context.getString(R.string.sending_succeeded));
-							}
-
-						}
-
-					} else { // there is no filter text set up on a sync URL
-						posted = messageSyncUtil.postToAWebService(
-								messagesFrom, messagesBody, messagesTimestamp,
-								messagesUuid, syncUrl.getSecret());
-						Logger.log(CLASS_TAG, "routeMessages posted is " + posted);
-						if (!posted) {
-							Util.showFailNotification(context, messagesBody,
-									context.getString(R.string.sending_failed));
-
-							// attempt to make a data connection so to sync
-							// the failed messages.
-							Util.connectToDataNetwork(context);
-
-						} else {
-
-							postToSentBox(messagesFrom, messagesBody,
-									messagesUuid, messagesTimestamp, PENDING);
-
-							Util.showFailNotification(
-									context,
-									messagesBody,
-									context.getString(R.string.sending_succeeded));
-						}
+						postToSentBox(messagesFrom, messagesBody,
+								messagesUuid, messagesTimestamp,
+								PENDING);
+						Util.showFailNotification(
+								context,
+								messagesBody,
+								context.getString(R.string.sending_succeeded));
 					}
+
 				}
 
-			} else { // no internet on the device.
-				Util.showFailNotification(context, messagesBody,
-						context.getString(R.string.sending_failed));
-				posted = false;
+			} else { // there is no filter text set up on a sync URL
+				posted = messageSyncUtil.postToAWebService(
+						messagesFrom, messagesBody, messagesTimestamp,
+						messagesUuid, syncUrl.getSecret());
+				Logger.log(CLASS_TAG, "routeMessages posted is " + posted);
+				if (!posted) {
+					Util.showFailNotification(context, messagesBody,
+							context.getString(R.string.sending_failed));
+
+					// attempt to make a data connection so to sync
+					// the failed messages.
+					Util.connectToDataNetwork(context);
+
+				} else {
+
+					postToSentBox(messagesFrom, messagesBody,
+							messagesUuid, messagesTimestamp, PENDING);
+
+					Util.showFailNotification(
+							context,
+							messagesBody,
+							context.getString(R.string.sending_succeeded));
+				}
 			}
 		}
+
 		return posted;
 	}
 
