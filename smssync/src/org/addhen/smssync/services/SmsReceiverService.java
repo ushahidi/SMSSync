@@ -173,8 +173,9 @@ public class SmsReceiverService extends Service {
 		log("handleSmsReceived() messagesUuid: "+messagesUuid);
 
 		// route the sms
-		processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
-				messagesUuid, sms);
+		processSms.routeSms(
+			messagesFrom, messagesBody, messagesTimestamp, messagesUuid
+		);
 
 	}
 

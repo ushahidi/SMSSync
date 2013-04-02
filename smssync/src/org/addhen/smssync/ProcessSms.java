@@ -214,11 +214,8 @@ public class ProcessSms {
 	 * @param String
 	 *            messagesBody The message body. This is the message sent to the
 	 *            phone.
-	 * @param SmsMessages
-	 *            sms The SMS object as
 	 */
-	public void routeSms(String from, String body,
-			String timestamp, String uuid, SmsMessage sms) {
+	public void routeSms(String from, String body, String timestamp, String uuid) {
 		Logger.log(CLASS_TAG, "routeSms uuid: " + uuid);
 		if (routeMessages(from, body, timestamp, uuid)) {
 
@@ -516,12 +513,7 @@ public class ProcessSms {
 	 */
 	private void postToPendingBox(String from, String body,
 			String uuid, String date) {
-	//private void postToPendingBox(final String messagesFrom,
-//			final String messagesBody, final SmsMessage sms) {
 		Logger.log(CLASS_TAG, "postToPendingBox(): post message to pendingbox");
-
-		// Get message id.
-		//String messageUuid = getUuid();
 
 		Util.smsMap.put("messagesFrom", from);
 		Util.smsMap.put("messagesBody", body);
