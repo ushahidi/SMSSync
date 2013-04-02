@@ -108,7 +108,7 @@ public class MessageSyncUtil extends Util {
 	 * 
 	 * @return int
 	 */
-	public int snycToWeb(String messageUuid) {
+	public int syncToWeb(String messageUuid) {
 		log("syncToWeb(): push pending messages to the Sync URL");
 		MessagesModel model = new MessagesModel();
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
@@ -201,7 +201,7 @@ public class MessageSyncUtil extends Util {
 		Logger.log(CLASS_TAG,
 				"processMessages(): Process text messages as received from the user's phone");
 		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-		String messageUuid ="";
+		String messageUuid = "";
 		int status = 1;
 		MessagesModel messages = new MessagesModel();
 		listMessages.add(messages);

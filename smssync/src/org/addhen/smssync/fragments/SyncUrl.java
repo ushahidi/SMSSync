@@ -449,7 +449,7 @@ public class SyncUrl extends
 		syncPendingMessagesServiceIntent = new Intent(getActivity(),
 				SyncPendingMessagesService.class);
 		syncPendingMessagesServiceIntent.putExtra(
-				ServicesConstants.MESSEAGE_UUID, messagesUuid);
+				ServicesConstants.MESSAGE_UUID, messagesUuid);
 		getActivity().startService(syncPendingMessagesServiceIntent);
 	}
 

@@ -60,14 +60,14 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 		int status = 3;
 		if (intent != null) {
 			// get Id
-			messageUuid = intent.getStringExtra(ServicesConstants.MESSEAGE_UUID);
+			messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
 			if (messagesModel.totalMessages() > 0) {
 				for (SyncUrlModel syncUrl : model
 						.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
 
 					status = new MessageSyncUtil(
 							SyncPendingMessagesService.this, syncUrl.getUrl())
-							.snycToWeb(messageUuid);
+							.syncToWeb(messageUuid);
 				}
 				
 				statusIntent.putExtra("syncstatus", status);
