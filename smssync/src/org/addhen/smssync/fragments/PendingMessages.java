@@ -31,7 +31,6 @@ import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.views.PendingMessagesView;
 
 import android.app.Activity;
@@ -68,8 +67,6 @@ public class PendingMessages
 
 	private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
 
-	private static String CLASS_TAG = PendingMessages.class.getSimpleName();
-
 	public PendingMessages() {
 		super(PendingMessagesView.class, PendingMessagesAdapter.class,
 				R.layout.list_messages, R.menu.pending_messages_menu,
@@ -85,7 +82,6 @@ public class PendingMessages
 		super.onActivityCreated(savedInstanceState);
 
 		setHasOptionsMenu(true);
-		// adapter = new PendingMessagesAdapter(getActivity());
 		Prefs.loadPreferences(getActivity());
 		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
 		// show notification
@@ -516,7 +512,7 @@ public class PendingMessages
 
 	/**
 	 * This will refresh content of the listview aka the pending messages when
-	 * smssync successfully syncs pending messages.
+	 * smssync fail to sync pending messages.
 	 */
 	private BroadcastReceiver failedReceiver = new BroadcastReceiver() {
 		@Override

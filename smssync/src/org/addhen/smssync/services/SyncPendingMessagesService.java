@@ -55,7 +55,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
 	@Override
 	protected void executeTask(Intent intent) {
-		// SmsSyncPref.loadPreferences(SmsSyncAutoSyncService.this);
+		
 		Logger.log(CLASS_TAG, "executeTask() executing this task");
 		int status = 3;
 		if (intent != null) {

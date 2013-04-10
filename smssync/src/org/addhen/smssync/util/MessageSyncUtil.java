@@ -150,6 +150,15 @@ public class MessageSyncUtil extends Util {
 		return deleted;
 
 	}
+	
+	/**
+	 * Pushes pending messages to the configured URL.
+	 *  
+	 * @return
+	 */
+	public int syncToWeb() {
+		return syncToWeb("");
+	}
 
 	/**
 	 * Sends messages received from the server as SMS.
