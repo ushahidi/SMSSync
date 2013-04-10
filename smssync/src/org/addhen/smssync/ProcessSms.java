@@ -45,7 +45,6 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
-import android.telephony.SmsMessage;
 import android.text.TextUtils;
 
 /**
@@ -130,33 +129,23 @@ public class ProcessSms {
 			return posted;
 		}
 
-		// send auto response from phone not server.
-		if (Prefs.enableReply) {
-			// send auto response as SMS to user's phone
-			sendSms(messagesFrom, Prefs.reply);
-		}
-
 		// get enabled Sync URLs
 		for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
 
-			messageSyncUtil = new MessageSyncUtil(context,
-					syncUrl.getUrl());
+			messageSyncUtil = new MessageSyncUtil(context, syncUrl.getUrl());
 
 			// process filter text (keyword or RegEx)
 			if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
 				String filterText = syncUrl.getKeywords();
 				if (filterByKeywords(messagesBody, filterText)
 						|| filterByRegex(messagesBody, filterText)) {
-					posted = messageSyncUtil.postToAWebService(
-							messagesFrom, messagesBody,
-							messagesTimestamp, messagesUuid,
+					posted = messageSyncUtil.postToAWebService(messagesFrom,
+							messagesBody, messagesTimestamp, messagesUuid,
 							syncUrl.getSecret());
 					if (!posted) {
 						// Note: HTTP Error code or custom error message
 						// will have been shown already
-						Util.showFailNotification(
-								context,
-								messagesBody,
+						Util.showFailNotification(context, messagesBody,
 								context.getString(R.string.sending_failed));
 
 						// attempt to make a data connection to sync
@@ -164,21 +153,18 @@ public class ProcessSms {
 						Util.connectToDataNetwork(context);
 					} else {
 
-						postToSentBox(messagesFrom, messagesBody,
-								messagesUuid, messagesTimestamp,
-								PENDING);
-						Util.showFailNotification(
-								context,
-								messagesBody,
+						postToSentBox(messagesFrom, messagesBody, messagesUuid,
+								messagesTimestamp, PENDING);
+						Util.showFailNotification(context, messagesBody,
 								context.getString(R.string.sending_succeeded));
 					}
 
 				}
 
 			} else { // there is no filter text set up on a sync URL
-				posted = messageSyncUtil.postToAWebService(
-						messagesFrom, messagesBody, messagesTimestamp,
-						messagesUuid, syncUrl.getSecret());
+				posted = messageSyncUtil.postToAWebService(messagesFrom,
+						messagesBody, messagesTimestamp, messagesUuid,
+						syncUrl.getSecret());
 				Logger.log(CLASS_TAG, "routeMessages posted is " + posted);
 				if (!posted) {
 					Util.showFailNotification(context, messagesBody,
@@ -190,12 +176,10 @@ public class ProcessSms {
 
 				} else {
 
-					postToSentBox(messagesFrom, messagesBody,
-							messagesUuid, messagesTimestamp, PENDING);
+					postToSentBox(messagesFrom, messagesBody, messagesUuid,
+							messagesTimestamp, PENDING);
 
-					Util.showFailNotification(
-							context,
-							messagesBody,
+					Util.showFailNotification(context, messagesBody,
 							context.getString(R.string.sending_succeeded));
 				}
 			}
@@ -217,6 +201,16 @@ public class ProcessSms {
 	 */
 	public void routeSms(String from, String body, String timestamp, String uuid) {
 		Logger.log(CLASS_TAG, "routeSms uuid: " + uuid);
+
+		// is SMSSync service running?
+		if (Prefs.enabled) {
+			// send auto response from phone not server.
+			if (Prefs.enableReply) {
+				// send auto response as SMS to user's phone
+				sendSms(from, Prefs.reply);
+			}
+		}
+
 		if (routeMessages(from, body, timestamp, uuid)) {
 
 			// Delete messages from message app's inbox, only
@@ -511,8 +505,8 @@ public class ProcessSms {
 	 * 
 	 * @return void
 	 */
-	private void postToPendingBox(String from, String body,
-			String uuid, String date) {
+	private void postToPendingBox(String from, String body, String uuid,
+			String date) {
 		Logger.log(CLASS_TAG, "postToPendingBox(): post message to pendingbox");
 
 		Util.smsMap.put("messagesFrom", from);
