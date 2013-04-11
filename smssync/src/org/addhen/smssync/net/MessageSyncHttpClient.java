@@ -24,6 +24,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
@@ -68,33 +69,32 @@ public class MessageSyncHttpClient extends MainHttpClient {
 		try {
 
 			// Add your data
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-			nameValuePairs.add(new BasicNameValuePair("secret", params
-					.get("secret")));
-			nameValuePairs.add(new BasicNameValuePair("from", params
-					.get("from")));
-			nameValuePairs.add(new BasicNameValuePair("message", params
-					.get("message")));
-			nameValuePairs.add(new BasicNameValuePair("message_id", params
-					.get("message_id")));
 
-			if (formatDate(params.get("sent_timestamp")) != null) {
-				nameValuePairs.add(new BasicNameValuePair("sent_timestamp",
-						params.get("sent_timestamp")));
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+
+			if (params != null) {
+				// get params values
+				
+				for (Entry<String, String> en : params.entrySet()) {
+					String key = en.getKey();
+					if (key == null || "".equals(key))
+						continue;
+					String val = en.getValue();
+
+					nameValuePairs.add(new BasicNameValuePair(key, val));
+				}
 			}
 
-			nameValuePairs.add(new BasicNameValuePair("sent_to", params
-					.get("sent_to")));
+			
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
 					HTTP.UTF_8));
 
 			// Execute HTTP Post Request
 			HttpResponse response = httpclient.execute(httppost);
 			int statusCode = response.getStatusLine().getStatusCode();
-
+			log("statusCode: " + statusCode);
 			if (statusCode == 200 || statusCode == 201) {
 				String resp = getText(response);
-
 				// Check JSON "success" status
 				if (Util.getJsonSuccessStatus(resp)) {
 					// auto response message is enabled to be received from the
@@ -139,14 +139,5 @@ public class MessageSyncHttpClient extends MainHttpClient {
 			return false;
 		}
 
-	}
-
-	private static String formatDate(String date) {
-		try {
-
-			return Util.formatDateTime(Long.parseLong(date), "MM-dd-yy kk:mm");
-		} catch (NumberFormatException e) {
-			return null;
-		}
 	}
 }

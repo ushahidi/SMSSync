@@ -56,11 +56,12 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 	@Override
 	protected void executeTask(Intent intent) {
 		
-		Logger.log(CLASS_TAG, "executeTask() executing this task");
+		Logger.log(CLASS_TAG, "executeTask() executing this task ");
 		int status = 3;
 		if (intent != null) {
 			// get Id
 			messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
+			Logger.log(CLASS_TAG,"messageUUid: "+messageUuid);
 			if (messagesModel.totalMessages() > 0) {
 				for (SyncUrlModel syncUrl : model
 						.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
@@ -68,6 +69,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 					status = new MessageSyncUtil(
 							SyncPendingMessagesService.this, syncUrl.getUrl())
 							.syncToWeb(messageUuid);
+					Logger.log(CLASS_TAG, "returnStatus: "+status);
 				}
 				
 				statusIntent.putExtra("syncstatus", status);

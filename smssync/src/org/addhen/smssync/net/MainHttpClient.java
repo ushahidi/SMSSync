@@ -153,7 +153,7 @@ public class MainHttpClient {
 		try {
 			text = getText(response.getEntity().getContent());
 		} catch (final Exception ex) {
-
+			Logger.log("MainHttpClient","GetText ", ex);
 		}
 		return text;
 	}
