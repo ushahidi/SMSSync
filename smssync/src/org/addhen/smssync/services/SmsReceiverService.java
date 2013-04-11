@@ -20,6 +20,8 @@
 
 package org.addhen.smssync.services;
 
+import java.lang.ref.WeakReference;
+
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.fragments.PendingMessages;
@@ -93,7 +95,7 @@ public class SmsReceiverService extends Service {
 		Prefs.loadPreferences(mContext);
 
 		mServiceLooper = thread.getLooper();
-		mServiceHandler = new ServiceHandler(mServiceLooper);
+		mServiceHandler = new ServiceHandler(this, mServiceLooper);
 
 	}
 
@@ -115,37 +117,46 @@ public class SmsReceiverService extends Service {
 		return null;
 	}
 
-	private final class ServiceHandler extends Handler {
-		public ServiceHandler(Looper looper) {
+	private static class ServiceHandler extends Handler {
+		private final WeakReference<SmsReceiverService> mSmsReceiverService;
+
+		public ServiceHandler(SmsReceiverService mSmsReceiverService,
+				Looper looper) {
 			super(looper);
+			this.mSmsReceiverService = new WeakReference<SmsReceiverService>(
+					mSmsReceiverService);
 		}
 
 		@Override
 		public void handleMessage(Message msg) {
+			SmsReceiverService smsReceiverService = mSmsReceiverService.get();
+			if (smsReceiverService != null) {
+				int serviceId = msg.arg1;
+				Intent intent = (Intent) msg.obj;
+				if (intent != null) {
+					String action = intent.getAction();
 
-			int serviceId = msg.arg1;
-			Intent intent = (Intent) msg.obj;
-			if (intent != null) {
-				String action = intent.getAction();
+					if (ACTION_SMS_RECEIVED.equals(action)) {
+						smsReceiverService.handleSmsReceived(intent);
+					}
 
-				if (ACTION_SMS_RECEIVED.equals(action)) {
-					handleSmsReceived(intent);
+					finishStartingService(smsReceiverService, serviceId);
 				}
+
 			}
-			finishStartingService(SmsReceiverService.this, serviceId);
 		}
 	}
 
 	/**
 	 * Handle receiving SMS message
 	 */
-	private void handleSmsReceived(Intent intent) {
+	protected void handleSmsReceived(Intent intent) {
 
 		String body;
 		Bundle bundle = intent.getExtras();
 		Prefs.loadPreferences(SmsReceiverService.this);
 
-		log("handleSmsReceived() bundle "+bundle);
+		log("handleSmsReceived() bundle " + bundle);
 
 		if (bundle != null) {
 			SmsMessage[] messages = getMessagesFromIntent(intent);
@@ -170,12 +181,11 @@ public class SmsReceiverService extends Service {
 			}
 		}
 
-		log("handleSmsReceived() messagesUuid: "+messagesUuid);
-		
+		log("handleSmsReceived() messagesUuid: " + messagesUuid);
+
 		// route the sms
-		processSms.routeSms(
-			messagesFrom, messagesBody, messagesTimestamp, messagesUuid
-		);
+		processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
+				messagesUuid);
 
 	}
 
