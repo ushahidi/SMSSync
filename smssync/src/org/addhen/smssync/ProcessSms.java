@@ -22,6 +22,7 @@ package org.addhen.smssync;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -261,9 +262,10 @@ public class ProcessSms {
 	 */
 	public boolean filterByKeywords(String message, String filterText) {
 		String[] keywords = filterText.split(",");
+		
 		for (int i = 0; i < keywords.length; i++) {
-			if (message.toLowerCase()
-					.contains(keywords[i].toLowerCase().trim())) {
+			if (message.toLowerCase(Locale.ENGLISH)
+					.contains(keywords[i].toLowerCase(Locale.ENGLISH).trim())) {
 				return true;
 			}
 		}
