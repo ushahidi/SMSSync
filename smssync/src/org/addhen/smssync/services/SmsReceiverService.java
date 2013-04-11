@@ -139,10 +139,8 @@ public class SmsReceiverService extends Service {
 					if (ACTION_SMS_RECEIVED.equals(action)) {
 						smsReceiverService.handleSmsReceived(intent);
 					}
-
-					finishStartingService(smsReceiverService, serviceId);
 				}
-
+				finishStartingService(smsReceiverService, serviceId);
 			}
 		}
 	}
