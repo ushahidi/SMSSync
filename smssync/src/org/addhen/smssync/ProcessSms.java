@@ -452,8 +452,11 @@ public class ProcessSms {
 		}
 
 		if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo)) {
+			/*sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+					deliveryIntents);*/
+			
 			sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-					deliveryIntents);
+                    null);
 
 			// Get current Time Millis
 			final Long timeMills = System.currentTimeMillis() / 1000;
