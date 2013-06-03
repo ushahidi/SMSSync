@@ -29,10 +29,10 @@
   <string name="sms_sync_disabled">\n\t\tSMSSync ist ausgeschaltet\n  </string>
   <!--general settings-->
   <string name="general_settings">\n\t\tAllgemeine Einstellungen\n  </string>
-  <!--reply from server-->
-  <string name="reply_settings">\n\t\tEinstellungen für die Antwortnachricht\n  </string>
   <string name="chk_enable_sms_sync">\n\t\tSMSSync starten\n  </string>
   <string name="chk_sms_sync_hint">\n\t\tSMS Gateway starten und beenden.\n  </string>
+  <!--reply from server-->
+  <string name="reply_settings">\n\t\tEinstellungen für die Antwortnachricht\n  </string>
   <string name="chk_enable_reply">\n\t\tAntwortnachricht\n  </string>
   <string name="chk_reply_hint">\n\t\tDiese Rückantwort wird an alle Benutzer des SMSSync Gateways verschickt.\n\t</string>
   <!--auto delete messages-->
@@ -47,7 +47,7 @@
   <!--enable task check-->
   <string name="chk_enable_task_check">\n\t\tAufgabenplanung einschalten\n  </string>
   <string name="chk_enable_task_check_hint">\n\t\tÜber diese Einstellung kann SMSSync automatisch Aufgaben mit der callback\n\t\tURL verknüpfen und diese dann ausführen, z.B. den automatischen\n\t\tVersand von SMS via SMSSync.\n  </string>
-  <!--task check deply-->
+  <!--task check delay-->
   <string name="txt_task_check_delay">Häufigkeit</string>
   <string name="txt_task_check_delay_hint">\n\t\tStellen Sie ein, wie oft SMSSync eine Aufgabe durchführen soll.\n  </string>
   <string name="app_name">\n\t\tSMSSync\n  </string>
@@ -57,6 +57,8 @@
   <string name="sms_status_failed">\n\t\tSMSSync Senden der Nachricht fehlgeschlagen\n  </string>
   <string name="notification_summary">\n\t\tSMSSync Gateway aktiv\n  </string>
   <string name="sending_failed">\n\t\tSMSSync Senden der Nachricht fehlgeschlagen\n  </string>
+  <string name="sending_failed_http_code">SMSSync Nachricht Senden fehlgeschlagen. Server zurückgegeben HTTP Status Code %1$d.</string>
+  <string name="sending_failed_custom_error">SMSSync Senden der Nachricht fehlgeschlagen. Server fehler: %1$s.\n  </string>
   <string name="sending_succeeded">\n\t\tSMSSync Nachricht erfolgreich verschickt.\n  </string>
   <string name="no_messages_to_sync">\n\t\tEs gibt keine zu verschickende Nachrichten.\n  </string>
   <string name="no_messages_to_delete">\n\t\tEs gibt keine zu löschende Nachrichten.\n  </string>
@@ -131,4 +133,6 @@
   <string name="no_sync_url_to_delete">Es gibt keine Sync URLs zu löschen.</string>
   <string name="empty_sync_url_title">Bitte gib einen Titel für die Sync URL ein.</string>
   <string name="valid_sync_url">Bitte gib eine funktionierende URL ein.</string>
+  <string name="task">Aufgabe</string>
+  <string name="confirm_sms_import">Dadurch werden alle SMS in den Posteingang importiert. Dies kann eine Weile dauern, bis zum Ende.</string>
 </resources>
