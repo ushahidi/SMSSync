@@ -11,3 +11,8 @@ before_install:
 notifications:
   email:
    -henry@ushahidi.com
+
+script:
+  - cd ./smssync
+  - ant clean
+  - ant debug
