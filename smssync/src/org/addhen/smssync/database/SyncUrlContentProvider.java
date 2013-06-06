@@ -97,8 +97,10 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 				listSyncUrl.add(syncUrl);
 				cursor.moveToNext();
 			}
-			cursor.close();
+			
 		}
+		
+		cursor.close();
 
 		return listSyncUrl;
 	}
