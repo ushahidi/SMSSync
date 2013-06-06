@@ -53,9 +53,10 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 mListSyncUrl.add(syncUrl);
                 cursor.moveToNext();
             }
-            cursor.close();
+
         }
 
+        cursor.close();
         return mListSyncUrl;
     }
 
@@ -77,9 +78,9 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 mListSyncUrl.add(syncUrl);
                 cursor.moveToNext();
             }
-            cursor.close();
-        }
 
+        }
+        cursor.close();
         return mListSyncUrl;
     }
 

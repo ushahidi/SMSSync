@@ -55,20 +55,20 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     @Override
     public int messagesCount() {
-        Cursor mCursor = mDb.rawQuery("SELECT COUNT(" + MESSAGE_UUID
-                + ") FROM " + TABLE, null);
+        cursor = mDb.rawQuery("SELECT COUNT(" + MESSAGE_UUID + ") FROM " + TABLE,
+                null);
 
         int result = 0;
         try {
-            if (mCursor == null) {
+            if (cursor == null) {
                 return result;
             }
 
-            mCursor.moveToFirst();
-            result = mCursor.getInt(0);
+            cursor.moveToFirst();
+            result = cursor.getInt(0);
         } finally {
-            if (mCursor != null)
-                mCursor.close();
+            if (cursor != null)
+                cursor.close();
         }
 
         return result;
@@ -118,7 +118,7 @@ public class MessagesContentProvider extends DbContentProvider implements
     public boolean deleteMessagesByUuid(String messageUuid) {
         String whereClause = MESSAGE_UUID + "= ?";
         String whereArgs[] = {
-            messageUuid
+                messageUuid
         };
         return super.delete(TABLE, whereClause, whereArgs) > 0;
     }
@@ -144,7 +144,7 @@ public class MessagesContentProvider extends DbContentProvider implements
         listMessages = new ArrayList<MessagesModel>();
         String selection = MESSAGE_UUID + "= ?";
         String selectionArgs[] = {
-            messageUuid
+                messageUuid
         };
         cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, DATE
                 + " DESC");
@@ -156,8 +156,10 @@ public class MessagesContentProvider extends DbContentProvider implements
                 listMessages.add(messages);
                 cursor.moveToNext();
             }
-            cursor.close();
+
         }
+
+        cursor.close();
 
         return listMessages;
     }
@@ -179,8 +181,9 @@ public class MessagesContentProvider extends DbContentProvider implements
                 listMessages.add(messages);
                 cursor.moveToNext();
             }
-            cursor.close();
+
         }
+        cursor.close();
 
         return listMessages;
     }
@@ -194,8 +197,8 @@ public class MessagesContentProvider extends DbContentProvider implements
     @Override
     public List<MessagesModel> fetchMessagesByLimit(int limit) {
         listMessages = new ArrayList<MessagesModel>();
-        cursor = super.query(TABLE, COLUMNS, null, null,
-                MESSAGE_UUID + " DESC", String.valueOf(limit));
+        cursor = super.query(TABLE, COLUMNS, null, null, MESSAGE_UUID + " DESC",
+                String.valueOf(limit));
         if (cursor != null) {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
@@ -203,8 +206,9 @@ public class MessagesContentProvider extends DbContentProvider implements
                 listMessages.add(messages);
                 cursor.moveToNext();
             }
-            cursor.close();
+
         }
+        cursor.close();
         return listMessages;
     }
 
