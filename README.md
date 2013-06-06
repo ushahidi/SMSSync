@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ushahidi/SMSSync.png)](https://travis-ci.org/ushahidi/SMSSync)
+
 # SMSSync
 
 Welcome to **"SMSSync"**, an android application that turns your android powered phone into an SMS gateway.
