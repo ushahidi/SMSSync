@@ -9,7 +9,7 @@ FAILED=0
 # Build test app first
 pushd ./smssync/tests
 
-ant clean test
+ant clean build-project
 
 if [ "$?" = 1 ]; then
     echo "SMSSync test app build failed"
