@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="SMSSync" default="help">
+<project
+    name="SMSSync"
+    default="help" >
 
-    <!-- The local.properties file is created and updated by the 'android' tool.
+    <!--
+         The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
-         Version Control Systems. -->
+         Version Control Systems.
+    -->
+
     <loadproperties srcFile="local.properties" />
 
-    <!-- The ant.properties file can be created by you. It is only edited by the
+    <!--
+         The ant.properties file can be created by you. It is only edited by the
          'android' tool to add properties to it.
          This is the place to change some Ant specific build properties.
          Here are some properties you may want to change/update:
@@ -24,11 +30,12 @@
 
          This file is an integral part of the build system for your
          application and should be checked into Version Control Systems.
+    -->
 
-         -->
     <property file="ant.properties" />
 
-    <!-- The project.properties file is created and updated by the 'android'
+    <!--
+         The project.properties file is created and updated by the 'android'
          tool, as well as ADT.
 
          This contains project specific properties such as project target, and library
@@ -36,19 +43,22 @@
          (or in .classpath for Eclipse projects).
 
          This file is an integral part of the build system for your
-         application and should be checked into Version Control Systems. -->
+         application and should be checked into Version Control Systems.
+    -->
+
     <loadproperties srcFile="project.properties" />
 
     <!-- quick check on sdk.dir -->
+
     <fail
-            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project'"
-            unless="sdk.dir"
-    />
+        message="sdk.dir is missing. Make sure to generate local.properties using &apos;android update project&apos;"
+        unless="sdk.dir" />
 
-
-<!-- extension targets. Uncomment the ones where you want to do custom work
-     in between standard targets -->
-<!--
+    <!--
+     extension targets. Uncomment the ones where you want to do custom work
+     in between standard targets
+    -->
+    <!--
     <target name="-pre-build">
     </target>
     <target name="-pre-compile">
@@ -59,9 +69,11 @@
        If this is not done in place, override ${out.dex.input.absolute.dir} */
     <target name="-post-compile">
     </target>
--->
+    -->
 
-    <!-- Import the actual build file.
+
+    <!--
+         Import the actual build file.
 
          To customize existing targets, there are two options:
          - Customize only one target:
@@ -80,6 +92,9 @@
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
     <!-- version-tag: 1 -->
+
     <import file="${sdk.dir}/tools/ant/build.xml" />
+
     <property file="secure.properties" />
+
 </project>
