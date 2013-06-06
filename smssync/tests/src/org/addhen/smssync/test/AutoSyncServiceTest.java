@@ -1,3 +1,4 @@
+
 package org.addhen.smssync.test;
 
 import org.addhen.smssync.services.AutoSyncService;
@@ -13,22 +14,22 @@ import android.test.suitebuilder.annotation.LargeTest;
  */
 public class AutoSyncServiceTest extends ServiceTestCase<AutoSyncService> {
 
-	public AutoSyncServiceTest() {
-		super(AutoSyncService.class);
+    public AutoSyncServiceTest() {
+        super(AutoSyncService.class);
 
-	}
+    }
 
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
 
-	}
+    }
 
-	@LargeTest
-	public void testSyncMessages() {
-	}
+    @LargeTest
+    public void testSyncMessages() {
+    }
 
-	@Override
-	public void tearDown() {
-	}
+    @Override
+    public void tearDown() {
+    }
 }
