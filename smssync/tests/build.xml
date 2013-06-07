@@ -74,6 +74,7 @@
         </ant>
     </target>
     <target depends="init" name="build-project">
+	<echo message="${env.ANDROID_HOME}"/>
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin/classes" includeantruntime="false" source="${source}" target="${target}">
             <src path="src"/>
