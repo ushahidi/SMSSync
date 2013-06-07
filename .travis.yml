@@ -11,10 +11,7 @@ before_install:
   - android list sdk
   - echo "y" | android -v update sdk --filter 1,2,4,5,6 --no-ui
   - export PATH=${PATH}:${ANDROID_HOME}/platform-tools
-  - android list targets
-  - android -s update project --path ./smssync --subprojects --target "android-17"
-  - android -s update test-project --path ./smssync/tests -m ../
-
+  
 script: "./build.sh"
 
 notifications:
