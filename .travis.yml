@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk6
+  - oraclejdk7
 
 before_install:
   # download the latest android sdk and unzip
@@ -14,12 +14,6 @@ before_install:
   - android list targets
   - android -s update project --path ./smssync --subprojects --target "android-17"
   - android -s update test-project --path ./smssync/tests -m ../
-  - mkdir -p android-sdk-linux/build-tools/17.0.0/
-  - ln -s android-sdk-linux/platform-tools/aapt android-sdk-linux/build-tools/17.0.0/aapt 
-  - ln -s android-sdk-linux/platform-tools/lib android-sdk-linux/build-tools/17.0.0/lib
-  - ln -s android-sdk-linux/platform-tools/aidl android-sdk-linux/build-tools/17.0.0/aidl
-
-
 
 script: "./build.sh"
 
