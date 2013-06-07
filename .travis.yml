@@ -15,7 +15,7 @@ before_install:
   - android -s update project --path ./smssync --subprojects --target "android-17"
   - android -s update test-project --path ./smssync/tests -m ../
   - ls android-sdk-linux
-
+  - ls android-sdk-linux/android-build-tools/17.0.0/
 script: "./build.sh"
 
 notifications:
