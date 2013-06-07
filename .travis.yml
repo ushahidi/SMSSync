@@ -9,7 +9,7 @@ before_install:
   - export ANDROID_HOME=`pwd`/android-sdk-linux
   - export PATH=${PATH}:${ANDROID_HOME}/tools
   - android list sdk
-  - echo "y" android -v update sdk --filter 1,2,4,5,6 --no-ui
+  - echo "y" | android -v update sdk --filter 1,2,4,5,6 --no-ui
   - export PATH=${PATH}:${ANDROID_HOME}/platform-tools
   - android list targets
   - android -s update project --path ./smssync --subprojects --target 34
