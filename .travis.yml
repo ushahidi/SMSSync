@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk6
+  - openjdk6
 
 before_install:
   # download the latest android sdk and unzip

@@ -1,5 +1,5 @@
 
-package org.addhen.smssync.test;
+package org.addhen.smssync.services;
 
 import org.addhen.smssync.services.AutoSyncService;
 

@@ -11,22 +11,23 @@
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
-    <path id="Android 4.1.2.libraryclasspath">
-        <pathelement location="../../../../Libraries/Java/Android/android-sdk-linux_x86/platforms/android-16/android.jar"/>
+    <property environment="env"/>
+    <path id="Android 4.2.libraryclasspath">
+        <pathelement location="${env.ANDROID_HOME}/platforms/android-17/android.jar"/>
     </path>
     <path id="Android Private Libraries.libraryclasspath">
         <pathelement location="../../abslib/libs/android-support-v4.jar"/>
     </path>
     <path id="Android Dependencies.libraryclasspath"/>
     <path id="abslib.classpath">
-        <path refid="Android 4.1.2.libraryclasspath"/>
+        <path refid="Android 4.2.libraryclasspath"/>
         <path refid="Android Private Libraries.libraryclasspath"/>
         <pathelement location="${abslib.location}/libs/android-support-v4.jar"/>
         <pathelement location="${abslib.location}/bin/classes"/>
         <path refid="Android Dependencies.libraryclasspath"/>
     </path>
     <path id="smssync.classpath">
-        <path refid="Android 4.1.2.libraryclasspath"/>
+        <path refid="Android 4.2.libraryclasspath"/>
         <path refid="abslib.classpath"/>
         <path refid="Android Private Libraries.libraryclasspath"/>
         <pathelement location="${smssync.location}/bin/classes"/>
@@ -35,7 +36,7 @@
     <path id="smssyncTest.classpath">
         <pathelement location="bin/classes"/>
         <path refid="smssync.classpath"/>
-        <path refid="Android 4.1.2.libraryclasspath"/>
+        <path refid="Android 4.2.libraryclasspath"/>
         <path refid="Android Private Libraries.libraryclasspath"/>
         <path refid="Android Dependencies.libraryclasspath"/>
     </path>
