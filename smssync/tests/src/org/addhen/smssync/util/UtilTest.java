@@ -11,10 +11,14 @@ public class UtilTest extends BaseTest {
 
     Long timestamp;
 
+    String expected;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        timestamp = System.currentTimeMillis() / 1000;
+        timestamp = 1370831690572l;
+        expected = "Jun 10, 2013 at 11:34 AM";
+
     }
 
     /**
@@ -26,7 +30,8 @@ public class UtilTest extends BaseTest {
         try {
             String formatted = Util.formatDateTime(timestamp,
                     "MMM dd, yyyy 'at' hh:mm a");
-            assertEquals(formatted, formatted);
+
+            assertNotNullOrEqual("Timestamp cannot be null or empty", expected, formatted);
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -34,6 +39,8 @@ public class UtilTest extends BaseTest {
 
     @Override
     public void tearDown() {
+        timestamp = null;
+        expected = null;
     }
 
 }
