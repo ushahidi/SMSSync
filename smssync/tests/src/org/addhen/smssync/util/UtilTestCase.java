@@ -1,13 +1,13 @@
 
 package org.addhen.smssync.util;
 
-import org.addhen.smssync.test.BaseTest;
+import org.addhen.smssync.test.BaseTestCase;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
 import org.addhen.smssync.util.Util;
 
-public class UtilTest extends BaseTest {
+public class UtilTestCase extends BaseTestCase {
 
     Long timestamp;
 

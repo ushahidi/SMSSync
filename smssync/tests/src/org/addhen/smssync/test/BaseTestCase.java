@@ -11,7 +11,7 @@ import junit.framework.TestCase;
  * 
  * @author eyedol
  */
-public class BaseTest extends TestCase {
+public class BaseTestCase extends TestCase {
 
     /**
      * Assert not null or empty.

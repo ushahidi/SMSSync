@@ -12,9 +12,9 @@ import android.test.suitebuilder.annotation.LargeTest;
  * 
  * @author eyedol
  */
-public class AutoSyncServiceTest extends ServiceTestCase<AutoSyncService> {
+public class AutoSyncServiceTestCase extends ServiceTestCase<AutoSyncService> {
 
-    public AutoSyncServiceTest() {
+    public AutoSyncServiceTestCase() {
         super(AutoSyncService.class);
 
     }
