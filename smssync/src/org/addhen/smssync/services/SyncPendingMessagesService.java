@@ -35,48 +35,50 @@ import android.content.Intent;
  */
 public class SyncPendingMessagesService extends SmsSyncServices {
 
-	private static String CLASS_TAG = SyncPendingMessagesService.class
-			.getSimpleName();
+    private static String CLASS_TAG = SyncPendingMessagesService.class
+            .getSimpleName();
 
-	private Intent statusIntent; // holds the status of the sync and sends it to
+    private Intent statusIntent; // holds the status of the sync and sends it to
 
-	private String messageUuid = "";
+    private String messageUuid = "";
 
-	private SyncUrlModel model;
+    private SyncUrlModel model;
 
-	private MessagesModel messagesModel;
+    private MessagesModel messagesModel;
 
-	public SyncPendingMessagesService() {
-		super(CLASS_TAG);
-		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-		model = new SyncUrlModel();
-		messagesModel = new MessagesModel();
-	}
+    public SyncPendingMessagesService() {
+        super(CLASS_TAG);
+        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+        model = new SyncUrlModel();
+        messagesModel = new MessagesModel();
+    }
 
-	@Override
-	protected void executeTask(Intent intent) {
-		
-		Logger.log(CLASS_TAG, "executeTask() executing this task ");
-		int status = 3;
-		if (intent != null) {
-			// get Id
-			messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
-			Logger.log(CLASS_TAG,"messageUUid: "+messageUuid);
-			if (messagesModel.totalMessages() > 0) {
-				for (SyncUrlModel syncUrl : model
-						.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+    @Override
+    protected void executeTask(Intent intent) {
 
-					status = new MessageSyncUtil(
-							SyncPendingMessagesService.this, syncUrl.getUrl())
-							.syncToWeb(messageUuid);
-					Logger.log(CLASS_TAG, "returnStatus: "+status);
-				}
-				
-				statusIntent.putExtra("syncstatus", status);
-				sendBroadcast(statusIntent);
-			}
-		}
+        Logger.log(CLASS_TAG, "executeTask() executing this task ");
+        int status = 3;
+        if (intent != null) {
+            // get Id
+            messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
+            Logger.log(CLASS_TAG, "messageUUid: " + messageUuid);
+            if (messagesModel.totalMessages() > 0) {
 
-	}
+                // This code is a bit retard
+                for (SyncUrlModel syncUrl : model
+                        .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+
+                    status = new MessageSyncUtil(
+                            SyncPendingMessagesService.this, syncUrl.getUrl())
+                            .syncToWeb(messageUuid);
+                    Logger.log(CLASS_TAG, "returnStatus: " + status);
+                }
+
+                statusIntent.putExtra("syncstatus", status);
+                sendBroadcast(statusIntent);
+            }
+        }
+
+    }
 
 }

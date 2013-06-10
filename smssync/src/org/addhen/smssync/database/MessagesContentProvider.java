@@ -175,11 +175,11 @@ public class MessagesContentProvider extends DbContentProvider implements
         cursor = super.query(TABLE, COLUMNS, null, null, DATE + " DESC");
 
         if (cursor != null) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
+            // cursor.moveToFirst();
+            while (cursor.moveToNext()) {
                 MessagesModel messages = cursorToEntity(cursor);
                 listMessages.add(messages);
-                cursor.moveToNext();
+
             }
 
         }

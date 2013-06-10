@@ -17,6 +17,7 @@
  ** Ushahidi developers at team@ushahidi.com.
  **
  *****************************************************************************/
+
 package org.addhen.smssync.util;
 
 import java.util.ArrayList;
@@ -39,268 +40,269 @@ import android.util.Log;
 
 /**
  * @author eyedol
- * 
  */
 public class MessageSyncUtil extends Util {
 
-	private Context context;
+    private Context context;
 
-	private String url;
+    private String url;
 
-	private static JSONObject jsonObject;
+    private static JSONObject jsonObject;
 
-	private static JSONArray jsonArray;
+    private static JSONArray jsonArray;
 
-	private static final String CLASS_TAG = MessageSyncUtil.class
-			.getSimpleName();
+    private static final String CLASS_TAG = MessageSyncUtil.class
+            .getSimpleName();
 
-	private MessageSyncHttpClient msgSyncHttpClient;
+    private MessageSyncHttpClient msgSyncHttpClient;
 
-	private ProcessSms processSms;
+    private ProcessSms processSms;
 
-	public MessageSyncUtil(Context context, String url) {
-		this.context = context;
-		this.url = url;
-		this.msgSyncHttpClient = new MessageSyncHttpClient(context, url);
-		processSms = new ProcessSms(context);
-	}
+    public MessageSyncUtil(Context context, String url) {
+        this.context = context;
+        this.url = url;
+        this.msgSyncHttpClient = new MessageSyncHttpClient(context, url);
+        processSms = new ProcessSms(context);
+    }
 
-	/**
-	 * Posts received SMS to a configured callback URL.
-	 * 
-	 * @param String
-	 *            apiKey
-	 * @param String
-	 *            fromAddress
-	 * @param String
-	 *            messageBody
-	 * @return boolean
-	 */
-	public boolean postToAWebService(String messagesFrom, String messagesBody,
-			String messagesTimestamp, String messagesUuid, String secret) {
-		log("postToAWebService(): Post received SMS to configured URL:"
-				+ Prefs.website + " messagesTimestamp: " + messagesTimestamp
-				+ " messagesBody: " + messagesBody + " messagesFrom "
-				+ messagesFrom + " Secret " + secret);
+    /**
+     * Posts received SMS to a configured callback URL.
+     * 
+     * @param String apiKey
+     * @param String fromAddress
+     * @param String messageBody
+     * @return boolean
+     */
+    public boolean postToAWebService(String messagesFrom, String messagesBody,
+            String messagesTimestamp, String messagesUuid, String secret) {
+        log("postToAWebService(): Post received SMS to configured URL:"
+                + Prefs.website + " messagesTimestamp: " + messagesTimestamp
+                + " messagesBody: " + messagesBody + " messagesFrom "
+                + messagesFrom + " Secret " + secret);
 
-		HashMap<String, String> params = new HashMap<String, String>();
-		Prefs.loadPreferences(context);
+        HashMap<String, String> params = new HashMap<String, String>();
+        Prefs.loadPreferences(context);
 
-		if (!TextUtils.isEmpty(url)) {
-			params.put("secret", secret);
-			params.put("from", messagesFrom);
-			params.put("message", messagesBody);
-			params.put("sent_timestamp", messagesTimestamp);
-			params.put("sent_to", getPhoneNumber(context));
-			params.put("message_id", messagesUuid);
-			return msgSyncHttpClient.postSmsToWebService(params);
-		}
+        if (!TextUtils.isEmpty(url)) {
+            params.put("secret", secret);
+            params.put("from", messagesFrom);
+            params.put("message", messagesBody);
+            params.put("sent_timestamp", messagesTimestamp);
+            params.put("sent_to", getPhoneNumber(context));
+            params.put("message_id", messagesUuid);
+            return msgSyncHttpClient.postSmsToWebService(params);
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Pushes pending messages to the configured URL.
-	 * 
-	 * @param int messageId - Sync by Id - 0 for no ID > 0 to for an id
-	 * @param String
-	 *            url The sync URL to push the message to.
-	 * 
-	 * @return int
-	 */
-	public int syncToWeb(String messageUuid) {
-		log("syncToWeb(): push pending messages to the Sync URL");
-		MessagesModel model = new MessagesModel();
-		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-		// check if it should sync by id
-		if (messageUuid != null && !TextUtils.isEmpty(messageUuid)) {
-			model.loadByUuid(messageUuid);
-			listMessages = model.listMessages;
+    /**
+     * Pushes pending messages to the configured URL.
+     * 
+     * @param int messageId - Sync by Id - 0 for no ID > 0 to for an id
+     * @param String url The sync URL to push the message to.
+     * @return int
+     */
+    public int syncToWeb(String messageUuid) {
+        log("syncToWeb(): push pending messages to the Sync URL");
+        MessagesModel model = new MessagesModel();
+        List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
+        ArrayList<String> successfulSyncMessages = new ArrayList<String>();
+        // check if it should sync by id
+        if (messageUuid != null && !TextUtils.isEmpty(messageUuid)) {
+            model.loadByUuid(messageUuid);
+            listMessages = model.listMessages;
 
-		} else {
-			model.load();
-			listMessages = model.listMessages;
+        } else {
+            model.load();
+            listMessages = model.listMessages;
 
-		}
-		int deleted = 0;
+        }
+        int deleted = 0;
 
-		if (listMessages != null) {
-			if (listMessages.size() == 0) {
-				return 2;
-			}
+        if (listMessages != null) {
+            if (listMessages.size() == 0) {
+                return 2;
+            }
 
-			for (MessagesModel messages : listMessages) {
-				log("processing");
-				if (processSms.routePendingMessages(messages.getMessageFrom(),
-						messages.getMessage(), messages.getMessageDate(),
-						messages.getMessageUuid())) {
+            for (MessagesModel messages : listMessages) {
+                log("processing");
 
-					// / if it successfully pushes message, delete message
-					// from db
-					new MessagesModel().deleteMessagesByUuid(messages
-							.getMessageUuid());
-					deleted = 0;
-				} else {
-					deleted = 1;
-				}
+                if (processSms.routePendingMessages(messages.getMessageFrom(),
+                        messages.getMessage(), messages.getMessageDate(),
+                        messages.getMessageUuid())) {
 
-			}
-		}
+                    successfulSyncMessages.add(messages.getMessageUuid());
 
-		return deleted;
+                }
 
-	}
-	
-	/**
-	 * Pushes pending messages to the configured URL.
-	 *  
-	 * @return
-	 */
-	public int syncToWeb() {
-		return syncToWeb("");
-	}
+                // Delete the queued items that were sucessful
+                if (successfulSyncMessages.size() > 0) {
+                    for (String msgUuid : successfulSyncMessages) {
+                        new MessagesModel().deleteMessagesByUuid(msgUuid);
+                    }
+                    deleted = 0;
+                }
+                else {
+                    deleted = 1;
+                }
 
-	/**
-	 * Sends messages received from the server as SMS.
-	 * 
-	 * @param String
-	 *            response - the response from the server.
-	 */
-	public void sendResponseFromServer(String response) {
-		Logger.log(CLASS_TAG, "performResponseFromServer(): " + " response:"
-				+ response);
+            }
 
-		if (!TextUtils.isEmpty(response) && response != null) {
+        }
 
-			try {
+        return deleted;
 
-				jsonObject = new JSONObject(response);
-				JSONObject payloadObject = jsonObject.getJSONObject("payload");
+    }
 
-				if (payloadObject != null) {
+    /**
+     * Pushes pending messages to the configured URL.
+     * 
+     * @return
+     */
+    public int syncToWeb() {
+        return syncToWeb("");
+    }
 
-					jsonArray = payloadObject.getJSONArray("messages");
+    /**
+     * Sends messages received from the server as SMS.
+     * 
+     * @param String response - the response from the server.
+     */
+    public void sendResponseFromServer(String response) {
+        Logger.log(CLASS_TAG, "performResponseFromServer(): " + " response:"
+                + response);
 
-					for (int index = 0; index < jsonArray.length(); ++index) {
-						jsonObject = jsonArray.getJSONObject(index);
-						new Util().log("Send sms: To: "
-								+ jsonObject.getString("to") + "Message: "
-								+ jsonObject.getString("message"));
+        if (!TextUtils.isEmpty(response) && response != null) {
 
-						processSms.sendSms(jsonObject.getString("to"),
-								jsonObject.getString("message"));
-					}
+            try {
 
-				}
-			} catch (JSONException e) {
-				new Util().log(CLASS_TAG, "Error: " + e.getMessage());
-				showToast(context, R.string.no_task);
-			}
-		}
+                jsonObject = new JSONObject(response);
+                JSONObject payloadObject = jsonObject.getJSONObject("payload");
 
-	}
+                if (payloadObject != null) {
 
-	/**
-	 * Process messages as received from the user; 0 - successful 1 - failed
-	 * fetching categories
-	 * 
-	 * @return int - status
-	 */
-	public static int processMessages() {
-		Logger.log(CLASS_TAG,
-				"processMessages(): Process text messages as received from the user's phone");
-		List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-		String messageUuid = "";
-		int status = 1;
-		MessagesModel messages = new MessagesModel();
-		listMessages.add(messages);
+                    jsonArray = payloadObject.getJSONArray("messages");
 
-		// check if messageId is actually initialized
-		if (smsMap.get("messagesUuid") != null) {
-			messageUuid = smsMap.get("messagesUuid");
-		}
+                    for (int index = 0; index < jsonArray.length(); ++index) {
+                        jsonObject = jsonArray.getJSONObject(index);
+                        new Util().log("Send sms: To: "
+                                + jsonObject.getString("to") + "Message: "
+                                + jsonObject.getString("message"));
 
-		messages.setMessageUuid(messageUuid);
-		messages.setMessageFrom(smsMap.get("messagesFrom"));
-		messages.setMessage(smsMap.get("messagesBody"));
-		messages.setMessageDate(smsMap.get("messagesDate"));
+                        processSms.sendSms(jsonObject.getString("to"),
+                                jsonObject.getString("message"));
+                    }
 
-		if (listMessages != null) {
-			MessagesModel model = new MessagesModel();
-			model.listMessages = listMessages;
-			model.save();
+                }
+            } catch (JSONException e) {
+                new Util().log(CLASS_TAG, "Error: " + e.getMessage());
+                showToast(context, R.string.no_task);
+            }
+        }
 
-			status = 0;
-		}
-		return status;
+    }
 
-	}
+    /**
+     * Process messages as received from the user; 0 - successful 1 - failed
+     * fetching categories
+     * 
+     * @return int - status
+     */
+    public static int processMessages() {
+        Logger.log(CLASS_TAG,
+                "processMessages(): Process text messages as received from the user's phone");
+        List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
+        String messageUuid = "";
+        int status = 1;
+        MessagesModel messages = new MessagesModel();
+        listMessages.add(messages);
 
-	/**
-	 * Performs a task based on what callback URL tells it.
-	 * 
-	 * @param Context
-	 *            context - the activity calling this method.
-	 * @return void
-	 */
-	public void performTask(String urlSecret) {
-		Logger.log(CLASS_TAG, "performTask(): perform a task");
-		// load Prefs
-		Prefs.loadPreferences(context);
+        // check if messageId is actually initialized
+        if (smsMap.get("messagesUuid") != null) {
+            messageUuid = smsMap.get("messagesUuid");
+        }
 
-		// validate configured url
-		int status = validateCallbackUrl(url);
-		if (status == 1) {
-			showToast(context, R.string.no_configured_url);
-		} else if (status == 2) {
-			showToast(context, R.string.invalid_url);
-		} else if (status == 3) {
-			showToast(context, R.string.no_connection);
-		} else {
+        messages.setMessageUuid(messageUuid);
+        messages.setMessageFrom(smsMap.get("messagesFrom"));
+        messages.setMessage(smsMap.get("messagesBody"));
+        messages.setMessageDate(smsMap.get("messagesDate"));
 
-			StringBuilder uriBuilder = new StringBuilder(url);
+        if (listMessages != null) {
+            MessagesModel model = new MessagesModel();
+            model.listMessages = listMessages;
+            model.save();
 
-			uriBuilder.append("?task=send");
+            status = 0;
+        }
+        return status;
 
-			String response = MainHttpClient.getFromWebService(uriBuilder
-					.toString());
-			Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
-			String task = "";
-			String secret = "";
-			if (!TextUtils.isEmpty(response) && response != null) {
+    }
 
-				try {
+    /**
+     * Performs a task based on what callback URL tells it.
+     * 
+     * @param Context context - the activity calling this method.
+     * @return void
+     */
+    public void performTask(String urlSecret) {
+        Logger.log(CLASS_TAG, "performTask(): perform a task");
+        // load Prefs
+        Prefs.loadPreferences(context);
 
-					jsonObject = new JSONObject(response);
-					JSONObject payloadObject = jsonObject
-							.getJSONObject("payload");
+        // validate configured url
+        int status = validateCallbackUrl(url);
+        if (status == 1) {
+            showToast(context, R.string.no_configured_url);
+        } else if (status == 2) {
+            showToast(context, R.string.invalid_url);
+        } else if (status == 3) {
+            showToast(context, R.string.no_connection);
+        } else {
 
-					if (payloadObject != null) {
-						task = payloadObject.getString("task");
-						secret = payloadObject.getString("secret");
-						if ((task.equals("send")) && (secret.equals(urlSecret))) {
-							jsonArray = payloadObject.getJSONArray("messages");
+            StringBuilder uriBuilder = new StringBuilder(url);
 
-							for (int index = 0; index < jsonArray.length(); ++index) {
-								jsonObject = jsonArray.getJSONObject(index);
+            uriBuilder.append("?task=send");
 
-								processSms.sendSms(jsonObject.getString("to"),
-										jsonObject.getString("message"));
-							}
+            String response = MainHttpClient.getFromWebService(uriBuilder
+                    .toString());
+            Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
+            String task = "";
+            String secret = "";
+            if (!TextUtils.isEmpty(response) && response != null) {
 
-						} else {
-							log(context.getString(R.string.no_task));
-						}
+                try {
 
-					} else { // 'payload' data may not be present in JSON
-								// response
-						log(context.getString(R.string.no_task));
-					}
+                    jsonObject = new JSONObject(response);
+                    JSONObject payloadObject = jsonObject
+                            .getJSONObject("payload");
 
-				} catch (JSONException e) {
-					log("Error: " + e.getMessage());
-				}
-			}
-		}
-	}
+                    if (payloadObject != null) {
+                        task = payloadObject.getString("task");
+                        secret = payloadObject.getString("secret");
+                        if ((task.equals("send")) && (secret.equals(urlSecret))) {
+                            jsonArray = payloadObject.getJSONArray("messages");
+
+                            for (int index = 0; index < jsonArray.length(); ++index) {
+                                jsonObject = jsonArray.getJSONObject(index);
+
+                                processSms.sendSms(jsonObject.getString("to"),
+                                        jsonObject.getString("message"));
+                            }
+
+                        } else {
+                            log(context.getString(R.string.no_task));
+                        }
+
+                    } else { // 'payload' data may not be present in JSON
+                             // response
+                        log(context.getString(R.string.no_task));
+                    }
+
+                } catch (JSONException e) {
+                    log("Error: " + e.getMessage());
+                }
+            }
+        }
+    }
 }

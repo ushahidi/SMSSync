@@ -38,13 +38,14 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
  * BaseActivity Add shared functionality that exists between all Activities
  */
-public abstract class BaseActivity<V extends View> extends SherlockActivity {
+public abstract class BaseActivity<V extends View> extends SherlockFragmentActivity {
 
 	/**
 	 * Layout resource id
