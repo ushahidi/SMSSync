@@ -25,85 +25,101 @@ import java.util.List;
 
 import org.addhen.smssync.models.Model;
 import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.Util;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
 /**
- * BaseListAdapter
+ * BaseListAdapter Base class for all list adapters for a specific BaseModel
+ * class
  * 
- * Base class for all list adapters for a specific BaseModel class
- * 
- * @param <M>
- *            Model class
+ * @param <M> Model class
  */
 public abstract class BaseListAdapter<M extends Model> extends BaseAdapter {
 
-	protected final Context context;
-	protected final LayoutInflater inflater;
-	protected final List<M> items = new ArrayList<M>();
+    protected final Context context;
+    protected final LayoutInflater inflater;
+    protected final List<M> items = new ArrayList<M>();
 
-	public BaseListAdapter(Context context) {
-		this.context = context;
-		inflater = LayoutInflater.from(context);
+    public BaseListAdapter(Context context) {
+        this.context = context;
+        inflater = LayoutInflater.from(context);
 
-	}
+    }
 
-	public int getCount() {
-		return this.items.size();
-	}
+    public int getCount() {
+        return this.items.size();
+    }
 
-	public void setItems(List<M> items) {
-		this.items.clear();
-		this.items.addAll(items);
-		notifyDataSetChanged();
-	}
+    public void setItems(List<M> items) {
+        this.items.clear();
+        this.items.addAll(items);
+        notifyDataSetChanged();
+    }
 
-	public void addItem(M item) {
-		this.items.add(item);
-		notifyDataSetChanged();
-	}
+    public void addItem(M item) {
+        this.items.add(item);
+        notifyDataSetChanged();
+    }
 
-	public M getItem(int position) {
-		return items.get(position);
-	}
+    public M getItem(int position) {
+        return items.get(position);
+    }
 
-	public long getItemId(int position) {
-		return position;
-	}
+    public long getItemId(int position) {
+        return position;
+    }
 
-	public int indexOf(M item) {
-		return items.indexOf(item);
-	}
+    public int indexOf(M item) {
+        return items.indexOf(item);
+    }
 
-	public void clearItems() {
-		this.items.clear();
-		notifyDataSetChanged();
-	}
+    public void clearItems() {
+        this.items.clear();
+        notifyDataSetChanged();
+    }
 
-	public void removeItem(int position) {
-		this.items.remove(position);
-		notifyDataSetChanged();
-	}
+    public void removeItem(int position) {
+        this.items.remove(position);
+        notifyDataSetChanged();
+    }
 
-	public void removeItem(M item) {
-		this.items.remove(item);
-		notifyDataSetChanged();
-	}
+    public void removeItem(M item) {
+        this.items.remove(item);
+        notifyDataSetChanged();
+    }
 
-	public abstract void refresh();
+    /**
+     * Set the date of the message.
+     * 
+     * @param String messageDate - The timestamp of the message. To be changed
+     *            into human readable.
+     * @return void
+     */
+    protected String formatDate(String messageDate) {
+        try {
+            return Util.formatDateTime(Long.parseLong(messageDate),
+                    "MMM dd, yyyy 'at' hh:mm a");
 
-	protected void log(String message) {
-		Logger.log(getClass().getName(), message);
-	}
+        } catch (NumberFormatException e) {
+            return messageDate;
+        }
+    }
 
-	protected void log(String format, Object... args) {
-		Logger.log(getClass().getName(), format, args);
-	}
+    public abstract void refresh();
 
-	protected void log(String message, Exception ex) {
-		Logger.log(getClass().getName(), message, ex);
-	}
+    protected void log(String message) {
+        Logger.log(getClass().getName(), message);
+    }
+
+    protected void log(String format, Object... args) {
+        Logger.log(getClass().getName(), format, args);
+    }
+
+    protected void log(String message, Exception ex) {
+        Logger.log(getClass().getName(), message, ex);
+    }
 
 }

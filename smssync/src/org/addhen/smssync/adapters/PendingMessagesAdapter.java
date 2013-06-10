@@ -22,7 +22,6 @@ package org.addhen.smssync.adapters;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.MessagesModel;
-import org.addhen.smssync.util.Util;
 
 import android.content.Context;
 import android.view.View;
@@ -90,25 +89,6 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 		if (messages.load()) {
 			this.setItems(messages.listMessages);
 		}
-	}
-
-	/**
-	 * Set the date of the message.
-	 * 
-	 * @param String
-	 *            messageDate - The timestamp of the message. To be changed into
-	 *            human readable.
-	 * @return void
-	 */
-	public String formatDate(String messageDate) {
-		try {
-			return Util.formatDateTime(Long.parseLong(messageDate),
-					"MMM dd, yyyy 'at' hh:mm a");
-
-		} catch (NumberFormatException e) {
-			return messageDate;
-		}
-
 	}
 
 }

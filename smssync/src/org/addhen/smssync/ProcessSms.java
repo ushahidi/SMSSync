@@ -50,7 +50,7 @@ import android.text.TextUtils;
 
 /**
  * This class has the main logic to dispatch the messages that comes to the
- * device. It decides where to post the messages to, depending on the status of
+ * device. It decides where to post the messages to depending on the status of
  * the device. If the message fails to send to the configured web service, it
  * saves them in the pending list and when it succeeds it saves them in the sent
  * list.
