@@ -150,16 +150,17 @@ public class MessagesContentProvider extends DbContentProvider implements
                 + " DESC");
 
         if (cursor != null) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                MessagesModel messages = cursorToEntity(cursor);
-                listMessages.add(messages);
-                cursor.moveToNext();
+            try {
+                while (cursor.moveToNext()) {
+                    MessagesModel messages = cursorToEntity(cursor);
+                    listMessages.add(messages);
+
+                }
+            } finally {
+                cursor.close();
             }
 
         }
-
-        cursor.close();
 
         return listMessages;
     }
@@ -175,15 +176,17 @@ public class MessagesContentProvider extends DbContentProvider implements
         cursor = super.query(TABLE, COLUMNS, null, null, DATE + " DESC");
 
         if (cursor != null) {
-            // cursor.moveToFirst();
-            while (cursor.moveToNext()) {
-                MessagesModel messages = cursorToEntity(cursor);
-                listMessages.add(messages);
+            try {
+                while (cursor.moveToNext()) {
+                    MessagesModel messages = cursorToEntity(cursor);
+                    listMessages.add(messages);
 
+                }
+            } finally {
+                cursor.close();
             }
 
         }
-        cursor.close();
 
         return listMessages;
     }
@@ -200,15 +203,19 @@ public class MessagesContentProvider extends DbContentProvider implements
         cursor = super.query(TABLE, COLUMNS, null, null, MESSAGE_UUID + " DESC",
                 String.valueOf(limit));
         if (cursor != null) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                MessagesModel messages = cursorToEntity(cursor);
-                listMessages.add(messages);
-                cursor.moveToNext();
+            try {
+
+                while (cursor.moveToNext()) {
+                    MessagesModel messages = cursorToEntity(cursor);
+                    listMessages.add(messages);
+
+                }
+            } finally {
+                cursor.close();
             }
 
         }
-        cursor.close();
+
         return listMessages;
     }
 

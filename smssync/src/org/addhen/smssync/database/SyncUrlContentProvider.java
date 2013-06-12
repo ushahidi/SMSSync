@@ -46,17 +46,22 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     public List<SyncUrlModel> fetchSyncUrl() {
         mListSyncUrl = new ArrayList<SyncUrlModel>();
         cursor = super.query(TABLE, COLUMNS, null, null, ID);
+
         if (cursor != null) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                SyncUrlModel syncUrl = cursorToEntity(cursor);
-                mListSyncUrl.add(syncUrl);
-                cursor.moveToNext();
+            try {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    SyncUrlModel syncUrl = cursorToEntity(cursor);
+                    mListSyncUrl.add(syncUrl);
+                    cursor.moveToNext();
+                }
+
+            } finally {
+
+                if (cursor != null)
+                    cursor.close();
             }
-
         }
-
-        cursor.close();
         return mListSyncUrl;
     }
 
@@ -71,16 +76,22 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
         mListSyncUrl = new ArrayList<SyncUrlModel>();
         cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                SyncUrlModel syncUrl = cursorToEntity(cursor);
-                mListSyncUrl.add(syncUrl);
-                cursor.moveToNext();
-            }
 
+        if (cursor != null) {
+            try {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    SyncUrlModel syncUrl = cursorToEntity(cursor);
+                    mListSyncUrl.add(syncUrl);
+                    cursor.moveToNext();
+                }
+
+            } finally {
+                if (cursor != null)
+                    cursor.close();
+            }
         }
-        cursor.close();
+
         return mListSyncUrl;
     }
 
@@ -96,16 +107,19 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         mListSyncUrl = new ArrayList<SyncUrlModel>();
         cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
         if (cursor != null) {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                SyncUrlModel syncUrl = cursorToEntity(cursor);
-                mListSyncUrl.add(syncUrl);
-                cursor.moveToNext();
+            try {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    SyncUrlModel syncUrl = cursorToEntity(cursor);
+                    mListSyncUrl.add(syncUrl);
+                    cursor.moveToNext();
+                }
+            } finally {
+                if (cursor != null)
+                    cursor.close();
             }
 
         }
-
-        cursor.close();
 
         return mListSyncUrl;
     }

@@ -58,10 +58,16 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
         Logger.log(CLASS_TAG, "executeTask() executing this task ");
         int status = 3;
+        // success
+        int s = 0;
+
+        // fail
+        int f = 0;
         if (intent != null) {
             // get Id
             messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "messageUUid: " + messageUuid);
+
             if (messagesModel.totalMessages() > 0) {
 
                 // This code is a bit retard
@@ -71,10 +77,20 @@ public class SyncPendingMessagesService extends SmsSyncServices {
                     status = new MessageSyncUtil(
                             SyncPendingMessagesService.this, syncUrl.getUrl())
                             .syncToWeb(messageUuid);
-                    Logger.log(CLASS_TAG, "returnStatus: " + status);
+
+                    if (status == 0) {
+                        // count successfully synced messages
+                        s++;
+                    } else {
+                        f++;
+                    }
+
                 }
 
-                statusIntent.putExtra("syncstatus", status);
+                statusIntent.putExtra("syncstatus", 0);
+                statusIntent.putExtra("fail", f);
+                statusIntent.putExtra("success", s);
+                statusIntent.putExtra("total", messagesModel.totalMessages());
                 sendBroadcast(statusIntent);
             }
         }
