@@ -1,22 +1,18 @@
 language: java
-jdk:
-  - oraclejdk7
 
 before_install:
+  - sudo apt-get update -qq
   # download the latest android sdk and unzip
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
   - wget http://dl.google.com/android/android-sdk_r22.0.1-linux.tgz
   - tar -zxvf android-sdk_r22.0.1-linux.tgz
   - export ANDROID_HOME=`pwd`/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
   - android list sdk
-  - echo "y" | android -v update sdk --filter 1,2,4,5,6 --no-ui
-  - export PATH=${PATH}:${ANDROID_HOME}/platform-tools
-  - export PATH=${PATH}:${ANDROID_HOME}/android-sdk-linux/build-tools/17.0.0/
-  - android list targets
-  - android -s update project --path ./smssync --subprojects --target "android-17"
-  - android -s update test-project --path ./smssync/tests -m ../
-  - ls android-sdk-linux
-  - ls android-sdk-linux/build-tools/17.0.0/
+  - echo "y" | android update sdk --filter tools,platform-tools,android-14 --no-ui --force
+  # - android list targets
+  # - android -s update project --path ./smssync --subprojects --target "android-17"
+  # - android -s update test-project --path ./smssync/tests -m ../
 script: "./build.sh"
 
 notifications:
