@@ -444,6 +444,7 @@ public class PendingMessages
         } else {
             syncPendingMessagesServiceIntent = new Intent(getActivity(),
                     SyncPendingMessagesService.class);
+
             syncPendingMessagesServiceIntent.putExtra(
                     ServicesConstants.MESSAGE_UUID, messagesUuid);
             getActivity().startService(syncPendingMessagesServiceIntent);
@@ -496,17 +497,21 @@ public class PendingMessages
                 int t = intent.getIntExtra("total", 0);
                 log("broadcastReceiver onReceive status: " + status);
                 if (status == 0) {
+
+                    refreshState = false;
+                    updateRefreshStatus();
+                    mHandler.post(mUpdateListView);
                     toastLong("Total of " + t + " messages where syncd. " + s
                             + " Successfully syncd and " + f + " failed");
-                    refreshState = false;
-                    updateRefreshStatus();
-                    mHandler.post(mUpdateListView);
                 } else if (status == 1) {
-                    toastLong(R.string.sync_failed);
+
                     refreshState = false;
                     updateRefreshStatus();
                     mHandler.post(mUpdateListView);
+                    toastLong(R.string.sync_failed);
                 } else if (status == 2) {
+                    refreshState = false;
+                    updateRefreshStatus();
                     toastLong(R.string.no_messages_to_sync);
                 }
                 if (syncPendingMessagesServiceIntent != null) {

@@ -26,12 +26,16 @@ import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
+import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ListView;
@@ -77,17 +81,22 @@ public class SentMessages
     @Override
     public void onResume() {
         super.onResume();
-
-        mHandler.post(mDisplayMessages);
+        if (getUserVisibleHint()) {
+            // getActivity().registerReceiver(broadcastReceiver,
+            // new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+            log("OnResume is called");
+            mHandler.post(mDisplayMessages);
+        }
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-
-        mHandler.post(mDisplayMessages);
-
+        if (getUserVisibleHint()) {
+            // getActivity().unregisterReceiver(broadcastReceiver);
+            mHandler.post(mDisplayMessages);
+        }
     }
 
     public boolean performAction(MenuItem item, int position) {
@@ -117,7 +126,7 @@ public class SentMessages
     // Display pending messages.
     final Runnable mDisplayMessages = new Runnable() {
         public void run() {
-            adapter.refresh();
+            refresh();
         }
     };
 
@@ -145,14 +154,14 @@ public class SentMessages
                 } else {
                     if (result) {
                         toastLong(R.string.messages_deleted);
-                        adapter.refresh();
+                        refresh();
                     } else {
                         toastLong(R.string.messages_deleted_failed);
                     }
                 }
                 refreshState = false;
                 updateRefreshStatus();
-                adapter.refresh();
+                refresh();
             } catch (Exception e) {
                 return;
             }
@@ -193,7 +202,7 @@ public class SentMessages
                 }
                 refreshState = true;
                 updateRefreshStatus();
-                adapter.refresh();
+                refresh();
             } catch (Exception e) {
                 return;
             }
@@ -267,5 +276,21 @@ public class SentMessages
         // TODO Auto-generated method stub
 
     }
+
+    public void refresh() {
+        if (adapter != null)
+            adapter.refresh();
+
+    }
+
+    /**
+     * This will refresh content of the listview aka the pending messages when
+     * smssync syncs pending messages.
+     */
+    /*
+     * private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+     * @Override public void onReceive(Context context, Intent intent) { if
+     * (intent != null) { mHandler.post(mDisplayMessages); } } };
+     */
 
 }

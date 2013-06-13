@@ -35,51 +35,71 @@ import android.view.View;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class MessagesTabActivity extends SherlockFragmentActivity {
+public class MessagesTabActivity extends SherlockFragmentActivity implements
+        ViewPager.OnPageChangeListener {
 
-	private ViewPager mViewPager;
+    private ViewPager mViewPager;
 
-	private TabAdapter mTabsAdapter;
+    private TabAdapter mTabsAdapter;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.list_messages_tab);
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		ActionBar.Tab pendingTab = getSupportActionBar().newTab().setText(
-				getString(R.string.pending_messages));
-		ActionBar.Tab sentTab = getSupportActionBar().newTab().setText(
-				getString(R.string.sent_messages));
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.list_messages_tab);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        ActionBar.Tab pendingTab = getSupportActionBar().newTab().setText(
+                getString(R.string.pending_messages));
+        ActionBar.Tab sentTab = getSupportActionBar().newTab().setText(
+                getString(R.string.sent_messages));
 
-		ActionBar.Tab syncTab = getSupportActionBar().newTab().setText(
-				getString(R.string.sync_url));
+        ActionBar.Tab syncTab = getSupportActionBar().newTab().setText(
+                getString(R.string.sync_url));
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setOnPageChangeListener(this);
+        mTabsAdapter = new TabAdapter(this, getSupportActionBar(), mViewPager);
 
-		mTabsAdapter = new TabAdapter(this, getSupportActionBar(), mViewPager);
+        mTabsAdapter.addTab(pendingTab, PendingMessages.class);
+        mTabsAdapter.addTab(sentTab, SentMessages.class);
+        mTabsAdapter.addTab(syncTab, SyncUrl.class);
+        
 
-		mTabsAdapter.addTab(pendingTab, PendingMessages.class);
-		mTabsAdapter.addTab(sentTab, SentMessages.class);
-		mTabsAdapter.addTab(syncTab, SyncUrl.class);
+        if (savedInstanceState != null) {
+            getSupportActionBar().setSelectedNavigationItem(
+                    savedInstanceState.getInt("index"));
+        }
+    }
 
-		if (savedInstanceState != null) {
-			getSupportActionBar().setSelectedNavigationItem(
-					savedInstanceState.getInt("index"));
-		}
-	}
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("index", getSupportActionBar()
+                .getSelectedNavigationIndex());
+    }
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putInt("index", getSupportActionBar()
-				.getSelectedNavigationIndex());
-	}
+    // Context Menu Stuff
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+            ContextMenuInfo menuInfo) {
 
-	// Context Menu Stuff
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v,
-			ContextMenuInfo menuInfo) {
+    }
 
-	}
+    @Override
+    public void onPageScrollStateChanged(int position) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onPageScrolled(int arg0, float arg1, int arg2) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
