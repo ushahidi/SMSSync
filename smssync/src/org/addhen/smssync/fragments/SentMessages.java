@@ -26,16 +26,12 @@ import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
-import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
 import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ListView;
@@ -43,257 +39,233 @@ import android.widget.ListView;
 import com.actionbarsherlock.view.MenuItem;
 
 public class SentMessages
-		extends
-		BaseListFragment<SentMessagesView, SentMessagesModel, SentMessagesAdapter> {
+        extends
+        BaseListFragment<SentMessagesView, SentMessagesModel, SentMessagesAdapter> {
 
-	private String messageUuid = "";
+    private String messageUuid = "";
 
-	private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
-	private SentMessagesModel model;
+    private SentMessagesModel model;
 
-	private MenuItem refresh;
+    private MenuItem refresh;
 
-	private boolean refreshState = false;
+    private boolean refreshState = false;
 
-	public SentMessages() {
-		super(SentMessagesView.class, SentMessagesAdapter.class,
-				R.layout.sent_messages, R.menu.sent_messages_menu,
-				android.R.id.list);
-	}
+    public SentMessages() {
+        super(SentMessagesView.class, SentMessagesAdapter.class,
+                R.layout.sent_messages, R.menu.sent_messages_menu,
+                android.R.id.list);
+    }
 
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		Prefs.loadPreferences(getActivity());
-		model = new SentMessagesModel();
-		// show notification
-		if (Prefs.enabled) {
-			Util.showNotification(getActivity());
-		}
-		listView.setItemsCanFocus(false);
-		listView.setLongClickable(true);
-		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
-				this, listView));
-	}
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Prefs.loadPreferences(getActivity());
+        model = new SentMessagesModel();
+        // show notification
+        if (Prefs.enabled) {
+            Util.showNotification(getActivity());
+        }
+        listView.setItemsCanFocus(false);
+        listView.setLongClickable(true);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
+                this, listView));
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		getActivity().registerReceiver(broadcastReceiver,
-				new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
-		mHandler.post(mDisplayMessages);
+    @Override
+    public void onResume() {
+        super.onResume();
 
-	}
+        mHandler.post(mDisplayMessages);
 
-	@Override
-	public void onPause() {
-		super.onPause();
-		getActivity().unregisterReceiver(broadcastReceiver);
-		mHandler.post(mDisplayMessages);
+    }
 
-	}
+    @Override
+    public void onPause() {
+        super.onPause();
 
-	public boolean performAction(MenuItem item, int position) {
-		messageUuid = adapter.getItem(position).getMessageUuid();
-		if (item.getItemId() == R.id.sent_messages_context_delete) {
-			// Delete by ID
-			performDeleteById();
-			return (true);
-		}
-		return (false);
-	}
+        mHandler.post(mDisplayMessages);
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		Intent intent;
+    }
 
-		if (item.getItemId() == R.id.delete) {
-			refresh = item;
-			performDeleteAll();
-		} else if (item.getItemId() == R.id.settings) {
-			intent = new Intent(getActivity(), Settings.class);
-			startActivity(intent);
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    public boolean performAction(MenuItem item, int position) {
+        messageUuid = adapter.getItem(position).getMessageUuid();
+        if (item.getItemId() == R.id.sent_messages_context_delete) {
+            // Delete by ID
+            performDeleteById();
+            return (true);
+        }
+        return (false);
+    }
 
-	// Display pending messages.
-	final Runnable mDisplayMessages = new Runnable() {
-		public void run() {
-			adapter.refresh();
-		}
-	};
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
 
-	/**
-	 * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
-	 * deleted.
-	 */
-	final Runnable mDeleteAllSentMessages = new Runnable() {
-		public void run() {
+        if (item.getItemId() == R.id.delete) {
+            refresh = item;
+            performDeleteAll();
+        } else if (item.getItemId() == R.id.settings) {
+            intent = new Intent(getActivity(), Settings.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-			boolean result = false;
+    // Display pending messages.
+    final Runnable mDisplayMessages = new Runnable() {
+        public void run() {
+            adapter.refresh();
+        }
+    };
 
-			int deleted = 0;
+    /**
+     * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
+     * deleted.
+     */
+    final Runnable mDeleteAllSentMessages = new Runnable() {
+        public void run() {
 
-			if (adapter.getCount() == 0) {
-				deleted = 1;
-			} else {
-				result = model.deleteAllSentMessages();
-			}
+            boolean result = false;
 
-			try {
+            int deleted = 0;
 
-				if (deleted == 1) {
-					toastLong(R.string.no_messages_to_delete);
-				} else {
-					if (result) {
-						toastLong(R.string.messages_deleted);
-						adapter.refresh();
-					} else {
-						toastLong(R.string.messages_deleted_failed);
-					}
-				}
-				refreshState = false;
-				updateRefreshStatus();
-				adapter.refresh();
-			} catch (Exception e) {
-				return;
-			}
-		}
-	};
+            if (adapter.getCount() == 0) {
+                deleted = 1;
+            } else {
+                result = model.deleteAllSentMessages();
+            }
 
-	/**
-	 * Delete individual messages 0 - Successfully deleted. 1 - There is nothing
-	 * to be deleted.
-	 */
-	final Runnable mDeleteMessagesById = new Runnable() {
-		public void run() {
-			getActivity().setProgressBarIndeterminateVisibility(true);
-			boolean result = false;
+            try {
 
-			int deleted = 0;
+                if (deleted == 1) {
+                    toastLong(R.string.no_messages_to_delete);
+                } else {
+                    if (result) {
+                        toastLong(R.string.messages_deleted);
+                        adapter.refresh();
+                    } else {
+                        toastLong(R.string.messages_deleted_failed);
+                    }
+                }
+                refreshState = false;
+                updateRefreshStatus();
+                adapter.refresh();
+            } catch (Exception e) {
+                return;
+            }
+        }
+    };
 
-			if (adapter.getCount() == 0) {
-				deleted = 1;
-			} else {
-				result = model.deleteSentMessagesByUuid(messageUuid);
-			}
+    /**
+     * Delete individual messages 0 - Successfully deleted. 1 - There is nothing
+     * to be deleted.
+     */
+    final Runnable mDeleteMessagesById = new Runnable() {
+        public void run() {
+            getActivity().setProgressBarIndeterminateVisibility(true);
+            boolean result = false;
 
-			try {
-				if (deleted == 1) {
-					toastLong(R.string.no_messages_to_delete);
+            int deleted = 0;
 
-				} else {
+            if (adapter.getCount() == 0) {
+                deleted = 1;
+            } else {
+                result = model.deleteSentMessagesByUuid(messageUuid);
+            }
 
-					if (result) {
-						toastLong(R.string.messages_deleted);
-						refreshState = false;
+            try {
+                if (deleted == 1) {
+                    toastLong(R.string.no_messages_to_delete);
 
-					} else {
-						toastLong(R.string.messages_deleted_failed);
+                } else {
 
-					}
-				}
-				refreshState = true;
-				updateRefreshStatus();
-				adapter.refresh();
-			} catch (Exception e) {
-				return;
-			}
-		}
-	};
+                    if (result) {
+                        toastLong(R.string.messages_deleted);
+                        refreshState = false;
 
-	/**
-	 * Delete all messages
-	 */
-	public void performDeleteAll() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage(getString(R.string.confirm_message))
-				.setCancelable(false)
-				.setNegativeButton(getString(R.string.confirm_no),
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						})
-				.setPositiveButton(getString(R.string.confirm_yes),
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								// delete all messages
-								refreshState = true;
-								updateRefreshStatus();
-								mHandler.post(mDeleteAllSentMessages);
-							}
-						});
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
+                    } else {
+                        toastLong(R.string.messages_deleted_failed);
 
-	/**
-	 * Delete message by it's id
-	 */
-	public void performDeleteById() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMessage(getString(R.string.confirm_message))
-				.setCancelable(false)
-				.setNegativeButton(getString(R.string.confirm_no),
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						})
-				.setPositiveButton(getString(R.string.confirm_yes),
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								// Delete by ID
-								refreshState = true;
-								updateRefreshStatus();
-								mHandler.post(mDeleteMessagesById);
-							}
-						});
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
+                    }
+                }
+                refreshState = true;
+                updateRefreshStatus();
+                adapter.refresh();
+            } catch (Exception e) {
+                return;
+            }
+        }
+    };
 
-	private void updateRefreshStatus() {
-		if (refresh != null) {
-			if (refreshState)
-				refresh.setActionView(R.layout.indeterminate_progress_action);
-			else
-				refresh.setActionView(null);
-		}
+    /**
+     * Delete all messages
+     */
+    public void performDeleteAll() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getString(R.string.confirm_message))
+                .setCancelable(false)
+                .setNegativeButton(getString(R.string.confirm_no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton(getString(R.string.confirm_yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // delete all messages
+                                refreshState = true;
+                                updateRefreshStatus();
+                                mHandler.post(mDeleteAllSentMessages);
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
-	}
+    /**
+     * Delete message by it's id
+     */
+    public void performDeleteById() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getString(R.string.confirm_message))
+                .setCancelable(false)
+                .setNegativeButton(getString(R.string.confirm_no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton(getString(R.string.confirm_yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Delete by ID
+                                refreshState = true;
+                                updateRefreshStatus();
+                                mHandler.post(mDeleteMessagesById);
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
 
-	@Override
-	protected void onLoaded(boolean success) {
-		// TODO Auto-generated method stub
+    private void updateRefreshStatus() {
+        if (refresh != null) {
+            if (refreshState)
+                refresh.setActionView(R.layout.indeterminate_progress_action);
+            else
+                refresh.setActionView(null);
+        }
 
-	}
+    }
 
-	/**
-	 * This will refresh content of the listview aka the pending messages when
-	 * smssync syncs pending messages.
-	 */
-	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (intent != null) {
-				int status = intent.getIntExtra("sentstatus", 2);
+    @Override
+    protected void onLoaded(boolean success) {
+        // TODO Auto-generated method stub
 
-				if (status == 0) {
-
-					toastLong(R.string.sending_succeeded);
-				} else if (status == 1) {
-					toastLong(R.string.sync_failed);
-				} else {
-					toastLong(R.string.no_messages_to_sync);
-				}
-				mHandler.post(mDisplayMessages);
-			}
-		}
-	};
+    }
 
 }
