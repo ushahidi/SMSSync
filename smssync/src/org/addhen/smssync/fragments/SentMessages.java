@@ -82,22 +82,20 @@ public class SentMessages
     @Override
     public void onResume() {
         super.onResume();
-        if (getUserVisibleHint()) {
-            getActivity().registerReceiver(broadcastReceiver,
-                    new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
-            log("OnResume is called");
-            mHandler.post(mDisplayMessages);
-        }
+
+        getActivity().registerReceiver(broadcastReceiver,
+                new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+        log("OnResume is called");
+        mHandler.post(mDisplayMessages);
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (getUserVisibleHint()) {
-            getActivity().unregisterReceiver(broadcastReceiver);
-            mHandler.post(mDisplayMessages);
-        }
+        getActivity().unregisterReceiver(broadcastReceiver);
+        mHandler.post(mDisplayMessages);
+
     }
 
     public boolean performAction(MenuItem item, int position) {
