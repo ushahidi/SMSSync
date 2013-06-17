@@ -76,14 +76,15 @@ public class SentMessages
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
                 this, listView));
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint()) {
-            // getActivity().registerReceiver(broadcastReceiver,
-            // new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+            getActivity().registerReceiver(broadcastReceiver,
+                    new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
             log("OnResume is called");
             mHandler.post(mDisplayMessages);
         }
@@ -94,7 +95,7 @@ public class SentMessages
     public void onPause() {
         super.onPause();
         if (getUserVisibleHint()) {
-            // getActivity().unregisterReceiver(broadcastReceiver);
+            getActivity().unregisterReceiver(broadcastReceiver);
             mHandler.post(mDisplayMessages);
         }
     }
@@ -106,6 +107,7 @@ public class SentMessages
             performDeleteById();
             return (true);
         }
+
         return (false);
     }
 
@@ -278,6 +280,7 @@ public class SentMessages
     }
 
     public void refresh() {
+
         if (adapter != null)
             adapter.refresh();
 
@@ -287,10 +290,14 @@ public class SentMessages
      * This will refresh content of the listview aka the pending messages when
      * smssync syncs pending messages.
      */
-    /*
-     * private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-     * @Override public void onReceive(Context context, Intent intent) { if
-     * (intent != null) { mHandler.post(mDisplayMessages); } } };
-     */
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                mHandler.post(mDisplayMessages);
+            }
+        }
+    };
 
 }

@@ -35,12 +35,11 @@ import android.view.View;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class MessagesTabActivity extends SherlockFragmentActivity implements
-        ViewPager.OnPageChangeListener {
+public class MessagesTabActivity extends SherlockFragmentActivity {
 
     private ViewPager mViewPager;
 
-    private TabAdapter mTabsAdapter;
+    public TabAdapter mTabsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,17 +55,17 @@ public class MessagesTabActivity extends SherlockFragmentActivity implements
                 getString(R.string.sync_url));
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setOnPageChangeListener(this);
-        mTabsAdapter = new TabAdapter(this, getSupportActionBar(), mViewPager);
 
+        mTabsAdapter = new TabAdapter(this, getSupportActionBar(), mViewPager);
         mTabsAdapter.addTab(pendingTab, PendingMessages.class);
         mTabsAdapter.addTab(sentTab, SentMessages.class);
         mTabsAdapter.addTab(syncTab, SyncUrl.class);
-        
 
         if (savedInstanceState != null) {
-            getSupportActionBar().setSelectedNavigationItem(
-                    savedInstanceState.getInt("index"));
+            final int index = savedInstanceState.getInt("index");
+            getSupportActionBar().setSelectedNavigationItem(index
+                    );
+
         }
     }
 
@@ -81,24 +80,6 @@ public class MessagesTabActivity extends SherlockFragmentActivity implements
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int position) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        // TODO Auto-generated method stub
 
     }
 

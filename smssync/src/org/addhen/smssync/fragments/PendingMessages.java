@@ -501,8 +501,10 @@ public class PendingMessages
                     refreshState = false;
                     updateRefreshStatus();
                     mHandler.post(mUpdateListView);
-                    toastLong("Total of " + t + " messages where syncd. " + s
-                            + " Successfully syncd and " + f + " failed");
+                    Util.showFailNotification(getActivity(), getString(R.string.sent_messages),
+                            getString(R.string.sending_succeeded));
+                    // toastLong("Total of " + t + " messages where syncd. " + s
+                    // + " Successfully syncd and " + f + " failed");
                 } else if (status == 1) {
 
                     refreshState = false;
