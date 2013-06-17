@@ -9,6 +9,7 @@
 	the specific language governing permissions and limitations under the License.
 -->
 
+
 <!-- This handles all the strings in the app. -->
 <resources>
 
@@ -75,7 +76,6 @@
     <!-- task check delay -->
     <string name="txt_task_check_delay">Frequency</string>
     <string name="txt_task_check_delay_hint">Set how often SMSSync checks for a task to be executed.</string>
-		
     <string name="app_name">SMSSync</string>
     <string name="outbox">SMSSync Pending Messages</string>
     <string name="version_status">Beta</string>
@@ -142,7 +142,6 @@
     <!-- validate unique id -->
     <string name="unique_id_length_error">Unique ID must be at least one digit</string>
     <string name="unique_id_numeric_error">Unique ID accepts only numbers</string>
-    
     <string name="loading">Loading</string>
     <string name="sync_url">Sync URL</string>
     <string name="no_sync_url">No Sync URL.\nUse the "+" button above to add one.</string>
@@ -167,4 +166,10 @@
     <string name="valid_sync_url">Please enter a valid URL</string>
     <string name="task">Task</string>
     <string name="confirm_sms_import">This will import all SMS in the messaging inbox. This may take a while to finish.</string>
+    <string name="source_incoming">incoming</string>
+    <string name="source_regular">regular</string>
+    <string name="source_3rd_party">3rd party</string>
+    <string name="source_manual">manual</string>
+    <string name="source_unknown">unknown</string>
+
 </resources>
