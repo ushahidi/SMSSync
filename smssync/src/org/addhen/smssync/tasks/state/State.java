@@ -10,11 +10,14 @@ public abstract class State {
     public final SyncState state;
 
     public final Exception exception;
+    
+    public final MessageType messageType;
 
-    public State(SyncState state, Exception exception) {
+    public State(SyncState state, MessageType messageType, Exception exception) {
 
         this.state = state;
         this.exception = exception;
+        messageType = messageType;
     }
 
     public boolean isInitialState() {
