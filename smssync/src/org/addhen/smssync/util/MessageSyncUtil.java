@@ -95,6 +95,15 @@ public class MessageSyncUtil extends Util {
 
         return false;
     }
+    
+    /**
+     * Pushes pending messages to the configured URL.
+     * 
+     * @return
+     */
+    public int syncToWeb() {
+        return syncToWeb("");
+    }
 
     /**
      * Pushes pending messages to the configured URL.
@@ -107,7 +116,6 @@ public class MessageSyncUtil extends Util {
         log("syncToWeb(): push pending messages to the Sync URL");
         MessagesModel model = new MessagesModel();
         List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-        ArrayList<String> successfulSyncMessages = new ArrayList<String>();
         // check if it should sync by id
         if (messageUuid != null && !TextUtils.isEmpty(messageUuid)) {
             model.loadByUuid(messageUuid);
@@ -127,42 +135,27 @@ public class MessageSyncUtil extends Util {
 
             for (MessagesModel messages : listMessages) {
                 log("processing");
-
                 if (processSms.routePendingMessages(messages.getMessageFrom(),
                         messages.getMessage(), messages.getMessageDate(),
                         messages.getMessageUuid())) {
 
-                    successfulSyncMessages.add(messages.getMessageUuid());
-
-                }
-
-                // Delete the queued items that were sucessful
-                if (successfulSyncMessages.size() > 0) {
-                    for (String msgUuid : successfulSyncMessages) {
-                        new MessagesModel().deleteMessagesByUuid(msgUuid);
-                    }
+                    // / if it successfully pushes message, delete message
+                    // from db
+                    new MessagesModel().deleteMessagesByUuid(messages
+                            .getMessageUuid());
                     deleted = 0;
-                }
-                else {
+                } else {
                     deleted = 1;
                 }
 
             }
-
         }
 
         return deleted;
 
     }
 
-    /**
-     * Pushes pending messages to the configured URL.
-     * 
-     * @return
-     */
-    public int syncToWeb() {
-        return syncToWeb("");
-    }
+   
 
     /**
      * Sends messages received from the server as SMS.

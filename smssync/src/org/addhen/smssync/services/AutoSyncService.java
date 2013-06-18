@@ -22,6 +22,7 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -36,32 +37,39 @@ import android.content.Intent;
 
 public class AutoSyncService extends SmsSyncServices {
 
-	private static String CLASS_TAG = AutoSyncService.class.getSimpleName();
-	private Intent statusIntent; // holds the status of the sync and sends it to
-	private SyncUrlModel model;
-	private MessagesModel messagesModel;
+    private static String CLASS_TAG = AutoSyncService.class.getSimpleName();
+    private Intent statusIntent; // holds the status of the sync and sends it to
+    private SyncUrlModel model;
+    private MessagesModel messagesModel;
 
-	public AutoSyncService() {
-		super(CLASS_TAG);
-		statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-		model = new SyncUrlModel();
-		messagesModel = new MessagesModel();
-	}
+    private MessageSyncState mState = new MessageSyncState();
 
-	@Override
-	protected void executeTask(Intent intent) {
+    public AutoSyncService() {
+        super(CLASS_TAG);
+        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+        model = new SyncUrlModel();
+        messagesModel = new MessagesModel();
+    }
 
-		log("executeTask() executing this task");
-		if (messagesModel.totalMessages() > 0) {
-			for (SyncUrlModel syncUrl : model
-					.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-				int status = new MessageSyncUtil(AutoSyncService.this,
-						syncUrl.getUrl()).syncToWeb();
-				statusIntent.putExtra("status", status);
-				sendBroadcast(statusIntent);
-			}
-		}
+    @Override
+    protected void executeTask(Intent intent) {
 
-	}
+        log("executeTask() executing this task");
+        if (messagesModel.totalMessages() > 0) {
+            for (SyncUrlModel syncUrl : model
+                    .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+                int status = new MessageSyncUtil(AutoSyncService.this,
+                        syncUrl.getUrl()).syncToWeb();
+                statusIntent.putExtra("status", status);
+                sendBroadcast(statusIntent);
+            }
+        }
+
+    }
+
+    @Override
+    public MessageSyncState getState() {
+        return mState;
+    }
 
 }

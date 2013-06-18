@@ -132,7 +132,7 @@ public class RunServicesUtil {
 		// load preferences
 		Prefs.loadPreferences(context);
 		if (Prefs.enableTaskCheck && Prefs.enabled) {
-			new SmsSyncServices().sendWakefulTask( CheckTaskService.class);
+			SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
 			// start the scheduler for 'task check' service
 			final long interval = (Prefs.taskCheckTime * 60000);
 

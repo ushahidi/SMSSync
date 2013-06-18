@@ -39,9 +39,9 @@ public abstract class SmsSyncServices extends IntentService {
 
     protected static String CLASS_TAG = SmsSyncServices.class.getSimpleName();
 
-    protected PowerManager.WakeLock mStartingService = null;
+    protected static PowerManager.WakeLock mStartingService = null;
 
-    protected WifiManager.WifiLock wifilock = null;
+    protected static WifiManager.WifiLock wifilock = null;
 
     protected NotificationManager notificationManager;
 
@@ -51,38 +51,35 @@ public abstract class SmsSyncServices extends IntentService {
         super(name);
     }
 
-    synchronized private PowerManager.WakeLock getPhoneWakeLock() {
+    synchronized private static PowerManager.WakeLock getPhoneWakeLock(Context context) {
         if (mStartingService == null) {
-            PowerManager mgr = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            PowerManager mgr = (PowerManager) context
+                    .getSystemService(Context.POWER_SERVICE);
             mStartingService = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     CLASS_TAG);
         }
+
         return mStartingService;
     }
 
-    synchronized private WifiManager.WifiLock getPhoneWifiLock() {
+    synchronized private static WifiManager.WifiLock getPhoneWifiLock(Context context) {
         if (wifilock == null) {
 
-            WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiManager manager = (WifiManager) context
+                    .getSystemService(Context.WIFI_SERVICE);
             wifilock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL,
                     CLASS_TAG);
         }
         return wifilock;
     }
 
-    protected void sendWakefulTask(Intent i) {
-
-        if (!getPhoneWakeLock().isHeld())
-            getPhoneWakeLock().acquire();
-
-        if (!getPhoneWifiLock().isHeld())
-            getPhoneWifiLock().acquire();
-
-        startService(i);
+    protected static void sendWakefulTask(Context context, Intent i) {
+        acquireLocks(context);
+        context.startService(i);
     }
 
-    public void sendWakefulTask(Class<?> classService) {
-        sendWakefulTask(new Intent(this, classService));
+    public static void sendWakefulTask(Context context, Class<?> classService) {
+        sendWakefulTask(context, new Intent(context, classService));
     }
 
     /*
@@ -137,19 +134,35 @@ public abstract class SmsSyncServices extends IntentService {
         releaseLocks();
     }
 
-    protected void acquireLocks() {
+    public static void acquireLocks(Context context) {
+        if (!getPhoneWakeLock(context).isHeld())
+            getPhoneWakeLock(context).acquire();
 
+        if (!getPhoneWifiLock(context).isHeld())
+            getPhoneWifiLock(context).acquire();
     }
 
-    protected void releaseLocks() {
-        if (getPhoneWifiLock().isHeld()
-                && getPhoneWifiLock() != null) {
-            getPhoneWifiLock().release();
+    public static void releaseLocks(Context context) {
+        if (getPhoneWifiLock(context).isHeld()
+                && getPhoneWifiLock(context) != null) {
+            getPhoneWifiLock(context).release();
         }
 
-        if (getPhoneWakeLock().isHeld()
-                && getPhoneWakeLock() != null) {
-            getPhoneWakeLock().release();
+        if (getPhoneWakeLock(context).isHeld()
+                && getPhoneWakeLock(context) != null) {
+            getPhoneWakeLock(context).release();
+        }
+    }
+
+    private void releaseLocks() {
+        if (getPhoneWakeLock(this.getApplicationContext()).isHeld()
+                && getPhoneWakeLock(this.getApplicationContext()) != null) {
+            getPhoneWakeLock(this.getApplicationContext()).release();
+        }
+
+        if (getPhoneWifiLock(this.getApplicationContext()).isHeld()
+                && getPhoneWifiLock(this.getApplicationContext()) != null) {
+            getPhoneWifiLock(this.getApplicationContext()).release();
         }
     }
 

@@ -22,6 +22,8 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.State;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
@@ -45,6 +47,8 @@ public class SyncPendingMessagesService extends SmsSyncServices {
     private SyncUrlModel model;
 
     private MessagesModel messagesModel;
+    
+    private MessageSyncState mState = new MessageSyncState();
 
     public SyncPendingMessagesService() {
         super(CLASS_TAG);
@@ -95,6 +99,11 @@ public class SyncPendingMessagesService extends SmsSyncServices {
             }
         }
 
+    }
+
+    @Override
+    public MessageSyncState getState() {
+        return mState;
     }
 
 }

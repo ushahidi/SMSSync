@@ -21,6 +21,7 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -32,6 +33,8 @@ public class CheckTaskScheduledService extends SmsSyncServices {
 			.getSimpleName();
 
 	private SyncUrlModel model;
+	
+	private MessageSyncState mState = new MessageSyncState();
 
 	public CheckTaskScheduledService() {
 		super(CLASS_TAG);
@@ -48,4 +51,9 @@ public class CheckTaskScheduledService extends SmsSyncServices {
 					syncUrl.getUrl()).performTask(syncUrl.getSecret());
 		}
 	}
+	
+	@Override
+    public MessageSyncState getState() {
+        return mState;
+    }
 }
