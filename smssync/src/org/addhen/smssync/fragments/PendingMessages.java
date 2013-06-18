@@ -20,6 +20,10 @@
 
 package org.addhen.smssync.fragments;
 
+import java.text.DateFormat;
+import java.util.Date;
+
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
@@ -46,6 +50,8 @@ import android.telephony.SmsManager;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
+
+import static org.addhen.smssync.MessageType.PENDING;
 
 public class PendingMessages
         extends
@@ -102,7 +108,7 @@ public class PendingMessages
                 listView.setItemChecked(position, true);
             }
         }
-
+        MainApplication.bus.register(this);
     }
 
     @Override
@@ -150,6 +156,25 @@ public class PendingMessages
     public void onDestroy() {
         log("onDestroy()");
         super.onDestroy();
+        MainApplication.bus.unregister(this);
+    }
+
+    private void idle() {
+        //TODO::  get timestamp
+        view.details.setText(getLastSyncText(0));
+    }
+
+    /**
+     * The last time the sync item was done.
+     * 
+     * @param lastSync
+     * @return
+     */
+    private String getLastSyncText(final long lastSync) {
+        return getString(R.string.idle,
+                lastSync < 0 ? getString(R.string.never) :
+                        DateFormat.getDateTimeInstance().format(new Date(lastSync)));
+
     }
 
     public boolean performAction(MenuItem item, int position) {

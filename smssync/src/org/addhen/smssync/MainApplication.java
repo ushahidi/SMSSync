@@ -41,7 +41,7 @@ public class MainApplication extends Application {
     public static MainHttpClient mApi;
 
     public static Application app = null;
-    
+
     public static final Bus bus = new Bus();
 
     @Override

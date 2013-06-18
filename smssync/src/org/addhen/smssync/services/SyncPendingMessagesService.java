@@ -31,7 +31,6 @@ import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncTask;
 import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;

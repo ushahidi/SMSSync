@@ -175,5 +175,6 @@
     <string name="idle">Idle</string>
     <string name="error">Error</string>
     <string name="done">Done</string>
+    <string name="never">Never</string>
 
 </resources>

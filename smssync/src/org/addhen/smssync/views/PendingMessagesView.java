@@ -20,11 +20,29 @@
 
 package org.addhen.smssync.views;
 
+import org.addhen.smssync.R;
+
 import android.app.Activity;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class PendingMessagesView extends View {
-	public PendingMessagesView(Activity activity) {
-		super(activity);
-	}
+
+    @Widget(R.id.status_label)
+    public TextView status;
+
+    @Widget(R.id.details_sync_label)
+    public TextView details;
+
+    @Widget(R.id.details_sync_progress)
+    public ProgressBar progressStatus;
+
+    @Widget(R.id.sync_button)
+    public Button sync;
+
+    public PendingMessagesView(Activity activity) {
+        super(activity);
+    }
 
 }
