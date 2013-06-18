@@ -10,19 +10,28 @@
 	have questions regarding the use of this file, please contact Ushahidi developers 
 	at team@ushahidi.com.
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
+    <!-- iinclude status layout -->
+
+    <include layout="@layout/sync_status" />
     <!-- List pending messages -->
 
-    <ListView
-        android:id="@id/android:list"
-        style="@style/ListView" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@id/android:empty"
-        style="@style/TextView.Empty"
-        android:text="@string/empty_list" />
+        <ListView
+            android:id="@id/android:list"
+            style="@style/ListView" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@id/android:empty"
+            style="@style/TextView.Empty"
+            android:text="@string/empty_list" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,64 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:id="@+id/status_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="10dip"
-    android:paddingLeft="10dip"
-    android:paddingRight="10dip"
-    android:paddingTop="10dip" >
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp" >
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-
-        <ImageView
-            android:id="@+id/status_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_done" />
 
         <TextView
             android:id="@+id/status_label"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/status_icon"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="6dip"
-            android:layout_toRightOf="@id/status_icon"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
             android:textColor="@color/status_done"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/details_sync"
-            android:layout_width="fill_parent"
+        <ProgressBar
+            android:id="@+id/details_sync_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/status_label"
-            android:layout_below="@id/status_icon"
-            android:orientation="vertical" >
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/sync_button"
+            android:layout_toRightOf="@id/status_label"
+            android:indeterminate="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
 
-            <ProgressBar
-                android:id="@+id/details_sync_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="false"
-                android:paddingRight="10dip" />
-
-            <TextView
-                android:id="@+id/details_sync_label"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dip" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/sync_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/sync"
+            android:textStyle="bold" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/sync_button"
+    <TextView
+        android:id="@+id/details_sync_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dip"
         android:gravity="center"
-        android:text="@string/sync"
-        android:textStyle="bold" />
+        android:paddingBottom="10dip" />
+
+    <TextView
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
 </LinearLayout>
