@@ -23,6 +23,8 @@ package org.addhen.smssync;
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.net.MainHttpClient;
 
+import com.squareup.otto.Bus;
+
 import android.app.Application;
 
 /**
@@ -39,6 +41,8 @@ public class MainApplication extends Application {
     public static MainHttpClient mApi;
 
     public static Application app = null;
+    
+    public static final Bus bus = new Bus();
 
     @Override
     public void onCreate() {
