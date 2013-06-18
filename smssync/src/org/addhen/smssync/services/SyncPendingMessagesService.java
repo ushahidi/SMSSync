@@ -20,10 +20,16 @@
 
 package org.addhen.smssync.services;
 
+import static org.addhen.smssync.tasks.SyncType.REGULAR;
+import static org.addhen.smssync.tasks.state.SyncState.ERROR;
+import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
+
+import org.addhen.smssync.MessageType;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.tasks.SyncConfig;
+import org.addhen.smssync.tasks.SyncTask;
 import org.addhen.smssync.tasks.state.MessageSyncState;
-import org.addhen.smssync.tasks.state.State;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
@@ -47,7 +53,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
     private SyncUrlModel model;
 
     private MessagesModel messagesModel;
-    
+
     private MessageSyncState mState = new MessageSyncState();
 
     public SyncPendingMessagesService() {
@@ -60,7 +66,6 @@ public class SyncPendingMessagesService extends SmsSyncServices {
     @Override
     protected void executeTask(Intent intent) {
 
-        Logger.log(CLASS_TAG, "executeTask() executing this task ");
         int status = 3;
         // success
         int s = 0;
@@ -72,7 +77,22 @@ public class SyncPendingMessagesService extends SmsSyncServices {
             messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "messageUUid: " + messageUuid);
 
-            if (messagesModel.totalMessages() > 0) {
+            Logger.log(CLASS_TAG, "executeTask() executing this task ");
+            if (!isWorking()) {
+                mState = new MessageSyncState(INITIAL, 0, 0, REGULAR, MessageType.PENDING,
+                        null);
+                try {
+                    SyncConfig config = new SyncConfig(3, false, messageUuid, REGULAR);
+                    new SyncTask(this, MessageType.PENDING).execute(config);
+                } catch (Exception e) {
+                    mState.transition(ERROR, e);
+                }
+            }
+            else {
+                log("Sync already running");
+            }
+
+            /*if (messagesModel.totalMessages() > 0) {
 
                 // This code is a bit retard
                 for (SyncUrlModel syncUrl : model
@@ -96,7 +116,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
                 statusIntent.putExtra("success", s);
                 statusIntent.putExtra("total", messagesModel.totalMessages());
                 sendBroadcast(statusIntent);
-            }
+            }*/
         }
 
     }
@@ -104,6 +124,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
     @Override
     public MessageSyncState getState() {
         return mState;
+
     }
 
 }
