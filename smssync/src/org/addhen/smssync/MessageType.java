@@ -6,7 +6,7 @@ public enum MessageType {
     PENDING("pending"),
     TASK("task");
 
-    private final String type;
+    public final String type;
 
     private MessageType(String type) {
         this.type = type;

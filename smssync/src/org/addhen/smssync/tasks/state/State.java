@@ -3,6 +3,8 @@ package org.addhen.smssync.tasks.state;
 
 import java.util.EnumSet;
 
+import org.addhen.smssync.MessageType;
+
 import android.content.res.Resources;
 
 public abstract class State {
@@ -17,7 +19,7 @@ public abstract class State {
 
         this.state = state;
         this.exception = exception;
-        messageType = messageType;
+        this.messageType = messageType;
     }
 
     public boolean isInitialState() {

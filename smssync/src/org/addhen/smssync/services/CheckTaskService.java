@@ -21,6 +21,7 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -35,29 +36,36 @@ import android.content.Intent;
  */
 public class CheckTaskService extends SmsSyncServices {
 
-	private final static String CLASS_TAG = CheckTaskService.class
-			.getSimpleName();
-	private SyncUrlModel model;
+    private final static String CLASS_TAG = CheckTaskService.class
+            .getSimpleName();
+    private SyncUrlModel model;
 
-	public CheckTaskService() {
-		super(CLASS_TAG);
-		model = new SyncUrlModel();
-	}
+    private MessageSyncState mState = new MessageSyncState();
 
-	/**
-	 * Starts the background service
-	 * 
-	 * @return void
-	 */
-	protected void executeTask(Intent intent) {
-		log("checkTaskService: check if a task has been enabled.");
-		// Perform a task
-		// get enabled Sync URL
-		for (SyncUrlModel syncUrl : model
-				.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-			new MessageSyncUtil(CheckTaskService.this, syncUrl.getUrl())
-					.performTask(syncUrl.getSecret());
-		}
-	}
+    public CheckTaskService() {
+        super(CLASS_TAG);
+        model = new SyncUrlModel();
+    }
+
+    /**
+     * Starts the background service
+     * 
+     * @return void
+     */
+    protected void executeTask(Intent intent) {
+        log("checkTaskService: check if a task has been enabled.");
+        // Perform a task
+        // get enabled Sync URL
+        for (SyncUrlModel syncUrl : model
+                .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+            new MessageSyncUtil(CheckTaskService.this, syncUrl.getUrl())
+                    .performTask(syncUrl.getSecret());
+        }
+    }
+
+    @Override
+    public MessageSyncState getState() {
+        return mState;
+    }
 
 }

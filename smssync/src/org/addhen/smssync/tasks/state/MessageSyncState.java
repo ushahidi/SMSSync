@@ -1,6 +1,7 @@
 
 package org.addhen.smssync.tasks.state;
 
+import org.addhen.smssync.MessageType;
 import org.addhen.smssync.tasks.SyncType;
 
 import android.content.res.Resources;
@@ -9,27 +10,28 @@ import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 import static org.addhen.smssync.tasks.state.SyncState.SYNC;
 import static org.addhen.smssync.tasks.SyncType.UNKNOWN;
 
-public class PendingMessagesState extends State {
+public class MessageSyncState extends State {
 
     public final int currentSyncedItems;
     public final int itemsToSync;
     public final SyncType syncType;
 
-    public PendingMessagesState(SyncState state, int currentSyncedItems,
-            int itemsToSync, SyncType syncType, Exception exception) {
-        super(state, exception);
+    public MessageSyncState(SyncState state, int currentSyncedItems,
+            int itemsToSync, SyncType syncType, MessageType type, Exception exception) {
+        super(state, type, exception);
         this.currentSyncedItems = currentSyncedItems;
         this.itemsToSync = itemsToSync;
         this.syncType = syncType;
     }
 
-    public PendingMessagesState() {
-        this(INITIAL, 0, 0, UNKNOWN, null);
+    public MessageSyncState() {
+        this(INITIAL, 0, 0, UNKNOWN, null, null);
     }
 
     @Override
-    public PendingMessagesState transition(SyncState newState, Exception exception) {
-        return new PendingMessagesState(newState, currentSyncedItems, itemsToSync, syncType,
+    public MessageSyncState transition(SyncState newState, Exception exception) {
+        return new MessageSyncState(newState, currentSyncedItems, itemsToSync, syncType,
+                messageType,
                 exception);
     }
 
@@ -56,7 +58,7 @@ public class PendingMessagesState extends State {
                 "state=" + state +
                 ", currentSyncedItems=" + currentSyncedItems +
                 ", itemsToSync=" + itemsToSync +
-                ", backupType=" + syncType +
+                ", syncType=" + syncType +
                 ']';
     }
 
