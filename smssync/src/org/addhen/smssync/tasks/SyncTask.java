@@ -3,11 +3,13 @@ package org.addhen.smssync.tasks;
 
 import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.FINISHED_SYNC;
+import static org.addhen.smssync.tasks.state.SyncState.CANCELED_SYNC;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 import static org.addhen.smssync.tasks.state.SyncState.SYNC;
 
 import java.util.Locale;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessageType;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
@@ -17,6 +19,8 @@ import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
+
+import com.squareup.otto.Subscribe;
 
 import android.os.AsyncTask;
 
@@ -66,8 +70,43 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         }
     }
 
+    @Override
+    protected void onPreExecute() {
+        MainApplication.bus.register(this);
+    }
+
+    @Subscribe
+    public void taskCanceled(TaskCanceled canceled) {
+        cancel(false);
+    }
+
+    @Override
+    protected void onPostExecute(MessageSyncState result) {
+        if (result != null) {
+            post(result);
+        }
+        MainApplication.bus.unregister(this);
+    }
+
+    @Override
+    protected void onCancelled() {
+        post(transition(CANCELED_SYNC, null));
+        MainApplication.bus.unregister(this);
+    }
+
+    private void post(MessageSyncState state) {
+        MainApplication.bus.post(state);
+    }
+
     private MessageSyncState transition(SyncState state, Exception exception) {
         return mService.getState().transition(state, exception);
+    }
+
+    @Override
+    protected void onProgressUpdate(MessageSyncState... progress) {
+        if (progress != null && progress.length > 0 && !isCancelled()) {
+            post(progress[0]);
+        }
     }
 
     private MessageSyncState sync(SyncConfig config) throws Exception {

@@ -24,9 +24,8 @@ import static org.addhen.smssync.tasks.SyncType.REGULAR;
 import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessageType;
-import org.addhen.smssync.models.MessagesModel;
-import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncTask;
 import org.addhen.smssync.tasks.state.MessageSyncState;
@@ -53,19 +52,13 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
     public SyncPendingMessagesService() {
         super(CLASS_TAG);
-
         service = this;
+        MainApplication.bus.register(this);
     }
 
     @Override
     protected void executeTask(Intent intent) {
 
-        int status = 3;
-        // success
-        int s = 0;
-
-        // fail
-        int f = 0;
         if (intent != null) {
             // get Id
             messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
