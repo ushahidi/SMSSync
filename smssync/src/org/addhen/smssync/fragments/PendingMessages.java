@@ -144,7 +144,7 @@ public class PendingMessages
          */
         idle();
         mHandler.post(mUpdateListView);
-        MainApplication.bus.register(getActivity());
+        MainApplication.bus.register(this);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class PendingMessages
 
         syncPendingMessagesServiceIntent.putExtra(
                 ServicesConstants.MESSAGE_UUID, messagesUuid);
-        syncPendingMessagesServiceIntent.putExtra(ServicesConstants.AUTO_SYNC_ACTION,
+        syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA,
                 SyncType.MANUAL.name());
         getActivity().startService(syncPendingMessagesServiceIntent);
 
@@ -502,7 +502,7 @@ public class PendingMessages
     @Subscribe
     public void syncStateChanged(final MessageSyncState newState) {
 
-        log("backupStateChanged:" + newState);
+        log("syncChanged:" + newState);
         if (view == null || newState.syncType.isBackground())
             return;
 
@@ -529,6 +529,7 @@ public class PendingMessages
                         newState.itemsToSync));
                 break;
         }
+        
     }
 
     private void finishedSync(MessageSyncState state) {
@@ -544,6 +545,7 @@ public class PendingMessages
         view.status.setText(text);
         view.details.setText(R.string.done);
         view.details.setTextColor(getActivity().getResources().getColor(R.color.status_done));
+        mHandler.post(mUpdateListView);
     }
 
     private void stateChanged(State state) {

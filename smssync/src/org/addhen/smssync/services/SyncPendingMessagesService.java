@@ -30,12 +30,14 @@ import org.addhen.smssync.MessageType;
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncTask;
+import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
 
+import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
 /**
@@ -54,8 +56,6 @@ public class SyncPendingMessagesService extends BaseService {
 
     private static SyncPendingMessagesService service;
 
-    
-    
     @Override
     public void onCreate() {
         super.onCreate();
@@ -66,21 +66,22 @@ public class SyncPendingMessagesService extends BaseService {
     protected void handleIntent(final Intent intent) {
 
         if (intent != null) {
+            final SyncType syncType = SyncType.fromIntent(intent);
             // get Id
             messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "messageUUid: " + messageUuid);
-
+            Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG, "executeTask() executing this task ");
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
-                    mState = new MessageSyncState(INITIAL, 0, 0, REGULAR, MessageType.PENDING,
+                    mState = new MessageSyncState(INITIAL, 0, 0, syncType, MessageType.PENDING,
                             null);
                     try {
-                        SyncConfig config = new SyncConfig(3, false, messageUuid, REGULAR);
+                        SyncConfig config = new SyncConfig(3, false, messageUuid, syncType);
                         new SyncTask(this, MessageType.PENDING).execute(config);
                     } catch (Exception e) {
-                        log("lNot syncing " + e.getMessage());
+                        log("Not syncing " + e.getMessage());
                         MainApplication.bus.post(mState.transition(ERROR, e));
                     }
                 }
@@ -125,6 +126,11 @@ public class SyncPendingMessagesService extends BaseService {
     public MessageSyncState getState() {
         return mState;
 
+    }
+
+    @Produce
+    public MessageSyncState produceLastState() {
+        return mState;
     }
 
     private void updateSyncStatusNotification(MessageSyncState state) {

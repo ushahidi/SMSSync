@@ -63,9 +63,8 @@ public class MessagesContentProvider extends DbContentProvider implements
             if (cursor == null) {
                 return result;
             }
-
-            cursor.moveToFirst();
-            result = cursor.getInt(0);
+            
+            result = cursor.getCount();
         } finally {
             if (cursor != null)
                 cursor.close();
