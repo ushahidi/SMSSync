@@ -21,13 +21,17 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.activities.MessagesTabActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.tasks.state.State;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -164,6 +168,18 @@ public abstract class SmsSyncServices extends IntentService {
                 && getPhoneWifiLock(this.getApplicationContext()) != null) {
             getPhoneWifiLock(this.getApplicationContext()).release();
         }
+    }
+
+    protected void createNotification(int resId, String title, PendingIntent intent) {
+        Util.buildNotification(this, R.drawable.icon, getString(resId), title,
+                intent, true);
+
+    }
+
+    protected PendingIntent getPendingIntent() {
+        return PendingIntent.getActivity(this, 0,
+                new Intent(this, MessagesTabActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     protected boolean isBackgroundTask() {

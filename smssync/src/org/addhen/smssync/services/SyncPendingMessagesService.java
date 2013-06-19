@@ -20,12 +20,14 @@
 
 package org.addhen.smssync.services;
 
+import static org.addhen.smssync.tasks.SyncType.MANUAL;
 import static org.addhen.smssync.tasks.SyncType.REGULAR;
 import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessageType;
+import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncTask;
 import org.addhen.smssync.tasks.state.MessageSyncState;
@@ -33,6 +35,8 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
+
+import com.squareup.otto.Subscribe;
 
 /**
  * This will sync pending messages as it's commanded by the user.
@@ -83,9 +87,39 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
     }
 
+    @Subscribe
+    public void syncStateChanged(final MessageSyncState state) {
+        mState = state;
+        if (mState.isInitialState())
+            return;
+
+        if (state.isError()) {
+
+            createNotification(R.string.status,
+                    state.getNotification(getResources(), R.string.error), getPendingIntent());
+        }
+
+        if (state.isRunning()) {
+            if (state.syncType == MANUAL) {
+                updateSyncStatusNotification(state);
+            }
+        } else {
+            log(state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done));
+
+            stopForeground(true);
+            stopSelf();
+        }
+    }
+
     @Override
     public MessageSyncState getState() {
         return mState;
+
+    }
+
+    private void updateSyncStatusNotification(MessageSyncState state) {
+        createNotification(R.string.status,
+                state.getNotification(getResources(), R.string.sync), getPendingIntent());
 
     }
 

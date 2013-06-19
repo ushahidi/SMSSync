@@ -25,6 +25,7 @@ import static org.addhen.smssync.MessageType.PENDING;
 import java.text.DateFormat;
 import java.util.Date;
 
+import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
@@ -44,6 +45,7 @@ import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.PendingMessagesView;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -51,8 +53,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.telephony.SmsManager;
 import android.widget.ListView;
 
@@ -116,6 +120,7 @@ public class PendingMessages
             }
         }
         view.sync.setOnClickListener(this);
+        setupStrictMode();
         MainApplication.bus.register(this);
     }
 
@@ -130,7 +135,7 @@ public class PendingMessages
     public void onResume() {
         log("onResume()");
         super.onResume();
-        getActivity().registerReceiver(broadcastReceiver,
+        /*getActivity().registerReceiver(broadcastReceiver,
                 new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
 
         getActivity().registerReceiver(failedReceiver,
@@ -138,7 +143,7 @@ public class PendingMessages
         getActivity().registerReceiver(smsSentReceiver,
                 new IntentFilter(ServicesConstants.SENT));
         getActivity().registerReceiver(smsDeliveredReceiver,
-                new IntentFilter(ServicesConstants.DELIVERED));
+                new IntentFilter(ServicesConstants.DELIVERED));*/
         idle();
         mHandler.post(mUpdateListView);
         MainApplication.bus.register(this);
@@ -154,10 +159,10 @@ public class PendingMessages
     public void onPause() {
         log("onPause()");
         super.onPause();
-        getActivity().unregisterReceiver(broadcastReceiver);
+        /*getActivity().unregisterReceiver(broadcastReceiver);
         getActivity().unregisterReceiver(failedReceiver);
         getActivity().unregisterReceiver(smsSentReceiver);
-        getActivity().unregisterReceiver(smsDeliveredReceiver);
+        getActivity().unregisterReceiver(smsDeliveredReceiver);*/
         mHandler.post(mUpdateListView);
 
     }
@@ -652,7 +657,7 @@ public class PendingMessages
     /**
      * This will refresh content of the listview aka the pending messages when
      * smssync successfully syncs pending messages.
-     */
+     *
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -693,7 +698,7 @@ public class PendingMessages
     /**
      * This will refresh content of the listview aka the pending messages when
      * smssync fail to sync pending messages.
-     */
+     *
     private BroadcastReceiver failedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -749,6 +754,18 @@ public class PendingMessages
                     break;
             }
         }
-    };
+    };*/
+    
+    @TargetApi(11) @SuppressWarnings({"ConstantConditions", "PointlessBooleanExpression"})
+    private void setupStrictMode() {
+        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= 11) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()
+                    .penaltyFlashScreen()
+                    .build());
+        }
+    }
 
 }
