@@ -52,7 +52,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
     protected MessageSyncState doInBackground(SyncConfig... params) {
         final SyncConfig config = params[0];
         if (config.skip) {
-            Logger.log(TAG, "Backup skipped");
+            Logger.log(TAG, "Sync skipped");
 
             return new MessageSyncState(FINISHED_SYNC, 0, 0, SyncType.MANUAL, null, null);
         }
