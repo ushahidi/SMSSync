@@ -59,16 +59,16 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         }
 
         try {
-            SyncPendingMessagesService.acquireLocks(mService.getApplicationContext());
+            mService.acquireLocks();
 
             return sync(config);
 
         } catch (ConnectivityException e) {
-            Logger.log(TAG,"No internet connection");
+            Logger.log(TAG, "No internet connection");
             return transition(ERROR, e);
 
         } finally {
-            SyncPendingMessagesService.releaseLocks(mService.getApplicationContext());
+            mService.releaseLocks();
         }
     }
 

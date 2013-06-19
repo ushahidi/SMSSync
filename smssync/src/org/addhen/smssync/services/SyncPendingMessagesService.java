@@ -43,7 +43,7 @@ import com.squareup.otto.Subscribe;
  * 
  * @author eyedol
  */
-public class SyncPendingMessagesService extends SmsSyncServices {
+public class SyncPendingMessagesService extends BaseService {
 
     private static String CLASS_TAG = SyncPendingMessagesService.class
             .getSimpleName();
@@ -54,20 +54,16 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
     private static SyncPendingMessagesService service;
 
-    public SyncPendingMessagesService() {
-        super(CLASS_TAG);
-        service = this;
-        MainApplication.bus.register(this);
-    }
+    
     
     @Override
     public void onCreate() {
         super.onCreate();
-        MainApplication.bus.register(this);
+        service = this;
     }
 
     @Override
-    protected void executeTask(Intent intent) {
+    protected void handleIntent(final Intent intent) {
 
         if (intent != null) {
             // get Id
