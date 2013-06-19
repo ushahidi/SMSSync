@@ -59,6 +59,12 @@ public class SyncPendingMessagesService extends SmsSyncServices {
         service = this;
         MainApplication.bus.register(this);
     }
+    
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        MainApplication.bus.register(this);
+    }
 
     @Override
     protected void executeTask(Intent intent) {
@@ -70,13 +76,21 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
             Logger.log(CLASS_TAG, "executeTask() executing this task ");
             if (!isWorking()) {
-                mState = new MessageSyncState(INITIAL, 0, 0, REGULAR, MessageType.PENDING,
-                        null);
-                try {
-                    SyncConfig config = new SyncConfig(3, false, messageUuid, REGULAR);
-                    new SyncTask(this, MessageType.PENDING).execute(config);
-                } catch (Exception e) {
-                    mState.transition(ERROR, e);
+                if (!SyncPendingMessagesService.isServiceWorking()) {
+                    log("Sync started");
+                    mState = new MessageSyncState(INITIAL, 0, 0, REGULAR, MessageType.PENDING,
+                            null);
+                    try {
+                        SyncConfig config = new SyncConfig(3, false, messageUuid, REGULAR);
+                        new SyncTask(this, MessageType.PENDING).execute(config);
+                    } catch (Exception e) {
+                        log("lNot syncing " + e.getMessage());
+                        MainApplication.bus.post(mState.transition(ERROR, e));
+                    }
+                }
+                else {
+                    log("Sync is running now.");
+                    MainApplication.bus.post(mState.transition(ERROR, null));
                 }
             }
             else {
@@ -96,7 +110,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
         if (state.isError()) {
 
             createNotification(R.string.status,
-                    state.getNotification(getResources(), R.string.error), getPendingIntent());
+                    state.getNotification(getResources()), getPendingIntent());
         }
 
         if (state.isRunning()) {
@@ -119,7 +133,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
 
     private void updateSyncStatusNotification(MessageSyncState state) {
         createNotification(R.string.status,
-                state.getNotification(getResources(), R.string.sync), getPendingIntent());
+                state.getNotification(getResources()), getPendingIntent());
 
     }
 

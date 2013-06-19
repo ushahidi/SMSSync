@@ -2,6 +2,7 @@
 package org.addhen.smssync.tasks.state;
 
 import org.addhen.smssync.MessageType;
+import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncType;
 
 import android.content.res.Resources;
@@ -35,13 +36,13 @@ public class MessageSyncState extends State {
                 exception);
     }
 
-    public String getNotification(Resources resources, int resourceId) {
+    public String getNotification(Resources resources) {
 
-        String msg = super.getErrorMessage(resources, resourceId);
+        String msg = super.getNotificationMessage(resources);
         if (msg != null)
             return msg;
         if (state == SYNC) {
-            msg = resources.getString(resourceId,
+            msg = resources.getString(R.string.status_sync_details,
                     currentSyncedItems,
                     itemsToSync);
 

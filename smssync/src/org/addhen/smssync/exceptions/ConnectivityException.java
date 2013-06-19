@@ -18,30 +18,17 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync.receivers;
-
-import org.addhen.smssync.exceptions.ConnectivityException;
-import org.addhen.smssync.services.AutoSyncScheduledService;
-import org.addhen.smssync.services.SmsSyncServices;
-import org.addhen.smssync.util.Logger;
-
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+package org.addhen.smssync.exceptions;
 
 /**
- * This Receiver class is used to listen for Broadcast Intents from the Alarm
- * manager so it executes all task that exist.
+ * Handle all connection exceptions
  */
-public class AutoSyncScheduledReceiver extends BroadcastReceiver {
+public class ConnectivityException extends Exception {
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        try {
-            SmsSyncServices.sendWakefulTask(context, AutoSyncScheduledService.class);
-        } catch (ConnectivityException e) {
-            Logger.log(AutoSyncScheduledReceiver.class.getSimpleName(), "No connection");
-        }
+    private static final long serialVersionUID = 1624406347941512333L;
+
+    public ConnectivityException(String message) {
+        super(message);
     }
 
 }

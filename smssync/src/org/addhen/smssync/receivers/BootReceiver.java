@@ -21,6 +21,7 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
@@ -61,8 +62,13 @@ public class BootReceiver extends BroadcastReceiver {
 				// Push any pending messages now that we have connectivity
 				if (Prefs.enableAutoSync) {
 
-					SmsSyncServices.sendWakefulTask(context,
-							AutoSyncService.class);
+					try {
+                        SmsSyncServices.sendWakefulTask(context,
+                        		AutoSyncService.class);
+                    } catch (ConnectivityException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 					// start the scheduler for auto sync service
 					long interval = (Prefs.autoTime * 60000);
 					new ScheduleServices(
@@ -76,8 +82,13 @@ public class BootReceiver extends BroadcastReceiver {
 
 				// Check for tasks now that we have connectivity
 				if (Prefs.enableTaskCheck) {
-					SmsSyncServices.sendWakefulTask(context,
-							CheckTaskService.class);
+					try {
+                        SmsSyncServices.sendWakefulTask(context,
+                        		CheckTaskService.class);
+                    } catch (ConnectivityException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
 
 					// start the scheduler for 'task check' service
 					long interval = (Prefs.taskCheckTime * 60000);

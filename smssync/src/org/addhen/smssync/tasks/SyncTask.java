@@ -1,9 +1,9 @@
 
 package org.addhen.smssync.tasks;
 
+import static org.addhen.smssync.tasks.state.SyncState.CANCELED_SYNC;
 import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.FINISHED_SYNC;
-import static org.addhen.smssync.tasks.state.SyncState.CANCELED_SYNC;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 import static org.addhen.smssync.tasks.state.SyncState.SYNC;
 
@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessageType;
+import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.services.SyncPendingMessagesService;
@@ -20,9 +21,9 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
-import com.squareup.otto.Subscribe;
-
 import android.os.AsyncTask;
+
+import com.squareup.otto.Subscribe;
 
 /**
  * Provide a background service for synchronizing huge messages
@@ -62,9 +63,10 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
             return sync(config);
 
-        } catch (Exception e) {
-
+        } catch (ConnectivityException e) {
+            Logger.log(TAG,"No internet connection");
             return transition(ERROR, e);
+
         } finally {
             SyncPendingMessagesService.releaseLocks(mService.getApplicationContext());
         }
@@ -109,7 +111,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         }
     }
 
-    private MessageSyncState sync(SyncConfig config) throws Exception {
+    private MessageSyncState sync(SyncConfig config) {
         Logger.log(TAG, "syncToWeb(): push pending messages to the Sync URL");
         publishState(INITIAL);
 

@@ -20,16 +20,17 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MessagesTabActivity;
+import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.tasks.state.State;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -77,12 +78,13 @@ public abstract class SmsSyncServices extends IntentService {
         return wifilock;
     }
 
-    protected static void sendWakefulTask(Context context, Intent i) {
+    protected static void sendWakefulTask(Context context, Intent i) throws ConnectivityException {
         acquireLocks(context);
         context.startService(i);
     }
 
-    public static void sendWakefulTask(Context context, Class<?> classService) {
+    public static void sendWakefulTask(Context context, Class<?> classService)
+            throws ConnectivityException {
         sendWakefulTask(context, new Intent(context, classService));
     }
 
@@ -97,6 +99,7 @@ public abstract class SmsSyncServices extends IntentService {
         super.onCreate();
         // load setting. Just in case someone changes a setting
         Prefs.loadPreferences(this);
+       
     }
 
     /**
@@ -110,7 +113,7 @@ public abstract class SmsSyncServices extends IntentService {
             boolean isConnected = Util.isConnected(this);
 
             // check if we have internet
-            if (!isConnected) {
+           /* if (!isConnected) {
                 // Enable the Connectivity Changed Receiver to listen for
                 // connection
                 // to a network
@@ -122,11 +125,11 @@ public abstract class SmsSyncServices extends IntentService {
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP);
 
-            } else {
+            } else {*/
 
                 // execute the scheduled task
                 executeTask(intent);
-            }
+           // }
         } finally {
             releaseLocks();
         }
@@ -136,9 +139,15 @@ public abstract class SmsSyncServices extends IntentService {
     public void onDestroy() {
         // release resources
         releaseLocks();
+        
     }
 
-    public static void acquireLocks(Context context) {
+    public static void acquireLocks(Context context) throws ConnectivityException {
+        boolean isConnected = Util.isConnected(context);
+        if (!isConnected)
+            // throw connectivity exception
+            throw new ConnectivityException(context.getString(R.string.no_connection));
+
         if (!getPhoneWakeLock(context).isHeld())
             getPhoneWakeLock(context).acquire();
 
