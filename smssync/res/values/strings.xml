@@ -11,7 +11,7 @@
 
 
 <!-- This handles all the strings in the app. -->
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- preferences -->
     <!-- sync URL -->
@@ -176,5 +176,15 @@
     <string name="error">Error</string>
     <string name="done">Done</string>
     <string name="never">Never</string>
+    <string name="idle_details">Last sync at: <xliff:g id="last_sync_date">%1$s</xliff:g></string>
+    <string name="working">Working</string>
+    <string name="canceled">Canceled</string>
+    <string name="sync_canceled_details">%1$d/%2$d items successfully syncd.</string>
+    <string name="sync_error_details">Error during sync:\n<xliff:g id="error_description">%1$s</xliff:g></string>
 
+    <plurals name="sync_done_details">
+        <item quantity="one">Successfully syncd <xliff:g id="total_items">%1$d</xliff:g> item.</item>
+        <item quantity="other">Successfully syncd <xliff:g id="total_items">%1$d</xliff:g> items.</item>
+    </plurals>
+    <string name="stopping">Stopping</string>
 </resources>

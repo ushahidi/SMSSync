@@ -45,21 +45,16 @@ public class SyncPendingMessagesService extends SmsSyncServices {
     private static String CLASS_TAG = SyncPendingMessagesService.class
             .getSimpleName();
 
-    private Intent statusIntent; // holds the status of the sync and sends it to
-
     private String messageUuid = "";
-
-    private SyncUrlModel model;
-
-    private MessagesModel messagesModel;
 
     private MessageSyncState mState = new MessageSyncState();
 
+    private static SyncPendingMessagesService service;
+
     public SyncPendingMessagesService() {
         super(CLASS_TAG);
-        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-        model = new SyncUrlModel();
-        messagesModel = new MessagesModel();
+
+        service = this;
     }
 
     @Override
@@ -91,31 +86,6 @@ public class SyncPendingMessagesService extends SmsSyncServices {
                 log("Sync already running");
             }
 
-            /*if (messagesModel.totalMessages() > 0) {
-
-                // This code is a bit retard
-                for (SyncUrlModel syncUrl : model
-                        .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-
-                    status = new MessageSyncUtil(
-                            SyncPendingMessagesService.this, syncUrl.getUrl())
-                            .syncToWeb(messageUuid);
-
-                    if (status == 0) {
-                        // count successfully synced messages
-                        s++;
-                    } else {
-                        f++;
-                    }
-
-                }
-
-                statusIntent.putExtra("syncstatus", 0);
-                statusIntent.putExtra("fail", f);
-                statusIntent.putExtra("success", s);
-                statusIntent.putExtra("total", messagesModel.totalMessages());
-                sendBroadcast(statusIntent);
-            }*/
         }
 
     }
@@ -124,6 +94,14 @@ public class SyncPendingMessagesService extends SmsSyncServices {
     public MessageSyncState getState() {
         return mState;
 
+    }
+
+    public boolean isWorking() {
+        return getState().isRunning();
+    }
+
+    public static boolean isServiceWorking() {
+        return service != null && service.isWorking();
     }
 
 }

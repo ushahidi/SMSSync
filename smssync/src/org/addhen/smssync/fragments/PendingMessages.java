@@ -20,6 +20,8 @@
 
 package org.addhen.smssync.fragments;
 
+import static org.addhen.smssync.MessageType.PENDING;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -33,6 +35,11 @@ import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.tasks.SyncType;
+import org.addhen.smssync.tasks.TaskCanceled;
+import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.State;
+import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.PendingMessagesView;
@@ -50,12 +57,12 @@ import android.telephony.SmsManager;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
-
-import static org.addhen.smssync.MessageType.PENDING;
+import com.squareup.otto.Subscribe;
 
 public class PendingMessages
         extends
-        BaseListFragment<PendingMessagesView, MessagesModel, PendingMessagesAdapter> {
+        BaseListFragment<PendingMessagesView, MessagesModel, PendingMessagesAdapter> implements
+        android.view.View.OnClickListener {
 
     private Intent syncPendingMessagesServiceIntent;
 
@@ -108,6 +115,7 @@ public class PendingMessages
                 listView.setItemChecked(position, true);
             }
         }
+        view.sync.setOnClickListener(this);
         MainApplication.bus.register(this);
     }
 
@@ -131,7 +139,9 @@ public class PendingMessages
                 new IntentFilter(ServicesConstants.SENT));
         getActivity().registerReceiver(smsDeliveredReceiver,
                 new IntentFilter(ServicesConstants.DELIVERED));
+        idle();
         mHandler.post(mUpdateListView);
+        MainApplication.bus.register(this);
     }
 
     @Override
@@ -160,8 +170,43 @@ public class PendingMessages
     }
 
     private void idle() {
-        //TODO::  get timestamp
-        view.details.setText(getLastSyncText(0));
+        // TODO:: get timestamp
+        view.details.setText(getLastSyncText(PENDING.getLastSyncedDate(getActivity())));
+        view.status.setText(R.string.idle);
+    }
+
+    @Override
+    public void onClick(android.view.View v) {
+        if (v == view.sync) {
+            if (!SyncPendingMessagesService.isServiceWorking()) {
+                log("Sync in action");
+                startSync();
+            } else {
+                log("Sync canceled by the user");
+                // Sync button will be restored on next status update.
+                view.sync.setText(R.string.stopping);
+                view.sync.setEnabled(false);
+                MainApplication.bus.post(new TaskCanceled());
+            }
+        }
+    }
+
+    private void startSync() {
+        startSync("");
+    }
+
+    private void startSync(String messagesUuid) {
+        log("syncMessages messagesUuid: " + messagesUuid);
+
+        syncPendingMessagesServiceIntent = new Intent(getActivity(),
+                SyncPendingMessagesService.class);
+
+        syncPendingMessagesServiceIntent.putExtra(
+                ServicesConstants.MESSAGE_UUID, messagesUuid);
+        syncPendingMessagesServiceIntent.putExtra(ServicesConstants.AUTO_SYNC_ACTION,
+                SyncType.MANUAL.name());
+        getActivity().startService(syncPendingMessagesServiceIntent);
+
     }
 
     /**
@@ -171,7 +216,7 @@ public class PendingMessages
      * @return
      */
     private String getLastSyncText(final long lastSync) {
-        return getString(R.string.idle,
+        return getString(R.string.idle_details,
                 lastSync < 0 ? getString(R.string.never) :
                         DateFormat.getDateTimeInstance().format(new Date(lastSync)));
 
@@ -447,6 +492,102 @@ public class PendingMessages
         if (adapter != null) {
             adapter.refresh();
         }
+    }
+
+    @Subscribe
+    public void syncStateChanged(final MessageSyncState newState) {
+
+        log("backupStateChanged:" + newState);
+        if (view == null || newState.syncType.isBackground())
+            return;
+
+        stateChanged(newState);
+
+        switch (newState.state) {
+            case FINISHED_SYNC:
+                finishedSync(newState);
+                break;
+            case SYNC:
+                view.sync.setText(R.string.cancel);
+                view.status.setText(R.string.sync);
+                view.details.setText(newState
+                        .getNotification(getActivity().getResources(), R.string.working));
+                view.progressStatus.setIndeterminate(false);
+                view.progressStatus.setProgress(newState.currentSyncedItems);
+                view.progressStatus.setMax(newState.itemsToSync);
+                break;
+            case CANCELED_SYNC:
+                view.status.setText(R.string.canceled);
+
+                view.details.setText(getString(R.string.sync_canceled_details,
+                        newState.currentSyncedItems,
+                        newState.itemsToSync));
+                break;
+        }
+    }
+
+    private void finishedSync(MessageSyncState state) {
+        int syncCount = state.currentSyncedItems;
+        String text = null;
+        if (syncCount > 0) {
+            text = getActivity().getResources().getQuantityString(
+                    R.plurals.sync_done_details, syncCount,
+                    syncCount);
+        } else if (syncCount == 0) {
+            text = getActivity().getString(R.string.empty_list);
+        }
+        view.status.setText(text);
+        view.details.setText(R.string.done);
+        view.details.setTextColor(getActivity().getResources().getColor(R.color.status_done));
+    }
+
+    private void stateChanged(State state) {
+        setViewAttributes(state.state);
+        switch (state.state) {
+            case INITIAL:
+                idle();
+                break;
+            case ERROR:
+                final String errorMessage = state.getErrorMessage(getActivity().getResources(),
+                        R.string.error);
+                view.status.setText(R.string.error);
+                view.status.setText(getActivity().getString(
+                        R.string.sync_error_details,
+                        errorMessage == null ? "N/A" : errorMessage));
+                break;
+        }
+    }
+
+    private void setViewAttributes(final SyncState state) {
+
+        switch (state) {
+            case SYNC:
+                view.status
+                        .setTextColor(getActivity().getResources().getColor(R.color.status_sync));
+
+                break;
+            case ERROR:
+                view.progressStatus.setProgress(0);
+                view.progressStatus.setIndeterminate(false);
+                view.status.setTextColor(getActivity().getResources()
+                        .getColor(R.color.status_error));
+
+                setButtonsToDefault();
+                break;
+            default:
+                view.progressStatus.setProgress(0);
+                view.progressStatus.setIndeterminate(false);
+                view.status
+                        .setTextColor(getActivity().getResources().getColor(R.color.status_idle));
+                setButtonsToDefault();
+                break;
+        }
+    }
+
+    private void setButtonsToDefault() {
+
+        view.sync.setEnabled(true);
+        view.sync.setText(R.string.idle);
     }
 
     @Override
