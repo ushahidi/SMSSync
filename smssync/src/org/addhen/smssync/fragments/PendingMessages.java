@@ -175,9 +175,11 @@ public class PendingMessages
     }
 
     private void idle() {
-        // TODO:: get timestamp
+
         view.details.setText(getLastSyncText(PENDING.getLastSyncedDate(getActivity())));
         view.status.setText(R.string.idle);
+        view.status
+                .setTextColor(getActivity().getResources().getColor(R.color.status_idle));
     }
 
     @Override
