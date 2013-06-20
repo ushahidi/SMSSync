@@ -163,7 +163,6 @@ public class PendingMessages
          * getActivity().unregisterReceiver(smsSentReceiver);
          * getActivity().unregisterReceiver(smsDeliveredReceiver);
          */
-        mHandler.post(mUpdateListView);
 
     }
 
@@ -549,14 +548,14 @@ public class PendingMessages
         view.status.setText(R.string.done);
         view.status.setTextColor(getActivity().getResources().getColor(R.color.status_done));
         view.details.setText(text);
-        adapter.refresh();
+        showMessages();
     }
 
     private void stateChanged(State state) {
         setViewAttributes(state.state);
         switch (state.state) {
             case INITIAL:
-               // idle();
+                idle();
                 break;
             case ERROR:
                 final String errorMessage = state.getError(getActivity().getResources());
@@ -574,7 +573,7 @@ public class PendingMessages
             case SYNC:
                 view.status
                         .setTextColor(getActivity().getResources().getColor(R.color.status_sync));
-
+                
                 break;
             case ERROR:
                 view.progressStatus.setProgress(0);
