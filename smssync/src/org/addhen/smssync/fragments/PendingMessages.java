@@ -556,7 +556,7 @@ public class PendingMessages
         setViewAttributes(state.state);
         switch (state.state) {
             case INITIAL:
-                idle();
+               // idle();
                 break;
             case ERROR:
                 final String errorMessage = state.getError(getActivity().getResources());

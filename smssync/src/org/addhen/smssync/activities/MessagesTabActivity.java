@@ -68,7 +68,7 @@ public class MessagesTabActivity extends SherlockFragmentActivity {
                     );
 
         }
-        MainApplication.bus.register(this);
+
     }
 
     @Override
@@ -84,10 +84,10 @@ public class MessagesTabActivity extends SherlockFragmentActivity {
             ContextMenuInfo menuInfo) {
 
     }
-    
+
     public void OnDestory() {
         super.onDestroy();
-        MainApplication.bus.unregister(this);
+
     }
 
 }
