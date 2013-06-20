@@ -95,7 +95,7 @@ public class MessageSyncUtil extends Util {
 
         return false;
     }
-    
+
     /**
      * Pushes pending messages to the configured URL.
      * 
@@ -141,9 +141,9 @@ public class MessageSyncUtil extends Util {
 
                     // / if it successfully pushes message, delete message
                     // from db
-                    new MessagesModel().deleteMessagesByUuid(messages
-                            .getMessageUuid());
-                    deleted++;
+                    if (new MessagesModel().deleteMessagesByUuid(messages
+                            .getMessageUuid()))
+                        deleted++;
                 }
 
             }
@@ -152,8 +152,6 @@ public class MessageSyncUtil extends Util {
         return deleted;
 
     }
-
-   
 
     /**
      * Sends messages received from the server as SMS.

@@ -517,6 +517,7 @@ public class PendingMessages
                 log("In sync state " + " items to sync: " + newState.itemsToSync + " syncdItems "
                         + newState.currentSyncedItems);
                 view.sync.setText(R.string.cancel);
+                
                 view.status.setText(R.string.working);
                 view.details.setText(newState
                         .getNotification(getActivity().getResources()));
@@ -556,6 +557,7 @@ public class PendingMessages
         switch (state.state) {
             case INITIAL:
                 idle();
+                
                 break;
             case ERROR:
                 final String errorMessage = state.getError(getActivity().getResources());

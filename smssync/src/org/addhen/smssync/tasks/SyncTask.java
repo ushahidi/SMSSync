@@ -7,13 +7,17 @@ import static org.addhen.smssync.tasks.state.SyncState.FINISHED_SYNC;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 import static org.addhen.smssync.tasks.state.SyncState.SYNC;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessageType;
+import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.tasks.state.SyncState;
@@ -22,6 +26,7 @@ import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.squareup.otto.Subscribe;
 
@@ -42,11 +47,16 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
     private int itemsToSync;
 
+    private MessageSyncHttpClient msgSyncHttpClient;
+
+    private ProcessSms processSms;
+
     public SyncTask(SyncPendingMessagesService service, MessageType messageType) {
         this.mService = service;
         this.messageType = messageType;
         this.messagesModel = new MessagesModel();
         this.model = new SyncUrlModel();
+
     }
 
     @Override
@@ -141,23 +151,43 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
     private int syncPending(SyncConfig config) {
         // sync pending messages
         int syncdItems = 0;
+
+        processSms = new ProcessSms(mService.getApplicationContext());
+
+        List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
+
         if (messagesModel.totalMessages() > 0) {
             itemsToSync = messagesModel.totalMessages();
             Logger.log(TAG,
                     String.format(Locale.ENGLISH, "Starting to sync (%d messages)", itemsToSync));
-            for (SyncUrlModel syncUrl : model
-                    .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-                try {
-                    Thread.sleep(1000);
-                    syncdItems = new MessageSyncUtil(mService.getApplicationContext(),
-                            syncUrl.getUrl())
-                            .syncToWeb(config.messageUuid);
+            while (!isCancelled() && syncdItems < itemsToSync) {
 
-                    publishProgress(new MessageSyncState(SYNC, syncdItems, itemsToSync,
-                            config.syncType, messageType, null));
+                if (config.messageUuid != null && !TextUtils.isEmpty(config.messageUuid)) {
+                    messagesModel.loadByUuid(config.messageUuid);
+                    listMessages = messagesModel.listMessages;
 
-                } catch (InterruptedException e) {
-                    Logger.log(TAG, "Thread interrupted");
+                } else {
+                    messagesModel.load();
+                    listMessages = messagesModel.listMessages;
+
+                }
+
+                for (MessagesModel messages : listMessages) {
+
+                    if (processSms.routePendingMessages(messages.getMessageFrom(),
+                            messages.getMessage(), messages.getMessageDate(),
+                            messages.getMessageUuid())) {
+
+                        // / if it successfully pushes message, delete
+                        // message
+                        // from db
+                        new MessagesModel().deleteMessagesByUuid(messages
+                                .getMessageUuid());
+                        syncdItems++;
+                        publishProgress(new MessageSyncState(SYNC, syncdItems, itemsToSync,
+                                config.syncType, messageType, null));
+
+                    }
                 }
             }
 
@@ -169,8 +199,10 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         Logger.log(TAG, "checkTaskService: check if a task has been enabled.");
         // Perform a task
         // get enabled Sync URL
+
         for (SyncUrlModel syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+
             new MessageSyncUtil(mService.getApplicationContext(), syncUrl.getUrl())
                     .performTask(syncUrl.getSecret());
         }
