@@ -142,9 +142,21 @@ public class SyncPendingMessagesService extends BaseService {
     public boolean isWorking() {
         return getState().isRunning();
     }
+    
+    @Override
+    protected boolean isBackgroundTask() {
+        return mState.syncType.isBackground();
+    }
 
     public static boolean isServiceWorking() {
         return service != null && service.isWorking();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        service = null;
     }
 
 }

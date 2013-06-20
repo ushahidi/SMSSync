@@ -17,49 +17,49 @@
  ** Ushahidi developers at team@ushahidi.com.
  **
  *****************************************************************************/
-
 package org.addhen.smssync;
 
-import org.addhen.smssync.database.Database;
-import org.addhen.smssync.net.MainHttpClient;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.squareup.otto.Bus;
 
-import android.app.Application;
-
 /**
- * This class is for maintaining global application state.
- * 
  * @author eyedol
+ *
  */
-public class MainApplication extends Application {
-
-    public static final String TAG = "SmsSyncApplication";
-
-    public static Database mDb;
-
-    public static MainHttpClient mApi;
-
-    public static Application app = null;
-
-    public static final SyncBus bus = new SyncBus(new Bus());
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        // Open database connection when the application starts.
-        app = this;
-        mDb = new Database(this);
-        mDb.open();
+public class SyncBus extends Bus {
+    
+    private final Bus mBus;
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+    
+    public SyncBus(final Bus bus) {
+        if( bus == null) {
+            throw new NullPointerException("Bus cannot be null");
+        }
+        mBus = bus;
     }
+    
+    @Override 
+    public void register(Object obj) {
+        mBus.register(obj);
+      }
 
-    @Override
-    public void onTerminate() {
+      @Override 
+      public void unregister(Object obj) {
+        mBus.unregister(obj);
+      }
 
-        // Close the database when the application terminates.
-        mDb.close();
-        super.onTerminate();
-    }
-
+      @Override 
+      public void post(final Object event) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+          mBus.post(event);
+        } else {
+          mHandler.post(new Runnable() {
+            @Override public void run() {
+              mBus.post(event);
+            }
+          });
+        }
+      }
 }
