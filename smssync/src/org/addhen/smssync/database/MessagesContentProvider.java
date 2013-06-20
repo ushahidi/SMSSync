@@ -55,7 +55,7 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     @Override
     public int messagesCount() {
-        cursor = mDb.rawQuery("SELECT COUNT(" + MESSAGE_UUID + ") FROM " + TABLE,
+        cursor = mDb.rawQuery("SELECT COUNT(*) FROM " + TABLE,
                 null);
 
         int result = 0;
@@ -63,8 +63,9 @@ public class MessagesContentProvider extends DbContentProvider implements
             if (cursor == null) {
                 return result;
             }
-            
-            result = cursor.getCount();
+
+            cursor.moveToFirst();
+            result = cursor.getInt(0);
         } finally {
             if (cursor != null)
                 cursor.close();

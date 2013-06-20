@@ -516,7 +516,7 @@ public class PendingMessages
                 log("In sync state " + " items to sync: " + newState.itemsToSync + " syncdItems "
                         + newState.currentSyncedItems);
                 view.sync.setText(R.string.cancel);
-                view.status.setText(R.string.sync);
+                view.status.setText(R.string.working);
                 view.details.setText(newState
                         .getNotification(getActivity().getResources()));
                 view.progressStatus.setIndeterminate(false);
@@ -547,7 +547,7 @@ public class PendingMessages
         view.status.setText(R.string.done);
         view.status.setTextColor(getActivity().getResources().getColor(R.color.status_done));
         view.details.setText(text);
-        mHandler.post(mUpdateListView);
+        adapter.refresh();
     }
 
     private void stateChanged(State state) {

@@ -99,7 +99,7 @@ public abstract class SmsSyncServices extends IntentService {
         super.onCreate();
         // load setting. Just in case someone changes a setting
         Prefs.loadPreferences(this);
-       
+        MainApplication.bus.register(this);
     }
 
     /**
@@ -113,7 +113,7 @@ public abstract class SmsSyncServices extends IntentService {
             boolean isConnected = Util.isConnected(this);
 
             // check if we have internet
-           /* if (!isConnected) {
+            if (!isConnected) {
                 // Enable the Connectivity Changed Receiver to listen for
                 // connection
                 // to a network
@@ -125,11 +125,11 @@ public abstract class SmsSyncServices extends IntentService {
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                         PackageManager.DONT_KILL_APP);
 
-            } else {*/
+            } else {
 
                 // execute the scheduled task
                 executeTask(intent);
-           // }
+            }
         } finally {
             releaseLocks();
         }
@@ -139,7 +139,7 @@ public abstract class SmsSyncServices extends IntentService {
     public void onDestroy() {
         // release resources
         releaseLocks();
-        
+        MainApplication.bus.unregister(this);
     }
 
     public static void acquireLocks(Context context) throws ConnectivityException {

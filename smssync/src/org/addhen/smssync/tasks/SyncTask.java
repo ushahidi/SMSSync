@@ -130,7 +130,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
             Logger.log(TAG, "Nothing to do.");
             return transition(FINISHED_SYNC, null);
         }
-
+        messageType.setLastSyncedDate(mService.getApplicationContext(), System.currentTimeMillis());
         return new MessageSyncState(FINISHED_SYNC,
                 syncdItems,
                 itemsToSync,
@@ -149,13 +149,13 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
                     .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
                 try {
                     Thread.sleep(1000);
-                    if (0 == new MessageSyncUtil(mService.getApplicationContext(), syncUrl.getUrl())
-                            .syncToWeb(config.messageUuid)) {
+                    syncdItems = new MessageSyncUtil(mService.getApplicationContext(),
+                            syncUrl.getUrl())
+                            .syncToWeb(config.messageUuid);
 
-                        syncdItems ++;
-                    }
                     publishProgress(new MessageSyncState(SYNC, syncdItems, itemsToSync,
                             config.syncType, messageType, null));
+
                 } catch (InterruptedException e) {
                     Logger.log(TAG, "Thread interrupted");
                 }

@@ -143,9 +143,7 @@ public class MessageSyncUtil extends Util {
                     // from db
                     new MessagesModel().deleteMessagesByUuid(messages
                             .getMessageUuid());
-                    deleted = 0;
-                } else {
-                    deleted = 1;
+                    deleted++;
                 }
 
             }
