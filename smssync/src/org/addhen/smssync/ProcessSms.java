@@ -481,7 +481,7 @@ public class ProcessSms {
 
         int status = SentMessagesUtil.processSentMessages(context);
         statusIntent.putExtra("sentstatus", status);
-        context.sendBroadcast(statusIntent);
+        //context.sendBroadcast(statusIntent);
 
     }
 
@@ -503,7 +503,7 @@ public class ProcessSms {
         int status = MessageSyncUtil.processMessages();
         statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
         statusIntent.putExtra("failed", status);
-        context.sendBroadcast(statusIntent);
+        //context.sendBroadcast(statusIntent);
 
     }
 

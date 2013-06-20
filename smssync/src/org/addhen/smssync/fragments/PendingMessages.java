@@ -117,8 +117,8 @@ public class PendingMessages
             }
         }
         view.sync.setOnClickListener(this);
-        setupStrictMode();
-        MainApplication.bus.register(getActivity());
+        //setupStrictMode();
+        MainApplication.bus.register(this);
     }
 
     @Override

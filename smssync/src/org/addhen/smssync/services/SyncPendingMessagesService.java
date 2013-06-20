@@ -21,7 +21,6 @@
 package org.addhen.smssync.services;
 
 import static org.addhen.smssync.tasks.SyncType.MANUAL;
-import static org.addhen.smssync.tasks.SyncType.REGULAR;
 import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 

@@ -17,7 +17,6 @@ import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
-import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.tasks.state.SyncState;
@@ -46,8 +45,6 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
     private MessageType messageType;
 
     private int itemsToSync;
-
-    private MessageSyncHttpClient msgSyncHttpClient;
 
     private ProcessSms processSms;
 

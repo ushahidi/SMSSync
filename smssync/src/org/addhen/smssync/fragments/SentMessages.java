@@ -20,13 +20,14 @@
 
 package org.addhen.smssync.fragments;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
-import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
@@ -35,12 +36,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
+import com.squareup.otto.Subscribe;
 
 public class SentMessages
         extends
@@ -76,26 +77,23 @@ public class SentMessages
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
                 this, listView));
+        MainApplication.bus.register(this);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        getActivity().registerReceiver(broadcastReceiver,
-                new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
         log("OnResume is called");
         mHandler.post(mDisplayMessages);
+        MainApplication.bus.register(this);
 
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        getActivity().unregisterReceiver(broadcastReceiver);
-        mHandler.post(mDisplayMessages);
-
+    public void onDestroy() {
+        super.onDestroy();
+        MainApplication.bus.unregister(this);
     }
 
     public boolean performAction(MenuItem item, int position) {
@@ -281,6 +279,19 @@ public class SentMessages
 
         if (adapter != null)
             adapter.refresh();
+
+    }
+
+    @Subscribe
+    public void syncStateChanged(final MessageSyncState newState) {
+
+        switch (newState.state) {
+            case FINISHED_SYNC:
+            case CANCELED_SYNC:
+                mHandler.post(mDisplayMessages);
+                break;
+
+        }
 
     }
 
