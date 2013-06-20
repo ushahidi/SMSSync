@@ -513,6 +513,8 @@ public class PendingMessages
                 finishedSync(newState);
                 break;
             case SYNC:
+                log("In sync state " + " items to sync: " + newState.itemsToSync + " syncdItems "
+                        + newState.currentSyncedItems);
                 view.sync.setText(R.string.cancel);
                 view.status.setText(R.string.sync);
                 view.details.setText(newState
@@ -529,7 +531,7 @@ public class PendingMessages
                         newState.itemsToSync));
                 break;
         }
-        
+
     }
 
     private void finishedSync(MessageSyncState state) {
@@ -542,9 +544,9 @@ public class PendingMessages
         } else if (syncCount == 0) {
             text = getActivity().getString(R.string.empty_list);
         }
-        view.status.setText(text);
-        view.details.setText(R.string.done);
-        view.details.setTextColor(getActivity().getResources().getColor(R.color.status_done));
+        view.status.setText(R.string.done);
+        view.status.setTextColor(getActivity().getResources().getColor(R.color.status_done));
+        view.details.setText(text);
         mHandler.post(mUpdateListView);
     }
 
@@ -593,7 +595,7 @@ public class PendingMessages
     private void setButtonsToDefault() {
 
         view.sync.setEnabled(true);
-        view.sync.setText(R.string.idle);
+        view.sync.setText(R.string.sync);
     }
 
     @Override

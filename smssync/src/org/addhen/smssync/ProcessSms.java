@@ -151,8 +151,8 @@ public class ProcessSms {
 
                         postToSentBox(messagesFrom, messagesBody, messagesUuid,
                                 messagesTimestamp, PENDING);
-                        Util.showFailNotification(context, messagesBody,
-                                context.getString(R.string.sending_succeeded));
+                        //Util.showFailNotification(context, messagesBody,
+                          //      context.getString(R.string.sending_succeeded));
                     }
 
                 }
@@ -163,8 +163,8 @@ public class ProcessSms {
                         syncUrl.getSecret());
                 Logger.log(CLASS_TAG, "routeMessages posted is " + posted);
                 if (!posted) {
-                    Util.showFailNotification(context, messagesBody,
-                            context.getString(R.string.sending_failed));
+                    //Util.showFailNotification(context, messagesBody,
+                      //      context.getString(R.string.sending_failed));
 
                     // attempt to make a data connection so to sync
                     // the failed messages.
@@ -175,8 +175,8 @@ public class ProcessSms {
                     postToSentBox(messagesFrom, messagesBody, messagesUuid,
                             messagesTimestamp, PENDING);
 
-                    Util.showFailNotification(context, messagesBody,
-                            context.getString(R.string.sending_succeeded));
+                 //   Util.showFailNotification(context, messagesBody,
+                   //         context.getString(R.string.sending_succeeded));
                 }
             }
         }

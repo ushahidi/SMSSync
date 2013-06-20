@@ -147,14 +147,18 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
                     String.format(Locale.ENGLISH, "Starting to sync (%d messages)", itemsToSync));
             for (SyncUrlModel syncUrl : model
                     .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+                try {
+                    Thread.sleep(1000);
+                    if (0 == new MessageSyncUtil(mService.getApplicationContext(), syncUrl.getUrl())
+                            .syncToWeb(config.messageUuid)) {
 
-                if (0 == new MessageSyncUtil(mService.getApplicationContext(), syncUrl.getUrl())
-                        .syncToWeb(config.messageUuid)) {
-
-                    syncdItems += 1;
+                        syncdItems ++;
+                    }
+                    publishProgress(new MessageSyncState(SYNC, syncdItems, itemsToSync,
+                            config.syncType, messageType, null));
+                } catch (InterruptedException e) {
+                    Logger.log(TAG, "Thread interrupted");
                 }
-                publishProgress(new MessageSyncState(SYNC, syncdItems, itemsToSync,
-                        config.syncType, messageType, null));
             }
 
         }
