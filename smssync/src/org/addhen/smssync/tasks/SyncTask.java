@@ -1,3 +1,22 @@
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2012 Ushahidi Inc
+ ** All rights reserved
+ ** Contact: team@ushahidi.com
+ ** Website: http://www.ushahidi.com
+ **
+ ** GNU Lesser General Public License Usage
+ ** This file may be used under the terms of the GNU Lesser
+ ** General Public License version 3 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.LGPL included in the
+ ** packaging of this file. Please review the following information to
+ ** ensure the GNU Lesser General Public License version 3 requirements
+ ** will be met: http://www.gnu.org/licenses/lgpl.html.
+ **
+ **
+ ** If you have questions regarding the use of this file, please contact
+ ** Ushahidi developers at team@ushahidi.com.
+ **
+ *****************************************************************************/
 
 package org.addhen.smssync.tasks;
 
@@ -13,19 +32,26 @@ import java.util.Locale;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.MessageType;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
+import org.addhen.smssync.R;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
@@ -36,7 +62,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
     private final SyncPendingMessagesService mService;
 
-    private final static String TAG = SyncTask.class.getSimpleName();
+    private final static String CLASS_TAG = SyncTask.class.getSimpleName();
 
     private final MessagesModel messagesModel;
 
@@ -66,7 +92,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
     protected MessageSyncState doInBackground(SyncConfig... params) {
         final SyncConfig config = params[0];
         if (config.skip) {
-            Logger.log(TAG, "Sync skipped");
+            Logger.log(CLASS_TAG, "Sync skipped");
             // In case a user decides to skip the sync process
             return new MessageSyncState(FINISHED_SYNC, 0, 0, SyncType.MANUAL, null, null);
         }
@@ -78,7 +104,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
             return sync(config);
 
         } catch (ConnectivityException e) {
-            Logger.log(TAG, "No internet connection");
+            Logger.log(CLASS_TAG, "No internet connection");
             return transition(ERROR, e);
 
         } finally {
@@ -130,7 +156,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
     }
 
     private MessageSyncState sync(SyncConfig config) {
-        Logger.log(TAG, "syncToWeb(): push pending messages to the Sync URL");
+        Logger.log(CLASS_TAG, "syncToWeb(): push pending messages to the Sync URL");
         publishState(INITIAL);
 
         int syncdItems = 0;
@@ -140,12 +166,11 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
                 break;
             case TASK:
                 syncTask(config);
-                break;
         }
 
         if (syncdItems == 0) {
 
-            Logger.log(TAG, "Nothing to do.");
+            Logger.log(CLASS_TAG, "Nothing to do.");
             return transition(FINISHED_SYNC, null);
         }
         messageType.setLastSyncedDate(mService.getApplicationContext(), System.currentTimeMillis());
@@ -172,7 +197,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
         if (messagesModel.totalMessages() > 0) {
             itemsToSync = messagesModel.totalMessages();
-            Logger.log(TAG,
+            Logger.log(CLASS_TAG,
                     String.format(Locale.ENGLISH, "Starting to sync (%d messages)", itemsToSync));
 
             // keep the sync running as long as the service is not cancelled and
@@ -220,16 +245,85 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         return syncdItems;
     }
 
-    private void syncTask(SyncConfig config) {
-        Logger.log(TAG, "checkTaskService: check if a task has been enabled.");
-        // Perform a task
-        // get enabled Sync URL
+    private int syncTask(SyncConfig config) {
+        int syncdItems = 0;
+        JSONObject jsonObject;
+
+        JSONArray jsonArray;
+        Logger.log(CLASS_TAG, "checkTaskService: check if a task has been enabled.");
+
+        // load Prefs
+        Prefs.loadPreferences(mService.getApplicationContext());
         for (SyncUrlModel syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+            // validate configured url
+            int status = Util.validateCallbackUrl(syncUrl.getUrl());
+            if (status == 1) {
+                Util.showToast(mService.getApplicationContext(), R.string.no_configured_url);
+            } else if (status == 2) {
+                Util.showToast(mService.getApplicationContext(), R.string.invalid_url);
+            } else if (status == 3) {
+                Util.showToast(mService.getApplicationContext(), R.string.no_connection);
+            } else {
 
-            new MessageSyncUtil(mService.getApplicationContext(), syncUrl.getUrl())
-                    .performTask(syncUrl.getSecret());
+                StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
+
+                uriBuilder.append("?task=send");
+
+                String response = MainHttpClient.getFromWebService(uriBuilder
+                        .toString());
+                Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
+                String task = "";
+                String secret = "";
+                if (!TextUtils.isEmpty(response) && response != null) {
+
+                    try {
+
+                        jsonObject = new JSONObject(response);
+                        JSONObject payloadObject = jsonObject
+                                .getJSONObject("payload");
+
+                        if (payloadObject != null) {
+                            task = payloadObject.getString("task");
+                            secret = payloadObject.getString("secret");
+                            if ((task.equals("send")) && (secret.equals(syncUrl.getSecret()))) {
+                                jsonArray = payloadObject.getJSONArray("messages");
+
+                                for (int index = 0; index < jsonArray.length(); ++index) {
+                                    jsonObject = jsonArray.getJSONObject(index);
+
+                                    processSms.sendSms(jsonObject.getString("to"),
+                                            jsonObject.getString("message"));
+                                    // increment the number of syncd items
+                                    syncdItems++;
+
+                                    // update the UI with progress of the sync
+                                    // progress
+                                    publishProgress(new MessageSyncState(SYNC, syncdItems,
+                                            itemsToSync,
+                                            config.syncType, messageType, null));
+                                }
+
+                            } else {
+                                Logger.log(CLASS_TAG,
+                                        mService.getApplicationContext()
+                                                .getString(R.string.no_task));
+                            }
+
+                        } else { // 'payload' data may not be present in JSON
+                                 // response
+                            Logger.log(CLASS_TAG,
+                                    mService.getApplicationContext().getString(R.string.no_task));
+                        }
+
+                    } catch (JSONException e) {
+                        Logger.log(CLASS_TAG, "Error: " + e.getMessage());
+                    }
+                }
+            }
         }
+
+        return syncdItems;
     }
 
     /**

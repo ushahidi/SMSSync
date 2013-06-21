@@ -25,7 +25,6 @@ import static org.addhen.smssync.MessageType.PENDING;
 import java.text.DateFormat;
 import java.util.Date;
 
-import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
@@ -45,16 +44,13 @@ import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.PendingMessagesView;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
