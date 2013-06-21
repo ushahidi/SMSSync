@@ -30,7 +30,7 @@ import android.text.TextUtils;
 import com.squareup.otto.Subscribe;
 
 /**
- * Provide a background service for synchronizing huge messages
+ * Provide a background service for asynchronous synchronizing of huge messages
  */
 public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyncState> {
 
@@ -48,6 +48,12 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
     private ProcessSms processSms;
 
+    /**
+     * Default constructor
+     * 
+     * @param service The sync service
+     * @param messageType The message type being synchronize
+     */
     public SyncTask(SyncPendingMessagesService service, MessageType messageType) {
         this.mService = service;
         this.messageType = messageType;
@@ -61,11 +67,12 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         final SyncConfig config = params[0];
         if (config.skip) {
             Logger.log(TAG, "Sync skipped");
-
+            // In case a user decides to skip the sync process
             return new MessageSyncState(FINISHED_SYNC, 0, 0, SyncType.MANUAL, null, null);
         }
 
         try {
+            // lock resources need to keep this sync alive
             mService.acquireLocks();
 
             return sync(config);
@@ -75,17 +82,20 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
             return transition(ERROR, e);
 
         } finally {
+            // release resources
             mService.releaseLocks();
         }
     }
 
     @Override
     protected void onPreExecute() {
+        // register bus for passing events around
         MainApplication.bus.register(this);
     }
 
     @Subscribe
     public void taskCanceled(TaskCanceled canceled) {
+        // cancel the sync process when the user hit to cancel button
         cancel(false);
     }
 
@@ -94,6 +104,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         if (result != null) {
             post(result);
         }
+        // unregister bus to stop listening for events
         MainApplication.bus.unregister(this);
     }
 
@@ -145,6 +156,12 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
     }
 
+    /**
+     * Sync pending messages to the enabled sync URL.
+     * 
+     * @param config The sync configuration.
+     * @return int The number of syncd items
+     */
     private int syncPending(SyncConfig config) {
         // sync pending messages
         int syncdItems = 0;
@@ -157,30 +174,41 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
             itemsToSync = messagesModel.totalMessages();
             Logger.log(TAG,
                     String.format(Locale.ENGLISH, "Starting to sync (%d messages)", itemsToSync));
+
+            // keep the sync running as long as the service is not cancelled and
+            // the syncd items is less than
+            // the items to be syncd.
             while (!isCancelled() && syncdItems < itemsToSync) {
 
+                // determine if syncing by message UUID
                 if (config.messageUuid != null && !TextUtils.isEmpty(config.messageUuid)) {
                     messagesModel.loadByUuid(config.messageUuid);
                     listMessages = messagesModel.listMessages;
 
                 } else {
+                    // load all messages
                     messagesModel.load();
                     listMessages = messagesModel.listMessages;
 
                 }
 
+                // iterate through the loaded messages and push to the web
+                // service
                 for (MessagesModel messages : listMessages) {
 
+                    // route the message to the appropriate enabled sync URL
                     if (processSms.routePendingMessages(messages.getMessageFrom(),
                             messages.getMessage(), messages.getMessageDate(),
                             messages.getMessageUuid())) {
 
-                        // / if it successfully pushes message, delete
-                        // message
-                        // from db
+                        // / if it successfully pushes message, purge the
+                        // message from the db
                         new MessagesModel().deleteMessagesByUuid(messages
                                 .getMessageUuid());
+                        // increment the number of syncd items
                         syncdItems++;
+
+                        // update the UI with progress of the sync progress
                         publishProgress(new MessageSyncState(SYNC, syncdItems, itemsToSync,
                                 config.syncType, messageType, null));
 
@@ -196,7 +224,6 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         Logger.log(TAG, "checkTaskService: check if a task has been enabled.");
         // Perform a task
         // get enabled Sync URL
-
         for (SyncUrlModel syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
 
@@ -205,10 +232,21 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         }
     }
 
+    /**
+     * Send the state of the sync to the UI
+     * 
+     * @param state The sync state
+     */
     private void publishState(SyncState state) {
         publishState(state, null);
     }
 
+    /**
+     * Send the state of the sync to the UI
+     * 
+     * @param state The sync state
+     * @param e The exception
+     */
     private void publishState(SyncState state, Exception e) {
         publishProgress(mService.getState().transition(state, e));
     }
