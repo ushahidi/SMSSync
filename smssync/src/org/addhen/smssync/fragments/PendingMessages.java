@@ -117,7 +117,7 @@ public class PendingMessages
             }
         }
         view.sync.setOnClickListener(this);
-        //setupStrictMode();
+        // setupStrictMode();
         MainApplication.bus.register(this);
     }
 
@@ -132,16 +132,7 @@ public class PendingMessages
     public void onResume() {
         log("onResume()");
         super.onResume();
-        /*
-         * getActivity().registerReceiver(broadcastReceiver, new
-         * IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
-         * getActivity().registerReceiver(failedReceiver, new
-         * IntentFilter(ServicesConstants.FAILED_ACTION));
-         * getActivity().registerReceiver(smsSentReceiver, new
-         * IntentFilter(ServicesConstants.SENT));
-         * getActivity().registerReceiver(smsDeliveredReceiver, new
-         * IntentFilter(ServicesConstants.DELIVERED));
-         */
+
         idle();
         mHandler.post(mUpdateListView);
         MainApplication.bus.register(this);
@@ -157,12 +148,6 @@ public class PendingMessages
     public void onPause() {
         log("onPause()");
         super.onPause();
-        /*
-         * getActivity().unregisterReceiver(broadcastReceiver);
-         * getActivity().unregisterReceiver(failedReceiver);
-         * getActivity().unregisterReceiver(smsSentReceiver);
-         * getActivity().unregisterReceiver(smsDeliveredReceiver);
-         */
 
     }
 
@@ -517,7 +502,7 @@ public class PendingMessages
                 log("In sync state " + " items to sync: " + newState.itemsToSync + " syncdItems "
                         + newState.currentSyncedItems);
                 view.sync.setText(R.string.cancel);
-                
+
                 view.status.setText(R.string.working);
                 view.details.setText(newState
                         .getNotification(getActivity().getResources()));
@@ -557,7 +542,7 @@ public class PendingMessages
         switch (state.state) {
             case INITIAL:
                 idle();
-                
+
                 break;
             case ERROR:
                 final String errorMessage = state.getError(getActivity().getResources());
@@ -575,7 +560,7 @@ public class PendingMessages
             case SYNC:
                 view.status
                         .setTextColor(getActivity().getResources().getColor(R.color.status_sync));
-                
+
                 break;
             case ERROR:
                 view.progressStatus.setProgress(0);
