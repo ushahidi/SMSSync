@@ -117,7 +117,7 @@ public class PendingMessages
             }
         }
         view.sync.setOnClickListener(this);
-        // setupStrictMode();
+        Util.setupStrictMode();
         MainApplication.bus.register(this);
     }
 
@@ -703,20 +703,5 @@ public class PendingMessages
      *           Activity.RESULT_CANCELED:
      *           toastLong(R.string.sms_not_delivered); break; } } };
      */
-
-    @TargetApi(11)
-    @SuppressWarnings({
-            "ConstantConditions", "PointlessBooleanExpression"
-    })
-    private void setupStrictMode() {
-        if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= 11) {
-            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()
-                    .penaltyFlashScreen()
-                    .build());
-        }
-    }
 
 }

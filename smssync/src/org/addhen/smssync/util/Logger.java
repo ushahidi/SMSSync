@@ -19,11 +19,13 @@
  *****************************************************************************/
 package org.addhen.smssync.util;
 
+import org.addhen.smssync.BuildConfig;
+
 import android.util.Log;
 
 public class Logger {
 
-	public static final boolean LOGGING_MODE = true;
+	public static final boolean LOGGING_MODE = BuildConfig.DEBUG;
 
 	public Logger() {
 
