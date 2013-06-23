@@ -41,11 +41,7 @@ public abstract class State {
     }
 
     public boolean isRunning() {
-        return EnumSet.of(
-
-                SyncState.SYNC,
-
-                SyncState.UPDATING_THREADS).contains(state);
+        return EnumSet.of(SyncState.SYNC).contains(state);
     }
 
     public abstract State transition(SyncState newState, Exception exception);
@@ -83,7 +79,7 @@ public abstract class State {
             return exception.getLocalizedMessage();
         }
     }
-    
+
     /**
      * Pass notification messages to the main UI
      * 
