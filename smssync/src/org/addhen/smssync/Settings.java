@@ -46,507 +46,508 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
  * @author eyedol
  */
 public class Settings extends SherlockPreferenceActivity implements
-		OnSharedPreferenceChangeListener {
+        OnSharedPreferenceChangeListener {
 
-	public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
+    public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
 
-	public static final String KEY_POWERED_PREFERENCE = "powered_preference";
+    public static final String KEY_POWERED_PREFERENCE = "powered_preference";
 
-	public static final String KEY_AUTO_DELETE_MESSAGE = "auto_delete_preference";
+    public static final String KEY_AUTO_DELETE_MESSAGE = "auto_delete_preference";
 
-	public static final String KEY_ENABLE_REPLY = "enable_reply_preference";
+    public static final String KEY_ENABLE_REPLY = "enable_reply_preference";
 
-	public static final String KEY_ENABLE_REPLY_FRM_SERVER = "enable_reply_frm_server_preference";
+    public static final String KEY_ENABLE_REPLY_FRM_SERVER = "enable_reply_frm_server_preference";
 
-	public static final String KEY_REPLY = "reply_preference";
+    public static final String KEY_REPLY = "reply_preference";
 
-	public static final String KEY_UNIQUE_ID = "unique_id_preference";
+    public static final String KEY_UNIQUE_ID = "unique_id_preference";
 
-	public static final String AUTO_SYNC = "auto_sync_preference";
+    public static final String AUTO_SYNC = "auto_sync_preference";
 
-	public static final String AUTO_SYNC_TIMES = "auto_sync_times";
+    public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 
-	public static final String TASK_CHECK = "task_check_preference";
+    public static final String TASK_CHECK = "task_check_preference";
 
-	public static final String TASK_CHECK_TIMES = "task_check_times";
+    public static final String TASK_CHECK_TIMES = "task_check_times";
 
-	public static final String ABOUT = "powered_preference";
+    public static final String ABOUT = "powered_preference";
 
-	private EditTextPreference replyPref;
+    private EditTextPreference replyPref;
 
-	private CheckBoxPreference enableReplyFrmServer;
+    private CheckBoxPreference enableReplyFrmServer;
 
-	private CheckBoxPreference enableAutoDelete;
+    private CheckBoxPreference enableAutoDelete;
 
-	private CheckBoxPreference enableReply;
+    private CheckBoxPreference enableReply;
 
-	private CheckBoxPreference autoSync;
+    private CheckBoxPreference autoSync;
 
-	private CheckBoxPreference taskCheck;
+    private CheckBoxPreference taskCheck;
 
-	private ListPreference autoSyncTimes;
+    private ListPreference autoSyncTimes;
 
-	private ListPreference taskCheckTimes;
+    private ListPreference taskCheckTimes;
 
-	private EditTextPreference uniqueId;
+    private EditTextPreference uniqueId;
 
-	private Preference about;
+    private Preference about;
 
-	private SharedPreferences settings;
+    private SharedPreferences settings;
 
-	private SharedPreferences.Editor editor;
+    private SharedPreferences.Editor editor;
 
-	private static final String URL = "http://smssync.ushahidi.com";
+    private static final String URL = "http://smssync.ushahidi.com";
 
-	private CharSequence[] autoSyncEntries = { "1 Minute", "2 Minutes",
-			"3 Minutes", "4 Minutes", "5 Minutes", "10 Minutes", "15 Minutes",
-			"30 Minutes", "60 Minutes" };
+    private CharSequence[] autoSyncEntries = {
+            "1 Minute", "2 Minutes",
+            "3 Minutes", "4 Minutes", "5 Minutes", "10 Minutes", "15 Minutes",
+            "30 Minutes", "60 Minutes"
+    };
 
-	private CharSequence[] autoSyncValues = { "1", "2", "3", "4", "5", "10",
-			"15", "30", "60" };
+    private CharSequence[] autoSyncValues = {
+            "1", "2", "3", "4", "5", "10",
+            "15", "30", "60"
+    };
 
-	private int autoTime = 5;
+    private int autoTime = 5;
 
-	private int taskCheckTime = 5;
+    private int taskCheckTime = 5;
 
-	private int uniqueIdValidityStatus = 1;
+    private int uniqueIdValidityStatus = 1;
 
-	private final Handler mHandler = new Handler();
+    private final Handler mHandler = new Handler();
 
-	private String versionName;
+    private String versionName;
 
-	private StringBuilder versionLabel;
+    private StringBuilder versionLabel;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		// Load the preferences from an XML resource
-		addPreferencesFromResource(R.xml.preferences);
-		try {
-			versionName = getPackageManager().getPackageInfo(
-					this.getPackageName(), 0).versionName;
-			// add app name to verstion number
-			versionLabel = new StringBuilder(getString(R.string.app_name));
-			versionLabel.append(" ");
-			versionLabel.append("v");
-			versionLabel.append(versionName);
-			versionLabel.append(" ");
-			versionLabel.append(getString(R.string.version_status));
-		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        // Load the preferences from an XML resource
+        addPreferencesFromResource(R.xml.preferences);
+        try {
+            versionName = getPackageManager().getPackageInfo(
+                    this.getPackageName(), 0).versionName;
+            // add app name to verstion number
+            versionLabel = new StringBuilder(getString(R.string.app_name));
+            versionLabel.append(" ");
+            versionLabel.append("v");
+            versionLabel.append(versionName);
+            versionLabel.append(" ");
+            versionLabel.append(getString(R.string.version_status));
+        } catch (NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-		enableAutoDelete = (CheckBoxPreference) getPreferenceScreen()
-				.findPreference(KEY_AUTO_DELETE_MESSAGE);
+        enableAutoDelete = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(KEY_AUTO_DELETE_MESSAGE);
 
-		enableReply = (CheckBoxPreference) getPreferenceScreen()
-				.findPreference(KEY_ENABLE_REPLY);
-		enableReplyFrmServer = (CheckBoxPreference) getPreferenceScreen()
-				.findPreference(KEY_ENABLE_REPLY_FRM_SERVER);
+        enableReply = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(KEY_ENABLE_REPLY);
+        enableReplyFrmServer = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(KEY_ENABLE_REPLY_FRM_SERVER);
 
-		autoSync = (CheckBoxPreference) getPreferenceScreen().findPreference(
-				AUTO_SYNC);
+        autoSync = (CheckBoxPreference) getPreferenceScreen().findPreference(
+                AUTO_SYNC);
 
-		taskCheck = (CheckBoxPreference) getPreferenceScreen().findPreference(
-				TASK_CHECK);
+        taskCheck = (CheckBoxPreference) getPreferenceScreen().findPreference(
+                TASK_CHECK);
 
-		replyPref = (EditTextPreference) getPreferenceScreen().findPreference(
-				KEY_REPLY);
+        replyPref = (EditTextPreference) getPreferenceScreen().findPreference(
+                KEY_REPLY);
 
-		uniqueId = (EditTextPreference) getPreferenceScreen().findPreference(
-				KEY_UNIQUE_ID);
+        uniqueId = (EditTextPreference) getPreferenceScreen().findPreference(
+                KEY_UNIQUE_ID);
 
-		autoSyncTimes = (ListPreference) getPreferenceScreen().findPreference(
-				AUTO_SYNC_TIMES);
-		autoSyncTimes.setEntries(autoSyncEntries);
-		autoSyncTimes.setEntryValues(autoSyncValues);
+        autoSyncTimes = (ListPreference) getPreferenceScreen().findPreference(
+                AUTO_SYNC_TIMES);
+        autoSyncTimes.setEntries(autoSyncEntries);
+        autoSyncTimes.setEntryValues(autoSyncValues);
 
-		taskCheckTimes = (ListPreference) getPreferenceScreen().findPreference(
-				TASK_CHECK_TIMES);
-		taskCheckTimes.setEntries(autoSyncEntries);
-		taskCheckTimes.setEntryValues(autoSyncValues);
+        taskCheckTimes = (ListPreference) getPreferenceScreen().findPreference(
+                TASK_CHECK_TIMES);
+        taskCheckTimes.setEntries(autoSyncEntries);
+        taskCheckTimes.setEntryValues(autoSyncValues);
 
-		about = (Preference) getPreferenceScreen().findPreference(ABOUT);
+        about = (Preference) getPreferenceScreen().findPreference(ABOUT);
 
-		about.setTitle(versionLabel.toString());
-		about.setSummary(R.string.powered_by);
+        about.setTitle(versionLabel.toString());
+        about.setSummary(R.string.powered_by);
 
-		// When the about us item is clicked at the Settings screen, open a URL
-		Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
-		poweredPreference
-				.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-					public boolean onPreferenceClick(Preference preference) {
-						final Intent i = new Intent(
-								android.content.Intent.ACTION_VIEW, Uri
-										.parse(URL));
-						startActivity(i);
-						return true;
-					}
-				});
+        // When the about us item is clicked at the Settings screen, open a URL
+        Preference poweredPreference = findPreference(KEY_POWERED_PREFERENCE);
+        poweredPreference
+                .setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                    public boolean onPreferenceClick(Preference preference) {
+                        final Intent i = new Intent(
+                                android.content.Intent.ACTION_VIEW, Uri
+                                        .parse(URL));
+                        startActivity(i);
+                        return true;
+                    }
+                });
 
-		// Save settings changes.
-		this.savePreferences();
-	}
+        // Save settings changes.
+        this.savePreferences();
+    }
 
-	/**
-	 * Get the time frequency selected by the user for auto synchronization.
+    /**
+     * Get the time frequency selected by the user for auto synchronization.
+     * 
+     * @return int
+     */
+    private int initializeAutoSyncTime() {
+
+        // Initialize the selected time to frequently sync pending messages
+        if (autoSyncTimes.getValue().matches("1")) {
+            return 1;
+        } else if (autoSyncTimes.getValue().matches("2")) {
+            return 2;
+        } else if (autoSyncTimes.getValue().matches("3")) {
+            return 3;
+        } else if (autoSyncTimes.getValue().matches("4")) {
+            return 4;
+        } else if (autoSyncTimes.getValue().matches("10")) {
+            return 10;
+        } else if (autoSyncTimes.getValue().matches("15")) {
+            return 15;
+        } else if (autoSyncTimes.getValue().matches("30")) {
+            return 30;
+        } else if (autoSyncTimes.getValue().matches("60")) {
+            return 60;
+        } else {
+            return 5;
+        }
+    }
+
+    /**
+     * Get the time frequency selected by the user for auto task checking.
+     * 
+     * @return int
+     */
+    private int initializeAutoTaskTime() {
+
+        // "1 Minutes", 2 Minutes", "3 Minutes", "4 Minutes", "5 Minutes", "10
+        // Minutes", "15 Minutes", "30", "60 Minutes"
+        if (taskCheckTimes.getValue().matches("1")) {
+            return 1;
+        } else if (taskCheckTimes.getValue().matches("2")) {
+            return 2;
+        } else if (taskCheckTimes.getValue().matches("3")) {
+            return 3;
+        } else if (taskCheckTimes.getValue().matches("4")) {
+            return 4;
+        } else if (taskCheckTimes.getValue().matches("10")) {
+            return 10;
+        } else if (taskCheckTimes.getValue().matches("15")) {
+            return 15;
+        } else if (taskCheckTimes.getValue().matches("30")) {
+            return 30;
+        } else if (taskCheckTimes.getValue().matches("60")) {
+            return 60;
+        } else {
+            return 5;
+        }
+    }
+
+    /**
+     * Save settings changes.
+     * 
+     * @return void
+     */
+    protected void savePreferences() {
+
+        settings = getSharedPreferences(Prefs.PREF_NAME, 0);
+
+        if (replyPref.getText().equals("")) {
+            replyPref.setText(getString(R.string.edittxt_reply_default));
+        }
+
+        if (enableReply.isChecked()) {
+            replyPref.setEnabled(true);
+            enableReplyFrmServer.setChecked(false);
+            enableReplyFrmServer.setEnabled(false);
+        } else {
+            replyPref.setEnabled(false);
+            enableReplyFrmServer.setEnabled(true);
+        }
+
+        if (enableReplyFrmServer.isChecked()) {
+            enableReply.setChecked(false);
+            enableReply.setEnabled(false);
+        } else {
+            enableReply.setEnabled(true);
+        }
+
+        if (autoSync.isChecked()) {
+            autoSyncTimes.setEnabled(true);
+        } else {
+            autoSyncTimes.setEnabled(false);
+        }
+
+        // Initialize the selected time to frequently sync pending messages
+        autoTime = initializeAutoSyncTime();
+
+        if (taskCheck.isChecked()) {
+            taskCheckTimes.setEnabled(true);
+        } else {
+            taskCheckTimes.setEnabled(false);
+        }
+
+        // Initialize the selected time to frequently to auto check for tasks
+        taskCheckTime = initializeAutoTaskTime();
+
+        editor = settings.edit();
+        editor.putString("ReplyPref", replyPref.getText());
+        editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
+        editor.putBoolean("EnableReply", enableReply.isChecked());
+        editor.putBoolean("EnableReplyFrmServer",
+                enableReplyFrmServer.isChecked());
+        editor.putBoolean("EnableTaskCheck", taskCheck.isChecked());
+        editor.putBoolean("AutoSync", autoSync.isChecked());
+        editor.putInt("AutoTime", autoTime);
+        editor.putInt("taskCheck", taskCheckTime);
+
+        if (!TextUtils.isEmpty(uniqueId.getText())) {
+            uniqueIdValidate(uniqueId.getText());
+            editor.putString("UniqueId", "");
+            if (uniqueIdValidityStatus == 0) {
+                editor.putString("UniqueId", uniqueId.getText());
+            }
+        }
+        editor.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Set up a listener whenever a key changes
+        getPreferenceScreen().getSharedPreferences()
+                .registerOnSharedPreferenceChangeListener(this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Unregister the listener whenever a key changes
+        getPreferenceScreen().getSharedPreferences()
+                .unregisterOnSharedPreferenceChangeListener(this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
+    /**
+     * Perform sanity checks on settings changes.
+     * 
+     * @param SharedPreferences sharedPreferences -
+     * @return void
+     */
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+            String key) {
+
+        // Unique ID
+        if (key.equals(KEY_UNIQUE_ID)) {
+            final String savedId = sharedPreferences.getString(KEY_UNIQUE_ID,
+                    "");
+            if (!TextUtils.isEmpty(savedId))
+                uniqueIdValidate(savedId);
+        }
+
+        if (key.equals(KEY_ENABLE_REPLY)) {
+
+            if (sharedPreferences.getBoolean(KEY_ENABLE_REPLY, false)) {
+                replyPref.setEnabled(true);
+            } else {
+                replyPref.setEnabled(false);
+            }
+        }
+
+        // Auto sync enable
+        if (key.equals(AUTO_SYNC)) {
+
+            if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
+
+                autoSyncEnable();
+
+            } else {
+                // stop scheduler
+                RunServicesUtil.stopAutoSyncService(Settings.this);
+
+                autoSyncTimes.setEnabled(false);
+            }
+        }
+
+        if (key.equals(AUTO_SYNC_TIMES)) {
+
+            // restart service
+            if (Prefs.enableAutoSync) {
+
+                // Initialize the selected time to frequently sync pending
+                // messages
+                Prefs.autoTime = initializeAutoSyncTime();
+
+                RunServicesUtil.runAutoSyncService(Settings.this);
+
+            }
+        }
+
+        // Enable task checking
+        if (key.equals(TASK_CHECK)) {
+
+            if (sharedPreferences.getBoolean(TASK_CHECK, false)) {
+                autoTaskCheckValidateCallbackURL();
+
+            } else {
+
+                RunServicesUtil.stopCheckTaskService(Settings.this);
+                taskCheckTimes.setEnabled(false);
+            }
+        }
+
+        // task frequency
+        if (key.equals(TASK_CHECK_TIMES)) {
+
+            Prefs.taskCheckTime = initializeAutoTaskTime();
+            RunServicesUtil.runCheckTaskService(Settings.this);
+        }
+
+        this.savePreferences();
+    }
+
+    /**
+     * Create runnable for validating callback URL. Putting the validation
+     * process in it own thread provides efficiency.
+     */
+    final Runnable mTaskCheckEnabled = new Runnable() {
+
+        public void run() {
+
+            if (!Prefs.enabled) {
+
+                Util.showToast(Settings.this, R.string.no_configured_url);
+                taskCheck.setChecked(false);
+
+            } else {
+
+                taskCheck.setChecked(true);
+
+                Prefs.taskCheckTime = initializeAutoTaskTime();
+
+                // start the scheduler for task checking service
+                RunServicesUtil.runCheckTaskService(Settings.this);
+            }
+        }
+    };
+
+    /**
 	 * 
-	 * @return int
 	 */
-	private int initializeAutoSyncTime() {
-
-		// Initialize the selected time to frequently sync pending messages
-		if (autoSyncTimes.getValue().matches("1")) {
-			return 1;
-		} else if (autoSyncTimes.getValue().matches("2")) {
-			return 2;
-		} else if (autoSyncTimes.getValue().matches("3")) {
-			return 3;
-		} else if (autoSyncTimes.getValue().matches("4")) {
-			return 4;
-		} else if (autoSyncTimes.getValue().matches("10")) {
-			return 10;
-		} else if (autoSyncTimes.getValue().matches("15")) {
-			return 15;
-		} else if (autoSyncTimes.getValue().matches("30")) {
-			return 30;
-		} else if (autoSyncTimes.getValue().matches("60")) {
-			return 60;
-		} else {
-			return 5;
-		}
-	}
-
-	/**
-	 * Get the time frequency selected by the user for auto task checking.
-	 * 
-	 * @return int
-	 */
-	private int initializeAutoTaskTime() {
-
-		// "1 Minutes", 2 Minutes", "3 Minutes", "4 Minutes", "5 Minutes", "10
-		// Minutes", "15 Minutes", "30", "60 Minutes"
-		if (taskCheckTimes.getValue().matches("1")) {
-			return 1;
-		} else if (taskCheckTimes.getValue().matches("2")) {
-			return 2;
-		} else if (taskCheckTimes.getValue().matches("3")) {
-			return 3;
-		} else if (taskCheckTimes.getValue().matches("4")) {
-			return 4;
-		} else if (taskCheckTimes.getValue().matches("10")) {
-			return 10;
-		} else if (taskCheckTimes.getValue().matches("15")) {
-			return 15;
-		} else if (taskCheckTimes.getValue().matches("30")) {
-			return 30;
-		} else if (taskCheckTimes.getValue().matches("60")) {
-			return 60;
-		} else {
-			return 5;
-		}
-	}
-
-	/**
-	 * Save settings changes.
-	 * 
-	 * @return void
-	 */
-	protected void savePreferences() {
-
-		settings = getSharedPreferences(Prefs.PREF_NAME, 0);
-
-		if (replyPref.getText().equals("")) {
-			replyPref.setText(getString(R.string.edittxt_reply_default));
-		}
-
-		if (enableReply.isChecked()) {
-			replyPref.setEnabled(true);
-			enableReplyFrmServer.setChecked(false);
-			enableReplyFrmServer.setEnabled(false);
-		} else {
-			replyPref.setEnabled(false);
-			enableReplyFrmServer.setEnabled(true);
-		}
-
-		if (enableReplyFrmServer.isChecked()) {
-			enableReply.setChecked(false);
-			enableReply.setEnabled(false);
-		} else {
-			enableReply.setEnabled(true);
-		}
-
-		if (autoSync.isChecked()) {
-			autoSyncTimes.setEnabled(true);
-		} else {
-			autoSyncTimes.setEnabled(false);
-		}
-
-		// Initialize the selected time to frequently sync pending messages
-		autoTime = initializeAutoSyncTime();
-
-		if (taskCheck.isChecked()) {
-			taskCheckTimes.setEnabled(true);
-		} else {
-			taskCheckTimes.setEnabled(false);
-		}
-
-		// Initialize the selected time to frequently to auto check for tasks
-		taskCheckTime = initializeAutoTaskTime();
-
-		editor = settings.edit();
-		editor.putString("ReplyPref", replyPref.getText());
-		editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
-		editor.putBoolean("EnableReply", enableReply.isChecked());
-		editor.putBoolean("EnableReplyFrmServer",
-				enableReplyFrmServer.isChecked());
-		editor.putBoolean("EnableTaskCheck", taskCheck.isChecked());
-		editor.putBoolean("AutoSync", autoSync.isChecked());
-		editor.putInt("AutoTime", autoTime);
-		editor.putInt("taskCheck", taskCheckTime);
-
-		if (!TextUtils.isEmpty(uniqueId.getText())) {
-			uniqueIdValidate(uniqueId.getText());
-			editor.putString("UniqueId", "");
-			if (uniqueIdValidityStatus == 0) {
-				editor.putString("UniqueId", uniqueId.getText());
-			}
-		}
-		editor.commit();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		// Set up a listener whenever a key changes
-		getPreferenceScreen().getSharedPreferences()
-				.registerOnSharedPreferenceChangeListener(this);
-
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		// Unregister the listener whenever a key changes
-		getPreferenceScreen().getSharedPreferences()
-				.unregisterOnSharedPreferenceChangeListener(this);
-
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		finish();
-	}
-
-	/**
-	 * Perform sanity checks on settings changes.
-	 * 
-	 * @param SharedPreferences
-	 *            sharedPreferences -
-	 * @return void
-	 */
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-			String key) {
-
-		// Unique ID
-		if (key.equals(KEY_UNIQUE_ID)) {
-			final String savedId = sharedPreferences.getString(KEY_UNIQUE_ID,
-					"");
-			if (!TextUtils.isEmpty(savedId))
-				uniqueIdValidate(savedId);
-		}
-
-		if (key.equals(KEY_ENABLE_REPLY)) {
-
-			if (sharedPreferences.getBoolean(KEY_ENABLE_REPLY, false)) {
-				replyPref.setEnabled(true);
-			} else {
-				replyPref.setEnabled(false);
-			}
-		}
-
-		// Auto sync enable
-		if (key.equals(AUTO_SYNC)) {
-
-			if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
-
-				autoSyncEnable();
-
-			} else {
-				// stop scheduler
-				RunServicesUtil.stopAutoSyncService(Settings.this);
-
-				autoSyncTimes.setEnabled(false);
-			}
-		}
-
-		if (key.equals(AUTO_SYNC_TIMES)) {
-
-			// restart service
-			if (Prefs.enableAutoSync) {
-
-				// Initialize the selected time to frequently sync pending
-				// messages
-				Prefs.autoTime = initializeAutoSyncTime();
-
-				RunServicesUtil.runAutoSyncService(Settings.this);
-
-			}
-		}
-
-		// Enable task checking
-		if (key.equals(TASK_CHECK)) {
-
-			if (sharedPreferences.getBoolean(TASK_CHECK, false)) {
-				autoTaskCheckValidateCallbackURL();
-
-			} else {
-
-				RunServicesUtil.stopCheckTaskService(Settings.this);
-				taskCheckTimes.setEnabled(false);
-			}
-		}
-
-		// task frequency
-		if (key.equals(TASK_CHECK_TIMES)) {
-
-			Prefs.taskCheckTime = initializeAutoTaskTime();
-			RunServicesUtil.runCheckTaskService(Settings.this);
-		}
-
-		this.savePreferences();
-	}
-
-	/**
-	 * Create runnable for validating callback URL. Putting the validation
-	 * process in it own thread provides efficiency.
-	 */
-	final Runnable mTaskCheckEnabled = new Runnable() {
-
-		public void run() {
-
-			if (!Prefs.enabled) {
-
-				Util.showToast(Settings.this, R.string.no_configured_url);
-				taskCheck.setChecked(false);
-
-			} else {
-
-				taskCheck.setChecked(true);
-
-				Prefs.taskCheckTime = initializeAutoTaskTime();
-
-				// start the scheduler for task checking service
-				RunServicesUtil.runCheckTaskService(Settings.this);
-			}
-		}
-	};
-
-	/**
-	 * 
-	 */
-	final Runnable mAutoSyncEnabled = new Runnable() {
-
-		public void run() {
-
-			if (!Prefs.enabled) {
-
-				Util.showToast(Settings.this, R.string.no_configured_url);
-				autoSync.setChecked(false);
-
-			} else {
-
-				autoSync.setChecked(true);
-
-				// Initialize the selected time to frequently sync pending
-				// messages
-				Prefs.autoTime = initializeAutoSyncTime();
-				autoSyncTimes.setEnabled(true);
-
-				RunServicesUtil.runAutoSyncService(Settings.this);
-			}
-		}
-	};
-
-	/**
-	 * Create a child thread and validate the callback URL in it when enabling
-	 * auto task check preference.
-	 * 
-	 * @param String
-	 *            Url - The Callback URL to be validated.
-	 * @return void
-	 */
-	public void autoTaskCheckValidateCallbackURL() {
-
-		Thread t = new Thread() {
-			public void run() {
-				mHandler.post(mTaskCheckEnabled);
-			}
-		};
-		t.start();
-	}
-
-	public void autoSyncEnable() {
-
-		Thread t = new Thread() {
-			public void run() {
-				mHandler.post(mAutoSyncEnabled);
-			}
-		};
-		t.start();
-	}
-
-	/**
-	 * Create runnable to validate unique ID.
-	 */
-	Runnable mUniqueId = new Runnable() {
-		public void run() {
-
-			if (uniqueIdValidityStatus == 1) {
-
-				Util.showToast(Settings.this, R.string.unique_id_length_error);
-				uniqueId.setText("");
-			} else if (uniqueIdValidityStatus == 2) {
-				Util.showToast(Settings.this, R.string.unique_id_numeric_error);
-				uniqueId.setText("");
-			}
-		}
-	};
-
-	/**
-	 * Thread to validate unique id
-	 * 
-	 * @param String
-	 *            uniqueId - The Callback Url to be validated.
-	 * @return void
-	 */
-	public void uniqueIdValidate(final String uniqueId) {
-
-		Thread t = new Thread() {
-			public void run() {
-
-				// validate number of digits
-				if ((uniqueId.length() == 0) || TextUtils.isEmpty(uniqueId)) {
-					uniqueIdValidityStatus = 1;
-					mHandler.post(mUniqueId);
-				} else {
-					// validate if it's a numeric value
-					try {
-						Integer.parseInt(uniqueId);
-						uniqueIdValidityStatus = 0;
-					} catch (NumberFormatException ex) {
-						uniqueIdValidityStatus = 2;
-						mHandler.post(mUniqueId);
-					}
-					mHandler.post(mUniqueId);
-				}
-			}
-		};
-		t.start();
-	}
+    final Runnable mAutoSyncEnabled = new Runnable() {
+
+        public void run() {
+
+            if (!Prefs.enabled) {
+
+                Util.showToast(Settings.this, R.string.no_configured_url);
+                autoSync.setChecked(false);
+
+            } else {
+
+                autoSync.setChecked(true);
+
+                // Initialize the selected time to frequently sync pending
+                // messages
+                Prefs.autoTime = initializeAutoSyncTime();
+                autoSyncTimes.setEnabled(true);
+
+                RunServicesUtil.runAutoSyncService(Settings.this);
+            }
+        }
+    };
+
+    /**
+     * Create a child thread and validate the callback URL in it when enabling
+     * auto task check preference.
+     * 
+     * @param String Url - The Callback URL to be validated.
+     * @return void
+     */
+    public void autoTaskCheckValidateCallbackURL() {
+
+        Thread t = new Thread() {
+            public void run() {
+                mHandler.post(mTaskCheckEnabled);
+            }
+        };
+        t.start();
+    }
+
+    public void autoSyncEnable() {
+
+        Thread t = new Thread() {
+            public void run() {
+                mHandler.post(mAutoSyncEnabled);
+            }
+        };
+        t.start();
+    }
+
+    /**
+     * Create runnable to validate unique ID.
+     */
+    Runnable mUniqueId = new Runnable() {
+        public void run() {
+
+            if (uniqueIdValidityStatus == 1) {
+
+                Util.showToast(Settings.this, R.string.unique_id_length_error);
+                uniqueId.setText("");
+            } else if (uniqueIdValidityStatus == 2) {
+                Util.showToast(Settings.this, R.string.unique_id_numeric_error);
+                uniqueId.setText("");
+            }
+        }
+    };
+
+    /**
+     * Thread to validate unique id
+     * 
+     * @param String uniqueId - The Callback Url to be validated.
+     * @return void
+     */
+    public void uniqueIdValidate(final String uniqueId) {
+
+        Thread t = new Thread() {
+            public void run() {
+
+                // validate number of digits
+                if ((uniqueId.length() == 0) || TextUtils.isEmpty(uniqueId)) {
+                    uniqueIdValidityStatus = 1;
+                    mHandler.post(mUniqueId);
+                } else {
+                    // validate if it's a numeric value
+                    try {
+                        Integer.parseInt(uniqueId);
+                        uniqueIdValidityStatus = 0;
+                    } catch (NumberFormatException ex) {
+                        uniqueIdValidityStatus = 2;
+                        mHandler.post(mUniqueId);
+                    }
+                    mHandler.post(mUniqueId);
+                }
+            }
+        };
+        t.start();
+    }
 
 }

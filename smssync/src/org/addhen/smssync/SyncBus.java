@@ -26,7 +26,8 @@ import android.os.Looper;
 import com.squareup.otto.Bus;
 
 /**
- * @author eyedol
+ * Add support for events to be posted on other thread apart from the main
+ * thread.
  */
 public class SyncBus extends Bus {
 
