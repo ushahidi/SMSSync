@@ -165,7 +165,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
                 syncdItems = syncPending(config);
                 break;
             case TASK:
-                syncTask(config);
+                syncdItems = syncTask(config);
         }
 
         if (syncdItems == 0) {
@@ -251,73 +251,84 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
         JSONArray jsonArray;
         Logger.log(CLASS_TAG, "checkTaskService: check if a task has been enabled.");
+        
+        Logger.log(CLASS_TAG,
+                String.format(Locale.ENGLISH, "Starting to sync task (%d messages)", itemsToSync));
 
-        // load Prefs
-        Prefs.loadPreferences(mService.getApplicationContext());
-        for (SyncUrlModel syncUrl : model
-                .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            // validate configured url
-            int status = Util.validateCallbackUrl(syncUrl.getUrl());
-            if (status == 1) {
-                Util.showToast(mService.getApplicationContext(), R.string.no_configured_url);
-            } else if (status == 2) {
-                Util.showToast(mService.getApplicationContext(), R.string.invalid_url);
-            } else if (status == 3) {
-                Util.showToast(mService.getApplicationContext(), R.string.no_connection);
-            } else {
+        // keep the sync running as long as the service is not cancelled and
+        // the syncd items is less than
+        // the items to be syncd.
+        while (!isCancelled() && syncdItems < itemsToSync) {
+            // load Prefs
+            Prefs.loadPreferences(mService.getApplicationContext());
+            for (SyncUrlModel syncUrl : model
+                    .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+                // validate configured url
+                int status = Util.validateCallbackUrl(syncUrl.getUrl());
+                if (status == 1) {
+                    Util.showToast(mService.getApplicationContext(), R.string.no_configured_url);
+                } else if (status == 2) {
+                    Util.showToast(mService.getApplicationContext(), R.string.invalid_url);
+                } else if (status == 3) {
+                    Util.showToast(mService.getApplicationContext(), R.string.no_connection);
+                } else {
 
-                StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
+                    StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
 
-                uriBuilder.append("?task=send");
+                    uriBuilder.append("?task=send");
 
-                String response = MainHttpClient.getFromWebService(uriBuilder
-                        .toString());
-                Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
-                String task = "";
-                String secret = "";
-                if (!TextUtils.isEmpty(response) && response != null) {
+                    String response = MainHttpClient.getFromWebService(uriBuilder
+                            .toString());
+                    Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
+                    String task = "";
+                    String secret = "";
+                    if (!TextUtils.isEmpty(response) && response != null) {
 
-                    try {
+                        try {
 
-                        jsonObject = new JSONObject(response);
-                        JSONObject payloadObject = jsonObject
-                                .getJSONObject("payload");
+                            jsonObject = new JSONObject(response);
+                            JSONObject payloadObject = jsonObject
+                                    .getJSONObject("payload");
 
-                        if (payloadObject != null) {
-                            task = payloadObject.getString("task");
-                            secret = payloadObject.getString("secret");
-                            if ((task.equals("send")) && (secret.equals(syncUrl.getSecret()))) {
-                                jsonArray = payloadObject.getJSONArray("messages");
+                            if (payloadObject != null) {
+                                task = payloadObject.getString("task");
+                                secret = payloadObject.getString("secret");
+                                if ((task.equals("send")) && (secret.equals(syncUrl.getSecret()))) {
+                                    jsonArray = payloadObject.getJSONArray("messages");
 
-                                for (int index = 0; index < jsonArray.length(); ++index) {
-                                    jsonObject = jsonArray.getJSONObject(index);
+                                    for (int index = 0; index < jsonArray.length(); ++index) {
+                                        jsonObject = jsonArray.getJSONObject(index);
 
-                                    processSms.sendSms(jsonObject.getString("to"),
-                                            jsonObject.getString("message"));
-                                    // increment the number of syncd items
-                                    syncdItems++;
+                                        processSms.sendSms(jsonObject.getString("to"),
+                                                jsonObject.getString("message"));
+                                        // increment the number of syncd items
+                                        syncdItems++;
 
-                                    // update the UI with progress of the sync
-                                    // progress
-                                    publishProgress(new MessageSyncState(SYNC, syncdItems,
-                                            itemsToSync,
-                                            config.syncType, messageType, null));
+                                        // update the UI with progress of the
+                                        // sync
+                                        // progress
+                                        publishProgress(new MessageSyncState(SYNC, syncdItems,
+                                                itemsToSync,
+                                                config.syncType, messageType, null));
+                                    }
+
+                                } else {
+                                    Logger.log(CLASS_TAG,
+                                            mService.getApplicationContext()
+                                                    .getString(R.string.no_task));
                                 }
 
-                            } else {
+                            } else { // 'payload' data may not be present in
+                                     // JSON
+                                     // response
                                 Logger.log(CLASS_TAG,
                                         mService.getApplicationContext()
                                                 .getString(R.string.no_task));
                             }
 
-                        } else { // 'payload' data may not be present in JSON
-                                 // response
-                            Logger.log(CLASS_TAG,
-                                    mService.getApplicationContext().getString(R.string.no_task));
+                        } catch (JSONException e) {
+                            Logger.log(CLASS_TAG, "Error: " + e.getMessage());
                         }
-
-                    } catch (JSONException e) {
-                        Logger.log(CLASS_TAG, "Error: " + e.getMessage());
                     }
                 }
             }
