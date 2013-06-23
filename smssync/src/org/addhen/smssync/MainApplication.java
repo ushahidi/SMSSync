@@ -24,6 +24,7 @@ import org.addhen.smssync.database.Database;
 import org.addhen.smssync.net.MainHttpClient;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import android.app.Application;
 
@@ -42,7 +43,7 @@ public class MainApplication extends Application {
 
     public static Application app = null;
 
-    public static final SyncBus bus = new SyncBus(new Bus());
+    public static final SyncBus bus = new SyncBus(new Bus(ThreadEnforcer.ANY));
 
     @Override
     public void onCreate() {

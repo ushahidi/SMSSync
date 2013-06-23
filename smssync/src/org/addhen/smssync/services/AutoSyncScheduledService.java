@@ -20,13 +20,19 @@
 
 package org.addhen.smssync.services;
 
+import static org.addhen.smssync.tasks.SyncType.MANUAL;
+
+import org.addhen.smssync.R;
 import org.addhen.smssync.models.MessagesModel;
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.tasks.state.MessageSyncState;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
+
+import com.squareup.otto.Produce;
+import com.squareup.otto.Subscribe;
 
 /**
  * A this class handles background services for periodic synchronization of
@@ -44,38 +50,94 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     // update the ui
     private Intent statusIntent;
 
-    private SyncUrlModel model;
-
     private MessagesModel messagesModel;
 
     private MessageSyncState mState = new MessageSyncState();
 
+    private static AutoSyncScheduledService service;
+
     public AutoSyncScheduledService() {
         super(CLASS_TAG);
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-        model = new SyncUrlModel();
         messagesModel = new MessagesModel();
+        service = this;
     }
 
     @Override
     protected void executeTask(Intent intent) {
 
         log(CLASS_TAG, "executeTask() executing this scheduled task");
+       
         if (messagesModel.totalMessages() > 0) {
+
             log(CLASS_TAG, "Sending pending messages");
-            for (SyncUrlModel syncUrl : model
-                    .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-                int status = new MessageSyncUtil(AutoSyncScheduledService.this,
-                        syncUrl.getUrl()).syncToWeb();
-                statusIntent.putExtra("status", status);
-                sendBroadcast(statusIntent);
-            }
+
+            int status = new MessageSyncUtil(AutoSyncScheduledService.this,
+                    "").syncToWeb();
+            statusIntent.putExtra("status", status);
+            sendBroadcast(statusIntent);
+
         }
     }
 
     @Override
     public MessageSyncState getState() {
         return mState;
+    }
+
+    @Subscribe
+    public void syncStateChanged(final MessageSyncState state) {
+        mState = state;
+        if (mState.isInitialState())
+            return;
+
+        if (state.isError()) {
+
+            createNotification(R.string.status,
+                    state.getNotification(getResources()), getPendingIntent());
+        }
+
+        if (state.isRunning()) {
+            if (state.syncType == MANUAL) {
+                updateSyncStatusNotification(state);
+            }
+        } else {
+            log(state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done));
+
+            stopForeground(true);
+            stopSelf();
+        }
+    }
+
+    @Produce
+    public MessageSyncState produceLastState() {
+        return mState;
+    }
+
+    private void updateSyncStatusNotification(MessageSyncState state) {
+        createNotification(R.string.status,
+                state.getNotification(getResources()), getPendingIntent());
+
+    }
+
+    public boolean isWorking() {
+        return getState().isRunning();
+    }
+
+    @Override
+    protected boolean isBackgroundTask() {
+        return mState.syncType.isBackground();
+    }
+
+    public static boolean isServiceWorking() {
+        return service != null && service.isWorking();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        service = null;
     }
 
 }

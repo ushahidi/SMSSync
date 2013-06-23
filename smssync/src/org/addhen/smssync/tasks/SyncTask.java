@@ -251,7 +251,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
         JSONArray jsonArray;
         Logger.log(CLASS_TAG, "checkTaskService: check if a task has been enabled.");
-
+        
         Logger.log(CLASS_TAG,
                 String.format(Locale.ENGLISH, "Starting to sync task (%d messages)", itemsToSync));
 

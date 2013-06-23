@@ -29,7 +29,7 @@ import org.addhen.smssync.util.ServicesConstants;
 import android.content.Intent;
 
 /**
- * A this class handles background services for periodic synchronization of
+ * This class handles background services for periodic synchronization of
  * pending messages.
  * 
  * @author eyedol
