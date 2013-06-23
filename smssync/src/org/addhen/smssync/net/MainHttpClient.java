@@ -44,151 +44,167 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
+
 public class MainHttpClient {
 
-	protected static DefaultHttpClient httpclient;
+    protected static DefaultHttpClient httpclient;
 
-	private HttpParams httpParameters;
+    private HttpParams httpParameters;
 
-	private int timeoutConnection = 60000;
+    private int timeoutConnection = 60000;
 
-	private int timeoutSocket = 60000;
-	
-	protected String url;
+    private int timeoutSocket = 60000;
 
-	public MainHttpClient(String url) {
-		this.url = url;
-		httpParameters = new BasicHttpParams();
-		httpParameters.setParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, 1);
-		httpParameters.setParameter(
-				ConnManagerPNames.MAX_CONNECTIONS_PER_ROUTE,
-				new ConnPerRouteBean(1));
+    protected String url;
 
-		httpParameters.setParameter(HttpProtocolParams.USE_EXPECT_CONTINUE,
-				false);
-		HttpProtocolParams.setVersion(httpParameters, HttpVersion.HTTP_1_1);
-		HttpProtocolParams.setContentCharset(httpParameters, "utf8");
-		// Set the timeout in milliseconds until a connection is established.
-		HttpConnectionParams.setConnectionTimeout(httpParameters,
-				timeoutConnection);
+    protected static StringBuilder userAgent;
+    private String versionName;
 
-		// in milliseconds which is the timeout for waiting for data.
-		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    public MainHttpClient(String url, Context context) {
+        this.url = url;
+        try {
+            versionName = context.getPackageManager().getPackageInfo(
+                    context.getPackageName(), 0).versionName;
+            // add app name to verstion number
+            userAgent = new StringBuilder("SMSSync-Android/");
+            userAgent.append("v");
+            userAgent.append(versionName);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        httpParameters = new BasicHttpParams();
+        httpParameters.setParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, 1);
+        httpParameters.setParameter(
+                ConnManagerPNames.MAX_CONNECTIONS_PER_ROUTE,
+                new ConnPerRouteBean(1));
 
-		SchemeRegistry schemeRegistry = new SchemeRegistry();
+        httpParameters.setParameter(HttpProtocolParams.USE_EXPECT_CONTINUE,
+                false);
+        HttpProtocolParams.setVersion(httpParameters, HttpVersion.HTTP_1_1);
+        HttpProtocolParams.setContentCharset(httpParameters, "utf8");
+        // Set the timeout in milliseconds until a connection is established.
+        HttpConnectionParams.setConnectionTimeout(httpParameters,
+                timeoutConnection);
 
-		// http scheme
-		schemeRegistry.register(new Scheme("http", PlainSocketFactory
-				.getSocketFactory(), 80));
-		// https scheme
-		try {
-			schemeRegistry.register(new Scheme("https",
-					new TrustedSocketFactory(url, false), 443));
-		} catch (KeyManagementException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(
-				httpParameters, schemeRegistry);
+        // in milliseconds which is the timeout for waiting for data.
+        HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
-		httpclient = new DefaultHttpClient(manager, httpParameters);
-	}
+        SchemeRegistry schemeRegistry = new SchemeRegistry();
 
-	public static HttpResponse GetURL(String URL) throws IOException {
+        // http scheme
+        schemeRegistry.register(new Scheme("http", PlainSocketFactory
+                .getSocketFactory(), 80));
+        // https scheme
+        try {
+            schemeRegistry.register(new Scheme("https",
+                    new TrustedSocketFactory(url, false), 443));
+        } catch (KeyManagementException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(
+                httpParameters, schemeRegistry);
 
-		try {
-			// wrap try around because this constructor can throw Error
-			final HttpGet httpget = new HttpGet(URL);
-			httpget.addHeader("User-Agent", "SMSSync-Android/1.0)");
+        httpclient = new DefaultHttpClient(manager, httpParameters);
 
-			// Post, check and show the result (not really spectacular, but
-			// works):
-			HttpResponse response = httpclient.execute(httpget);
+    }
 
-			return response;
+    public static HttpResponse GetURL(String URL) throws IOException {
 
-		} catch (final Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+        try {
+            // wrap try around because this constructor can throw Error
+            final HttpGet httpget = new HttpGet(URL);
+            httpget.addHeader("User-Agent", userAgent.toString());
 
-	/**
-	 * Does a HTTP GET request
-	 * 
-	 * @param String
-	 *            url - The Callback URL to do the HTTP GET
-	 * @return String - the HTTP response
-	 */
-	public static String getFromWebService(String url) {
+            // Post, check and show the result (not really spectacular, but
+            // works):
+            HttpResponse response = httpclient.execute(httpget);
 
-		// Create a new HttpClient and Post Header
-		final HttpGet httpGet = new HttpGet(url);
-		httpGet.addHeader("User-Agent", "SMSSync-Android/1.0)");
+            return response;
 
-		try {
-			// Execute HTTP Get Request
-			HttpResponse response = httpclient.execute(httpGet);
+        } catch (final Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-			if (response.getStatusLine().getStatusCode() == 200) {
-				return getText(response);
+    /**
+     * Does a HTTP GET request
+     * 
+     * @param String url - The Callback URL to do the HTTP GET
+     * @return String - the HTTP response
+     */
+    public static String getFromWebService(String url) {
 
-			} else {
-				return "";
-			}
+        // Create a new HttpClient and Post Header
+        final HttpGet httpGet = new HttpGet(url);
+        httpGet.addHeader("User-Agent", userAgent.toString());
 
-		} catch (ClientProtocolException e) {
-			return null;
-		} catch (IOException e) {
-			return null;
-		}
-	}
+        try {
+            // Execute HTTP Get Request
+            HttpResponse response = httpclient.execute(httpGet);
 
-	public static String getText(HttpResponse response) {
-		String text = "";
-		try {
-			text = getText(response.getEntity().getContent());
-		} catch (final Exception ex) {
-			Logger.log("MainHttpClient","GetText ", ex);
-		}
-		return text;
-	}
+            if (response.getStatusLine().getStatusCode() == 200) {
+                return getText(response);
 
-	public static String getText(InputStream in) {
-		String text = "";
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(
-				in), 1024);
-		final StringBuilder sb = new StringBuilder();
-		String line = null;
-		try {
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-			text = sb.toString();
-		} catch (final Exception ex) {
-		} finally {
-			try {
-				in.close();
-			} catch (final Exception ex) {
-			}
-		}
-		return text;
-	}
+            } else {
+                return "";
+            }
 
-	protected void log(String message) {
-		Logger.log(getClass().getName(), message);
-	}
+        } catch (ClientProtocolException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
-	protected void log(String format, Object... args) {
-		Logger.log(getClass().getName(), format, args);
-	}
+    public static String getText(HttpResponse response) {
+        String text = "";
+        try {
+            text = getText(response.getEntity().getContent());
+        } catch (final Exception ex) {
+            Logger.log("MainHttpClient", "GetText ", ex);
+        }
+        return text;
+    }
 
-	protected void log(String message, Exception ex) {
-		Logger.log(getClass().getName(), message, ex);
-	}
+    public static String getText(InputStream in) {
+        String text = "";
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(
+                in), 1024);
+        final StringBuilder sb = new StringBuilder();
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+            text = sb.toString();
+        } catch (final Exception ex) {
+        } finally {
+            try {
+                in.close();
+            } catch (final Exception ex) {
+            }
+        }
+        return text;
+    }
+
+    protected void log(String message) {
+        Logger.log(getClass().getName(), message);
+    }
+
+    protected void log(String format, Object... args) {
+        Logger.log(getClass().getName(), format, args);
+    }
+
+    protected void log(String message, Exception ex) {
+        Logger.log(getClass().getName(), message, ex);
+    }
 
 }

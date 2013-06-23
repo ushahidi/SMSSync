@@ -50,7 +50,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
 	private Context context;
 
 	public MessageSyncHttpClient(Context context, String url) {
-		super(url);
+		super(url, context);
 		this.context = context;
 	}
 
@@ -65,7 +65,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
 	public boolean postSmsToWebService(HashMap<String, String> params) {
 		// Create a new HttpClient and Post Header
 		HttpPost httppost = new HttpPost(url);
-
+		httppost.addHeader("User-Agent", userAgent.toString());
 		try {
 
 			// Add your data
