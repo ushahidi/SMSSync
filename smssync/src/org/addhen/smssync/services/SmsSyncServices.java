@@ -20,19 +20,13 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.activities.MessagesTabActivity;
-import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
-import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -56,18 +50,19 @@ public abstract class SmsSyncServices extends IntentService {
         super(name);
     }
 
-    synchronized private static PowerManager.WakeLock getPhoneWakeLock(Context context) {
+    synchronized private static PowerManager.WakeLock getPhoneWakeLock(
+            Context context) {
         if (mStartingService == null) {
             PowerManager mgr = (PowerManager) context
                     .getSystemService(Context.POWER_SERVICE);
             mStartingService = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                     CLASS_TAG);
         }
-
         return mStartingService;
     }
 
-    synchronized private static WifiManager.WifiLock getPhoneWifiLock(Context context) {
+    synchronized private static WifiManager.WifiLock getPhoneWifiLock(
+            Context context) {
         if (wifilock == null) {
 
             WifiManager manager = (WifiManager) context
@@ -78,13 +73,18 @@ public abstract class SmsSyncServices extends IntentService {
         return wifilock;
     }
 
-    protected static void sendWakefulTask(Context context, Intent i) throws ConnectivityException {
-        acquireLocks(context);
+    protected static void sendWakefulTask(Context context, Intent i) {
+
+        if (!getPhoneWakeLock(context.getApplicationContext()).isHeld())
+            getPhoneWakeLock(context.getApplicationContext()).acquire();
+
+        if (!getPhoneWifiLock(context.getApplicationContext()).isHeld())
+            getPhoneWifiLock(context.getApplicationContext()).acquire();
+
         context.startService(i);
     }
 
-    public static void sendWakefulTask(Context context, Class<?> classService)
-            throws ConnectivityException {
+    public static void sendWakefulTask(Context context, Class<?> classService) {
         sendWakefulTask(context, new Intent(context, classService));
     }
 
@@ -99,7 +99,6 @@ public abstract class SmsSyncServices extends IntentService {
         super.onCreate();
         // load setting. Just in case someone changes a setting
         Prefs.loadPreferences(this);
-        MainApplication.bus.register(this);
     }
 
     /**
@@ -131,74 +130,31 @@ public abstract class SmsSyncServices extends IntentService {
                 executeTask(intent);
             }
         } finally {
-            releaseLocks();
+
+            if (getPhoneWakeLock(this.getApplicationContext()).isHeld()
+                    && getPhoneWakeLock(this.getApplicationContext()) != null) {
+                getPhoneWakeLock(this.getApplicationContext()).release();
+            }
+
+            if (getPhoneWifiLock(this.getApplicationContext()).isHeld()
+                    && getPhoneWifiLock(this.getApplicationContext()) != null) {
+                getPhoneWifiLock(this.getApplicationContext()).release();
+            }
         }
     }
 
     @Override
     public void onDestroy() {
         // release resources
-        releaseLocks();
-        MainApplication.bus.unregister(this);
-    }
-
-    public static void acquireLocks(Context context) throws ConnectivityException {
-        boolean isConnected = Util.isConnected(context);
-        if (!isConnected)
-            // throw connectivity exception
-            throw new ConnectivityException(context.getString(R.string.no_connection));
-
-        if (!getPhoneWakeLock(context).isHeld())
-            getPhoneWakeLock(context).acquire();
-
-        if (!getPhoneWifiLock(context).isHeld())
-            getPhoneWifiLock(context).acquire();
-    }
-
-    public static void releaseLocks(Context context) {
-        if (getPhoneWifiLock(context).isHeld()
-                && getPhoneWifiLock(context) != null) {
-            getPhoneWifiLock(context).release();
-        }
-
-        if (getPhoneWakeLock(context).isHeld()
-                && getPhoneWakeLock(context) != null) {
-            getPhoneWakeLock(context).release();
-        }
-    }
-
-    private void releaseLocks() {
-        if (getPhoneWakeLock(this.getApplicationContext()).isHeld()
-                && getPhoneWakeLock(this.getApplicationContext()) != null) {
-            getPhoneWakeLock(this.getApplicationContext()).release();
-        }
-
         if (getPhoneWifiLock(this.getApplicationContext()).isHeld()
                 && getPhoneWifiLock(this.getApplicationContext()) != null) {
             getPhoneWifiLock(this.getApplicationContext()).release();
         }
-    }
 
-    protected void createNotification(int resId, String title, PendingIntent intent) {
-        Util.buildNotification(this, R.drawable.icon, getString(resId), title,
-                intent, true);
-
-    }
-
-    protected PendingIntent getPendingIntent() {
-        return PendingIntent.getActivity(this, 0,
-                new Intent(this, MessagesTabActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    protected boolean isBackgroundTask() {
-        return false;
-    }
-
-    public abstract SyncPendingMessagesState getState();
-
-    public boolean isWorking() {
-        return getState().isRunning();
+        if (getPhoneWakeLock(this.getApplicationContext()).isHeld()
+                && getPhoneWakeLock(this.getApplicationContext()) != null) {
+            getPhoneWakeLock(this.getApplicationContext()).release();
+        }
     }
 
     protected void log(String message) {

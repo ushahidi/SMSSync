@@ -1,30 +1,11 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
 
 package org.addhen.smssync.util;
 
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
 import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
 import org.addhen.smssync.services.AutoSyncScheduledService;
+import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
@@ -109,27 +90,25 @@ public class RunServicesUtil {
         // load preferences
         Prefs.loadPreferences(context);
         if (Prefs.enableTaskCheck && Prefs.enabled) {
-            try {
-                SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
 
-                // start the scheduler for 'task check' service
-                final long interval = (Prefs.taskCheckTime * 60000);
+            SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
 
-                final Intent intent = new Intent(context,
-                        CheckTaskScheduledService.class);
+            // start the scheduler for 'task check' service
+            final long interval = (Prefs.taskCheckTime * 60000);
 
-                Logger.log(CLASS_TAG, "Check task service started");
-                // run the service
-                RunServicesUtil
-                        .runServices(
-                                context,
-                                intent,
-                                CheckTaskScheduledReceiver.class,
-                                ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
-                                interval);
-            } catch (ConnectivityException e) {
-                Logger.log(CLASS_TAG, "No connection");
-            }
+            final Intent intent = new Intent(context,
+                    CheckTaskScheduledService.class);
+
+            Logger.log(CLASS_TAG, "Check task service started");
+            // run the service
+            RunServicesUtil
+                    .runServices(
+                            context,
+                            intent,
+                            CheckTaskScheduledReceiver.class,
+                            ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
+                            interval);
+
         }
 
     }
@@ -146,22 +125,19 @@ public class RunServicesUtil {
         Prefs.loadPreferences(context);
         if (Prefs.enableAutoSync) {
 
-            try {
-                SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
+            SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
 
-                // start the scheduler for auto sync service
-                final long interval = (Prefs.autoTime * 60000);
-                final Intent intent = new Intent(context,
-                        AutoSyncScheduledService.class);
-                Logger.log(CLASS_TAG, "Auto sync service started");
-                // run the service
-                RunServicesUtil.runServices(context, intent,
-                        AutoSyncScheduledReceiver.class,
-                        ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE,
-                        interval);
-            } catch (ConnectivityException e) {
-                Logger.log(CLASS_TAG, "No connection");
-            }
+            // start the scheduler for auto sync service
+            final long interval = (Prefs.autoTime * 60000);
+            final Intent intent = new Intent(context,
+                    AutoSyncScheduledService.class);
+            Logger.log(CLASS_TAG, "Auto sync service started");
+            // run the service
+            RunServicesUtil.runServices(context, intent,
+                    AutoSyncScheduledReceiver.class,
+                    ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE,
+                    interval);
+
         }
     }
 

@@ -21,6 +21,7 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -33,37 +34,34 @@ import android.content.Intent;
  * @author eyedol
  */
 
-public class AutoSyncScheduledService extends SmsSyncServices {
+public class AutoSyncService extends SmsSyncServices {
 
-    private static String CLASS_TAG = AutoSyncScheduledService.class
-            .getSimpleName();
-
-    // holds the status of the sync and sends it to pending messages activity to
-    // update the ui
-    private Intent statusIntent;
-
+    private static String CLASS_TAG = AutoSyncService.class.getSimpleName();
+    private Intent statusIntent; // holds the status of the sync and sends it to
+    private SyncUrlModel model;
     private MessagesModel messagesModel;
 
-    public AutoSyncScheduledService() {
+    public AutoSyncService() {
         super(CLASS_TAG);
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-
+        model = new SyncUrlModel();
         messagesModel = new MessagesModel();
     }
 
     @Override
     protected void executeTask(Intent intent) {
 
-        log(CLASS_TAG, "executeTask() executing this scheduled task");
+        log("executeTask() executing this task");
         if (messagesModel.totalMessages() > 0) {
-            log(CLASS_TAG, "Sending pending messages");
-
-            int status = new MessageSyncUtil(AutoSyncScheduledService.this,
-                    "").syncToWeb("");
-            statusIntent.putExtra("status", status);
-            sendBroadcast(statusIntent);
-
+            for (SyncUrlModel syncUrl : model
+                    .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+                int status = new MessageSyncUtil(AutoSyncService.this,
+                        syncUrl.getUrl()).syncToWeb();
+                statusIntent.putExtra("status", status);
+                sendBroadcast(statusIntent);
+            }
         }
+
     }
 
 }

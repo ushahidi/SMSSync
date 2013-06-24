@@ -28,6 +28,7 @@ import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
+import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
@@ -36,6 +37,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ListView;
@@ -85,6 +87,8 @@ public class SentMessages
     public void onResume() {
         super.onResume();
         log("OnResume is called");
+        getActivity().registerReceiver(broadcastReceiver,
+                new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
         mHandler.post(mDisplayMessages);
         MainApplication.bus.register(this);
 
@@ -93,6 +97,7 @@ public class SentMessages
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
         MainApplication.bus.unregister(this);
     }
 

@@ -20,16 +20,7 @@
 
 package org.addhen.smssync.services;
 
-import static org.addhen.smssync.tasks.state.SyncState.ERROR;
-import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
-
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.models.SyncUrlModel;
-import org.addhen.smssync.tasks.CheckTask;
-import org.addhen.smssync.tasks.SyncConfig;
-import org.addhen.smssync.tasks.SyncType;
-import org.addhen.smssync.tasks.state.CheckTaskState;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -42,94 +33,31 @@ import android.content.Intent;
  * 
  * @author eyedol
  */
-public class CheckTaskService extends BaseService {
+public class CheckTaskService extends SmsSyncServices {
 
-    private final static String CLASS_TAG = CheckTaskService.class
-            .getSimpleName();
-    private SyncUrlModel model;
+	private final static String CLASS_TAG = CheckTaskService.class
+			.getSimpleName();
+	private SyncUrlModel model;
 
-    private static CheckTaskService service;
+	public CheckTaskService() {
+		super(CLASS_TAG);
+		model = new SyncUrlModel();
+	}
 
-    private CheckTaskState mState = new CheckTaskState();
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        service = this;
-    }
-
-    /**
-     * Starts the background service
-     * 
-     * @return void
-     */
-    protected void executeTask(Intent intent) {
-        log("checkTaskService: check if a task has been enabled.");
-        // Perform a task
-        // get enabled Sync URL
-        for (SyncUrlModel syncUrl : model
-                .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            new MessageSyncUtil(CheckTaskService.this, syncUrl.getUrl())
-                    .performTask(syncUrl.getSecret());
-        }
-    }
-
-    @Override
-    public CheckTaskState getState() {
-        return mState;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.addhen.smssync.services.BaseService#handleIntent(android.content.
-     * Intent)
-     */
-    @Override
-    protected void handleIntent(Intent intent) {
-        if (intent != null) {
-            final SyncType syncType = SyncType.fromIntent(intent);
-
-            Logger.log(CLASS_TAG, "SyncType: " + syncType);
-            Logger.log(CLASS_TAG, "executeTask() executing this task ");
-            if (!isWorking()) {
-                if (!CheckTaskService.isServiceWorking()) {
-                    log("Sync started");
-                    mState = new CheckTaskState(INITIAL, 0, 0, syncType,null);
-                    try {
-                        SyncConfig config = new SyncConfig(3, false, "", syncType);
-                        new CheckTask(this).execute(config);
-                    } catch (Exception e) {
-                        log("Not checking " + e.getMessage());
-                        MainApplication.bus.post(mState.transition(ERROR, e));
-                    }
-                }
-                else {
-                    log("CheckTask is running now.");
-                    MainApplication.bus.post(mState.transition(ERROR, null));
-                }
-            }
-            else {
-                log("CheckTask already running");
-            }
-
-        }
-    }
-
-    @Override
-    protected boolean isBackgroundTask() {
-        return mState.syncType.isBackground();
-    }
-
-    public static boolean isServiceWorking() {
-        return service != null && service.isWorking();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        service = null;
-    }
+	/**
+	 * Starts the background service
+	 * 
+	 * @return void
+	 */
+	protected void executeTask(Intent intent) {
+		log("checkTaskService: check if a task has been enabled.");
+		// Perform a task
+		// get enabled Sync URL
+		for (SyncUrlModel syncUrl : model
+				.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+			new MessageSyncUtil(CheckTaskService.this, syncUrl.getUrl())
+					.performTask(syncUrl.getSecret());
+		}
+	}
 
 }

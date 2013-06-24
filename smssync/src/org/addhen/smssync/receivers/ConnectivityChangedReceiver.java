@@ -21,7 +21,6 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SmsSyncServices;
@@ -69,25 +68,15 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                 pm.setComponentEnabledSetting(connectivityReceiver,
                         PackageManager.COMPONENT_ENABLED_STATE_DEFAULT,
                         PackageManager.DONT_KILL_APP);
-                
+
                 // Push any pending messages now that we have connectivity
                 if (Prefs.enableAutoSync) {
-                    try {
-                        SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
-                    } catch (ConnectivityException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
                 }
 
                 // Check for tasks now that we have connectivity
                 if (Prefs.enableTaskCheck) {
-                    try {
-                        SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
-                    } catch (ConnectivityException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
                 }
             }
         }

@@ -21,8 +21,8 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
+import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.util.Util;
 
 import android.content.BroadcastReceiver;
@@ -58,7 +58,7 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
 
                 // Stop the service that pushes pending messages
                 if (Prefs.enableAutoSync) {
-                    smsSyncAutoSyncServiceIntent = new Intent(context, AutoSyncService.class);
+                    smsSyncAutoSyncServiceIntent = new Intent(context, SyncPendingMessagesService.class);
                     context.stopService(smsSyncAutoSyncServiceIntent);
                 }
 

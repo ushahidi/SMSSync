@@ -20,10 +20,8 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.services.CheckTaskScheduledService;
-import org.addhen.smssync.util.Logger;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -37,11 +35,7 @@ public class CheckTaskScheduledReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        try {
-            SmsSyncServices.sendWakefulTask(context, CheckTaskScheduledService.class);
-        } catch (ConnectivityException e) {
-            Logger.log(CheckTaskScheduledReceiver.class.getSimpleName(), "No connection");
-        }
+        SmsSyncServices.sendWakefulTask(context, CheckTaskScheduledService.class);
     }
 
 }

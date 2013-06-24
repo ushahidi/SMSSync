@@ -25,7 +25,6 @@ import java.lang.ref.WeakReference;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.fragments.PendingMessages;
-import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.Logger;
 
 import android.app.Service;
@@ -42,7 +41,7 @@ import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
 
-public class SmsReceiverService extends BaseService {
+public class SmsReceiverService extends Service {
     private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
 
     private ServiceHandler mServiceHandler;
@@ -301,14 +300,6 @@ public class SmsReceiverService extends BaseService {
 
     protected void log(String message, Exception ex) {
         Logger.log(getClass().getName(), message, ex);
-    }
-
-    @Override
-    protected void handleIntent(Intent intent) {
-    }
-
-    public SyncPendingMessagesState getState() {
-        return getState();
     }
 
 }
