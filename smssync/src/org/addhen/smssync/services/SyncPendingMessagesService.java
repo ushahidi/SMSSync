@@ -25,7 +25,6 @@ import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncPendingMessagesTask;

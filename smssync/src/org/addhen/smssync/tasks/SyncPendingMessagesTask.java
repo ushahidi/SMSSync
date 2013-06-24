@@ -31,42 +31,31 @@ import java.util.List;
 import java.util.Locale;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.SyncDate;
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
-import org.addhen.smssync.R;
+import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.models.MessagesModel;
-import org.addhen.smssync.models.SyncUrlModel;
-import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.ServicesConstants;
-import org.addhen.smssync.util.Util;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
 /**
  * Provide a background service for asynchronous synchronizing of huge messages
  */
-public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMessagesState, SyncPendingMessagesState> {
+public class SyncPendingMessagesTask extends
+        AsyncTask<SyncConfig, SyncPendingMessagesState, SyncPendingMessagesState> {
 
     private final SyncPendingMessagesService mService;
 
     private final static String CLASS_TAG = SyncPendingMessagesTask.class.getSimpleName();
 
     private final MessagesModel messagesModel;
-
-    private SyncUrlModel model;
 
     private int itemsToSync;
 
@@ -81,8 +70,6 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
     public SyncPendingMessagesTask(SyncPendingMessagesService service) {
         this.mService = service;
         this.messagesModel = new MessagesModel();
-        this.model = new SyncUrlModel();
-
     }
 
     @Override
@@ -142,7 +129,7 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
     }
 
     private SyncPendingMessagesState transition(SyncState state, Exception exception) {
-        return (SyncPendingMessagesState) mService.getState().transition(state, exception);
+        return  mService.getState().transition(state, exception);
     }
 
     @Override
@@ -165,7 +152,8 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
             return transition(FINISHED_SYNC, null);
         }
 
-        new SyncDate().setLastSyncedDate(mService.getApplicationContext(), System.currentTimeMillis());
+        new SyncDate().setLastSyncedDate(mService.getApplicationContext(),
+                System.currentTimeMillis());
 
         return new SyncPendingMessagesState(FINISHED_SYNC,
                 syncdItems,
@@ -238,98 +226,6 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
         return syncdItems;
     }
 
-    private int syncTask(SyncConfig config) {
-        int syncdItems = 0;
-        JSONObject jsonObject;
-
-        JSONArray jsonArray;
-        Logger.log(CLASS_TAG, "checkTaskService: check if a task has been enabled.");
-
-        Logger.log(CLASS_TAG,
-                String.format(Locale.ENGLISH, "Starting to sync task (%d messages)", itemsToSync));
-
-        // keep the sync running as long as the service is not cancelled and
-        // the syncd items is less than
-        // the items to be syncd.
-        while (!isCancelled() && syncdItems < itemsToSync) {
-            // load Prefs
-            Prefs.loadPreferences(mService.getApplicationContext());
-            for (SyncUrlModel syncUrl : model
-                    .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-                // validate configured url
-                int status = Util.validateCallbackUrl(syncUrl.getUrl());
-                if (status == 1) {
-                    Util.showToast(mService.getApplicationContext(), R.string.no_configured_url);
-                } else if (status == 2) {
-                    Util.showToast(mService.getApplicationContext(), R.string.invalid_url);
-                } else if (status == 3) {
-                    Util.showToast(mService.getApplicationContext(), R.string.no_connection);
-                } else {
-
-                    StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
-
-                    uriBuilder.append("?task=send");
-
-                    String response = MainHttpClient.getFromWebService(uriBuilder
-                            .toString());
-                    Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
-                    String task = "";
-                    String secret = "";
-                    if (!TextUtils.isEmpty(response) && response != null) {
-
-                        try {
-
-                            jsonObject = new JSONObject(response);
-                            JSONObject payloadObject = jsonObject
-                                    .getJSONObject("payload");
-
-                            if (payloadObject != null) {
-                                task = payloadObject.getString("task");
-                                secret = payloadObject.getString("secret");
-                                if ((task.equals("send")) && (secret.equals(syncUrl.getSecret()))) {
-                                    jsonArray = payloadObject.getJSONArray("messages");
-
-                                    for (int index = 0; index < jsonArray.length(); ++index) {
-                                        jsonObject = jsonArray.getJSONObject(index);
-
-                                        processSms.sendSms(jsonObject.getString("to"),
-                                                jsonObject.getString("message"));
-                                        // increment the number of syncd items
-                                        syncdItems++;
-
-                                        // update the UI with progress of the
-                                        // sync
-                                        // progress
-                                        publishProgress(new SyncPendingMessagesState(SYNC, syncdItems,
-                                                itemsToSync,
-                                                config.syncType, null));
-                                    }
-
-                                } else {
-                                    Logger.log(CLASS_TAG,
-                                            mService.getApplicationContext()
-                                                    .getString(R.string.no_task));
-                                }
-
-                            } else { // 'payload' data may not be present in
-                                     // JSON
-                                     // response
-                                Logger.log(CLASS_TAG,
-                                        mService.getApplicationContext()
-                                                .getString(R.string.no_task));
-                            }
-
-                        } catch (JSONException e) {
-                            Logger.log(CLASS_TAG, "Error: " + e.getMessage());
-                        }
-                    }
-                }
-            }
-        }
-
-        return syncdItems;
-    }
-
     /**
      * Send the state of the sync to the UI
      * 
@@ -346,6 +242,6 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
      * @param e The exception
      */
     private void publishState(SyncState state, Exception e) {
-        publishProgress((SyncPendingMessagesState) mService.getState().transition(state, e));
+        publishProgress(mService.getState().transition(state, e));
     }
 }

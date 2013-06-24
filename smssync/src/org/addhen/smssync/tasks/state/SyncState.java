@@ -21,11 +21,12 @@
 package org.addhen.smssync.tasks.state;
 
 /**
- * Provide the various state a task can go through
+ * Provide the various state a sync task can go through
  */
 public enum SyncState {
     INITIAL,
     SYNC,
+    CHECK,
     ERROR,
     CANCELED_SYNC,
     FINISHED_SYNC
