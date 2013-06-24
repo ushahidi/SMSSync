@@ -26,7 +26,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MessagesTabActivity;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
@@ -195,7 +195,7 @@ public abstract class SmsSyncServices extends IntentService {
         return false;
     }
 
-    public abstract MessageSyncState getState();
+    public abstract SyncPendingMessagesState getState();
 
     public boolean isWorking() {
         return getState().isRunning();

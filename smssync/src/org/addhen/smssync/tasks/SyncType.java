@@ -11,11 +11,10 @@ import android.content.Intent;
  * @author eyedol
  */
 public enum SyncType {
-    BROADCAST_INTENT(R.string.source_3rd_party),
-    INCOMING(R.string.source_incoming),
-    REGULAR(R.string.source_regular),
-    UNKNOWN(R.string.source_unknown),
-    MANUAL(R.string.source_manual);
+    INCOMING(R.string.incoming),
+    SCHEDULE(R.string.schedule),
+    UNKNOWN(R.string.unknown),
+    MANUAL(R.string.manual);
 
     public final int resId;
 
@@ -33,10 +32,9 @@ public enum SyncType {
                     return type;
                 }
             }
-            return UNKNOWN;
-        } else {
-            return UNKNOWN;
         }
+        return UNKNOWN;
+
     }
 
     public boolean isBackground() {

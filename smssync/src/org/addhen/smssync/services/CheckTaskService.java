@@ -20,8 +20,17 @@
 
 package org.addhen.smssync.services;
 
+import static org.addhen.smssync.tasks.state.SyncState.ERROR;
+import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
+
+import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.models.SyncUrlModel;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.SyncConfig;
+import org.addhen.smssync.tasks.SyncPendingMessagesTask;
+import org.addhen.smssync.tasks.SyncType;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -34,17 +43,20 @@ import android.content.Intent;
  * 
  * @author eyedol
  */
-public class CheckTaskService extends SmsSyncServices {
+public class CheckTaskService extends BaseService {
 
     private final static String CLASS_TAG = CheckTaskService.class
             .getSimpleName();
     private SyncUrlModel model;
 
-    private MessageSyncState mState = new MessageSyncState();
+    private SyncPendingMessagesState mState = getState();
 
-    public CheckTaskService() {
-        super(CLASS_TAG);
-        model = new SyncUrlModel();
+    private CheckTaskService service;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        service = this;
     }
 
     /**
@@ -64,8 +76,46 @@ public class CheckTaskService extends SmsSyncServices {
     }
 
     @Override
-    public MessageSyncState getState() {
+    public SyncPendingMessagesState getState() {
         return mState;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * org.addhen.smssync.services.BaseService#handleIntent(android.content.
+     * Intent)
+     */
+    @Override
+    protected void handleIntent(Intent intent) {
+        if (intent != null) {
+            final SyncType syncType = SyncType.fromIntent(intent);
+            
+            Logger.log(CLASS_TAG, "SyncType: " + syncType);
+            Logger.log(CLASS_TAG, "executeTask() executing this task ");
+            if (!isWorking()) {
+                if (!SyncPendingMessagesService.isServiceWorking()) {
+                    log("Sync started");
+                    mState = new SyncPendingMessagesState(INITIAL, 0, 0, syncType, SyncDate.PENDING,
+                            null);
+                    try {
+                        SyncConfig config = new SyncConfig(3, false, "", syncType);
+                        new SyncPendingMessagesTask(this, SyncDate.TASK).execute(config);
+                    } catch (Exception e) {
+                        log("Not syncing " + e.getMessage());
+                        MainApplication.bus.post(mState.transition(ERROR, e));
+                    }
+                }
+                else {
+                    log("Sync is running now.");
+                    MainApplication.bus.post(mState.transition(ERROR, null));
+                }
+            }
+            else {
+                log("Sync already running");
+            }
+
+        }
     }
 
 }

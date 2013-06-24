@@ -25,7 +25,6 @@ import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
 import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
 import org.addhen.smssync.services.AutoSyncScheduledService;
-import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;

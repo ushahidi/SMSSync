@@ -27,7 +27,7 @@ import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
@@ -283,7 +283,7 @@ public class SentMessages
     }
 
     @Subscribe
-    public void syncStateChanged(final MessageSyncState newState) {
+    public void syncStateChanged(final SyncPendingMessagesState newState) {
 
         switch (newState.state) {
             case FINISHED_SYNC:

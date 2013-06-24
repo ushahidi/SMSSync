@@ -25,12 +25,12 @@ import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.MessageType;
+import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncConfig;
-import org.addhen.smssync.tasks.SyncTask;
+import org.addhen.smssync.tasks.SyncPendingMessagesTask;
 import org.addhen.smssync.tasks.SyncType;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -51,7 +51,7 @@ public class SyncPendingMessagesService extends BaseService {
 
     private String messageUuid = "";
 
-    private MessageSyncState mState = new MessageSyncState();
+    private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
     private static SyncPendingMessagesService service;
 
@@ -74,11 +74,10 @@ public class SyncPendingMessagesService extends BaseService {
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
-                    mState = new MessageSyncState(INITIAL, 0, 0, syncType, MessageType.PENDING,
-                            null);
+                    mState = new SyncPendingMessagesState(INITIAL, 0, 0, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuid, syncType);
-                        new SyncTask(this, MessageType.PENDING).execute(config);
+                        new SyncPendingMessagesTask(this).execute(config);
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
                         MainApplication.bus.post(mState.transition(ERROR, e));
@@ -98,7 +97,7 @@ public class SyncPendingMessagesService extends BaseService {
     }
 
     @Subscribe
-    public void syncStateChanged(final MessageSyncState state) {
+    public void syncStateChanged(final SyncPendingMessagesState state) {
         mState = state;
         if (mState.isInitialState())
             return;
@@ -122,17 +121,17 @@ public class SyncPendingMessagesService extends BaseService {
     }
 
     @Override
-    public MessageSyncState getState() {
+    public SyncPendingMessagesState getState() {
         return mState;
 
     }
 
     @Produce
-    public MessageSyncState produceLastState() {
+    public SyncPendingMessagesState produceLastState() {
         return mState;
     }
 
-    private void updateSyncStatusNotification(MessageSyncState state) {
+    private void updateSyncStatusNotification(SyncPendingMessagesState state) {
         createNotification(R.string.status,
                 state.getNotification(getResources()), getPendingIntent());
 
@@ -141,7 +140,7 @@ public class SyncPendingMessagesService extends BaseService {
     public boolean isWorking() {
         return getState().isRunning();
     }
-    
+
     @Override
     protected boolean isBackgroundTask() {
         return mState.syncType.isBackground();

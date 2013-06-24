@@ -166,11 +166,10 @@
     <string name="valid_sync_url">Please enter a valid URL</string>
     <string name="task">Task</string>
     <string name="confirm_sms_import">This will import all SMS in the messaging inbox. This may take a while to finish.</string>
-    <string name="source_incoming">incoming</string>
-    <string name="source_regular">regular</string>
-    <string name="source_3rd_party">3rd party</string>
-    <string name="source_manual">manual</string>
-    <string name="source_unknown">unknown</string>
+    <string name="incoming">incoming</string>
+    <string name="schedule">schedule</string>
+    <string name="manual">manual</string>
+    <string name="unknown">unknown</string>
     <string name="sync">Sync</string>
     <string name="idle">Idle</string>
     <string name="error">Error</string>

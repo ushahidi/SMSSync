@@ -25,7 +25,7 @@ import static org.addhen.smssync.tasks.SyncType.MANUAL;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.tasks.SyncType;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -52,7 +52,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
 
     private MessagesModel messagesModel;
 
-    private MessageSyncState mState = new MessageSyncState();
+    private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
     private static AutoSyncScheduledService service;
 
@@ -81,12 +81,12 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     }
 
     @Override
-    public MessageSyncState getState() {
+    public SyncPendingMessagesState getState() {
         return mState;
     }
 
     @Subscribe
-    public void syncStateChanged(final MessageSyncState state) {
+    public void syncStateChanged(final SyncPendingMessagesState state) {
         mState = state;
         if (mState.isInitialState())
             return;
@@ -110,11 +110,11 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     }
 
     @Produce
-    public MessageSyncState produceLastState() {
+    public SyncPendingMessagesState produceLastState() {
         return mState;
     }
 
-    private void updateSyncStatusNotification(MessageSyncState state) {
+    private void updateSyncStatusNotification(SyncPendingMessagesState state) {
         createNotification(R.string.status,
                 state.getNotification(getResources()), getPendingIntent());
 

@@ -20,25 +20,24 @@
 
 package org.addhen.smssync.tasks.state;
 
-import org.addhen.smssync.MessageType;
+import static org.addhen.smssync.tasks.SyncType.UNKNOWN;
+import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
+import static org.addhen.smssync.tasks.state.SyncState.SYNC;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncType;
 
 import android.content.res.Resources;
 
-import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
-import static org.addhen.smssync.tasks.state.SyncState.SYNC;
-import static org.addhen.smssync.tasks.SyncType.UNKNOWN;
-
-public class MessageSyncState extends State {
+public class SyncPendingMessagesState extends State {
 
     public final int currentSyncedItems;
     public final int itemsToSync;
     public final SyncType syncType;
 
-    public MessageSyncState(SyncState state, int currentSyncedItems,
-            int itemsToSync, SyncType syncType, MessageType type, Exception exception) {
-        super(state, type, exception);
+    public SyncPendingMessagesState(SyncState state, int currentSyncedItems,
+            int itemsToSync, SyncType syncType, Exception exception) {
+        super(state, exception);
         this.currentSyncedItems = currentSyncedItems;
         this.itemsToSync = itemsToSync;
         this.syncType = syncType;
@@ -47,15 +46,13 @@ public class MessageSyncState extends State {
     /**
      * Create default state
      */
-    public MessageSyncState() {
-        this(INITIAL, 0, 0, UNKNOWN, null, null);
+    public SyncPendingMessagesState() {
+        this(INITIAL, 0, 0, UNKNOWN, null);
     }
 
     @Override
-    public MessageSyncState transition(SyncState newState, Exception exception) {
-        return new MessageSyncState(newState, currentSyncedItems, itemsToSync, syncType,
-                messageType,
-                exception);
+    public SyncPendingMessagesState transition(SyncState newState, Exception exception) {
+        return new SyncPendingMessagesState(newState, currentSyncedItems, itemsToSync, syncType, exception);
     }
 
     /**

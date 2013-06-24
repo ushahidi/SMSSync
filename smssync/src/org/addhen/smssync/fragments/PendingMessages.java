@@ -20,8 +20,6 @@
 
 package org.addhen.smssync.fragments;
 
-import static org.addhen.smssync.MessageType.PENDING;
-
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -30,6 +28,7 @@ import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
+import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
 import org.addhen.smssync.models.MessagesModel;
@@ -37,7 +36,7 @@ import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.tasks.TaskCanceled;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.State;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.ServicesConstants;
@@ -156,7 +155,7 @@ public class PendingMessages
 
     private void idle() {
 
-        view.details.setText(getLastSyncText(PENDING.getLastSyncedDate(getActivity())));
+        view.details.setText(getLastSyncText(new SyncDate().getLastSyncedDate(getActivity())));
         view.status.setText(R.string.idle);
         view.status
                 .setTextColor(getActivity().getResources().getColor(R.color.status_idle));
@@ -482,7 +481,7 @@ public class PendingMessages
     }
 
     @Subscribe
-    public void syncStateChanged(final MessageSyncState newState) {
+    public void syncStateChanged(final SyncPendingMessagesState newState) {
 
         log("syncChanged:" + newState);
         if (view == null || newState.syncType.isBackground())
@@ -517,7 +516,7 @@ public class PendingMessages
 
     }
 
-    private void finishedSync(MessageSyncState state) {
+    private void finishedSync(SyncPendingMessagesState state) {
         int syncCount = state.currentSyncedItems;
         String text = null;
         if (syncCount > 0) {

@@ -21,7 +21,7 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.models.SyncUrlModel;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -34,7 +34,7 @@ public class CheckTaskScheduledService extends SmsSyncServices {
 
 	private SyncUrlModel model;
 	
-	private MessageSyncState mState = new MessageSyncState();
+	private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
 	public CheckTaskScheduledService() {
 		super(CLASS_TAG);
@@ -53,7 +53,7 @@ public class CheckTaskScheduledService extends SmsSyncServices {
 	}
 	
 	@Override
-    public MessageSyncState getState() {
+    public SyncPendingMessagesState getState() {
         return mState;
     }
 }

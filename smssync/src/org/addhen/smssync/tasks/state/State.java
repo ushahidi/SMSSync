@@ -3,7 +3,6 @@ package org.addhen.smssync.tasks.state;
 
 import java.util.EnumSet;
 
-import org.addhen.smssync.MessageType;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.exceptions.I8nException;
 
@@ -20,20 +19,16 @@ public abstract class State {
 
     public final Exception exception;
 
-    public final MessageType messageType;
-
     /**
      * Default constructor
      * 
      * @param state The state of the task
-     * @param messageType The type of message being processed
      * @param exception Exception to throw.
      */
-    public State(SyncState state, MessageType messageType, Exception exception) {
+    public State(SyncState state, Exception exception) {
 
         this.state = state;
         this.exception = exception;
-        this.messageType = messageType;
     }
 
     public boolean isInitialState() {

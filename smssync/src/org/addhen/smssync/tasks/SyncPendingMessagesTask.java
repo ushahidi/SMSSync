@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.MessageType;
+import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
@@ -40,7 +40,7 @@ import org.addhen.smssync.models.MessagesModel;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.services.SyncPendingMessagesService;
-import org.addhen.smssync.tasks.state.MessageSyncState;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
@@ -58,17 +58,15 @@ import com.squareup.otto.Subscribe;
 /**
  * Provide a background service for asynchronous synchronizing of huge messages
  */
-public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyncState> {
+public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMessagesState, SyncPendingMessagesState> {
 
     private final SyncPendingMessagesService mService;
 
-    private final static String CLASS_TAG = SyncTask.class.getSimpleName();
+    private final static String CLASS_TAG = SyncPendingMessagesTask.class.getSimpleName();
 
     private final MessagesModel messagesModel;
 
     private SyncUrlModel model;
-
-    private MessageType messageType;
 
     private int itemsToSync;
 
@@ -80,21 +78,20 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
      * @param service The sync service
      * @param messageType The message type being synchronize
      */
-    public SyncTask(SyncPendingMessagesService service, MessageType messageType) {
+    public SyncPendingMessagesTask(SyncPendingMessagesService service) {
         this.mService = service;
-        this.messageType = messageType;
         this.messagesModel = new MessagesModel();
         this.model = new SyncUrlModel();
 
     }
 
     @Override
-    protected MessageSyncState doInBackground(SyncConfig... params) {
+    protected SyncPendingMessagesState doInBackground(SyncConfig... params) {
         final SyncConfig config = params[0];
         if (config.skip) {
             Logger.log(CLASS_TAG, "Sync skipped");
             // In case a user decides to skip the sync process
-            return new MessageSyncState(FINISHED_SYNC, 0, 0, SyncType.MANUAL, null, null);
+            return new SyncPendingMessagesState(FINISHED_SYNC, 0, 0, SyncType.MANUAL, null);
         }
 
         try {
@@ -126,7 +123,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
     }
 
     @Override
-    protected void onPostExecute(MessageSyncState result) {
+    protected void onPostExecute(SyncPendingMessagesState result) {
         if (result != null) {
             post(result);
         }
@@ -140,44 +137,40 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
         MainApplication.bus.unregister(this);
     }
 
-    private void post(MessageSyncState state) {
+    private void post(SyncPendingMessagesState state) {
         MainApplication.bus.post(state);
     }
 
-    private MessageSyncState transition(SyncState state, Exception exception) {
-        return mService.getState().transition(state, exception);
+    private SyncPendingMessagesState transition(SyncState state, Exception exception) {
+        return (SyncPendingMessagesState) mService.getState().transition(state, exception);
     }
 
     @Override
-    protected void onProgressUpdate(MessageSyncState... progress) {
+    protected void onProgressUpdate(SyncPendingMessagesState... progress) {
         if (progress != null && progress.length > 0 && !isCancelled()) {
             post(progress[0]);
         }
     }
 
-    private MessageSyncState sync(SyncConfig config) {
+    private SyncPendingMessagesState sync(SyncConfig config) {
         Logger.log(CLASS_TAG, "syncToWeb(): push pending messages to the Sync URL");
         publishState(INITIAL);
 
         int syncdItems = 0;
-        switch (messageType) {
-            case PENDING:
-                syncdItems = syncPending(config);
-                break;
-            case TASK:
-                syncdItems = syncTask(config);
-        }
+
+        syncdItems = syncPending(config);
 
         if (syncdItems == 0) {
-
             Logger.log(CLASS_TAG, "Nothing to do.");
             return transition(FINISHED_SYNC, null);
         }
-        messageType.setLastSyncedDate(mService.getApplicationContext(), System.currentTimeMillis());
-        return new MessageSyncState(FINISHED_SYNC,
+
+        new SyncDate().setLastSyncedDate(mService.getApplicationContext(), System.currentTimeMillis());
+
+        return new SyncPendingMessagesState(FINISHED_SYNC,
                 syncdItems,
                 itemsToSync,
-                config.syncType, messageType, null);
+                config.syncType, null);
 
     }
 
@@ -234,8 +227,8 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
                         syncdItems++;
 
                         // update the UI with progress of the sync progress
-                        publishProgress(new MessageSyncState(SYNC, syncdItems, itemsToSync,
-                                config.syncType, messageType, null));
+                        publishProgress(new SyncPendingMessagesState(SYNC, syncdItems, itemsToSync,
+                                config.syncType, null));
 
                     }
                 }
@@ -251,7 +244,7 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
 
         JSONArray jsonArray;
         Logger.log(CLASS_TAG, "checkTaskService: check if a task has been enabled.");
-        
+
         Logger.log(CLASS_TAG,
                 String.format(Locale.ENGLISH, "Starting to sync task (%d messages)", itemsToSync));
 
@@ -307,9 +300,9 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
                                         // update the UI with progress of the
                                         // sync
                                         // progress
-                                        publishProgress(new MessageSyncState(SYNC, syncdItems,
+                                        publishProgress(new SyncPendingMessagesState(SYNC, syncdItems,
                                                 itemsToSync,
-                                                config.syncType, messageType, null));
+                                                config.syncType, null));
                                     }
 
                                 } else {
@@ -353,6 +346,6 @@ public class SyncTask extends AsyncTask<SyncConfig, MessageSyncState, MessageSyn
      * @param e The exception
      */
     private void publishState(SyncState state, Exception e) {
-        publishProgress(mService.getState().transition(state, e));
+        publishProgress((SyncPendingMessagesState) mService.getState().transition(state, e));
     }
 }
