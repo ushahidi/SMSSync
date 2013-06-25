@@ -45,11 +45,13 @@ import org.addhen.smssync.views.PendingMessagesView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SmsManager;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -642,61 +644,106 @@ public class PendingMessages
 
     /**
      * This will refresh content of the listview aka the pending messages when
-     * smssync successfully syncs pending messages. private BroadcastReceiver
-     * broadcastReceiver = new BroadcastReceiver() {
-     * 
-     * @Override public void onReceive(Context context, Intent intent) { if
-     *           (intent != null) { int status =
-     *           intent.getIntExtra("syncstatus", 3); int f =
-     *           intent.getIntExtra("fail", 0); int s =
-     *           intent.getIntExtra("success", 0); int t =
-     *           intent.getIntExtra("total", 0);
-     *           log("broadcastReceiver onReceive status: " + status); if
-     *           (status == 0) { refreshState = false; updateRefreshStatus();
-     *           mHandler.post(mUpdateListView);
-     *           Util.showFailNotification(getActivity(),
-     *           getString(R.string.sent_messages),
-     *           getString(R.string.sending_succeeded)); //
-     *           toastLong("Total of " + t + " messages where syncd. " + s // +
-     *           " Successfully syncd and " + f + " failed"); } else if (status
-     *           == 1) { refreshState = false; updateRefreshStatus();
-     *           mHandler.post(mUpdateListView);
-     *           toastLong(R.string.sync_failed); } else if (status == 2) {
-     *           refreshState = false; updateRefreshStatus();
-     *           toastLong(R.string.no_messages_to_sync); } if
-     *           (syncPendingMessagesServiceIntent != null) {
-     *           getActivity().stopService(syncPendingMessagesServiceIntent); }
-     *           } } }; /** This will refresh content of the listview aka the
-     *           pending messages when smssync fail to sync pending messages.
-     *           private BroadcastReceiver failedReceiver = new
-     *           BroadcastReceiver() {
-     * @Override public void onReceive(Context context, Intent intent) { if
-     *           (intent != null) { int status = intent.getIntExtra("failed",
-     *           2); log("failedReceiver onReceive status: " + status); if
-     *           (status == 0) { mHandler.post(mUpdateListView); } } } }; //
-     *           when sms has been sent private BroadcastReceiver
-     *           smsSentReceiver = new BroadcastReceiver() {
-     * @Override public void onReceive(Context context, Intent intent) { int
-     *           result = getResultCode();
-     *           log("smsSentReceiver onReceive result: " + result); switch
-     *           (result) { case Activity.RESULT_OK:
-     *           toastLong(R.string.sms_status_success); break; case
-     *           SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-     *           toastLong(R.string.sms_delivery_status_failed); break; case
-     *           SmsManager.RESULT_ERROR_NO_SERVICE:
-     *           toastLong(R.string.sms_delivery_status_no_service); break; case
-     *           SmsManager.RESULT_ERROR_NULL_PDU:
-     *           toastLong(R.string.sms_delivery_status_null_pdu); break; case
-     *           SmsManager.RESULT_ERROR_RADIO_OFF:
-     *           toastLong(R.string.sms_delivery_status_radio_off); break; } }
-     *           }; // when sms has been delivered private BroadcastReceiver
-     *           smsDeliveredReceiver = new BroadcastReceiver() { public void
-     *           onReceive(Context context, Intent intent) { int result =
-     *           getResultCode(); log("smsDeliveredReceiver onReceive result: "
-     *           + result); switch (result) { case Activity.RESULT_OK:
-     *           toastLong(R.string.sms_delivered); break; case
-     *           Activity.RESULT_CANCELED:
-     *           toastLong(R.string.sms_not_delivered); break; } } };
+     * smssync successfully syncs pending messages.
      */
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                int status =
+                        intent.getIntExtra("syncstatus", 3);
+                int f =
+                        intent.getIntExtra("fail", 0);
+                int s =
+                        intent.getIntExtra("success", 0);
+                int t =
+                        intent.getIntExtra("total", 0);
+                log("broadcastReceiver onReceive status: " + status);
+                if
+                (status == 0) {
+                    refreshState = false;
+                    updateRefreshStatus();
+                    mHandler.post(mUpdateListView);
+                    Util.showFailNotification(getActivity(),
+                            getString(R.string.sent_messages),
+                            getString(R.string.sending_succeeded)); //
+                    toastLong("Total of " + t + " messages where syncd. " + s +
+                            " Successfully syncd and " + f + " failed");
+                } else if (status == 1) {
+                    refreshState = false;
+                    updateRefreshStatus();
+                    mHandler.post(mUpdateListView);
+                    toastLong(R.string.sync_failed);
+                } else if (status == 2) {
+                    refreshState = false;
+                    updateRefreshStatus();
+                    toastLong(R.string.no_messages_to_sync);
+                }
+                if (syncPendingMessagesServiceIntent != null) {
+                    getActivity().stopService(syncPendingMessagesServiceIntent);
+                }
+            }
+        }
+    };
+
+    /**
+     * This will refresh content of the listview aka the pending messages when
+     * smssync fail to sync pending messages.
+     */
+    private BroadcastReceiver failedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                int status = intent.getIntExtra("failed", 2);
+                log("failedReceiver onReceive status: " + status);
+                if (status == 0) {
+                    mHandler.post(mUpdateListView);
+                }
+            }
+        }
+    };
+
+    // when sms has been sent
+    private BroadcastReceiver smsSentReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int result = getResultCode();
+            log("smsSentReceiver onReceive result: " + result);
+            switch (result) {
+                case Activity.RESULT_OK:
+                    toastLong(R.string.sms_status_success);
+                    break;
+                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                    toastLong(R.string.sms_delivery_status_failed);
+                    break;
+                case SmsManager.RESULT_ERROR_NO_SERVICE:
+                    toastLong(R.string.sms_delivery_status_no_service);
+                    break;
+                case SmsManager.RESULT_ERROR_NULL_PDU:
+                    toastLong(R.string.sms_delivery_status_null_pdu);
+                    break;
+                case SmsManager.RESULT_ERROR_RADIO_OFF:
+                    toastLong(R.string.sms_delivery_status_radio_off);
+                    break;
+            }
+        }
+    };
+    // when sms has been delivered
+    private BroadcastReceiver smsDeliveredReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            int result = getResultCode();
+            log("smsDeliveredReceiver onReceive result: "
+                    + result);
+            switch (result) {
+                case Activity.RESULT_OK:
+                    toastLong(R.string.sms_delivered);
+                    break;
+                case Activity.RESULT_CANCELED:
+                    toastLong(R.string.sms_not_delivered);
+                    break;
+            }
+        }
+    };
 
 }
