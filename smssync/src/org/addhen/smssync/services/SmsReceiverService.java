@@ -198,6 +198,8 @@ public class SmsReceiverService extends Service {
         } else {
             Util.showFailNotification(this, messagesBody,
                     getString(R.string.sending_succeeded));
+            statusIntent.putExtra("sentstatus", 0);
+            sendBroadcast(statusIntent);
         }
     }
 
