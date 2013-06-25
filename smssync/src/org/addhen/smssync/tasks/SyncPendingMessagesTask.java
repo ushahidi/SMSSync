@@ -129,7 +129,7 @@ public class SyncPendingMessagesTask extends
     }
 
     private SyncPendingMessagesState transition(SyncState state, Exception exception) {
-        return  mService.getState().transition(state, exception);
+        return mService.getState().transition(state, exception);
     }
 
     @Override
@@ -176,8 +176,20 @@ public class SyncPendingMessagesTask extends
 
         List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 
-        if (messagesModel.totalMessages() > 0) {
-            itemsToSync = messagesModel.totalMessages();
+        // determine if syncing by message UUID
+        if (config.messageUuid != null && !TextUtils.isEmpty(config.messageUuid)) {
+            messagesModel.loadByUuid(config.messageUuid);
+            listMessages = messagesModel.listMessages;
+
+        } else {
+            // load all messages
+            messagesModel.load();
+            listMessages = messagesModel.listMessages;
+
+        }
+
+        if (listMessages.size() > 0) {
+            itemsToSync = listMessages.size();
             Logger.log(CLASS_TAG,
                     String.format(Locale.ENGLISH, "Starting to sync (%d messages)", itemsToSync));
 
@@ -185,18 +197,6 @@ public class SyncPendingMessagesTask extends
             // the syncd items is less than
             // the items to be syncd.
             while (!isCancelled() && syncdItems < itemsToSync) {
-
-                // determine if syncing by message UUID
-                if (config.messageUuid != null && !TextUtils.isEmpty(config.messageUuid)) {
-                    messagesModel.loadByUuid(config.messageUuid);
-                    listMessages = messagesModel.listMessages;
-
-                } else {
-                    // load all messages
-                    messagesModel.load();
-                    listMessages = messagesModel.listMessages;
-
-                }
 
                 // iterate through the loaded messages and push to the web
                 // service
