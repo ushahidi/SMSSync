@@ -5,7 +5,6 @@ import org.addhen.smssync.Prefs;
 import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
 import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
 import org.addhen.smssync.services.AutoSyncScheduledService;
-import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
@@ -125,8 +124,6 @@ public class RunServicesUtil {
         Prefs.loadPreferences(context);
         if (Prefs.enableAutoSync) {
 
-            SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
-
             // start the scheduler for auto sync service
             final long interval = (Prefs.autoTime * 60000);
             final Intent intent = new Intent(context,
@@ -155,7 +152,6 @@ public class RunServicesUtil {
                 AutoSyncScheduledService.class);
 
         // stop the scheduled service
-        context.stopService(new Intent(context, AutoSyncService.class));
         RunServicesUtil.stopServices(context, intent,
                 CheckTaskScheduledReceiver.class,
                 ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE);
@@ -176,7 +172,6 @@ public class RunServicesUtil {
                 AutoSyncScheduledService.class);
 
         // stop the scheduled service
-        context.stopService(new Intent(context, AutoSyncService.class));
         RunServicesUtil.stopServices(context, intent,
                 AutoSyncScheduledService.class,
                 ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE);

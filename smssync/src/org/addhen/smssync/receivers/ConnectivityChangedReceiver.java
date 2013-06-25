@@ -21,9 +21,11 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.services.AutoSyncService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SmsSyncServices;
+import org.addhen.smssync.services.SyncPendingMessagesService;
+import org.addhen.smssync.tasks.SyncType;
+import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.content.BroadcastReceiver;
@@ -71,7 +73,14 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
 
                 // Push any pending messages now that we have connectivity
                 if (Prefs.enableAutoSync) {
-                    SmsSyncServices.sendWakefulTask(context, AutoSyncService.class);
+                    Intent syncPendingMessagesServiceIntent = new Intent(context,
+                            SyncPendingMessagesService.class);
+
+                    syncPendingMessagesServiceIntent.putExtra(
+                            ServicesConstants.MESSAGE_UUID, "");
+                    syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA,
+                            SyncType.MANUAL.name());
+                    context.startService(syncPendingMessagesServiceIntent);
                 }
 
                 // Check for tasks now that we have connectivity

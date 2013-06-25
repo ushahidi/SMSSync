@@ -49,6 +49,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
@@ -63,8 +64,6 @@ public class PendingMessages
         android.view.View.OnClickListener {
 
     private Intent syncPendingMessagesServiceIntent;
-
-    private Intent statusIntent;
 
     private final Handler mHandler;
 
@@ -94,7 +93,6 @@ public class PendingMessages
 
         setHasOptionsMenu(true);
         Prefs.loadPreferences(getActivity());
-        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         // show notification
         if (Prefs.enabled) {
             Util.showNotification(getActivity());
@@ -129,9 +127,15 @@ public class PendingMessages
     public void onResume() {
         log("onResume()");
         super.onResume();
-
+        getActivity().registerReceiver(failedReceiver,
+                new IntentFilter(ServicesConstants.FAILED_ACTION));
+        getActivity().registerReceiver(smsSentReceiver,
+                new IntentFilter(ServicesConstants.SENT));
+        getActivity().registerReceiver(smsDeliveredReceiver,
+                new IntentFilter(ServicesConstants.DELIVERED));
         idle();
         mHandler.post(mUpdateListView);
+
         MainApplication.bus.register(this);
     }
 
@@ -152,6 +156,9 @@ public class PendingMessages
     public void onDestroy() {
         log("onDestroy()");
         super.onDestroy();
+        getActivity().unregisterReceiver(failedReceiver);
+        getActivity().unregisterReceiver(smsSentReceiver);
+        getActivity().unregisterReceiver(smsDeliveredReceiver);
         MainApplication.bus.unregister(this);
     }
 
@@ -220,10 +227,7 @@ public class PendingMessages
 
         } else if (item.getItemId() == R.id.context_sync) {
             // Synchronize by ID
-            refresh = item;
-            refreshState = true;
-            updateRefreshStatus();
-            syncMessages(messageUuid);
+            startSync(messageUuid);
         }
         return (false);
     }
@@ -232,13 +236,7 @@ public class PendingMessages
     public boolean onOptionsItemSelected(MenuItem item) {
         log("onOptionsItemSelected()");
         Intent intent;
-        if (item.getItemId() == R.id.sync) {
-            refresh = item;
-            refreshState = true;
-            updateRefreshStatus();
-            syncMessages("");
-            return (true);
-        } else if (item.getItemId() == R.id.import_sms) {
+        if (item.getItemId() == R.id.import_sms) {
             importAllSms();
         } else if (item.getItemId() == R.id.delete) {
             performDeleteAll();
@@ -588,28 +586,6 @@ public class PendingMessages
         // TODO Auto-generated method stub
     }
 
-    /**
-     * Get messages from the db and push them to the configured callback URL
-     * 
-     * @param String messagesUuid
-     * @return int
-     */
-
-    public void syncMessages(String messagesUuid) {
-        log("syncMessages messagesUuid: " + messagesUuid);
-        if (adapter != null && adapter.getCount() == 0) {
-            statusIntent.putExtra("syncstatus", 2);
-            getActivity().sendBroadcast(statusIntent);
-        } else {
-            syncPendingMessagesServiceIntent = new Intent(getActivity(),
-                    SyncPendingMessagesService.class);
-
-            syncPendingMessagesServiceIntent.putExtra(
-                    ServicesConstants.MESSAGE_UUID, messagesUuid);
-            getActivity().startService(syncPendingMessagesServiceIntent);
-        }
-    }
-
     // Thread class to handle synchronous execution of message importation task.
     private class ImportMessagesTask extends ProgressTask {
 
@@ -644,14 +620,14 @@ public class PendingMessages
 
     /**
      * This will refresh content of the listview aka the pending messages when
-     * smssync fail to sync pending messages.
+     * smssync successfully syncs pending messages.
      */
     private BroadcastReceiver failedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
-                int status = intent.getIntExtra("failed", 2);
-                log("failedReceiver onReceive status: " + status);
+                int status = intent.getIntExtra("failed", 1);
+
                 if (status == 0) {
                     mHandler.post(mUpdateListView);
                 }

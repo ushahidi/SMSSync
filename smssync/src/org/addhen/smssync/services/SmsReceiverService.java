@@ -24,8 +24,11 @@ import java.lang.ref.WeakReference;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
+import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import android.app.Service;
 import android.content.Context;
@@ -66,6 +69,8 @@ public class SmsReceiverService extends Service {
 
     private SmsMessage sms;
 
+    private Intent statusIntent;
+
     private static final String CLASS_TAG = SmsReceiverService.class
             .getSimpleName();
 
@@ -93,7 +98,7 @@ public class SmsReceiverService extends Service {
         processSms = new ProcessSms(mContext);
 
         Prefs.loadPreferences(mContext);
-
+        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
 
@@ -182,9 +187,18 @@ public class SmsReceiverService extends Service {
         log("handleSmsReceived() messagesUuid: " + messagesUuid);
 
         // route the sms
-        processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
+        boolean sent = processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
                 messagesUuid);
-
+        if (!sent) {
+            Util.showFailNotification(this, messagesBody,
+                    getString(R.string.sending_failed));
+            statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
+            statusIntent.putExtra("failed", 0);
+            sendBroadcast(statusIntent);
+        } else {
+            Util.showFailNotification(this, messagesBody,
+                    getString(R.string.sending_succeeded));
+        }
     }
 
     /**

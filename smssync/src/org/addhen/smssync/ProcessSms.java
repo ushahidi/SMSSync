@@ -87,8 +87,6 @@ public class ProcessSms {
 
     private MessageSyncUtil messageSyncUtil;
 
-    private Intent statusIntent;
-
     private int PENDING = 0;
 
     private int TASK = 1;
@@ -97,7 +95,7 @@ public class ProcessSms {
         this.context = context;
         smsMap = new HashMap<String, String>();
         model = new SyncUrlModel();
-        statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
+
     }
 
     /**
@@ -120,8 +118,6 @@ public class ProcessSms {
 
         // is SMSSync service running?
         if (!Prefs.enabled || !Util.isConnected(context)) {
-            Util.showFailNotification(context, messagesBody,
-                    context.getString(R.string.sending_failed));
             return posted;
         }
 
@@ -141,8 +137,6 @@ public class ProcessSms {
                     if (!posted) {
                         // Note: HTTP Error code or custom error message
                         // will have been shown already
-                        Util.showFailNotification(context, messagesBody,
-                                context.getString(R.string.sending_failed));
 
                         // attempt to make a data connection to sync
                         // the failed messages.
@@ -151,8 +145,6 @@ public class ProcessSms {
 
                         postToSentBox(messagesFrom, messagesBody, messagesUuid,
                                 messagesTimestamp, PENDING);
-                        //Util.showFailNotification(context, messagesBody,
-                          //      context.getString(R.string.sending_succeeded));
                     }
 
                 }
@@ -163,8 +155,6 @@ public class ProcessSms {
                         syncUrl.getSecret());
                 Logger.log(CLASS_TAG, "routeMessages posted is " + posted);
                 if (!posted) {
-                    //Util.showFailNotification(context, messagesBody,
-                      //      context.getString(R.string.sending_failed));
 
                     // attempt to make a data connection so to sync
                     // the failed messages.
@@ -174,9 +164,6 @@ public class ProcessSms {
 
                     postToSentBox(messagesFrom, messagesBody, messagesUuid,
                             messagesTimestamp, PENDING);
-
-                 //   Util.showFailNotification(context, messagesBody,
-                   //         context.getString(R.string.sending_succeeded));
                 }
             }
         }
@@ -193,7 +180,7 @@ public class ProcessSms {
      * @param String messagesBody The message body. This is the message sent to
      *            the phone.
      */
-    public void routeSms(String from, String body, String timestamp, String uuid) {
+    public boolean routeSms(String from, String body, String timestamp, String uuid) {
         Logger.log(CLASS_TAG, "routeSms uuid: " + uuid);
 
         // is SMSSync service running?
@@ -212,10 +199,12 @@ public class ProcessSms {
             if (Prefs.autoDelete) {
                 delSmsFromInbox(body, from);
             }
-
+            return true;
         } else {
             postToPendingBox(from, body, uuid, timestamp);
         }
+
+        return false;
 
     }
 
@@ -479,9 +468,7 @@ public class ProcessSms {
         SentMessagesUtil.smsMap
                 .put("messagesType", String.valueOf(messageType));
 
-        int status = SentMessagesUtil.processSentMessages(context);
-        statusIntent.putExtra("sentstatus", status);
-        //context.sendBroadcast(statusIntent);
+        SentMessagesUtil.processSentMessages(context);
 
     }
 
@@ -499,12 +486,7 @@ public class ProcessSms {
         Util.smsMap.put("messagesDate", date);
         Util.smsMap.put("messagesUuid", uuid);
         new PendingMessages().showMessages();
-
-        int status = MessageSyncUtil.processMessages();
-        statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
-        statusIntent.putExtra("failed", status);
-        //context.sendBroadcast(statusIntent);
-
+        MessageSyncUtil.processMessages();
     }
 
 }
