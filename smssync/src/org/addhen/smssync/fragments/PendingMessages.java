@@ -644,51 +644,6 @@ public class PendingMessages
 
     /**
      * This will refresh content of the listview aka the pending messages when
-     * smssync successfully syncs pending messages.
-     */
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                int status =
-                        intent.getIntExtra("syncstatus", 3);
-                int f =
-                        intent.getIntExtra("fail", 0);
-                int s =
-                        intent.getIntExtra("success", 0);
-                int t =
-                        intent.getIntExtra("total", 0);
-                log("broadcastReceiver onReceive status: " + status);
-                if
-                (status == 0) {
-                    refreshState = false;
-                    updateRefreshStatus();
-                    mHandler.post(mUpdateListView);
-                    Util.showFailNotification(getActivity(),
-                            getString(R.string.sent_messages),
-                            getString(R.string.sending_succeeded)); //
-                    toastLong("Total of " + t + " messages where syncd. " + s +
-                            " Successfully syncd and " + f + " failed");
-                } else if (status == 1) {
-                    refreshState = false;
-                    updateRefreshStatus();
-                    mHandler.post(mUpdateListView);
-                    toastLong(R.string.sync_failed);
-                } else if (status == 2) {
-                    refreshState = false;
-                    updateRefreshStatus();
-                    toastLong(R.string.no_messages_to_sync);
-                }
-                if (syncPendingMessagesServiceIntent != null) {
-                    getActivity().stopService(syncPendingMessagesServiceIntent);
-                }
-            }
-        }
-    };
-
-    /**
-     * This will refresh content of the listview aka the pending messages when
      * smssync fail to sync pending messages.
      */
     private BroadcastReceiver failedReceiver = new BroadcastReceiver() {
