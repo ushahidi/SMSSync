@@ -4,6 +4,24 @@
 
 # Current Release
 
+* Released June 27<sup>th</sup>, 2013
+* Version [v2.3(https://github.com/ushahidi/SMSSync/tree/v2.3)
+
+### Changelog
+
+* Feature:
+  * Manually synchronizing pending messages now shows a progress bar.
+  * Added ability to cancel a progressive synchronization.
+  * Added user agent header to all HTTP requests.
+
+* Bug:
+  * Fix crashes when synchronizing huge pending messages
+  * Fix incorrect date display in sent inbox.
+  * Fix duplicate reply responses.
+
+
+# Previous releases
+
 * Released March 20<sup>th</sup>, 2013
 * Version [v2.0.2](https://github.com/ushahidi/SMSSync/tree/v2.0.2)
 
@@ -24,7 +42,6 @@
   * Fix ID issue. Now uses UUID instead. See [#60](https://github.com/ushahidi/SMSSync/issues/60).
   * Fix issue with auto sync failing.
 
-# Previous releases
 
 * Released October 22<sup>nd</sup>, 2012
 * Version [v2.0.1](https://github.com/ushahidi/SMSSync/tree/v2.0.1)
