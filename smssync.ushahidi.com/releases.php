@@ -90,19 +90,18 @@
 <li>Added RegExp support to keyword filtering.</li>
 <li>Added more useful HTTP and server error messages</li>
 <li>Simplified the actionbar menu. Only show the relevant menus</li>
-<li>Updated notification code to make use the notification.compact library</li>
+<li>Updated notification code to make use of the notification.compact library</li>
 <li>
-<p>Add Urkainian language</p>
+<p>Add Russian, Ukrainian, Belarusian languages</p>
 </li>
 <li>
 <p>Bug:</p>
 </li>
-<li>Fix wifi lock issue <a href="https://github.com/ushahidi/SMSSync/issues/56">#56</a></li>
+<li>Fix wifi lock issue. See <a href="https://github.com/ushahidi/SMSSync/issues/56">#56</a></li>
 <li>Improved wording and typos in the strings file</li>
 <li>Disable excessive "no task enabled" notifications</li>
-<li>Upgrade abs library to 4.2.0</li>
-<li>Fix ID issue <a href="https://github.com/ushahidi/SMSSync/issues/60">#60</a>. Now uses UUID instead</li>
-<li>Fix issue with auto sync failing</li>
+<li>Fix ID issue. Now uses UUID instead. See <a href="https://github.com/ushahidi/SMSSync/issues/60">#60</a>.</li>
+<li>Fix issue with auto sync failing.</li>
 </ul>
 <h1>Previous releases</h1>
 <ul>
@@ -115,7 +114,7 @@
 <p>Feature:</p>
 <ul>
 <li>Resizable widgets to fit on most screens.</li>
-<li>Upgraded ABS library to 4.2.2.</li>
+<li>Upgraded ABS library to 4.2.0.</li>
 <li>Added Korean translation.</li>
 </ul>
 </li>
@@ -245,8 +244,7 @@
 <li>Scheduler automatically syncs pending messages to the configured Callback URL.</li>
 <li>Now sends out messages from the configured callback URL as text message.</li>
 <li>Imports messages from Android messages app inbox for synchronizing to the configured callback URL.</li>
-<li>Added context menu for deleting or synchronizing pending messages. <br />
-</li>
+<li>Added context menu for deleting or synchronizing pending messages.   </li>
 </ul>
 </li>
 <li>
@@ -304,14 +302,14 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 19-03-2013
+                Generated: 26-06-2013
             </div>
             <div class="span4">
-                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+                Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>
             </div>
             <div class="span4">
                 <p class="pull-right">
-                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com"><img src="images/ushahidi-logo.png"><span>Ushahidi</span</a>
                 </p>
             </div>
         </div>  

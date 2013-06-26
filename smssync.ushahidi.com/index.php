@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; char.uset=UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>SMSSync by Ushahidi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="SMSSync the free and open source SMS gateway for Android">
@@ -27,13 +27,8 @@
 <script src="libs/js/google-code-prettify/prettify.js"></script>
 
 <script src="libs/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript">
 
-    $(function() {
-        $('#myCarousel').carousel();
-    });
-</script>
-</head>
+<p></head>
 <body style="padding-top:40px;" data-spy="scroll" onload="prettyPrint()"></p>
 <!-- nav bar -->
 
@@ -50,7 +45,7 @@
             </div>
             <div class="nav-collapse subnav-collapse">
                 <ul class="nav">
-                    <li class="active"><a href="index">Home</a></li>
+                    <li><a href="index">Home</a></li>
                     <li><a href="releases">Releases</a></li>
                     <li><a href="download">Download</a></li>
                     <li><a href="howto">Configure</a></li>
@@ -69,41 +64,13 @@
 <!-- header starts -->
 
 <div class="container">
-    <div class="row-fluid">
-        <div class="span6">
-            <br/><br />
-            <h4>The free and open source SMS gateway for Android</h4>
-            <p>It's one of the <strong><em>best</em></strong> SMS gateways for Android
-            <p>The app is available today on the Android market. You can download it on your phone by scanning the QR code below.</p>
-            <div class="thumbnails">
-                <img class="thumbnail" width="150" src="http://qr.kaywa.com/?s=8&d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync" alt="Scan to download SMSSync" title="Scan to download SMSSync"/>
-            </div>
-        </div>
-        <div class="span6">
-            <div id="myCarousel" class="carousel slide slid">
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <img src="images/promo/tablet_phone.png" alt="manage Sync URL" title="manage Sync URL">
-                    </div>
-                
-                    <div class="item">
-                        <img src="images/promo/pending.png" alt="pending" title="Pending Messages">
-                    </div>
-                
-                    <div class="item">
-                        <img src="images/promo/import.png" alt="import sms" title="Import SMS">
-                    </div>
-                
-                    <div class="item">
-                        <img src="images/promo/settings.png" alt="settings" title="Settings">
-                    </div>
-                </div>
-
-            </div>
-        </div>
+    <div class="hero-unit">
+        <h2>The free and open source SMS gateway for Android</h2>
     </div>
 </div>
+
 <!-- header ends -->
+
 <!-- body starts -->
 
 <div class="container">
@@ -115,9 +82,9 @@
     </div>
     <div class="row"><!--start row-->
         <div class="span4">
-                <h3>What is it</h3>
+                <h3>What is it?</h3>
                 <p>
-                    SMSSync is a simple, yet powerful SMS to HTTP sync utility,that turns any Android phone into a local SMS gateway by sending incoming messages(SMS) to a configured URL(web service).
+                    SMSSync is a simple, yet powerful SMS to HTTP sync utility that turns any Android phone into a local SMS gateway by sending incoming messages(SMS) to a configured URL (web service).
                 </p>
             </div>
             <div class="span4"> 
@@ -131,7 +98,7 @@
             </div> 
             <div class="span4"> 
                 <h3>Participation</h3> 
-                <p>There are a variety of ways to actively participate in the project. These range from writing documentation for the project to  translating the app into various other languages. If you are a developer and want to help write code for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue tracker</a> on github.
+                <p>There are a variety of ways to actively participate in the project. These range from writing documentation for the project to translating the app into other languages. If you are a developer and want to help write code for the project, feel free to browse through our <a href="https://github.com/ushahidi/SMSSync/issues/">issue tracker</a> on github.
                 </p>
             </div>
         </div><!--end row-->
@@ -139,7 +106,7 @@
     <section id="project-status">
         <div class="row"><!--start row-->
             <div class="span4">
-                <h3>Release status</h3>
+                <h3>Release Status</h3>
                 <p>
                     <strong>Public release:</strong>
                         <ul>
@@ -163,23 +130,20 @@
             <div class="span4"> 
                 <h3>Tools</h3>
                 <p>
-                    SMSSync uses <a href="http://git-scm.com/">GIT</a> for source control management and the code 
-                    is hosted on <a href="https://github.com/ushahidi/SMSSync/">github.com.</a> 
+                    SMSSync uses <a href="http://git-scm.com/">GIT</a> for source control management and the code is hosted on <a href="https://github.com/ushahidi/SMSSync/">github.com.</a> 
                 </p>
                 <p>
-                    It uses <a href="http://github.com">Github</a> 
-                    for project management and for tracking 
-                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. Transifex, the free and open source localization tool, is used for translations.
+                    It uses <a href="http://github.com">Github</a> for project management and for tracking 
+                    <a href="https://github.com/ushahidi/SMSSync/issues/">bugs and issues</a>. <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">Transifex</a>, the free and open source localization tool, is used for translations.
                 </p>
             </div>
             <div class="span4"> 
                 <h3>Translations</h3>
                 <p>
-                    SMSSync, as of now, has been completely translated into 5 languages. We use transifex for hosting our strings and to make translation much easier. 
+                    SMSSync, as of now, has been completely translated into 5 languages. We use Transifex for hosting our strings and to make translation much easier. 
                     <p>To help translate SMSSync into other languages, simply headover to 
                     <a href="https://www.transifex.net/projects/p/smssync/resource/stringsxml/">transifex.net</a>, 
-                    add a language if it's not there or contribute to the uncompleted
-                    translations.
+                    add a language if it's not there or contribute to the incomplete translations.
                 </p>            
             </div> 
         </div><!--end row-->
@@ -190,14 +154,14 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 22-10-2012
+                Generated: 26-06-2013
             </div>
             <div class="span4">
-                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+                Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>
             </div>
             <div class="span4">
                 <p class="pull-right">
-                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com"><img src="images/ushahidi-logo.png"><span>Ushahidi</span</a>
                 </p>
             </div>
         </div>  

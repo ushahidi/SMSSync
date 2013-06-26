@@ -261,14 +261,14 @@ You can either configure the app to automatically or manually sync these failed 
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 19-03-2013
+                Generated: 26-06-2013
             </div>
             <div class="span4">
-                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+                Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>
             </div>
             <div class="span4">
                 <p class="pull-right">
-                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com"><img src="images/ushahidi-logo.png"><span>Ushahidi</span</a>
                 </p>
             </div>
         </div>  
