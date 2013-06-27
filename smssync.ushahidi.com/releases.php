@@ -52,7 +52,7 @@
                     <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
-                    <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
+                    <li><a href="https://wiki.ushahidi.com/display/forums/Ushahidi+Forums">Support</a></li>
                 </ul>
             </div>
         </div>
@@ -80,32 +80,59 @@
 
 <h1>Current Release</h1>
 <ul>
+<li>Released June 27<sup>th</sup>, 2013</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.3">v2.3</a></li>
+</ul>
+<h3>Changelog</h3>
+<ul>
+<li>
+<p>Feature:</p>
+<ul>
+<li>Manually synchronizing pending messages now shows a progress bar.</li>
+<li>Added ability to cancel a progressive synchronization.</li>
+<li>Added user agent header to all HTTP requests.</li>
+</ul>
+</li>
+<li>
+<p>Bug:</p>
+<ul>
+<li>Fix crashes when synchronizing huge pending messages</li>
+<li>Fix incorrect date display in sent inbox</li>
+<li>Fix duplicate reply responses.</li>
+</ul>
+</li>
+</ul>
+<h1>Previous releases</h1>
+<ul>
 <li>Released March 20<sup>th</sup>, 2013</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.2">v2.0.2</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
-<li>Feature:</li>
+<li>
+<p>Feature:</p>
+<ul>
 <li>Show confirmation prompt when attempting to import SMS</li>
 <li>Added RegExp support to keyword filtering.</li>
 <li>Added more useful HTTP and server error messages</li>
 <li>Simplified the actionbar menu. Only show the relevant menus</li>
 <li>Updated notification code to make use of the notification.compact library</li>
-<li>
-<p>Add Russian, Ukrainian, Belarusian languages</p>
+<li>Add Russian, Ukrainian, Belarusian languages</li>
+</ul>
 </li>
 <li>
 <p>Bug:</p>
-</li>
+<ul>
 <li>Fix wifi lock issue. See <a href="https://github.com/ushahidi/SMSSync/issues/56">#56</a></li>
 <li>Improved wording and typos in the strings file</li>
 <li>Disable excessive "no task enabled" notifications</li>
 <li>Fix ID issue. Now uses UUID instead. See <a href="https://github.com/ushahidi/SMSSync/issues/60">#60</a>.</li>
 <li>Fix issue with auto sync failing.</li>
 </ul>
-<h1>Previous releases</h1>
-<ul>
-<li>Released October 22<sup>nd</sup>, 2012</li>
+</li>
+<li>
+<p>Released October 22<sup>nd</sup>, 2012</p>
+</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.1">v2.0.1</a></li>
 </ul>
 <h3>Changelog</h3>
@@ -302,7 +329,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 26-06-2013
+                Generated: 27-06-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>

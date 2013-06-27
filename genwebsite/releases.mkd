@@ -5,19 +5,19 @@
 # Current Release
 
 * Released June 27<sup>th</sup>, 2013
-* Version [v2.3(https://github.com/ushahidi/SMSSync/tree/v2.3)
+* Version [v2.3](https://github.com/ushahidi/SMSSync/tree/v2.3)
 
 ### Changelog
 
 * Feature:
-  * Manually synchronizing pending messages now shows a progress bar.
-  * Added ability to cancel a progressive synchronization.
-  * Added user agent header to all HTTP requests.
+    * Manually synchronizing pending messages now shows a progress bar.
+    * Added ability to cancel a progressive synchronization.
+    * Added user agent header to all HTTP requests.
 
 * Bug:
-  * Fix crashes when synchronizing huge pending messages
-  * Fix incorrect date display in sent inbox
-  * Fix duplicate reply responses.
+    * Fix crashes when synchronizing huge pending messages
+    * Fix incorrect date display in sent inbox
+    * Fix duplicate reply responses.
 
 
 # Previous releases
@@ -28,19 +28,19 @@
 ### Changelog
 
 * Feature:
-  * Show confirmation prompt when attempting to import SMS
-  * Added RegExp support to keyword filtering.
-  * Added more useful HTTP and server error messages
-  * Simplified the actionbar menu. Only show the relevant menus
-  * Updated notification code to make use of the notification.compact library
-  * Add Russian, Ukrainian, Belarusian languages
+    * Show confirmation prompt when attempting to import SMS
+    * Added RegExp support to keyword filtering.
+    * Added more useful HTTP and server error messages
+    * Simplified the actionbar menu. Only show the relevant menus
+    * Updated notification code to make use of the notification.compact library
+    * Add Russian, Ukrainian, Belarusian languages
 
 * Bug:
-  * Fix wifi lock issue. See [#56](https://github.com/ushahidi/SMSSync/issues/56)
-  * Improved wording and typos in the strings file
-  * Disable excessive "no task enabled" notifications
-  * Fix ID issue. Now uses UUID instead. See [#60](https://github.com/ushahidi/SMSSync/issues/60).
-  * Fix issue with auto sync failing.
+    * Fix wifi lock issue. See [#56](https://github.com/ushahidi/SMSSync/issues/56)
+    * Improved wording and typos in the strings file
+    * Disable excessive "no task enabled" notifications
+    * Fix ID issue. Now uses UUID instead. See [#60](https://github.com/ushahidi/SMSSync/issues/60).
+    * Fix issue with auto sync failing.
 
 
 * Released October 22<sup>nd</sup>, 2012

@@ -52,7 +52,7 @@
                     <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
-                    <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
+                    <li><a href="https://wiki.ushahidi.com/display/forums/Ushahidi+Forums">Support</a></li>
                 </ul>
             </div>
         </div>
@@ -64,13 +64,41 @@
 <!-- header starts -->
 
 <div class="container">
-    <div class="hero-unit">
-        <h2>The free and open source SMS gateway for Android</h2>
+    <div class="row-fluid">
+        <div class="span6">
+            <br/><br />
+            <h4>The free and open source SMS gateway for Android</h4>
+            <p>It's one of the <strong><em>best</em></strong> SMS gateways for Android
+            <p>The app is available today on the Android market. You can download it on your phone by scanning the QR code below.</p>
+            <div class="thumbnails">
+                <img class="thumbnail" width="150" src="http://qr.kaywa.com/?s=8&d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync" alt="Scan to download SMSSync" title="Scan to download SMSSync"/>
+            </div>
+        </div>
+        <div class="span6">
+            <div id="myCarousel" class="carousel slide slid">
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="images/promo/tablet_phone.png" alt="manage Sync URL" title="manage Sync URL">
+                    </div>
+                
+                    <div class="item">
+                        <img src="images/promo/pending.png" alt="pending" title="Pending Messages">
+                    </div>
+                
+                    <div class="item">
+                        <img src="images/promo/import.png" alt="import sms" title="Import SMS">
+                    </div>
+                
+                    <div class="item">
+                        <img src="images/promo/settings.png" alt="settings" title="Settings">
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
-
 <!-- header ends -->
-
 <!-- body starts -->
 
 <div class="container">
@@ -110,8 +138,8 @@
                 <p>
                     <strong>Public release:</strong>
                         <ul>
-                            <li>Released October 22<sup>nd</sup>, 2012</li>
-                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.0.1">v2.0.1</a></li>
+                            <li>Released June 27<sup>th</sup>, 2013</li>
+                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.3">v2.3</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -122,7 +150,7 @@
                     <strong>Development branch:</strong>
                         <ul>
                         <li>
-                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.0.2</li>
+                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.4</li>
                         </ul>
                         <a href="releases">More</a>
                 </p>
@@ -154,7 +182,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 26-06-2013
+                Generated: 27-06-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>
