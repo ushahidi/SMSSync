@@ -16,7 +16,7 @@
 
 * Bug:
   * Fix crashes when synchronizing huge pending messages
-  * Fix incorrect date display in sent inbox.
+  * Fix incorrect date display in sent inbox
   * Fix duplicate reply responses.
 
 
