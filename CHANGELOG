@@ -1,4 +1,17 @@
-2.0.2
+v2.3
+Feature:
+  * Manually synchronizing pending messages now shows a progress bar.
+  * Added ability to cancel a progressive synchronization.
+  * Added user agent header to all HTTP requests.
+
+Bug:
+  * Fix crashes when synchronizing huge pending messages
+  * Fix incorrect date display in sent inbox
+  * Fix duplicate reply responses.
+
+
+
+v2.0.2
 Feature:
   * Show confirmation prompt when attempting to import SMS
   * Added RegExp support to keyword filtering.
@@ -17,7 +30,7 @@ Bug:
 
 Bug:
 
-2.0.1
+v2.0.1
 Feature:
   * Resizable widgets to fit on most screens.
   * Upgraded ABS library to 4.2.0.
@@ -29,7 +42,7 @@ Bug:
   it to show up on the Google play store for most devices.
   
 
-2.0.0
+v2.0.0
 Feature:
   * Improved the UI. Optimized it to scale well on tablet devices.
   * Added the ability to manage multiple Sync URLs and the ability to sync messages to them.
@@ -43,19 +56,19 @@ Bug:
   * sent_timestamp variable  now sends the raw timestamp instead of the preformatted one. This is to allow the client to have control of the formatting.
   * Removed the characters contrains to Unique ID field.
 
-1.1.9
+v1.1.9
 Bug:
   * Fixed missing title
   * Reformated sent_timestamp to 13.11.11 14:59 instead of 11-13-11-02:59
   * Added 5 more languages - French, Japanese, Danish, Russian and Serbian
 
-1.0.9:
+v1.0.9:
 Bug:
   * Fixed HTTPS not working on some devices. 
   * Fixed sent_to variable not sending the device's number. 
   * Fixed formatting issue with sent_timestamp.
   
-1.0.8:
+v1.0.8:
 Feature:
   * Added filtering when importing SMS.
   * Added sent_to variable so the server can receive the phone number the SMS was sent to.
@@ -66,12 +79,12 @@ Bug:
   * Fixed issue with app widget not updating  view when pending messages are in the view.
   * Improved performance with syncing pending messages. 
 
-1.0.7:
+v1.0.7:
 Feature:
   * Added 5 new languages. Swahili, Dutch, Hungarian, German and Italian.
   * Added UTF-8 support when submitting messages.
     
-1.0.6
+v1.0.6
 Feature:
   * Added improvement that makes th battery consumption by the app.
   * Added the ability for enabled services to automatically start after the phone boots up.
@@ -87,7 +100,7 @@ Fixed:
   * Fixed a bug that when all messages are deleted, the app shows a failed message yet the messages are deleted.
   * Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service.
   
-1.0.5
+v1.0.5
 Feature:
   * Scheduler automatically Syncs pending messages to the configured Callback URL.
   * Now sends out messages from the configured callback URL as text message.
@@ -104,11 +117,11 @@ Known issue:
  * Scheduler doesn't refresh pending messages' list after it runs. The pending messages screen needs
    to be restarted. 
 
-1.0.4
+v1.0.4
 * Notification cannot be cleared untill SMSSync is stopped.
 * Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost.
 
-1.0.3
+v1.0.3
 * Downgraded to Android 1.6 so smssync works from 1.6 and above.
 * Now sms can be deleted from the sms inbox. This is a configurable option. 
 * Fixed issue with the secret variable.
