@@ -40,14 +40,14 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
      * @param counter
      * @param counterBgColor
      */
-    public PendingMessagesNavDrawerItem(String title, int iconRes, int counter,
-            SherlockFragmentActivity activity) {
-        super(NO_ITEM_ID, title, iconRes, counter, null, activity);
-    }
-
     public PendingMessagesNavDrawerItem(String title, int iconRes,
             SherlockFragmentActivity activity) {
-        super(NO_ITEM_ID, title, iconRes, NO_COUNTER, null, activity);
+        super(NO_ITEM_ID, title, iconRes, null, activity);
+    }
+
+    public PendingMessagesNavDrawerItem(String title, int iconRes, String counterBgColor,
+            SherlockFragmentActivity activity) {
+        super(NO_ITEM_ID, title, iconRes, counterBgColor, activity);
     }
 
     @Override

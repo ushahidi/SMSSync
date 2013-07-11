@@ -42,9 +42,9 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
      * @param counter
      * @param counterBgColor
      */
-    public BaseNavDrawerItem(int itemId, String title, int iconRes, int counter,
+    public BaseNavDrawerItem(int itemId, String title, int iconRes,
             String counterBgColor, SherlockFragmentActivity activity) {
-        super(itemId, title, iconRes, counter, counterBgColor);
+        super(itemId, title, iconRes, counterBgColor);
         mActivity = activity;
     }
 

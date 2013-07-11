@@ -39,7 +39,7 @@ public class NavDrawerItem extends Model {
     private int mItemId;
 
     // counter
-    protected int mCounter;
+    private int mCounter;
 
     // The counter background color
     protected String mCounterBgColor;
@@ -48,11 +48,10 @@ public class NavDrawerItem extends Model {
      * Creates a NavDrawerItem with the specific id, string resource id and
      * drawable resource id
      */
-    public NavDrawerItem(int itemId, String title, int iconRes, int counter, String counterBgColor) {
+    public NavDrawerItem(int itemId, String title, int iconRes, String counterBgColor) {
         mTitle = title;
         mIconRes = iconRes;
         mItemId = itemId;
-        mCounter = counter;
         mCounterBgColor = counterBgColor;
     }
 
@@ -61,6 +60,10 @@ public class NavDrawerItem extends Model {
      */
     public int getItemId() {
         return mItemId;
+    }
+
+    public void setCounter(int counter) {
+        this.mCounter = counter;
     }
 
     /**
