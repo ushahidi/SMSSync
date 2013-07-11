@@ -253,4 +253,21 @@
         <item name="android:padding">5dp</item>
     </style>
 
+    <style name="NavDrawerItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="NavDrawerList">
+        <item name="android:layout_width">240dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:background">#111</item>
+        <item name="android:choiceMode">singleChoice</item>
+    </style>
+
 </resources>
