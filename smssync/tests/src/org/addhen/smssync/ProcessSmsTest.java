@@ -49,7 +49,8 @@ public class ProcessSmsTest extends BaseTestCase {
     }
 
     @Override
-    public void tearDown() {
+    public void tearDown() throws Exception {
+        super.tearDown();
         processSms = null;
         from = null;
         body = null;

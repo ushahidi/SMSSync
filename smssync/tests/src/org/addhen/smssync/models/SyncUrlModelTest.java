@@ -20,11 +20,14 @@
 
 package org.addhen.smssync.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.addhen.smssync.database.Database;
+import org.addhen.smssync.database.ISyncUrlSchema;
 import org.addhen.smssync.test.BaseTestCase;
 
+import android.database.Cursor;
 import android.test.suitebuilder.annotation.SmallTest;
 
 /**
@@ -44,79 +47,126 @@ public class SyncUrlModelTest extends BaseTestCase {
         id = 1;
     }
 
+    /**
+     * Test adding a new sync url to the db
+     */
+    @SmallTest
+    public void testSave() {
+        // add demo sync url
+        syncUrl = new SyncUrlModel();
+        syncUrl.setKeywords("demo,ushahidi,smssync");
+        syncUrl.setSecret("demo");
+        syncUrl.setTitle("ushahidi demo");
+        syncUrl.setUrl("http://demo.ushahidi.com/smssync");
+        syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
+        syncUrl.listSyncUrl.add(syncUrl);
+
+        syncUrl.save();
+        // check if ushahidi demo was added to the database
+
+        final String selectionArgs[] = {
+                "ushahidi demo"
+        };
+        Cursor cursor = Database.mSyncUrlContentProvider.rawQuery("SELECT COUNT("
+                + ISyncUrlSchema.ID + ") FROM "
+                + ISyncUrlSchema.TABLE + " WHERE " + ISyncUrlSchema.TITLE + " =?", selectionArgs);
+
+        assertEquals("Ushahidi demo couldn't be added", 1, getDbCount(cursor));
+
+    }
+
+    /**
+     * Test updating an existing sync URL
+     */
+    @SmallTest
+    public void testUpdate() {
+        syncUrl = new SyncUrlModel();
+        // load item
+        Cursor cursors = Database.mSyncUrlContentProvider.query(ISyncUrlSchema.TABLE,
+                ISyncUrlSchema.COLUMNS, null, null,
+                ISyncUrlSchema.ID);
+
+        getEntity(cursors);
+        SyncUrlModel model = listSyncUrl.get(0);
+        model.setTitle("ushahidi demo updated");
+        syncUrl.update(model);
+        final String selectionArgs[] = {
+                "ushahidi demo updated"
+        };
+        Cursor cursor = Database.mSyncUrlContentProvider.rawQuery("SELECT COUNT("
+                + ISyncUrlSchema.ID + ") FROM "
+                + ISyncUrlSchema.TABLE + " WHERE " + ISyncUrlSchema.TITLE + " =?", selectionArgs);
+
+        assertEquals("Ushahidi demo updated couldn't be updated", 1, getDbCount(cursor));
+    }
+
+    /**
+     * Test making a Sync URL active
+     */
+    public void testUpdateStatus() {
+        syncUrl = new SyncUrlModel();
+
+        // load item
+        Cursor cursors = Database.mSyncUrlContentProvider.query(ISyncUrlSchema.TABLE,
+                ISyncUrlSchema.COLUMNS, null, null,
+                ISyncUrlSchema.ID);
+
+        getEntity(cursors);
+        SyncUrlModel model = listSyncUrl.get(0);
+        model.setStatus(1);
+        syncUrl.update(model);
+
+        final String selectionArgs[] = {
+                "1"
+        };
+        Cursor cursor = Database.mSyncUrlContentProvider.rawQuery("SELECT COUNT("
+                + ISyncUrlSchema.ID + ") FROM "
+                + ISyncUrlSchema.TABLE + " WHERE " + ISyncUrlSchema.STATUS + " =?", selectionArgs);
+
+        assertEquals("Ushahidi demo failed to be updated as active", 1, getDbCount(cursor));
+
+    }
+
     @SmallTest
     public void testLoad() {
-
         boolean status = syncUrl.load();
-        assertTrue("Load all saved sync URL", status);
+        assertTrue("Couldn't load all saved sync URL", status);
     }
 
     @SmallTest
     public void testLoadById() {
         listSyncUrl = syncUrl.loadById(id);
-        assertNotNull("Sync URL by ID " + id + " has been loaded", listSyncUrl);
+        assertNotNull("Couldn't Sync URL by ID " + id, listSyncUrl);
 
     }
 
     @SmallTest
     public void loadByStatusActive() {
         listSyncUrl = syncUrl.loadByStatus(1);
-        assertNotNull("Sync URL by status active", listSyncUrl);
+        assertNotNull("Couldn't load active Sync URL", listSyncUrl);
 
     }
 
     @SmallTest
     public void loadByStatusInActive() {
         listSyncUrl = syncUrl.loadByStatus(0);
-        assertNotNull("Sync URL by status inactive", listSyncUrl);
+        assertNotNull("Couldn't load inactive Sync URLs", listSyncUrl);
 
+    }
+
+    /**
+     * Test the total number of active or enabled Sync URLs.
+     */
+    @SmallTest
+    public void totalActiveSyncUrl() {
+        int count = Database.mSyncUrlContentProvider.totalActiveSyncUrl();
+        assetNotNullOrZero("There are no active SyncUrl", count);
     }
 
     @SmallTest
-    public boolean save() {
-        if (listSyncUrl != null && listSyncUrl.size() > 0) {
-            return Database.mSyncUrlContentProvider.addSyncUrl(listSyncUrl);
-        }
-        return false;
-    }
-
-    /**
-     * Update an existing sync URL
-     * 
-     * @param syncUrl
-     * @return boolean
-     */
-    public boolean update(SyncUrlModel syncUrl) {
-        if (syncUrl != null) {
-            return Database.mSyncUrlContentProvider.updateSyncUrl(syncUrl);
-        }
-        return false;
-    }
-
-    /**
-     * Update status of a sync URL
-     * 
-     * @param int stauts The 0 for inactive and 1 for active. This determine
-     *        whether the sync URL is active or not.
-     * @param int id The unique id of the sync URL to update its status.
-     * @return
-     */
-    public boolean updateStatus(SyncUrlModel syncUrl) {
-        return Database.mSyncUrlContentProvider.updateStatus(syncUrl);
-    }
-
-    /**
-     * The total number of active or enabled Sync URLs.
-     * 
-     * @return int The total number of Sync URLs that have been enabled.
-     */
-    public int totalActiveSynUrl() {
-        return Database.mSyncUrlContentProvider.totalActiveSyncUrl();
-    }
-
     public void testDeleteAllSyncUrl() {
         boolean status = syncUrl.deleteAllSyncUrl();
-        assertTrue("All sync URL have been deleted", status);
+        assertTrue("All sync URL failed to be deleted", status);
     }
 
     /**
@@ -127,11 +177,45 @@ public class SyncUrlModelTest extends BaseTestCase {
      */
     public void testDeleteSyncUrlById() {
         boolean status = syncUrl.deleteSyncUrlById(id);
-        assertTrue("Deleted sync URL with ID " + id, status);
+        assertTrue("couldn't delete sync url with id " + id, status);
     }
 
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
     }
+
+    private int getDbCount(Cursor cursor) {
+        int count = 0;
+        try {
+
+            cursor.moveToFirst();
+            count = cursor.getInt(0);
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+
+        return count;
+    }
+
+    private void getEntity(final Cursor cursor) {
+        listSyncUrl = new ArrayList<SyncUrlModel>();
+        if (cursor != null) {
+            try {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    SyncUrlModel syncUrl = Database.mSyncUrlContentProvider.cursorToEntity(cursor);
+                    listSyncUrl.add(syncUrl);
+                    cursor.moveToNext();
+                }
+            } finally {
+                if (cursor != null)
+                    cursor.close();
+            }
+
+        }
+
+    }
+
 }

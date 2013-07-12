@@ -251,7 +251,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
     @SuppressWarnings("unchecked")
     @Override
-    protected SyncUrlModel cursorToEntity(Cursor cursor) {
+    public SyncUrlModel cursorToEntity(Cursor cursor) {
         SyncUrlModel syncUrl = new SyncUrlModel();
 
         int idIndex;

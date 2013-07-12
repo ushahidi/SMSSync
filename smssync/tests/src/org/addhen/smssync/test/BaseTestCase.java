@@ -3,6 +3,8 @@ package org.addhen.smssync.test;
 
 import java.util.Collection;
 
+import org.addhen.smssync.database.Database;
+
 import android.test.AndroidTestCase;
 
 /**
@@ -12,6 +14,26 @@ import android.test.AndroidTestCase;
  * @author eyedol
  */
 public class BaseTestCase extends AndroidTestCase {
+
+    public static Database mDb;
+
+    @Override
+    public void setUp() throws Exception {
+
+        mDb = new Database(getContext());
+        mDb.open();
+        super.setUp();
+
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+
+        mDb.close();
+        mDb = null;
+        super.tearDown();
+
+    }
 
     /**
      * Assert not null or empty.
