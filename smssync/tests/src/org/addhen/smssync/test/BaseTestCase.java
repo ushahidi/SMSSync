@@ -3,7 +3,7 @@ package org.addhen.smssync.test;
 
 import java.util.Collection;
 
-import junit.framework.TestCase;
+import android.test.AndroidTestCase;
 
 /**
  * Base test class for handling all unit test that doesn't call any of Android's
@@ -11,7 +11,7 @@ import junit.framework.TestCase;
  * 
  * @author eyedol
  */
-public class BaseTestCase extends TestCase {
+public class BaseTestCase extends AndroidTestCase {
 
     /**
      * Assert not null or empty.
