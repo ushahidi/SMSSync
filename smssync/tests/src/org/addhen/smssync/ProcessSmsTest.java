@@ -58,10 +58,13 @@ public class ProcessSmsTest extends BaseTestCase {
         uuid = null;
         filterText = null;
     }
-
+    
+    @SmallTest
     public void testRouteSms() {
-        // processSms.routeSms(from, body, timestamp, uuid);
 
+        boolean routed = processSms.routeSms(from, body, timestamp, uuid);
+        assertTrue(routed);
+        
     }
 
     /**
@@ -79,5 +82,10 @@ public class ProcessSmsTest extends BaseTestCase {
     public void testFilterByKeywords() {
         boolean status = processSms.filterByKeywords(body, filterText);
         assertTrue("Passed testing filter by keywords", status);
+    }
+    
+    @SmallTest
+    public void testRouteSmsByKeyWord() {
+        
     }
 }
