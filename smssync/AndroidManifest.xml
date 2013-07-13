@@ -28,7 +28,7 @@
 
     <uses-sdk
         android:minSdkVersion="7"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="17" />
 
     <application
         android:name=".MainApplication"
@@ -57,7 +57,7 @@
 
         <!-- messages tab -->
         <activity
-            android:name=".activities.MessagesTabActivity"
+            android:name=".activities.MainActivity"
             android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
             android:label="@string/app_name"
             android:launchMode="singleTop" >

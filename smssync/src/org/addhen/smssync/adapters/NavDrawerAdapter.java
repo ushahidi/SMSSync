@@ -20,16 +20,16 @@
 
 package org.addhen.smssync.adapters;
 
-import static org.addhen.smssync.models.NavDrawerItem.NO_COUNTER;
 import static org.addhen.smssync.models.NavDrawerItem.NO_ICON_RES_ID;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
 
 /**
  * @author eyedol
@@ -63,9 +63,9 @@ public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
 
         }
 
-        if (getItem(position).getCounter() != NO_COUNTER) {
-            widget.counter.setText(getItem(position).getCounter());
-        }
+       // if (getItem(position).getCounter() != NO_COUNTER) {
+         //   widget.counter.setText(getItem(position).getCounter());
+       // }
 
         if (getItem(position).getCounterBgColor() != null) {
             widget.counter.setBackgroundColor(Color.parseColor(getItem(position)

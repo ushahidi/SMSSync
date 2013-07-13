@@ -30,6 +30,7 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.views.View;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -48,7 +49,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -140,11 +140,19 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         if (listViewId != 0)
             listView = (ListView) findViewById(listViewId);
 
-        view = Objects.createInstance(viewClass, SherlockActivity.class, this);
+        view = Objects.createInstance(viewClass, Activity.class, this);
 
-        if (drawerLayout != null)
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        if (drawerLayout != null) {
+
             // default deployment is not set
             createNavDrawer();
+            if (savedInstanceState == null) {
+                selectItem(0);
+            }
+        }
 
     }
 
@@ -213,6 +221,22 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+
+                if (drawerLayout != null) {
+
+                    if (drawerLayout.isDrawerOpen(listView)) {
+                        drawerLayout.closeDrawer(listView);
+                    } else {
+                        drawerLayout.openDrawer(listView);
+                    }
+
+                } else {
+                    finish();
+                }
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
