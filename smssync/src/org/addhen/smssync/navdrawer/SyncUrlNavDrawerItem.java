@@ -33,20 +33,12 @@ public class SyncUrlNavDrawerItem extends BaseNavDrawerItem {
     private static final String TAG = "sync";
 
     /**
-     * @param itemId
      * @param title
      * @param iconRes
-     * @param counter
-     * @param counterBgColor
      */
     public SyncUrlNavDrawerItem(String title, int iconRes,
             SherlockFragmentActivity activity) {
-        super(NO_ITEM_ID, title, iconRes, null, activity);
-    }
-
-    public SyncUrlNavDrawerItem(String title, int iconRes, String counterBgColor,
-            SherlockFragmentActivity activity) {
-        super(NO_ITEM_ID, title, iconRes, counterBgColor, activity);
+        super(title, iconRes, activity);
     }
 
     @Override
@@ -55,9 +47,6 @@ public class SyncUrlNavDrawerItem extends BaseNavDrawerItem {
         showFragment(TAG);
     }
 
-    /* (non-Javadoc)
-     * @see org.addhen.smssync.navdrawer.BaseNavDrawerItem#setCounter()
-     */
     @Override
     public void setCounter() {
         mCounter = new SyncUrlModel().totalActiveSynUrl();

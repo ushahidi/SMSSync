@@ -25,53 +25,28 @@ package org.addhen.smssync.models;
  */
 public class NavDrawerItem extends Model {
 
-    public static int NO_ITEM_ID = -1;
-
-    public static int NO_COUNTER = -1;
-
     public static int NO_ICON_RES_ID = -1;
 
     // Resource id for the title string
     protected String mTitle;
     // Resource id for the icon drawable
     protected int mIconRes;
-    // ID for the item for remembering which item was selected
-    private int mItemId;
 
     // counter
     protected int mCounter;
 
-    // The counter background color
-    protected String mCounterBgColor;
-
     /**
-     * Creates a NavDrawerItem with the specific id, string resource id and
-     * drawable resource id
+     * Creates a NavDrawerItem with the title, string resource id
      */
-    public NavDrawerItem(int itemId, String title, int iconRes, String counterBgColor) {
+    public NavDrawerItem(String title, int iconRes) {
         mTitle = title;
         mIconRes = iconRes;
-        mItemId = itemId;
-        mCounterBgColor = counterBgColor;
         mCounter = 0;
     }
 
-    /**
-     * Get's the item's unique ID
-     */
-    public int getItemId() {
-        return mItemId;
-    }
-
-    public void setCounter(int counter) {
-        this.mCounter = counter;
-    }
-
-    /**
-     * Returns the item's string representation (used by ArrayAdapter.getView)
-     */
     public String toString() {
-        return "";
+        return "NavDrawerItem{title:" + mTitle + ", iconRes" + mIconRes + ", counter:" + mCounter
+                + "}";
     }
 
     /**
@@ -95,10 +70,6 @@ public class NavDrawerItem extends Model {
      */
     public int getCounter() {
         return mCounter;
-    }
-
-    public String getCounterBgColor() {
-        return mCounterBgColor;
     }
 
     @Override

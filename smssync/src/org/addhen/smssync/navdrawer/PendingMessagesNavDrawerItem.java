@@ -41,12 +41,7 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
      */
     public PendingMessagesNavDrawerItem(String title, int iconRes,
             SherlockFragmentActivity activity) {
-        super(NO_ITEM_ID, title, iconRes, null, activity);
-    }
-
-    public PendingMessagesNavDrawerItem(String title, int iconRes, String counterBgColor,
-            SherlockFragmentActivity activity) {
-        super(NO_ITEM_ID, title, iconRes, counterBgColor, activity);
+        super(title, iconRes, activity);
     }
 
     @Override
@@ -57,6 +52,6 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        mCounter  = new MessagesModel().totalMessages();
+        mCounter = new MessagesModel().totalMessages();
     }
 }

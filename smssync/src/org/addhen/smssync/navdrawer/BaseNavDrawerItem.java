@@ -40,7 +40,7 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     protected Fragment fragment;
 
     protected FragmentManager fragmentManager;
-    
+
     protected int count;
 
     /**
@@ -50,14 +50,13 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
      * @param counter
      * @param counterBgColor
      */
-    public BaseNavDrawerItem(int itemId, String title, int iconRes,
-            String counterBgColor, SherlockFragmentActivity activity) {
-        super(itemId, title, iconRes, counterBgColor);
+    public BaseNavDrawerItem(String title, int iconRes, SherlockFragmentActivity activity) {
+        super(title, iconRes);
         mActivity = activity;
     }
 
     protected abstract void onSelectItem();
-    
+
     public abstract void setCounter();
 
     public void selectItem() {
@@ -88,7 +87,7 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     protected void launchActivity(Intent intent) {
         mActivity.startActivity(intent);
     }
-    
+
     public int getCounters() {
         return count;
     }
