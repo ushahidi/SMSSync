@@ -23,7 +23,6 @@ package org.addhen.smssync.fragments;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.Settings;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
@@ -114,14 +113,10 @@ public class SentMessages
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-
+        
         if (item.getItemId() == R.id.delete) {
             refresh = item;
             performDeleteAll();
-        } else if (item.getItemId() == R.id.settings) {
-            intent = new Intent(getActivity(), Settings.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

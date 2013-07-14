@@ -27,7 +27,6 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
-import org.addhen.smssync.Settings;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
@@ -36,8 +35,8 @@ import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.tasks.TaskCanceled;
-import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.State;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -240,9 +239,6 @@ public class PendingMessages
             importAllSms();
         } else if (item.getItemId() == R.id.delete) {
             performDeleteAll();
-        } else if (item.getItemId() == R.id.settings) {
-            intent = new Intent(getActivity(), Settings.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
