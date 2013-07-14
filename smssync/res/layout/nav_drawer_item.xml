@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu_posts_btn"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/activatedBackgroundIndicator"
     android:orientation="horizontal" >
 
     <TextView
@@ -11,6 +12,9 @@
 
     <TextView
         android:id="@+id/nav_drawer_counter"
-        style="@style/TextView.Value" />
+        style="@style/TextView.NavDrawerCounter"
+        android:layout_alignBaseline="@+id/nav_drawer_title"
+        android:layout_alignBottom="@+id/nav_drawer_title"
+        android:layout_alignParentRight="true" />
 
-</LinearLayout>
+</RelativeLayout>

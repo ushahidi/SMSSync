@@ -256,7 +256,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                 getString(R.string.pending_messages),
                 R.drawable.pending, BaseActivity.this));
 
-        navDrawerAdapter.addItem(new SentMessagesNavDrawerItem(getString(R.string.sent_messages),
+        navDrawerAdapter.addItem(new SentMessagesNavDrawerItem(
+                getString(R.string.sent_messages),
                 R.drawable.sent, BaseActivity.this));
 
         navDrawerAdapter.addItem(new SyncUrlNavDrawerItem(getString(R.string.sync_url),
@@ -269,21 +270,23 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         @Override
         public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
             selectItem(position);
+            view.getFocusables(position);
+            view.setSelected(true);
         }
 
     }
 
     protected void selectItem(int position) {
 
-        // update selected item and title, then close the drawer
-        listView.setItemChecked(position, true);
-
         BaseNavDrawerItem item = navDrawerAdapter.getItem(position);
 
-        // Perform selection only if item is selected
-        if (!item.isSelected())
+        // Perform selection only if item is not selected
+        if (!item.isSelected()) {
             item.selectItem();
+        }
 
+        // update selected item and title, then close the drawer
+        listView.setItemChecked(position, true);
         drawerLayout.closeDrawer(listView);
     }
 

@@ -26,6 +26,7 @@ import org.addhen.smssync.models.NavDrawerItem;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -33,7 +34,14 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * @author eyedol
  */
 public abstract class BaseNavDrawerItem extends NavDrawerItem {
+
     protected SherlockFragmentActivity mActivity;
+
+    protected Fragment fragment;
+
+    protected FragmentManager fragmentManager;
+    
+    protected int count;
 
     /**
      * @param itemId
@@ -49,6 +57,8 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     }
 
     protected abstract void onSelectItem();
+    
+    public abstract void setCounter();
 
     public void selectItem() {
         onSelectItem();
@@ -69,12 +79,17 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
         return true;
     };
 
-    protected void showFragment(Fragment fragment) {
-        FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+    protected void showFragment(String tag) {
+        fragmentManager = mActivity.getSupportFragmentManager();
+        fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
+                .replace(R.id.content_frame, fragment, tag).commit();
     }
 
     protected void launchActivity(Intent intent) {
         mActivity.startActivity(intent);
+    }
+    
+    public int getCounters() {
+        return count;
     }
 }

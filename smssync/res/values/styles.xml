@@ -10,7 +10,13 @@
 	have questions regarding the use of this file, please contact Ushahidi developers 
 	at team@ushahidi.com.
 -->
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Theme.SmsSync" parent="Theme.Sherlock">
+        <item name="android:listChoiceIndicatorSingle">@color/status_done</item>
+        <item name="android:attr/activatedBackgroundIndicator">@null</item>
+        <item name="activatedBackgroundIndicator">@null</item>
+    </style>
 
     <style name="WidgetStyle">
         <item name="android:background">@drawable/appwidget_bg</item>
@@ -125,7 +131,8 @@
     </style>
 
     <style name="TextView.Value">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:color">@color/text_light</item>
     </style>
 
     <style name="TextView.Empty">
@@ -260,6 +267,13 @@
         <item name="android:padding">10dp</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:gravity">center_vertical</item>
+    </style>
+    
+    <style name="TextView.NavDrawerCounter">
+        <item name="android:textSize">14sp</item>
+        <item name="android:color">@color/text_light</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="NavDrawerList">

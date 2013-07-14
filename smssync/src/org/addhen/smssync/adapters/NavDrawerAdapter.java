@@ -26,7 +26,6 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -54,7 +53,7 @@ public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
         } else {
             widget = (Widgets) convertView.getTag();
         }
-        widget.title.setText(this.getItem(position).getTitleRes());
+        widget.title.setText(getItem(position).getTitleRes());
 
         if (getItem(position).getIconRes() != NO_ICON_RES_ID) {
 
@@ -63,22 +62,10 @@ public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
 
         }
 
-       // if (getItem(position).getCounter() != NO_COUNTER) {
-         //   widget.counter.setText(getItem(position).getCounter());
-       // }
-
-        if (getItem(position).getCounterBgColor() != null) {
-            widget.counter.setBackgroundColor(Color.parseColor(getItem(position)
-                    .getCounterBgColor().trim()));
-        }
-
-        if (getItem(position).isSelected()) {
-            int bottom = convertView.getPaddingBottom();
-            int top = convertView.getPaddingTop();
-            int right = convertView.getPaddingRight();
-            int left = convertView.getPaddingLeft();
-            convertView.setBackgroundResource(R.drawable.nav_drawer_selected);
-            convertView.setPadding(left, top, right, bottom);
+        // set counter
+        getItem(position).setCounter();
+        if (getItem(position).getCounter() > 0) {
+            widget.counter.setText(String.valueOf(getItem(position).getCounter()));
         }
 
         return convertView;
@@ -91,7 +78,6 @@ public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
     @Override
     public void refresh() {
         // TODO Auto-generated method stub
-
     }
 
     private class Widgets {

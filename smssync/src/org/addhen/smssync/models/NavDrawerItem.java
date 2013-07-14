@@ -39,7 +39,7 @@ public class NavDrawerItem extends Model {
     private int mItemId;
 
     // counter
-    private int mCounter;
+    protected int mCounter;
 
     // The counter background color
     protected String mCounterBgColor;
@@ -53,6 +53,7 @@ public class NavDrawerItem extends Model {
         mIconRes = iconRes;
         mItemId = itemId;
         mCounterBgColor = counterBgColor;
+        mCounter = 0;
     }
 
     /**

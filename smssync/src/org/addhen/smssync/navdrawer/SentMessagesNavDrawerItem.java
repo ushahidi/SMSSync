@@ -21,8 +21,7 @@
 package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.fragments.SentMessages;
-
-import android.support.v4.app.Fragment;
+import org.addhen.smssync.models.SentMessagesModel;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -31,7 +30,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
 
-    Fragment fragment;
+    private static final String TAG = "sent";
 
     /**
      * @param itemId
@@ -51,14 +50,19 @@ public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
     }
 
     @Override
-    public boolean isSelected() {
-        return fragment instanceof SentMessages;
-    }
-
-    @Override
     protected void onSelectItem() {
         fragment = new SentMessages();
-        showFragment(fragment);
+        showFragment(TAG);
+    }
+
+    /* (non-Javadoc)
+     * @see org.addhen.smssync.navdrawer.BaseNavDrawerItem#setCounter()
+     */
+    @Override
+    public void setCounter() {
+       SentMessagesModel sentMessages = new SentMessagesModel();
+       sentMessages.load();
+       mCounter = sentMessages.listMessages.size();
     }
 
 }

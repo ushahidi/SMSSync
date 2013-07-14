@@ -16,4 +16,5 @@
     <color name="status_error">#ac4444</color>
     <color name="nav_drawer_selected_bg">#464646</color>
     <color name="nav_drawer_selected_bar">#8A1F03</color>
+    <color name="selectable_background">#79b255</color>
 </resources>

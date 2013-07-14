@@ -21,8 +21,7 @@
 package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.fragments.PendingMessages;
-
-import android.support.v4.app.Fragment;
+import org.addhen.smssync.models.MessagesModel;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -31,7 +30,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
 
-    Fragment fragment;
+    private static final String TAG = "pending";
 
     /**
      * @param itemId
@@ -51,14 +50,13 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
     }
 
     @Override
-    public boolean isSelected() {
-        return fragment instanceof PendingMessages;
+    protected void onSelectItem() {
+        fragment = new PendingMessages();
+        showFragment(TAG);
     }
 
     @Override
-    protected void onSelectItem() {
-        fragment = new PendingMessages();
-        showFragment(fragment);
+    public void setCounter() {
+        mCounter  = new MessagesModel().totalMessages();
     }
-
 }

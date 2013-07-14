@@ -3,7 +3,7 @@
 
     <item>
         <shape>
-            <solid android:color="@color/nav_drawer_selected_bar" />
+            <solid android:color="@color/status_done" />
         </shape>
     </item>
     <item android:left="8dp">

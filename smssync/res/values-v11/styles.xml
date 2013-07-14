@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SmsSync" parent="Theme.Sherlock">
+        <item name="android:listChoiceIndicatorSingle">@color/status_done</item>
+        <item name="android:attr/activatedBackgroundIndicator">@drawable/nav_drawer_selector</item>
+        <item name="activatedBackgroundIndicator">@drawable/nav_drawer_selector</item>
+    </style>
+    <style name="NavDrawerList">
+        <item name="android:layout_width">240dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:background">#111</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:listSelector">@color/selectable_background</item>
+    </style>
+</resources>
