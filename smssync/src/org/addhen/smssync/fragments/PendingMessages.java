@@ -70,10 +70,6 @@ public class PendingMessages
 
     private String messageUuid;
 
-    private MenuItem refresh;
-
-    private boolean refreshState = false;
-
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
 
     public PendingMessages() {
@@ -99,7 +95,7 @@ public class PendingMessages
 
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(new PendingMessagesActionModeListener(
                 this, listView));
 
@@ -234,24 +230,12 @@ public class PendingMessages
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         log("onOptionsItemSelected()");
-        Intent intent;
         if (item.getItemId() == R.id.import_sms) {
             importAllSms();
         } else if (item.getItemId() == R.id.delete) {
             performDeleteAll();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void updateRefreshStatus() {
-        log("updateRefreshStatus()");
-        if (refresh != null) {
-            if (refreshState)
-                refresh.setActionView(R.layout.indeterminate_progress_action);
-            else
-                refresh.setActionView(null);
-        }
-
     }
 
     /**
