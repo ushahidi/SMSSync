@@ -26,7 +26,7 @@ import org.addhen.smssync.models.SyncUrlModel;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
- * @author eyedol
+ * Menu Item for SyncUrl
  */
 public class SyncUrlNavDrawerItem extends BaseNavDrawerItem {
 

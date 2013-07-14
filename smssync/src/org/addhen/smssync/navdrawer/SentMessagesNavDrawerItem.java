@@ -26,7 +26,7 @@ import org.addhen.smssync.models.SentMessagesModel;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
- * @author eyedol
+ * Menu Item for Sent messages
  */
 public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
 

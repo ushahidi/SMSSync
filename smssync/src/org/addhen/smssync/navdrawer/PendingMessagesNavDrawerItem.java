@@ -26,7 +26,7 @@ import org.addhen.smssync.models.MessagesModel;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
- * @author eyedol
+ * Menu Item for Pending messages
  */
 public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
 
