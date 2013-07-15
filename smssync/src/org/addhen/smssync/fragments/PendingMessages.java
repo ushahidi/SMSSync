@@ -71,6 +71,8 @@ public class PendingMessages
 
     private String messageUuid;
 
+    private LinkedHashSet<Integer> mSelectedItems;
+
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
 
     public PendingMessages() {
@@ -215,10 +217,8 @@ public class PendingMessages
 
     public boolean performAction(MenuItem item, LinkedHashSet<Integer> selectedItemPositions) {
         log("performAction()");
-       // messageUuid = adapter.getItem(position).getMessageUuid();
-        toastLong("total: "+selectedItemPositions.size());
+        mSelectedItems = selectedItemPositions;
         if (item.getItemId() == R.id.context_delete) {
-
             performDeleteById();
             return (true);
 
@@ -427,7 +427,10 @@ public class PendingMessages
             if (adapter.getCount() == 0) {
                 deleted = 1;
             } else {
-                result = model.deleteMessagesByUuid(messageUuid);
+                for (Integer position : mSelectedItems) {
+                    model.deleteMessagesByUuid(adapter.getItem(position).getMessageUuid());
+                }
+                result = true;
             }
 
             try {

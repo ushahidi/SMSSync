@@ -49,7 +49,7 @@ public class PendingMessagesActionModeListener extends BaseActionModeListener {
 
         if (host != null) {
             result = mHost.performAction(item, getSelectedItemPositions());
-            getSelectedItemPositions().clear();
+            //getSelectedItemPositions().clear();
         }
         return result;
     }

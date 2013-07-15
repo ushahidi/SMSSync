@@ -138,7 +138,6 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     public void onDestroyActionMode(ActionMode mode) {
         activeMode = null;
         modeView.clearChoices();
-        getSelectedItemPositions().clear();
     }
 
 }
