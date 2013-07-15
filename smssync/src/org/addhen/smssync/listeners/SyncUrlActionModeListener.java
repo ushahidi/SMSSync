@@ -17,53 +17,110 @@
  ** Ushahidi developers at team@ushahidi.com.
  **
  *****************************************************************************/
-
 package org.addhen.smssync.listeners;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.SyncUrl;
 
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
- * SyncUrl ActionMode listener
+ * @author eyedol
+ * 
  */
-public class SyncUrlActionModeListener extends BaseActionModeListener {
+public class SyncUrlActionModeListener implements ActionMode.Callback,
+		AdapterView.OnItemLongClickListener {
 
-    private SyncUrl mHost;
+	private SyncUrl host;
 
-    public SyncUrlActionModeListener(final SyncUrl host, ListView modeView) {
-        super(host.getSherlockActivity(), modeView, R.menu.sync_url_context_menu);
-        this.mHost = host;
+	private ActionMode activeMode;
 
-    }
+	private ListView modeView;
 
-    @Override
-    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        boolean result = false;
+	private int lastPosition = -1;
 
-        // TODO:: refactor this code to make use of multi selectable items
-        if (host != null)
-            result = mHost.performAction(item, getSelectedItemPositions().size());
-        
-        if (activeMode != null) 
-            activeMode.finish();
-        return result;
-    }
+	public SyncUrlActionModeListener(final SyncUrl host, ListView modeView) {
+		this.host = host;
+		this.modeView = modeView;
+	}
 
-    @Override
-    public void setTitle(CharSequence title) {
-        if (activeMode != null)
-            activeMode.setTitle(title);
-    }
+	@Override
+	public boolean onItemLongClick(AdapterView<?> view, View row, int position,
+			long id) {
+		lastPosition = position;
+		modeView.clearChoices();
+		modeView.setItemChecked(lastPosition, true);
 
-    @Override
-    public void setTitle(int resId) {
-        if (activeMode != null)
-            activeMode.setTitle(host.getString(resId));
-    }
+		if (activeMode == null) {
+			if (host != null)
+				activeMode = host.getSherlockActivity().startActionMode(this);
+		}
+
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.actionbarsherlock.view.ActionMode.Callback#onCreateActionMode(com
+	 * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
+	 */
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		if (host != null) {
+			new com.actionbarsherlock.view.MenuInflater(host.getActivity())
+					.inflate(R.menu.sync_url_context_menu, menu);
+		}
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.actionbarsherlock.view.ActionMode.Callback#onPrepareActionMode(com
+	 * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
+	 */
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.actionbarsherlock.view.ActionMode.Callback#onActionItemClicked(com
+	 * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.MenuItem)
+	 */
+	@Override
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		boolean result = false;
+		if (host != null)
+			result = host.performAction(item, lastPosition);
+		if (activeMode != null)
+			activeMode.finish();
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.actionbarsherlock.view.ActionMode.Callback#onDestroyActionMode(com
+	 * .actionbarsherlock.view.ActionMode)
+	 */
+	@Override
+	public void onDestroyActionMode(ActionMode mode) {
+		activeMode = null;
+		modeView.clearChoices();
+	}
 
 }
