@@ -20,84 +20,25 @@
 
 package org.addhen.smssync.listeners;
 
-import java.util.LinkedHashSet;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
 
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
  * @author eyedol
  */
-public class PendingMessagesActionModeListener implements ActionMode.Callback,
-        AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
+public class PendingMessagesActionModeListener extends BaseActionModeListener {
 
-    private PendingMessages host;
-
-    private ActionMode activeMode;
-
-    private ListView modeView;
-
-    private LinkedHashSet<Integer> mSelectedItemPositions = new LinkedHashSet<Integer>();
+    private PendingMessages mHost;
 
     public PendingMessagesActionModeListener(final PendingMessages host,
             ListView modeView) {
-        this.host = host;
-        this.modeView = modeView;
-        this.modeView.setOnItemClickListener(this);
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> view, View row, int position,
-            long id) {
-
-        if (activeMode == null) {
-            if (host != null)
-                activeMode = host.getSherlockActivity().startActionMode(this);
-        }
-        onItemCheckedStateChanged(position);
-        return true;
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> view, View row, int position,
-            long id) {
-        onItemCheckedStateChanged(position);
-    }
-
-    private void onItemCheckedStateChanged(int position) {
-
-        if (activeMode != null) {
-            modeView.setItemChecked(position, true);
-            if (!mSelectedItemPositions.add(position)) {
-                mSelectedItemPositions.remove(position);
-                modeView.setItemChecked(position, false);
-            }
-
-            activeMode.setTitle(String.valueOf(mSelectedItemPositions.size()));
-        }
-
-    }
-
-    @Override
-    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-        if (host != null) {
-            new com.actionbarsherlock.view.MenuInflater(host.getActivity())
-                    .inflate(R.menu.pending_messages_context_menu, menu);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-        return false;
+        super(host.getSherlockActivity(), modeView, R.menu.pending_messages_context_menu);
+        this.mHost = host;
     }
 
     @Override
@@ -107,17 +48,22 @@ public class PendingMessagesActionModeListener implements ActionMode.Callback,
             activeMode.finish();
 
         if (host != null) {
-            result = host.performAction(item, mSelectedItemPositions);
+            result = mHost.performAction(item, mSelectedItemPositions);
             mSelectedItemPositions.clear();
         }
         return result;
     }
 
     @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        activeMode = null;
-        modeView.clearChoices();
+    public void setTitle(CharSequence title) {
+        if (activeMode != null)
+            activeMode.setTitle(title);
+    }
 
+    @Override
+    public void setTitle(int resId) {
+        if (activeMode != null)
+            activeMode.setTitle(host.getString(resId));
     }
 
 }
