@@ -22,6 +22,7 @@ package org.addhen.smssync.fragments;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.LinkedHashSet;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
@@ -52,6 +53,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
+import android.util.SparseBooleanArray;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -212,9 +214,10 @@ public class PendingMessages
 
     }
 
-    public boolean performAction(MenuItem item, int position) {
+    public boolean performAction(MenuItem item, LinkedHashSet<Integer> selectedItemPositions) {
         log("performAction()");
-        messageUuid = adapter.getItem(position).getMessageUuid();
+       // messageUuid = adapter.getItem(position).getMessageUuid();
+        toastLong("total: "+selectedItemPositions.size());
         if (item.getItemId() == R.id.context_delete) {
 
             performDeleteById();

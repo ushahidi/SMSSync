@@ -35,7 +35,6 @@ public class ApiUtil {
 		try {
 			jsonObject = new JSONObject(jsonString);
 		} catch (JSONException e) {
-			//new Util().log("JSONException", e);
 			processingResult = false;
 		}
 	}
