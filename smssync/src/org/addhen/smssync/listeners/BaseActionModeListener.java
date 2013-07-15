@@ -29,6 +29,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Base class for action mode listener
@@ -41,7 +42,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
 
     protected ListView modeView;
 
-    protected LinkedHashSet<Integer> mSelectedItemPositions = new LinkedHashSet<Integer>();
+    private LinkedHashSet<Integer> mSelectedItemPositions = new LinkedHashSet<Integer>();
 
     protected final int contextMenuResId;
 
@@ -96,10 +97,18 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
                 mSelectedItemPositions.remove(position);
                 modeView.setItemChecked(position, false);
             }
-
+            setSelectedItemPositions(mSelectedItemPositions);
             setTitle(String.valueOf(mSelectedItemPositions.size()));
         }
 
+    }
+
+    public void setSelectedItemPositions(LinkedHashSet<Integer> selectedItemPositions) {
+        mSelectedItemPositions = selectedItemPositions;
+    }
+
+    public LinkedHashSet<Integer> getSelectedItemPositions() {
+        return mSelectedItemPositions;
     }
 
     @Override
@@ -113,6 +122,14 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     }
 
     @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+
+        if (activeMode != null)
+            activeMode.finish();
+        return true;
+    }
+
+    @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
         return false;
     }
@@ -121,7 +138,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     public void onDestroyActionMode(ActionMode mode) {
         activeMode = null;
         modeView.clearChoices();
-
+        getSelectedItemPositions().clear();
     }
 
 }

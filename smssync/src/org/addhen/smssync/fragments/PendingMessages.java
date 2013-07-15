@@ -53,7 +53,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
-import android.util.SparseBooleanArray;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;

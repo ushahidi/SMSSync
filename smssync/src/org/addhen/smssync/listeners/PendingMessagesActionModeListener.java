@@ -29,7 +29,7 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
- * @author eyedol
+ * Pending messages action mode listener
  */
 public class PendingMessagesActionModeListener extends BaseActionModeListener {
 
@@ -48,8 +48,8 @@ public class PendingMessagesActionModeListener extends BaseActionModeListener {
             activeMode.finish();
 
         if (host != null) {
-            result = mHost.performAction(item, mSelectedItemPositions);
-            mSelectedItemPositions.clear();
+            result = mHost.performAction(item, getSelectedItemPositions());
+            getSelectedItemPositions().clear();
         }
         return result;
     }
