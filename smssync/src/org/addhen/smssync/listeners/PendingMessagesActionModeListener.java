@@ -44,12 +44,15 @@ public class PendingMessagesActionModeListener extends BaseActionModeListener {
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         boolean result = false;
-        if (activeMode != null)
-            activeMode.finish();
 
         if (host != null) {
             result = mHost.performAction(item, getSelectedItemPositions());
-            //getSelectedItemPositions().clear();
+
+        }
+
+        if (activeMode != null) {
+            activeMode.finish();
+            getSelectedItemPositions().clear();
         }
         return result;
     }

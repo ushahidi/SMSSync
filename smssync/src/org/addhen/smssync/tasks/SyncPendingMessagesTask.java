@@ -41,7 +41,6 @@ import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.Logger;
 
 import android.os.AsyncTask;
-import android.text.TextUtils;
 
 import com.squareup.otto.Subscribe;
 
@@ -177,9 +176,12 @@ public class SyncPendingMessagesTask extends
         List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
 
         // determine if syncing by message UUID
-        if (config.messageUuid != null && !TextUtils.isEmpty(config.messageUuid)) {
-            messagesModel.loadByUuid(config.messageUuid);
-            listMessages = messagesModel.listMessages;
+        if (config.messageUuids != null && config.messageUuids.size() > 0) {
+            for (String messageUuid : config.messageUuids) {
+                if (messagesModel.loadByUuid(messageUuid)) {
+                    listMessages.add(messagesModel.listMessages.get(0));
+                }
+            }
 
         } else {
             // load all messages

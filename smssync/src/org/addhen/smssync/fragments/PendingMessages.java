@@ -21,6 +21,7 @@
 package org.addhen.smssync.fragments;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
 
@@ -69,9 +70,7 @@ public class PendingMessages
 
     private MessagesModel model;
 
-    private String messageUuid;
-
-    private LinkedHashSet<Integer> mSelectedItems;
+    private LinkedHashSet<Integer> mSelectedItemsPositions;
 
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
 
@@ -171,9 +170,16 @@ public class PendingMessages
     @Override
     public void onClick(android.view.View v) {
         if (v == view.sync) {
+            startSync();
+        }
+    }
+
+    private void startSync() {
+        // make sure service is enabled
+        if (Prefs.enabled) {
             if (!SyncPendingMessagesService.isServiceWorking()) {
                 log("Sync in action");
-                startSync();
+                initSync();
             } else {
                 log("Sync canceled by the user");
                 // Sync button will be restored on next status update.
@@ -181,21 +187,26 @@ public class PendingMessages
                 view.sync.setEnabled(false);
                 MainApplication.bus.post(new TaskCanceled());
             }
+        } else {
+            toastLong(R.string.no_configured_url);
         }
     }
 
-    private void startSync() {
-        startSync("");
-    }
-
-    private void startSync(String messagesUuid) {
-        log("syncMessages messagesUuid: " + messagesUuid);
+    private void initSync() {
+        log("syncMessages messagesUuid: ");
+        ArrayList<String> messagesUuids = null;
+        if (mSelectedItemsPositions != null && mSelectedItemsPositions.size() > 0) {
+            messagesUuids = new ArrayList<String>();
+            for (Integer position : mSelectedItemsPositions) {
+                messagesUuids.add(adapter.getItem(position).getMessageUuid());
+            }
+        }
 
         syncPendingMessagesServiceIntent = new Intent(getActivity(),
                 SyncPendingMessagesService.class);
 
-        syncPendingMessagesServiceIntent.putExtra(
-                ServicesConstants.MESSAGE_UUID, messagesUuid);
+        syncPendingMessagesServiceIntent.putStringArrayListExtra(
+                ServicesConstants.MESSAGE_UUID, messagesUuids);
         syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA,
                 SyncType.MANUAL.name());
         getActivity().startService(syncPendingMessagesServiceIntent);
@@ -217,14 +228,18 @@ public class PendingMessages
 
     public boolean performAction(MenuItem item, LinkedHashSet<Integer> selectedItemPositions) {
         log("performAction()");
-        mSelectedItems = selectedItemPositions;
+
         if (item.getItemId() == R.id.context_delete) {
-            performDeleteById();
+            // only initialize selected items positions if this action is taken
+            mSelectedItemsPositions = selectedItemPositions;
+            performDeleteById(selectedItemPositions);
             return (true);
 
         } else if (item.getItemId() == R.id.context_sync) {
             // Synchronize by ID
-            startSync(messageUuid);
+            // only initialize selected items positions if this action is taken
+            mSelectedItemsPositions = selectedItemPositions;
+            startSync();
         }
         return (false);
     }
@@ -296,7 +311,7 @@ public class PendingMessages
     /**
      * Delete message by it's id
      */
-    public void performDeleteById() {
+    public void performDeleteById(LinkedHashSet<Integer> selectedItemPositions) {
         log("performDeleteById()");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getString(R.string.confirm_message))
@@ -427,7 +442,7 @@ public class PendingMessages
             if (adapter.getCount() == 0) {
                 deleted = 1;
             } else {
-                for (Integer position : mSelectedItems) {
+                for (Integer position : mSelectedItemsPositions) {
                     model.deleteMessagesByUuid(adapter.getItem(position).getMessageUuid());
                 }
                 result = true;

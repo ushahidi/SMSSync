@@ -24,6 +24,8 @@ import static org.addhen.smssync.tasks.SyncType.MANUAL;
 import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 
+import java.util.ArrayList;
+
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncConfig;
@@ -48,7 +50,7 @@ public class SyncPendingMessagesService extends BaseService {
     private static String CLASS_TAG = SyncPendingMessagesService.class
             .getSimpleName();
 
-    private String messageUuid = "";
+    private ArrayList<String> messageUuids = null;
 
     private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
@@ -66,8 +68,7 @@ public class SyncPendingMessagesService extends BaseService {
         if (intent != null) {
             final SyncType syncType = SyncType.fromIntent(intent);
             // get Id
-            messageUuid = intent.getStringExtra(ServicesConstants.MESSAGE_UUID);
-            Logger.log(CLASS_TAG, "messageUUid: " + messageUuid);
+            messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG, "executeTask() executing this task ");
             if (!isWorking()) {
@@ -75,7 +76,7 @@ public class SyncPendingMessagesService extends BaseService {
                     log("Sync started");
                     mState = new SyncPendingMessagesState(INITIAL, 0, 0, syncType, null);
                     try {
-                        SyncConfig config = new SyncConfig(3, false, messageUuid, syncType);
+                        SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
                         new SyncPendingMessagesTask(this).execute(config);
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());

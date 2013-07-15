@@ -28,6 +28,7 @@ import org.addhen.smssync.models.SyncUrlModel;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Debug;
 
 public class SyncUrlContentProvider extends DbContentProvider implements
         ISyncUrlContentProvider, ISyncUrlSchema {
@@ -103,15 +104,15 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         final String selectionArgs[] = {
                 String.valueOf(status)
         };
-
+        
         mListSyncUrl = new ArrayList<SyncUrlModel>();
         cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
         if (cursor != null) {
             try {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    SyncUrlModel syncUrl = cursorToEntity(cursor);
-                    mListSyncUrl.add(syncUrl);
+
+                    mListSyncUrl.add(cursorToEntity(cursor));
                     cursor.moveToNext();
                 }
             } finally {
@@ -120,7 +121,6 @@ public class SyncUrlContentProvider extends DbContentProvider implements
             }
 
         }
-
         return mListSyncUrl;
     }
 
