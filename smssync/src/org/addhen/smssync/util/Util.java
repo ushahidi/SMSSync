@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.activities.MessagesTabActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.json.JSONException;
@@ -277,7 +278,7 @@ public class Util {
      */
     public static void showNotification(Context context) {
 
-        Intent baseIntent = new Intent(context, MessagesTabActivity.class);
+        Intent baseIntent = new Intent(context, MainActivity.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
@@ -298,7 +299,7 @@ public class Util {
     public static void showFailNotification(Context context, String message,
             String notificationTitle) {
 
-        Intent baseIntent = new Intent(context, MessagesTabActivity.class);
+        Intent baseIntent = new Intent(context, MainActivity.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
@@ -336,7 +337,7 @@ public class Util {
             builder.setOngoing(ongoing);
         }
 
-        notificationManager.notify(NOTIFY_RUNNING, builder.getNotification());
+        notificationManager.notify(NOTIFY_RUNNING, builder.build());
     }
 
     /**
@@ -514,7 +515,7 @@ public class Util {
                     .detectDiskReads()
                     .detectDiskWrites()
                     .detectNetwork()
-                    .penaltyFlashScreen()
+                    .penaltyLog()
                     .build());
         }
     }

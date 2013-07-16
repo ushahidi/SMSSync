@@ -148,7 +148,9 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         if (drawerLayout != null) {
 
             // default deployment is not set
+
             createNavDrawer();
+
             if (savedInstanceState == null) {
                 selectItem(0);
             }
@@ -277,17 +279,19 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     }
 
     protected void selectItem(int position) {
+        if (navDrawerAdapter != null) {
+            BaseNavDrawerItem item = navDrawerAdapter.getItem(position);
 
-        BaseNavDrawerItem item = navDrawerAdapter.getItem(position);
+            // Perform selection only if item is not selected
+            if (!item.isSelected()) {
+                item.selectItem();
+            }
 
-        // Perform selection only if item is not selected
-        if (!item.isSelected()) {
-            item.selectItem();
+            // update selected item and title, then close the drawer
+            listView.setItemChecked(position, true);
+            drawerLayout.closeDrawer(listView);
+
         }
-
-        // update selected item and title, then close the drawer
-        listView.setItemChecked(position, true);
-        drawerLayout.closeDrawer(listView);
     }
 
     private void initNavDrawer() {

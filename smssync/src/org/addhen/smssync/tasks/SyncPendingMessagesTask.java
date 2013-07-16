@@ -198,6 +198,8 @@ public class SyncPendingMessagesTask extends
             // keep the sync running as long as the service is not cancelled and
             // the syncd items is less than
             // the items to be syncd.
+            publishProgress(new SyncPendingMessagesState(INITIAL, syncdItems, itemsToSync,
+                    config.syncType, null));
             while (!isCancelled() && syncdItems < itemsToSync) {
 
                 // iterate through the loaded messages and push to the web
@@ -220,6 +222,10 @@ public class SyncPendingMessagesTask extends
                         publishProgress(new SyncPendingMessagesState(SYNC, syncdItems, itemsToSync,
                                 config.syncType, null));
 
+                    } else {
+                        publishProgress(new SyncPendingMessagesState(ERROR, syncdItems,
+                                itemsToSync,
+                                config.syncType, null));
                     }
                 }
             }

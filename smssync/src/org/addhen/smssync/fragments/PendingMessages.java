@@ -132,8 +132,6 @@ public class PendingMessages
                 new IntentFilter(ServicesConstants.DELIVERED));
         idle();
         mHandler.post(mUpdateListView);
-
-        MainApplication.bus.register(this);
     }
 
     @Override
@@ -537,12 +535,11 @@ public class PendingMessages
         switch (state.state) {
             case INITIAL:
                 idle();
-
                 break;
             case ERROR:
                 final String errorMessage = state.getError(getActivity().getResources());
                 view.status.setText(R.string.error);
-                view.status.setText(getActivity().getString(
+                view.details.setText(getActivity().getString(
                         R.string.sync_error_details,
                         errorMessage == null ? "N/A" : errorMessage));
                 break;

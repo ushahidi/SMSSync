@@ -465,7 +465,7 @@ public class SyncUrl extends
 
                     Prefs.enabled = true;
                     view.enableSmsSync.setChecked(true);
-                    // because the services to be run depends on the save the
+                    // because the services to be run depends on state of the service, save the
                     // changes first
                     Prefs.savePreferences(getActivity());
                     // run auto sync service
