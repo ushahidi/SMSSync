@@ -3,8 +3,8 @@ package org.addhen.smssync.tasks.state;
 
 import java.util.EnumSet;
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.exceptions.ConnectivityException;
-import org.addhen.smssync.exceptions.I8nException;
 
 import android.content.res.Resources;
 
@@ -60,19 +60,8 @@ public abstract class State {
      * @return
      */
     public String getError(Resources resources) {
-        // exception shouldn't be null
-        if (exception == null)
-            return null;
+        return resources.getString(R.string.unknown_issue);
 
-        // Is the exception message localizable
-        if (exception instanceof I8nException) {
-            // return any localizable string
-            return resources.getString(((I8nException) exception).resId());
-        } else {
-            // return an exception message based on the active locale of the
-            // system
-            return exception.getLocalizedMessage();
-        }
     }
 
     /**

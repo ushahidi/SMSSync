@@ -510,6 +510,15 @@ public class PendingMessages
                         newState.currentSyncedItems,
                         newState.itemsToSync));
                 break;
+
+            case ERROR:
+                final String errorMessage = newState
+                        .getNotification(getActivity().getResources());
+                view.status.setText(R.string.error);
+                view.details.setText(getActivity().getString(
+                        R.string.sync_error_details,
+                        errorMessage == null ? "N/A" : errorMessage));
+                break;
         }
 
     }
@@ -536,13 +545,7 @@ public class PendingMessages
             case INITIAL:
                 idle();
                 break;
-            case ERROR:
-                final String errorMessage = state.getError(getActivity().getResources());
-                view.status.setText(R.string.error);
-                view.details.setText(getActivity().getString(
-                        R.string.sync_error_details,
-                        errorMessage == null ? "N/A" : errorMessage));
-                break;
+
         }
     }
 

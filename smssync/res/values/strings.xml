@@ -189,7 +189,8 @@
     <string name="stopping">Stopping</string>
     <string name="status_sync_details">Syncd <xliff:g id="syncd_up_items">%1$d</xliff:g>/<xliff:g id="total_items">%2$d</xliff:g> items\u2026</string>
     <string name="status_check_details">Checked <xliff:g id="executed_items">%1$d</xliff:g>/<xliff:g id="total_items_received">%2$d</xliff:g> items\u2026</string>
+    <string name="sync_failed">Failed to sync <xliff:g id="failed_item">%1$d</xliff:g>/<xliff:g id="total_items">%2$d</xliff:g></string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-
+    <string name="unknown_issue">Unknown issue</string>
 </resources>

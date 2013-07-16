@@ -142,10 +142,8 @@ public class SyncPendingMessagesTask extends
         Logger.log(CLASS_TAG, "syncToWeb(): push pending messages to the Sync URL");
         publishState(INITIAL);
 
-        int syncdItems = 0;
-
-        syncdItems = syncPending(config);
-
+        final int syncdItems = syncPending(config);
+        Logger.log(CLASS_TAG, " Hey there: "+syncdItems);
         if (syncdItems == 0) {
             Logger.log(CLASS_TAG, "Nothing to do.");
             return transition(FINISHED_SYNC, null);
@@ -170,7 +168,8 @@ public class SyncPendingMessagesTask extends
     private int syncPending(SyncConfig config) {
         // sync pending messages
         int syncdItems = 0;
-
+        int failedItems = 0;
+        int counter = 0;
         processSms = new ProcessSms(mService.getApplicationContext());
 
         List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
@@ -200,12 +199,12 @@ public class SyncPendingMessagesTask extends
             // the items to be syncd.
             publishProgress(new SyncPendingMessagesState(INITIAL, syncdItems, itemsToSync,
                     config.syncType, null));
-            while (!isCancelled() && syncdItems < itemsToSync) {
+            while (!isCancelled() && counter < itemsToSync) {
 
                 // iterate through the loaded messages and push to the web
                 // service
                 for (MessagesModel messages : listMessages) {
-
+                    counter++;
                     // route the message to the appropriate enabled sync URL
                     if (processSms.routePendingMessages(messages.getMessageFrom(),
                             messages.getMessage(), messages.getMessageDate(),
@@ -223,7 +222,8 @@ public class SyncPendingMessagesTask extends
                                 config.syncType, null));
 
                     } else {
-                        publishProgress(new SyncPendingMessagesState(ERROR, syncdItems,
+                        failedItems++;
+                        publishProgress(new SyncPendingMessagesState(ERROR, failedItems,
                                 itemsToSync,
                                 config.syncType, null));
                     }

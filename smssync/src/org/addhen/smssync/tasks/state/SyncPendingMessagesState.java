@@ -23,6 +23,7 @@ package org.addhen.smssync.tasks.state;
 import static org.addhen.smssync.tasks.SyncType.UNKNOWN;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 import static org.addhen.smssync.tasks.state.SyncState.SYNC;
+import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncType;
@@ -52,7 +53,8 @@ public class SyncPendingMessagesState extends State {
 
     @Override
     public SyncPendingMessagesState transition(SyncState newState, Exception exception) {
-        return new SyncPendingMessagesState(newState, currentSyncedItems, itemsToSync, syncType, exception);
+        return new SyncPendingMessagesState(newState, currentSyncedItems, itemsToSync, syncType,
+                exception);
     }
 
     /**
@@ -63,15 +65,13 @@ public class SyncPendingMessagesState extends State {
      */
     public String getNotification(Resources resources) {
 
-        String msg = super.getNotificationMessage(resources);
-        if (msg != null)
-            return msg;
         if (state == SYNC) {
-            msg = resources.getString(R.string.status_sync_details,
+            return resources.getString(R.string.status_sync_details,
                     currentSyncedItems,
                     itemsToSync);
 
-            return msg;
+        } else if (state == ERROR) {
+            return resources.getString(R.string.sync_failed, currentSyncedItems, itemsToSync);
         } else {
             return "";
         }
