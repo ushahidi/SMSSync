@@ -8,11 +8,8 @@ import android.content.Intent;
 /**
  * Determine which sync type to execute
  * 
- * @author eyedol
  */
 public enum SyncType {
-    INCOMING(R.string.incoming),
-    SCHEDULE(R.string.schedule),
     UNKNOWN(R.string.unknown),
     MANUAL(R.string.manual);
 
