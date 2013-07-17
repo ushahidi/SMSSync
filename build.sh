@@ -25,13 +25,14 @@ function handle_bad_config {
 }
 
 log "Checking config..."
-if [[ ! -f local.properties ]]; then
-	log "File not found: local.properties"
+localPropsFile=smssync/local.properties
+if [[ ! -f $localPropsFile ]]; then
+	log "File not found: $localPropsFile"
 	handle_bad_config
 fi
 
-if ! grep -q '^sdk\.dir=' local.properties; then
-	log "value 'sdk.dir' not set in file 'local.properties'."
+if ! grep -q '^sdk\.dir=' $localPropsFile; then
+	log "value 'sdk.dir' not set in file '$localPropsFile'."
 	handle_bad_config
 fi
 
@@ -52,15 +53,17 @@ if ! $noSdkUpdate; then
 	fi
 fi
 
-log "Building test app..."
-cd ./smssync/tests
-ant clean build-project
-log "Test app built."
-
 log "Building smssync..."
-cd ..
+pushd smssync
 ant clean debug
+popd
 log "Smssync built."
+
+log "Building test app..."
+pushd smssync/tests
+ant clean build-project
+popd
+log "Test app built."
 
 log "BUILD COMPLETE"
 
