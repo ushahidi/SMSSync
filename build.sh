@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+noSdkUpdate=false
+while [[ $1 == "--"* ]]; do
+	if [[ $1 == "--no-sdk-update" ]]; then
+		noSdkUpdate=true
+	fi
+	shift
+done
+
 function log {
 	local logStart="#"
 	local sourceLen=${#BASH_SOURCE[@]}
@@ -33,9 +41,16 @@ if [[ -z $ANDROID_HOME ]]; then
 fi
 log "Config looks OK."
 
-log "Updating android SDK..."
-android update sdk --no-ui
-log "Android SDK updated."
+if ! $noSdkUpdate; then
+	read -p "Do you want to update android SDK?  This may be necessary for the build to run." -n 1 -r
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		log "Updating android SDK..."
+		android update sdk --no-ui
+		log "Android SDK updated."
+	else
+		log "Skipping android SDK update."
+	fi
+fi
 
 log "Building test app..."
 cd ./smssync/tests
