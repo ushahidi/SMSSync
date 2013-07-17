@@ -23,7 +23,6 @@ package org.addhen.smssync.tasks.state;
 import static org.addhen.smssync.tasks.SyncType.UNKNOWN;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 import static org.addhen.smssync.tasks.state.SyncState.SYNC;
-import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncType;
@@ -54,12 +53,13 @@ public class SyncPendingMessagesState extends State {
      * Create default state
      */
     public SyncPendingMessagesState() {
-        this(INITIAL, 0, 0, 0, 0,UNKNOWN, null);
+        this(INITIAL, 0, 0, 0, 0, UNKNOWN, null);
     }
 
     @Override
     public SyncPendingMessagesState transition(SyncState newState, Exception exception) {
-        return new SyncPendingMessagesState(newState, currentSyncedItems, currentFailedItems, currentProgress,
+        return new SyncPendingMessagesState(newState, currentSyncedItems, currentFailedItems,
+                currentProgress,
                 itemsToSync, syncType,
                 exception);
     }
@@ -72,17 +72,18 @@ public class SyncPendingMessagesState extends State {
      */
     public String getNotification(Resources resources) {
 
+        String msg = super.getNotificationMessage(resources);
+        if (msg != null)
+            return msg;
         if (state == SYNC) {
-            return resources.getString(R.string.status_sync_details,
+            msg = resources.getString(R.string.status_sync_details,
                     currentSyncedItems,
                     currentFailedItems,
                     itemsToSync);
 
-        } else if (state == ERROR) {
-            return resources.getString(R.string.sync_failed, currentFailedItems, itemsToSync);
-        } else {
-            return "";
+            return msg;
         }
+        return "";
 
     }
 
@@ -91,9 +92,10 @@ public class SyncPendingMessagesState extends State {
         return "SyncStateChanged[" +
                 "state=" + state +
                 ", currentSyncedItems=" + currentSyncedItems +
+                ", currentFailedItems=" + currentFailedItems +
+                ", currentProgress=" + currentProgress +
                 ", itemsToSync=" + itemsToSync +
                 ", syncType=" + syncType +
                 ']';
     }
-
 }
