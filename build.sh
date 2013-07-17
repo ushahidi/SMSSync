@@ -42,7 +42,7 @@ fi
 log "Config looks OK."
 
 if ! $noSdkUpdate; then
-	read -p "Do you want to update android SDK?  This may be necessary for the build to run." -n 1 -r
+	read -p "Do you want to update android SDK?  (This may be necessary for the build to run.) [y/N] " -n 1 -r
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		log "Updating android SDK..."
 		android update sdk --no-ui
