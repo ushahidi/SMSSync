@@ -37,7 +37,6 @@ import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
-import org.addhen.smssync.activities.MessagesTabActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -473,7 +472,6 @@ public class Util {
             buf.newLine();
             buf.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

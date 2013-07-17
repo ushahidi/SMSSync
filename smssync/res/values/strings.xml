@@ -192,5 +192,6 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="unknown_issue">Unknown issue</string>
-
+    <string name="pending_messages_sync_completed">Pending Messages Sync Completed</string>
+    <string name="pending_messages_sync_progress">Pending Messages Sync Completed</string>
 </resources>
