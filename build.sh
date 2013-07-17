@@ -11,8 +11,8 @@ function log {
 }
 
 # Confirm that local.build.properties file exists
-if [[ ! -f local.properties ]]; then
-	log "File not found: local.properties"
+if [[ ! -f local.properties ]] ||  ! grep -q '^sdk\.dir=' local.properties; then
+	log "File not found or missing sdk.dir from: local.properties"
 	log "Please read BUILDING.txt for more info."
 	log "BUILD FAILED"
 	exit 1
