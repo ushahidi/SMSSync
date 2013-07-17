@@ -523,11 +523,12 @@ public class PendingMessages
             text = getActivity().getResources().getQuantityString(
                     R.plurals.sync_done_details, itemToSync,
                     itemToSync);
-            
+            log("Finished: successfull: " + state.currentSyncedItems + " failed: "
+                    + state.currentFailedItems + " progress: " + state.currentProgress);
             text += getActivity().getResources().getString(R.string.sync_status_done,
                     state.currentSyncedItems,
                     state.currentFailedItems);
-            
+
         } else if (itemToSync == 0) {
             text = getActivity().getString(R.string.empty_list);
         }
