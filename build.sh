@@ -1,31 +1,35 @@
 #!/bin/bash
+set -e
+
+function log {
+	local logStart="#"
+	local sourceLen=${#BASH_SOURCE[@]}
+	for ((i=$sourceLen-1; i>0; --i)); do
+		logStart="$logStart [$(basename ${BASH_SOURCE[$i]})]"
+	done
+	echo "$logStart $@"
+}
+
+# Confirm that local.build.properties file exists
+if [[ ! -f local.properties ]]; then
+	log "File not found: local.properties"
+	log "Please read BUILDING.txt for more info."
+	log "BUILD FAILED"
+	exit 1
+fi
 
 ##
 # Build the test app and then the main app.
 #
 
-FAILED=0
-
 # Build test app first
 pushd ./smssync/tests
-
 ant clean build-project
 
-if [ "$?" = 1 ]; then
-    echo "SMSSync test app build failed"
-    FAILED=1
-fi
-
-# Build main app
-
 cd ..
-
 ant clean debug
-
-if [ "$?" = 1 ]; then
-    echo "SMSSync main app build failed"
-fi
 
 # Get back to where it all started
 popd
-exit $FAILED
+log "BUILD COMPLETE"
+
