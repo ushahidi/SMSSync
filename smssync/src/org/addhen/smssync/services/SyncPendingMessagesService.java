@@ -74,7 +74,7 @@ public class SyncPendingMessagesService extends BaseService {
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
-                    mState = new SyncPendingMessagesState(INITIAL, 0, 0, syncType, null);
+                    mState = new SyncPendingMessagesState(INITIAL, 0, 0, 0, 0, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
                         new SyncPendingMessagesTask(this).execute(config);

@@ -493,14 +493,15 @@ public class PendingMessages
                 break;
             case SYNC:
                 log("In sync state " + " items to sync: " + newState.itemsToSync + " syncdItems "
-                        + newState.currentSyncedItems);
+                        + newState.currentSyncedItems + " faileditems: "
+                        + newState.currentFailedItems);
                 view.sync.setText(R.string.cancel);
 
                 view.status.setText(R.string.working);
                 view.details.setText(newState
                         .getNotification(getActivity().getResources()));
                 view.progressStatus.setIndeterminate(false);
-                view.progressStatus.setProgress(newState.currentSyncedItems);
+                view.progressStatus.setProgress(newState.currentProgress);
                 view.progressStatus.setMax(newState.itemsToSync);
                 break;
             case CANCELED_SYNC:
@@ -511,26 +512,23 @@ public class PendingMessages
                         newState.itemsToSync));
                 break;
 
-            case ERROR:
-                final String errorMessage = newState
-                        .getNotification(getActivity().getResources());
-                view.status.setText(R.string.error);
-                view.details.setText(getActivity().getString(
-                        R.string.sync_error_details,
-                        errorMessage == null ? "N/A" : errorMessage));
-                break;
         }
 
     }
 
     private void finishedSync(SyncPendingMessagesState state) {
-        int syncCount = state.currentSyncedItems;
+        int itemToSync = state.itemsToSync;
         String text = null;
-        if (syncCount > 0) {
+        if (itemToSync > 0) {
             text = getActivity().getResources().getQuantityString(
-                    R.plurals.sync_done_details, syncCount,
-                    syncCount);
-        } else if (syncCount == 0) {
+                    R.plurals.sync_done_details, itemToSync,
+                    itemToSync);
+            
+            text += getActivity().getResources().getString(R.string.sync_status_done,
+                    state.currentSyncedItems,
+                    state.currentFailedItems);
+            
+        } else if (itemToSync == 0) {
             text = getActivity().getString(R.string.empty_list);
         }
         view.status.setText(R.string.done);

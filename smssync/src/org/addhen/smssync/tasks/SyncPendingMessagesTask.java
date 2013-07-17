@@ -77,7 +77,7 @@ public class SyncPendingMessagesTask extends
         if (config.skip) {
             Logger.log(CLASS_TAG, "Sync skipped");
             // In case a user decides to skip the sync process
-            return new SyncPendingMessagesState(FINISHED_SYNC, 0, 0, SyncType.MANUAL, null);
+            return new SyncPendingMessagesState(FINISHED_SYNC, 0, 0, 0, 0, SyncType.MANUAL, null);
         }
 
         try {
@@ -142,9 +142,9 @@ public class SyncPendingMessagesTask extends
         Logger.log(CLASS_TAG, "syncToWeb(): push pending messages to the Sync URL");
         publishState(INITIAL);
 
-        final int syncdItems = syncPending(config);
-        Logger.log(CLASS_TAG, " Hey there: "+syncdItems);
-        if (syncdItems == 0) {
+        final SyncStatus syncdStatus = syncPending(config);
+
+        if (itemsToSync == 0) {
             Logger.log(CLASS_TAG, "Nothing to do.");
             return transition(FINISHED_SYNC, null);
         }
@@ -152,8 +152,13 @@ public class SyncPendingMessagesTask extends
         new SyncDate().setLastSyncedDate(mService.getApplicationContext(),
                 System.currentTimeMillis());
 
+        Logger.log("SyncPendingMessages", "successful: " + syncdStatus.successful + " failed: "
+                + syncdStatus.failed);
+
         return new SyncPendingMessagesState(FINISHED_SYNC,
-                syncdItems,
+                syncdStatus.successful,
+                syncdStatus.failed,
+                syncdStatus.progress,
                 itemsToSync,
                 config.syncType, null);
 
@@ -165,11 +170,12 @@ public class SyncPendingMessagesTask extends
      * @param config The sync configuration.
      * @return int The number of syncd items
      */
-    private int syncPending(SyncConfig config) {
+    private SyncStatus syncPending(SyncConfig config) {
         // sync pending messages
         int syncdItems = 0;
         int failedItems = 0;
-        int counter = 0;
+        int progress = 0;
+        SyncStatus syncStatus = new SyncStatus();
         processSms = new ProcessSms(mService.getApplicationContext());
 
         List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
@@ -197,14 +203,13 @@ public class SyncPendingMessagesTask extends
             // keep the sync running as long as the service is not cancelled and
             // the syncd items is less than
             // the items to be syncd.
-            publishProgress(new SyncPendingMessagesState(INITIAL, syncdItems, itemsToSync,
-                    config.syncType, null));
-            while (!isCancelled() && counter < itemsToSync) {
+
+            while (!isCancelled() && progress < itemsToSync) {
 
                 // iterate through the loaded messages and push to the web
                 // service
                 for (MessagesModel messages : listMessages) {
-                    counter++;
+                    progress++;
                     // route the message to the appropriate enabled sync URL
                     if (processSms.routePendingMessages(messages.getMessageFrom(),
                             messages.getMessage(), messages.getMessageDate(),
@@ -217,21 +222,24 @@ public class SyncPendingMessagesTask extends
                         // increment the number of syncd items
                         syncdItems++;
 
-                        // update the UI with progress of the sync progress
-                        publishProgress(new SyncPendingMessagesState(SYNC, syncdItems, itemsToSync,
-                                config.syncType, null));
-
                     } else {
                         failedItems++;
-                        publishProgress(new SyncPendingMessagesState(ERROR, failedItems,
-                                itemsToSync,
-                                config.syncType, null));
+
                     }
+
+                    // update the UI with progress of the sync progress
+                    publishProgress(new SyncPendingMessagesState(SYNC, syncdItems, failedItems,
+                            progress,
+                            itemsToSync,
+                            config.syncType, null));
                 }
             }
 
         }
-        return syncdItems;
+
+        return syncStatus.setSuccessfulCount(syncdItems).setFailedCount(failedItems)
+                .setProgress(progress);
+
     }
 
     /**
@@ -251,5 +259,29 @@ public class SyncPendingMessagesTask extends
      */
     private void publishState(SyncState state, Exception e) {
         publishProgress(mService.getState().transition(state, e));
+    }
+
+    private class SyncStatus {
+
+        int successful;
+
+        int failed;
+
+        int progress;
+
+        public SyncStatus setSuccessfulCount(int count) {
+            this.successful = count;
+            return this;
+        }
+
+        public SyncStatus setFailedCount(int count) {
+            this.failed = count;
+            return this;
+        }
+
+        public SyncStatus setProgress(int progress) {
+            this.progress = progress;
+            return this;
+        }
     }
 }

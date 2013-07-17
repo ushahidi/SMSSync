@@ -182,15 +182,14 @@
     <string name="sync_error_details">Error during sync:\n<xliff:g id="error_description">%1$s</xliff:g></string>
 
     <plurals name="sync_done_details">
-        <item quantity="one">Successfully syncd <xliff:g id="total_items">%1$d</xliff:g> item.</item>
-        <item quantity="other">Successfully syncd <xliff:g id="total_items">%1$d</xliff:g> items.</item>
+        <item quantity="one">Successfully proccessed <xliff:g id="total_items">%1$d</xliff:g> item.  </item>
+        <item quantity="other">Successfully proccessed <xliff:g id="total_items">%1$d</xliff:g> items. </item>
     </plurals>
-
+    <string name="sync_status_done"><xliff:g id="syncd_up_items">%1$d</xliff:g> syncd  , <xliff:g id="failed_items">%1$d</xliff:g> failed</string>
     <string name="stopping">Stopping</string>
-    <string name="status_sync_details">Syncd <xliff:g id="syncd_up_items">%1$d</xliff:g>/<xliff:g id="total_items">%2$d</xliff:g> items\u2026</string>
-    <string name="status_check_details">Checked <xliff:g id="executed_items">%1$d</xliff:g>/<xliff:g id="total_items_received">%2$d</xliff:g> items\u2026</string>
-    <string name="sync_failed">Failed to sync <xliff:g id="failed_item">%1$d</xliff:g>/<xliff:g id="total_items">%2$d</xliff:g></string>
+    <string name="status_sync_details"><xliff:g id="syncd_up_items">%1$d</xliff:g> syncd  , <xliff:g id="failed_items">%1$d</xliff:g> failed  / <xliff:g id="total_items">%2$d</xliff:g> items\u2026</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="unknown_issue">Unknown issue</string>
+
 </resources>
