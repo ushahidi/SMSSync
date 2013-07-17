@@ -104,7 +104,7 @@ public class SyncPendingMessagesService extends BaseService {
 
         if (state.isError()) {
 
-            createNotification(R.string.pending_messages_sync_completed,
+            createNotification(R.string.sync_in_completed,
                     state.getNotification(getResources()), getPendingIntent());
         }
 
@@ -132,7 +132,7 @@ public class SyncPendingMessagesService extends BaseService {
     }
 
     private void updateSyncStatusNotification(SyncPendingMessagesState state) {
-        createNotification(R.string.pending_messages_sync_progress,
+        createNotification(R.string.sync_in_progress,
                 state.getNotification(getResources()), getPendingIntent());
 
     }
