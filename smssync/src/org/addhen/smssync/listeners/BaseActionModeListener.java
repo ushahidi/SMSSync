@@ -38,7 +38,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
         AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
     protected SherlockFragmentActivity host;
 
-    protected ActionMode activeMode;
+    public ActionMode activeMode;
 
     protected ListView modeView;
 
@@ -136,8 +136,10 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        activeMode = null;
         modeView.clearChoices();
+        getSelectedItemPositions().clear();
+        activeMode = null;
+        
     }
 
 }

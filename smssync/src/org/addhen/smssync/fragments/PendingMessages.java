@@ -74,6 +74,8 @@ public class PendingMessages
 
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
 
+    private PendingMessagesActionModeListener multichoiceActionModeListener;
+
     public PendingMessages() {
         super(PendingMessagesView.class, PendingMessagesAdapter.class,
                 R.layout.list_messages, R.menu.pending_messages_menu,
@@ -94,12 +96,12 @@ public class PendingMessages
         if (Prefs.enabled) {
             Util.showNotification(getActivity());
         }
-
+        multichoiceActionModeListener = new PendingMessagesActionModeListener(
+                this, listView);
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setOnItemLongClickListener(new PendingMessagesActionModeListener(
-                this, listView));
+        listView.setOnItemLongClickListener(multichoiceActionModeListener);
 
         if (savedInstanceState != null) {
             int position = savedInstanceState.getInt(STATE_CHECKED, -1);
@@ -224,22 +226,24 @@ public class PendingMessages
 
     }
 
-    public boolean performAction(MenuItem item, LinkedHashSet<Integer> selectedItemPositions) {
+    public boolean performAction(MenuItem item) {
         log("performAction()");
 
         if (item.getItemId() == R.id.context_delete) {
             // only initialize selected items positions if this action is taken
-            mSelectedItemsPositions = selectedItemPositions;
-            performDeleteById(selectedItemPositions);
-            return (true);
-
+            mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
+            performDeleteById();
+            return true;
         } else if (item.getItemId() == R.id.context_sync) {
             // Synchronize by ID
             // only initialize selected items positions if this action is taken
-            mSelectedItemsPositions = selectedItemPositions;
+            mSelectedItemsPositions =multichoiceActionModeListener.getSelectedItemPositions();
             startSync();
+            multichoiceActionModeListener.activeMode.finish();
+            multichoiceActionModeListener.getSelectedItemPositions().clear();
+            return true;
         }
-        return (false);
+        return false;
     }
 
     @Override
@@ -309,7 +313,8 @@ public class PendingMessages
     /**
      * Delete message by it's id
      */
-    public void performDeleteById(LinkedHashSet<Integer> selectedItemPositions) {
+    public void performDeleteById() {
+
         log("performDeleteById()");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getString(R.string.confirm_message))
@@ -317,6 +322,7 @@ public class PendingMessages
                 .setNegativeButton(getString(R.string.confirm_no),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+
                                 dialog.cancel();
                             }
                         })
@@ -326,10 +332,12 @@ public class PendingMessages
                                 // Delete by ID
                                 mHandler.post(mDeleteMessagesById);
                                 adapter.refresh();
+                                
                             }
                         });
         AlertDialog alert = builder.create();
         alert.show();
+
     }
 
     // Display pending messages.
@@ -440,6 +448,7 @@ public class PendingMessages
             if (adapter.getCount() == 0) {
                 deleted = 1;
             } else {
+                log("deletebyId position: " + mSelectedItemsPositions.size());
                 for (Integer position : mSelectedItemsPositions) {
                     model.deleteMessagesByUuid(adapter.getItem(position).getMessageUuid());
                 }
@@ -459,6 +468,9 @@ public class PendingMessages
                     }
                 }
                 showMessages();
+                // destory the action mode dialog
+                multichoiceActionModeListener.activeMode.finish();
+                multichoiceActionModeListener.getSelectedItemPositions().clear();
                 getActivity().setProgressBarIndeterminateVisibility(false);
             } catch (Exception e) {
                 return;

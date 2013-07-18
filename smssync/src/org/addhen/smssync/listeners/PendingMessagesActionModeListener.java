@@ -22,6 +22,7 @@ package org.addhen.smssync.listeners;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.util.Logger;
 
 import android.widget.ListView;
 
@@ -46,14 +47,10 @@ public class PendingMessagesActionModeListener extends BaseActionModeListener {
         boolean result = false;
 
         if (host != null) {
-            result = mHost.performAction(item, getSelectedItemPositions());
-
+            result = mHost.performAction(item);
+            Logger.log("ActionMode","Log: "+getSelectedItemPositions().size());
         }
 
-        if (activeMode != null) {
-            activeMode.finish();
-            getSelectedItemPositions().clear();
-        }
         return result;
     }
 
