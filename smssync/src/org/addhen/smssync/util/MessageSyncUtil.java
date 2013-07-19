@@ -117,7 +117,7 @@ public class MessageSyncUtil extends Util {
         MessagesModel model = new MessagesModel();
         List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
         // check if it should sync by id
-        if (messageUuid != null && !TextUtils.isEmpty(messageUuid)) {
+        if (!TextUtils.isEmpty(messageUuid)) {
             model.loadByUuid(messageUuid);
             listMessages = model.listMessages;
 
@@ -162,7 +162,7 @@ public class MessageSyncUtil extends Util {
         Logger.log(CLASS_TAG, "performResponseFromServer(): " + " response:"
                 + response);
 
-        if (!TextUtils.isEmpty(response) && response != null) {
+        if (!TextUtils.isEmpty(response)) {
 
             try {
 
@@ -256,9 +256,7 @@ public class MessageSyncUtil extends Util {
             String response = MainHttpClient.getFromWebService(uriBuilder
                     .toString());
             Log.d(CLASS_TAG, "TaskCheckResponse: " + response);
-            String task = "";
-            String secret = "";
-            if (!TextUtils.isEmpty(response) && response != null) {
+            if (!TextUtils.isEmpty(response)) {
 
                 try {
 
@@ -267,9 +265,10 @@ public class MessageSyncUtil extends Util {
                             .getJSONObject("payload");
 
                     if (payloadObject != null) {
-                        task = payloadObject.getString("task");
-                        secret = payloadObject.getString("secret");
-                        if ((task.equals("send")) && (secret.equals(urlSecret))) {
+                        String task = payloadObject.getString("task");
+                        boolean secretOk = TextUtils.isEmpty(urlSecret) ||
+                                urlSecret.equals(payloadObject.getString("secret"));
+                        if (secretOk && task.equals("send")) {
                             jsonArray = payloadObject.getJSONArray("messages");
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
