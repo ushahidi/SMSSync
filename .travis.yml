@@ -18,7 +18,7 @@ before_install:
   - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-17 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
-  - android -s update project --path ./smssync --subprojects --target "android-14"
+  - android -s update project --path ./smssync --subprojects --target "android-17"
   - android -s update test-project --path ./smssync/tests -m ../
 script: "./travis.sh"
 
