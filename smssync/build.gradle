@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.4'
+        classpath 'com.android.tools.build:gradle:0.5.2'
     }
 }
 apply plugin: 'android'
@@ -14,7 +14,7 @@ dependencies {
 
 android {
     compileSdkVersion 16
-    buildToolsVersion "16"
+    buildToolsVersion '17'
 
     defaultConfig {
         minSdkVersion 7
@@ -32,5 +32,12 @@ android {
         }
 
         instrumentTest.setRoot('tests')
+	instrumentTest {
+	    java.srcDirs = ['tests/src']
+            res.srcDirs = ['tests/res']
+            assets.srcDirs = ['tests/assets']
+            resources.srcDirs = ['tests/src']
+	}
     }
+    	
 }

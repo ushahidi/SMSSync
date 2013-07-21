@@ -14,15 +14,24 @@ function log {
 
 log "Building smssync..."
 pushd smssync
-ant clean debug
+gradle connectedInstrumentTest
 popd
 log "Smssync built."
 
-log "Building test app..."
-pushd smssync/tests
-ant clean build-project
-popd
-log "Test app built."
-
 log "BUILD COMPLETE"
+
+# This uses ant. Gradually migrating to gradle. Disabling ant for now 
+#log "Building smssync..."
+#pushd smssync
+#ant clean debug
+#popd
+#log "Smssync built."
+
+#log "Building test app..."
+#pushd smssync/tests
+#ant clean build-project
+#popd
+#log "Test app built."
+
+#log "BUILD COMPLETE"
 
