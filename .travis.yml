@@ -25,6 +25,12 @@ before_install:
   - android -s update project --path ./smssync --subprojects --target "android-17"
   - android -s update test-project --path ./smssync/tests -m ../
   
+  # Gradle
+  - wget http://services.gradle.org/distributions/gradle-1.6-bin.zip
+  - unzip gradle-1.6-bin.zip
+  - export GRADLE_HOME=$PWD/gradle-1.6
+  - export PATH=$GRADLE_HOME/bin:$PATH
+  
   # Create and start emulator
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
