@@ -3,13 +3,21 @@ language: java
 before_install:
   - sudo apt-get update -qq
   # download the latest android sdk and unzip
-  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
-  - wget http://dl.google.com/android/android-sdk_r21.1-linux.tgz
-  - tar -zxf android-sdk_r21.1-linux.tgz
-  - export ANDROID_HOME=`pwd`/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/build-tools
+  - sudo apt-get update -qq
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null; fi
+  - wget http://dl.google.com/android/android-sdk_r22-linux.tgz
+  - tar xzf android-sdk_r22-linux.tgz
+  - export ANDROID_HOME=$PWD/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
-  - android update sdk --no-ui --force
+  # install android build tools
+  - wget https://dl-ssl.google.com/android/repository/build-tools_r17-linux.zip
+  - unzip build-tools_r17-linux.zip -d $ANDROID_HOME
+  - mkdir -p $ANDROID_HOME/build-tools/
+  - mv $ANDROID_HOME/android-4.2.2 $ANDROID_HOME/build-tools/17.0.0
+  - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-17 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - android -s update project --path ./smssync --subprojects --target "android-14"
   - android -s update test-project --path ./smssync/tests -m ../
 script: "./travis.sh"
