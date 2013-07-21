@@ -3,12 +3,13 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.4'
+        classpath 'com.android.tools.build:gradle:0.5.2'
     }
 }
 apply plugin: 'android-library'
 
 dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')    
 }
 
 android {
@@ -30,6 +31,6 @@ android {
             assets.srcDirs = ['assets']
         }
 
-        instrumentTest.setRoot('tests')
+        instrumentTest.setRoot('test')
     }
 }
