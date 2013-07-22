@@ -24,20 +24,27 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApiUtil {
-	
-	private JSONObject jsonObject;
 
-	private boolean processingResult;
-	
-	public ApiUtil(String jsonString) {
-		processingResult = true;
+    private JSONObject jsonObject;
 
-		try {
-			jsonObject = new JSONObject(jsonString);
-		} catch (JSONException e) {
-			//new Util().log("JSONException", e);
-			processingResult = false;
-		}
-	}
+    private boolean processingResult;
+
+    public ApiUtil(String jsonString) {
+        processingResult = true;
+
+        try {
+            jsonObject = new JSONObject(jsonString);
+        } catch (JSONException e) {
+            processingResult = false;
+        }
+    }
+
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
+
+    public boolean getProcessingResult() {
+        return processingResult;
+    }
 
 }
