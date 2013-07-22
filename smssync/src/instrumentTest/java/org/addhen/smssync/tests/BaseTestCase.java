@@ -1,5 +1,5 @@
 
-package org.addhen.smssync.test;
+package org.addhen.smssync.tests;
 
 import java.util.Collection;
 

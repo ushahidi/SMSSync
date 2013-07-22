@@ -1,7 +1,7 @@
 
-package org.addhen.smssync.util;
+package org.addhen.smssync.tests.util;
 
-import org.addhen.smssync.test.BaseTestCase;
+import org.addhen.smssync.tests.BaseTestCase;
 
 import android.test.suitebuilder.annotation.SmallTest;
 

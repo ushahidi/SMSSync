@@ -18,9 +18,9 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync;
+package org.addhen.smssync.tests;
 
-import org.addhen.smssync.test.BaseTestCase;
+import org.addhen.smssync.ProcessSms;
 
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;

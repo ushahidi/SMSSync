@@ -1,8 +1,12 @@
 apply plugin: 'android'
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':abslib')
+    compile 'com.squareup:otto:1.3.4'
 }
 
 android {
@@ -10,18 +14,17 @@ android {
     buildToolsVersion "17.0.0"
 
     sourceSets {
+
         main {
-            manifest.srcFile =['src.main.AndroidManifest.xml']
-            java.srcDirs = ['src.main.java']
-            res.srcDirs = ['src.main.res']
-            assets.srcDirs = ['src.main.assets']
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            resources.srcDirs = ['src/main']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
         }
 
-        // Move the tests to tests/java, tests/res, etc...
-        instrumentTest.setRoot('tests')
-
-        instrumentTest {
-            java.srcDirs = ['src.instrumentTest.java']
+        defaultConfig {
+            testPackageName "org.addhen.smssync.tests"
         }
 
         // Move the build types to build-types/<type>

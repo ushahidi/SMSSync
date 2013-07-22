@@ -1,8 +1,10 @@
 
-package org.addhen.smssync.services;
+package org.addhen.smssync.tests.services;
 
 import android.test.ServiceTestCase;
 import android.test.suitebuilder.annotation.LargeTest;
+
+import org.addhen.smssync.services.SyncPendingMessagesService;
 
 /**
  * Testcase for testing submission of pending messages when SMS fails to submit

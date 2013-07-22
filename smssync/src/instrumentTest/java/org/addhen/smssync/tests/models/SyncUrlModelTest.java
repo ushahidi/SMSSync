@@ -18,14 +18,15 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync.models;
+package org.addhen.smssync.tests.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.database.ISyncUrlSchema;
-import org.addhen.smssync.test.BaseTestCase;
+import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.tests.BaseTestCase;
 
 import android.database.Cursor;
 import android.test.suitebuilder.annotation.SmallTest;
