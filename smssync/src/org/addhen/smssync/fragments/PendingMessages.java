@@ -21,13 +21,14 @@
 package org.addhen.smssync.fragments;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
 import org.addhen.smssync.R;
-import org.addhen.smssync.Settings;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
@@ -36,8 +37,8 @@ import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.tasks.TaskCanceled;
-import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.State;
+import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -69,13 +70,11 @@ public class PendingMessages
 
     private MessagesModel model;
 
-    private String messageUuid;
-
-    private MenuItem refresh;
-
-    private boolean refreshState = false;
+    private LinkedHashSet<Integer> mSelectedItemsPositions;
 
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
+
+    private PendingMessagesActionModeListener multichoiceActionModeListener;
 
     public PendingMessages() {
         super(PendingMessagesView.class, PendingMessagesAdapter.class,
@@ -97,12 +96,12 @@ public class PendingMessages
         if (Prefs.enabled) {
             Util.showNotification(getActivity());
         }
-
+        multichoiceActionModeListener = new PendingMessagesActionModeListener(
+                this, listView);
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        listView.setOnItemLongClickListener(new PendingMessagesActionModeListener(
-                this, listView));
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listView.setOnItemLongClickListener(multichoiceActionModeListener);
 
         if (savedInstanceState != null) {
             int position = savedInstanceState.getInt(STATE_CHECKED, -1);
@@ -135,8 +134,6 @@ public class PendingMessages
                 new IntentFilter(ServicesConstants.DELIVERED));
         idle();
         mHandler.post(mUpdateListView);
-
-        MainApplication.bus.register(this);
     }
 
     @Override
@@ -173,9 +170,16 @@ public class PendingMessages
     @Override
     public void onClick(android.view.View v) {
         if (v == view.sync) {
+            startSync();
+        }
+    }
+
+    private void startSync() {
+        // make sure service is enabled
+        if (Prefs.enabled) {
             if (!SyncPendingMessagesService.isServiceWorking()) {
                 log("Sync in action");
-                startSync();
+                initSync();
             } else {
                 log("Sync canceled by the user");
                 // Sync button will be restored on next status update.
@@ -183,21 +187,26 @@ public class PendingMessages
                 view.sync.setEnabled(false);
                 MainApplication.bus.post(new TaskCanceled());
             }
+        } else {
+            toastLong(R.string.no_configured_url);
         }
     }
 
-    private void startSync() {
-        startSync("");
-    }
-
-    private void startSync(String messagesUuid) {
-        log("syncMessages messagesUuid: " + messagesUuid);
+    private void initSync() {
+        log("syncMessages messagesUuid: ");
+        ArrayList<String> messagesUuids = null;
+        if (mSelectedItemsPositions != null && mSelectedItemsPositions.size() > 0) {
+            messagesUuids = new ArrayList<String>();
+            for (Integer position : mSelectedItemsPositions) {
+                messagesUuids.add(adapter.getItem(position).getMessageUuid());
+            }
+        }
 
         syncPendingMessagesServiceIntent = new Intent(getActivity(),
                 SyncPendingMessagesService.class);
 
-        syncPendingMessagesServiceIntent.putExtra(
-                ServicesConstants.MESSAGE_UUID, messagesUuid);
+        syncPendingMessagesServiceIntent.putStringArrayListExtra(
+                ServicesConstants.MESSAGE_UUID, messagesUuids);
         syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA,
                 SyncType.MANUAL.name());
         getActivity().startService(syncPendingMessagesServiceIntent);
@@ -217,45 +226,35 @@ public class PendingMessages
 
     }
 
-    public boolean performAction(MenuItem item, int position) {
+    public boolean performAction(MenuItem item) {
         log("performAction()");
-        messageUuid = adapter.getItem(position).getMessageUuid();
+
         if (item.getItemId() == R.id.context_delete) {
-
+            // only initialize selected items positions if this action is taken
+            mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
             performDeleteById();
-            return (true);
-
+            return true;
         } else if (item.getItemId() == R.id.context_sync) {
             // Synchronize by ID
-            startSync(messageUuid);
+            // only initialize selected items positions if this action is taken
+            mSelectedItemsPositions =multichoiceActionModeListener.getSelectedItemPositions();
+            startSync();
+            multichoiceActionModeListener.activeMode.finish();
+            multichoiceActionModeListener.getSelectedItemPositions().clear();
+            return true;
         }
-        return (false);
+        return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         log("onOptionsItemSelected()");
-        Intent intent;
         if (item.getItemId() == R.id.import_sms) {
             importAllSms();
         } else if (item.getItemId() == R.id.delete) {
             performDeleteAll();
-        } else if (item.getItemId() == R.id.settings) {
-            intent = new Intent(getActivity(), Settings.class);
-            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void updateRefreshStatus() {
-        log("updateRefreshStatus()");
-        if (refresh != null) {
-            if (refreshState)
-                refresh.setActionView(R.layout.indeterminate_progress_action);
-            else
-                refresh.setActionView(null);
-        }
-
     }
 
     /**
@@ -315,6 +314,7 @@ public class PendingMessages
      * Delete message by it's id
      */
     public void performDeleteById() {
+
         log("performDeleteById()");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getString(R.string.confirm_message))
@@ -322,6 +322,7 @@ public class PendingMessages
                 .setNegativeButton(getString(R.string.confirm_no),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
+
                                 dialog.cancel();
                             }
                         })
@@ -331,10 +332,12 @@ public class PendingMessages
                                 // Delete by ID
                                 mHandler.post(mDeleteMessagesById);
                                 adapter.refresh();
+                                
                             }
                         });
         AlertDialog alert = builder.create();
         alert.show();
+
     }
 
     // Display pending messages.
@@ -445,7 +448,11 @@ public class PendingMessages
             if (adapter.getCount() == 0) {
                 deleted = 1;
             } else {
-                result = model.deleteMessagesByUuid(messageUuid);
+                log("deletebyId position: " + mSelectedItemsPositions.size());
+                for (Integer position : mSelectedItemsPositions) {
+                    model.deleteMessagesByUuid(adapter.getItem(position).getMessageUuid());
+                }
+                result = true;
             }
 
             try {
@@ -461,6 +468,9 @@ public class PendingMessages
                     }
                 }
                 showMessages();
+                // destory the action mode dialog
+                multichoiceActionModeListener.activeMode.finish();
+                multichoiceActionModeListener.getSelectedItemPositions().clear();
                 getActivity().setProgressBarIndeterminateVisibility(false);
             } catch (Exception e) {
                 return;
@@ -495,14 +505,15 @@ public class PendingMessages
                 break;
             case SYNC:
                 log("In sync state " + " items to sync: " + newState.itemsToSync + " syncdItems "
-                        + newState.currentSyncedItems);
+                        + newState.currentSyncedItems + " faileditems: "
+                        + newState.currentFailedItems);
                 view.sync.setText(R.string.cancel);
 
                 view.status.setText(R.string.working);
                 view.details.setText(newState
                         .getNotification(getActivity().getResources()));
                 view.progressStatus.setIndeterminate(false);
-                view.progressStatus.setProgress(newState.currentSyncedItems);
+                view.progressStatus.setProgress(newState.currentProgress);
                 view.progressStatus.setMax(newState.itemsToSync);
                 break;
             case CANCELED_SYNC:
@@ -512,18 +523,25 @@ public class PendingMessages
                         newState.currentSyncedItems,
                         newState.itemsToSync));
                 break;
+
         }
 
     }
 
     private void finishedSync(SyncPendingMessagesState state) {
-        int syncCount = state.currentSyncedItems;
+        int itemToSync = state.itemsToSync;
         String text = null;
-        if (syncCount > 0) {
+        if (itemToSync > 0) {
             text = getActivity().getResources().getQuantityString(
-                    R.plurals.sync_done_details, syncCount,
-                    syncCount);
-        } else if (syncCount == 0) {
+                    R.plurals.sync_done_details, itemToSync,
+                    itemToSync);
+            log("Finished: successfull: " + state.currentSyncedItems + " failed: "
+                    + state.currentFailedItems + " progress: " + state.currentProgress);
+            text += getActivity().getResources().getString(R.string.sync_status_done,
+                    state.currentSyncedItems,
+                    state.currentFailedItems);
+
+        } else if (itemToSync == 0) {
             text = getActivity().getString(R.string.empty_list);
         }
         view.status.setText(R.string.done);
@@ -537,15 +555,8 @@ public class PendingMessages
         switch (state.state) {
             case INITIAL:
                 idle();
+                break;
 
-                break;
-            case ERROR:
-                final String errorMessage = state.getError(getActivity().getResources());
-                view.status.setText(R.string.error);
-                view.status.setText(getActivity().getString(
-                        R.string.sync_error_details,
-                        errorMessage == null ? "N/A" : errorMessage));
-                break;
         }
     }
 

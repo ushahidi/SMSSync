@@ -3,7 +3,9 @@ package org.addhen.smssync.test;
 
 import java.util.Collection;
 
-import junit.framework.TestCase;
+import org.addhen.smssync.database.Database;
+
+import android.test.AndroidTestCase;
 
 /**
  * Base test class for handling all unit test that doesn't call any of Android's
@@ -11,7 +13,27 @@ import junit.framework.TestCase;
  * 
  * @author eyedol
  */
-public class BaseTestCase extends TestCase {
+public class BaseTestCase extends AndroidTestCase {
+
+    public static Database mDb;
+
+    @Override
+    public void setUp() throws Exception {
+
+        mDb = new Database(getContext());
+        mDb.open();
+        super.setUp();
+
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+
+        mDb.close();
+        mDb = null;
+        super.tearDown();
+
+    }
 
     /**
      * Assert not null or empty.

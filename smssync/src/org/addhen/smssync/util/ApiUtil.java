@@ -24,8 +24,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ApiUtil {
+	
+	private JSONObject jsonObject;
 
-    private JSONObject jsonObject;
 
     private boolean processingResult;
 

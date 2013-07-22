@@ -22,7 +22,7 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
-import org.addhen.smssync.activities.MessagesTabActivity;
+import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.tasks.state.State;
 import org.addhen.smssync.util.Logger;
@@ -156,7 +156,7 @@ public abstract class BaseService extends Service {
 
     protected PendingIntent getPendingIntent() {
         return PendingIntent.getActivity(this, 0,
-                new Intent(this, MessagesTabActivity.class),
+                new Intent(this, MainActivity.class),
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
