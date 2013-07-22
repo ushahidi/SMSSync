@@ -13,7 +13,7 @@ import android.test.AndroidTestCase;
  * 
  * @author eyedol
  */
-public class BaseTestCase extends AndroidTestCase {
+public abstract class BaseTestCase extends AndroidTestCase {
 
     public static Database mDb;
 

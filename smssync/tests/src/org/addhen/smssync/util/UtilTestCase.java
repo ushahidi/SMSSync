@@ -32,6 +32,7 @@ public class UtilTestCase extends BaseTestCase {
                     "MMM dd, yyyy 'at' hh:mm a");
 
             assertNotNullOrEqual("Timestamp cannot be null or empty", expected, formatted);
+            
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }

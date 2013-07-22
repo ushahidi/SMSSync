@@ -72,7 +72,16 @@ public class ProcessSmsTest extends BaseTestCase {
      */
     @MediumTest
     public void testRoutePendingMessagesSuccessful() {
-        // processSms.routePendingMessages(from, body, timestamp, uuid);
+        boolean routed = processSms.routePendingMessages(from, body, timestamp, uuid);
+        assertTrue(routed);
+    }
+    
+    /**
+     * Test that an SMS failed to be sent to the Sync URL. This should be sent to the sent inbox
+     */
+    @MediumTest
+    public void testRoutePendingMessagesFailed() {
+        
     }
 
     /**
@@ -81,7 +90,7 @@ public class ProcessSmsTest extends BaseTestCase {
     @SmallTest
     public void testFilterByKeywords() {
         boolean status = processSms.filterByKeywords(body, filterText);
-        assertTrue("Passed testing filter by keywords", status);
+        assertTrue("Couldn't filter by keywoards using  this csv " + filterText, status);
     }
 
     @SmallTest
