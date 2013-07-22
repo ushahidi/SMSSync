@@ -3,7 +3,6 @@ bin
 gen
 local.properties
 secure.properties
-.gradle
 *.iml
 *.ipr
 *.iws
