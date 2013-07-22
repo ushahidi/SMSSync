@@ -32,27 +32,36 @@ import android.content.res.Resources;
 public class SyncPendingMessagesState extends State {
 
     public final int currentSyncedItems;
+    public final int currentFailedItems;
     public final int itemsToSync;
+    public final int currentProgress;
     public final SyncType syncType;
 
     public SyncPendingMessagesState(SyncState state, int currentSyncedItems,
+            int currentFailedItems,
+            int currentProgress,
             int itemsToSync, SyncType syncType, Exception exception) {
         super(state, exception);
         this.currentSyncedItems = currentSyncedItems;
+        this.currentFailedItems = currentFailedItems;
         this.itemsToSync = itemsToSync;
         this.syncType = syncType;
+        this.currentProgress = currentProgress;
     }
 
     /**
      * Create default state
      */
     public SyncPendingMessagesState() {
-        this(INITIAL, 0, 0, UNKNOWN, null);
+        this(INITIAL, 0, 0, 0, 0, UNKNOWN, null);
     }
 
     @Override
     public SyncPendingMessagesState transition(SyncState newState, Exception exception) {
-        return new SyncPendingMessagesState(newState, currentSyncedItems, itemsToSync, syncType, exception);
+        return new SyncPendingMessagesState(newState, currentSyncedItems, currentFailedItems,
+                currentProgress,
+                itemsToSync, syncType,
+                exception);
     }
 
     /**
@@ -69,12 +78,12 @@ public class SyncPendingMessagesState extends State {
         if (state == SYNC) {
             msg = resources.getString(R.string.status_sync_details,
                     currentSyncedItems,
+                    currentFailedItems,
                     itemsToSync);
 
             return msg;
-        } else {
-            return "";
         }
+        return "";
 
     }
 
@@ -83,9 +92,10 @@ public class SyncPendingMessagesState extends State {
         return "SyncStateChanged[" +
                 "state=" + state +
                 ", currentSyncedItems=" + currentSyncedItems +
+                ", currentFailedItems=" + currentFailedItems +
+                ", currentProgress=" + currentProgress +
                 ", itemsToSync=" + itemsToSync +
                 ", syncType=" + syncType +
                 ']';
     }
-
 }

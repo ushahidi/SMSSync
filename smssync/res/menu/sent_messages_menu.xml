@@ -18,11 +18,4 @@
         android:orderInCategory="0"
         android:showAsAction="ifRoom"
         android:title="@string/menu_delete_all"/>
-    <item
-        android:id="@+id/settings"
-        android:orderInCategory="1"
-        android:icon="@drawable/settings"
-        android:showAsAction="never"
-        android:title="@string/menu_settings"/>
-
 </menu>

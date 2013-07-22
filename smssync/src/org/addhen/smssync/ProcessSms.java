@@ -191,7 +191,7 @@ public class ProcessSms {
                 sendSms(from, Prefs.reply);
             }
         }
-
+        
         if (routeMessages(from, body, timestamp, uuid)) {
 
             // Delete messages from message app's inbox, only

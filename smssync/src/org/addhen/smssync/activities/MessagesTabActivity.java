@@ -20,7 +20,6 @@
 
 package org.addhen.smssync.activities;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.TabAdapter;
 import org.addhen.smssync.fragments.PendingMessages;

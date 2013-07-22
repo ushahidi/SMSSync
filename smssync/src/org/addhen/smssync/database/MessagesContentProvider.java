@@ -24,10 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDoneException;
+import android.database.sqlite.SQLiteStatement;
 
 /**
  * @author eyedol
@@ -46,32 +50,24 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     public MessagesContentProvider(SQLiteDatabase db) {
         super(db);
-        // TODO Auto-generated constructor stub
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.addhen.smssync.database.IMessagesContentProvider#messagesCount()
-     */
     @Override
     public int messagesCount() {
-        cursor = mDb.rawQuery("SELECT COUNT(*) FROM " + TABLE,
-                null);
 
-        int result = 0;
-        try {
-            if (cursor == null) {
-                return result;
-            }
-
-            cursor.moveToFirst();
-            result = cursor.getInt(0);
-        } finally {
-            if (cursor != null)
-                cursor.close();
+        if (Util.isHoneycomb()) {
+            return (int) DatabaseUtils.queryNumEntries(mDb, TABLE);
         }
 
-        return result;
+        // For API < 11
+        try {
+            String sql = "SELECT COUNT(*) FROM " + TABLE;
+            SQLiteStatement statement = mDb.compileStatement(sql);
+            return (int) statement.simpleQueryForLong();
+        } catch (SQLiteDoneException ex) {
+            return 0;
+        }
+
     }
 
     /*
