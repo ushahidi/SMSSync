@@ -24,10 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDoneException;
+import android.database.sqlite.SQLiteStatement;
 
 public class SyncUrlContentProvider extends DbContentProvider implements
         ISyncUrlContentProvider, ISyncUrlSchema {
@@ -45,22 +49,22 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     @Override
     public List<SyncUrlModel> fetchSyncUrl() {
         mListSyncUrl = new ArrayList<SyncUrlModel>();
-        cursor = super.query(TABLE, COLUMNS, null, null, ID);
 
-        if (cursor != null) {
-            try {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
+        try {
+            if (cursor != null) {
+                cursor = super.query(TABLE, COLUMNS, null, null, ID);
+                while (cursor.moveToNext()) {
                     SyncUrlModel syncUrl = cursorToEntity(cursor);
                     mListSyncUrl.add(syncUrl);
-                    cursor.moveToNext();
+
                 }
-
-            } finally {
-
-                if (cursor != null)
-                    cursor.close();
             }
+
+        } finally {
+
+            if (cursor != null)
+                cursor.close();
+
         }
         return mListSyncUrl;
     }
@@ -75,21 +79,21 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         };
 
         mListSyncUrl = new ArrayList<SyncUrlModel>();
-        cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
 
-        if (cursor != null) {
-            try {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
+        try {
+
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
+            if (cursor != null) {
+
+                while (cursor.moveToNext()) {
                     SyncUrlModel syncUrl = cursorToEntity(cursor);
                     mListSyncUrl.add(syncUrl);
-                    cursor.moveToNext();
-                }
 
-            } finally {
-                if (cursor != null)
-                    cursor.close();
+                }
             }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
 
         return mListSyncUrl;
@@ -105,20 +109,18 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         };
 
         mListSyncUrl = new ArrayList<SyncUrlModel>();
-        cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
-        if (cursor != null) {
-            try {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-                    SyncUrlModel syncUrl = cursorToEntity(cursor);
-                    mListSyncUrl.add(syncUrl);
-                    cursor.moveToNext();
-                }
-            } finally {
-                if (cursor != null)
-                    cursor.close();
-            }
 
+        try {
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
+            if (cursor != null) {
+
+                while (cursor.moveToNext()) {
+                    mListSyncUrl.add(cursorToEntity(cursor));
+                }
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
         }
 
         return mListSyncUrl;
@@ -225,23 +227,20 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         final String selectionArgs[] = {
                 "1"
         };
-        Cursor mCursor = super.rawQuery("SELECT COUNT(" + ID + ") FROM "
-                + TABLE + " WHERE " + STATUS + " =?", selectionArgs);
 
-        int result = 0;
-        try {
-            if (mCursor == null) {
-                return result;
-            }
-
-            mCursor.moveToFirst();
-            result = mCursor.getInt(0);
-        } finally {
-            if (mCursor != null)
-                mCursor.close();
+        final String selection = STATUS + "=?";
+        if (Util.isHoneycomb()) {
+            return (int) DatabaseUtils.queryNumEntries(mDb, TABLE, selection, selectionArgs);
         }
-
-        return result;
+        
+        // For API < 11
+        try {
+            String sql = "SELECT COUNT(*) FROM " + TABLE + " WHERE " + STATUS + " =1";
+            SQLiteStatement statement = mDb.compileStatement(sql);
+            return (int) statement.simpleQueryForLong();
+        } catch (SQLiteDoneException ex) {
+            return 0;
+        }
 
     }
 
@@ -251,7 +250,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
     @SuppressWarnings("unchecked")
     @Override
-    protected SyncUrlModel cursorToEntity(Cursor cursor) {
+    public SyncUrlModel cursorToEntity(Cursor cursor) {
         SyncUrlModel syncUrl = new SyncUrlModel();
 
         int idIndex;

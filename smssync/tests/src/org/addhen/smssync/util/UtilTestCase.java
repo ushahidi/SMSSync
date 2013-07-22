@@ -38,7 +38,8 @@ public class UtilTestCase extends BaseTestCase {
     }
 
     @Override
-    public void tearDown() {
+    public void tearDown() throws Exception{
+        super.tearDown();
         timestamp = null;
         expected = null;
     }
