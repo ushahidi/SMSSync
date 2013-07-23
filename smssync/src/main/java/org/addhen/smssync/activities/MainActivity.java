@@ -37,13 +37,6 @@ import android.view.ContextMenu.ContextMenuInfo;
  */
 public class MainActivity extends BaseActivity<MainView> {
 
-    /**
-     * @param view
-     * @param layout
-     * @param menu
-     * @param drawerLayoutId
-     * @param listViewId
-     */
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
                 R.id.left_drawer);

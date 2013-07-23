@@ -37,7 +37,6 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.SmsSync" >
         <service android:name=".services.SmsReceiverService" />
-        <service android:name=".services.AutoSyncService" />
         <service android:name=".services.AutoSyncScheduledService" />
         <service android:name=".services.CheckTaskScheduledService" />
         <service android:name=".services.CheckTaskService" />
