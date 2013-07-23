@@ -11,8 +11,8 @@ dependencies {
     compile project(':abslib')
     compile 'com.android.support:support-v4:13.0.+'
     compile 'com.squareup:otto:1.3.4'
-    instrumentTestCompile 'org.robolectric:robolectric:2.2-SNAPSHOT'
-    instrumentTestCompile 'junit:junit-dep:4.9'
+    // Disabling this for now. Causing out of memory exception when building
+    //instrumentTestCompile 'org.robolectric:robolectric:2.1.1-SNAPSHOT'
     instrumentTestCompile 'com.squareup:fest-android:1.0.5'
 }
 

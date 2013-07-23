@@ -18,18 +18,9 @@ before_install:
   - mkdir -p $ANDROID_HOME/build-tools/
   - mv $ANDROID_HOME/android-4.2.2 $ANDROID_HOME/build-tools/17.0.0
   - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-16 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-17 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter sysimg-17 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
-  - android -s update project --path ./smssync --subprojects --target "android-17"
-  - android -s update test-project --path ./smssync/tests -m ../
-  
-  # Gradle
-  #- wget http://services.gradle.org/distributions/gradle-1.6-bin.zip
-  #- unzip gradle-1.6-bin.zip
-  #- export GRADLE_HOME=$PWD/gradle-1.6
-  #- export PATH=$GRADLE_HOME/bin:$PATH
 
   # Create and start emulator
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
@@ -40,10 +31,5 @@ before_install:
  # - ci/wait_for_emulator.sh
  # - adb shell input keyevent 82
 
-script: "./travis.sh"
-
-  
-notifications:
-  email:
-   -henry@ushahidi.com
+script: "./build.sh"
 

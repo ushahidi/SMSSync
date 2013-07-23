@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
 
-noSdkUpdate=false
-while [[ $1 == "--"* ]]; do
-	if [[ $1 == "--no-sdk-update" ]]; then
-		noSdkUpdate=true
-	fi
-	shift
-done
-
 function log {
 	local logStart="#"
 	local sourceLen=${#BASH_SOURCE[@]}
@@ -45,12 +37,11 @@ fi
 log "Config looks OK."
 
 log "Building smssync..."
-./gradlew assemble
+#./gradlew clean assemble
 log "Smssync built."
 
 log "Building test app..."
-./gradlew clean assembleTest
+./gradlew clean connectedInstrumentTest --continue
 log "Test app built."
 
 log "BUILD COMPLETE"
-
