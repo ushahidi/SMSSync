@@ -18,9 +18,9 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync;
+package org.addhen.smssync.tests;
 
-import org.addhen.smssync.models.SyncUrlModelTest;
+import org.addhen.smssync.tests.models.SyncUrlModelTest;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

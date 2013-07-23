@@ -45,7 +45,7 @@ fi
 log "Config looks OK."
 
 log "Building smssync..."
-./gradlew clean assemble
+./gradlew assemble
 log "Smssync built."
 
 log "Building test app..."
