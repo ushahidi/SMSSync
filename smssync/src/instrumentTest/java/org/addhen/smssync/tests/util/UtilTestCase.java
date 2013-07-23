@@ -17,8 +17,7 @@ public class UtilTestCase extends BaseTestCase {
     public void setUp() throws Exception {
         super.setUp();
         timestamp = 1370831690572l;
-        expected = "Jun 10, 2013 at 11:34 AM";
-
+        expected = "Jun 10, 2013 at 02:34 AM";
     }
 
     /**
