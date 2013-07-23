@@ -6,13 +6,13 @@ SDK in the local.property file. In local.property file, make sure `sdk.dir` equa
 
 ### Example on how to setup local.properties file
 Create a local.properties file in the root document of the project and insert the absolute path where you have
-your sdk stored. Eg. sdk.dir=/home/username/android-sdk-linux_x86
+your sdk stored. Eg. `sdk.dir=/home/username/android-sdk-linux_x86`
 
 ### Build the app on the command line
-./build.sh
+`./build.sh`
 
 ### Build with Android Studio.
-Import Project.
-Select `build.gradle` located in the project's root document.
-After it finishes the import, hit Shift + F10 to build the project.
+* Import Project.
+* Select `build.gradle` located in the project's root document.
+* After it finishes the import, hit Shift + F10 to build the project.
 
