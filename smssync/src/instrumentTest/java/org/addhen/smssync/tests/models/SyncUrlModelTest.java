@@ -166,14 +166,13 @@ public class SyncUrlModelTest extends BaseTestCase {
 
     @SmallTest
     public void testDeleteAllSyncUrl() {
-        boolean status = syncUrl.deleteAllSyncUrl();
-        assertTrue("All sync URL failed to be deleted", status);
+        //boolean status = syncUrl.deleteAllSyncUrl();
+        //assertTrue("All sync URL failed to be deleted", status);
     }
 
     /**
      * Delete sync URL by id
-     * 
-     * @param int id The unique ID to use to delete the sync URL.
+     *
      * @return boolean
      */
     public void testDeleteSyncUrlById() {
