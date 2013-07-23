@@ -25,7 +25,7 @@ function handle_bad_config {
 }
 
 log "Checking config..."
-localPropsFile=smssync/local.properties
+localPropsFile=local.properties
 if [[ ! -f $localPropsFile ]]; then
 	log "File not found: $localPropsFile"
 	handle_bad_config
@@ -42,27 +42,12 @@ if [[ -z $ANDROID_HOME ]]; then
 fi
 log "Config looks OK."
 
-if ! $noSdkUpdate; then
-	read -p "Do you want to update android SDK?  (This may be necessary for the build to run.) [y/N] " -n 1 -r
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		log "Updating android SDK..."
-		android update sdk --no-ui
-		log "Android SDK updated."
-	else
-		log "Skipping android SDK update."
-	fi
-fi
-
 log "Building smssync..."
-pushd smssync
-ant clean debug
-popd
+./gradlew clean assemble
 log "Smssync built."
 
 log "Building test app..."
-pushd smssync/tests
-ant clean build-project
-popd
+./gradlew clean assembleTest
 log "Test app built."
 
 log "BUILD COMPLETE"
