@@ -27,8 +27,13 @@ function handle_bad_config {
 log "Checking config..."
 localPropsFile=local.properties
 if [[ ! -f $localPropsFile ]]; then
-	log "File not found: $localPropsFile"
-	handle_bad_config
+
+	if [[ -z $ANDROID_HOME ]]; then
+	    log "File not found: $localPropsFile"
+    	log "environment variable ANDROID_HOME is not set."
+    	handle_bad_config
+	fi
+
 fi
 
 if ! grep -q '^sdk\.dir=' $localPropsFile; then
@@ -36,10 +41,7 @@ if ! grep -q '^sdk\.dir=' $localPropsFile; then
 	handle_bad_config
 fi
 
-if [[ -z $ANDROID_HOME ]]; then
-	log "environment variable ANDROID_HOME is not set."
-	handle_bad_config
-fi
+
 log "Config looks OK."
 
 log "Building smssync..."
