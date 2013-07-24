@@ -13,7 +13,7 @@ dependencies {
     compile 'com.squareup:otto:1.3.4'
     // Disabling this for now. Causing out of memory exception when building
     //instrumentTestCompile 'org.robolectric:robolectric:2.1.1-SNAPSHOT'
-    instrumentTestCompile 'com.squareup:fest-android:1.0.5'
+    //instrumentTestCompile 'com.squareup:fest-android:1.0.5'
 }
 
 android {
