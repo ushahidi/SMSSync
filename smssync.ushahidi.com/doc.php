@@ -160,7 +160,7 @@ In the app itself, ensure <strong>*Get Reply from Server*</strong> is checked to
 <p>&nbsp;</p>
 <strong>Task</strong>
 <p>
-SMSSync supports execution of tasks defined on the server. Currently it supports sending of messages sent from the Sync URL as SMS. This feature is targeted towards developers. The app can be configured to poll the server for new tasks at a given frequency. The server then needs to respond to HTTP GET requests with <code>?task=send</code> (for example <code>http://callback_url/smssync?task=send</code>). The format of this response is shown below.
+SMSSync supports execution of tasks defined on the server. Currently it supports sending of messages sent from the Sync URL as SMS. This feature is targeted towards developers. The app can be configured to poll the server for new tasks at a given frequency. The server then needs to respond to HTTP GET requests with <code>?task=send</code> (for example <code>http://callback_url/smssync?task=send&secret=secret_key</code>). The format of this response is shown below.
 </p>
 <br /><br />        
 
@@ -196,6 +196,9 @@ The secret key provided by the server must match the secret key configured withi
 </li>
 <li>
 To ensure the message is sent to the correct recipient, add the country code to the phone number. Eg. <strong>+254</strong>700709142. Without this, the message is sent to the number in the country where the phone is.
+</li>
+<li>
+The web-service should check the value of the secret passed with each task http request that smsync makes to the web-service for messages to send and respond appropriately so that not just any running smssync instance can communicate with your web-service.
 </li>
 </ul>
 
