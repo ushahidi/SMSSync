@@ -24,12 +24,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,6 +55,7 @@ import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
+import 	android.text.format.DateFormat;
 
 /**
  * This class habours common util methods that are available for other classes
@@ -67,31 +66,19 @@ import android.widget.Toast;
 public class Util {
 
     public static final int NOTIFICATION_ALERT = 1337;
-
     public static final int READ_THREAD = 1;
-
-    public static HashMap<String, String> smsMap = new HashMap<String, String>();
-
-    private static NetworkInfo networkInfo;
-
-    private static JSONObject jsonObject;
-
-    private static Pattern pattern;
-
-    private static Matcher matcher;
-
     private static final String TIME_FORMAT_12_HOUR = "h:mm a";
-
     private static final String TIME_FORMAT_24_HOUR = "H:mm";
-
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
     private static final String URL_PATTERN = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
-
     private static final int NOTIFY_RUNNING = 100;
-
     private static final String CLASS_TAG = Util.class.getSimpleName();
+    public static HashMap<String, String> smsMap = new HashMap<String, String>();
+    private static NetworkInfo networkInfo;
+    private static JSONObject jsonObject;
+    private static Pattern pattern;
+    private static Matcher matcher;
 
     /**
      * Joins two strings together.
@@ -169,7 +156,7 @@ public class Util {
 
         String formatted = "";
 
-        DateFormat formatter = new SimpleDateFormat(dateFormat);
+        java.text.DateFormat formatter = new SimpleDateFormat(dateFormat);
         try {
             Date dateStr = formatter.parse(date);
             formatted = formatter.format(dateStr);
@@ -392,11 +379,10 @@ public class Util {
      * @return String
      */
     public static String formatTimestamp(Context context, long timestamp) {
-        String HOURS_24 = "24";
-        String hours = "24";
+        final boolean is24Hr =  DateFormat.is24HourFormat (context);
 
         SimpleDateFormat mSDF = new SimpleDateFormat();
-        if (HOURS_24.equals(hours)) {
+        if (is24Hr) {
             mSDF.applyLocalizedPattern(TIME_FORMAT_24_HOUR);
         } else {
             mSDF.applyLocalizedPattern(TIME_FORMAT_12_HOUR);
@@ -422,7 +408,6 @@ public class Util {
             return 0;
         }
         return 1;
-
     }
 
     /**
