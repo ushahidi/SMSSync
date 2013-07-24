@@ -125,26 +125,6 @@ public class Util {
     }
 
     /**
-     * Create CSV from a given string in a Vector object.
-     * 
-     * @param Vector <String> text - The Vector object containing the Strings
-     * @return String
-     */
-    public static String implode(Vector<String> text) {
-
-        String implodedStr = "";
-
-        int i = 0;
-
-        for (String value : text) {
-            implodedStr += i == text.size() - 1 ? value : value + ",";
-            i++;
-        }
-
-        return implodedStr;
-    }
-
-    /**
      * Checks if there is Internet connection or data connection on the device.
      * 
      * @param Context context - The activity calling this method.
@@ -157,9 +137,7 @@ public class Util {
 
         networkInfo = connectivity.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
-            return true;
-        }
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) return true;
         return false;
 
     }
@@ -430,8 +408,7 @@ public class Util {
      * Validate the callback URL
      * 
      * @param String callbackURL - The callback URL to be validated.
-     * @return int - 0 = well formed URL, 1 = no configured url, 2 = Malformed
-     *         URL - 3 = can't make connection to it.
+     * @return int - 0 = well formed URL, 1 = no configured url
      */
     public static int validateCallbackUrl(String callbackUrl) {
 

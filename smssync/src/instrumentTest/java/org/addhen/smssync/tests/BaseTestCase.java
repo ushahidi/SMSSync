@@ -67,4 +67,5 @@ public abstract class BaseTestCase extends AndroidTestCase {
         assertNotNullOrEmpty(message, actual);
         assertEquals(message, expected, actual);
     }
+
 }
