@@ -24,17 +24,11 @@ public class UtilTestCase extends BaseTestCase {
      * Test date and time formatter
      */
     @SmallTest
-    public void testFormatDate() {
+    public void testFormatDate() throws NumberFormatException{
+        String formatted = Util.formatDateTime(timestamp,"MMM dd, yyyy 'at' hh:mm a");
 
-        try {
-            String formatted = Util.formatDateTime(timestamp,
-                    "MMM dd, yyyy 'at' hh:mm a");
+        assertNotNullOrEqual("Timestamp cannot be null or empty", expected, formatted);
 
-            assertNotNullOrEqual("Timestamp cannot be null or empty", expected, formatted);
-            
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
