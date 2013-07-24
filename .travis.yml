@@ -32,4 +32,4 @@ before_install:
   #- ci/wait_for_emulator.sh
   #- adb shell input keyevent 82
 
-script: ./gradlew connectedInstrumentTest --continue
+#script: ./gradlew connectedInstrumentTest
