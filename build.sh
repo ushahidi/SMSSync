@@ -1,14 +1,6 @@
 #!/bin/bash
 set -e
 
-noSdkUpdate=false
-while [[ $1 == "--"* ]]; do
-	if [[ $1 == "--no-sdk-update" ]]; then
-		noSdkUpdate=true
-	fi
-	shift
-done
-
 function log {
 	local logStart="#"
 	local sourceLen=${#BASH_SOURCE[@]}
@@ -24,11 +16,42 @@ function handle_bad_config {
 	exit 1
 }
 
+function no_device_running_create_one {
+    if ! adb devices | grep -w -q 'device'; then
+        create_emulator_with_no_gui
+    fi
+}
+
+function create_emulator_with_no_gui {
+    log "Creating emulator..."
+    echo yes | android update sdk --filter sysimg-17 --no-ui --force > /dev/null
+
+    echo no | android create avd --force -n test -t android-17 --abi armeabi-v7a
+    emulator -avd test -no-skin -no-audio -no-window &
+
+    chmod +x ci/wait_for_emulator.sh
+    ci/wait_for_emulator.sh
+    adb shell input keyevent 82
+
+    log "Complete!"
+}
+
+function kill_running_emulator {
+    log "Killing emulator..."
+    adb -s emulator-5554 emu kill
+    log "Done!"
+}
+
 log "Checking config..."
-localPropsFile=smssync/local.properties
+localPropsFile=local.properties
 if [[ ! -f $localPropsFile ]]; then
-	log "File not found: $localPropsFile"
-	handle_bad_config
+
+	if [[ -z $ANDROID_HOME ]]; then
+	    log "File not found: $localPropsFile"
+    	log "environment variable ANDROID_HOME is not set."
+    	handle_bad_config
+	fi
+
 fi
 
 if ! grep -q '^sdk\.dir=' $localPropsFile; then
@@ -36,34 +59,22 @@ if ! grep -q '^sdk\.dir=' $localPropsFile; then
 	handle_bad_config
 fi
 
-if [[ -z $ANDROID_HOME ]]; then
-	log "environment variable ANDROID_HOME is not set."
-	handle_bad_config
-fi
+
 log "Config looks OK."
 
-if ! $noSdkUpdate; then
-	read -p "Do you want to update android SDK?  (This may be necessary for the build to run.) [y/N] " -n 1 -r
-	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		log "Updating android SDK..."
-		android update sdk --no-ui
-		log "Android SDK updated."
-	else
-		log "Skipping android SDK update."
-	fi
-fi
-
 log "Building smssync..."
-pushd smssync
-ant clean debug
-popd
+./gradlew assemble
 log "Smssync built."
 
+# test build requires a running emulator. Create and run and emulator
+log "About to build test app"
+no_device_running_create_one
+
 log "Building test app..."
-pushd smssync/tests
-ant clean build-project
-popd
+./gradlew connectedInstrumentTest --continue
 log "Test app built."
 
 log "BUILD COMPLETE"
 
+# Kill emulator
+#kill_running_emulator
