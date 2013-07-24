@@ -28,7 +28,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 /**
  * @author eyedol
  */
-public class ProcessSmsTest extends BaseTestCase {
+public class ProcessSmsTest extends BaseTest {
 
     ProcessSms processSms;
     String from;

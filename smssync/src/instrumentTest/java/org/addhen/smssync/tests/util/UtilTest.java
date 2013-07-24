@@ -3,10 +3,10 @@ package org.addhen.smssync.tests.util;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
-import org.addhen.smssync.tests.BaseTestCase;
+import org.addhen.smssync.tests.BaseTest;
 import org.addhen.smssync.util.Util;
 
-public class UtilTest extends BaseTestCase {
+public class UtilTest extends BaseTest {
 
     Long timestamp;
     String expected;

@@ -26,7 +26,7 @@ import java.util.List;
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.database.ISyncUrlSchema;
 import org.addhen.smssync.models.SyncUrlModel;
-import org.addhen.smssync.tests.BaseTestCase;
+import org.addhen.smssync.tests.BaseTest;
 
 import android.database.Cursor;
 import android.test.suitebuilder.annotation.SmallTest;
@@ -34,7 +34,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 /**
  * @author eyedol
  */
-public class SyncUrlModelTest extends BaseTestCase {
+public class SyncUrlModelTest extends BaseTest {
     private SyncUrlModel syncUrl;
 
     private int id;

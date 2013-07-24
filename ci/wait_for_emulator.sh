@@ -1,5 +1,7 @@
 #!/bin/bash
-#Credits: https://github.com/pestrada/android-tdd-playground/blob/master/ci/wait_for_emulator.sh
+
+# Credits: https://github.com/pestrada/android-tdd-playground/blob/master/ci/wait_for_emulator.sh
+
 bootanim=""
 failcounter=0
 until [[ "$bootanim" =~ "stopped" ]]; do
