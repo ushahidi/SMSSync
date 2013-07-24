@@ -77,4 +77,4 @@ log "Test app built."
 log "BUILD COMPLETE"
 
 # Kill emulator
-kill_running_emulator
+#kill_running_emulator
