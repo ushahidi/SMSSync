@@ -6,8 +6,6 @@ import android.test.suitebuilder.annotation.SmallTest;
 import org.addhen.smssync.tests.BaseTestCase;
 import org.addhen.smssync.util.Util;
 
-import java.util.Vector;
-
 public class UtilTestCase extends BaseTestCase {
 
     Long timestamp;
@@ -54,7 +52,7 @@ public class UtilTestCase extends BaseTestCase {
     }
 
     public void testShouldCapitalizeFirstLetterOfAText(){
-        final String actual = Util.capitalizeString("hello world where are you");
+        final String actual = Util.capitalizeFirstLetter("hello world where are you");
         assertNotNullOrEqual("Could not capitalize the string ", "Hello world where are you", actual);
     }
 

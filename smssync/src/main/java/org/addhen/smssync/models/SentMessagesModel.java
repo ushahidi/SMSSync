@@ -198,8 +198,8 @@ public class SentMessagesModel extends Model {
 					messageUuid = cursor.getString(messagesIdIndex);
 					messages.setMessageUuid(messageUuid);
 
-					messagesFrom = Util.capitalizeString(cursor
-							.getString(messagesFromIndex));
+					messagesFrom = Util.capitalizeFirstLetter(cursor
+                            .getString(messagesFromIndex));
 					messages.setMessageFrom(messagesFrom);
 
 					messagesDate = cursor.getString(messagesDateIndex);

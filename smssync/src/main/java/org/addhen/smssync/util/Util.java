@@ -120,7 +120,7 @@ public class Util {
      * @param String text - The string to be capitalized.
      * @return String
      */
-    public static String capitalizeString(String text) {
+    public static String capitalizeFirstLetter(String text) {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
