@@ -23,6 +23,7 @@ package org.addhen.smssync.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.net.URLEncoder;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
@@ -252,6 +253,16 @@ public class MessageSyncUtil extends Util {
             StringBuilder uriBuilder = new StringBuilder(url);
 
             uriBuilder.append("?task=send");
+
+	if(!TextUtils.isEmpty(urlSecret)) {
+		String urlSecretEncoded;
+		try {
+			urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
+		} catch (java.io.UnsupportedEncodingException e) {
+			urlSecretEncoded = urlSecret;
+		}
+		uriBuilder.append("&secret=" + urlSecretEncoded);
+	}
 
             String response = MainHttpClient.getFromWebService(uriBuilder
                     .toString());
