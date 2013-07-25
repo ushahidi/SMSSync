@@ -44,19 +44,18 @@ function kill_running_emulator {
 
 log "Checking config..."
 localPropsFile=local.properties
-if [[ ! -f $localPropsFile ]]; then
+if [[ -z $ANDROID_HOME ]]; then
+    log "environment variable ANDROID_HOME is not set."
 
-	if [[ -z $ANDROID_HOME ]]; then
-	    log "File not found: $localPropsFile"
-    	log "environment variable ANDROID_HOME is not set."
+    if [[ ! -f $localPropsFile ]]; then
+        log "File not found: $localPropsFile"
+        handle_bad_config
+    fi
+
+    if ! grep -q '^sdk\.dir=' $localPropsFile; then
+    	log "value 'sdk.dir' not set in file '$localPropsFile'."
     	handle_bad_config
-	fi
-
-fi
-
-if ! grep -q '^sdk\.dir=' $localPropsFile; then
-	log "value 'sdk.dir' not set in file '$localPropsFile'."
-	handle_bad_config
+    fi
 fi
 
 
@@ -75,6 +74,6 @@ log "Building test app..."
 log "Test app built."
 
 log "BUILD COMPLETE"
-
+exit 0
 # Kill emulator
 #kill_running_emulator
