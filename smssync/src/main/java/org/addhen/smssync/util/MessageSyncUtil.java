@@ -20,10 +20,11 @@
 
 package org.addhen.smssync.util;
 
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.net.URLEncoder;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.ProcessSms;
@@ -254,15 +255,16 @@ public class MessageSyncUtil extends Util {
 
             uriBuilder.append("?task=send");
 
-	if(!TextUtils.isEmpty(urlSecret)) {
-		String urlSecretEncoded;
-		try {
-			urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
-		} catch (java.io.UnsupportedEncodingException e) {
-			urlSecretEncoded = urlSecret;
-		}
-		uriBuilder.append("&secret=" + urlSecretEncoded);
-	}
+            if(!TextUtils.isEmpty(urlSecret)) {
+                uriBuilder.append("&secret=");
+                String urlSecretEncoded = urlSecret;
+                try {
+                    urlSecretEncoded = URLEncoder.encode(urlSecretEncoded, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    // everyone has UTF-8, surely?
+                }
+                uriBuilder.append(urlSecretEncoded);
+            }
 
             String response = MainHttpClient.getFromWebService(uriBuilder
                     .toString());
