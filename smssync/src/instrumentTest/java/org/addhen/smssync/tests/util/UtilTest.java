@@ -22,7 +22,7 @@ public class UtilTest extends BaseTest {
      * Test date and time formatter
      */
     @SmallTest
-    public void testShouldFormatDate() throws NumberFormatException {
+    public void ShouldFormatDate() throws NumberFormatException {
         final String formatted = Util.formatDateTime(timestamp, "MMM dd, yyyy 'at' hh:mm a");
 
         assertNotNullOrEqual("Timestamp cannot be null or empty", expected, formatted);
@@ -106,7 +106,7 @@ public class UtilTest extends BaseTest {
      * Jun 10, 2013 at 2:34 AM
      */
     @SmallTest
-    public void testShouldFormatTimestampToHumanFriendly() {
+    public void ShouldFormatTimestampToHumanFriendly() {
         final String formatted = Util.formatTimestamp(getContext(),timestamp);
         assertNotNullOrEqual("Timestamp cannot be null or empty", "2:34 AM", formatted);
     }

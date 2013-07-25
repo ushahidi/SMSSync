@@ -17,11 +17,11 @@ before_install:
   - unzip build-tools_r17-linux.zip -d $ANDROID_HOME
   - mkdir -p $ANDROID_HOME/build-tools/
   - mv $ANDROID_HOME/android-4.2.2 $ANDROID_HOME/build-tools/17.0.0
-  - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-16 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-17 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter sysimg-17 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter platform-tools --no-ui --force
+  - echo yes | android update sdk --filter android-16 --no-ui --force
+  - echo yes | android update sdk --filter android-17 --no-ui --force
+  - echo yes | android update sdk --filter sysimg-17 --no-ui --force
+  - echo yes | android update sdk --filter extra-android-support --no-ui --force
 
   # Gradle
   - wget http://services.gradle.org/distributions/gradle-1.6-bin.zip
