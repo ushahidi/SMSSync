@@ -27,12 +27,12 @@ import java.util.LinkedHashSet;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.ProcessSms;
+import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
-import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.MessageModel;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.SyncType;
@@ -61,14 +61,14 @@ import com.squareup.otto.Subscribe;
 
 public class PendingMessages
         extends
-        BaseListFragment<PendingMessagesView, MessagesModel, PendingMessagesAdapter> implements
+        BaseListFragment<PendingMessagesView, MessageModel, PendingMessagesAdapter> implements
         android.view.View.OnClickListener {
 
     private Intent syncPendingMessagesServiceIntent;
 
     private final Handler mHandler;
 
-    private MessagesModel model;
+    private MessageModel model;
 
     private LinkedHashSet<Integer> mSelectedItemsPositions;
 
@@ -82,7 +82,7 @@ public class PendingMessages
                 android.R.id.list);
         log("PendingMessages()");
         mHandler = new Handler();
-        model = new MessagesModel();
+        model = new MessageModel();
     }
 
     @Override

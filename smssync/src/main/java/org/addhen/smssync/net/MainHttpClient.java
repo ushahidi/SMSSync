@@ -60,14 +60,16 @@ public class MainHttpClient {
     protected String url;
 
     protected static StringBuilder userAgent;
-    private String versionName;
+
+    protected Context context;
 
     public MainHttpClient(String url, Context context) {
         this.url = url;
+        this.context = context;
         try {
-            versionName = context.getPackageManager().getPackageInfo(
+            final String versionName = context.getPackageManager().getPackageInfo(
                     context.getPackageName(), 0).versionName;
-            // add app name to verstion number
+            // Add version name to user agent
             userAgent = new StringBuilder("SMSSync-Android/");
             userAgent.append("v");
             userAgent.append(versionName);

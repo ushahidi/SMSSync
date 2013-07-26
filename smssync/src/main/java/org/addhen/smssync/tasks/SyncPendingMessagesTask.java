@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.ProcessSms;
+import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.exceptions.ConnectivityException;
-import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.MessageModel;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
@@ -54,7 +54,7 @@ public class SyncPendingMessagesTask extends
 
     private final static String CLASS_TAG = SyncPendingMessagesTask.class.getSimpleName();
 
-    private final MessagesModel messagesModel;
+    private final MessageModel messagesModel;
 
     private int itemsToSync;
 
@@ -68,7 +68,7 @@ public class SyncPendingMessagesTask extends
      */
     public SyncPendingMessagesTask(SyncPendingMessagesService service) {
         this.mService = service;
-        this.messagesModel = new MessagesModel();
+        this.messagesModel = new MessageModel();
     }
 
     @Override
@@ -178,7 +178,7 @@ public class SyncPendingMessagesTask extends
         SyncStatus syncStatus = new SyncStatus();
         processSms = new ProcessSms(mService.getApplicationContext());
 
-        List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
+        List<MessageModel> listMessages = new ArrayList<MessageModel>();
 
         // determine if syncing by message UUID
         if (config.messageUuids != null && config.messageUuids.size() > 0) {
@@ -208,7 +208,7 @@ public class SyncPendingMessagesTask extends
 
                 // iterate through the loaded messages and push to the web
                 // service
-                for (MessagesModel messages : listMessages) {
+                for (MessageModel messages : listMessages) {
                     progress++;
                     // route the message to the appropriate enabled sync URL
                     if (processSms.routePendingMessages(messages.getMessageFrom(),
@@ -217,7 +217,7 @@ public class SyncPendingMessagesTask extends
 
                         // / if it successfully pushes message, purge the
                         // message from the db
-                        new MessagesModel().deleteMessagesByUuid(messages
+                        new MessageModel().deleteMessagesByUuid(messages
                                 .getMessageUuid());
                         // increment the number of syncd items
                         syncdItems++;

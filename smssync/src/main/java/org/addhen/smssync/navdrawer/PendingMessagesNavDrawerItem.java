@@ -21,7 +21,7 @@
 package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.fragments.PendingMessages;
-import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.MessageModel;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -52,6 +52,6 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        mCounter = new MessagesModel().totalMessages();
+        mCounter = new MessageModel().totalMessages();
     }
 }

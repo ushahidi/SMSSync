@@ -23,136 +23,57 @@ package org.addhen.smssync.models;
 import java.util.List;
 
 import org.addhen.smssync.database.Database;
+import org.addhen.smssync.messages.Message;
 
 /**
  * Class to handle set and getters.
- * 
- * @author eyedol
+ *
  */
-public class MessagesModel extends Model {
+public class MessageModel extends Model {
 
-	private String message;
+	private List<Message> listMessages;
 
-	private String messageFrom;
+    private Message message;
 
-	private String messageDate;
-
-	private String messageUuid;
-
-	public List<MessagesModel> listMessages;
-
-	/**
-	 * Set the content of the message. More like the body of the SMS message.
-	 * 
-	 * @param String
-	 *            messageBody - The content of the SMS message.
-	 * @return void
-	 */
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	/**
-	 * Get the content of the message.
-	 * 
-	 * @return String
-	 */
-	public String getMessage() {
-		return this.message;
-	}
-
-	/**
-	 * Set the address of the SMS message.
-	 * 
-	 * @param String
-	 *            messageFrom
-	 * @return void
-	 */
-	public void setMessageFrom(String messageFrom) {
-		this.messageFrom = messageFrom;
-	}
-
-	/**
-	 * Get the address of the SMS Message
-	 * 
-	 * @return String
-	 */
-	public String getMessageFrom() {
-		return this.messageFrom;
-	}
-
-	/**
-	 * Set the date of the message.
-	 * 
-	 * @param String
-	 *            messageDate - The timestamp of the message. To be changed into
-	 *            human readable.
-	 * @return void
-	 */
-	public void setMessageDate(String messageDate) {
-		this.messageDate = messageDate;
-	}
-
-	/**
-	 * Get the message date
-	 * 
-	 * @return String
-	 */
-	public String getMessageDate() {
-		return this.messageDate;
-	}
-
-	/**
-	 * Set the message UUID.
-	 * 
-	 * @param int messageUuid - The message UUID.
-	 * @return void
-	 */
-	public void setMessageUuid(String messageUuid) {
-		this.messageUuid = messageUuid;
-	}
-
-	/**
-	 * Get the message UUID.
-	 * 
-	 * @return String
-	 */
-	public String getMessageUuid() {
-		return this.messageUuid;
-	}
-
+    /**
+     * Set list messages
+     *
+     * @param listMessages List of messages
+     */
+    public void setListMessages(List<Message> listMessages) {
+        this.listMessages = listMessages;
+    }
+    /**
+     * Initialize the message
+     *
+     * @param message The message object
+     */
+    public void setMessage(Message message) {
+        this.message = message;
+    }
 	@Override
 	public boolean load() {
 		listMessages = Database.mMessagesContentProvider.fetchAllMessages();
-		if (listMessages != null) {
-			return true;
-		}
-		return false;
-	}
+        return listMessages != null;
+    }
 
 	public boolean loadByUuid(String messageUuid) {
 		listMessages = Database.mMessagesContentProvider
 				.fetchMessagesByUuid(messageUuid);
-		if (listMessages != null) {
-			return true;
-		}
-		return false;
-	}
+        return listMessages != null;
+    }
 
 	public boolean loadByLimit(int limit) {
 		listMessages = Database.mMessagesContentProvider
 				.fetchMessagesByLimit(limit);
-		if (listMessages != null) {
-			return true;
-		}
-		return false;
-	}
+        return listMessages != null;
+    }
 
 	@Override
 	public boolean save() {
-		if (listMessages != null && listMessages.size() > 0) {
+		if (listMessages != null && listMessages.size() > 0)
 			return Database.mMessagesContentProvider.addMessages(listMessages);
-		}
+
 		return false;
 	}
 
@@ -168,7 +89,7 @@ public class MessagesModel extends Model {
 	/**
 	 * Delete messages by UUID
 	 * 
-	 * @param int messageId - Message to be deleted UUID
+	 * @param  messageUuid - The message's UUID
 	 * @return boolean
 	 */
 	public boolean deleteMessagesByUuid(String messageUuid) {
@@ -185,4 +106,11 @@ public class MessagesModel extends Model {
 		return Database.mMessagesContentProvider.messagesCount();
 	}
 
+    public Message getMessage(){
+        return this.message;
+    }
+
+    public List<Message> getListMessages() {
+        return this.listMessages;
+    }
 }

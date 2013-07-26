@@ -26,7 +26,7 @@ import java.util.List;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.activities.MessagesTabActivity;
-import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.MessageModel;
 import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
@@ -96,14 +96,14 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 		}
 	}
 
-	public static List<MessagesModel> pendingMsgs = new ArrayList<MessagesModel>();
+	public static List<MessageModel> pendingMsgs = new ArrayList<MessageModel>();
 
 	public static List<Integer> pendingMsgIds;
 
 	public static int pendingMsgIndex = 0;
 
 	// implement next screen
-	public static MessagesModel getNextPendingMessages() {
+	public static MessageModel getNextPendingMessages() {
 		if (pendingMsgs != null && pendingMsgs.size() > 0) {
 			pendingMsgIndex = (pendingMsgIndex + 1) % pendingMsgs.size();
 			return pendingMsgs.get(pendingMsgIndex);
@@ -112,7 +112,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	// implement previous screen.
-	public static MessagesModel getPrevPendingMessages() {
+	public static MessageModel getPrevPendingMessages() {
 		if (pendingMsgs != null && pendingMsgs.size() > 0) {
 			pendingMsgIndex = pendingMsgIndex - 1;
 			pendingMsgIndex = pendingMsgIndex < 0 ? pendingMsgs.size() - 1
@@ -123,7 +123,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 	}
 
 	// implement current screen
-	public static MessagesModel getCurrentPendingMessages() {
+	public static MessageModel getCurrentPendingMessages() {
 
 		if (pendingMsgs != null && pendingMsgs.size() > 0) {
 			pendingMsgIndex = pendingMsgIndex < 0 ? 0 : pendingMsgIndex;
@@ -158,7 +158,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 			Log.i(CLASS_TAG, "Updating display");
 			RemoteViews views = new RemoteViews(getPackageName(),
 					R.layout.appwidget);
-			MessagesModel mgs;
+			MessageModel mgs;
 			String action = intent.getAction();
 			if (INTENT_NEXT.equals(action)) {
 				mgs = getNextPendingMessages();
@@ -286,9 +286,9 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 		}
 	}
 
-	public static List<MessagesModel> showMessages() {
+	public static List<MessageModel> showMessages() {
 
-		MessagesModel model = new MessagesModel();
+		MessageModel model = new MessageModel();
 		model.loadByLimit(LIMIT);
 
 		if (model.listMessages != null) {

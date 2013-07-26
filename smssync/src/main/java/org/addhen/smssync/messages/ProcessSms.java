@@ -18,7 +18,7 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync;
+package org.addhen.smssync.messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,11 +29,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.fragments.PendingMessages;
-import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.MessageModel;
 import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -85,7 +85,7 @@ public class ProcessSms {
 
     public static HashMap<String, String> smsMap;
 
-    private MessageSyncUtil messageSyncUtil;
+    private MessageSync messageSync;
 
     private int PENDING = 0;
 
@@ -124,14 +124,14 @@ public class ProcessSms {
         // get enabled Sync URLs
         for (SyncUrlModel syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
 
-            messageSyncUtil = new MessageSyncUtil(context, syncUrl.getUrl());
+            messageSync = new MessageSync(context, syncUrl.getUrl());
 
             // process filter text (keyword or RegEx)
             if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
                 String filterText = syncUrl.getKeywords();
                 if (filterByKeywords(messagesBody, filterText)
                         || filterByRegex(messagesBody, filterText)) {
-                    posted = messageSyncUtil.postToAWebService(messagesFrom,
+                    posted = messageSync.postToAWebService(messagesFrom,
                             messagesBody, messagesTimestamp, messagesUuid,
                             syncUrl.getSecret());
                     if (!posted) {
@@ -150,7 +150,7 @@ public class ProcessSms {
                 }
 
             } else { // there is no filter text set up on a sync URL
-                posted = messageSyncUtil.postToAWebService(messagesFrom,
+                posted = messageSync.postToAWebService(messagesFrom,
                         messagesBody, messagesTimestamp, messagesUuid,
                         syncUrl.getSecret());
                 Logger.log(CLASS_TAG, "routeMessages posted is " + posted);
@@ -287,13 +287,13 @@ public class ProcessSms {
         Cursor c = context.getContentResolver().query(uriSms, projection, null,
                 null, "date DESC");
 
-        List<MessagesModel> listMessages = new ArrayList<MessagesModel>();
-        MessagesModel msgs = new MessagesModel();
+        List<MessageModel> listMessages = new ArrayList<MessageModel>();
+        MessageModel msgs = new MessageModel();
         if (c.getCount() > 0 && c != null) {
             if (c.moveToFirst()) {
 
                 do {
-                    MessagesModel messages = new MessagesModel();
+                    MessageModel messages = new MessageModel();
                     listMessages.add(messages);
 
                     messageDate = String.valueOf(c.getLong(c
@@ -377,13 +377,13 @@ public class ProcessSms {
         Cursor c = context.getContentResolver().query(uriSms, null, null, null,
                 "date DESC ");
 
-        if (c.getCount() > 0 && c != null) {
-
+        if (c != null) {
+           if(c.getCount() > 0) {
             c.moveToFirst();
             long threadId = c.getLong(c.getColumnIndex("thread_id"));
             c.close();
-
             return threadId;
+           }
         }
 
         return 0;
@@ -486,7 +486,7 @@ public class ProcessSms {
         Util.smsMap.put("messagesDate", date);
         Util.smsMap.put("messagesUuid", uuid);
         new PendingMessages().showMessages();
-        MessageSyncUtil.processMessages();
+        MessageSync.processMessages();
     }
 
 }

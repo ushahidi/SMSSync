@@ -23,7 +23,7 @@ package org.addhen.smssync.services;
 import java.lang.ref.WeakReference;
 
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.ProcessSms;
+import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.util.Logger;

@@ -20,8 +20,8 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.messages.MessageSync;
 import org.addhen.smssync.models.SyncUrlModel;
-import org.addhen.smssync.util.MessageSyncUtil;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
@@ -44,7 +44,7 @@ public class CheckTaskScheduledService extends SmsSyncServices {
         // Perform a task
         for (SyncUrlModel syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            new MessageSyncUtil(CheckTaskScheduledService.this,
+            new MessageSync(CheckTaskScheduledService.this,
                     syncUrl.getUrl()).performTask(syncUrl.getSecret());
         }
     }

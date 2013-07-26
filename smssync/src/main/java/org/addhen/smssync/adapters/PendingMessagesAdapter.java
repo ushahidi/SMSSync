@@ -21,7 +21,7 @@
 package org.addhen.smssync.adapters;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.models.MessageModel;
 
 import android.content.Context;
 import android.view.View;
@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
-public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
+public class PendingMessagesAdapter extends BaseListAdapter<MessageModel> {
 
 	public class Widgets extends org.addhen.smssync.views.View implements
 			View.OnClickListener {
@@ -56,7 +56,7 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 		}
 	}
 
-	private MessagesModel messages;
+	private MessageModel messages;
 
 	public PendingMessagesAdapter(Context context) {
 		super(context);
@@ -85,7 +85,7 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessagesModel> {
 
 	@Override
 	public void refresh() {
-		messages = new MessagesModel();
+		messages = new MessageModel();
 		if (messages.load()) {
 			this.setItems(messages.listMessages);
 		}

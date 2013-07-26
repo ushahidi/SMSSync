@@ -20,7 +20,7 @@
 
 package org.addhen.smssync.tests;
 
-import org.addhen.smssync.ProcessSms;
+import org.addhen.smssync.messages.ProcessSms;
 
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;

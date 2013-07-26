@@ -23,7 +23,8 @@ package org.addhen.smssync.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.addhen.smssync.models.MessagesModel;
+import org.addhen.smssync.messages.Message;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -41,12 +42,16 @@ public class MessagesContentProvider extends DbContentProvider implements
 
     private Cursor cursor;
 
-    private List<MessagesModel> listMessages;
+    private List<Message> listMessages;
 
     private ContentValues initialValues;
 
+    private final static String TAG = MessagesContentProvider.class.getSimpleName();
+
     /**
-     * @param db
+     * Initialize the connected database
+     *
+     * @param db The connected database object
      */
     public MessagesContentProvider(SQLiteDatabase db) {
         super(db);
@@ -63,11 +68,12 @@ public class MessagesContentProvider extends DbContentProvider implements
         try {
             String sql = "SELECT COUNT(*) FROM " + TABLE;
             SQLiteStatement statement = mDb.compileStatement(sql);
-            return (int) statement.simpleQueryForLong();
+            if(statement != null)
+                return (int) statement.simpleQueryForLong();
         } catch (SQLiteDoneException ex) {
-            return 0;
+            Logger.log(TAG, ex.getMessage());
         }
-
+        return 0;
     }
 
     /*
@@ -77,11 +83,11 @@ public class MessagesContentProvider extends DbContentProvider implements
      * .util.List)
      */
     @Override
-    public boolean addMessages(List<MessagesModel> messages) {
+    public boolean addMessages(List<Message> messages) {
         try {
             mDb.beginTransaction();
 
-            for (MessagesModel message : messages) {
+            for (Message message : messages) {
                 addMessages(message);
             }
             mDb.setTransactionSuccessful();
@@ -95,10 +101,10 @@ public class MessagesContentProvider extends DbContentProvider implements
      * (non-Javadoc)
      * @see
      * org.addhen.smssync.database.IMessagesContentProvider#addMessages(org.
-     * addhen.smssync.models.MessagesModel)
+     * addhen.smssync.models.MessageModel)
      */
     @Override
-    public boolean addMessages(MessagesModel messages) {
+    public boolean addMessages(Message messages) {
         // set values
         setContentValue(messages);
         return super.insert(TABLE, getContentValue()) > 0;
@@ -106,9 +112,8 @@ public class MessagesContentProvider extends DbContentProvider implements
 
     /**
      * Delete message by UUID
-     * 
-     * @see org.addhen.smssync.database.IMessagesContentProvider#deleteMessagesById
-     *      (int)
+     *
+     * @param messageUuid The message unique id
      */
     @Override
     public boolean deleteMessagesByUuid(String messageUuid) {
@@ -119,10 +124,8 @@ public class MessagesContentProvider extends DbContentProvider implements
         return super.delete(TABLE, whereClause, whereArgs) > 0;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.addhen.smssync.database.IMessagesContentProvider#deleteAllMessages()
+    /**
+     * Delete all saved messages
      */
     @Override
     public boolean deleteAllMessages() {
@@ -136,8 +139,8 @@ public class MessagesContentProvider extends DbContentProvider implements
      * (int)
      */
     @Override
-    public List<MessagesModel> fetchMessagesByUuid(String messageUuid) {
-        listMessages = new ArrayList<MessagesModel>();
+    public List<Message> fetchMessagesByUuid(String messageUuid) {
+        listMessages = new ArrayList<Message>();
         String selection = MESSAGE_UUID + "= ?";
         String selectionArgs[] = {
                 messageUuid
@@ -148,8 +151,8 @@ public class MessagesContentProvider extends DbContentProvider implements
         if (cursor != null) {
             try {
                 while (cursor.moveToNext()) {
-                    MessagesModel messages = cursorToEntity(cursor);
-                    listMessages.add(messages);
+                    Message message = cursorToEntity(cursor);
+                    listMessages.add(message);
 
                 }
             } finally {
@@ -167,15 +170,15 @@ public class MessagesContentProvider extends DbContentProvider implements
      * org.addhen.smssync.database.IMessagesContentProvider#fetchAllMessages()
      */
     @Override
-    public List<MessagesModel> fetchAllMessages() {
-        listMessages = new ArrayList<MessagesModel>();
+    public List<Message> fetchAllMessages() {
+        listMessages = new ArrayList<Message>();
         cursor = super.query(TABLE, COLUMNS, null, null, DATE + " DESC");
 
         if (cursor != null) {
             try {
                 while (cursor.moveToNext()) {
-                    MessagesModel messages = cursorToEntity(cursor);
-                    listMessages.add(messages);
+                    Message message = cursorToEntity(cursor);
+                    listMessages.add(message);
 
                 }
             } finally {
@@ -194,16 +197,15 @@ public class MessagesContentProvider extends DbContentProvider implements
      * (int)
      */
     @Override
-    public List<MessagesModel> fetchMessagesByLimit(int limit) {
-        listMessages = new ArrayList<MessagesModel>();
+    public List<Message> fetchMessagesByLimit(int limit) {
+        listMessages = new ArrayList<Message>();
         cursor = super.query(TABLE, COLUMNS, null, null, MESSAGE_UUID + " DESC",
                 String.valueOf(limit));
         if (cursor != null) {
             try {
-
                 while (cursor.moveToNext()) {
-                    MessagesModel messages = cursorToEntity(cursor);
-                    listMessages.add(messages);
+                    Message message = cursorToEntity(cursor);
+                    listMessages.add(message);
 
                 }
             } finally {
@@ -218,31 +220,31 @@ public class MessagesContentProvider extends DbContentProvider implements
     /**
      * Initializes content values for the messages table.
      * 
-     * @param messages
-     * @return void
+     * @param messages The message to be saved
+     *
      */
-    private void setContentValue(MessagesModel messages) {
+    private void setContentValue(Message messages) {
         initialValues = new ContentValues();
-        initialValues.put(MESSAGE_UUID, messages.getMessageUuid());
-        initialValues.put(FROM, messages.getMessageFrom());
-        initialValues.put(BODY, messages.getMessage());
-        initialValues.put(DATE, messages.getMessageDate());
+        initialValues.put(MESSAGE_UUID, messages.getUuid());
+        initialValues.put(FROM, messages.getFrom());
+        initialValues.put(BODY, messages.getBody());
+        initialValues.put(DATE, messages.getTimestamp());
     }
 
     private ContentValues getContentValue() {
         return initialValues;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.addhen.smssync.database.DbContentProvider#cursorToEntity(android.
-     * database.Cursor)
+    /**
+     * Convert the cursor to the messages Model
+     *
+     * @param cursor The database curs object
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected MessagesModel cursorToEntity(Cursor cursor) {
-        MessagesModel messages = new MessagesModel();
+    protected Message cursorToEntity(Cursor cursor) {
+        Message message = new Message();
+
         int messageUuidIndex;
         int fromIndex;
         int messageIndex;
@@ -251,25 +253,24 @@ public class MessagesContentProvider extends DbContentProvider implements
         if (cursor != null) {
             if (cursor.getColumnIndex(MESSAGE_UUID) != -1) {
                 messageUuidIndex = cursor.getColumnIndexOrThrow(MESSAGE_UUID);
-                messages.setMessageUuid(cursor.getString(messageUuidIndex));
+                message.setUuid(cursor.getString(messageUuidIndex));
             }
 
             if (cursor.getColumnIndex(FROM) != -1) {
                 fromIndex = cursor.getColumnIndexOrThrow(FROM);
-                messages.setMessageFrom(cursor.getString(fromIndex));
+                message.setFrom(cursor.getString(fromIndex));
             }
 
             if (cursor.getColumnIndex(BODY) != -1) {
                 messageIndex = cursor.getColumnIndexOrThrow(BODY);
-                messages.setMessage(cursor.getString(messageIndex));
+                message.setBody(cursor.getString(messageIndex));
             }
 
             if (cursor.getColumnIndex(DATE) != -1) {
                 dateIndex = cursor.getColumnIndexOrThrow(DATE);
-                messages.setMessageDate(cursor.getString(dateIndex));
+                message.setTimestamp(cursor.getString(dateIndex));
             }
         }
-        return messages;
+        return message;
     }
-
 }

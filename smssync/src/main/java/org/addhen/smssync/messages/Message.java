@@ -17,32 +17,52 @@
  ** Ushahidi developers at team@ushahidi.com.
  **
  *****************************************************************************/
-package org.addhen.smssync.database;
 
-import java.util.List;
-
-import org.addhen.smssync.messages.Message;
+package org.addhen.smssync.messages;
 
 /**
- * Interface to provide methods for manipulating messages db
- * 
+ * Holds the messages to be sent via HTTP request
  */
-public interface IMessagesContentProvider {
+public class Message {
 
-	public int messagesCount();
+    private String body;
 
-	public boolean addMessages(List<Message> messages);
+    private String from;
 
-	public boolean addMessages(Message messages);
+    private String timestamp;
 
-	public boolean deleteMessagesByUuid(String messageUuid);
+    private String uuid;
 
-	public boolean deleteAllMessages();
 
-	public List<Message> fetchMessagesByUuid(String messageUuid);
+    public String getBody() {
+        return body;
+    }
 
-	public List<Message> fetchAllMessages();
+    public void setBody(String body) {
+        this.body = body;
+    }
 
-	public List<Message> fetchMessagesByLimit(int limit);
-	
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 }

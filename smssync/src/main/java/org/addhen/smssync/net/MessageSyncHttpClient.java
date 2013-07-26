@@ -19,16 +19,13 @@
  *****************************************************************************/
 package org.addhen.smssync.net;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
+import android.content.Context;
+import android.content.res.Resources;
+import android.text.TextUtils;
 
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.util.MessageSyncUtil;
+import org.addhen.smssync.messages.Message;
+import org.addhen.smssync.messages.SyncUrl;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -38,31 +35,33 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import android.content.Context;
-import android.content.res.Resources;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * @author eyedol
  * 
  */
 public class MessageSyncHttpClient extends MainHttpClient {
+    private SyncUrl syncUrl;
+    private String serverError;
+    private String serverSuccessResp;
 
-	private Context context;
-
-	public MessageSyncHttpClient(Context context, String url) {
-		super(url, context);
-		this.context = context;
+	public MessageSyncHttpClient(Context context, SyncUrl syncUrl) {
+		super(syncUrl.getUrl(), context);
+        this.syncUrl = syncUrl;
 	}
 
-	/**
-	 * Upload SMS to a web service via HTTP POST
-	 * 
-	 * @param address
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 * @return
-	 */
-	public boolean postSmsToWebService(HashMap<String, String> params) {
+    /**
+     * Post sms to the configured sync URL
+     *
+     * @param message The sms sent
+     * @param toNumber The phone number the sms was sent to
+     * @return boolean
+     */
+	public boolean postSmsToWebService(Message message, String toNumber) {
 		// Create a new HttpClient and Post Header
 		HttpPost httppost = new HttpPost(url);
 		httppost.addHeader("User-Agent", userAgent.toString());
@@ -72,19 +71,12 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 
-			if (params != null) {
-				// get params values
-				
-				for (Entry<String, String> en : params.entrySet()) {
-					String key = en.getKey();
-					if (key == null || "".equals(key))
-						continue;
-					String val = en.getValue();
-
-					nameValuePairs.add(new BasicNameValuePair(key, val));
-				}
-			}
-
+            nameValuePairs.add(new BasicNameValuePair("secret", syncUrl.getSecret()));
+            nameValuePairs.add(new BasicNameValuePair("from", message.getFrom()));
+            nameValuePairs.add(new BasicNameValuePair("message", message.getBody()));
+            nameValuePairs.add(new BasicNameValuePair("sent_timestamp", message.getTimestamp()));
+            nameValuePairs.add(new BasicNameValuePair("sent_to", toNumber));
+            nameValuePairs.add(new BasicNameValuePair("message_id", message.getUuid()));
 			
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
 					HTTP.UTF_8));
@@ -99,37 +91,24 @@ public class MessageSyncHttpClient extends MainHttpClient {
 				if (Util.getJsonSuccessStatus(resp)) {
 					// auto response message is enabled to be received from the
 					// server.
-					if (Prefs.enableReplyFrmServer) {
-						new MessageSyncUtil(context, url)
-								.sendResponseFromServer(resp);
-					}
-
+                    this.setServerSuccessResp(resp);
 					return true;
 				}
 
 				// Display error from server, if any
 				// see https://github.com/ushahidi/SMSSync/issues/68
 				String payloadError = Util.getJsonError(resp);
-				if (payloadError != "") {
+				if (!TextUtils.isEmpty(payloadError)) {
+
 					Resources res = context.getResources();
-					Util.showToast(
-							context,
-							String.format(
-									res.getString(R.string.sending_failed_custom_error),
-									payloadError));
+
+					setServerError(String.format(Locale.getDefault(),"%s, %s ",String.format(
+                            res.getString(R.string.sending_failed_custom_error),
+                            payloadError,String.format(
+                            res.getString(R.string.sending_failed_http_code),
+                            statusCode))));
 				}
-
-				return false;
 			}
-
-			// HTTP Status code error
-			// see https://github.com/ushahidi/SMSSync/issues/69
-			Resources res = context.getResources();
-			Util.showToast(context, String.format(
-					res.getString(R.string.sending_failed_http_code),
-					statusCode));
-
-			return false;
 
 		} catch (ClientProtocolException e) {
 			return false;
@@ -138,6 +117,22 @@ public class MessageSyncHttpClient extends MainHttpClient {
 		} catch (IllegalArgumentException e) {
 			return false;
 		}
-
+        return false;
 	}
+
+    public String getServerError() {
+        return this.serverError;
+    }
+
+    public void setServerError(String serverError) {
+        this.serverError = serverError;
+    }
+
+    public String getServerSuccessResp() {
+        return this.serverSuccessResp;
+    }
+
+    public void setServerSuccessResp(String serverSuccessResp) {
+        this.serverSuccessResp = serverSuccessResp;
+    }
 }

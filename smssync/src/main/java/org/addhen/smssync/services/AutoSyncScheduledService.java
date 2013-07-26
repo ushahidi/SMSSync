@@ -20,8 +20,8 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.models.MessagesModel;
-import org.addhen.smssync.util.MessageSyncUtil;
+import org.addhen.smssync.models.MessageModel;
+import org.addhen.smssync.messages.MessageSync;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
@@ -43,13 +43,13 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     // update the ui
     private Intent statusIntent;
 
-    private MessagesModel messagesModel;
+    private MessageModel messagesModel;
 
     public AutoSyncScheduledService() {
         super(CLASS_TAG);
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
 
-        messagesModel = new MessagesModel();
+        messagesModel = new MessageModel();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
         if (messagesModel.totalMessages() > 0) {
             log(CLASS_TAG, "Sending pending messages");
 
-            int status = new MessageSyncUtil(AutoSyncScheduledService.this,
+            int status = new MessageSync(AutoSyncScheduledService.this,
                     "").syncToWeb("");
             statusIntent.putExtra("status", status);
             sendBroadcast(statusIntent);

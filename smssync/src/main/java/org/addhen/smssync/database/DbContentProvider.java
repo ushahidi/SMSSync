@@ -20,7 +20,6 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.models.Model;
 import org.addhen.smssync.util.Logger;
 
 import android.content.ContentValues;
@@ -42,7 +41,7 @@ public abstract class DbContentProvider {
 
 	}
 
-	protected abstract <T extends Model> T cursorToEntity(Cursor cursor);
+	protected abstract Object cursorToEntity(Cursor cursor);
 
 	public DbContentProvider(SQLiteDatabase db) {
 
@@ -53,10 +52,8 @@ public abstract class DbContentProvider {
 	public Cursor query(String tableName, String[] columns, String selection,
 			String[] selectionArgs, String sortOrder) {
 		try {
-			final Cursor cursor = mDb.query(tableName, columns, selection,
+			return mDb.query(tableName, columns, selection,
 					selectionArgs, null, null, sortOrder);
-
-			return cursor;
 		} catch (SQLiteException e) {
 			e.printStackTrace();
 		}
