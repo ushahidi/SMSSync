@@ -29,6 +29,9 @@ import org.addhen.smssync.util.Util;
 
 import android.database.Cursor;
 
+/**
+ * TODO:: refactor
+ */
 public class SentMessagesModel extends Model {
 
 	private String message;
