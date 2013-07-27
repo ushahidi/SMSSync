@@ -50,7 +50,7 @@ public class SyncUrlTest extends BaseTest {
      * Test adding a new sync url to the db
      */
     @SmallTest
-    public void testShouldSaveNewSyncUrl() {
+    public void testShouldSaveNewSyncUrl() throws Exception{
         // add demo sync url
         syncUrl = new SyncUrl();
         syncUrl.setKeywords("demo,ushahidi,smssync");
@@ -65,7 +65,7 @@ public class SyncUrlTest extends BaseTest {
      * Test updating an existing sync URL
      */
     @SmallTest
-    public void testShouldUpdateSyuncUrlTitle() {
+    public void testShouldUpdateSyuncUrlTitle() throws Exception{
         syncUrl = new SyncUrl();
         syncUrl.setKeywords("demo,ushahidi,smssync");
         syncUrl.setSecret("demo2");
@@ -87,7 +87,7 @@ public class SyncUrlTest extends BaseTest {
     /**
      * Test making a Sync URL active
      */
-    public void testShouldUpdateSyncUrlStatusToActive() {
+    public void testShouldUpdateSyncUrlStatusToActive() throws Exception{
         syncUrl = new SyncUrl();
         syncUrl.setKeywords("demo,ushahidi,smssync");
         syncUrl.setSecret("demo3");
@@ -106,7 +106,7 @@ public class SyncUrlTest extends BaseTest {
     }
 
     @SmallTest
-    public void testShouldLoadAllSyncUrl() {
+    public void testShouldLoadAllSyncUrl() throws Exception{
         syncUrl = new SyncUrl();
         syncUrl.setKeywords("demo,ushahidi,smssync");
         syncUrl.setSecret("demo4");
@@ -120,7 +120,7 @@ public class SyncUrlTest extends BaseTest {
     }
 
     @SmallTest
-    public void testShouldLoadById() {
+    public void testShouldLoadById() throws Exception{
         syncUrl = new SyncUrl();
         syncUrl.setKeywords("demo,ushahidi,smssync5");
         syncUrl.setSecret("demo5");
@@ -138,13 +138,13 @@ public class SyncUrlTest extends BaseTest {
     }
 
     @SmallTest
-    public void testShouldLoadAllActiveSyncUrl() {
+    public void testShouldLoadAllActiveSyncUrl() throws Exception{
         listSyncUrl = syncUrl.loadByStatus(1);
         assertNotNull("Couldn't load active Sync URL", listSyncUrl);
     }
 
     @SmallTest
-    public void testShouldLoadAllInActiveSyncUrl() {
+    public void testShouldLoadAllInActiveSyncUrl() throws Exception{
         listSyncUrl = syncUrl.loadByStatus(0);
         assertNotNull("Couldn't load inactive Sync URLs", listSyncUrl);
     }
@@ -153,13 +153,13 @@ public class SyncUrlTest extends BaseTest {
      * Test the total number of active or enabled Sync URLs.
      */
     @SmallTest
-    public void testShouldGiveTotalActiveSyncUrl() {
+    public void testShouldGiveTotalActiveSyncUrl() throws Exception{
         int count = Database.mSyncUrlContentProvider.totalActiveSyncUrl();
         assetNotNullOrZero("There are no active SyncUrl", count);
     }
 
     @SmallTest
-    public void testShouldDeleteAllSyncUrl() {
+    public void testShouldDeleteAllSyncUrl() throws Exception{
         syncUrl = new SyncUrl();
         syncUrl.setKeywords("demo,ushahidi,smssync");
         syncUrl.setSecret("demo6");
@@ -176,7 +176,7 @@ public class SyncUrlTest extends BaseTest {
      *
      * @return boolean
      */
-    public void testShouldDeleteSyncUrlById() {
+    public void testShouldDeleteSyncUrlById() throws Exception{
         syncUrl = new SyncUrl();
         syncUrl.setKeywords("demo,ushahidi,smssync7");
         syncUrl.setSecret("demo7");
