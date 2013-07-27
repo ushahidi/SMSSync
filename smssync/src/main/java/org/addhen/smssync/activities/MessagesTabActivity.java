@@ -23,8 +23,8 @@ package org.addhen.smssync.activities;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.TabAdapter;
 import org.addhen.smssync.fragments.PendingMessages;
-import org.addhen.smssync.fragments.SentMessages;
-import org.addhen.smssync.fragments.SyncUrl;
+import org.addhen.smssync.fragments.SentMessageFragment;
+import org.addhen.smssync.fragments.SyncUrlFragment;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -58,8 +58,8 @@ public class MessagesTabActivity extends SherlockFragmentActivity {
 
         mTabsAdapter = new TabAdapter(this, getSupportActionBar(), mViewPager);
         mTabsAdapter.addTab(pendingTab, PendingMessages.class);
-        mTabsAdapter.addTab(sentTab, SentMessages.class);
-        mTabsAdapter.addTab(syncTab, SyncUrl.class);
+        mTabsAdapter.addTab(sentTab, SentMessageFragment.class);
+        mTabsAdapter.addTab(syncTab, SyncUrlFragment.class);
 
         if (savedInstanceState != null) {
             final int index = savedInstanceState.getInt("index");

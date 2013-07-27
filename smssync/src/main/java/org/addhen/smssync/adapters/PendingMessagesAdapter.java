@@ -21,7 +21,7 @@
 package org.addhen.smssync.adapters;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.MessageModel;
+import org.addhen.smssync.models.Message;
 
 import android.content.Context;
 import android.view.View;
@@ -29,7 +29,7 @@ import android.view.ViewGroup;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
 
-public class PendingMessagesAdapter extends BaseListAdapter<MessageModel> {
+public class PendingMessagesAdapter extends BaseListAdapter<Message> {
 
 	public class Widgets extends org.addhen.smssync.views.View implements
 			View.OnClickListener {
@@ -38,8 +38,6 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessageModel> {
 		TextView messageDate;
 
 		TextView message;
-
-		CheckedTextView listCheckBox;
 
 		public Widgets(View convertView) {
 			super(convertView);
@@ -52,43 +50,42 @@ public class PendingMessagesAdapter extends BaseListAdapter<MessageModel> {
 
 		@Override
 		public void onClick(View v) {
-			// listCheckBox.setChecked(true);
+
 		}
 	}
 
-	private MessageModel messages;
+	private Message message;
 
 	public PendingMessagesAdapter(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
+		message = new Message();
 	}
 
 	@Override
 	public View getView(int position, View view, ViewGroup viewGroup) {
-		View row = inflater.inflate(R.layout.list_messages_item, viewGroup,
-				false);
-		Widgets widget = (Widgets) row.getTag();
-
-		if (widget == null) {
-			widget = new Widgets(row);
-			row.setTag(widget);
-		}
+        Widgets widgets;
+        if(view == null) {
+            view = inflater.inflate(R.layout.list_messages_item, null);
+            widgets = new Widgets(view);
+            view.setTag(widgets);
+        }
+        else {
+            widgets = (Widgets) view.getTag();
+        }
 
 		// initialize view with content
-		widget.messageFrom.setText(getItem(position).getMessageFrom());
-		widget.messageDate.setText(formatDate(getItem(position)
-				.getMessageDate()));
-		widget.message.setText(getItem(position).getMessage());
+		widgets.messageFrom.setText(getItem(position).getFrom());
+		widgets.messageDate.setText(formatDate(getItem(position)
+				.getTimestamp()));
+		widgets.message.setText(getItem(position).getBody());
 
-		return row;
+		return view;
 	}
 
 	@Override
 	public void refresh() {
-		messages = new MessageModel();
-		if (messages.load()) {
-			this.setItems(messages.listMessages);
+		if (message.load()) {
+			setItems(message.getMessageList());
 		}
 	}
-
 }

@@ -21,7 +21,7 @@ package org.addhen.smssync.database;
 
 import java.util.List;
 
-import org.addhen.smssync.messages.Message;
+import org.addhen.smssync.models.Message;
 
 /**
  * Interface to provide methods for manipulating messages db

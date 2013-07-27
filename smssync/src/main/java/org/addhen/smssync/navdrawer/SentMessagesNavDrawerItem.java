@@ -20,7 +20,7 @@
 
 package org.addhen.smssync.navdrawer;
 
-import org.addhen.smssync.fragments.SentMessages;
+import org.addhen.smssync.fragments.SentMessageFragment;
 import org.addhen.smssync.models.SentMessagesModel;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -44,7 +44,7 @@ public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
-        fragment = new SentMessages();
+        fragment = new SentMessageFragment();
         showFragment(TAG);
     }
 

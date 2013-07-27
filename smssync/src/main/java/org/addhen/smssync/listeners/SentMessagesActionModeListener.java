@@ -21,7 +21,7 @@
 package org.addhen.smssync.listeners;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.SentMessages;
+import org.addhen.smssync.fragments.SentMessageFragment;
 
 import android.widget.ListView;
 
@@ -33,9 +33,9 @@ import com.actionbarsherlock.view.MenuItem;
  */
 public class SentMessagesActionModeListener extends BaseActionModeListener {
 
-    private SentMessages mHost;
+    private SentMessageFragment mHost;
 
-    public SentMessagesActionModeListener(final SentMessages host,
+    public SentMessagesActionModeListener(final SentMessageFragment host,
             ListView modeView) {
         super(host.getSherlockActivity(), modeView, R.menu.sent_messages_context_menu);
         mHost = host;

@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Locale;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.exceptions.ConnectivityException;
-import org.addhen.smssync.models.MessageModel;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
@@ -54,21 +54,17 @@ public class SyncPendingMessagesTask extends
 
     private final static String CLASS_TAG = SyncPendingMessagesTask.class.getSimpleName();
 
-    private final MessageModel messagesModel;
-
     private int itemsToSync;
 
-    private ProcessSms processSms;
+    ProcessMessage mProcessMessage;
 
     /**
      * Default constructor
      * 
      * @param service The sync service
-     * @param messageType The message type being synchronize
      */
     public SyncPendingMessagesTask(SyncPendingMessagesService service) {
         this.mService = service;
-        this.messagesModel = new MessageModel();
     }
 
     @Override
@@ -113,7 +109,7 @@ public class SyncPendingMessagesTask extends
         if (result != null) {
             post(result);
         }
-        // unregister bus to stop listening for events
+        // un-register bus to stop listening for events
         MainApplication.bus.unregister(this);
     }
 
@@ -176,22 +172,22 @@ public class SyncPendingMessagesTask extends
         int failedItems = 0;
         int progress = 0;
         SyncStatus syncStatus = new SyncStatus();
-        processSms = new ProcessSms(mService.getApplicationContext());
-
-        List<MessageModel> listMessages = new ArrayList<MessageModel>();
+        mProcessMessage = new ProcessMessage(mService.getApplicationContext());
+        Message message = new Message();
+        List<Message> listMessages = new ArrayList<Message>();
 
         // determine if syncing by message UUID
         if (config.messageUuids != null && config.messageUuids.size() > 0) {
             for (String messageUuid : config.messageUuids) {
-                if (messagesModel.loadByUuid(messageUuid)) {
-                    listMessages.add(messagesModel.listMessages.get(0));
+                if (message.loadByUuid(messageUuid)) {
+                    listMessages.add(message.getMessageList().get(0));
                 }
             }
 
         } else {
             // load all messages
-            messagesModel.load();
-            listMessages = messagesModel.listMessages;
+            message.load();
+            listMessages = message.getMessageList();
 
         }
 
@@ -208,17 +204,12 @@ public class SyncPendingMessagesTask extends
 
                 // iterate through the loaded messages and push to the web
                 // service
-                for (MessageModel messages : listMessages) {
+                for (Message m : listMessages) {
                     progress++;
                     // route the message to the appropriate enabled sync URL
-                    if (processSms.routePendingMessages(messages.getMessageFrom(),
-                            messages.getMessage(), messages.getMessageDate(),
-                            messages.getMessageUuid())) {
-
+                    if (mProcessMessage.routePendingMessage(m)) {
                         // / if it successfully pushes message, purge the
                         // message from the db
-                        new MessageModel().deleteMessagesByUuid(messages
-                                .getMessageUuid());
                         // increment the number of syncd items
                         syncdItems++;
 

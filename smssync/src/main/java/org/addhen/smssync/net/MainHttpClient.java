@@ -139,7 +139,7 @@ public class MainHttpClient {
     /**
      * Does a HTTP GET request
      * 
-     * @param String url - The Callback URL to do the HTTP GET
+     * @param url - The Callback URL to do the HTTP GET
      * @return String - the HTTP response
      */
     public static String getFromWebService(String url) {

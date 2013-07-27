@@ -23,7 +23,7 @@ package org.addhen.smssync.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.addhen.smssync.messages.Message;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 

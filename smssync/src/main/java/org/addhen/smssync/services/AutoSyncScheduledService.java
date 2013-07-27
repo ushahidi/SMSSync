@@ -20,8 +20,8 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.models.MessageModel;
-import org.addhen.smssync.messages.MessageSync;
+import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
@@ -43,28 +43,25 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     // update the ui
     private Intent statusIntent;
 
-    private MessageModel messagesModel;
+    private Message mMessage;
 
     public AutoSyncScheduledService() {
         super(CLASS_TAG);
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
-
-        messagesModel = new MessageModel();
+        mMessage = new Message();
     }
 
     @Override
     protected void executeTask(Intent intent) {
 
         log(CLASS_TAG, "executeTask() executing this scheduled task");
-        if (messagesModel.totalMessages() > 0) {
+        if (mMessage.totalMessages() > 0) {
             log(CLASS_TAG, "Sending pending messages");
 
-            int status = new MessageSync(AutoSyncScheduledService.this,
-                    "").syncToWeb("");
-            statusIntent.putExtra("status", status);
+            ProcessMessage processMessage = new ProcessMessage(AutoSyncScheduledService.this);
+            processMessage.syncPendingMessages("");
+            statusIntent.putExtra("status", processMessage.getErrorMessage());
             sendBroadcast(statusIntent);
-
         }
     }
-
 }

@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.database.ISyncUrlSchema;
-import org.addhen.smssync.models.SyncUrlModel;
 import org.addhen.smssync.tests.BaseTest;
 
 import android.database.Cursor;
@@ -161,7 +160,7 @@ public class SyncUrlModelTest extends BaseTest {
     @SmallTest
     public void totalActiveSyncUrl() {
         int count = Database.mSyncUrlContentProvider.totalActiveSyncUrl();
-        assetNotNullOrZero("There are no active SyncUrl", count);
+        assetNotNullOrZero("There are no active SyncUrlFragment", count);
     }
 
     @SmallTest

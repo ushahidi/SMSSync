@@ -23,6 +23,7 @@ package org.addhen.smssync.services;
 import java.lang.ref.WeakReference;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
@@ -67,14 +68,14 @@ public class SmsReceiverService extends Service {
 
     private static WifiManager.WifiLock wifilock;
 
+    private ProcessMessage mProcessMessage;
+
     private SmsMessage sms;
 
     private Intent statusIntent;
 
     private static final String CLASS_TAG = SmsReceiverService.class
             .getSimpleName();
-
-    private ProcessSms processSms;
 
     synchronized protected static WifiManager.WifiLock getWifiLock(
             Context context) {
@@ -95,7 +96,7 @@ public class SmsReceiverService extends Service {
                 Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
-        processSms = new ProcessSms(mContext);
+        mProcessMessage = new ProcessMessage(mContext);
 
         Prefs.loadPreferences(mContext);
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
@@ -158,6 +159,8 @@ public class SmsReceiverService extends Service {
         String body;
         Bundle bundle = intent.getExtras();
         Prefs.loadPreferences(SmsReceiverService.this);
+        //TODO:: refactor to use a different name for this
+        org.addhen.smssync.models.Message msg  = new org.addhen.smssync.models.Message();
 
         log("handleSmsReceived() bundle " + bundle);
 
@@ -166,8 +169,8 @@ public class SmsReceiverService extends Service {
             sms = messages[0];
             if (messages != null) {
                 // extract message details. phone number and the message body
-                messagesFrom = sms.getOriginatingAddress();
-                messagesTimestamp = String.valueOf(sms.getTimestampMillis());
+                msg.setFrom(sms.getOriginatingAddress());
+                msg.setTimestamp(String.valueOf(sms.getTimestampMillis()));
 
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
@@ -179,16 +182,15 @@ public class SmsReceiverService extends Service {
                     }
                     body = bodyText.toString();
                 }
-                messagesBody = body;
-                messagesUuid = processSms.getUuid();
+                msg.setBody(body);
+                msg.setUuid(new ProcessSms(mContext).getUuid());
             }
         }
 
         log("handleSmsReceived() messagesUuid: " + messagesUuid);
 
         // route the sms
-        boolean sent = processSms.routeSms(messagesFrom, messagesBody, messagesTimestamp,
-                messagesUuid);
+        boolean sent = mProcessMessage.routeSms(msg);
         if (!sent) {
             Util.showFailNotification(this, messagesBody,
                     getString(R.string.sending_failed));
@@ -206,7 +208,7 @@ public class SmsReceiverService extends Service {
     /**
      * Get the SMS message.
      * 
-     * @param Intent intent - The SMS message intent.
+     * @param intent - The SMS message intent.
      * @return SmsMessage
      */
     public static final SmsMessage[] getMessagesFromIntent(Intent intent) {
@@ -245,8 +247,8 @@ public class SmsReceiverService extends Service {
      * Start the service to process the current event notifications, acquiring
      * the wake lock before returning to ensure that the service will run.
      * 
-     * @param Context context - The context of the calling activity.
-     * @param Intent intent - The calling intent.
+     * @param context - The context of the calling activity.
+     * @param intent - The calling intent.
      * @return void
      */
     public static void beginStartingService(Context context, Intent intent) {
@@ -271,8 +273,8 @@ public class SmsReceiverService extends Service {
      * Called back by the service when it has finished processing notifications,
      * releasing the wake lock and wifi lock if the service is now stopping.
      * 
-     * @param Service service - The calling service.
-     * @param int startId - The service start id.
+     * @param service - The calling service.
+     * @param startId - The service start id.
      * @return void
      */
     public static void finishStartingService(Service service, int startId) {

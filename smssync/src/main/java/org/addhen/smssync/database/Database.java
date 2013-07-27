@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.models.SyncUrl;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -157,9 +157,9 @@ public class Database {
 	/**
 	 * Get the table columns in the database. Credits http://goo.gl/7kOpU
 	 * 
-	 * @param SQLiteDatabase
+	 * @param
 	 *            db - The SQLiteDatabase to get the table columns
-	 * @param String
+	 * @param
 	 *            tableName - The table to get the columns
 	 * @return List<String>
 	 */
@@ -214,9 +214,8 @@ public class Database {
 	/**
 	 * Insert new message into the messages table. TODO://Change the name of
 	 * this function to insertMessages -- copy and paste is *evil*
-	 * 
-	 * @param MessagesModel
-	 *            messages - The messages items.
+	 *
+	 * @param messages - The messages items.
 	 * @return long
 	 */
 	public long createSentMessages(Messages messages) {
@@ -252,7 +251,7 @@ public class Database {
 	/**
 	 * Delete sent messages in the database by ID.
 	 * 
-	 * @param int messageId
+	 * @param messageId
 	 * @return boolean
 	 */
 	public boolean deleteSentMessagesByUuid(String messageId) {
@@ -264,8 +263,7 @@ public class Database {
 	/**
 	 * Add a new sent message to the database.
 	 * 
-	 * @param List
-	 *            <Messages> messages - The messages to be added to the
+	 * @param  messages - The messages to be added to the
 	 *            database.
 	 */
 	public void addSentMessages(List<Messages> messages) {
@@ -282,7 +280,7 @@ public class Database {
 		}
 	}
 
-	public static boolean addSyncUrl(SyncUrlModel syncUrl, SQLiteDatabase db) {
+	public static boolean addSyncUrl(SyncUrl syncUrl, SQLiteDatabase db) {
 		// set values
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(ISyncUrlSchema.TITLE, syncUrl.getTitle());
@@ -293,13 +291,13 @@ public class Database {
 		return db.insert(ISyncUrlSchema.TABLE, null, initialValues) > 0;
 	}
 
-	public static boolean addSyncUrl(List<SyncUrlModel> syncUrls,
+	public static boolean addSyncUrl(List<SyncUrl> syncUrls,
 			SQLiteDatabase db) {
 
 		try {
 			db.beginTransaction();
 
-			for (SyncUrlModel syncUrl : syncUrls) {
+			for (SyncUrl syncUrl : syncUrls) {
 
 				addSyncUrl(syncUrl, db);
 			}
@@ -366,16 +364,16 @@ public class Database {
 		final String website = settings.getString("WebsitePref", "");
 		final String apiKey = settings.getString("ApiKey", "");
 		final String keyword = settings.getString("Keyword", "");
-		SyncUrlModel syncUrl = new SyncUrlModel();
+		SyncUrl syncUrl = new SyncUrl();
+        List<SyncUrl> listSyncUrl = new ArrayList<SyncUrl>();
 		if (!TextUtils.isEmpty(website)) {
 			syncUrl.setKeywords(keyword);
 			syncUrl.setSecret(apiKey);
 			syncUrl.setTitle(context.getString(R.string.sync_url));
 			syncUrl.setUrl(website);
 			syncUrl.setStatus(1);
-			syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
-			syncUrl.listSyncUrl.add(syncUrl);
-			addSyncUrl(syncUrl.listSyncUrl, db);
+			listSyncUrl.add(syncUrl);
+			addSyncUrl(listSyncUrl, db);
 		}
 
 	}

@@ -22,27 +22,27 @@ package org.addhen.smssync.database;
 
 import java.util.List;
 
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.models.SyncUrl;
 
 public interface ISyncUrlContentProvider {
 
-	public List<SyncUrlModel> fetchSyncUrl();
+	public List<SyncUrl> fetchSyncUrl();
 
-	public List<SyncUrlModel> fetchSyncUrlById(int id);
+	public List<SyncUrl> fetchSyncUrlById(int id);
 
-	public List<SyncUrlModel> fetchSyncUrlByStatus(int status);
+	public List<SyncUrl> fetchSyncUrlByStatus(int status);
 
-	public boolean addSyncUrl(SyncUrlModel syncUrl);
+	public boolean addSyncUrl(SyncUrl syncUrl);
 
-	public boolean addSyncUrl(List<SyncUrlModel> syncUrl);
+	public boolean addSyncUrl(List<SyncUrl> syncUrl);
 
 	public boolean deleteAllSyncUrl();
 
 	public boolean deleteSyncUrlById(int id);
 
-	public boolean updateSyncUrl(SyncUrlModel syncUrl);
+	public boolean updateSyncUrl(SyncUrl syncUrl);
 
-	public boolean updateStatus(SyncUrlModel syncUrl);
+	public boolean updateStatus(SyncUrl syncUrl);
 	
 	public int totalActiveSyncUrl();
 

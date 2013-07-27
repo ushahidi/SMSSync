@@ -20,7 +20,7 @@
 package org.addhen.smssync.listeners;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.SyncUrl;
+import org.addhen.smssync.fragments.SyncUrlFragment;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +37,7 @@ import com.actionbarsherlock.view.MenuItem;
 public class SyncUrlActionModeListener implements ActionMode.Callback,
 		AdapterView.OnItemLongClickListener {
 
-	private SyncUrl host;
+	private SyncUrlFragment host;
 
 	private ActionMode activeMode;
 
@@ -45,7 +45,7 @@ public class SyncUrlActionModeListener implements ActionMode.Callback,
 
 	private int lastPosition = -1;
 
-	public SyncUrlActionModeListener(final SyncUrl host, ListView modeView) {
+	public SyncUrlActionModeListener(final SyncUrlFragment host, ListView modeView) {
 		this.host = host;
 		this.modeView = modeView;
 	}

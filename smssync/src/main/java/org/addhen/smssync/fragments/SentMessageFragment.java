@@ -44,7 +44,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.view.MenuItem;
 import com.squareup.otto.Subscribe;
 
-public class SentMessages
+public class SentMessageFragment
         extends
         BaseListFragment<SentMessagesView, SentMessagesModel, SentMessagesAdapter> {
 
@@ -58,7 +58,7 @@ public class SentMessages
 
     private boolean refreshState = false;
 
-    public SentMessages() {
+    public SentMessageFragment() {
         super(SentMessagesView.class, SentMessagesAdapter.class,
                 R.layout.sent_messages, R.menu.sent_messages_menu,
                 android.R.id.list);

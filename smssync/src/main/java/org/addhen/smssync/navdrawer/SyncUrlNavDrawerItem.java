@@ -20,13 +20,12 @@
 
 package org.addhen.smssync.navdrawer;
 
-import org.addhen.smssync.fragments.SyncUrl;
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.fragments.SyncUrlFragment;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
- * Menu Item for SyncUrl
+ * Menu Item for SyncUrlFragment
  */
 public class SyncUrlNavDrawerItem extends BaseNavDrawerItem {
 
@@ -43,13 +42,13 @@ public class SyncUrlNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
-        fragment = new SyncUrl();
+        fragment = new SyncUrlFragment();
         showFragment(TAG);
     }
 
     @Override
     public void setCounter() {
-        mCounter = new SyncUrlModel().totalActiveSynUrl();
+        mCounter = new org.addhen.smssync.models.SyncUrl() .totalActiveSynUrl();
     }
 
 }

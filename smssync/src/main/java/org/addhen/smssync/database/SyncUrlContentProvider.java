@@ -20,10 +20,7 @@
 
 package org.addhen.smssync.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -33,12 +30,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteStatement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SyncUrlContentProvider extends DbContentProvider implements
         ISyncUrlContentProvider, ISyncUrlSchema {
 
     private Cursor cursor;
 
-    private List<SyncUrlModel> mListSyncUrl;
+    private List<SyncUrl> mListSyncUrl;
 
     private ContentValues mInitialValues;
 
@@ -47,14 +47,14 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     }
 
     @Override
-    public List<SyncUrlModel> fetchSyncUrl() {
-        mListSyncUrl = new ArrayList<SyncUrlModel>();
+    public List<SyncUrl> fetchSyncUrl() {
+        mListSyncUrl = new ArrayList<SyncUrl>();
 
         try {
             if (cursor != null) {
                 cursor = super.query(TABLE, COLUMNS, null, null, ID);
                 while (cursor.moveToNext()) {
-                    SyncUrlModel syncUrl = cursorToEntity(cursor);
+                    SyncUrl syncUrl = cursorToEntity(cursor);
                     mListSyncUrl.add(syncUrl);
 
                 }
@@ -70,7 +70,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     }
 
     @Override
-    public List<SyncUrlModel> fetchSyncUrlById(int id) {
+    public List<SyncUrl> fetchSyncUrlById(int id) {
 
         final String selection = ID + " = ?";
 
@@ -78,7 +78,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 String.valueOf(id)
         };
 
-        mListSyncUrl = new ArrayList<SyncUrlModel>();
+        mListSyncUrl = new ArrayList<SyncUrl>();
 
         try {
 
@@ -86,7 +86,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
             if (cursor != null) {
 
                 while (cursor.moveToNext()) {
-                    SyncUrlModel syncUrl = cursorToEntity(cursor);
+                    SyncUrl syncUrl = cursorToEntity(cursor);
                     mListSyncUrl.add(syncUrl);
 
                 }
@@ -100,7 +100,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     }
 
     @Override
-    public List<SyncUrlModel> fetchSyncUrlByStatus(int status) {
+    public List<SyncUrl> fetchSyncUrlByStatus(int status) {
 
         final String selection = STATUS + " = ?";
 
@@ -108,7 +108,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 String.valueOf(status)
         };
 
-        mListSyncUrl = new ArrayList<SyncUrlModel>();
+        mListSyncUrl = new ArrayList<SyncUrl>();
 
         try {
             cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
@@ -127,19 +127,19 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     }
 
     @Override
-    public boolean addSyncUrl(SyncUrlModel syncUrl) {
+    public boolean addSyncUrl(SyncUrl syncUrl) {
         // set values
         setContentValue(syncUrl);
         return super.insert(TABLE, getContentValue()) > 0;
     }
 
     @Override
-    public boolean addSyncUrl(List<SyncUrlModel> syncUrls) {
+    public boolean addSyncUrl(List<SyncUrl> syncUrls) {
 
         try {
             mDb.beginTransaction();
 
-            for (SyncUrlModel syncUrl : syncUrls) {
+            for (SyncUrl syncUrl : syncUrls) {
 
                 addSyncUrl(syncUrl);
             }
@@ -158,8 +158,9 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
     /**
      * Delete a particular sync URL.
-     * 
-     * @param int id The unique id of the sync URL
+     *
+     * @param id The sync url it's id
+     *
      * @return boolean
      */
     public boolean deleteSyncUrlById(int id) {
@@ -173,13 +174,12 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     }
 
     /**
-     * Update the status of a sync url.
-     * 
-     * @param int status The status
-     * @param int id The unique id of the sync URL
+     * Update the status of a sync url
+     *
+     * @param syncUrl The sync url to be updated
      * @return boolean
      */
-    public boolean updateStatus(SyncUrlModel syncUrl) {
+    public boolean updateStatus(SyncUrl syncUrl) {
 
         mInitialValues = new ContentValues();
         mInitialValues.put(TITLE, syncUrl.getTitle());
@@ -196,7 +196,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         return super.update(TABLE, mInitialValues, selection, selectionArgs) > 0;
     }
 
-    private void setContentValue(SyncUrlModel syncUrl) {
+    private void setContentValue(SyncUrl syncUrl) {
 
         mInitialValues = new ContentValues();
         mInitialValues.put(TITLE, syncUrl.getTitle());
@@ -208,7 +208,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
     }
 
     @Override
-    public boolean updateSyncUrl(SyncUrlModel syncUrl) {
+    public boolean updateSyncUrl(SyncUrl syncUrl) {
         mInitialValues = new ContentValues();
         mInitialValues.put(TITLE, syncUrl.getTitle());
         mInitialValues.put(URL, syncUrl.getUrl());
@@ -250,8 +250,8 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public SyncUrlModel cursorToEntity(Cursor cursor) {
-        SyncUrlModel syncUrl = new SyncUrlModel();
+    public SyncUrl cursorToEntity(Cursor cursor) {
+        SyncUrl syncUrl = new SyncUrl();
 
         int idIndex;
         int statusIndex;

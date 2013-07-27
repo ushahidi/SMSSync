@@ -22,7 +22,7 @@ package org.addhen.smssync.adapters;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.models.SyncUrl;
 
 import android.content.Context;
 import android.view.View;
@@ -31,7 +31,7 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
+public class SyncUrlAdapter extends BaseListAdapter<SyncUrl> {
 
 	public class Widgets extends org.addhen.smssync.views.View implements
 			View.OnClickListener {
@@ -89,44 +89,45 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 
 	}
 
-	private SyncUrlModel syncUrls;
+	private SyncUrl syncUrls;
 
 	public SyncUrlAdapter(Context context) {
 		super(context);
-		syncUrls = new SyncUrlModel();
+		syncUrls = new SyncUrl();
 	}
 
 	@Override
 	public View getView(int position, View view, ViewGroup viewGroup) {
-		View row = inflater.inflate(R.layout.list_sync_url_item, viewGroup,
-				false);
-		Widgets widget = (Widgets) row.getTag();
-
-		if (widget == null) {
-			widget = new Widgets(row);
-			row.setTag(widget);
-		}
+        Widgets widgets;
+        if(view == null) {
+            view = inflater.inflate(R.layout.list_sync_url_item, null);
+            widgets = new Widgets(view);
+            view.setTag(widgets);
+        }
+        else {
+            widgets = (Widgets) view.getTag();
+        }
 
 		// initialize view with content
-		widget.title.setText(getItem(position).getTitle());
-		widget.keywords.setText(getItem(position).getKeywords());
-		widget.url.setText(getItem(position).getUrl());
-		widget.secret.setText(getItem(position).getSecret());
-		widget.position = position;
+		widgets.title.setText(getItem(position).getTitle());
+		widgets.keywords.setText(getItem(position).getKeywords());
+		widgets.url.setText(getItem(position).getUrl());
+		widgets.secret.setText(getItem(position).getSecret());
+		widgets.position = position;
 
 		if (getItem(position).getStatus() == 1) {
-			widget.listCheckBox.setChecked(true);
+			widgets.listCheckBox.setChecked(true);
 		} else {
-			widget.listCheckBox.setChecked(false);
+			widgets.listCheckBox.setChecked(false);
 		}
 
-		return row;
+		return view;
 	}
 
 	@Override
 	public void refresh() {
 		if (syncUrls.load()) {
-			this.setItems(syncUrls.listSyncUrl);
+			this.setItems(syncUrls.getSyncUrlList());
 		}
 	}
 
@@ -137,7 +138,6 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrlModel> {
 	 * @return boolean
 	 */
 	public boolean updateStatus(int position) {
-
 		return syncUrls.updateStatus(this.getItem(position));
 	}
 

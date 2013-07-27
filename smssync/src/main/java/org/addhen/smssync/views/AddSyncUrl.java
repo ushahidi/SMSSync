@@ -23,7 +23,7 @@ package org.addhen.smssync.views;
 import java.util.ArrayList;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.models.SyncUrl;
 
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -75,13 +75,12 @@ public class AddSyncUrl {
 	 * @return boolean
 	 */
 	public boolean addSyncUrl() {
-		SyncUrlModel syncUrl = new SyncUrlModel();
+		SyncUrl syncUrl = new SyncUrl();
 		syncUrl.setKeywords(keywords.getText().toString());
 		syncUrl.setSecret(secret.getText().toString());
 		syncUrl.setTitle(title.getText().toString());
 		syncUrl.setUrl(url.getText().toString());
-		syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
-		syncUrl.listSyncUrl.add(syncUrl);
+
 		return syncUrl.save();
 	}
 
@@ -91,15 +90,13 @@ public class AddSyncUrl {
 	 * @return boolean
 	 */
 	public boolean updateSyncUrl(int id) {
-		SyncUrlModel syncUrl = new SyncUrlModel();
+		SyncUrl syncUrl = new SyncUrl();
 		syncUrl.setId(id);
 		syncUrl.setKeywords(keywords.getText().toString());
 		syncUrl.setSecret(secret.getText().toString());
 		syncUrl.setTitle(title.getText().toString());
 		syncUrl.setUrl(url.getText().toString());
 		syncUrl.setStatus(status);
-		syncUrl.listSyncUrl = new ArrayList<SyncUrlModel>();
-		syncUrl.listSyncUrl.add(syncUrl);
-		return syncUrl.update(syncUrl);
+		return syncUrl.update();
 	}
 }

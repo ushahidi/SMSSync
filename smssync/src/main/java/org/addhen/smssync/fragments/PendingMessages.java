@@ -32,7 +32,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
-import org.addhen.smssync.models.MessageModel;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.SyncType;
@@ -61,14 +61,14 @@ import com.squareup.otto.Subscribe;
 
 public class PendingMessages
         extends
-        BaseListFragment<PendingMessagesView, MessageModel, PendingMessagesAdapter> implements
+        BaseListFragment<PendingMessagesView, Message, PendingMessagesAdapter> implements
         android.view.View.OnClickListener {
 
     private Intent syncPendingMessagesServiceIntent;
 
     private final Handler mHandler;
 
-    private MessageModel model;
+    private Message model;
 
     private LinkedHashSet<Integer> mSelectedItemsPositions;
 
@@ -82,7 +82,7 @@ public class PendingMessages
                 android.R.id.list);
         log("PendingMessages()");
         mHandler = new Handler();
-        model = new MessageModel();
+        model = new Message();
     }
 
     @Override
@@ -198,7 +198,7 @@ public class PendingMessages
         if (mSelectedItemsPositions != null && mSelectedItemsPositions.size() > 0) {
             messagesUuids = new ArrayList<String>();
             for (Integer position : mSelectedItemsPositions) {
-                messagesUuids.add(adapter.getItem(position).getMessageUuid());
+                messagesUuids.add(adapter.getItem(position).getUuid());
             }
         }
 
@@ -450,7 +450,7 @@ public class PendingMessages
             } else {
                 log("deletebyId position: " + mSelectedItemsPositions.size());
                 for (Integer position : mSelectedItemsPositions) {
-                    model.deleteMessagesByUuid(adapter.getItem(position).getMessageUuid());
+                    model.deleteMessagesByUuid(adapter.getItem(position).getUuid());
                 }
                 result = true;
             }

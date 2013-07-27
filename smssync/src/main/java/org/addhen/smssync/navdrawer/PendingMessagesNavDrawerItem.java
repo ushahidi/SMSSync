@@ -21,7 +21,7 @@
 package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.fragments.PendingMessages;
-import org.addhen.smssync.models.MessageModel;
+import org.addhen.smssync.models.Message;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -33,11 +33,10 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
     private static final String TAG = "pending";
 
     /**
-     * @param itemId
+     *
      * @param title
      * @param iconRes
-     * @param counter
-     * @param counterBgColor
+     * @param activity
      */
     public PendingMessagesNavDrawerItem(String title, int iconRes,
             SherlockFragmentActivity activity) {
@@ -52,6 +51,6 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        mCounter = new MessageModel().totalMessages();
+        mCounter = new Message().totalMessages();
     }
 }

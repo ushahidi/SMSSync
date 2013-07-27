@@ -26,7 +26,7 @@ import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
 import org.addhen.smssync.listeners.SyncUrlActionModeListener;
-import org.addhen.smssync.models.SyncUrlModel;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
@@ -52,8 +52,8 @@ import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
 
-public class SyncUrl extends
-        BaseListFragment<SyncUrlView, SyncUrlModel, SyncUrlAdapter> implements
+public class SyncUrlFragment extends
+        BaseListFragment<SyncUrlView, SyncUrl, SyncUrlAdapter> implements
         View.OnClickListener {
 
     private Intent syncPendingMessagesServiceIntent;
@@ -62,23 +62,23 @@ public class SyncUrl extends
 
     private final Handler mHandler;
 
-    private SyncUrlModel model;
+    private SyncUrl model;
 
     private int id = 0;
 
     private boolean edit = false;
 
-    private List<SyncUrlModel> syncUrl;
+    private List<SyncUrl> syncUrl;
 
     private PackageManager pm;
 
     private ComponentName smsReceiverComponent;
 
-    public SyncUrl() {
+    public SyncUrlFragment() {
         super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
                 R.menu.sync_url_menu, android.R.id.list);
         mHandler = new Handler();
-        model = new SyncUrlModel();
+        model = new SyncUrl();
         // load all checked syncurl
         syncUrl = model.loadByStatus(1);
     }
@@ -197,7 +197,7 @@ public class SyncUrl extends
     /**
      * Validates the Sync URL to be added
      * 
-     * @param AddSyncUrl addSyncUrl
+     * @param  addSyncUrl
      * @return boolean
      */
     public boolean validateSyncUrlEntry(AddSyncUrl addSyncUrl) {
@@ -242,7 +242,7 @@ public class SyncUrl extends
     /**
      * Show prompt message
      * 
-     * @param int message The resource string which is the message to show to
+     * @param message The resource string which is the message to show to
      *        the user.
      * @return void
      */
@@ -268,7 +268,7 @@ public class SyncUrl extends
         // if edit was selected at the context menu, populate fields
         // with existing sync URL details
         if (edit) {
-            final List<SyncUrlModel> listSyncUrl = model.loadById(id);
+            final List<SyncUrl> listSyncUrl = model.loadById(id);
             if (listSyncUrl != null && listSyncUrl.size() > 0) {
                 addSyncUrl.title.setText(listSyncUrl.get(0).getTitle());
                 addSyncUrl.url.setText(listSyncUrl.get(0).getUrl());
@@ -431,7 +431,7 @@ public class SyncUrl extends
     /**
      * Get messages from the db and push them to the configured callback URL
      * 
-     * @param int messagesId
+     * @param messagesUuid
      * @return int
      */
 
