@@ -18,10 +18,7 @@ public class ProcessSmsTest extends BaseTest {
 
     @Override
     public void setUp() throws Exception {
-        longText = "Hello, Kids; it appears we can’t call them so any more. Not after they "
-                + "exhibit adult traits, like a cadet parade where a pupil bellows out instruction "
-                + "to his 'officers' as was the case during a graduation at Careguide Montessori "
-                + "School, Accra. ";
+        longText = "Hello, See you at tomorrow at the accra mall";
         mProcessSms = new ProcessSms(getContext());
     }
     @SmallTest
@@ -46,7 +43,7 @@ public class ProcessSmsTest extends BaseTest {
     @SmallTest
     public void testShouldFilterTextByRegex() throws Exception {
         StringBuilder message = new StringBuilder(longText);
-        message.append(" 12pm");
+        message.append(" at 12pm");
         final boolean filtered = mProcessSms.filterByRegex(message.toString(), REGEX);
         assertTrue(" failed at "+message.toString(),filtered);
     }
@@ -68,7 +65,7 @@ public class ProcessSmsTest extends BaseTest {
     }
 
     @SmallTest
-    public void testShouldDeleteSmsFromInbox() throws Exception {
+    public void testShouldDeleteSmsFromSmsInbox() throws Exception {
 
     }
 

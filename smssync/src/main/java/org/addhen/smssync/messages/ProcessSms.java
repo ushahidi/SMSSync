@@ -178,7 +178,7 @@ public class ProcessSms {
         String[] projection = {
                 "_id", "address", "date", "body"
         };
-        String messageDate = "";
+        String messageDate;
 
         Cursor c = context.getContentResolver().query(uriSms, projection, null,
                 null, "date DESC");
