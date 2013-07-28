@@ -88,12 +88,11 @@ public class ProcessSms {
      * Tries to locate the message id (from the system database), given the message thread id and
      * the timestamp of the message.
      *
-     * @param context   - The activity calling the method.
      * @param threadId  - The message's thread ID.
      * @param timestamp - The timestamp of the message.
      * @return the message id
      */
-    public static long findMessageId(Context context, long threadId,
+    public long findMessageId(long threadId,
             long timestamp) {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
@@ -155,9 +154,10 @@ public class ProcessSms {
             pattern = Pattern.compile(filterText, Pattern.CASE_INSENSITIVE);
         } catch (PatternSyntaxException e) {
             // invalid RegEx
-            return false;
+            return true;
         }
         Matcher matcher = pattern.matcher(message);
+
         return (matcher.find());
     }
 
