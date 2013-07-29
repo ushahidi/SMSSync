@@ -294,15 +294,22 @@ public class ProcessSms {
      *
      * @param body    The message body
      * @param address The address / from
+     * @return boolean
      */
-    public void delSmsFromInbox(String body, String address) {
+    public boolean delSmsFromInbox(String body, String address) {
         Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
         final long threadId = getThreadId(body, address);
 
         if (threadId >= 0) {
-            context.getContentResolver().delete(
+
+            int rowsDeleted = context.getContentResolver().delete(
                     Uri.parse(SMS_CONTENT_URI + threadId), null, null);
+            if (rowsDeleted > 0) {
+                return true;
+            }
+            return false;
         }
+        return false;
     }
 
     /**
