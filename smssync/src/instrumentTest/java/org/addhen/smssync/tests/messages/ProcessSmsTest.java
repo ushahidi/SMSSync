@@ -9,8 +9,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import static org.addhen.smssync.messages.ProcessSms.TASK;
-
 /**
  * Test process sms
  */
