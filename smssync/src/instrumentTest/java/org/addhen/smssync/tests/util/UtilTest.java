@@ -72,7 +72,7 @@ public class UtilTest extends BaseTest {
     @SmallTest
     public void testShouldCheckUrlIsValid() {
         final int actual = Util.validateCallbackUrl("http://demo.ushahidi.com/smssync");
-        assetNotNullOrZero("The provided URL is not a valid one", actual);
+        assertNotNullOrZero("The provided URL is not a valid one", actual);
     }
 
     /**

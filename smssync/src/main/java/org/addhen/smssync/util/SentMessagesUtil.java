@@ -49,7 +49,7 @@ public class SentMessagesUtil {
 	 * 
 	 * @return int - status
 	 */
-	public static int processSentMessages(Context context) {
+	public static boolean processSentMessages(Context context) {
 		Logger.log(CLASS_TAG,
 				"processMessages(): Process text messages as received from the user's phone");
 
@@ -73,9 +73,9 @@ public class SentMessagesUtil {
 
 		if (mMessages != null) {
 			MainApplication.mDb.addSentMessages(mMessages);
-			return 0;
+			return true;
 		}
-		return 1;
+		return false;
 
 	}
 

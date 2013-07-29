@@ -73,7 +73,7 @@ public class ProcessSms {
 
     private static final String CLASS_TAG = ProcessSms.class.getSimpleName();
 
-    private static final int TASK = 1;
+    public static final int TASK = 1;
 
     public static HashMap<String, String> smsMap;
 
@@ -317,7 +317,7 @@ public class ProcessSms {
      *
      * @param messageType the message type
      */
-    public void postToSentBox(Message message, int messageType) {
+    public boolean postToSentBox(Message message, int messageType) {
         Logger.log(CLASS_TAG, "postToSentBox(): post message to sentbox");
 
         //TODO:: refactor this to use message obj directly
@@ -328,7 +328,7 @@ public class ProcessSms {
         SentMessagesUtil.smsMap
                 .put("messagesType", String.valueOf(messageType));
 
-        SentMessagesUtil.processSentMessages(context);
+        return SentMessagesUtil.processSentMessages(context);
 
     }
 

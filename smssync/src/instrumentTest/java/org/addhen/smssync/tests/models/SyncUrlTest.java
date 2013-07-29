@@ -155,7 +155,7 @@ public class SyncUrlTest extends BaseTest {
     @SmallTest
     public void testShouldGiveTotalActiveSyncUrl() throws Exception{
         int count = Database.mSyncUrlContentProvider.totalActiveSyncUrl();
-        assetNotNullOrZero("There are no active SyncUrl", count);
+        assertNotNullOrZero("There are no active SyncUrl", count);
     }
 
     @SmallTest

@@ -58,7 +58,7 @@ public abstract class BaseTest extends AndroidTestCase {
         assertFalse(message, value.isEmpty());
     }
 
-    protected static void assetNotNullOrZero(String message, int value) {
+    protected static void assertNotNullOrZero(String message, int value) {
         assertNotNull(message, value);
         assertEquals(message, 0, value);
     }
