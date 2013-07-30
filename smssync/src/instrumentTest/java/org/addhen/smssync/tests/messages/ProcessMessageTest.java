@@ -1,6 +1,9 @@
 package org.addhen.smssync.tests.messages;
 
 import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tests.BaseTest;
 
 import android.test.suitebuilder.annotation.MediumTest;
@@ -12,20 +15,37 @@ import android.test.suitebuilder.annotation.SmallTest;
 public class ProcessMessageTest extends BaseTest {
 
     private ProcessMessage mProcessMessage;
+
+    private Message message;
+
+    private ProcessSms mProcessSms;
     @Override
     public void setUp() throws Exception {
         super.setUp();
         mProcessMessage = new ProcessMessage(getContext());
+        mProcessSms = new ProcessSms(getContext());
+        message = new Message();
+        message.setFrom("0243581806");
+        message.setUuid(mProcessSms.getUuid());
+        message.setTimestamp("1370831690572");
+        message.setBody("foo bar");
     }
 
     @SmallTest
     public void testShouldSaveMessage() throws Exception {
-
+        assertTrue("Could not add a new message ", mProcessMessage.saveMessage(message));
+        assertTrue("Could not delete the message",message.deleteAllMessages());
     }
 
-    @SmallTest
+    @MediumTest
     public void testShouldSyncReceivedSms() throws Exception {
-
+        SyncUrl syncUrl = new SyncUrl();
+        syncUrl.setKeywords("demo,ushahidi,smssync");
+        syncUrl.setSecret("demo");
+        syncUrl.setTitle("ushahidi demo6");
+        syncUrl.setUrl("http://demo.ushahidi.com/smssync");
+        final boolean posted = mProcessMessage.syncReceivedSms(message, syncUrl);
+        assertTrue(posted);
     }
 
     @SmallTest
