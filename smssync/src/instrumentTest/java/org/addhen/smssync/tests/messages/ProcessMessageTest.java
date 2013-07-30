@@ -48,7 +48,6 @@ public class ProcessMessageTest extends BaseTest {
         syncUrl.setUrl("http://demo.ushahidi.com/smssync");
         final boolean posted = mProcessMessage.syncReceivedSms(mMessage, syncUrl);
         assertTrue(posted);
-        assertTrue("Could not delete saved sync url ", syncUrl.deleteAllSyncUrl());
     }
 
     @SmallTest
