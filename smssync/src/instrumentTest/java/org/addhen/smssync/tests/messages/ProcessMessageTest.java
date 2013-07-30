@@ -40,7 +40,7 @@ public class ProcessMessageTest extends BaseTest {
     }
 
     @MediumTest
-    public void ShouldSyncReceivedSms() throws Exception {
+    public void testShouldSyncReceivedSms() throws Exception {
         SyncUrl syncUrl = new SyncUrl();
         syncUrl.setKeywords("");
         syncUrl.setSecret("demo");
@@ -68,7 +68,7 @@ public class ProcessMessageTest extends BaseTest {
     }
 
     @MediumTest
-    public void ShouldRouteMessage() throws Exception {
+    public void testShouldRouteMessage() throws Exception {
         SyncUrl syncUrlEyedol = new SyncUrl();
         syncUrlEyedol.setKeywords("");
         syncUrlEyedol.setSecret("");
