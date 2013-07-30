@@ -1,11 +1,13 @@
 package org.addhen.smssync.tests.messages;
 
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tests.BaseTest;
 
+import android.preference.Preference;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
@@ -16,7 +18,7 @@ public class ProcessMessageTest extends BaseTest {
 
     private ProcessMessage mProcessMessage;
 
-    private Message message;
+    private Message mMessage;
 
     private ProcessSms mProcessSms;
     @Override
@@ -24,28 +26,29 @@ public class ProcessMessageTest extends BaseTest {
         super.setUp();
         mProcessMessage = new ProcessMessage(getContext());
         mProcessSms = new ProcessSms(getContext());
-        message = new Message();
-        message.setFrom("0243581806");
-        message.setUuid(mProcessSms.getUuid());
-        message.setTimestamp("1370831690572");
-        message.setBody("foo bar");
+        mMessage = new Message();
+        mMessage.setFrom("0243581806");
+        mMessage.setUuid(mProcessSms.getUuid());
+        mMessage.setTimestamp("1370831690572");
+        mMessage.setBody("foo bar");
     }
 
     @SmallTest
     public void testShouldSaveMessage() throws Exception {
-        assertTrue("Could not add a new message ", mProcessMessage.saveMessage(message));
-        assertTrue("Could not delete the message",message.deleteAllMessages());
+        assertTrue("Could not add a new message ", mProcessMessage.saveMessage(mMessage));
+        assertTrue("Could not delete the message",mMessage.deleteAllMessages());
     }
 
     @MediumTest
-    public void testShouldSyncReceivedSms() throws Exception {
+    public void ShouldSyncReceivedSms() throws Exception {
         SyncUrl syncUrl = new SyncUrl();
-        syncUrl.setKeywords("demo,ushahidi,smssync");
+        syncUrl.setKeywords("");
         syncUrl.setSecret("demo");
-        syncUrl.setTitle("ushahidi demo6");
+        syncUrl.setTitle("ushahidi demo");
         syncUrl.setUrl("http://demo.ushahidi.com/smssync");
-        final boolean posted = mProcessMessage.syncReceivedSms(message, syncUrl);
+        final boolean posted = mProcessMessage.syncReceivedSms(mMessage, syncUrl);
         assertTrue(posted);
+        assertTrue("Could not delete saved sync url ", syncUrl.deleteAllSyncUrl());
     }
 
     @SmallTest
@@ -54,43 +57,118 @@ public class ProcessMessageTest extends BaseTest {
     }
 
     @MediumTest
-    public void testShouldPerformTaskOnOneEnabledSyncUrl() throws Exception {
-
+    public void testShouldPerformTaskEnabledSyncUrl() throws Exception {
+        SyncUrl syncUrlDemo = new SyncUrl();
+        syncUrlDemo.setKeywords("");
+        syncUrlDemo.setSecret("demo");
+        syncUrlDemo.setTitle("ushahidi demo");
+        syncUrlDemo.setUrl("http://demo.ushahidi.com/smssync");
+        mProcessMessage.performTask(syncUrlDemo);
+        assertNotNullOrEmpty("Could not delete saved sync url ", mProcessMessage.getErrorMessage());
     }
 
     @MediumTest
-    public void testShouldPerformTaskOnTwoEnabledSyncUrl() throws Exception {
+    public void ShouldRouteMessage() throws Exception {
+        SyncUrl syncUrlEyedol = new SyncUrl();
+        syncUrlEyedol.setKeywords("");
+        syncUrlEyedol.setSecret("");
+        syncUrlEyedol.setTitle("eyedol demo");
+        syncUrlEyedol.setUrl("https://eyedol.crowdmap.com/smssync");
+        syncUrlEyedol.setStatus(1);
+        assertTrue("Could not save demo sync URL",syncUrlEyedol.save());
 
-    }
+        mMessage = new Message();
+        mMessage.setFrom("0243581806");
+        mMessage.setUuid(mProcessSms.getUuid());
+        mMessage.setTimestamp("1370831690572");
+        mMessage.setBody("Routing to one sync URL");
+        assertTrue(mMessage.save());
 
-    @MediumTest
-    public void testShouldPerformTaskOnThreeEnabledSyncUrl() throws Exception {
-
-    }
-
-    @MediumTest
-    public void testShouldRouteMessage() throws Exception {
-
+        // enable smssync
+        Prefs.enabled = true;
+        Prefs.savePreferences(getContext());
+        final boolean posted = mProcessMessage.routePendingMessage(mMessage);
+        assertTrue("Could not sync pending messages, ",
+                posted);
+        assertTrue(syncUrlEyedol.deleteAllSyncUrl());
     }
 
     @MediumTest
     public void testShouldRouteMessageToTwoEnabledSyncUrl() throws Exception {
 
+        SyncUrl syncUrlEyedol = new SyncUrl();
+        syncUrlEyedol.setKeywords("");
+        syncUrlEyedol.setSecret("");
+        syncUrlEyedol.setTitle("eyedol demo");
+        syncUrlEyedol.setUrl("https://eyedol.crowdmap.com/smssync");
+        syncUrlEyedol.setStatus(1);
+        assertTrue("Could not save demo sync URL",syncUrlEyedol.save());
+
+        SyncUrl syncUrlDemo = new SyncUrl();
+        syncUrlDemo.setKeywords("");
+        syncUrlDemo.setSecret("demo");
+        syncUrlDemo.setTitle("ushahidi demo");
+        syncUrlDemo.setStatus(1);
+        syncUrlDemo.setUrl("http://demo.ushahidi.com/smssync");
+        assertTrue("Could not save demo sync URL",syncUrlDemo.save());
+
+        mMessage = new Message();
+        mMessage.setFrom("0243581806");
+        mMessage.setUuid(mProcessSms.getUuid());
+        mMessage.setTimestamp("1370831690572");
+        mMessage.setBody("Routing to two sync URLs");
+        assertTrue(mMessage.save());
+
+        // enable smssync
+        Prefs.enabled = true;
+        Prefs.savePreferences(getContext());
+        final boolean posted = mProcessMessage.routePendingMessage(mMessage);
+        assertTrue("Could not sync pending messages, ",
+                posted);
+        assertTrue(syncUrlDemo.deleteAllSyncUrl());
+
     }
 
     @MediumTest
     public void testShouldRouteMessageToThreeEnabledSyncUrl() throws Exception {
+        SyncUrl syncUrlEyedol = new SyncUrl();
+        syncUrlEyedol.setKeywords("");
+        syncUrlEyedol.setSecret("");
+        syncUrlEyedol.setTitle("eyedol demo");
+        syncUrlEyedol.setUrl("https://eyedol.crowdmap.com/smssync");
+        syncUrlEyedol.setStatus(1);
+        assertTrue("Could not save demo sync URL",syncUrlEyedol.save());
 
-    }
+        SyncUrl syncUrlDemo = new SyncUrl();
+        syncUrlDemo.setKeywords("");
+        syncUrlDemo.setSecret("demo");
+        syncUrlDemo.setTitle("ushahidi demo");
+        syncUrlDemo.setStatus(1);
+        syncUrlDemo.setUrl("http://demo.ushahidi.com/smssync");
+        assertTrue("Could not save demo sync URL",syncUrlDemo.save());
 
-    @MediumTest
-    public void testShouldRouteMessageToFourEnabledSyncUrl() throws Exception {
+        SyncUrl syncUrlTest = new SyncUrl();
+        syncUrlTest.setKeywords("");
+        syncUrlTest.setSecret("test");
+        syncUrlTest.setTitle("ushahidi demo");
+        syncUrlTest.setStatus(1);
+        syncUrlTest.setUrl("http://testing.ushahidi.com/smssync");
+        assertTrue("Could not save demo sync URL",syncUrlTest.save());
 
-    }
+        mMessage = new Message();
+        mMessage.setFrom("0243581806");
+        mMessage.setUuid(mProcessSms.getUuid());
+        mMessage.setTimestamp("1370831690572");
+        mMessage.setBody("Routing to three sync URLs");
+        assertTrue(mMessage.save());
 
-    @MediumTest
-    public void testShouldRouteMessageToFiveEnabledSyncUrl() throws Exception {
-
+        // enable smssync
+        Prefs.enabled = true;
+        Prefs.savePreferences(getContext());
+        final boolean posted = mProcessMessage.routePendingMessage(mMessage);
+        assertTrue("Could not sync pending messages, ",
+                posted);
+        assertTrue(syncUrlTest.deleteAllSyncUrl());
     }
 
     @MediumTest

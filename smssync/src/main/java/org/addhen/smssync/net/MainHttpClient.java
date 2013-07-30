@@ -116,11 +116,11 @@ public class MainHttpClient {
 
     }
 
-    public static HttpResponse GetURL(String URL) throws IOException {
+    public HttpResponse getUrl() throws IOException {
 
         try {
             // wrap try around because this constructor can throw Error
-            final HttpGet httpget = new HttpGet(URL);
+            final HttpGet httpget = new HttpGet(url);
             httpget.addHeader("User-Agent", userAgent.toString());
 
             // Post, check and show the result (not really spectacular, but
@@ -138,11 +138,10 @@ public class MainHttpClient {
 
     /**
      * Does a HTTP GET request
-     * 
-     * @param url - The Callback URL to do the HTTP GET
+     *
      * @return String - the HTTP response
      */
-    public static String getFromWebService(String url) {
+    public String getFromWebService() {
 
         // Create a new HttpClient and Post Header
         final HttpGet httpGet = new HttpGet(url);
@@ -166,7 +165,7 @@ public class MainHttpClient {
         }
     }
 
-    public static String getText(HttpResponse response) {
+    public String getText(HttpResponse response) {
         String text = "";
         try {
             text = getText(response.getEntity().getContent());
@@ -176,7 +175,7 @@ public class MainHttpClient {
         return text;
     }
 
-    public static String getText(InputStream in) {
+    public String getText(InputStream in) {
         String text = "";
         final BufferedReader reader = new BufferedReader(new InputStreamReader(
                 in), 1024);

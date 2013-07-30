@@ -42,34 +42,36 @@ import java.util.Locale;
 
 /**
  * @author eyedol
- * 
  */
 public class MessageSyncHttpClient extends MainHttpClient {
+
     private SyncUrl syncUrl;
+
     private String serverError;
+
     private String serverSuccessResp;
 
-	public MessageSyncHttpClient(Context context, SyncUrl syncUrl) {
-		super(syncUrl.getUrl(), context);
+    public MessageSyncHttpClient(Context context, SyncUrl syncUrl) {
+        super(syncUrl.getUrl(), context);
         this.syncUrl = syncUrl;
-	}
+    }
 
     /**
      * Post sms to the configured sync URL
      *
-     * @param message The sms sent
+     * @param message  The sms sent
      * @param toNumber The phone number the sms was sent to
      * @return boolean
      */
-	public boolean postSmsToWebService(Message message, String toNumber) {
-		// Create a new HttpClient and Post Header
-		HttpPost httppost = new HttpPost(url);
-		httppost.addHeader("User-Agent", userAgent.toString());
-		try {
+    public boolean postSmsToWebService(Message message, String toNumber) {
+        // Create a new HttpClient and Post Header
+        HttpPost httppost = new HttpPost(url);
+        httppost.addHeader("User-Agent", userAgent.toString());
+        try {
 
-			// Add your data
+            // Add your data
 
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 
             nameValuePairs.add(new BasicNameValuePair("secret", syncUrl.getSecret()));
             nameValuePairs.add(new BasicNameValuePair("from", message.getFrom()));
@@ -77,48 +79,48 @@ public class MessageSyncHttpClient extends MainHttpClient {
             nameValuePairs.add(new BasicNameValuePair("sent_timestamp", message.getTimestamp()));
             nameValuePairs.add(new BasicNameValuePair("sent_to", toNumber));
             nameValuePairs.add(new BasicNameValuePair("message_id", message.getUuid()));
-			
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
-					HTTP.UTF_8));
 
-			// Execute HTTP Post Request
-			HttpResponse response = httpclient.execute(httppost);
-			int statusCode = response.getStatusLine().getStatusCode();
-			log("statusCode: " + statusCode);
-			if (statusCode == 200 || statusCode == 201) {
-				String resp = getText(response);
-				// Check JSON "success" status
-				if (Util.getJsonSuccessStatus(resp)) {
-					// auto response message is enabled to be received from the
-					// server.
-                    this.setServerSuccessResp(resp);
-					return true;
-				}
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,
+                    HTTP.UTF_8));
 
-				// Display error from server, if any
-				// see https://github.com/ushahidi/SMSSync/issues/68
-				String payloadError = Util.getJsonError(resp);
-				if (!TextUtils.isEmpty(payloadError)) {
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+            int statusCode = response.getStatusLine().getStatusCode();
+            log("statusCode: " + statusCode);
+            if (statusCode == 200 || statusCode == 201) {
+                String resp = getText(response);
+                // Check JSON "success" status
+                if (Util.getJsonSuccessStatus(resp)) {
+                    // auto response message is enabled to be received from the
+                    // server.
+                    setServerSuccessResp(resp);
+                    return true;
+                }
 
-					Resources res = context.getResources();
+                // Display error from server, if any
+                // see https://github.com/ushahidi/SMSSync/issues/68
+                String payloadError = Util.getJsonError(resp);
+                if (!TextUtils.isEmpty(payloadError)) {
 
-					setServerError(String.format(Locale.getDefault(),"%s, %s ",String.format(
+                    Resources res = context.getResources();
+
+                    setServerError(String.format(Locale.getDefault(), "%s, %s ", String.format(
                             res.getString(R.string.sending_failed_custom_error),
-                            payloadError,String.format(
+                            payloadError, String.format(
                             res.getString(R.string.sending_failed_http_code),
                             statusCode))));
-				}
-			}
+                }
+            }
 
-		} catch (ClientProtocolException e) {
-			return false;
-		} catch (IOException e) {
-			return false;
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
+        } catch (ClientProtocolException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
         return false;
-	}
+    }
 
     public String getServerError() {
         return this.serverError;

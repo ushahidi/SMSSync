@@ -178,9 +178,8 @@ public class ProcessMessage {
                 }
                 uriBuilder.append(urlSecretEncoded);
             }
-
-            String response = MainHttpClient.getFromWebService(uriBuilder
-                    .toString());
+            MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
+            String response = msgSyncHttpClient.getFromWebService();
             Logger.log(TAG, "TaskCheckResponse: " + response);
             if (!TextUtils.isEmpty(response)) {
 
@@ -206,18 +205,22 @@ public class ProcessMessage {
 
                         } else {
                             Logger.log(TAG, context.getString(R.string.no_task));
+                            setErrorMessage(context.getString(R.string.no_task));
                         }
 
                     } else { // 'payload' data may not be present in JSON
                         // response
                         Logger.log(TAG, context.getString(R.string.no_task));
+                        setErrorMessage(context.getString(R.string.no_task));
                     }
 
                 } catch (JSONException e) {
                     Logger.log(TAG, "Error: " + e.getMessage());
+                    setErrorMessage(e.getMessage());
                 }
             }
         }
+
     }
 
     /**
@@ -287,6 +290,8 @@ public class ProcessMessage {
                 String filterText = syncUrl.getKeywords();
                 if (processSms.filterByKeywords(message.getBody(), filterText)
                         || processSms.filterByRegex(message.getBody(), filterText)) {
+                    Logger.log(TAG, syncUrl.getUrl());
+
                     posted = syncReceivedSms(message, syncUrl);
                     if (!posted) {
                         // Note: HTTP Error code or custom error message
@@ -295,6 +300,7 @@ public class ProcessMessage {
                         // attempt to make a data connection to sync
                         // the failed messages.
                         Util.connectToDataNetwork(context);
+
                     } else {
 
                         processSms.postToSentBox(message, PENDING);
@@ -305,8 +311,7 @@ public class ProcessMessage {
             } else { // there is no filter text set up on a sync URL
                 posted = syncReceivedSms(message,
                         syncUrl);
-                Logger.log(TAG, "routeMessages posted is " + posted);
-
+                setErrorMessage(syncUrl.getUrl());
                 if (!posted) {
 
                     // attempt to make a data connection to the sync
