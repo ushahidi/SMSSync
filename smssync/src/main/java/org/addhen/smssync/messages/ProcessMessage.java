@@ -177,11 +177,12 @@ public class ProcessMessage {
                     Logger.log(TAG, e.getMessage());
                 }
                 uriBuilder.append(urlSecretEncoded);
+                syncUrl.setUrl(uriBuilder.toString());
             }
             MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
             String response = msgSyncHttpClient.getFromWebService();
             Logger.log(TAG, "TaskCheckResponse: " + response);
-            if (!TextUtils.isEmpty(response)) {
+            if (response !=null && !TextUtils.isEmpty(response)) {
 
                 try {
 
@@ -220,6 +221,7 @@ public class ProcessMessage {
                 }
             }
         }
+
 
     }
 

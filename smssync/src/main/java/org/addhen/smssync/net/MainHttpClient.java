@@ -116,26 +116,6 @@ public class MainHttpClient {
 
     }
 
-    public HttpResponse getUrl() throws IOException {
-
-        try {
-            // wrap try around because this constructor can throw Error
-            final HttpGet httpget = new HttpGet(url);
-            httpget.addHeader("User-Agent", userAgent.toString());
-
-            // Post, check and show the result (not really spectacular, but
-            // works):
-            HttpResponse response = httpclient.execute(httpget);
-
-            return response;
-
-        } catch (final Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     /**
      * Does a HTTP GET request
      *
@@ -145,22 +125,25 @@ public class MainHttpClient {
 
         // Create a new HttpClient and Post Header
         final HttpGet httpGet = new HttpGet(url);
+
         httpGet.addHeader("User-Agent", userAgent.toString());
 
         try {
             // Execute HTTP Get Request
             HttpResponse response = httpclient.execute(httpGet);
-
+            log("GetFromWebService " + url+ " userAgent "+userAgent.toString()+ " status code: "+response.getStatusLine().getStatusCode());
             if (response.getStatusLine().getStatusCode() == 200) {
                 return getText(response);
 
             } else {
-                return "";
+                return null;
             }
 
         } catch (ClientProtocolException e) {
+            log("ClientProtocolException", e);
             return null;
         } catch (IOException e) {
+            log("IOException",e);
             return null;
         }
     }

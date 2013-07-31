@@ -63,7 +63,10 @@ public class ProcessMessageTest extends BaseTest {
         syncUrlDemo.setTitle("ushahidi demo");
         syncUrlDemo.setUrl("http://demo.ushahidi.com/smssync");
         mProcessMessage.performTask(syncUrlDemo);
-        assertNotNullOrEmpty("Could not delete saved sync url ", mProcessMessage.getErrorMessage());
+
+        // there is no proper way of testing if a task went successfuly. Right now falling on error
+        // message to assert the status. ProcessMessage.performTask needs refactoring
+        assertNull("Could not perform task on enabled sync url ", mProcessMessage.getErrorMessage());
     }
 
     @MediumTest
@@ -74,7 +77,7 @@ public class ProcessMessageTest extends BaseTest {
         syncUrlEyedol.setTitle("eyedol demo");
         syncUrlEyedol.setUrl("https://eyedol.crowdmap.com/smssync");
         syncUrlEyedol.setStatus(1);
-        assertTrue("Could not save demo sync URL",syncUrlEyedol.save());
+        assertTrue("Could not save demo sync URL", syncUrlEyedol.save());
 
         mMessage = new Message();
         mMessage.setFrom("0243581806");
