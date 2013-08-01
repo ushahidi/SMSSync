@@ -1,0 +1,59 @@
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+}
+
+dependencies {
+    compile project(':abslib')
+    compile 'com.android.support:support-v4:13.0.+'
+    compile 'com.squareup:otto:1.3.4'
+    // Disabling this for now. Causing out of memory exception when building
+    //instrumentTestCompile 'org.robolectric:robolectric:2.2-SNAPSHOT'
+    //instrumentTestCompile 'com.squareup:fest-android:1.0.5'
+}
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "17.0.0"
+
+    sourceSets {
+
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            res.srcDirs = ['src/main/res']
+        }
+
+        defaultConfig {
+            testPackageName "org.addhen.smssync.tests"
+        }
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+
+    buildTypes {
+        proguard.initWith(buildTypes.debug)
+        proguard {
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+
+    defaultConfig {
+        versionCode 16
+        versionName "2.4"
+        minSdkVersion 7
+        targetSdkVersion 17
+    }
+}

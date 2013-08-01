@@ -19,7 +19,7 @@ To add a new Sync URL:
 2. Tap on the ![Add icon](images/icons/new.png) icon on the actionbar. An input dialog should open.
 3. Enter a title for the Sync URL.
 4. Enter a secret key if required by the webservices. Make sure you enter the exact key here.
-5. Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding.
+5. Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding. As of v2.0.2. You can now add Regular Expresssion code for filtering. This means, it can either be CSV or RegExp. It cannot be both.
 6. Enter the URL for your webservice. Don't forget to start with the **_HTTP_** or **_HTTPS_** protocol.
 7. Tap **_OK_** to save the new entry.
 
@@ -121,7 +121,9 @@ To enable Task Checking feature:
 <div class="row-fluid">
 <div class="span12">
 ### Manage Pending Messages
-Pending messages are failed SMS that couldn't make it to any of the enabled Sync URLs. SMSSync allows you to manage these pending messages. You can either configure the app to automatically or manually sync these failed messages or delete them.
+Pending messages are failed SMS that couldn't make it to any of the enabled Sync URLs. 
+SMSSync allows you to manage these pending messages. 
+You can either configure the app to automatically or manually sync these failed messages or delete them.
 </div>
 </div>
 <div class="row-fluid">

@@ -9,12 +9,17 @@ Maintain by Henry Addo aka eyedol
 P.S. This file was inspired by Linux credits-file
 
 ----------
+N: Milan Andric
+E: milan@medicmobile.org
+W: http://m.andric.us/
+D: Bug fixes
+C: United States
 
-N: Artem Noskov
-E: a@saratovout.ru
-W: http://ashowtimes.ru
-D: Translated the app into Russian/Ukrainian and reports bugs for fixing.
-C: Russia
+N: Ollie Bennett
+E: olliebennett@gmail.com
+W: http://olliebennett.co.uk
+D: Bug fixes and RegExp support
+C: http://olliebennett.co.uk
 
 N: Sándor Balikó
 W: https://www.transifex.net/accounts/profile/vo101sanyo/
@@ -53,6 +58,12 @@ E: charl@ushahidi.com
 W: https://www.transifex.net/accounts/profile/charl/
 D: Translated the app into Dutch.
 C: South Africa
+
+N: Artem Noskov
+E: a@saratovout.ru
+W: http://ashowtimes.ru
+D: Translated the app into Russian/Ukrainian and reports bugs for fixing.
+C: Russia
 
 N: Tobias Quinn
 E: tobias@tobiasquinn.com

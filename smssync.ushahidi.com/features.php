@@ -50,9 +50,9 @@
                     <li><a href="download">Download</a></li>
                     <li><a href="howto">Configure</a></li>
                     <li><a href="doc">Developers</a></li>
-                    <li class="active"><a href="features">Features</a></li>
+                    <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
-                    <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
+                    <li><a href="https://wiki.ushahidi.com/display/forums/Ushahidi+Forums">Support</a></li>
                 </ul>
             </div>
         </div>
@@ -80,37 +80,36 @@
 
 <ul>
 <li>Scheduler to auto sync pending messages</li>
-<li>Pending messages view</li>
-<li>Sent messages view</li>
-<li>Configurable auto reply messages</li>
-<li>Instant auto reply messages from server</li>
-<li>Imports existing SMS</li>
+<li>Pending and sent message views</li>
+<li>Configurable auto-reply messages</li>
+<li>Instant auto-reply messages from server</li>
+<li>Import existing messages from inbox</li>
 <li>Keyword based SMS filtering</li>
-<li>Supports mutliple languages</li>
-<li>Allows task scheduling</li>
-<li>Support mutliple Sync URLs</li>
+<li>Multiple languages</li>
+<li>Task scheduling</li>
+<li>Multiple Sync URLs</li>
 </ul>
 <h1>Limitations</h1>
 <ul>
-<li>Android enforces an outgoing limit of 100 SMS messages per hour.However, there are ways to override this limitation. Check <a href="http://www.xda-developers.com/android/increase-the-sms-limit-on-android">this</a> thread for details.</li>
+<li>Android enforces an outgoing limit of 100 SMS messages per hour. However, there are ways to override this limitation. Check <a href="http://www.xda-developers.com/android/increase-the-sms-limit-on-android">this</a> thread for details.</li>
 </ul>
 <h2>Caveats</h2>
 <ul>
-<li>There maybe security holes. Patches are humbly accepted.</li>
+<li>There may be security holes. Patches are humbly accepted.</li>
 </ul></div>
 
 <footer class="footer">
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 30-08-2012
+                Generated: 27-06-2013
             </div>
             <div class="span4">
-                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+                Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>
             </div>
             <div class="span4">
                 <p class="pull-right">
-                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com"><img src="images/ushahidi-logo.png"><span>Ushahidi</span</a>
                 </p>
             </div>
         </div>  

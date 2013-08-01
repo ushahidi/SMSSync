@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--preferences-->
+  <!--sync URL-->
+  <string name="edittxt_website_pref">\n\t\tSync URL eingeben\n  </string>
+  <string name="edittxt_website_pref_summary">\n\t\tDiese Website wird die Textnachrichten empfangen.\n  </string>
+  <!--secret-->
+  <string name="edittxt_api_key_pref">\n\t\tgeheimen Schlüssel eingeben\n  </string>
+  <string name="edittxt_api_key_pref_summary">\n        geheimen Schlüssel eingeben\n\t</string>
+  <!--filter by keywords-->
+  <string name="edittxt_keyword_pref">\n\t\tStichwort(e) eingeben\n  </string>
+  <string name="editxt_keyword_pref_summary">\n\t\tGeben Sie Stichworte an, nach denen die Nachricht gefiltert werden soll.\n\t</string>
+  <string name="edittxt_keyword_hint">\n\t\tFeuer, Verbrechen, Hilfe, Statusmeldung, etc.\n  </string>
+  <!--filter by phone numbers-->
+  <string name="edittxt_filter_by_from_pref">Telefonnummer eingeben - optional)</string>
+  <string name="edittxt_filter_by_from_pref_summary">Geben Sie Telefonnummern an, über die die zu verschickende Nachricht gefiltert wird.</string>
+  <string name="edittxt_filter_by_from_hint">+233713849796, +254243581806</string>
+  <!--unique id-->
+  <string name="edittxt_unique_id_pref">Einmalige Kennung eingeben</string>
+  <string name="edittxt_unique_id_pref_summary">Geben Sie eine einmalige Kennung für dieses Gerät an. Diese wird von Sync URL zur Absenderidentifikation verwendet. Die Kennung sollte nicht länger als 5 Ziffern lang sein.</string>
+  <string name="edittxt_unique_id_hint">01234</string>
+  <!--response message-->
+  <string name="edittxt_reply">\n\t\tFügen Sie eine Antwortnachricht hinzu\n  </string>
+  <string name="edittxt_reply_title">\n\t\teine Antwort\n  </string>
+  <string name="edittxt_reply_summary">\n\t\tDie Nachricht, die an die Benutzer verschickt werden soll.\n  </string>
+  <string name="edittxt_reply_default">\n\t\tIhre Nachricht wurden empfangen. Vielen Dank!\n  </string>
+  <!--enable/disable smssync-->
+  <string name="sms_sync_enabled">\n\t\tSMSSync ist eingeschaltet\n  </string>
+  <string name="sms_sync_disabled">\n\t\tSMSSync ist ausgeschaltet\n  </string>
+  <!--general settings-->
+  <string name="general_settings">\n\t\tAllgemeine Einstellungen\n  </string>
+  <string name="chk_enable_sms_sync">\n\t\tSMSSync starten\n  </string>
+  <string name="chk_sms_sync_hint">\n\t\tSMS Gateway starten und beenden.\n  </string>
+  <!--reply from server-->
+  <string name="reply_settings">\n\t\tEinstellungen für die Antwortnachricht\n  </string>
+  <string name="chk_enable_reply">\n\t\tAntwortnachricht\n  </string>
+  <string name="chk_reply_hint">\n\t\tDiese Rückantwort wird an alle Benutzer des SMSSync Gateways verschickt.\n\t</string>
+  <!--auto delete messages-->
+  <string name="chk_enable_auto_delete">\n\t\tNachrichten automatisch löschen\n  </string>
+  <string name="chk_auto_delete_hint">\n\t\tDiese Einstellung löscht eingegangene Nachrichten automatisch aus dem\n\t\tPosteingang, um Speicherplatz auf dem Telefon zu bewahren.\n  </string>
+  <!--enable auto sync-->
+  <string name="chk_enable_auto_sync">\n\t\tAutomatische Synchronisation aktivieren\n  </string>
+  <string name="chk_enable_auto_sync_hint">\n\t\tDiese Einstellung ermöglicht SMSSync, Nachrichten automatisch zu\n\t\tsynchronisieren.\n  </string>
+  <!--auto sync delay-->
+  <string name="txt_auto_sync_delay">\n\t\tFrequent der automatischen Synchronisation\n  </string>
+  <string name="auto_sync_delay_hint">\n\t\tStellen Sie ein, wie oft SMSSync mit der angegebenen URL synchronisiert\n\t\twerden soll.\n  </string>
+  <!--enable task check-->
+  <string name="chk_enable_task_check">\n\t\tAufgabenplanung einschalten\n  </string>
+  <string name="chk_enable_task_check_hint">\n\t\tÜber diese Einstellung kann SMSSync automatisch Aufgaben mit der callback\n\t\tURL verknüpfen und diese dann ausführen, z.B. den automatischen\n\t\tVersand von SMS via SMSSync.\n  </string>
+  <!--task check delay-->
+  <string name="txt_task_check_delay">Häufigkeit</string>
+  <string name="txt_task_check_delay_hint">\n\t\tStellen Sie ein, wie oft SMSSync eine Aufgabe durchführen soll.\n  </string>
+  <string name="app_name">\n\t\tSMSSync\n  </string>
+  <string name="outbox">\n\t\tSMSSync Warteschlange\n  </string>
+  <string name="version_status">\n\t\tBeta\n  </string>
+  <string name="sms_status_success">\n\t\tSMSSync gesendete Nachrichten\n  </string>
+  <string name="sms_status_failed">\n\t\tSMSSync Senden der Nachricht fehlgeschlagen\n  </string>
+  <string name="notification_summary">\n\t\tSMSSync Gateway aktiv\n  </string>
+  <string name="sending_failed">\n\t\tSMSSync Senden der Nachricht fehlgeschlagen\n  </string>
+  <string name="sending_failed_http_code">SMSSync Nachricht Senden fehlgeschlagen. Server zurückgegeben HTTP Status Code %1$d.</string>
+  <string name="sending_failed_custom_error">SMSSync Senden der Nachricht fehlgeschlagen. Server fehler: %1$s.\n  </string>
+  <string name="sending_succeeded">\n\t\tSMSSync Nachricht erfolgreich verschickt.\n  </string>
+  <string name="no_messages_to_sync">\n\t\tEs gibt keine zu verschickende Nachrichten.\n  </string>
+  <string name="no_messages_to_delete">\n\t\tEs gibt keine zu löschende Nachrichten.\n  </string>
+  <string name="sync_failed">\n\t\tSMSSync Senden der Nachricht fehlgeschlagen. Bitte überprüfen Sie die\n\t\tInternetverbindung und Einstellungen.\n  </string>
+  <string name="powered">\n\t\tPowered\n  </string>
+  <string name="powered_by">\n\t\tCreated by Ushahidi\n  </string>
+  <string name="menu_delete_all">\n\t\tAlles löschen\n  </string>
+  <string name="menu_sync_all">\n\t\tAlles synchronisieren\n  </string>
+  <string name="menu_delete">\n\t\tlöschen\n  </string>
+  <string name="menu_sync">\n\t\tsynchronisieren\n  </string>
+  <string name="menu_import">\n\t\tImportiere SMS\n  </string>
+  <string name="menu_settings">\n\t\tEinstellungen\n  </string>
+  <string name="messages_deleted">\n\t\tNachrichten erfolgreich gelöscht.\n  </string>
+  <string name="messages_deleted_failed">\n\t\tNachrichten konnten nicht gelöscht werden.\n  </string>
+  <string name="status">\n\t\tStatus\n  </string>
+  <string name="empty_list">\n\t\tKeine neuen Nachrichten.\n  </string>
+  <string name="http_text">\n\t\thttp://\n  </string>
+  <string name="sms_failed">\n\t\tSMS fehlgeschlagen\n  </string>
+  <!--URL validation-->
+  <string name="invalid_url">\n\t\tDie eingegebene URL ist fehlerhaft.\n  </string>
+  <string name="no_configured_url">\n\t\tEs gibt keine konfigurierte URL.\n  </string>
+  <string name="no_connection">\n\t\tKonnte keine Verbindung zur URL herstellen.\n  </string>
+  <string name="no_task">\n\t\tEs ist (noch) keine Aufgabe mit der callback URL verknüpft.\n  </string>
+  <string name="auto_sync_settings">\n\t\tAutomatische Synchronisationseinstellungen\n  </string>
+  <string name="task_check_settings">\n\t\tAufgabeneinstellungen\n  </string>
+  <string name="about_smssync">\n\t\tÜber Sync\n  </string>
+  <string name="please_wait">\n\t\tBitte warten\n  </string>
+  <string name="smssync_not_enabled">\n\t\tSMSSync ist nicht aktiviert. Bitte aktivieren Sie es in den Einstellungen.\n\t</string>
+  <string name="import_messages">\n\t\tImportiere Nachrichten...\n  </string>
+  <string name="nothing_to_import">\n\t\tKeine Nachricht zu importieren. Bitte stellen Sie sicher, dass neue\n\t\tKurznachrichten im SMS Eingang vorhanden sind.\n  </string>
+  <string name="chk_enable_reply_frm_server">\n\t\tHolen Sie Antwort von Server\n  </string>
+  <string name="chk_reply_frm_server_hint">\n\t\tDies verschickt die Nachrichten vom Server sofort als SMS, ohne auf einen\n\t\tAuslöser zu warten\n  </string>
+  <string name="filter_messages">Nachrichten filtern</string>
+  <!--SMS delivery status-->
+  <string name="sms_delivery_status_failed">\n\t\tSMS nicht verschickt -- vielleicht nicht genügend Guthaben aus dem\n\t\tTelefon\n  </string>
+  <string name="sms_delivery_status_no_service">\n\t\tkein Dienst\n  </string>
+  <string name="sms_delivery_status_radio_off">\n\t\tRadio aus\n  </string>
+  <string name="sms_delivery_status_null_pdu">\n\t\tkein PDU\n  </string>
+  <string name="sms_delivered">\n\t\tSMS verschickt\n  </string>
+  <string name="sms_not_delivered">\n\t\tSMS nicht verschickt\n  </string>
+  <!--Pending and failed messages Tab-->
+  <string name="pending_messages">\n\t\tUnerledigt\n  </string>
+  <string name="sent_messages">\n\t\tGesendet\n  </string>
+  <string name="title_bar_text">\n\t\tNachrichten\n  </string>
+  <string name="no_sent_messages">\n\t\tkeine verschickten Nachrichten.\n  </string>
+  <!--confirmation dialog-->
+  <string name="confirm_yes">\n\t\tJa\n  </string>
+  <string name="confirm_no">\n\t\tNein\n  </string>
+  <string name="confirm_message">\n\t\tWillst Du diese Aktion wirklich durchführen?\n  </string>
+  <!--validate unique id-->
+  <string name="unique_id_length_error">Kennung kann nicht länger als 5 Zeichen sein.</string>
+  <string name="unique_id_numeric_error">Kennung darf nur aus Ziffern bestehen</string>
+  <string name="loading">Lädt</string>
+  <string name="sync_url">Sync URL</string>
+  <string name="no_sync_url">Keine Sync URL.</string>
+  <string name="edit">Bearbeiten</string>
+  <string name="enter_sync_title">Titel für die Sync URL eingeben</string>
+  <string name="edittxt_keyword">Keyword eingeben, z.B. Feuer, Verbrechen, Hilfe</string>
+  <string name="add_sync_url">Sync URL hinzufügen</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Löschen</string>
+  <string name="failed_to_add_sync_url">Sync URL konnte nicht hinzugefügt werden</string>
+  <string name="failed_to_update_sync_url">Sync URL konnte nicht aktualisiert werden</string>
+  <string name="sync_url_deleted">Sync URL erfolgreich gelöscht.</string>
+  <string name="sync_url_deleted_failed">Sync URL konnte nicht gelöscht werden.</string>
+  <string name="disable_to_delete_syncurl">Du kannst diese Sync URL nicht löschen, weil sie noch aktiviert ist. Bitte vor dem Löschen erst deaktivieren.</string>
+  <string name="disable_to_delete_all_syncurl">Es gibt noch aktivierte Sync URLs, die deswegen nicht gelöscht werden können. Bitte erst deaktivieren, dann noch einmal versuchen. </string>
+  <string name="no_enabled_sync_url">Mindestens eine Sync URL aktivieren um den Dienst zu starten.</string>
+  <string name="disable_smssync_service">Der SMSSync Dienst läuft. Du kannst erst dann löschen, wenn der Dienst nicht mehr läuft. Erst den Dienst stoppen, dann noch einmal versuchen.</string>
+  <string name="disable_last_sync_url">Du kannst diese letzte Sync URL nicht deaktivieren weil der SMSSync Dienst noch läuft.</string>
+  <string name="no_sync_url_added">Füge mindestens eine Sync URL hinzu, um den Dienst zu starten.</string>
+  <string name="no_sync_url_to_delete">Es gibt keine Sync URLs zu löschen.</string>
+  <string name="empty_sync_url_title">Bitte gib einen Titel für die Sync URL ein.</string>
+  <string name="valid_sync_url">Bitte gib eine funktionierende URL ein.</string>
+  <string name="task">Aufgabe</string>
+  <string name="confirm_sms_import">Dadurch werden alle SMS in den Posteingang importiert. Dies kann eine Weile dauern, bis zum Ende.</string>
+</resources>

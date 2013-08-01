@@ -3,6 +3,46 @@
 </div>
 
 # Current Release
+
+* Released June 27<sup>th</sup>, 2013
+* Version [v2.3](https://github.com/ushahidi/SMSSync/tree/v2.3)
+
+### Changelog
+
+* Feature:
+    * Manually synchronizing pending messages now shows a progress bar.
+    * Added ability to cancel a progressive synchronization.
+    * Added user agent header to all HTTP requests.
+
+* Bug:
+    * Fix crashes when synchronizing huge pending messages
+    * Fix incorrect date display in sent inbox
+    * Fix duplicate reply responses.
+
+
+# Previous releases
+
+* Released March 20<sup>th</sup>, 2013
+* Version [v2.0.2](https://github.com/ushahidi/SMSSync/tree/v2.0.2)
+
+### Changelog
+
+* Feature:
+    * Show confirmation prompt when attempting to import SMS
+    * Added RegExp support to keyword filtering.
+    * Added more useful HTTP and server error messages
+    * Simplified the actionbar menu. Only show the relevant menus
+    * Updated notification code to make use of the notification.compact library
+    * Add Russian, Ukrainian, Belarusian languages
+
+* Bug:
+    * Fix wifi lock issue. See [#56](https://github.com/ushahidi/SMSSync/issues/56)
+    * Improved wording and typos in the strings file
+    * Disable excessive "no task enabled" notifications
+    * Fix ID issue. Now uses UUID instead. See [#60](https://github.com/ushahidi/SMSSync/issues/60).
+    * Fix issue with auto sync failing.
+
+
 * Released October 22<sup>nd</sup>, 2012
 * Version [v2.0.1](https://github.com/ushahidi/SMSSync/tree/v2.0.1)
 
@@ -10,14 +50,12 @@
 
 * Feature:
     * Resizable widgets to fit on most screens.
-    * Upgraded ABS library to 4.2.2.
+    * Upgraded ABS library to 4.2.0.
     * Added Korean translation.
 
 * Bug:
     * Fixed an issue with pending messages. See issue [#44](https://github.com/ushahidi/SMSSync/issues/44)
     * Removed screen restriction support from manifest file. This is to allow it to show up on the Google play store for most devices.
-
-# Previous releases
 
 * Released September 3<sup>rd</sup>, 2012
 * Version [v2.0.0](https://github.com/ushahidi/SMSSync/tree/v2.0.0)

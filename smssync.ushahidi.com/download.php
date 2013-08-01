@@ -52,7 +52,7 @@
                     <li><a href="doc">Developers</a></li>
                     <li><a href="features">Features</a></li>
                     <li><a href="screenshots">Screenshots</a></li>
-                    <li><a href="http://forums.ushahidi.com/forum/ushahidi-apps">Support</a></li>
+                    <li><a href="https://wiki.ushahidi.com/display/forums/Ushahidi+Forums">Support</a></li>
                 </ul>
             </div>
         </div>
@@ -99,14 +99,14 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 31-08-2012
+                Generated: 27-06-2013
             </div>
             <div class="span4">
-                Copyright &copy; 2010 - 2012 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+                Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>
             </div>
             <div class="span4">
                 <p class="pull-right">
-                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com">Ushahidi</a>
+                    <span class="smssync">SMSSync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com"><img src="images/ushahidi-logo.png"><span>Ushahidi</span</a>
                 </p>
             </div>
         </div>  
