@@ -164,6 +164,12 @@
     <string name="no_sync_url_to_delete">There are no Sync URLs to delete.</string>
     <string name="empty_sync_url_title">Please enter a title for the Sync URL</string>
     <string name="valid_sync_url">Please enter a valid URL</string>
+    <string name="use_sms_portals_settings">Increase sms sending through-put</string>
+    <string name="use_sms_portals_hint">Use Sms-Portals</string>
+    <string name="use_sms_portals_delay">Android maintains a limit on the number of sms that an applcation can send(100 sms per app per hour). But SmsSync allows you to by pass this limit. All you have to do is download some extra power packs.</string>
+    <string name="sms_portal_1">Sms Portal 1</string>
+    <string name="sms_portal_2">Sms Portal 2</string>
+    <string name="sms_portal_3">Sms Portal 3</string>
     <string name="task">Task</string>
     <string name="confirm_sms_import">This will import all SMS in the messaging inbox. This may take a while to finish.</string>
     <string name="incoming">incoming</string>
