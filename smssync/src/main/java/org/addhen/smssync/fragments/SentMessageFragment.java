@@ -26,11 +26,13 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.SentMessagesModel;
+import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -39,6 +41,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -89,7 +92,7 @@ public class SentMessageFragment
         getActivity().registerReceiver(broadcastReceiver,
                 new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
         //mHandler.post(mDisplayMessages);
-
+        refresh();
         MainApplication.bus.register(this);
 
     }
@@ -122,12 +125,6 @@ public class SentMessageFragment
         return super.onOptionsItemSelected(item);
     }
 
-    // Display pending messages.
-    final Runnable mDisplayMessages = new Runnable() {
-        public void run() {
-            refresh();
-        }
-    };
 
     /**
      * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
@@ -270,17 +267,8 @@ public class SentMessageFragment
 
     }
 
-    @Override
-    protected void onLoaded(boolean success) {
-        // TODO Auto-generated method stub
-
-    }
-
     public void refresh() {
-
-        if (adapter != null)
-            adapter.refresh();
-
+        new LoadingTask(getActivity()).execute((String)null);
     }
 
     @Subscribe
@@ -289,7 +277,7 @@ public class SentMessageFragment
         switch (newState.state) {
             case FINISHED_SYNC:
             case CANCELED_SYNC:
-                mHandler.post(mDisplayMessages);
+                refresh();
                 break;
 
         }
@@ -305,9 +293,39 @@ public class SentMessageFragment
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
-                mHandler.post(mDisplayMessages);
+                refresh();
             }
         }
     };
 
+    private class LoadingTask extends ProgressTask {
+
+        public LoadingTask(Activity activity) {
+            super(activity);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.cancel();
+            view.emptyView.setVisibility(android.view.View.GONE);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+            return model.load();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if(success) {
+                view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                view.emptyView.setVisibility(View.VISIBLE);
+                adapter.setItems(model.listMessages);
+                listView.setAdapter(adapter);
+            }
+        }
+    }
 }

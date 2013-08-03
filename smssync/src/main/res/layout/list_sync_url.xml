@@ -25,15 +25,5 @@
 
     <!-- List pending messages -->
 
-    <ListView
-        android:id="@id/android:list"
-        style="@style/ListView"
-        android:layout_below="@+id/start_checkbox" />
-
-    <TextView
-        android:id="@id/android:empty"
-        style="@style/TextView.Empty"
-        android:text="@string/no_sync_url"
-        />
-
+    <include layout="@layout/list_items" />
 </RelativeLayout>

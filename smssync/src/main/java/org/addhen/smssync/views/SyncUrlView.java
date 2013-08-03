@@ -24,11 +24,19 @@ import org.addhen.smssync.R;
 
 import android.app.Activity;
 import android.widget.CheckBox;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class SyncUrlView extends View {
 
 	@Widget(R.id.start_checkbox)
 	public CheckBox enableSmsSync;
+
+    @Widget(R.id.loading_list_progress)
+    public ProgressBar listLoadingProgress;
+
+    @Widget(android.R.id.empty)
+    public TextView emptyView;
 
 	public SyncUrlView(Activity activity) {
 		super(activity);

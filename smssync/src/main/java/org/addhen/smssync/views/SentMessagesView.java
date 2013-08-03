@@ -20,9 +20,21 @@
 
 package org.addhen.smssync.views;
 
+import org.addhen.smssync.R;
+
 import android.app.Activity;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 
 public class SentMessagesView extends View {
+
+    @Widget(R.id.loading_list_progress)
+    public ProgressBar listLoadingProgress;
+
+    @Widget(android.R.id.empty)
+    public TextView emptyView;
+
 	public SentMessagesView(Activity activity) {
 		super(activity);
 	}

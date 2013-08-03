@@ -36,6 +36,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -88,6 +89,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 	 */
 	protected V view;
 
+
 	/**
 	 * BaseListActivity
 	 * 
@@ -125,8 +127,6 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 
 			listView.setFocusable(true);
 			listView.setFocusableInTouchMode(true);
-
-            new LoadingTask(getActivity()).execute((String)null);
 		}
 	}
 
@@ -154,14 +154,6 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
         super.onResume();
     }
 
-	/**
-	 * Called after ListAdapter has been loaded
-	 * 
-	 * @param success
-	 *            true is successfully loaded
-	 */
-	protected abstract void onLoaded(boolean success);
-
 	@SuppressWarnings("unchecked")
 	protected M getSelectedItem() {
 		return (M) listView.getSelectedItem();
@@ -172,38 +164,6 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 	}
 
 	public void onNothingSelected(AdapterView<?> adapterView) {
-	}
-
-	/**
-	 * ProgressTask sub-class for showing Loading... dialog while the
-	 * BaseListAdapter loads the data
-	 */
-	protected class LoadingTask extends ProgressTask {
-		public LoadingTask(Activity activity) {
-			super(activity);
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			dialog.cancel();
-		}
-
-		@Override
-		protected Boolean doInBackground(String... args) {
-
-			adapter.refresh();
-
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean success) {
-			super.onPostExecute(success);
-
-			onLoaded(success);
-			listView.setAdapter(adapter);
-		}
 	}
 
 	protected void log(String message) {

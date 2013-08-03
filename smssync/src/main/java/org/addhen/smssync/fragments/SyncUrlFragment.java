@@ -423,10 +423,6 @@ public class SyncUrlFragment extends
         new LoadingStatusTask(getActivity()).execute();
     }
 
-    @Override
-    protected void onLoaded(boolean success) {
-        // TODO Auto-generated method stub
-    }
 
     /**
      * Get messages from the db and push them to the configured callback URL
@@ -534,7 +530,37 @@ public class SyncUrlFragment extends
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
-            onLoaded(success);
+        }
+    }
+
+    private class LoadingTask extends ProgressTask {
+
+        public LoadingTask(Activity activity) {
+            super(activity);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.cancel();
+            view.emptyView.setVisibility(android.view.View.GONE);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+            return model.load();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if(success) {
+                view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                view.emptyView.setVisibility(View.VISIBLE);
+                adapter.setItems(model.getSyncUrlList());
+                listView.setAdapter(adapter);
+            }
         }
     }
 

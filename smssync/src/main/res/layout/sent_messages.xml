@@ -15,14 +15,5 @@
     android:layout_height="match_parent" >
 
     <!-- List sent messages -->
-
-    <ListView
-        android:id="@id/android:list"
-        style="@style/ListView" />
-
-    <TextView
-        android:id="@id/android:empty"
-        style="@style/TextView.Empty"
-        android:text="@string/no_sent_messages" />
-
+    <include layout="@layout/list_items" />
 </RelativeLayout>
