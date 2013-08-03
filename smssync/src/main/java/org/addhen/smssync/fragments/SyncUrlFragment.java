@@ -31,12 +31,14 @@ import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SyncPendingMessagesService;
+import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.SyncUrlView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -79,8 +81,6 @@ public class SyncUrlFragment extends
                 R.menu.sync_url_menu, android.R.id.list);
         mHandler = new Handler();
         model = new SyncUrl();
-        // load all checked syncurl
-        syncUrl = model.loadByStatus(1);
     }
 
     @Override
@@ -108,7 +108,6 @@ public class SyncUrlFragment extends
     @Override
     public void onResume() {
         super.onResume();
-        mHandler.post(mUpdateListView);
     }
 
     @Override
@@ -119,8 +118,6 @@ public class SyncUrlFragment extends
     @Override
     public void onPause() {
         super.onPause();
-        mHandler.post(mUpdateListView);
-
     }
 
     @Override
@@ -156,7 +153,7 @@ public class SyncUrlFragment extends
             return (true);
         } else if (item.getItemId() == R.id.delete_all_sync_url) {
             // load all checked syncurl
-            syncUrl = model.loadByStatus(1);
+            loadByStatus();
             if (syncUrl != null && syncUrl.size() > 0) {
                 showMessage(R.string.disable_to_delete_all_syncurl);
 
@@ -313,14 +310,14 @@ public class SyncUrlFragment extends
                             if (edit) {
 
                                 if (addSyncUrl.updateSyncUrl(id)) {
-                                    mHandler.post(mUpdateListView);
+                                    loadSyncUrlInBackground();
                                 } else {
                                     toastLong(R.string.failed_to_update_sync_url);
                                 }
                             } else {
                                 // add a new entry
                                 if (addSyncUrl.addSyncUrl()) {
-                                    mHandler.post(mUpdateListView);
+                                    loadSyncUrlInBackground();
                                 } else {
                                     toastLong(R.string.failed_to_add_sync_url);
                                 }
@@ -334,11 +331,9 @@ public class SyncUrlFragment extends
     }
 
     // Display pending messages.
-    final Runnable mUpdateListView = new Runnable() {
-        public void run() {
-            showSyncUrl();
-        }
-    };
+    public void loadSyncUrlInBackground() {
+        new LoadingTask(getActivity()).execute();
+    }
 
     /**
      * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
@@ -418,9 +413,14 @@ public class SyncUrlFragment extends
      * @return void
      */
     public void showSyncUrl() {
+
         if (adapter != null) {
             adapter.refresh();
         }
+    }
+
+    public void loadByStatus() {
+        new LoadingStatusTask(getActivity()).execute();
     }
 
     @Override
@@ -455,7 +455,7 @@ public class SyncUrlFragment extends
         if (adapter.getCount() > 0) {
             // check if there are any enabled sync urls
             // load all checked syncurl
-            syncUrl = model.loadByStatus(1);
+            loadByStatus();
             if (syncUrl != null && syncUrl.size() > 0) {
                 if (view.enableSmsSync.isChecked()) {
                     // start sms receiver
@@ -510,6 +510,32 @@ public class SyncUrlFragment extends
             view.enableSmsSync.setChecked(false);
         }
         Prefs.savePreferences(getActivity());
+    }
+
+    private class LoadingStatusTask extends ProgressTask {
+
+        protected LoadingStatusTask(Activity activity) {
+            super(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.cancel();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            // load all checked syncurl
+            syncUrl = model.loadByStatus(1);
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            onLoaded(success);
+        }
     }
 
 }

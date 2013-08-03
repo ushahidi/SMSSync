@@ -41,6 +41,12 @@ public class PendingMessagesView extends View {
     @Widget(R.id.sync_button)
     public Button sync;
 
+    @Widget(R.id.loading_list_progress)
+    public ProgressBar listLoadingProgress;
+
+    @Widget(android.R.id.empty)
+    public TextView emptyView;
+
     public PendingMessagesView(Activity activity) {
         super(activity);
     }

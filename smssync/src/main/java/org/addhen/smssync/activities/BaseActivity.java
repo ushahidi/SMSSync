@@ -26,8 +26,10 @@ import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
 import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
+import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
+import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.View;
 
 import android.app.Activity;
@@ -151,11 +153,9 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
             createNavDrawer();
 
-            if (savedInstanceState == null) {
-                selectItem(0);
-            }
-        }
 
+        }
+        Util.setupStrictMode();
     }
 
     @Override
@@ -253,17 +253,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     }
 
     protected void createNavDrawer() {
-        initNavDrawer();
-        navDrawerAdapter.addItem(new PendingMessagesNavDrawerItem(
-                getString(R.string.pending_messages),
-                R.drawable.pending, BaseActivity.this));
-
-        navDrawerAdapter.addItem(new SentMessagesNavDrawerItem(
-                getString(R.string.sent_messages),
-                R.drawable.sent, BaseActivity.this));
-
-        navDrawerAdapter.addItem(new SyncUrlNavDrawerItem(getString(R.string.sync_url),
-                R.drawable.sync_url, BaseActivity.this));
+        navDrawerAdapter = new NavDrawerAdapter(this);
+        new LoadingStatusTask(this).execute((String)null);
 
     }
 
@@ -295,7 +286,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     }
 
     private void initNavDrawer() {
-        navDrawerAdapter = new NavDrawerAdapter(this);
+
         listView.setOnItemClickListener(new NavDrawerItemClickListener());
         listView.setAdapter(navDrawerAdapter);
 
@@ -342,6 +333,33 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         // Pass any configuration change to the drawer toggls
         if (drawerToggle != null)
             drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    private class LoadingStatusTask extends ProgressTask {
+
+        protected LoadingStatusTask(Activity activity) {
+            super(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.cancel();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            // load all checked syncurl
+            navDrawerAdapter.refresh();
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            initNavDrawer();
+            selectItem(0);
+        }
     }
 
     protected EditText findEditTextById(int id) {

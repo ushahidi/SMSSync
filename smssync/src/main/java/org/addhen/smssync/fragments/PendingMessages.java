@@ -54,6 +54,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.telephony.SmsManager;
+import android.view.View;
 import android.widget.ListView;
 
 import com.actionbarsherlock.view.MenuItem;
@@ -111,7 +112,7 @@ public class PendingMessages
             }
         }
         view.sync.setOnClickListener(this);
-        Util.setupStrictMode();
+        view.emptyView.setVisibility(View.GONE);
         MainApplication.bus.register(this);
     }
 
@@ -133,7 +134,7 @@ public class PendingMessages
         getActivity().registerReceiver(smsDeliveredReceiver,
                 new IntentFilter(ServicesConstants.DELIVERED));
         idle();
-        mHandler.post(mUpdateListView);
+
     }
 
     @Override
@@ -485,8 +486,11 @@ public class PendingMessages
      */
     public void showMessages() {
         log("showMessages()");
+
         if (adapter != null) {
+            view.listLoadingProgress.setVisibility(View.VISIBLE);
             adapter.refresh();
+            view.listLoadingProgress.setVisibility(View.GONE);
         }
     }
 
@@ -594,7 +598,7 @@ public class PendingMessages
 
     @Override
     protected void onLoaded(boolean success) {
-        // TODO Auto-generated method stub
+        view.listLoadingProgress.setVisibility(View.GONE);
     }
 
     // Thread class to handle synchronous execution of message importation task.

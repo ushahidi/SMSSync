@@ -20,10 +20,15 @@
 
 package org.addhen.smssync.adapters;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import static org.addhen.smssync.models.NavDrawerItem.NO_ICON_RES_ID;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
+import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
+import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
+import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
 
 import android.content.Context;
 import android.view.View;
@@ -35,11 +40,14 @@ import android.widget.TextView;
  */
 public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
 
+    private SherlockFragmentActivity mActivity;
+
     /**
-     * @param context
+     * @param activity
      */
-    public NavDrawerAdapter(Context context) {
-        super(context);
+    public NavDrawerAdapter(SherlockFragmentActivity activity) {
+        super(activity);
+        this.mActivity = activity;
     }
 
     @Override
@@ -63,7 +71,6 @@ public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
         }
 
         // set counter
-        getItem(position).setCounter();
         if (getItem(position).getCounter() > 0) {
             widget.counter.setText(String.valueOf(getItem(position).getCounter()));
         }
@@ -77,11 +84,30 @@ public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
      */
     @Override
     public void refresh() {
-        // TODO Auto-generated method stub
+        PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem
+                = new PendingMessagesNavDrawerItem(
+                context.getString(R.string.pending_messages),
+                R.drawable.pending, mActivity);
+        pendingMessagesNavDrawerItem.setCounter();
+        addItem(pendingMessagesNavDrawerItem);
+
+        SentMessagesNavDrawerItem sentMessagesNavDrawerItem = new SentMessagesNavDrawerItem(
+                context.getString(R.string.sent_messages),
+                R.drawable.sent, mActivity);
+        sentMessagesNavDrawerItem.setCounter();
+        addItem(sentMessagesNavDrawerItem);
+
+        SyncUrlNavDrawerItem syncUrlNavDrawerItem = new SyncUrlNavDrawerItem(context.getString(
+                R.string.sync_url),
+                R.drawable.sync_url, mActivity);
+        syncUrlNavDrawerItem.setCounter();
+        addItem(syncUrlNavDrawerItem);
     }
 
     private class Widgets {
+
         TextView title;
+
         TextView counter;
 
         public Widgets(View convertView) {

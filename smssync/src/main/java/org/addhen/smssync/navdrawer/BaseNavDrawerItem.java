@@ -22,7 +22,9 @@ package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.NavDrawerItem;
+import org.addhen.smssync.tasks.ProgressTask;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,11 +46,10 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     protected int count;
 
     /**
-     * @param itemId
+     *
      * @param title
      * @param iconRes
-     * @param counter
-     * @param counterBgColor
+     * @param activity
      */
     public BaseNavDrawerItem(String title, int iconRes, SherlockFragmentActivity activity) {
         super(title, iconRes);
@@ -91,4 +92,5 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     public int getCounters() {
         return count;
     }
+
 }

@@ -472,9 +472,7 @@ public class Util {
     public static void setupStrictMode() {
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= 11) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()
+                    .detectAll()
                     .penaltyLog()
                     .build());
         }

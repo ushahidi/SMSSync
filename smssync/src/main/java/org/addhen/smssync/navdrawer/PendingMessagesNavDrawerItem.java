@@ -53,4 +53,5 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
     public void setCounter() {
         mCounter = new Message().totalMessages();
     }
+
 }

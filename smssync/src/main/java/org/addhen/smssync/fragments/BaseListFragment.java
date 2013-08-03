@@ -35,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -116,15 +117,16 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 
 		if (listViewId != 0) {
 			listView = getListView();
+
 			view = Objects.createInstance(viewClass, Activity.class,
 					getSherlockActivity());
 			adapter = Objects.createInstance(adapterClass, Context.class,
 					getSherlockActivity());
 
-			listView.setAdapter(adapter);
 			listView.setFocusable(true);
 			listView.setFocusableInTouchMode(true);
 
+            new LoadingTask(getActivity()).execute((String)null);
 		}
 	}
 
@@ -146,6 +148,11 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 		}
 		return root;
 	}
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
 	/**
 	 * Called after ListAdapter has been loaded
@@ -173,7 +180,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 	 */
 	protected class LoadingTask extends ProgressTask {
 		public LoadingTask(Activity activity) {
-			super(activity, R.string.loading);
+			super(activity);
 		}
 
 		@Override
