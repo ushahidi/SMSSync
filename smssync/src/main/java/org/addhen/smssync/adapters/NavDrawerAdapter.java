@@ -40,14 +40,12 @@ import android.widget.TextView;
  */
 public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
 
-    private SherlockFragmentActivity mActivity;
 
     /**
-     * @param activity
+     * @param context
      */
-    public NavDrawerAdapter(SherlockFragmentActivity activity) {
-        super(activity);
-        this.mActivity = activity;
+    public NavDrawerAdapter(Context context) {
+        super(context);
     }
 
     @Override
@@ -84,24 +82,6 @@ public class NavDrawerAdapter extends BaseListAdapter<BaseNavDrawerItem> {
      */
     @Override
     public void refresh() {
-        PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem
-                = new PendingMessagesNavDrawerItem(
-                context.getString(R.string.pending_messages),
-                R.drawable.pending, mActivity);
-        pendingMessagesNavDrawerItem.setCounter();
-        addItem(pendingMessagesNavDrawerItem);
-
-        SentMessagesNavDrawerItem sentMessagesNavDrawerItem = new SentMessagesNavDrawerItem(
-                context.getString(R.string.sent_messages),
-                R.drawable.sent, mActivity);
-        sentMessagesNavDrawerItem.setCounter();
-        addItem(sentMessagesNavDrawerItem);
-
-        SyncUrlNavDrawerItem syncUrlNavDrawerItem = new SyncUrlNavDrawerItem(context.getString(
-                R.string.sync_url),
-                R.drawable.sync_url, mActivity);
-        syncUrlNavDrawerItem.setCounter();
-        addItem(syncUrlNavDrawerItem);
     }
 
     private class Widgets {

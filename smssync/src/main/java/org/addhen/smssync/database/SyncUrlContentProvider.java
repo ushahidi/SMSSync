@@ -21,6 +21,7 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -48,11 +49,12 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
     @Override
     public List<SyncUrl> fetchSyncUrl() {
-        mListSyncUrl = new ArrayList<SyncUrl>();
 
         try {
+            cursor = super.query(TABLE, COLUMNS, null, null, ID);
             if (cursor != null) {
-                cursor = super.query(TABLE, COLUMNS, null, null, ID);
+
+                mListSyncUrl = new ArrayList<SyncUrl>();
                 while (cursor.moveToNext()) {
                     SyncUrl syncUrl = cursorToEntity(cursor);
                     mListSyncUrl.add(syncUrl);

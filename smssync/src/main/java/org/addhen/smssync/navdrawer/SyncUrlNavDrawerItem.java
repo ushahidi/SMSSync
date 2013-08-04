@@ -21,6 +21,7 @@
 package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.fragments.SyncUrlFragment;
+import org.addhen.smssync.models.SyncUrl;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -48,7 +49,7 @@ public class SyncUrlNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        mCounter = new org.addhen.smssync.models.SyncUrl() .totalActiveSynUrl();
+        mCounter = new SyncUrl().totalActiveSynUrl();
     }
 
 }

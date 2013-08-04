@@ -37,6 +37,7 @@ public class SentMessagesView extends View {
 
 	public SentMessagesView(Activity activity) {
 		super(activity);
+        emptyView.setText(R.string.no_sent_messages);
 	}
 
 }

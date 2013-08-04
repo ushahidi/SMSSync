@@ -55,6 +55,9 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * BaseActivity Add shared functionality that exists between all Activities
  */
@@ -75,6 +78,13 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
      */
     protected final Class<V> viewClass;
 
+    protected final int drawerLayoutId;
+
+    /**
+     * ListView resource id
+     */
+    protected final int listViewId;
+
     /**
      * View
      */
@@ -86,27 +96,21 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     protected ActionBarDrawerToggle drawerToggle;
 
-    protected final int drawerLayoutId;
-
     protected DrawerLayout drawerLayout;
 
     protected ListView listView;
 
     /**
-     * ListView resource id
-     */
-    protected final int listViewId;
-
-    /**
      * BaseActivity
-     * 
-     * @param view View class
-     * @param layout layout resource id
-     * @param menu menu resource id
+     *
+     * @param view           View class
+     * @param layout         layout resource id
+     * @param menu           menu resource id
      * @param drawerLayoutId resource id for the drawerLayout
-     * @param listViewId the resource id for the list view
+     * @param listViewId     the resource id for the list view
      */
-    protected BaseActivity(Class<V> view, int layout, int menu, int drawerLayoutId, int listViewId) {
+    protected BaseActivity(Class<V> view, int layout, int menu, int drawerLayoutId,
+            int listViewId) {
 
         this.viewClass = view;
         this.layout = layout;
@@ -117,10 +121,10 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     /**
      * BaseActivity
-     * 
-     * @param view View class
+     *
+     * @param view   View class
      * @param layout layout resource id
-     * @param menu menu resource id
+     * @param menu   menu resource id
      */
     protected BaseActivity(Class<V> view, int layout, int menu) {
         this(view, layout, menu, 0, 0);
@@ -136,11 +140,13 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             setContentView(layout);
         }
 
-        if (drawerLayoutId != 0)
+        if (drawerLayoutId != 0) {
             drawerLayout = (DrawerLayout) findViewById(drawerLayoutId);
+        }
 
-        if (listViewId != 0)
+        if (listViewId != 0) {
             listView = (ListView) findViewById(listViewId);
+        }
 
         view = Objects.createInstance(viewClass, Activity.class, this);
 
@@ -233,7 +239,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                     } else {
                         drawerLayout.openDrawer(listView);
                     }
-
+                    
                 } else {
                     finish();
                 }
@@ -254,18 +260,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     protected void createNavDrawer() {
         navDrawerAdapter = new NavDrawerAdapter(this);
-        new LoadingStatusTask(this).execute((String)null);
-
-    }
-
-    private class NavDrawerItemClickListener implements ListView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-            selectItem(position);
-            view.getFocusables(position);
-            view.setSelected(true);
-        }
+        new NavDrawerItemTask(this).execute((String) null);
 
     }
 
@@ -315,50 +310,25 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     }
 
     /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
+     * When using the ActionBarDrawerToggle, you must call it during onPostCreate() and
+     * onConfigurationChanged()...
      */
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        if (drawerToggle != null)
+        if (drawerToggle != null) {
             drawerToggle.syncState();
+        }
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
-        if (drawerToggle != null)
+        if (drawerToggle != null) {
             drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    private class LoadingStatusTask extends ProgressTask {
-
-        protected LoadingStatusTask(Activity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.cancel();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            // load all checked syncurl
-            navDrawerAdapter.refresh();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
-            initNavDrawer();
-            selectItem(0);
         }
     }
 
@@ -436,6 +406,73 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     protected void toastShort(CharSequence message) {
         Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    private class NavDrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, android.view.View view, int position,
+                long id) {
+            selectItem(position);
+            view.getFocusables(position);
+            view.setSelected(true);
+        }
+
+    }
+
+    private class NavDrawerItemTask extends ProgressTask {
+
+        PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem;
+
+        SentMessagesNavDrawerItem sentMessagesNavDrawerItem;
+
+        SyncUrlNavDrawerItem syncUrlNavDrawerItem;
+
+        List<BaseNavDrawerItem> navDrawerItem;
+
+        protected NavDrawerItemTask(Activity activity) {
+            super(activity);
+            pendingMessagesNavDrawerItem
+                    = new PendingMessagesNavDrawerItem(
+                    getString(R.string.pending_messages),
+                    R.drawable.pending, BaseActivity.this);
+
+            sentMessagesNavDrawerItem = new SentMessagesNavDrawerItem(
+                    getString(R.string.sent_messages),
+                    R.drawable.sent, BaseActivity.this);
+            syncUrlNavDrawerItem = new SyncUrlNavDrawerItem(getString(
+                    R.string.sync_url),
+                    R.drawable.sync_url, BaseActivity.this);
+            navDrawerItem = new ArrayList<BaseNavDrawerItem>();
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.cancel();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            // load all checked syncurl
+            sentMessagesNavDrawerItem.setCounter();
+            pendingMessagesNavDrawerItem.setCounter();
+            syncUrlNavDrawerItem.setCounter();
+            navDrawerItem.add(pendingMessagesNavDrawerItem);
+            navDrawerItem.add(sentMessagesNavDrawerItem);
+            navDrawerItem.add(syncUrlNavDrawerItem);
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            navDrawerAdapter.setItems(navDrawerItem);
+            initNavDrawer();
+            selectItem(0);
+        }
     }
 
 }

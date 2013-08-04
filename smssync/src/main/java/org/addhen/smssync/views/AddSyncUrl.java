@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.util.Logger;
 
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -80,8 +81,9 @@ public class AddSyncUrl {
 		syncUrl.setSecret(secret.getText().toString());
 		syncUrl.setTitle(title.getText().toString());
 		syncUrl.setUrl(url.getText().toString());
-
-		return syncUrl.save();
+        syncUrl.setStatus(0);
+        return syncUrl.save();
+       
 	}
 
 	/**

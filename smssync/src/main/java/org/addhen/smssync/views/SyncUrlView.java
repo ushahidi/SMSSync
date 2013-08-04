@@ -40,6 +40,8 @@ public class SyncUrlView extends View {
 
 	public SyncUrlView(Activity activity) {
 		super(activity);
+        emptyView.setText(R.string.no_sync_url);
+
 	}
 
 }

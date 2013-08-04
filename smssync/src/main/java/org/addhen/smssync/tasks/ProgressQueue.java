@@ -59,5 +59,4 @@ public class ProgressQueue implements ProgressCallback {
             queue.remove().execute((String)null);
         }
     }
-
 }

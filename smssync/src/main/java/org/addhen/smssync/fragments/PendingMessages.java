@@ -67,53 +67,6 @@ public class PendingMessages
 
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
 
-    /**
-     * Delete individual messages 0 - Successfully deleted. 1 - There is nothing to be deleted.
-     */
-    final Runnable mDeleteMessagesById = new Runnable() {
-        public void run() {
-            log("mDeleteMessagesById()");
-            getActivity().setProgressBarIndeterminateVisibility(true);
-            boolean result = false;
-
-            int deleted = 0;
-
-            if (adapter.getCount() == 0) {
-                deleted = 1;
-            } else {
-                log("deletebyId position: " + mSelectedItemsPositions.size());
-                for (Integer position : mSelectedItemsPositions) {
-                    model.deleteMessagesByUuid(adapter.getItem(position).getUuid());
-                }
-                result = true;
-            }
-
-            try {
-                if (deleted == 1) {
-                    toastLong(R.string.no_messages_to_delete);
-                } else {
-
-                    if (result) {
-                        toastLong(R.string.messages_deleted);
-
-                    } else {
-                        toastLong(R.string.messages_deleted_failed);
-                    }
-                }
-
-                // destory the action mode dialog
-                multichoiceActionModeListener.activeMode.finish();
-                multichoiceActionModeListener.getSelectedItemPositions().clear();
-                getActivity().setProgressBarIndeterminateVisibility(false);
-                refreshListView();
-            } catch (Exception e) {
-                return;
-            }
-        }
-    };
-
-    private final Handler mHandler;
-
     private Intent syncPendingMessagesServiceIntent;
 
     private Message model;
@@ -187,7 +140,6 @@ public class PendingMessages
                 R.layout.list_messages, R.menu.pending_messages_menu,
                 android.R.id.list);
         log("PendingMessages()");
-        mHandler = new Handler();
         model = new Message();
     }
 
@@ -688,8 +640,10 @@ public class PendingMessages
                     }
                 }
                 adapter.setItems(model.getMessageList());
-                multichoiceActionModeListener.activeMode.finish();
-                multichoiceActionModeListener.getSelectedItemPositions().clear();
+                if (multichoiceActionModeListener.activeMode != null) {
+                    multichoiceActionModeListener.activeMode.finish();
+                    multichoiceActionModeListener.getSelectedItemPositions().clear();
+                }
                 listView.setAdapter(adapter);
             }
         }

@@ -32,6 +32,7 @@ import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -58,12 +59,6 @@ public class SyncUrlFragment extends
         BaseListFragment<SyncUrlView, SyncUrl, SyncUrlAdapter> implements
         View.OnClickListener {
 
-    private Intent syncPendingMessagesServiceIntent;
-
-    private Intent statusIntent;
-
-    private final Handler mHandler;
-
     private SyncUrl model;
 
     private int id = 0;
@@ -79,7 +74,6 @@ public class SyncUrlFragment extends
     public SyncUrlFragment() {
         super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
                 R.menu.sync_url_menu, android.R.id.list);
-        mHandler = new Handler();
         model = new SyncUrl();
     }
 
@@ -108,6 +102,7 @@ public class SyncUrlFragment extends
     @Override
     public void onResume() {
         super.onResume();
+        loadSyncUrlInBackground();
     }
 
     @Override
@@ -184,7 +179,7 @@ public class SyncUrlFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // delete all messages
-                                mHandler.post(mDeleteAllMessages);
+                                new DeleteTask(getActivity()).execute((String) null);
                             }
                         });
         AlertDialog alert = builder.create();
@@ -193,8 +188,7 @@ public class SyncUrlFragment extends
 
     /**
      * Validates the Sync URL to be added
-     * 
-     * @param  addSyncUrl
+     *
      * @return boolean
      */
     public boolean validateSyncUrlEntry(AddSyncUrl addSyncUrl) {
@@ -229,7 +223,9 @@ public class SyncUrlFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Delete by ID
-                                mHandler.post(mDeleteSyncById);
+                                DeleteTask deleteById = new DeleteTask(getActivity());
+                                deleteById.deletebyUuid = true;
+                                deleteById.execute((String) null);
                             }
                         });
         AlertDialog alert = builder.create();
@@ -238,9 +234,8 @@ public class SyncUrlFragment extends
 
     /**
      * Show prompt message
-     * 
-     * @param message The resource string which is the message to show to
-     *        the user.
+     *
+     * @param message The resource string which is the message to show to the user.
      * @return void
      */
     public void showMessage(int message) {
@@ -308,19 +303,16 @@ public class SyncUrlFragment extends
                         if (validateSyncUrlEntry(addSyncUrl)) {
                             // edit was selected
                             if (edit) {
+                                AddSyncUrlTask updateTask = new AddSyncUrlTask(getActivity(),
+                                        addSyncUrl);
+                                updateTask.editSyncUrl = true;
+                                updateTask.execute((String) null);
 
-                                if (addSyncUrl.updateSyncUrl(id)) {
-                                    loadSyncUrlInBackground();
-                                } else {
-                                    toastLong(R.string.failed_to_update_sync_url);
-                                }
                             } else {
                                 // add a new entry
-                                if (addSyncUrl.addSyncUrl()) {
-                                    loadSyncUrlInBackground();
-                                } else {
-                                    toastLong(R.string.failed_to_add_sync_url);
-                                }
+                                AddSyncUrlTask addTask = new AddSyncUrlTask(getActivity(),
+                                        addSyncUrl);
+                                addTask.execute((String) null);
                             }
                             deploymentDialog.dismiss();
                         }
@@ -332,113 +324,13 @@ public class SyncUrlFragment extends
 
     // Display pending messages.
     public void loadSyncUrlInBackground() {
-        new LoadingTask(getActivity()).execute();
-    }
-
-    /**
-     * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
-     * deleted.
-     */
-    final Runnable mDeleteAllMessages = new Runnable() {
-        public void run() {
-
-            boolean result = false;
-
-            int deleted = 0;
-
-            try {
-                if (adapter.getCount() == 0) {
-                    deleted = 1;
-                } else {
-                    result = model.deleteAllSyncUrl();
-                }
-
-                if (deleted == 1) {
-                    toastLong(R.string.no_sync_url_to_delete);
-                } else {
-                    if (result) {
-
-                        toastLong(R.string.sync_url_deleted);
-                        showSyncUrl();
-                    } else {
-                        toastLong(R.string.sync_url_deleted_failed);
-                    }
-                }
-
-            } catch (Exception e) {
-                return;
-            }
-        }
-    };
-
-    /**
-     * Delete individual messages 0 - Successfully deleted. 1 - There is nothing
-     * to be deleted.
-     */
-    final Runnable mDeleteSyncById = new Runnable() {
-        public void run() {
-
-            boolean result = false;
-
-            int deleted = 0;
-            try {
-                if (adapter.getCount() == 0) {
-                    deleted = 1;
-                } else {
-                    result = model.deleteSyncUrlById(id);
-                }
-
-                if (deleted == 1) {
-                    toastLong(R.string.no_sync_url_to_delete);
-                } else {
-                    if (result) {
-
-                        toastLong(R.string.sync_url_deleted);
-                        showSyncUrl();
-                    } else {
-                        toastLong(R.string.sync_url_deleted_failed);
-                    }
-
-                }
-
-            } catch (Exception e) {
-                return;
-            }
-        }
-    };
-
-    /**
-     * Get sync url from the database.
-     * 
-     * @return void
-     */
-    public void showSyncUrl() {
-
-        if (adapter != null) {
-            adapter.refresh();
-        }
+        new LoadingTask(getActivity()).execute((String) null);
     }
 
     public void loadByStatus() {
-        new LoadingStatusTask(getActivity()).execute();
-    }
-
-
-    /**
-     * Get messages from the db and push them to the configured callback URL
-     * 
-     * @param messagesUuid
-     * @return int
-     */
-
-    public void syncMessages(String messagesUuid) {
-        statusIntent.putExtra("status", 3);
-        getActivity().sendBroadcast(statusIntent);
-        syncPendingMessagesServiceIntent = new Intent(getActivity(),
-                SyncPendingMessagesService.class);
-        syncPendingMessagesServiceIntent.putExtra(
-                ServicesConstants.MESSAGE_UUID, messagesUuid);
-        getActivity().startService(syncPendingMessagesServiceIntent);
+        LoadingTask loadingStatusTask = new LoadingTask(getActivity());
+        loadingStatusTask.loadSyncUrlByStatus = true;
+        loadingStatusTask.execute((String) null);
     }
 
     /*
@@ -508,36 +400,12 @@ public class SyncUrlFragment extends
         Prefs.savePreferences(getActivity());
     }
 
-    private class LoadingStatusTask extends ProgressTask {
-
-        protected LoadingStatusTask(Activity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.cancel();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            // load all checked syncurl
-            syncUrl = model.loadByStatus(1);
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
-        }
-    }
-
     private class LoadingTask extends ProgressTask {
+
+        protected boolean loadSyncUrlByStatus = false;
 
         public LoadingTask(Activity activity) {
             super(activity);
-
         }
 
         @Override
@@ -549,17 +417,118 @@ public class SyncUrlFragment extends
 
         @Override
         protected Boolean doInBackground(String... args) {
-            return model.load();
+            if (loadSyncUrlByStatus) {
+                syncUrl = model.loadByStatus(1);
+                return true;
+            } else {
+                return model.load();
+            }
         }
 
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
-            if(success) {
+            if (success) {
                 view.listLoadingProgress.setVisibility(android.view.View.GONE);
                 view.emptyView.setVisibility(View.VISIBLE);
                 adapter.setItems(model.getSyncUrlList());
                 listView.setAdapter(adapter);
+            }
+        }
+    }
+
+    protected class DeleteTask extends ProgressTask {
+
+        protected boolean deletebyUuid = false;
+
+        protected int deleted = 0;
+
+        public DeleteTask(Activity activity) {
+            super(activity);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.cancel();
+            activity.setProgressBarIndeterminateVisibility(true);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+            if (adapter.getCount() == 0) {
+                deleted = 1;
+            } else {
+                if (deletebyUuid) {
+                    model.deleteSyncUrlById(id);
+                } else {
+                    model.deleteAllSyncUrl();
+                }
+                deleted = 2;
+            }
+            model.load();
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            view.emptyView.setVisibility(View.VISIBLE);
+            if (success) {
+                if (deleted == 1) {
+                    toastLong(R.string.no_sync_url_to_delete);
+                } else {
+                    if (deleted == 2) {
+                        toastLong(R.string.sync_url_deleted);
+
+                    } else {
+                        toastLong(R.string.sync_url_deleted_failed);
+                    }
+
+                }
+                adapter.setItems(model.getSyncUrlList());
+                listView.setAdapter(adapter);
+            }
+        }
+    }
+
+    private class AddSyncUrlTask extends Task<String, String, Boolean> {
+
+        protected boolean editSyncUrl = false;
+
+        private AddSyncUrl addSyncUrl;
+
+        private boolean status = false;
+
+        protected AddSyncUrlTask(Activity activity, AddSyncUrl addSyncUrl) {
+            super(activity);
+            this.addSyncUrl = addSyncUrl;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            if (editSyncUrl) {
+
+                status = addSyncUrl.updateSyncUrl(id);
+            } else {
+                status = addSyncUrl.addSyncUrl();
+            }
+            model.load();
+            return status;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if (success) {
+                adapter.setItems(model.getSyncUrlList());
+                listView.setAdapter(adapter);
+            } else {
+                if (editSyncUrl) {
+                    toastLong(R.string.failed_to_update_sync_url);
+                } else {
+                    toastLong(R.string.failed_to_add_sync_url);
+                }
             }
         }
     }

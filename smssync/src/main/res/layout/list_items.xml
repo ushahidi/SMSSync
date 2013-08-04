@@ -7,6 +7,7 @@
     <TextView
         android:id="@id/android:empty"
         style="@style/TextView.Empty"
+        android:visibility="gone"
         android:text="@string/empty_list" />
 <ProgressBar android:id="@+id/loading_list_progress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true"
     style="@style/Widget.Sherlock.ProgressBar" />
