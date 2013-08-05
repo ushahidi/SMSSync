@@ -574,9 +574,9 @@ public class PendingMessages
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
+            view.listLoadingProgress.setVisibility(android.view.View.GONE);
+            view.emptyView.setVisibility(View.VISIBLE);
             if (success) {
-                view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                view.emptyView.setVisibility(View.VISIBLE);
                 adapter.setItems(model.getMessageList());
                 listView.setAdapter(adapter);
             }
@@ -625,9 +625,9 @@ public class PendingMessages
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
+            activity.setProgressBarIndeterminateVisibility(false);
+            view.emptyView.setVisibility(View.VISIBLE);
             if (success) {
-                activity.setProgressBarIndeterminateVisibility(false);
-                view.emptyView.setVisibility(View.VISIBLE);
                 if (deleted == 1) {
                     toastLong(R.string.no_messages_to_delete);
                 } else {

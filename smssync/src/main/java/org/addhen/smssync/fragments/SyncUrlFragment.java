@@ -20,7 +20,7 @@
 
 package org.addhen.smssync.fragments;
 
-import java.util.List;
+import com.actionbarsherlock.view.MenuItem;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
@@ -30,11 +30,9 @@ import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
-import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.util.RunServicesUtil;
-import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.SyncUrlView;
@@ -47,13 +45,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
-import com.actionbarsherlock.view.MenuItem;
+import java.util.List;
 
 public class SyncUrlFragment extends
         BaseListFragment<SyncUrlView, SyncUrl, SyncUrlAdapter> implements
@@ -428,9 +425,10 @@ public class SyncUrlFragment extends
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
+            view.listLoadingProgress.setVisibility(android.view.View.GONE);
+            view.emptyView.setVisibility(View.VISIBLE);
             if (success) {
-                view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                view.emptyView.setVisibility(View.VISIBLE);
+
                 adapter.setItems(model.getSyncUrlList());
                 listView.setAdapter(adapter);
             }

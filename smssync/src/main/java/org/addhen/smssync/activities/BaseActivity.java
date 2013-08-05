@@ -20,6 +20,10 @@
 
 package org.addhen.smssync.activities;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.NavDrawerAdapter;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
@@ -49,11 +53,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,8 +88,6 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
      * View
      */
     protected V view;
-
-    protected ActionBar actionBar;
 
     protected NavDrawerAdapter navDrawerAdapter;
 
@@ -154,11 +151,9 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         getSupportActionBar().setHomeButtonEnabled(true);
 
         if (drawerLayout != null) {
-
-            // default deployment is not set
+            // enable navigation drawer
 
             createNavDrawer();
-
 
         }
         Util.setupStrictMode();
@@ -239,7 +234,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                     } else {
                         drawerLayout.openDrawer(listView);
                     }
-                    
+
                 } else {
                     finish();
                 }
@@ -261,7 +256,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     protected void createNavDrawer() {
         navDrawerAdapter = new NavDrawerAdapter(this);
         new NavDrawerItemTask(this).execute((String) null);
-
+        initNavDrawer();
     }
 
     protected void selectItem(int position) {
@@ -283,7 +278,6 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     private void initNavDrawer() {
 
         listView.setOnItemClickListener(new NavDrawerItemClickListener());
-        listView.setAdapter(navDrawerAdapter);
 
         if (drawerLayout != null) {
             drawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
@@ -470,7 +464,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             navDrawerAdapter.setItems(navDrawerItem);
-            initNavDrawer();
+            listView.setAdapter(navDrawerAdapter);
             selectItem(0);
         }
     }

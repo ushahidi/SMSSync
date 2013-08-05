@@ -320,9 +320,10 @@ public class SentMessageFragment
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
+            view.listLoadingProgress.setVisibility(android.view.View.GONE);
+            view.emptyView.setVisibility(View.VISIBLE);
             if(success) {
-                view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                view.emptyView.setVisibility(View.VISIBLE);
+
                 adapter.setItems(model.listMessages);
                 listView.setAdapter(adapter);
             }
