@@ -30,6 +30,7 @@ android {
 
         defaultConfig {
             testPackageName "org.addhen.smssync.tests"
+            packageName "org.addhen.smssync"
         }
 
         // Move the build types to build-types/<type>
@@ -42,8 +43,27 @@ android {
         release.setRoot('build-types/release')
     }
 
+    signingConfigs {
+        release
+    }
+
     buildTypes {
         proguard.initWith(buildTypes.debug)
+        proguard {
+            runProguard true
+            proguardFile getDefaultProguardFile('proguard-andronid.txt')
+        }
+
+        release {
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            packageNameSuffix ".debug"
+            versionNameSuffix "-debug"
+        }
+
+        proguard.initWith(buildTypes.release)
         proguard {
             runProguard true
             proguardFile getDefaultProguardFile('proguard-android.txt')
@@ -56,4 +76,17 @@ android {
         minSdkVersion 7
         targetSdkVersion 17
     }
+
+    if (project.hasProperty('releaseKeyStore') &&
+            project.hasProperty('releaseKeyPassword') &&
+            project.hasProperty('releaseKeyStorePassword') &&
+            project.hasProperty('releaseKeyAlias')) {
+        android.signingConfigs.release.keyAlias = releaseKeyAlias
+        android.signingConfigs.release.storeFile = file(releaseKeyStore)
+        android.signingConfigs.release.storePassword = releaseKeyStorePassword
+        android.signingConfigs.release.keyPassword = releaseKeyPassword
+    } else {
+        buildTypes.release.signingConfig = null
+    }
+
 }

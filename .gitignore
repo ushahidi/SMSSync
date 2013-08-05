@@ -17,4 +17,5 @@ proguard-project.txt
 build
 .gradle
 gradle-app.setting
+gradle.properties
 
