@@ -48,6 +48,7 @@ android {
     }
 
     buildTypes {
+        archivesBaseName = archivesBaseName + versionName
         proguard.initWith(buildTypes.debug)
         proguard {
             runProguard true
@@ -56,6 +57,7 @@ android {
 
         release {
             signingConfig signingConfigs.release
+
         }
 
         debug {
@@ -72,7 +74,7 @@ android {
 
     defaultConfig {
         versionCode 16
-        versionName "2.4"
+        versionName "v2.4"
         minSdkVersion 7
         targetSdkVersion 17
     }
