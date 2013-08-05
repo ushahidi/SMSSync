@@ -48,7 +48,7 @@ android {
     }
 
     buildTypes {
-        archivesBaseName = archivesBaseName + versionName
+
         proguard.initWith(buildTypes.debug)
         proguard {
             runProguard true
@@ -62,7 +62,7 @@ android {
 
         debug {
             packageNameSuffix ".debug"
-            versionNameSuffix "-debug"
+            versionNameSuffix "-DEBUG"
         }
 
         proguard.initWith(buildTypes.release)
@@ -70,13 +70,26 @@ android {
             runProguard true
             proguardFile getDefaultProguardFile('proguard-android.txt')
         }
+
     }
 
     defaultConfig {
         versionCode 16
-        versionName "v2.4"
+        versionName "2.4"
         minSdkVersion 7
         targetSdkVersion 17
+    }
+
+    android.applicationVariants.all { variant ->
+
+        def apk = variant.outputFile;
+
+        def newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-" + variant.buildType.name.toUpperCase() + ".apk");
+
+        variant.outputFile = file("$project.buildDir/apk/"+newName);
+        if (variant.zipAlign) {
+            variant.zipAlign.outputFile = file("$project.buildDir/apk/"+newName.replace("-unaligned", ""));
+        }
     }
 
     if (project.hasProperty('releaseKeyStore') &&
@@ -92,3 +105,5 @@ android {
     }
 
 }
+
+
