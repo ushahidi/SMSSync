@@ -194,4 +194,17 @@
     <string name="unknown_issue">Unknown issue</string>
     <string name="sync_in_completed">Sync Completed</string>
     <string name="sync_in_progress">Sync In Progress</string>
+    <!-- donation related -->
+    <string name="donate">Donate</string>
+    <string name="donate_summary">Using secure Google Play Store in-app payment.</string>
+
+    <string name="ui_dialog_donate_message">Please specify amount:</string>
+    <string name="ui_donation_success_message">Donation successful, thank you!</string>
+    <string name="ui_donation_failure_message">Donation failed: %1$s</string>
+
+    <!-- purchase errors -->
+    <string name="donation_error_iab_unavailable">In-app billing is not available</string>
+    <string name="donation_error_unavailable">not available</string>
+    <string name="donation_error_canceled">canceled</string>
+    <string name="donation_error_already_owned">you have already donated</string>
 </resources>

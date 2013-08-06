@@ -18,32 +18,35 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync.fragments;
-
-import com.github.jberkel.pay.me.IabResult;
-import com.github.jberkel.pay.me.listener.OnIabPurchaseFinishedListener;
-import com.github.jberkel.pay.me.listener.QueryInventoryFinishedListener;
-import com.github.jberkel.pay.me.model.Inventory;
-import com.github.jberkel.pay.me.model.Purchase;
+package org.addhen.smssync.util;
 
 /**
- * Add donation support
+ * Handles donation constants
  */
-public class DonationFragment extends BaseFragment implements
-        QueryInventoryFinishedListener,
-        OnIabPurchaseFinishedListener {
+public class DonationConstants {
 
-    public DonationFragment(int layout, int menu) {
-        super(menu);
-    }
+    public static class Billing {
 
-    @Override
-    public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+        public static final String PUBLIC_KEY = "";
 
-    }
+        public static final String DONATION_PREFIX = "donation.";
 
-    @Override
-    public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+        public static final String SKU_DONATION_1 = "donation.1";
 
+        public static final String SKU_DONATION_2 = "donation.2";
+
+        public static final String SKU_DONATION_3 = "donation.3";
+
+        public static final String SKU_DONATION_4 = "donation.4";
+
+        public static final String SKU_DONATION_5 = "donation.5";
+
+        public static final String[] ALL_SKUS = new String[]{
+                SKU_DONATION_1,
+                SKU_DONATION_2,
+                SKU_DONATION_3,
+                SKU_DONATION_4,
+                SKU_DONATION_5
+        };
     }
 }
