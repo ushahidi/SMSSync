@@ -4,6 +4,13 @@ repositories {
     mavenCentral()
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots'
+        //url 'http://zegoggl.es:8081/nexus/content/repositories/releases/'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
         url 'http://zegoggl.es:8081/nexus/content/repositories/releases/'
     }
 }
@@ -21,7 +28,7 @@ dependencies {
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    buildToolsVersion "18.0.1"
 
     sourceSets {
 

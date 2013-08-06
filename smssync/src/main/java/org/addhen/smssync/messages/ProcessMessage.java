@@ -117,7 +117,7 @@ public class ProcessMessage {
     public void smsServerResponse(String response) {
         Logger.log(TAG, "performResponseFromServer(): " + " response:"
                 + response);
-        if (Prefs.enableReplyFrmServer) {
+        if (!Prefs.enableReplyFrmServer) {
             return;
         }
 
