@@ -8,19 +8,19 @@ repositories {
     }
 }
 
-repositories {
+/*repositories {
     mavenCentral()
     maven {
         url 'http://zegoggl.es:8081/nexus/content/repositories/releases/'
     }
-}
+}*/
 
 dependencies {
     compile project(':abslib')
     compile fileTree(dir: 'libs', include: '*.jar')
     compile 'com.android.support:support-v4:13.0.+'
     compile 'com.squareup:otto:1.3.4'
-    compile 'com.github.jberkel.pay.me:library:0.0.2'
+    //compile 'com.github.jberkel.pay.me:library:0.0.2'
     // Disabling this for now. Causing out of memory exception when building
     //instrumentTestCompile 'org.robolectric:robolectric:2.2-SNAPSHOT'
     //instrumentTestCompile 'com.squareup:fest-android:1.0.5'
