@@ -39,7 +39,7 @@ public class DonationFragment extends BaseFragment implements
 
     @Override
     public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-        
+
     }
 
     @Override

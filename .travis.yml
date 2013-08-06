@@ -2,7 +2,7 @@ language: java
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_SDKS=android-14,sysimg-14  ANDROID_TARGET=android-14  ANDROID_ABI=armeabi-v7a
+    - ANDROID_SDKS=android-17,sysimg-17  ANDROID_TARGET=android-17  ANDROID_ABI=armeabi-v7a
 before_install:
   # download the latest android sdk and unzip
   - sudo apt-get update -qq
@@ -13,15 +13,16 @@ before_install:
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
   # install android build tools
-  #- wget https://dl-ssl.google.com/android/repository/build-tools_r18-linux.zip
-  #- unzip build-tools_r18-linux.zip -d $ANDROID_HOME
-  #- mkdir -p $ANDROID_HOME/build-tools/
-  #- mv $ANDROID_HOME/android-4.3 $ANDROID_HOME/build-tools/18.0.1
+  - wget https://dl-ssl.google.com/android/repository/build-tools_r18-linux.zip
+  - unzip build-tools_r18-linux.zip -d $ANDROID_HOME
+  - mkdir -p $ANDROID_HOME/build-tools/
+  - mv $ANDROID_HOME/android-4.3 $ANDROID_HOME/build-tools/18.0.1
   - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter tools --no-ui --force > /dev/null
+  #- echo yes | android update sdk --filter tools --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-16 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-14 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter sysimg-14 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-17 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter sysimg-17 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 
