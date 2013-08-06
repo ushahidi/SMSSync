@@ -99,7 +99,7 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
             listView.setAdapter(adapter);
             listView.setFocusable(true);
         }
-        EasyTracker.getInstance().activityStart(this);
+        EasyTracker.getInstance().setContext(this);
     }
 
     /**

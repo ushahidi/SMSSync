@@ -56,7 +56,7 @@ public class BaseFragment extends SherlockFragment {
 		log("onCreate");
 
 		setHasOptionsMenu(true);
-        EasyTracker.getInstance().activityStart(getActivity());
+        EasyTracker.getInstance().setContext(getActivity());
 	}
 
 	@Override

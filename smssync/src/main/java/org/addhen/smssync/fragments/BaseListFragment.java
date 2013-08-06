@@ -121,7 +121,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
             listView.setFocusable(true);
             listView.setFocusableInTouchMode(true);
         }
-        EasyTracker.getInstance().activityStart(getActivity());
+        EasyTracker.getInstance().setContext(getActivity());
     }
 
     @Override
