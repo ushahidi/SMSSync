@@ -11,6 +11,7 @@ dependencies {
     compile project(':abslib')
     compile 'com.android.support:support-v4:13.0.+'
     compile 'com.squareup:otto:1.3.4'
+    compile fileTree(dir: 'libs', include: '*.jar')
     // Disabling this for now. Causing out of memory exception when building
     //instrumentTestCompile 'org.robolectric:robolectric:2.2-SNAPSHOT'
     //instrumentTestCompile 'com.squareup:fest-android:1.0.5'
@@ -89,6 +90,15 @@ android {
         variant.outputFile = file("$project.buildDir/apk/"+newName);
         if (variant.zipAlign) {
             variant.zipAlign.outputFile = file("$project.buildDir/apk/"+newName.replace("-unaligned", ""));
+        }
+
+        // Add google analytics code here. This is defined in the gradle.properties file
+        if(project.hasProperty('googleAnalyticsCode')) {
+            File analyticsFile = file("src/main/res/values/analytics.xml")
+            def analyticsCode = "<string name=\"ga_trackingId\">${googleAnalyticsCode}</string>"
+            String content = analyticsFile.getText('UTF-8')
+            content = content.replaceAll("<string name=\"ga_trackingId\"/>", analyticsCode)
+            analyticsFile.write(content, 'UTF-8')
         }
     }
 

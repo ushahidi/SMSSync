@@ -20,6 +20,8 @@
 
 package org.addhen.smssync.activities;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -152,10 +154,9 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
         if (drawerLayout != null) {
             // enable navigation drawer
-
             createNavDrawer();
-
         }
+        EasyTracker.getInstance().setContext(this);
         Util.setupStrictMode();
     }
 
@@ -163,6 +164,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     protected void onStart() {
         super.onStart();
         log("onStart");
+        EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
@@ -193,6 +195,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     protected void onDestroy() {
         super.onDestroy();
         log("onDestroy");
+        EasyTracker.getInstance().activityStop(this);
     }
 
     protected void setActionBarTitle(String title) {

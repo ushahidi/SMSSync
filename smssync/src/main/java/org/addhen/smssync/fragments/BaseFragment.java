@@ -20,6 +20,8 @@
 
 package org.addhen.smssync.fragments;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import org.addhen.smssync.util.Logger;
 
 import android.os.Bundle;
@@ -39,11 +41,7 @@ public class BaseFragment extends SherlockFragment {
 
 	/**
 	 * BaseActivity
-	 * 
-	 * @param view
-	 *            View class
-	 * @param layout
-	 *            layout resource id
+	 *
 	 * @param menu
 	 *            menu resource id
 	 */
@@ -58,7 +56,7 @@ public class BaseFragment extends SherlockFragment {
 		log("onCreate");
 
 		setHasOptionsMenu(true);
-
+        EasyTracker.getInstance().activityStart(getActivity());
 	}
 
 	@Override
@@ -68,6 +66,25 @@ public class BaseFragment extends SherlockFragment {
 		}
 
 	}
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        log("onStart");
+        EasyTracker.getInstance().activityStart(getActivity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        log("onDestroy");
+        EasyTracker.getInstance().activityStop(getActivity());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
