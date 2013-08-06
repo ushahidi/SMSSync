@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pay.me.response.ok">OK</string>
+    <string name="pay.me.response.user_canceled">User Canceled</string>
+    <string name="pay.me.response.billing_unavailable">Billing Unavailable</string>
+    <string name="pay.me.response.item_unavailable">Item Unavailable</string>
+    <string name="pay.me.response.developer_error">Developer error</string>
+    <string name="pay.me.response.error">Error</string>
+    <string name="pay.me.response.item_already_owned">Item already owned</string>
+    <string name="pay.me.response.item_not_owned">Item already owned</string>
+
+
+    <string name="pay.me.response.remote_exception">Remote exception during initialization</string>
+    <string name="pay.me.response.bad_response">Bad response received</string>
+    <string name="pay.me.response.signature_verification_failed">Purchase signature verification failed</string>
+    <string name="pay.me.response.send_intent_failed">Send intent failed</string>
+    <string name="pay.me.response.unknown_purchase_response">Unknown purchase response</string>
+    <string name="pay.me.response.missing_token">Missing token</string>
+    <string name="pay.me.response.unknown_error">Unknown error</string>
+    <string name="pay.me.response.subscriptions_not_available">Subscriptions not available</string>
+    <string name="pay.me.response.invalid_consumption">Invalid consumption attempt</string>
+    <string name="pay.me.response.disposed">The helper was already disposed of</string>
+</resources>

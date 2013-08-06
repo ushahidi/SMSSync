@@ -2,32 +2,21 @@ apply plugin: 'android'
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots'
-        //url 'http://zegoggl.es:8081/nexus/content/repositories/releases/'
-    }
 }
 
-/*repositories {
-    mavenCentral()
-    maven {
-        url 'http://zegoggl.es:8081/nexus/content/repositories/releases/'
-    }
-}*/
-
 dependencies {
-    compile project(':abslib')
+    compile project(':libraries:pay-me')
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:support-v4:13.0.+'
+    compile 'com.actionbarsherlock:actionbarsherlock:4.4.0@aar'
+    compile 'com.android.support:support-v4:18.0.+'
     compile 'com.squareup:otto:1.3.4'
-    //compile 'com.github.jberkel.pay.me:library:0.0.2'
     // Disabling this for now. Causing out of memory exception when building
     //instrumentTestCompile 'org.robolectric:robolectric:2.2-SNAPSHOT'
     //instrumentTestCompile 'com.squareup:fest-android:1.0.5'
 }
 
 android {
-    compileSdkVersion 17
+    compileSdkVersion 14
     buildToolsVersion "18.0.1"
 
     sourceSets {

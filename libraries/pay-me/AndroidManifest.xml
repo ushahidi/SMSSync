@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.github.jberkel.pay.me"
+          android:versionCode="1"
+          android:versionName="0.0.1-SNAPSHOT">
+
+    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
+</manifest>

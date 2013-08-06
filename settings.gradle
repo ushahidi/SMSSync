@@ -1,2 +1,2 @@
-include ':abslib'
+include ':libraries:pay-me'
 include ':smssync'

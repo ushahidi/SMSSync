@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github.jberkel.pay.me</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.3-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>library</artifactId>
+    <packaging>apklib</packaging>
+    <name>pay-me library</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <configuration>
+                    <attachJar>true</attachJar>
+                    <sdk>
+                        <platform>14</platform>
+                    </sdk>
+                    <lint>
+                        <skip>false</skip>
+                        <failOnError>true</failOnError>
+                        <enableHtml>true</enableHtml>
+                        <warningsAsErrors>true</warningsAsErrors>
+                        <enableClasspath>true</enableClasspath>
+                    </lint>
+                </configuration>
+                <extensions>true</extensions>
+            </plugin>
+
+            <!-- workaround for https://code.google.com/p/maven-android-plugin/issues/detail?id=139 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <type>jar</type>
+                                    <file>${project.build.directory}/${project.build.finalName}.jar</file>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>android</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.android</groupId>
+            <artifactId>annotations</artifactId>
+            <version>4.1.1.4</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

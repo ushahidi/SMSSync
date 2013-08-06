@@ -2,7 +2,7 @@ language: java
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_SDKS=android-18,sysimg-18  ANDROID_TARGET=android-18  ANDROID_ABI=armeabi-v7a
+    - ANDROID_SDKS=android-14,sysimg-14  ANDROID_TARGET=android-14  ANDROID_ABI=armeabi-v7a
 before_install:
   # download the latest android sdk and unzip
   - sudo apt-get update -qq
@@ -20,8 +20,8 @@ before_install:
   - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
   - echo yes | android update sdk --filter tools --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-16 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-18 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter sysimg-18 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-14 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter sysimg-14 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 
