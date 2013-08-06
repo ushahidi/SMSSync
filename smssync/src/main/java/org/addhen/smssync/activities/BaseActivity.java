@@ -29,6 +29,7 @@ import com.actionbarsherlock.view.MenuItem;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.NavDrawerAdapter;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
+import org.addhen.smssync.navdrawer.DonationNavDrawerItem;
 import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
@@ -425,6 +426,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
         SyncUrlNavDrawerItem syncUrlNavDrawerItem;
 
+        DonationNavDrawerItem donationNavDrawerItem;
+
         List<BaseNavDrawerItem> navDrawerItem;
 
         protected NavDrawerItemTask(Activity activity) {
@@ -440,6 +443,9 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             syncUrlNavDrawerItem = new SyncUrlNavDrawerItem(getString(
                     R.string.sync_url),
                     R.drawable.sync_url, BaseActivity.this);
+            donationNavDrawerItem = new DonationNavDrawerItem(getString(R.string.donate),
+                    R.drawable.donate, BaseActivity.this);
+
             navDrawerItem = new ArrayList<BaseNavDrawerItem>();
 
         }
@@ -456,9 +462,11 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             sentMessagesNavDrawerItem.setCounter();
             pendingMessagesNavDrawerItem.setCounter();
             syncUrlNavDrawerItem.setCounter();
+            donationNavDrawerItem.setCounter();
             navDrawerItem.add(pendingMessagesNavDrawerItem);
             navDrawerItem.add(sentMessagesNavDrawerItem);
             navDrawerItem.add(syncUrlNavDrawerItem);
+            navDrawerItem.add(donationNavDrawerItem);
 
             return true;
         }

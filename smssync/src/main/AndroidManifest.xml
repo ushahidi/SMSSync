@@ -70,7 +70,7 @@
         </activity>
 
         <!-- donation -->
-        <activity android:name=".activities.DonationActivity" android:lable="@string/donate"/>
+        <activity android:name=".activities.DonationActivity" android:label="@string/donate"/>
         <!-- sms -->
         <receiver android:name=".receivers.SmsReceiver" >
             <intent-filter>

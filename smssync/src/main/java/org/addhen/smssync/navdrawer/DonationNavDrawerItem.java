@@ -22,6 +22,10 @@ package org.addhen.smssync.navdrawer;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
+import org.addhen.smssync.activities.DonationActivity;
+
+import android.content.Intent;
+
 /**
  * Donation nav drawer item
  */
@@ -40,7 +44,8 @@ public class DonationNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
-
+        Intent i = new Intent(mActivity,DonationActivity.class);
+        launchActivity(i);
     }
 
     @Override
