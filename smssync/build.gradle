@@ -75,8 +75,8 @@ android {
     defaultConfig {
         versionCode 16
         versionName "2.4"
-        minSdkVersion 7
-        targetSdkVersion 17
+        minSdkVersion 8
+        targetSdkVersion 18
     }
 
     android.applicationVariants.all { variant ->
