@@ -101,7 +101,6 @@ android {
                 String content = valuesFile.getText('UTF-8')
                 content = content.replaceAll("<string name=\"ga_trackingId\"></string>",
                         analyticsCode)
-                println("content: " + content)
                 valuesFile.write(content, 'UTF-8')
             }
         }

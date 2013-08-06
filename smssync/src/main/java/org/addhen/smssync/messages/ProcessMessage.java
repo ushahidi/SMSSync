@@ -182,7 +182,7 @@ public class ProcessMessage {
             MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
             String response = msgSyncHttpClient.getFromWebService();
             Logger.log(TAG, "TaskCheckResponse: " + response);
-            if (response !=null && !TextUtils.isEmpty(response)) {
+            if (response != null && !TextUtils.isEmpty(response)) {
 
                 try {
 
@@ -195,6 +195,7 @@ public class ProcessMessage {
                         boolean secretOk = TextUtils.isEmpty(urlSecret) ||
                                 urlSecret.equals(payloadObject.getString("secret"));
                         if (secretOk && task.equals("send")) {
+
                             jsonArray = payloadObject.getJSONArray("messages");
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
@@ -260,8 +261,8 @@ public class ProcessMessage {
 
     }
 
-    public boolean routePendingMessage(Message message){
-        if(routeMessage(message)) {
+    public boolean routePendingMessage(Message message) {
+        if (routeMessage(message)) {
             return message.deleteMessagesByUuid(message.getUuid());
         }
         return false;
