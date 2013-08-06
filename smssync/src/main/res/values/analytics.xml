@@ -12,7 +12,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
-    <!-- Replace placeholder ID with your tracking ID -->
+    <!-- The tracking code is read from gradle.properties file -->
     <string name="ga_trackingId"/>
 
     <!-- Enable automatic activity tracking -->
@@ -22,7 +22,5 @@
     <bool name="ga_reportUncaughtExceptions">true</bool>
     
     <bool name="ga_debug">true</bool>
-    
-    <!--  for more params configuration check https://developers.google.com/analytics/devguides/collection/android/v2/parameters -->
     
 </resources>
