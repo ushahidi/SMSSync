@@ -29,19 +29,18 @@ import android.widget.TextView;
 
 public class WhitelistView extends View {
 
-    @Widget(R.id.enable_checkbox)
-    public CheckBox enableSmsSync;
+    @Widget(R.id.enable_whitelist_checkbox)
+    public CheckBox enableWhitelist;
 
     @Widget(R.id.loading_list_progress)
     public ProgressBar listLoadingProgress;
 
-    @Widget(android.R.id.empty)
+    @Widget(R.id.empty_list)
     public TextView emptyView;
 
     public WhitelistView(Activity activity) {
         super(activity);
         emptyView.setText(R.string.no_whitelist);
-
     }
 
 }

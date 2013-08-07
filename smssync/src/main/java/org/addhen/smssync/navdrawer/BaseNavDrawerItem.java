@@ -84,6 +84,8 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
                 .replace(R.id.content_frame, fragment, tag).commit();
     }
 
+
+
     protected void launchActivity(Intent intent) {
         mActivity.startActivity(intent);
     }

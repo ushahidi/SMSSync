@@ -18,29 +18,43 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync.views;
+package org.addhen.smssync.navdrawer;
 
-import org.addhen.smssync.R;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-import android.app.Activity;
-import android.widget.CheckBox;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import org.addhen.smssync.activities.FilterTabActivity;
 
-public class BlacklistView extends View {
+import android.content.Intent;
 
-    @Widget(R.id.enable_blacklist_checkbox)
-    public CheckBox enableBlacklist;
+/**
+ * Filter Nav Drawer Item
+ */
+public class WhitelistNavDrawerItem extends BaseNavDrawerItem {
 
-    @Widget(R.id.loading_list_progress)
-    public ProgressBar listLoadingProgress;
-
-    @Widget(android.R.id.empty)
-    public TextView emptyView;
-
-    public BlacklistView(Activity activity) {
-        super(activity);
-        emptyView.setText(R.string.no_blacklist);
+    /**
+     * Filter Nav Drawer
+     */
+    public WhitelistNavDrawerItem(String title, int iconRes,
+            SherlockFragmentActivity activity) {
+        super(title, iconRes, activity);
     }
 
+    @Override
+    protected void onSelectItem() {
+        if (!isSelected()) {
+            Intent i = new Intent(mActivity, FilterTabActivity.class);
+            launchActivity(i);
+        }
+    }
+
+    @Override
+    public boolean isSelected() {
+        return mActivity instanceof FilterTabActivity;
+    }
+
+
+    @Override
+    public void setCounter() {
+
+    }
 }

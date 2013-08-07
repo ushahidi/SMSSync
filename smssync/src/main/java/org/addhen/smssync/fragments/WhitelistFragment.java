@@ -67,7 +67,7 @@ public class WhitelistFragment extends
     private BlacklistActionModeListener multichoiceActionModeListener;
 
     public WhitelistFragment() {
-        super(WhitelistView.class, FilterAdapter.class, R.layout.list_filter,
+        super(WhitelistView.class, FilterAdapter.class, R.layout.whitelist,
                 R.menu.filter_menu, android.R.id.list);
         model = new Filter();
     }
@@ -84,8 +84,8 @@ public class WhitelistFragment extends
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(new WhitelistActionModeListener(this,
                 listView));
-        view.enableSmsSync.setChecked(Prefs.enabled);
-        view.enableSmsSync.setOnClickListener(this);
+        view.enableWhitelist.setChecked(Prefs.enabled);
+        view.enableWhitelist.setOnClickListener(this);
 
     }
 
@@ -256,7 +256,7 @@ public class WhitelistFragment extends
         final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
                 getActivity());
         addBuilder
-                .setTitle(R.string.add_phone_number)
+                .setTitle(R.string.add_phone_number_list)
                 .setView(textEntryView)
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
@@ -320,28 +320,28 @@ public class WhitelistFragment extends
             // load all checked syncurl
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
-                if (view.enableSmsSync.isChecked()) {
+                if (view.enableWhitelist.isChecked()) {
                     // start sms receiver
 
                     //Prefs.enabled = true;
-                    view.enableSmsSync.setChecked(true);
+                    view.enableWhitelist.setChecked(true);
 
 
                 } else {
 
                     //Prefs.enabled = false;
-                    view.enableSmsSync.setChecked(false);
+                    view.enableWhitelist.setChecked(false);
                 }
             } else {
                 toastLong(R.string.no_enabled_sync_url);
                 Prefs.enabled = false;
-                view.enableSmsSync.setChecked(false);
+                view.enableWhitelist.setChecked(false);
             }
 
         } else {
             toastLong(R.string.no_sync_url_added);
             Prefs.enabled = false;
-            view.enableSmsSync.setChecked(false);
+            view.enableWhitelist.setChecked(false);
         }
         Prefs.savePreferences(getActivity());
     }

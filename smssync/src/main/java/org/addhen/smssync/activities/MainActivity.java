@@ -40,7 +40,6 @@ public class MainActivity extends BaseActivity<MainView> {
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
                 R.id.left_drawer);
-
     }
 
     @Override

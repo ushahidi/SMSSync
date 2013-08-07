@@ -29,12 +29,12 @@ import android.content.Intent;
 /**
  * Filter Nav Drawer Item
  */
-public class FilterNavDrawerItem extends BaseNavDrawerItem {
+public class BlacklistNavDrawerItem extends BaseNavDrawerItem {
 
     /**
      * Filter Nav Drawer
      */
-    public FilterNavDrawerItem(String title, int iconRes,
+    public BlacklistNavDrawerItem(String title, int iconRes,
             SherlockFragmentActivity activity) {
         super(title, iconRes, activity);
     }

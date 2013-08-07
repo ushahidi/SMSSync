@@ -15,12 +15,12 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
     <CheckBox
-            android:id="@+id/enable_blacklist_checkbox"
+            android:id="@+id/enable_whitelist_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/enable_blacklist" android:layout_gravity="center"/>
+            android:text="@string/enable_whitelist" android:layout_gravity="center"/>
 
     <!-- List pending messages -->
 
@@ -29,6 +29,17 @@
             android:layout_height="match_parent"
             android:padding="5dp">
 
-        <include layout="@layout/list_items"/>
+        <ListView
+                android:id="@id/android:list"
+                style="@style/ListView"/>
+
+        <TextView
+                android:id="@+id/empty_list"
+                style="@style/TextView.Empty"
+                android:visibility="gone"
+                android:text="@string/no_whitelist"/>
+        <ProgressBar android:id="@+id/loading_list_progress" android:layout_width="wrap_content"
+                     android:layout_height="wrap_content" android:layout_centerInParent="true"
+                     style="@style/Widget.Sherlock.ProgressBar"/>
     </RelativeLayout>
 </LinearLayout>

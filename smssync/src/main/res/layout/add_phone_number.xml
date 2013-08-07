@@ -7,7 +7,7 @@
 
     <EditText
             android:id="@+id/phone_number"
-            style="@style/EditText"
-            android:hint="@string/add_phone_number"/>
+            style="@style/EditText.Phone"
+            android:hint="@string/enter_phone_number"/>
 
 </LinearLayout>

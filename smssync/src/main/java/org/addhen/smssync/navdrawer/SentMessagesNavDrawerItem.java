@@ -22,8 +22,11 @@ package org.addhen.smssync.navdrawer;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
+import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.fragments.SentMessageFragment;
 import org.addhen.smssync.models.SentMessagesModel;
+
+import android.content.Intent;
 
 /**
  * Menu Item for Sent messages
@@ -44,8 +47,17 @@ public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
+        if(!isSelected()) {
+            Intent i = new Intent(mActivity, MainActivity.class);
+            launchActivity(i);
+        }
         fragment = new SentMessageFragment();
         showFragment(TAG);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return mActivity instanceof MainActivity;
     }
 
     @Override

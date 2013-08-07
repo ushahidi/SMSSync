@@ -83,8 +83,8 @@ public class BlacklistFragment extends
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(new BlacklistActionModeListener(this,
                 listView));
-        view.enableSmsSync.setChecked(Prefs.enabled);
-        view.enableSmsSync.setOnClickListener(this);
+        view.enableBlacklist.setChecked(Prefs.enabled);
+        view.enableBlacklist.setOnClickListener(this);
 
     }
 
@@ -255,7 +255,7 @@ public class BlacklistFragment extends
         final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
                 getActivity());
         addBuilder
-                .setTitle(R.string.add_phone_number)
+                .setTitle(R.string.add_phone_number_list)
                 .setView(textEntryView)
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
@@ -319,28 +319,28 @@ public class BlacklistFragment extends
             // load all checked syncurl
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
-                if (view.enableSmsSync.isChecked()) {
+                if (view.enableBlacklist.isChecked()) {
                     // start sms receiver
 
                     //Prefs.enabled = true;
-                    view.enableSmsSync.setChecked(true);
+                    view.enableBlacklist.setChecked(true);
 
 
                 } else {
 
                     //Prefs.enabled = false;
-                    view.enableSmsSync.setChecked(false);
+                    view.enableBlacklist.setChecked(false);
                 }
             } else {
                 toastLong(R.string.no_enabled_sync_url);
                 Prefs.enabled = false;
-                view.enableSmsSync.setChecked(false);
+                view.enableBlacklist.setChecked(false);
             }
 
         } else {
             toastLong(R.string.no_sync_url_added);
             Prefs.enabled = false;
-            view.enableSmsSync.setChecked(false);
+            view.enableBlacklist.setChecked(false);
         }
         Prefs.savePreferences(getActivity());
     }

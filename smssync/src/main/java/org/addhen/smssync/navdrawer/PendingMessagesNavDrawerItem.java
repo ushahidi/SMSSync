@@ -22,8 +22,12 @@ package org.addhen.smssync.navdrawer;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
+import org.addhen.smssync.activities.FilterTabActivity;
+import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.Message;
+
+import android.content.Intent;
 
 /**
  * Menu Item for Pending messages
@@ -45,8 +49,17 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
+        if(!isSelected()) {
+            Intent i = new Intent(mActivity, MainActivity.class);
+            launchActivity(i);
+        }
         fragment = new PendingMessages();
         showFragment(TAG);
+    }
+
+    @Override
+    public boolean isSelected() {
+        return mActivity instanceof MainActivity;
     }
 
     @Override

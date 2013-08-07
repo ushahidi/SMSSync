@@ -29,8 +29,8 @@ import com.actionbarsherlock.view.MenuItem;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.NavDrawerAdapter;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
+import org.addhen.smssync.navdrawer.BlacklistNavDrawerItem;
 import org.addhen.smssync.navdrawer.DonationNavDrawerItem;
-import org.addhen.smssync.navdrawer.FilterNavDrawerItem;
 import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
@@ -275,6 +275,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
             // update selected item and title, then close the drawer
             listView.setItemChecked(position, true);
+
             drawerLayout.closeDrawer(listView);
 
         }
@@ -429,7 +430,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
         DonationNavDrawerItem donationNavDrawerItem;
 
-        FilterNavDrawerItem filterNavDrawerItem;
+        BlacklistNavDrawerItem filterNavDrawerItem;
 
         List<BaseNavDrawerItem> navDrawerItem;
 
@@ -448,7 +449,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                     R.drawable.sync_url, BaseActivity.this);
             donationNavDrawerItem = new DonationNavDrawerItem(getString(R.string.donate),
                     R.drawable.donate, BaseActivity.this);
-            filterNavDrawerItem = new FilterNavDrawerItem(getString(R.string.filter),
+            filterNavDrawerItem = new BlacklistNavDrawerItem(getString(R.string.filter),
                     R.drawable.whitelist_blacklist, BaseActivity.this);
             navDrawerItem = new ArrayList<BaseNavDrawerItem>();
 
@@ -482,7 +483,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             super.onPostExecute(success);
             navDrawerAdapter.setItems(navDrawerItem);
             listView.setAdapter(navDrawerAdapter);
-            selectItem(0);
+            //selectItem(0);
         }
     }
 

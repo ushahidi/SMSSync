@@ -24,9 +24,11 @@ import com.actionbarsherlock.app.ActionBar;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.TabAdapter;
+import org.addhen.smssync.fragments.BlacklistFragment;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.fragments.SentMessageFragment;
 import org.addhen.smssync.fragments.SyncUrlFragment;
+import org.addhen.smssync.fragments.WhitelistFragment;
 import org.addhen.smssync.views.FilterTabView;
 
 import android.os.Bundle;
@@ -49,22 +51,20 @@ public class FilterTabActivity extends BaseActivity<FilterTabView> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.filter_tab);
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        ActionBar.Tab pendingTab = getSupportActionBar().newTab().setText(
-                getString(R.string.pending_messages));
-        ActionBar.Tab sentTab = getSupportActionBar().newTab().setText(
-                getString(R.string.sent_messages));
 
-        ActionBar.Tab syncTab = getSupportActionBar().newTab().setText(
-                getString(R.string.sync_url));
+        ActionBar.Tab whitelistTab = getSupportActionBar().newTab().setText(
+                getString(R.string.whitelist));
+
+        ActionBar.Tab blacklistTab = getSupportActionBar().newTab().setText(
+                getString(R.string.blacklist));
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
 
         mTabsAdapter = new TabAdapter(this, getSupportActionBar(), mViewPager);
-        mTabsAdapter.addTab(pendingTab, PendingMessages.class);
-        mTabsAdapter.addTab(sentTab, SentMessageFragment.class);
-        mTabsAdapter.addTab(syncTab, SyncUrlFragment.class);
+        mTabsAdapter.addTab(whitelistTab, WhitelistFragment.class);
+        mTabsAdapter.addTab(blacklistTab, BlacklistFragment.class);
+
 
         if (savedInstanceState != null) {
             final int index = savedInstanceState.getInt("index");
