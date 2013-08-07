@@ -27,7 +27,7 @@ public class DonationConstants {
 
     public static class Billing {
 
-        public static final String PUBLIC_KEY = "";
+        public static final String PUBLIC_KEY = "dkdladkaldadksdfas";
 
         public static final String DONATION_PREFIX = "donation.";
 

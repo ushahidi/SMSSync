@@ -196,7 +196,7 @@
     <string name="sync_in_progress">Sync In Progress</string>
     <!-- donation related -->
     <string name="donate">Donate</string>
-    <string name="donate_summary">Using secure Google Play Store in-app payment.</string>
+    <string name="donate_summary">Using Google Play Store\'s secure in-app payment.</string>
 
     <string name="ui_dialog_donate_message">Please specify amount:</string>
     <string name="ui_donation_success_message">Donation successful, thank you!</string>

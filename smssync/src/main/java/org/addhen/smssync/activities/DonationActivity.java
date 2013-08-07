@@ -36,7 +36,6 @@ import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.R;
 import org.addhen.smssync.views.DonationView;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -75,7 +74,7 @@ public class DonationActivity extends BaseActivity<DonationView> implements
     private IabHelper mIabHelper;
 
     public DonationActivity() {
-        super(DonationView.class, 0, 0);
+        super(DonationView.class, R.layout.donation, 0);
     }
 
     public void onCreate(Bundle savedInstanceState) {
