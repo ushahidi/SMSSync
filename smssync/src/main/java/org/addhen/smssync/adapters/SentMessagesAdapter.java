@@ -31,6 +31,7 @@ import android.widget.TextView;
 public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 
     public class Widgets extends org.addhen.smssync.views.View {
+
         TextView messageFrom;
 
         TextView messageDate;

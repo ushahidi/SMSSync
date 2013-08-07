@@ -20,20 +20,15 @@
 
 package org.addhen.smssync.adapters;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-import static org.addhen.smssync.models.NavDrawerItem.NO_ICON_RES_ID;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
-import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
-import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
-import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import static org.addhen.smssync.models.NavDrawerItem.NO_ICON_RES_ID;
 
 /**
  * @author eyedol

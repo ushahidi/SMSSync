@@ -24,39 +24,34 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.MenuItem;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.SentMessageFragment;
+import org.addhen.smssync.fragments.WhitelistFragment;
+import org.addhen.smssync.util.Logger;
 
 import android.widget.ListView;
 
 /**
- * Sent messages action mode listener
+ * Pending messages action mode listener
  */
-public class SentMessagesActionModeListener extends BaseActionModeListener {
+public class WhitelistActionModeListener extends BaseActionModeListener {
 
-    private SentMessageFragment mHost;
+    private WhitelistFragment mHost;
 
-    public SentMessagesActionModeListener(final SentMessageFragment host,
+    public WhitelistActionModeListener(final WhitelistFragment host,
             ListView modeView) {
-        super(host.getSherlockActivity(), modeView, R.menu.sent_messages_context_menu);
-        mHost = host;
+        super(host.getSherlockActivity(), modeView, R.menu.filter_context_menu);
+        this.mHost = host;
     }
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         boolean result = false;
-        if (host != null) {
-            result = mHost.performAction(item, getSelectedItemPositions().size());
-        }
-        if (activeMode != null) {
-            activeMode.finish();
-        }
-        return result;
-    }
 
-    @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        activeMode = null;
-        modeView.clearChoices();
+        if (host != null) {
+            result = mHost.performAction(item);
+            Logger.log("ActionMode", "Log: " + getSelectedItemPositions().size());
+        }
+
+        return result;
     }
 
     @Override

@@ -18,19 +18,22 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync.views;
+package org.addhen.smssync.database;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+public interface IFilterSchema {
 
-/**
- * Widget Annotation
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface Widget {
+	public static final String ID = "_id";
 
-    public int value();
+	public static final String PHONE_NUMBER= "phone_number";
+
+    public static final String STATUS = "status";
+
+    public static final String TABLE = "whitelist_blacklist";
+
+	public static final String[] COLUMNS = new String[] { ID, PHONE_NUMBER, STATUS };
+
+	public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
+			+ TABLE + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ STATUS + " INTEGER , " + PHONE_NUMBER + " TEXT "
+			+ ")";
 }

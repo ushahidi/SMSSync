@@ -20,17 +20,14 @@
 
 package org.addhen.smssync.views;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import android.app.Activity;
 
 /**
- * Widget Annotation
+ * Filter tab
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface Widget {
+public class FilterTabView extends View {
 
-    public int value();
+    public FilterTabView(Activity activity) {
+        super(activity);
+    }
 }

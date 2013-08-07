@@ -13,7 +13,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical" >
+              android:orientation="vertical">
     <CheckBox
             android:id="@+id/start_checkbox"
             android:layout_width="wrap_content"
@@ -22,13 +22,13 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/chk_enable_sms_sync" android:layout_gravity="center"/>
 
-    <!-- List pending messages -->
+    <!-- List sync url -->
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp" >
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
 
-        <include layout="@layout/list_items" />
+        <include layout="@layout/list_items"/>
     </RelativeLayout>
 </LinearLayout>

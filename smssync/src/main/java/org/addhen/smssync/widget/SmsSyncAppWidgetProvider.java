@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
-import org.addhen.smssync.activities.MessagesTabActivity;
+import org.addhen.smssync.activities.FilterTabActivity;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.Util;
 
@@ -176,7 +176,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 			views.setOnClickPendingIntent(R.id.appwidget_settings,
 					settingsAction);
 
-			Intent pendingMessages = new Intent(this, MessagesTabActivity.class);
+			Intent pendingMessages = new Intent(this, FilterTabActivity.class);
 			pendingMessages.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			PendingIntent mainAction = PendingIntent.getActivity(this, 0,
 					pendingMessages, 0);

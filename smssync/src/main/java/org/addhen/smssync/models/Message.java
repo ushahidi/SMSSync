@@ -46,31 +46,31 @@ public class Message extends Model {
 
     @Override
     public boolean load() {
-        mMessageList = Database.mMessagesContentProvider.fetchAllMessages();
+        mMessageList = Database.messagesContentProvider.fetchAllMessages();
         return mMessageList != null;
     }
 
     public boolean loadByUuid(String messageUuid) {
-        mMessageList = Database.mMessagesContentProvider
+        mMessageList = Database.messagesContentProvider
                 .fetchMessagesByUuid(messageUuid);
         return mMessageList != null;
     }
 
     public boolean loadByLimit(int limit) {
-        mMessageList = Database.mMessagesContentProvider
+        mMessageList = Database.messagesContentProvider
                 .fetchMessagesByLimit(limit);
         return mMessageList != null;
     }
 
     public boolean saveMessages(List<Message> messages) {
-        return messages != null && messages.size() > 0 && Database.mMessagesContentProvider
+        return messages != null && messages.size() > 0 && Database.messagesContentProvider
                 .addMessages(messages);
 
     }
 
     @Override
     public boolean save() {
-        return Database.mMessagesContentProvider.addMessages(this);
+        return Database.messagesContentProvider.addMessages(this);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Message extends Model {
      * @return boolean
      */
     public boolean deleteAllMessages() {
-        return Database.mMessagesContentProvider.deleteAllMessages();
+        return Database.messagesContentProvider.deleteAllMessages();
     }
 
     /**
@@ -89,7 +89,7 @@ public class Message extends Model {
      * @return boolean
      */
     public boolean deleteMessagesByUuid(String messageUuid) {
-        return Database.mMessagesContentProvider
+        return Database.messagesContentProvider
                 .deleteMessagesByUuid(messageUuid);
     }
 
@@ -99,7 +99,7 @@ public class Message extends Model {
      * @return int
      */
     public int totalMessages() {
-        return Database.mMessagesContentProvider.messagesCount();
+        return Database.messagesContentProvider.messagesCount();
     }
 
     public List<Message> getMessageList() {

@@ -20,9 +20,6 @@
 
 package org.addhen.smssync.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.addhen.smssync.models.Model;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
@@ -31,16 +28,20 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * BaseListAdapter Base class for all list adapters for a specific BaseModel
- * class
- * 
+ * BaseListAdapter Base class for all list adapters for a specific BaseModel class
+ *
  * @param <M> Model class
  */
 public abstract class BaseListAdapter<M extends Model> extends BaseAdapter {
 
     protected final Context context;
+
     protected final LayoutInflater inflater;
+
     protected final List<M> items = new ArrayList<M>();
 
     public BaseListAdapter(Context context) {
@@ -93,9 +94,8 @@ public abstract class BaseListAdapter<M extends Model> extends BaseAdapter {
 
     /**
      * Set the date of the message.
-     * 
-     * @param String messageDate - The timestamp of the message. To be changed
-     *            into human readable.
+     *
+     * @param String messageDate - The timestamp of the message. To be changed into human readable.
      * @return void
      */
     protected String formatDate(String messageDate) {

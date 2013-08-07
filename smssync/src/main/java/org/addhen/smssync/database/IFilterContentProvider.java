@@ -18,19 +18,30 @@
  **
  *****************************************************************************/
 
-package org.addhen.smssync.views;
+package org.addhen.smssync.database;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.addhen.smssync.models.Filter;
 
-/**
- * Widget Annotation
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface Widget {
+import java.util.List;
 
-    public int value();
+public interface IFilterContentProvider {
+
+    public List<Filter> fetchAll();
+
+    public List<Filter> fetchById(int id);
+
+    public List<Filter> fetchByStatus(int status);
+
+	public boolean add(Filter syncUrl);
+
+	public boolean add(List<Filter> filterLists);
+
+	public boolean deleteAll();
+
+	public boolean deleteById(int id);
+
+	public boolean update(Filter filter);
+	
+	public int total();
+
 }

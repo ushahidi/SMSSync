@@ -20,14 +20,14 @@
 
 package org.addhen.smssync.listeners;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.MenuItem;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.util.Logger;
 
 import android.widget.ListView;
-
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.MenuItem;
 
 /**
  * Pending messages action mode listener
@@ -48,7 +48,7 @@ public class PendingMessagesActionModeListener extends BaseActionModeListener {
 
         if (host != null) {
             result = mHost.performAction(item);
-            Logger.log("ActionMode","Log: "+getSelectedItemPositions().size());
+            Logger.log("ActionMode", "Log: " + getSelectedItemPositions().size());
         }
 
         return result;
@@ -56,14 +56,16 @@ public class PendingMessagesActionModeListener extends BaseActionModeListener {
 
     @Override
     public void setTitle(CharSequence title) {
-        if (activeMode != null)
+        if (activeMode != null) {
             activeMode.setTitle(title);
+        }
     }
 
     @Override
     public void setTitle(int resId) {
-        if (activeMode != null)
+        if (activeMode != null) {
             activeMode.setTitle(host.getString(resId));
+        }
     }
 
 }

@@ -20,17 +20,27 @@
 
 package org.addhen.smssync.views;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.addhen.smssync.R;
 
-/**
- * Widget Annotation
- */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface Widget {
+import android.app.Activity;
+import android.widget.CheckBox;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-    public int value();
+public class BlacklistView extends View {
+
+    @Widget(R.id.enable_checkbox)
+    public CheckBox enableSmsSync;
+
+    @Widget(R.id.loading_list_progress)
+    public ProgressBar listLoadingProgress;
+
+    @Widget(android.R.id.empty)
+    public TextView emptyView;
+
+    public BlacklistView(Activity activity) {
+        super(activity);
+        emptyView.setText(R.string.no_blacklist);
+    }
+
 }

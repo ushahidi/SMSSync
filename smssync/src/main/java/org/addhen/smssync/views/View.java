@@ -20,86 +20,83 @@
 
 package org.addhen.smssync.views;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-
 import android.app.Activity;
 import android.util.Log;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+
 /**
  * Base class for Views
- * 
- * Handles dynamically loading all the sub-classes members tagged with @Widget
- * annotation
+ *
+ * Handles dynamically loading all the sub-classes members tagged with @Widget annotation
  */
 public abstract class View {
 
-	/**
-	 * View Map View
-	 * 
-	 * @param activity
-	 *            Activity
-	 */
-	public View(Activity activity) {
-		for (Class<?> clazz : new Class[] { getClass(),
-				getClass().getSuperclass() }) {
-			if (clazz != null && View.class.isAssignableFrom(clazz)) {
-				for (Field field : clazz.getDeclaredFields()) {
-					try {
-						Annotation annotation = field
-								.getAnnotation(Widget.class);
-						if (annotation instanceof Widget) {
-							Widget widgetAnnotation = (Widget) annotation;
-							if (!field.isAccessible()) {
-								field.setAccessible(true);
-							}
-							field.set(this, activity
-									.findViewById(widgetAnnotation.value()));
-						}
-					} catch (IllegalArgumentException e) {
-						Log.e(getClass().getSimpleName(),
-								"IllegalArgumentException", e);
-					} catch (IllegalAccessException e) {
-						Log.e(getClass().getSimpleName(),
-								"IllegalAccessException", e);
-					}
-				}
-			}
-		}
-	}
+    /**
+     * View Map View
+     *
+     * @param activity Activity
+     */
+    public View(Activity activity) {
+        for (Class<?> clazz : new Class[]{getClass(),
+                getClass().getSuperclass()}) {
+            if (clazz != null && View.class.isAssignableFrom(clazz)) {
+                for (Field field : clazz.getDeclaredFields()) {
+                    try {
+                        Annotation annotation = field
+                                .getAnnotation(Widget.class);
+                        if (annotation instanceof Widget) {
+                            Widget widgetAnnotation = (Widget) annotation;
+                            if (!field.isAccessible()) {
+                                field.setAccessible(true);
+                            }
+                            field.set(this, activity
+                                    .findViewById(widgetAnnotation.value()));
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Log.e(getClass().getSimpleName(),
+                                "IllegalArgumentException", e);
+                    } catch (IllegalAccessException e) {
+                        Log.e(getClass().getSimpleName(),
+                                "IllegalAccessException", e);
+                    }
+                }
+            }
+        }
+    }
 
-	/**
-	 * View
-	 * 
-	 * @param view
-	 *            View
-	 */
-	public View(android.view.View view) {
-		for (Class<?> clazz : new Class[] { getClass(),
-				getClass().getSuperclass() }) {
-			if (clazz != null && View.class.isAssignableFrom(clazz)) {
-				for (Field field : clazz.getDeclaredFields()) {
-					try {
-						Annotation annotation = field
-								.getAnnotation(Widget.class);
-						if (annotation instanceof Widget) {
-							Widget widgetAnnotation = (Widget) annotation;
-							if (!field.isAccessible()) {
-								field.setAccessible(true);
-							}
-							field.set(this,
-									view.findViewById(widgetAnnotation.value()));
-						}
-					} catch (IllegalArgumentException e) {
-						Log.e(getClass().getSimpleName(),
-								"IllegalArgumentException", e);
-					} catch (IllegalAccessException e) {
-						Log.e(getClass().getSimpleName(),
-								"IllegalAccessException", e);
-					}
-				}
-			}
-		}
-	}
+    /**
+     * View
+     *
+     * @param view View
+     */
+    public View(android.view.View view) {
+        for (Class<?> clazz : new Class[]{getClass(),
+                getClass().getSuperclass()}) {
+            if (clazz != null && View.class.isAssignableFrom(clazz)) {
+                for (Field field : clazz.getDeclaredFields()) {
+                    try {
+                        Annotation annotation = field
+                                .getAnnotation(Widget.class);
+                        if (annotation instanceof Widget) {
+                            Widget widgetAnnotation = (Widget) annotation;
+                            if (!field.isAccessible()) {
+                                field.setAccessible(true);
+                            }
+                            field.set(this,
+                                    view.findViewById(widgetAnnotation.value()));
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Log.e(getClass().getSimpleName(),
+                                "IllegalArgumentException", e);
+                    } catch (IllegalAccessException e) {
+                        Log.e(getClass().getSimpleName(),
+                                "IllegalAccessException", e);
+                    }
+                }
+            }
+        }
+    }
 
 }

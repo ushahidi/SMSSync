@@ -25,6 +25,7 @@ import org.addhen.smssync.adapters.TabAdapter;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.fragments.SentMessageFragment;
 import org.addhen.smssync.fragments.SyncUrlFragment;
+import org.addhen.smssync.views.FilterTabView;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -35,11 +36,16 @@ import android.view.View;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class MessagesTabActivity extends SherlockFragmentActivity {
+public class FilterTabActivity extends BaseActivity<FilterTabView> {
 
     private ViewPager mViewPager;
 
     public TabAdapter mTabsAdapter;
+
+    public FilterTabActivity(Class<FilterTabView> view, int layout, int menu, int drawerLayoutId,
+            int listViewId) {
+        super(FilterTabView.class, R.layout.list_messages_tab, menu, drawerLayoutId, listViewId);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

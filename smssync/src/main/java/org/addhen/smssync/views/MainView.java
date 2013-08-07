@@ -23,10 +23,9 @@ import android.app.Activity;
 
 /**
  * @author eyedol
- *
  */
-public class MainView extends View{
-    
+public class MainView extends View {
+
     public MainView(Activity activity) {
         super(activity);
     }

@@ -11,49 +11,19 @@
     at team@ushahidi.com.
 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/relativeLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dip"
-                android:background="?attr/activatedBackgroundIndicator"
                 android:padding="5dip">
 
     <TextView
-            android:id="@+id/sent_message_from"
+            android:id="@+id/filter_phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:ellipsize="end"
             android:lines="1"
             android:paddingLeft="3dp"
-            android:textIsSelectable="true"
             android:textStyle="bold"/>
-
-    <TextView
-            android:id="@+id/sent_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_below="@+id/sent_message_from"
-            android:padding="3dp"/>
-
-    <TextView
-            android:id="@+id/sent_message_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_below="@+id/sent_message"
-            android:ellipsize="end"
-            android:layout_alignParentRight="true"
-            android:lines="1"
-            android:padding="3dp"/>
-
-    <TextView
-            android:id="@+id/sent_message_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_alignParentRight="true"
-            android:lines="1"
-            android:paddingLeft="3dp"/>
 
 </RelativeLayout>

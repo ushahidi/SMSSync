@@ -20,22 +20,23 @@
 
 package org.addhen.smssync.listeners;
 
-import java.util.LinkedHashSet;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import java.util.LinkedHashSet;
 
 /**
  * Base class for action mode listener
  */
 public abstract class BaseActionModeListener implements ActionMode.Callback,
         AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
+
     protected SherlockFragmentActivity host;
 
     public ActionMode activeMode;
@@ -48,16 +49,16 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
 
     /**
      * Set the title of the action mode.
-     * 
+     *
      * @param title Title string to set
      * @see #setTitle(int)
      */
     public abstract void setTitle(CharSequence title);
 
     /**
-     * Set the title of the action mode. This method will have no visible effect
-     * if a custom view has been set.
-     * 
+     * Set the title of the action mode. This method will have no visible effect if a custom view
+     * has been set.
+     *
      * @param resId Resource ID of a string to set as the title
      * @see #setTitle(CharSequence)
      */
@@ -76,8 +77,9 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
             long id) {
 
         if (activeMode == null) {
-            if (host != null)
+            if (host != null) {
                 activeMode = host.startActionMode(this);
+            }
         }
         onItemCheckedStateChanged(position);
         return true;
@@ -114,9 +116,10 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         if (host != null) {
-            if (contextMenuResId != 0)
+            if (contextMenuResId != 0) {
                 new com.actionbarsherlock.view.MenuInflater(host)
                         .inflate(contextMenuResId, menu);
+            }
         }
         return true;
     }
@@ -124,8 +127,9 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 
-        if (activeMode != null)
+        if (activeMode != null) {
             activeMode.finish();
+        }
         return true;
     }
 
@@ -139,7 +143,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
         modeView.clearChoices();
         getSelectedItemPositions().clear();
         activeMode = null;
-        
+
     }
 
 }

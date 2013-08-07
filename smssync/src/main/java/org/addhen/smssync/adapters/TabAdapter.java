@@ -20,7 +20,9 @@
 
 package org.addhen.smssync.adapters;
 
-import java.util.ArrayList;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import org.addhen.smssync.listeners.OnFragmentListViewRefreshListener;
 
@@ -30,9 +32,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import java.util.ArrayList;
 
 public class TabAdapter extends FragmentPagerAdapter implements
         ViewPager.OnPageChangeListener, ActionBar.TabListener {
@@ -94,8 +94,9 @@ public class TabAdapter extends FragmentPagerAdapter implements
     public void onTabSelected(Tab tab, FragmentTransaction ft) {
 
         mViewPager.setCurrentItem(tab.getPosition());
-        if (mListViewRefreshListener != null)
+        if (mListViewRefreshListener != null) {
             mListViewRefreshListener.OnFragmentListViewRefresh();
+        }
 
     }
 

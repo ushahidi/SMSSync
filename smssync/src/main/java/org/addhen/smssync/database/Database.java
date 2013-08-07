@@ -62,13 +62,13 @@ public class Database {
 
 	private DatabaseHelper mDbHelper;
 
-	private SQLiteDatabase mDb;
+	protected SQLiteDatabase mDb;
 
 	private static final String DATABASE_NAME = "smssync_db";
 
 	private static final String SENT_MESSAGES_TABLE = "sent_messages";
 
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	private static final String SENT_MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
 			+ SENT_MESSAGES_TABLE
@@ -86,16 +86,18 @@ public class Database {
 
 	private final Context mContext;
 
-	public static SyncUrlContentProvider mSyncUrlContentProvider; // CP
+	public static SyncUrlContentProvider syncUrlContentProvider; // CP
 
-	public static MessagesContentProvider mMessagesContentProvider;
+	public static MessagesContentProvider messagesContentProvider;
+
+    public static FilterContentProvider filterContentProvider;
 
 	private static class DatabaseHelper extends SQLiteOpenHelper {
-		private Context sContext;
+		private Context mContext;
 
 		DatabaseHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
-			sContext = context;
+			mContext = context;
 		}
 
 		@Override
@@ -103,6 +105,7 @@ public class Database {
 			db.execSQL(IMessagesSchema.CREATE_TABLE);
 			db.execSQL(SENT_MESSAGES_TABLE_CREATE);
 			db.execSQL(ISyncUrlSchema.CREATE_TABLE);
+            db.execSQL(IFilterSchema.CREATE_TABLE);
 		}
 
 		@Override
@@ -124,8 +127,9 @@ public class Database {
 			// upgrade syncurl table
 			db.execSQL(ISyncUrlSchema.CREATE_TABLE);
 
+            db.execSQL(IFilterSchema.CREATE_TABLE);
 			// add old sync url configuration to the database,
-			syncLegacySyncUrl(sContext, db);
+			syncLegacySyncUrl(mContext, db);
 			onCreate(db);
 		}
 
@@ -202,8 +206,9 @@ public class Database {
 	public Database open() throws SQLException {
 		mDbHelper = new DatabaseHelper(mContext);
 		mDb = mDbHelper.getWritableDatabase();
-		mSyncUrlContentProvider = new SyncUrlContentProvider(mDb);
-		mMessagesContentProvider = new MessagesContentProvider(mDb);
+		syncUrlContentProvider = new SyncUrlContentProvider(mDb);
+		messagesContentProvider = new MessagesContentProvider(mDb);
+        filterContentProvider = new FilterContentProvider(mDb);
 		return this;
 	}
 

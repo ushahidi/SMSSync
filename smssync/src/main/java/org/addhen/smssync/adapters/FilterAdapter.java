@@ -21,51 +21,39 @@
 package org.addhen.smssync.adapters;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.models.SyncUrl;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class PendingMessagesAdapter extends BaseListAdapter<Message> {
+public class FilterAdapter extends BaseListAdapter<Filter> {
 
-    public class Widgets extends org.addhen.smssync.views.View implements
-            View.OnClickListener {
+    public class Widgets extends org.addhen.smssync.views.View {
 
-        TextView messageFrom;
-
-        TextView messageDate;
-
-        TextView message;
+        TextView phoneNumber;
 
         public Widgets(View convertView) {
             super(convertView);
-            messageFrom = (TextView) convertView
-                    .findViewById(R.id.message_from);
-            messageDate = (TextView) convertView
-                    .findViewById(R.id.message_date);
-            message = (TextView) convertView.findViewById(R.id.message);
-        }
 
-        @Override
-        public void onClick(View v) {
+            phoneNumber = (TextView) convertView.findViewById(R.id.filter_phone_number);
 
         }
+
     }
 
-    private Message message;
 
-    public PendingMessagesAdapter(Context context) {
+    public FilterAdapter(Context context) {
         super(context);
-        message = new Message();
     }
 
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         Widgets widgets;
         if (view == null) {
-            view = inflater.inflate(R.layout.list_messages_item, null);
+            view = inflater.inflate(R.layout.list_filter_item, null);
             widgets = new Widgets(view);
             view.setTag(widgets);
         } else {
@@ -73,18 +61,13 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
         }
 
         // initialize view with content
-        widgets.messageFrom.setText(getItem(position).getFrom());
-        widgets.messageDate.setText(formatDate(getItem(position)
-                .getTimestamp()));
-        widgets.message.setText(getItem(position).getBody());
+        widgets.phoneNumber.setText(getItem(position).getPhoneNumber());
 
         return view;
     }
 
     @Override
     public void refresh() {
-        if (message.load()) {
-            setItems(message.getMessageList());
-        }
+
     }
 }

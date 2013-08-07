@@ -29,8 +29,8 @@ import android.widget.TextView;
 
 public class SyncUrlView extends View {
 
-	@Widget(R.id.start_checkbox)
-	public CheckBox enableSmsSync;
+    @Widget(R.id.start_checkbox)
+    public CheckBox enableSmsSync;
 
     @Widget(R.id.loading_list_progress)
     public ProgressBar listLoadingProgress;
@@ -38,10 +38,10 @@ public class SyncUrlView extends View {
     @Widget(android.R.id.empty)
     public TextView emptyView;
 
-	public SyncUrlView(Activity activity) {
-		super(activity);
+    public SyncUrlView(Activity activity) {
+        super(activity);
         emptyView.setText(R.string.no_sync_url);
 
-	}
+    }
 
 }

@@ -19,6 +19,10 @@
  *****************************************************************************/
 package org.addhen.smssync.listeners;
 
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.SyncUrlFragment;
 
@@ -26,101 +30,99 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 /**
  * @author eyedol
- * 
  */
 public class SyncUrlActionModeListener implements ActionMode.Callback,
-		AdapterView.OnItemLongClickListener {
+        AdapterView.OnItemLongClickListener {
 
-	private SyncUrlFragment host;
+    private SyncUrlFragment host;
 
-	private ActionMode activeMode;
+    private ActionMode activeMode;
 
-	private ListView modeView;
+    private ListView modeView;
 
-	private int lastPosition = -1;
+    private int lastPosition = -1;
 
-	public SyncUrlActionModeListener(final SyncUrlFragment host, ListView modeView) {
-		this.host = host;
-		this.modeView = modeView;
-	}
+    public SyncUrlActionModeListener(final SyncUrlFragment host, ListView modeView) {
+        this.host = host;
+        this.modeView = modeView;
+    }
 
-	@Override
-	public boolean onItemLongClick(AdapterView<?> view, View row, int position,
-			long id) {
-		lastPosition = position;
-		modeView.clearChoices();
-		modeView.setItemChecked(lastPosition, true);
+    @Override
+    public boolean onItemLongClick(AdapterView<?> view, View row, int position,
+            long id) {
+        lastPosition = position;
+        modeView.clearChoices();
+        modeView.setItemChecked(lastPosition, true);
 
-		if (activeMode == null) {
-			if (host != null)
-				activeMode = host.getSherlockActivity().startActionMode(this);
-		}
+        if (activeMode == null) {
+            if (host != null) {
+                activeMode = host.getSherlockActivity().startActionMode(this);
+            }
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.actionbarsherlock.view.ActionMode.Callback#onCreateActionMode(com
-	 * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
-	 */
-	@Override
-	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-		if (host != null) {
-			new com.actionbarsherlock.view.MenuInflater(host.getActivity())
-					.inflate(R.menu.sync_url_context_menu, menu);
-		}
-		return true;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.actionbarsherlock.view.ActionMode.Callback#onCreateActionMode(com
+     * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
+     */
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        if (host != null) {
+            new com.actionbarsherlock.view.MenuInflater(host.getActivity())
+                    .inflate(R.menu.sync_url_context_menu, menu);
+        }
+        return true;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.actionbarsherlock.view.ActionMode.Callback#onPrepareActionMode(com
-	 * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
-	 */
-	@Override
-	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		return false;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.actionbarsherlock.view.ActionMode.Callback#onPrepareActionMode(com
+     * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
+     */
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.actionbarsherlock.view.ActionMode.Callback#onActionItemClicked(com
-	 * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.MenuItem)
-	 */
-	@Override
-	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		boolean result = false;
-		if (host != null)
-			result = host.performAction(item, lastPosition);
-		if (activeMode != null)
-			activeMode.finish();
-		return result;
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.actionbarsherlock.view.ActionMode.Callback#onActionItemClicked(com
+     * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.MenuItem)
+     */
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        boolean result = false;
+        if (host != null) {
+            result = host.performAction(item, lastPosition);
+        }
+        if (activeMode != null) {
+            activeMode.finish();
+        }
+        return result;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.actionbarsherlock.view.ActionMode.Callback#onDestroyActionMode(com
-	 * .actionbarsherlock.view.ActionMode)
-	 */
-	@Override
-	public void onDestroyActionMode(ActionMode mode) {
-		activeMode = null;
-		modeView.clearChoices();
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.actionbarsherlock.view.ActionMode.Callback#onDestroyActionMode(com
+     * .actionbarsherlock.view.ActionMode)
+     */
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        activeMode = null;
+        modeView.clearChoices();
+    }
 
 }

@@ -154,7 +154,7 @@ public class SyncUrlTest extends BaseTest {
      */
     @SmallTest
     public void testShouldGiveTotalActiveSyncUrl() throws Exception{
-        int count = Database.mSyncUrlContentProvider.totalActiveSyncUrl();
+        int count = Database.syncUrlContentProvider.totalActiveSyncUrl();
         assertNotNullOrZero("There are no active SyncUrl", count);
     }
 
@@ -221,7 +221,7 @@ public class SyncUrlTest extends BaseTest {
             try {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    SyncUrl syncUrl = Database.mSyncUrlContentProvider.cursorToEntity(cursor);
+                    SyncUrl syncUrl = Database.syncUrlContentProvider.cursorToEntity(cursor);
                     listSyncUrl.add(syncUrl);
                     cursor.moveToNext();
                 }
@@ -238,7 +238,7 @@ public class SyncUrlTest extends BaseTest {
         final String selectionArgs[] = {
                 title
         };
-        Cursor cursor = Database.mSyncUrlContentProvider.rawQuery("SELECT * FROM "
+        Cursor cursor = Database.syncUrlContentProvider.rawQuery("SELECT * FROM "
                 + ISyncUrlSchema.TABLE + " WHERE " + ISyncUrlSchema.TITLE + " =?", selectionArgs);
         getEntity(cursor);
     }

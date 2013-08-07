@@ -1,7 +1,26 @@
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2012 Ushahidi Inc
+ ** All rights reserved
+ ** Contact: team@ushahidi.com
+ ** Website: http://www.ushahidi.com
+ **
+ ** GNU Lesser General Public License Usage
+ ** This file may be used under the terms of the GNU Lesser
+ ** General Public License version 3 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.LGPL included in the
+ ** packaging of this file. Please review the following information to
+ ** ensure the GNU Lesser General Public License version 3 requirements
+ ** will be met: http://www.gnu.org/licenses/lgpl.html.
+ **
+ **
+ ** If you have questions regarding the use of this file, please contact
+ ** Ushahidi developers at team@ushahidi.com.
+ **
+ *****************************************************************************/
+
 package org.addhen.smssync.models;
 
 import org.addhen.smssync.database.Database;
-import org.addhen.smssync.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +54,7 @@ public class SyncUrl extends Model {
      * @return boolean
      */
     public boolean deleteAllSyncUrl() {
-        return Database.mSyncUrlContentProvider.deleteAllSyncUrl();
+        return Database.syncUrlContentProvider.deleteAllSyncUrl();
     }
 
     /**
@@ -45,27 +64,27 @@ public class SyncUrl extends Model {
      * @return boolean
      */
     public boolean deleteSyncUrlById(int id) {
-        return Database.mSyncUrlContentProvider.deleteSyncUrlById(id);
+        return Database.syncUrlContentProvider.deleteSyncUrlById(id);
     }
 
     @Override
     public boolean load() {
 
-        mSyncUrlList = Database.mSyncUrlContentProvider.fetchSyncUrl();
+        mSyncUrlList = Database.syncUrlContentProvider.fetchSyncUrl();
         return mSyncUrlList != null;
 
     }
 
     public List<SyncUrl> loadById(int id) {
-        return Database.mSyncUrlContentProvider.fetchSyncUrlById(id);
+        return Database.syncUrlContentProvider.fetchSyncUrlById(id);
     }
 
     public List<SyncUrl> loadByStatus(int status) {
-        return Database.mSyncUrlContentProvider.fetchSyncUrlByStatus(status);
+        return Database.syncUrlContentProvider.fetchSyncUrlByStatus(status);
     }
 
     public boolean saveSyncUrls(List<SyncUrl> syncUrls) {
-        return syncUrls != null && syncUrls.size() > 0 && Database.mSyncUrlContentProvider
+        return syncUrls != null && syncUrls.size() > 0 && Database.syncUrlContentProvider
                 .addSyncUrl(syncUrls);
     }
 
@@ -76,7 +95,7 @@ public class SyncUrl extends Model {
      */
     @Override
     public boolean save() {
-        return Database.mSyncUrlContentProvider.addSyncUrl(this);
+        return Database.syncUrlContentProvider.addSyncUrl(this);
     }
 
     /**
@@ -85,7 +104,7 @@ public class SyncUrl extends Model {
      * @return boolean
      */
     public boolean update() {
-        return Database.mSyncUrlContentProvider.updateSyncUrl(this);
+        return Database.syncUrlContentProvider.updateSyncUrl(this);
     }
 
     /**
@@ -95,7 +114,7 @@ public class SyncUrl extends Model {
      * @return boolean
      */
     public boolean updateStatus(SyncUrl syncUrl) {
-        return Database.mSyncUrlContentProvider.updateStatus(syncUrl);
+        return Database.syncUrlContentProvider.updateStatus(syncUrl);
     }
 
     /**
@@ -104,7 +123,7 @@ public class SyncUrl extends Model {
      * @return int The total number of Sync URLs that have been enabled.
      */
     public int totalActiveSynUrl() {
-        return Database.mSyncUrlContentProvider.totalActiveSyncUrl();
+        return Database.syncUrlContentProvider.totalActiveSyncUrl();
     }
 
     public List<SyncUrl> getSyncUrlList() {

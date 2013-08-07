@@ -35,9 +35,9 @@ public class SentMessagesView extends View {
     @Widget(android.R.id.empty)
     public TextView emptyView;
 
-	public SentMessagesView(Activity activity) {
-		super(activity);
+    public SentMessagesView(Activity activity) {
+        super(activity);
         emptyView.setText(R.string.no_sent_messages);
-	}
+    }
 
 }

@@ -20,11 +20,8 @@
 
 package org.addhen.smssync.views;
 
-import java.util.ArrayList;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.util.Logger;
 
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -34,71 +31,69 @@ import android.widget.EditText;
 
 public class AddSyncUrl {
 
-	public EditText title;
+    public EditText title;
 
-	public EditText keywords;
+    public EditText keywords;
 
-	public EditText url;
+    public EditText url;
 
-	public EditText secret;
+    public EditText secret;
 
-	public int status = 0;
+    public int status = 0;
 
-	/**
-	 * Handles views for the add dialog box
-	 * 
-	 * @param dialogViews
-	 */
-	public AddSyncUrl(final android.view.View dialogViews) {
-		title = (EditText) dialogViews.findViewById(R.id.sync_url_title);
-		keywords = (EditText) dialogViews.findViewById(R.id.sync_url_keyword);
-		secret = (EditText) dialogViews.findViewById(R.id.sync_url_secret);
-		url = (EditText) dialogViews.findViewById(R.id.sync_url);
-		url.setOnTouchListener(new OnTouchListener() {
+    /**
+     * Handles views for the add dialog box
+     */
+    public AddSyncUrl(final android.view.View dialogViews) {
+        title = (EditText) dialogViews.findViewById(R.id.sync_url_title);
+        keywords = (EditText) dialogViews.findViewById(R.id.sync_url_keyword);
+        secret = (EditText) dialogViews.findViewById(R.id.sync_url_secret);
+        url = (EditText) dialogViews.findViewById(R.id.sync_url);
+        url.setOnTouchListener(new OnTouchListener() {
 
-			public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(View v, MotionEvent event) {
 
-				if (TextUtils.isEmpty(url.getText().toString())) {
-					url.setText(dialogViews.getContext().getString(
-							R.string.http_text));
-				}
+                if (TextUtils.isEmpty(url.getText().toString())) {
+                    url.setText(dialogViews.getContext().getString(
+                            R.string.http_text));
+                }
 
-				return false;
-			}
+                return false;
+            }
 
-		});
+        });
 
-	}
+    }
 
-	/**
-	 * Add Sync URL to database
-	 * 
-	 * @return boolean
-	 */
-	public boolean addSyncUrl() {
-		SyncUrl syncUrl = new SyncUrl();
-		syncUrl.setKeywords(keywords.getText().toString());
-		syncUrl.setSecret(secret.getText().toString());
-		syncUrl.setTitle(title.getText().toString());
-		syncUrl.setUrl(url.getText().toString());
+    /**
+     * Add Sync URL to database
+     *
+     * @return boolean
+     */
+    public boolean addSyncUrl() {
+        SyncUrl syncUrl = new SyncUrl();
+        syncUrl.setKeywords(keywords.getText().toString());
+        syncUrl.setSecret(secret.getText().toString());
+        syncUrl.setTitle(title.getText().toString());
+        syncUrl.setUrl(url.getText().toString());
         syncUrl.setStatus(0);
         return syncUrl.save();
-       
-	}
 
-	/**
-	 * Add Sync URL to database
-	 * 
-	 * @return boolean
-	 */
-	public boolean updateSyncUrl(int id) {
-		SyncUrl syncUrl = new SyncUrl();
-		syncUrl.setId(id);
-		syncUrl.setKeywords(keywords.getText().toString());
-		syncUrl.setSecret(secret.getText().toString());
-		syncUrl.setTitle(title.getText().toString());
-		syncUrl.setUrl(url.getText().toString());
-		syncUrl.setStatus(status);
-		return syncUrl.update();
-	}
+    }
+
+    /**
+     * Add Sync URL to database
+     *
+     * @return boolean
+     */
+    public boolean updateSyncUrl(int id) {
+        SyncUrl syncUrl = new SyncUrl();
+        syncUrl.setId(id);
+        syncUrl.setKeywords(keywords.getText().toString());
+        syncUrl.setSecret(secret.getText().toString());
+        syncUrl.setTitle(title.getText().toString());
+        syncUrl.setUrl(url.getText().toString());
+        syncUrl.setStatus(status);
+        return syncUrl.update();
+    }
 }

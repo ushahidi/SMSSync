@@ -207,4 +207,14 @@
     <string name="donation_error_unavailable">not available</string>
     <string name="donation_error_canceled">canceled</string>
     <string name="donation_error_already_owned">you have already donated</string>
+
+    <!-- filter -->
+    <string name="blacklist">Blacklist</string>
+    <string name="whitelist">Whitelist</string>
+    <string name="filter">Filter</string>
+    <string name="enable_whitelist">Enable Whitelist</string>
+    <string name="enable_blacklist">Enable Blacklist</string>
+    <string name="no_whitelist">No Whitelisted Phone Numbers. \nUse the "+" button above to add one.</string>
+    <string name="no_blacklist">No Blacklisted Phone Numbers. \nUse the "+" button above to add one.</string>
+    <string name="add_phone_number">Add phone number</string>
 </resources>
