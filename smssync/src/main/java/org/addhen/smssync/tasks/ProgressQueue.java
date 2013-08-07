@@ -27,11 +27,7 @@ import java.util.LinkedList;
  *
  * Sequentially invokes next ProgressTask in the queue
  *
- * new Queue().add(
- *      new TaskOne(this),
- *      new TaskTwo(this),
- *      new TaskThree(this))
- *  .execute();
+ * new Queue().add( new TaskOne(this), new TaskTwo(this), new TaskThree(this)) .execute();
  */
 public class ProgressQueue implements ProgressCallback {
 
@@ -41,7 +37,7 @@ public class ProgressQueue implements ProgressCallback {
         add(tasks);
     }
 
-    public ProgressQueue add(ProgressTask...tasks) {
+    public ProgressQueue add(ProgressTask... tasks) {
         for (ProgressTask task : tasks) {
             task.register(this);
             queue.add(task);
@@ -56,7 +52,7 @@ public class ProgressQueue implements ProgressCallback {
 
     public void execute() {
         if (queue.size() > 0) {
-            queue.remove().execute((String)null);
+            queue.remove().execute((String) null);
         }
     }
 }

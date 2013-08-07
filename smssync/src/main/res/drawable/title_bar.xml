@@ -9,7 +9,7 @@
 	If you have questions regarding the use of this file, please contact Ushahidi 
 	developers at team@ushahidi.com. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-	
-	<gradient android:startColor="#666" android:centerColor="#000"
-		android:endColor="#222" android:angle="270" />
+
+    <gradient android:startColor="#666" android:centerColor="#000"
+              android:endColor="#222" android:angle="270"/>
 </shape>

@@ -19,30 +19,29 @@
  *****************************************************************************/
 package org.addhen.smssync.database;
 
-import java.util.List;
-
 import org.addhen.smssync.models.Message;
+
+import java.util.List;
 
 /**
  * Interface to provide methods for manipulating messages db
- * 
  */
 public interface IMessagesContentProvider {
 
-	public int messagesCount();
+    public int messagesCount();
 
-	public boolean addMessages(List<Message> messages);
+    public boolean addMessages(List<Message> messages);
 
-	public boolean addMessages(Message messages);
+    public boolean addMessages(Message messages);
 
-	public boolean deleteMessagesByUuid(String messageUuid);
+    public boolean deleteMessagesByUuid(String messageUuid);
 
-	public boolean deleteAllMessages();
+    public boolean deleteAllMessages();
 
-	public List<Message> fetchMessagesByUuid(String messageUuid);
+    public List<Message> fetchMessagesByUuid(String messageUuid);
 
-	public List<Message> fetchAllMessages();
+    public List<Message> fetchAllMessages();
 
-	public List<Message> fetchMessagesByLimit(int limit);
-	
+    public List<Message> fetchMessagesByLimit(int limit);
+
 }

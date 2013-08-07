@@ -20,17 +20,15 @@
 
 package org.addhen.smssync.navdrawer;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.NavDrawerItem;
-import org.addhen.smssync.tasks.ProgressTask;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * @author eyedol
@@ -72,12 +70,13 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     }
 
     /**
-     * Determines if the menu item should be displayed in the menu. Default is
-     * always true.
+     * Determines if the menu item should be displayed in the menu. Default is always true.
      */
     public boolean isVisible() {
         return true;
-    };
+    }
+
+    ;
 
     protected void showFragment(String tag) {
         fragmentManager = mActivity.getSupportFragmentManager();

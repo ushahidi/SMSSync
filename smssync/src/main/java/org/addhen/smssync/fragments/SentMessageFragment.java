@@ -20,6 +20,9 @@
 
 package org.addhen.smssync.fragments;
 
+import com.actionbarsherlock.view.MenuItem;
+import com.squareup.otto.Subscribe;
+
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
@@ -43,9 +46,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.ListView;
-
-import com.actionbarsherlock.view.MenuItem;
-import com.squareup.otto.Subscribe;
 
 public class SentMessageFragment
         extends
@@ -117,7 +117,7 @@ public class SentMessageFragment
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        
+
         if (item.getItemId() == R.id.delete) {
             refresh = item;
             performDeleteAll();
@@ -127,8 +127,7 @@ public class SentMessageFragment
 
 
     /**
-     * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be
-     * deleted.
+     * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be deleted.
      */
     final Runnable mDeleteAllSentMessages = new Runnable() {
         public void run() {
@@ -165,8 +164,7 @@ public class SentMessageFragment
     };
 
     /**
-     * Delete individual messages 0 - Successfully deleted. 1 - There is nothing
-     * to be deleted.
+     * Delete individual messages 0 - Successfully deleted. 1 - There is nothing to be deleted.
      */
     final Runnable mDeleteMessagesById = new Runnable() {
         public void run() {
@@ -259,16 +257,17 @@ public class SentMessageFragment
 
     private void updateRefreshStatus() {
         if (refresh != null) {
-            if (refreshState)
+            if (refreshState) {
                 refresh.setActionView(R.layout.indeterminate_progress_action);
-            else
+            } else {
                 refresh.setActionView(null);
+            }
         }
 
     }
 
     public void refresh() {
-        new LoadingTask(getActivity()).execute((String)null);
+        new LoadingTask(getActivity()).execute((String) null);
     }
 
     @Subscribe
@@ -285,8 +284,8 @@ public class SentMessageFragment
     }
 
     /**
-     * This will refresh content of the listview aka the pending messages when
-     * smssync syncs pending messages.
+     * This will refresh content of the listview aka the pending messages when smssync syncs pending
+     * messages.
      */
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -322,7 +321,7 @@ public class SentMessageFragment
             super.onPostExecute(success);
             view.listLoadingProgress.setVisibility(android.view.View.GONE);
             view.emptyView.setVisibility(View.VISIBLE);
-            if(success) {
+            if (success) {
 
                 adapter.setItems(model.listMessages);
                 listView.setAdapter(adapter);

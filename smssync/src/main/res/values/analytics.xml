@@ -20,7 +20,7 @@
 
     <!-- Enable automatic exception tracking -->
     <bool name="ga_reportUncaughtExceptions">true</bool>
-    
+
     <bool name="ga_debug">true</bool>
-    
+
 </resources>

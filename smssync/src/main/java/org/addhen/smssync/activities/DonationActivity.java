@@ -43,8 +43,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,23 +50,22 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.github.jberkel.pay.me.Response.BILLING_UNAVAILABLE;
-import static org.addhen.smssync.util.DonationConstants.Billing.PUBLIC_KEY;
+import static org.addhen.smssync.activities.DonationActivity.DonationStatusListener.State;
 import static org.addhen.smssync.util.DonationConstants.Billing.ALL_SKUS;
 import static org.addhen.smssync.util.DonationConstants.Billing.DONATION_PREFIX;
-import static org.addhen.smssync.activities.DonationActivity.DonationStatusListener.State;
+import static org.addhen.smssync.util.DonationConstants.Billing.PUBLIC_KEY;
 
 /**
  * Modified it to work with SMSSync
  *
  * Credits: https://github.com/jberkel/sms-backup-plus/blob/master/src/com/zegoggles/smssync/activity/donation/DonationActivity.java
- *
- *
  */
 public class DonationActivity extends BaseActivity<DonationView> implements
         QueryInventoryFinishedListener,
         OnIabPurchaseFinishedListener {
 
     private static boolean DEBUG_IAB = BuildConfig.DEBUG;
+
     private static final int PURCHASE_REQUEST = 1;
 
     private IabHelper mIabHelper;
@@ -95,7 +92,7 @@ public class DonationActivity extends BaseActivity<DonationView> implements
                     }
 
                     toastLong(message);
-                    log("Problem setting up in-app billing: "+result);
+                    log("Problem setting up in-app billing: " + result);
 
                     finish();
                 } else if (mIabHelper != null) {
@@ -242,7 +239,9 @@ public class DonationActivity extends BaseActivity<DonationView> implements
 
     private static boolean userHasDonated(Inventory inventory) {
         for (String sku : ALL_SKUS) {
-            if (inventory.hasPurchase(sku)) return true;
+            if (inventory.hasPurchase(sku)) {
+                return true;
+            }
         }
         return false;
     }
@@ -254,6 +253,7 @@ public class DonationActivity extends BaseActivity<DonationView> implements
     }
 
     public static interface DonationStatusListener {
+
         public enum State {
             DONATED,
             NOT_DONATED,
@@ -280,7 +280,8 @@ public class DonationActivity extends BaseActivity<DonationView> implements
                         public void onQueryInventoryFinished(IabResult result, Inventory inv) {
                             try {
                                 if (result.isSuccess()) {
-                                    final State s = userHasDonated(inv) ? State.DONATED : State.NOT_DONATED;
+                                    final State s = userHasDonated(inv) ? State.DONATED
+                                            : State.NOT_DONATED;
                                     l.userDonationState(s);
                                 } else {
                                     l.userDonationState(State.UNKNOWN);
@@ -291,7 +292,9 @@ public class DonationActivity extends BaseActivity<DonationView> implements
                         }
                     });
                 } else {
-                    l.userDonationState(result.getResponse() == BILLING_UNAVAILABLE ? State.NOT_AVAILABLE : State.UNKNOWN);
+                    l.userDonationState(
+                            result.getResponse() == BILLING_UNAVAILABLE ? State.NOT_AVAILABLE
+                                    : State.UNKNOWN);
                     helper.dispose();
                 }
             }
@@ -299,6 +302,7 @@ public class DonationActivity extends BaseActivity<DonationView> implements
     }
 
     private static class SkuComparator implements Comparator<SkuDetails> {
+
         static final SkuComparator INSTANCE = new SkuComparator();
 
         @Override

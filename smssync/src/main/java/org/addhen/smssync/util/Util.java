@@ -20,17 +20,6 @@
 
 package org.addhen.smssync.util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
@@ -53,36 +42,59 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
-import 	android.text.format.DateFormat;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * This class habours common util methods that are available for other classes
- * to use.
- * 
+ * This class habours common util methods that are available for other classes to use.
+ *
  * @author eyedol
  */
 public class Util {
 
     public static final int NOTIFICATION_ALERT = 1337;
+
     public static final int READ_THREAD = 1;
+
     private static final String TIME_FORMAT_12_HOUR = "h:mm a";
+
     private static final String TIME_FORMAT_24_HOUR = "H:mm";
+
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-    private static final String URL_PATTERN = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+    private static final String URL_PATTERN
+            = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
     private static final int NOTIFY_RUNNING = 100;
+
     private static final String CLASS_TAG = Util.class.getSimpleName();
+
     public static HashMap<String, String> smsMap = new HashMap<String, String>();
+
     private static NetworkInfo networkInfo;
+
     private static JSONObject jsonObject;
+
     private static Pattern pattern;
+
     private static Matcher matcher;
 
     /**
      * Joins two strings together.
-     * 
+     *
      * @param String first - The first String to be joined to a second string.
      * @param String second - The second String to join to the first string.
      * @return String
@@ -93,7 +105,7 @@ public class Util {
 
     /**
      * Converts a string into an int value.
-     * 
+     *
      * @param String value - The string to be converted into int value.
      * @return int
      */
@@ -103,7 +115,7 @@ public class Util {
 
     /**
      * Capitalize any String given to it.
-     * 
+     *
      * @param String text - The string to be capitalized.
      * @return String
      */
@@ -113,7 +125,7 @@ public class Util {
 
     /**
      * Checks if there is Internet connection or data connection on the device.
-     * 
+     *
      * @param Context context - The activity calling this method.
      * @return boolean
      */
@@ -124,15 +136,17 @@ public class Util {
 
         networkInfo = connectivity.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) return true;
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            return true;
+        }
         return false;
 
     }
 
     /**
      * Limit a string to a defined length.
-     * 
-     * @param int limit - the total length.
+     *
+     * @param int    limit - the total length.
      * @param string limited - the limited string.
      * @return String
      */
@@ -147,7 +161,7 @@ public class Util {
 
     /**
      * Format date into more human readable format.
-     * 
+     *
      * @param date - The date to be formatted.
      * @return String
      */
@@ -173,7 +187,7 @@ public class Util {
 
     /**
      * Get true/false status of JSON payload "success"
-     * 
+     *
      * @param json_data - The JSON string.
      * @return boolean - value of "success" JSON parameter
      */
@@ -194,7 +208,7 @@ public class Util {
 
     /**
      * Get JSON payload "error" string
-     * 
+     *
      * @param json_data - The JSON string.
      * @return string - value of "error" JSON parameter
      */
@@ -216,9 +230,9 @@ public class Util {
 
     /**
      * Show toast (int version)
-     * 
+     *
      * @param context - the application's context
-     * @param resId - ID of string resource
+     * @param resId   - ID of string resource
      * @return void
      */
     public static void showToast(Context context, int resId) {
@@ -228,9 +242,9 @@ public class Util {
 
     /**
      * Show toast (string version)
-     * 
+     *
      * @param context - the application's context
-     * @param text - message to display in toast pop-up
+     * @param text    - message to display in toast pop-up
      */
     public static void showToast(Context context, String text) {
         int duration = Toast.LENGTH_LONG;
@@ -256,7 +270,7 @@ public class Util {
 
     /**
      * Show a notification
-     * 
+     *
      * @param String message to display
      * @param String notification title
      */
@@ -276,13 +290,13 @@ public class Util {
 
     /**
      * Build notification info
-     * 
-     * @param context The calling activity
+     *
+     * @param context  The calling activity
      * @param drawable The notification icon
-     * @param message The message
-     * @param title The title for the notification
-     * @param intent The pending intent
-     * @param ongoing True if you don't want the user to clear the notification
+     * @param message  The message
+     * @param title    The title for the notification
+     * @param intent   The pending intent
+     * @param ongoing  True if you don't want the user to clear the notification
      */
     public static void buildNotification(Context context, int drawable,
             String message, String title, PendingIntent intent, boolean ongoing) {
@@ -305,10 +319,9 @@ public class Util {
     }
 
     /**
-     * Validates an email address Credits:
-     * http://www.mkyong.com/regular-expressions
+     * Validates an email address Credits: http://www.mkyong.com/regular-expressions
      * /how-to-validate-email-address-with-regular-expression/
-     * 
+     *
      * @param String - email address to be validated
      * @return boolean
      */
@@ -324,7 +337,7 @@ public class Util {
 
     /**
      * Clear the standard notification alert.
-     * 
+     *
      * @param Context context - The context of the calling activity.
      * @return void
      */
@@ -334,7 +347,7 @@ public class Util {
 
     /**
      * Clear all notifications shown to the user.
-     * 
+     *
      * @param Context context - The context of the calling activity.
      * @return void.
      */
@@ -346,7 +359,7 @@ public class Util {
 
     /**
      * Clear a running notification.
-     * 
+     *
      * @param Context context - The context of the calling activity.
      * @return void
      */
@@ -371,15 +384,15 @@ public class Util {
     }
 
     /**
-     * Format an Unix timestamp to a string suitable for display to the user
-     * according to their system settings (12 or 24 hour time).
-     * 
+     * Format an Unix timestamp to a string suitable for display to the user according to their
+     * system settings (12 or 24 hour time).
+     *
      * @param Context context - The context of the calling activity.
-     * @param long timestamp - The human unfriendly timestamp.
+     * @param long    timestamp - The human unfriendly timestamp.
      * @return String
      */
     public static String formatTimestamp(Context context, long timestamp) {
-        final boolean is24Hr =  DateFormat.is24HourFormat (context);
+        final boolean is24Hr = DateFormat.is24HourFormat(context);
 
         SimpleDateFormat mSDF = new SimpleDateFormat();
         if (is24Hr) {
@@ -392,7 +405,7 @@ public class Util {
 
     /**
      * Validate the callback URL
-     * 
+     *
      * @param String callbackURL - The callback URL to be validated.
      * @return int - 0 = well formed URL, 1 = no configured url
      */
@@ -412,8 +425,6 @@ public class Util {
 
     /**
      * For debugging purposes. Append content of a string to a file
-     * 
-     * @param text
      */
     public static void appendLog(String text) {
         File logFile = new File(Environment.getExternalStorageDirectory(),
@@ -462,8 +473,8 @@ public class Util {
     }
 
     /**
-     * Setup strict mode for threading when app is debug built. This is good for
-     * debugging features that use heavy threading.
+     * Setup strict mode for threading when app is debug built. This is good for debugging features
+     * that use heavy threading.
      */
     @TargetApi(11)
     @SuppressWarnings({
@@ -477,7 +488,7 @@ public class Util {
                     .build());
         }
     }
-    
+
     public static boolean isHoneycomb() {
         // Can use static final constants like HONEYCOMB, declared in later
         // versions

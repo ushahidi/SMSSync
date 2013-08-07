@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/context_sync"
-        android:icon="@drawable/refresh"
-        android:showAsAction="ifRoom"
-        android:title="@string/menu_sync"/>
+            android:id="@+id/context_sync"
+            android:icon="@drawable/refresh"
+            android:showAsAction="ifRoom"
+            android:title="@string/menu_sync"/>
     <item
-        android:id="@+id/context_delete"
-        android:icon="@drawable/delete"
-        android:showAsAction="ifRoom"
-        android:title="@string/menu_delete"/>
+            android:id="@+id/context_delete"
+            android:icon="@drawable/delete"
+            android:showAsAction="ifRoom"
+            android:title="@string/menu_delete"/>
 
 </menu>

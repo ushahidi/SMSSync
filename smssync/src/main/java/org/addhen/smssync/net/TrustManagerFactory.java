@@ -20,6 +20,12 @@
 
 package org.addhen.smssync.net;
 
+import org.addhen.smssync.MainApplication;
+
+import android.app.Application;
+import android.content.Context;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,13 +40,8 @@ import java.util.Map;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.addhen.smssync.MainApplication;
-
-import android.app.Application;
-import android.content.Context;
-import android.util.Log;
-
 public final class TrustManagerFactory {
+
     private static final String LOG_TAG = "TrustManagerFactory";
 
     private static X509TrustManager defaultTrustManager;
@@ -56,6 +57,7 @@ public final class TrustManagerFactory {
     private static KeyStore keyStore;
 
     private static class SimpleX509TrustManager implements X509TrustManager {
+
         public void checkClientTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
         }
@@ -70,7 +72,9 @@ public final class TrustManagerFactory {
     }
 
     private static class SecureX509TrustManager implements X509TrustManager {
-        private static final Map<String, SecureX509TrustManager> mTrustManager = new HashMap<String, SecureX509TrustManager>();
+
+        private static final Map<String, SecureX509TrustManager> mTrustManager
+                = new HashMap<String, SecureX509TrustManager>();
 
         private final String mHost;
 
@@ -104,8 +108,8 @@ public final class TrustManagerFactory {
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
             } catch (CertificateException e) {
-                localTrustManager.checkServerTrusted(new X509Certificate[] {
-                    chain[0]
+                localTrustManager.checkServerTrusted(new X509Certificate[]{
+                        chain[0]
                 }, authType);
             }
 
@@ -151,24 +155,24 @@ public final class TrustManagerFactory {
                         "KeyStore CertificateException while initializing TrustManagerFactory ", e);
                 keyStore = null;
             }
-            Log.i(LOG_TAG,"keyStore: "+keyStore.toString());
+            Log.i(LOG_TAG, "keyStore: " + keyStore.toString());
             tmf.init(keyStore);
             TrustManager[] tms = tmf.getTrustManagers();
             if (tms != null) {
                 for (TrustManager tm : tms) {
                     if (tm instanceof X509TrustManager) {
-                        localTrustManager = (X509TrustManager)tm;
+                        localTrustManager = (X509TrustManager) tm;
                         break;
                     }
                 }
             }
             tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
-            tmf.init((KeyStore)null);
+            tmf.init((KeyStore) null);
             tms = tmf.getTrustManagers();
             if (tms != null) {
                 for (TrustManager tm : tms) {
                     if (tm instanceof X509TrustManager) {
-                        defaultTrustManager = (X509TrustManager)tm;
+                        defaultTrustManager = (X509TrustManager) tm;
                         break;
                     }
                 }
@@ -179,7 +183,7 @@ public final class TrustManagerFactory {
         } catch (KeyStoreException e) {
             Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
         } finally {
-            
+
         }
         unsecureTrustManager = new SimpleX509TrustManager();
     }
@@ -217,7 +221,7 @@ public final class TrustManagerFactory {
             if (tms != null) {
                 for (TrustManager tm : tms) {
                     if (tm instanceof X509TrustManager) {
-                        localTrustManager = (X509TrustManager)tm;
+                        localTrustManager = (X509TrustManager) tm;
                         break;
                     }
                 }
@@ -233,7 +237,7 @@ public final class TrustManagerFactory {
             } catch (IOException e) {
                 throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
             } finally {
-                
+
             }
 
         } catch (NoSuchAlgorithmException e) {

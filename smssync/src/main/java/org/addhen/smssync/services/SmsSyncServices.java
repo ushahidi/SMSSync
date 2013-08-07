@@ -75,11 +75,13 @@ public abstract class SmsSyncServices extends IntentService {
 
     protected static void sendWakefulTask(Context context, Intent i) {
 
-        if (!getPhoneWakeLock(context.getApplicationContext()).isHeld())
+        if (!getPhoneWakeLock(context.getApplicationContext()).isHeld()) {
             getPhoneWakeLock(context.getApplicationContext()).acquire();
+        }
 
-        if (!getPhoneWifiLock(context.getApplicationContext()).isHeld())
+        if (!getPhoneWifiLock(context.getApplicationContext()).isHeld()) {
             getPhoneWifiLock(context.getApplicationContext()).acquire();
+        }
 
         context.startService(i);
     }

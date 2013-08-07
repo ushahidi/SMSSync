@@ -16,25 +16,35 @@
     <!-- preferences -->
     <!-- sync URL -->
     <string name="edittxt_website_pref">Enter The Sync URL</string>
-    <string name="edittxt_website_pref_summary">This is the website that will receive the text messages.</string>
+    <string name="edittxt_website_pref_summary">This is the website that will receive the text
+        messages.
+    </string>
 
     <!-- secret -->
     <string name="edittxt_api_key_pref">Enter the Secret Key</string>
-    <string name="edittxt_api_key_pref_summary">If a secret/key has been specified at the website, it will be required.</string>
+    <string name="edittxt_api_key_pref_summary">If a secret/key has been specified at the website,
+        it will be required.
+    </string>
 
     <!-- filter by keywords -->
     <string name="edittxt_keyword_pref">Enter Keyword - optional</string>
-    <string name="editxt_keyword_pref_summary">Specify keywords to use to filter incoming messages.</string>
+    <string name="editxt_keyword_pref_summary">Specify keywords to use to filter incoming
+        messages.
+    </string>
     <string name="edittxt_keyword_hint">fire, crime, help, report, or a RegEx.</string>
 
     <!-- filter by phone numbers -->
     <string name="edittxt_filter_by_from_pref">Enter Phone Number - optional</string>
-    <string name="edittxt_filter_by_from_pref_summary">Specify phone number whitelist used to filter incoming messages.</string>
+    <string name="edittxt_filter_by_from_pref_summary">Specify phone number whitelist used to filter
+        incoming messages.
+    </string>
     <string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
 
     <!-- unique id -->
     <string name="edittxt_unique_id_pref">Enter Unique ID</string>
-    <string name="edittxt_unique_id_pref_summary">Specify a unique ID for this device. Used by the server to identify which device is sending it messages.</string>
+    <string name="edittxt_unique_id_pref_summary">Specify a unique ID for this device. Used by the
+        server to identify which device is sending it messages.
+    </string>
     <string name="edittxt_unique_id_hint">01234</string>
 
     <!-- response message -->
@@ -55,27 +65,37 @@
     <!-- reply from server -->
     <string name="reply_settings">Reply Message Settings</string>
     <string name="chk_enable_reply">Reply Messages</string>
-    <string name="chk_reply_hint">Automatically respond to every message that comes to SMSSync.</string>
+    <string name="chk_reply_hint">Automatically respond to every message that comes to SMSSync.
+    </string>
 
     <!-- auto delete messages -->
     <string name="chk_enable_auto_delete">Auto Delete Messages</string>
-    <string name="chk_auto_delete_hint">Automatically delete messages from the Message app\'s inbox to save space on the phone.</string>
+    <string name="chk_auto_delete_hint">Automatically delete messages from the Message app\'s inbox
+        to save space on the phone.
+    </string>
 
     <!-- enable auto sync -->
     <string name="chk_enable_auto_sync">Enable Auto Sync</string>
-    <string name="chk_enable_auto_sync_hint">Allow SMSSync to periodically sync pending messages.</string>
+    <string name="chk_enable_auto_sync_hint">Allow SMSSync to periodically sync pending messages.
+    </string>
 
     <!-- auto sync delay -->
     <string name="txt_auto_sync_delay">Auto sync frequency</string>
-    <string name="auto_sync_delay_hint">Set how often SMSSync syncronizes with the configured callback URL.</string>
+    <string name="auto_sync_delay_hint">Set how often SMSSync syncronizes with the configured
+        callback URL.
+    </string>
 
     <!-- enable task check -->
     <string name="chk_enable_task_check">Enable Task Checking</string>
-    <string name="chk_enable_task_check_hint">Allow SMSSync to periodically check for tasks enabled on the callback URL. SMSSync then executes the task. Eg. SMSSync sends SMS</string>
+    <string name="chk_enable_task_check_hint">Allow SMSSync to periodically check for tasks enabled
+        on the callback URL. SMSSync then executes the task. Eg. SMSSync sends SMS
+    </string>
 
     <!-- task check delay -->
     <string name="txt_task_check_delay">Frequency</string>
-    <string name="txt_task_check_delay_hint">Set how often SMSSync checks for a task to be executed.</string>
+    <string name="txt_task_check_delay_hint">Set how often SMSSync checks for a task to be
+        executed.
+    </string>
     <string name="app_name">SMSSync</string>
     <string name="outbox">SMSSync Pending Messages</string>
     <string name="version_status">Beta</string>
@@ -83,12 +103,17 @@
     <string name="sms_status_failed">SMSSync Message Sending failed</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="sending_failed">SMSSync Message Sending failed.</string>
-    <string name="sending_failed_http_code">SMSSync message sending failed. Server returned HTTP status code %1$d.</string>
-    <string name="sending_failed_custom_error">SMSSync message sending failed. Server error: %1$s.</string>
+    <string name="sending_failed_http_code">SMSSync message sending failed. Server returned HTTP
+        status code %1$d.
+    </string>
+    <string name="sending_failed_custom_error">SMSSync message sending failed. Server error: %1$s.
+    </string>
     <string name="sending_succeeded">SMSSync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to send.</string>
     <string name="no_messages_to_delete">There are no messages to delete.</string>
-    <string name="sync_failed">SMSSync message sending failed. Please check your internet connection and sync URL configuration.</string>
+    <string name="sync_failed">SMSSync message sending failed. Please check your internet connection
+        and sync URL configuration.
+    </string>
     <string name="powered">Powered</string>
     <string name="powered_by">Created by Ushahidi</string>
     <string name="menu_delete_all">Delete All</string>
@@ -113,15 +138,23 @@
     <string name="task_check_settings">Task Settings</string>
     <string name="about_smssync">About Sync</string>
     <string name="please_wait">Please wait</string>
-    <string name="smssync_not_enabled">SMSSync is not enabled. Please enable it from the Settings screen.</string>
+    <string name="smssync_not_enabled">SMSSync is not enabled. Please enable it from the Settings
+        screen.
+    </string>
     <string name="import_messages">Importing messages...</string>
-    <string name="nothing_to_import">No messages to import. Make sure you have SMS messages in your SMS inbox.</string>
+    <string name="nothing_to_import">No messages to import. Make sure you have SMS messages in your
+        SMS inbox.
+    </string>
     <string name="chk_enable_reply_frm_server">Get Reply from Server</string>
-    <string name="chk_reply_frm_server_hint">Instantly send messages as recieved from the server as SMS without waiting on a scheduler.</string>
+    <string name="chk_reply_frm_server_hint">Instantly send messages as recieved from the server as
+        SMS without waiting on a scheduler.
+    </string>
     <string name="filter_messages">Filter messages</string>
 
     <!-- SMS delivery status -->
-    <string name="sms_delivery_status_failed">Failed to send SMS - Maybe insufficient air time on the phone.</string>
+    <string name="sms_delivery_status_failed">Failed to send SMS - Maybe insufficient air time on
+        the phone.
+    </string>
     <string name="sms_delivery_status_no_service">No service</string>
     <string name="sms_delivery_status_radio_off">Radio off</string>
     <string name="sms_delivery_status_null_pdu">No PDU</string>
@@ -155,17 +188,29 @@
     <string name="failed_to_update_sync_url">Failed to update sync URL</string>
     <string name="sync_url_deleted">Sync URL successfully deleted.</string>
     <string name="sync_url_deleted_failed">Sync URL couldn\'t be deleted.</string>
-    <string name="disable_to_delete_syncurl">You cannot delete this Sync URL because it is enabled. Disable it before deleting it.</string>
-    <string name="disable_to_delete_all_syncurl">There are enabled Sync URLs so you cannot delete all of them. Disable all enabled Sync URLs then try this action again.</string>
-    <string name="no_enabled_sync_url">Enable at least one Sync URL before starting the service.</string>
-    <string name="disable_smssync_service">SMSSync service is running. You cannot perform a deletion until the service is stopped. Stop the service then try this action again.</string>
-    <string name="disable_last_sync_url">You cannot disable this last Sync URL because the SMSSync service is running.</string>
-    <string name="no_sync_url_added">Add at least one Sync URL to start the SMSSync service.</string>
+    <string name="disable_to_delete_syncurl">You cannot delete this Sync URL because it is enabled.
+        Disable it before deleting it.
+    </string>
+    <string name="disable_to_delete_all_syncurl">There are enabled Sync URLs so you cannot delete
+        all of them. Disable all enabled Sync URLs then try this action again.
+    </string>
+    <string name="no_enabled_sync_url">Enable at least one Sync URL before starting the service.
+    </string>
+    <string name="disable_smssync_service">SMSSync service is running. You cannot perform a deletion
+        until the service is stopped. Stop the service then try this action again.
+    </string>
+    <string name="disable_last_sync_url">You cannot disable this last Sync URL because the SMSSync
+        service is running.
+    </string>
+    <string name="no_sync_url_added">Add at least one Sync URL to start the SMSSync service.
+    </string>
     <string name="no_sync_url_to_delete">There are no Sync URLs to delete.</string>
     <string name="empty_sync_url_title">Please enter a title for the Sync URL</string>
     <string name="valid_sync_url">Please enter a valid URL</string>
     <string name="task">Task</string>
-    <string name="confirm_sms_import">This will import all SMS in the messaging inbox. This may take a while to finish.</string>
+    <string name="confirm_sms_import">This will import all SMS in the messaging inbox. This may take
+        a while to finish.
+    </string>
     <string name="incoming">incoming</string>
     <string name="schedule">schedule</string>
     <string name="manual">manual</string>
@@ -175,20 +220,42 @@
     <string name="error">Error</string>
     <string name="done">Done</string>
     <string name="never">Never</string>
-    <string name="idle_details">Last sync at: <xliff:g id="last_sync_date">%1$s</xliff:g></string>
+    <string name="idle_details">Last sync at:
+        <xliff:g id="last_sync_date">%1$s</xliff:g>
+    </string>
     <string name="working">Working</string>
     <string name="canceled">Canceled</string>
     <string name="sync_canceled_details">%1$d/%2$d items successfully syncd.</string>
-    <string name="sync_error_details">Error during sync:\n<xliff:g id="error_description">%1$s</xliff:g></string>
+    <string name="sync_error_details">Error during sync:\n
+        <xliff:g id="error_description">%1$s</xliff:g>
+    </string>
 
     <plurals name="sync_done_details">
-        <item quantity="one">Successfully proccessed <xliff:g id="total_items">%1$d</xliff:g> item.  </item>
-        <item quantity="other">Successfully proccessed <xliff:g id="total_items">%1$d</xliff:g> items. </item>
+        <item quantity="one">Successfully proccessed
+            <xliff:g id="total_items">%1$d</xliff:g>
+            item.
+        </item>
+        <item quantity="other">Successfully proccessed
+            <xliff:g id="total_items">%1$d</xliff:g>
+            items.
+        </item>
     </plurals>
 
-    <string name="sync_status_done"><xliff:g id="syncd_up_items">%1$d</xliff:g> syncd  , <xliff:g id="failed_items">%2$d</xliff:g> failed</string>
+    <string name="sync_status_done">
+        <xliff:g id="syncd_up_items">%1$d</xliff:g>
+        syncd ,
+        <xliff:g id="failed_items">%2$d</xliff:g>
+        failed
+    </string>
     <string name="stopping">Stopping</string>
-    <string name="status_sync_details"><xliff:g id="syncd_up_items">%1$d</xliff:g> syncd  , <xliff:g id="failed_items">%2$d</xliff:g> failed  / <xliff:g id="total_items">%3$d</xliff:g> items\u2026</string>
+    <string name="status_sync_details">
+        <xliff:g id="syncd_up_items">%1$d</xliff:g>
+        syncd ,
+        <xliff:g id="failed_items">%2$d</xliff:g>
+        failed /
+        <xliff:g id="total_items">%3$d</xliff:g>
+        items\u2026
+    </string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="unknown_issue">Unknown issue</string>
@@ -214,7 +281,11 @@
     <string name="filter">Filter</string>
     <string name="enable_whitelist">Enable Whitelist</string>
     <string name="enable_blacklist">Enable Blacklist</string>
-    <string name="no_whitelist">No Whitelisted Phone Numbers. \nUse the "+" button above to add one.</string>
-    <string name="no_blacklist">No Blacklisted Phone Numbers. \nUse the "+" button above to add one.</string>
+    <string name="no_whitelist">No Whitelisted Phone Numbers. \nUse the "+" button above to add
+        one.
+    </string>
+    <string name="no_blacklist">No Blacklisted Phone Numbers. \nUse the "+" button above to add
+        one.
+    </string>
     <string name="add_phone_number">Add phone number</string>
 </resources>

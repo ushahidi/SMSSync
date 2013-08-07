@@ -20,18 +20,16 @@
 
 package org.addhen.smssync;
 
+import com.squareup.otto.Bus;
+
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.net.MainHttpClient;
-import org.addhen.smssync.util.Util;
-
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 
 import android.app.Application;
 
 /**
  * This class is for maintaining global application state.
- * 
+ *
  * @author eyedol
  */
 public class MainApplication extends Application {
@@ -54,7 +52,7 @@ public class MainApplication extends Application {
         app = this;
         mDb = new Database(this);
         mDb.open();
-        
+
     }
 
     @Override

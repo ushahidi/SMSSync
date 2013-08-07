@@ -44,7 +44,7 @@ public class DonationNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
-        Intent i = new Intent(mActivity,DonationActivity.class);
+        Intent i = new Intent(mActivity, DonationActivity.class);
         launchActivity(i);
     }
 

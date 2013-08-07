@@ -20,21 +20,25 @@
 
 package org.addhen.smssync.tasks.state;
 
-import static org.addhen.smssync.tasks.SyncType.UNKNOWN;
-import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
-import static org.addhen.smssync.tasks.state.SyncState.SYNC;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncType;
 
 import android.content.res.Resources;
 
+import static org.addhen.smssync.tasks.SyncType.UNKNOWN;
+import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
+import static org.addhen.smssync.tasks.state.SyncState.SYNC;
+
 public class SyncPendingMessagesState extends State {
 
     public final int currentSyncedItems;
+
     public final int currentFailedItems;
+
     public final int itemsToSync;
+
     public final int currentProgress;
+
     public final SyncType syncType;
 
     public SyncPendingMessagesState(SyncState state, int currentSyncedItems,
@@ -66,15 +70,13 @@ public class SyncPendingMessagesState extends State {
 
     /**
      * Get the notification
-     * 
-     * @param resources
-     * @return
      */
     public String getNotification(Resources resources) {
 
         String msg = super.getNotificationMessage(resources);
-        if (msg != null)
+        if (msg != null) {
             return msg;
+        }
         if (state == SYNC) {
             msg = resources.getString(R.string.status_sync_details,
                     currentSyncedItems,

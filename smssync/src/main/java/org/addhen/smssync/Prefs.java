@@ -24,9 +24,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * This class instantiate static variables to hold values of the settings /
- * preference fields.
- * 
+ * This class instantiate static variables to hold values of the settings / preference fields.
+ *
  * @author eyedol
  */
 public class Prefs {
@@ -63,7 +62,7 @@ public class Prefs {
 
     /**
      * Load the value of the settings / preference variable.
-     * 
+     *
      * @param Context context - The context of the calling activity.
      * @return void
      */
@@ -90,7 +89,7 @@ public class Prefs {
 
     /**
      * Save settings changes.
-     * 
+     *
      * @return void
      */
     public static void savePreferences(Context context) {

@@ -20,13 +20,6 @@
 
 package org.addhen.smssync.net;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -46,6 +39,13 @@ import org.apache.http.params.HttpProtocolParams;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 public class MainHttpClient {
 
@@ -131,7 +131,8 @@ public class MainHttpClient {
         try {
             // Execute HTTP Get Request
             HttpResponse response = httpclient.execute(httpGet);
-            log("GetFromWebService " + url+ " userAgent "+userAgent.toString()+ " status code: "+response.getStatusLine().getStatusCode());
+            log("GetFromWebService " + url + " userAgent " + userAgent.toString() + " status code: "
+                    + response.getStatusLine().getStatusCode());
             if (response.getStatusLine().getStatusCode() == 200) {
                 return getText(response);
 
@@ -143,7 +144,7 @@ public class MainHttpClient {
             log("ClientProtocolException", e);
             return null;
         } catch (IOException e) {
-            log("IOException",e);
+            log("IOException", e);
             return null;
         }
     }

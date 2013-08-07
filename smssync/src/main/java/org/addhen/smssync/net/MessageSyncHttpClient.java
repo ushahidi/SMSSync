@@ -19,10 +19,6 @@
  *****************************************************************************/
 package org.addhen.smssync.net;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.text.TextUtils;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
@@ -34,6 +30,10 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.text.TextUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -27,25 +27,17 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.listeners.BlacklistActionModeListener;
 import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.services.CheckTaskScheduledService;
-import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddPhoneNumber;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.BlacklistView;
 
-import static org.addhen.smssync.models.Filter.Status.BLACKLIST;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -54,6 +46,8 @@ import android.widget.ListView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+
+import static org.addhen.smssync.models.Filter.Status.BLACKLIST;
 
 public class BlacklistFragment extends
         BaseListFragment<BlacklistView, Filter, FilterAdapter> implements

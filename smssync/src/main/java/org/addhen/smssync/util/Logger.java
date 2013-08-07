@@ -25,24 +25,27 @@ import android.util.Log;
 
 public class Logger {
 
-	public static final boolean LOGGING_MODE = BuildConfig.DEBUG;
+    public static final boolean LOGGING_MODE = BuildConfig.DEBUG;
 
-	public Logger() {
+    public Logger() {
 
-	}
+    }
 
-	public static void log(String tag, String message) {
-		if (LOGGING_MODE)
-			Log.i(tag, message);
-	}
+    public static void log(String tag, String message) {
+        if (LOGGING_MODE) {
+            Log.i(tag, message);
+        }
+    }
 
-	public static void log(String tag, String format, Object... args) {
-		if (LOGGING_MODE)
-			Log.i(tag, String.format(format, args));
-	}
+    public static void log(String tag, String format, Object... args) {
+        if (LOGGING_MODE) {
+            Log.i(tag, String.format(format, args));
+        }
+    }
 
-	public static void log(String tag, String message, Exception ex) {
-		if (LOGGING_MODE)
-			Log.e(tag, message, ex);
-	}
+    public static void log(String tag, String message, Exception ex) {
+        if (LOGGING_MODE) {
+            Log.e(tag, message, ex);
+        }
+    }
 }

@@ -58,63 +58,61 @@ package org.addhen.smssync.util;
  **
  *****************************************************************************/
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.database.Messages;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Utility class for sent messages feature
- * 
+ *
  * @author eyedol
- * 
  */
 public class SentMessagesUtil {
 
-	private static final String CLASS_TAG = Util.class.getCanonicalName();
+    private static final String CLASS_TAG = Util.class.getCanonicalName();
 
-	public static HashMap<String, String> smsMap = new HashMap<String, String>();
+    public static HashMap<String, String> smsMap = new HashMap<String, String>();
 
-	private static List<Messages> mMessages;
+    private static List<Messages> mMessages;
 
-	/**
-	 * Process messages as received from the user; 0 - successful 1 - failed
-	 * fetching categories
-	 * 
-	 * @return int - status
-	 */
-	public static boolean processSentMessages(Context context) {
-		Logger.log(CLASS_TAG,
-				"processMessages(): Process text messages as received from the user's phone");
+    /**
+     * Process messages as received from the user; 0 - successful 1 - failed fetching categories
+     *
+     * @return int - status
+     */
+    public static boolean processSentMessages(Context context) {
+        Logger.log(CLASS_TAG,
+                "processMessages(): Process text messages as received from the user's phone");
 
-		List<Messages> listMessages = new ArrayList<Messages>();
-		String messageUuid = "";
-		Messages messages = new Messages();
-		listMessages.add(messages);
+        List<Messages> listMessages = new ArrayList<Messages>();
+        String messageUuid = "";
+        Messages messages = new Messages();
+        listMessages.add(messages);
 
-		// check if messageId is actually initialized
-		if (smsMap.get("messagesUuid") != null) {
-			messageUuid = smsMap.get("messagesUuid");
-		}
+        // check if messageId is actually initialized
+        if (smsMap.get("messagesUuid") != null) {
+            messageUuid = smsMap.get("messagesUuid");
+        }
 
-		messages.setMessageUuid(messageUuid);
-		messages.setMessageFrom(smsMap.get("messagesFrom"));
-		messages.setMessageBody(smsMap.get("messagesBody"));
-		messages.setMessageDate(smsMap.get("messagesDate"));
-		messages.setMessageType(Integer.valueOf(smsMap.get("messagesType")));
-		
-		mMessages = listMessages;
+        messages.setMessageUuid(messageUuid);
+        messages.setMessageFrom(smsMap.get("messagesFrom"));
+        messages.setMessageBody(smsMap.get("messagesBody"));
+        messages.setMessageDate(smsMap.get("messagesDate"));
+        messages.setMessageType(Integer.valueOf(smsMap.get("messagesType")));
 
-		if (mMessages != null) {
-			MainApplication.mDb.addSentMessages(mMessages);
-			return true;
-		}
-		return false;
+        mMessages = listMessages;
 
-	}
+        if (mMessages != null) {
+            MainApplication.mDb.addSentMessages(mMessages);
+            return true;
+        }
+        return false;
+
+    }
 
 }

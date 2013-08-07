@@ -11,10 +11,10 @@
 	at team@ushahidi.com.
 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialLayout="@layout/appwidget"
-    android:minHeight="180dp"
-    android:minResizeHeight="150dp"
-    android:minResizeWidth="280dp"
-    android:minWidth="280dp"
-    android:resizeMode="vertical|horizontal"
-    android:updatePeriodMillis="1800000" />
+                    android:initialLayout="@layout/appwidget"
+                    android:minHeight="180dp"
+                    android:minResizeHeight="150dp"
+                    android:minResizeWidth="280dp"
+                    android:minWidth="280dp"
+                    android:resizeMode="vertical|horizontal"
+                    android:updatePeriodMillis="1800000"/>

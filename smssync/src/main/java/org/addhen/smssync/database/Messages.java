@@ -22,7 +22,7 @@ package org.addhen.smssync.database;
 
 /**
  * Class to handle set and getters.
- * 
+ *
  * @author eyedol
  */
 public class Messages {
@@ -61,7 +61,7 @@ public class Messages {
 
     /**
      * Set the content of the message. More like the body of the SMS message.
-     * 
+     *
      * @param String messageBody - The content of the SMS message.
      * @return void
      */
@@ -71,7 +71,7 @@ public class Messages {
 
     /**
      * Get the content of the message.
-     * 
+     *
      * @return String
      */
     public String getMessageBody() {
@@ -80,7 +80,7 @@ public class Messages {
 
     /**
      * Set the address of the SMS message.
-     * 
+     *
      * @param String messageFrom
      * @return void
      */
@@ -90,7 +90,7 @@ public class Messages {
 
     /**
      * Get the address of the SMS Message
-     * 
+     *
      * @return String
      */
     public String getMessageFrom() {
@@ -99,9 +99,8 @@ public class Messages {
 
     /**
      * Set the date of the message.
-     * 
-     * @param String messageDate - The timestamp of the message. To be changed
-     *            into human readable.
+     *
+     * @param String messageDate - The timestamp of the message. To be changed into human readable.
      * @return void
      */
     public void setMessageDate(String messageDate) {
@@ -110,7 +109,7 @@ public class Messages {
 
     /**
      * Get the message date
-     * 
+     *
      * @return String
      */
     public String getMessageDate() {
@@ -119,7 +118,7 @@ public class Messages {
 
     /**
      * Set the message UUID.
-     * 
+     *
      * @param int messageId - The message UUID.
      * @return void
      */
@@ -129,7 +128,7 @@ public class Messages {
 
     /**
      * Get the message UUID.
-     * 
+     *
      * @return String
      */
     public String getMessageUuid() {

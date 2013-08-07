@@ -20,6 +20,8 @@
 
 package org.addhen.smssync;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.Util;
 
@@ -37,12 +39,10 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.text.TextUtils;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
 /**
- * This class handles all related task for settings on SMSSync. TODO // move the
- * UI code into it's own xml file
- * 
+ * This class handles all related task for settings on SMSSync. TODO // move the UI code into it's
+ * own xml file
+ *
  * @author eyedol
  */
 public class Settings extends SherlockPreferenceActivity implements
@@ -184,7 +184,7 @@ public class Settings extends SherlockPreferenceActivity implements
                     public boolean onPreferenceClick(Preference preference) {
                         final Intent i = new Intent(
                                 android.content.Intent.ACTION_VIEW, Uri
-                                        .parse(URL));
+                                .parse(URL));
                         startActivity(i);
                         return true;
                     }
@@ -196,7 +196,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
     /**
      * Get the time frequency selected by the user for auto synchronization.
-     * 
+     *
      * @return int
      */
     private int initializeAutoSyncTime() {
@@ -225,7 +225,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
     /**
      * Get the time frequency selected by the user for auto task checking.
-     * 
+     *
      * @return int
      */
     private int initializeAutoTaskTime() {
@@ -255,7 +255,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
     /**
      * Save settings changes.
-     * 
+     *
      * @return void
      */
     protected void savePreferences() {
@@ -348,7 +348,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
     /**
      * Perform sanity checks on settings changes.
-     * 
+     *
      * @param SharedPreferences sharedPreferences -
      * @return void
      */
@@ -359,8 +359,9 @@ public class Settings extends SherlockPreferenceActivity implements
         if (key.equals(KEY_UNIQUE_ID)) {
             final String savedId = sharedPreferences.getString(KEY_UNIQUE_ID,
                     "");
-            if (!TextUtils.isEmpty(savedId))
+            if (!TextUtils.isEmpty(savedId)) {
                 uniqueIdValidate(savedId);
+            }
         }
 
         if (key.equals(KEY_ENABLE_REPLY)) {
@@ -425,8 +426,8 @@ public class Settings extends SherlockPreferenceActivity implements
     }
 
     /**
-     * Create runnable for validating callback URL. Putting the validation
-     * process in it own thread provides efficiency.
+     * Create runnable for validating callback URL. Putting the validation process in it own thread
+     * provides efficiency.
      */
     final Runnable mTaskCheckEnabled = new Runnable() {
 
@@ -450,8 +451,8 @@ public class Settings extends SherlockPreferenceActivity implements
     };
 
     /**
-	 * 
-	 */
+     *
+     */
     final Runnable mAutoSyncEnabled = new Runnable() {
 
         public void run() {
@@ -476,9 +477,9 @@ public class Settings extends SherlockPreferenceActivity implements
     };
 
     /**
-     * Create a child thread and validate the callback URL in it when enabling
-     * auto task check preference.
-     * 
+     * Create a child thread and validate the callback URL in it when enabling auto task check
+     * preference.
+     *
      * @param String Url - The Callback URL to be validated.
      * @return void
      */
@@ -521,7 +522,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
     /**
      * Thread to validate unique id
-     * 
+     *
      * @param String uniqueId - The Callback Url to be validated.
      * @return void
      */

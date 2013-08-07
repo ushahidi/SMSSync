@@ -20,16 +20,16 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.services.CheckTaskScheduledService;
+import org.addhen.smssync.services.SmsSyncServices;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 /**
- * This Receiver class is used to listen for Broadcast Intents from the Alarm
- * manager so it executes all task that exist.
+ * This Receiver class is used to listen for Broadcast Intents from the Alarm manager so it executes
+ * all task that exist.
  */
 public class CheckTaskScheduledReceiver extends BroadcastReceiver {
 

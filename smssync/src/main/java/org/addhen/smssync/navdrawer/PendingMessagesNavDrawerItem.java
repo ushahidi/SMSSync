@@ -20,10 +20,10 @@
 
 package org.addhen.smssync.navdrawer;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.Message;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * Menu Item for Pending messages

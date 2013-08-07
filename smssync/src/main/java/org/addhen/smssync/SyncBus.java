@@ -20,18 +20,18 @@
 
 package org.addhen.smssync;
 
+import com.squareup.otto.Bus;
+
 import android.os.Handler;
 import android.os.Looper;
 
-import com.squareup.otto.Bus;
-
 /**
- * Add support for events to be posted on other thread apart from the main
- * thread.
+ * Add support for events to be posted on other thread apart from the main thread.
  */
 public class SyncBus extends Bus {
 
     private final Bus mBus;
+
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
     public SyncBus(final Bus bus) {

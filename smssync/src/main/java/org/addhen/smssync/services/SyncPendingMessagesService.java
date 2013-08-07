@@ -20,11 +20,8 @@
 
 package org.addhen.smssync.services;
 
-import static org.addhen.smssync.tasks.SyncType.MANUAL;
-import static org.addhen.smssync.tasks.state.SyncState.ERROR;
-import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
-
-import java.util.ArrayList;
+import com.squareup.otto.Produce;
+import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
@@ -37,12 +34,15 @@ import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
 
-import com.squareup.otto.Produce;
-import com.squareup.otto.Subscribe;
+import java.util.ArrayList;
+
+import static org.addhen.smssync.tasks.SyncType.MANUAL;
+import static org.addhen.smssync.tasks.state.SyncState.ERROR;
+import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 
 /**
  * This will sync pending messages as it's commanded by the user.
- * 
+ *
  * @author eyedol
  */
 public class SyncPendingMessagesService extends BaseService {
@@ -82,13 +82,11 @@ public class SyncPendingMessagesService extends BaseService {
                         log("Not syncing " + e.getMessage());
                         MainApplication.bus.post(mState.transition(ERROR, e));
                     }
-                }
-                else {
+                } else {
                     log("Sync is running now.");
                     MainApplication.bus.post(mState.transition(ERROR, null));
                 }
-            }
-            else {
+            } else {
                 log("Sync already running");
             }
 
@@ -99,8 +97,9 @@ public class SyncPendingMessagesService extends BaseService {
     @Subscribe
     public void syncStateChanged(final SyncPendingMessagesState state) {
         mState = state;
-        if (mState.isInitialState())
+        if (mState.isInitialState()) {
             return;
+        }
 
         if (state.isError()) {
 

@@ -34,19 +34,21 @@ public class ServicesConstants {
 
     public static String CHECT_TASK_ACTION = "org.addhen.smssync.syncservices.checktask";
 
-    public static String AUTO_SYNC_SCHEDULED_ACTION = "org.addhen.smssync.syncservices.autosyncscheduled";
+    public static String AUTO_SYNC_SCHEDULED_ACTION
+            = "org.addhen.smssync.syncservices.autosyncscheduled";
 
-    public static String CHECT_TASK_SCHEDULED_ACTION = "org.addhen.smssync.syncservices.checktaskscheduled";
-    
+    public static String CHECT_TASK_SCHEDULED_ACTION
+            = "org.addhen.smssync.syncservices.checktaskscheduled";
+
     public static String FAILED_ACTION = "org.addhen.smssync.syncservices.failed";
-    
+
     public static String MESSAGE_UUID = "message_uuid";
 
     public static String SENT = "SMS_SENT";
 
     public static String DELIVERED = "SMS_DELIVERED";
-    
+
     public static final int ACTIVE_SYNC_URL = 1;
-    
+
     public static final int INACTIVE_SYNC_URL = 1;
 }

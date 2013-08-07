@@ -7,7 +7,6 @@ import android.content.Intent;
 
 /**
  * Determine which sync type to execute
- * 
  */
 public enum SyncType {
     UNKNOWN(R.string.unknown),

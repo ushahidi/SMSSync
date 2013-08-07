@@ -20,20 +20,12 @@
 
 package org.addhen.smssync.tasks;
 
-import static org.addhen.smssync.tasks.state.SyncState.CANCELED_SYNC;
-import static org.addhen.smssync.tasks.state.SyncState.ERROR;
-import static org.addhen.smssync.tasks.state.SyncState.FINISHED_SYNC;
-import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
-import static org.addhen.smssync.tasks.state.SyncState.SYNC;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.exceptions.ConnectivityException;
+import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
@@ -42,7 +34,15 @@ import org.addhen.smssync.util.Logger;
 
 import android.os.AsyncTask;
 
-import com.squareup.otto.Subscribe;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import static org.addhen.smssync.tasks.state.SyncState.CANCELED_SYNC;
+import static org.addhen.smssync.tasks.state.SyncState.ERROR;
+import static org.addhen.smssync.tasks.state.SyncState.FINISHED_SYNC;
+import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
+import static org.addhen.smssync.tasks.state.SyncState.SYNC;
 
 /**
  * Provide a background service for asynchronous synchronizing of huge messages
@@ -60,7 +60,7 @@ public class SyncPendingMessagesTask extends
 
     /**
      * Default constructor
-     * 
+     *
      * @param service The sync service
      */
     public SyncPendingMessagesTask(SyncPendingMessagesService service) {
@@ -162,7 +162,7 @@ public class SyncPendingMessagesTask extends
 
     /**
      * Sync pending messages to the enabled sync URL.
-     * 
+     *
      * @param config The sync configuration.
      * @return int The number of syncd items
      */
@@ -235,7 +235,7 @@ public class SyncPendingMessagesTask extends
 
     /**
      * Send the state of the sync to the UI
-     * 
+     *
      * @param state The sync state
      */
     private void publishState(SyncState state) {
@@ -244,9 +244,9 @@ public class SyncPendingMessagesTask extends
 
     /**
      * Send the state of the sync to the UI
-     * 
+     *
      * @param state The sync state
-     * @param e The exception
+     * @param e     The exception
      */
     private void publishState(SyncState state, Exception e) {
         publishProgress(mService.getState().transition(state, e));

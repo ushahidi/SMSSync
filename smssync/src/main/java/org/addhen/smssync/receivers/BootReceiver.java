@@ -35,8 +35,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * This Receiver class listens for system boot. If smssync has been enabled run
- * the app.
+ * This Receiver class listens for system boot. If smssync has been enabled run the app.
  */
 public class BootReceiver extends BroadcastReceiver {
 

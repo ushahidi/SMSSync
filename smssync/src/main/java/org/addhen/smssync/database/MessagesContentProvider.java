@@ -20,9 +20,6 @@
 
 package org.addhen.smssync.database;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
@@ -33,6 +30,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteStatement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author eyedol
@@ -68,8 +68,9 @@ public class MessagesContentProvider extends DbContentProvider implements
         try {
             String sql = "SELECT COUNT(*) FROM " + TABLE;
             SQLiteStatement statement = mDb.compileStatement(sql);
-            if(statement != null)
+            if (statement != null) {
                 return (int) statement.simpleQueryForLong();
+            }
         } catch (SQLiteDoneException ex) {
             Logger.log(TAG, ex.getMessage());
         }
@@ -219,9 +220,8 @@ public class MessagesContentProvider extends DbContentProvider implements
 
     /**
      * Initializes content values for the messages table.
-     * 
-     * @param messages The message to be saved
      *
+     * @param messages The message to be saved
      */
     private void setContentValue(Message messages) {
         initialValues = new ContentValues();

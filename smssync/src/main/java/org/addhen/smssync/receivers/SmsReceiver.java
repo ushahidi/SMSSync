@@ -28,7 +28,7 @@ import android.content.Intent;
 
 /**
  * This class handles SMS broadcast receiver.
- * 
+ *
  * @author eyedol
  */
 

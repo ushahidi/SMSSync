@@ -21,7 +21,6 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -64,8 +63,9 @@ public class SyncUrlContentProvider extends DbContentProvider implements
 
         } finally {
 
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
 
         }
         return mListSyncUrl;
@@ -94,8 +94,9 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 }
             }
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
         }
 
         return mListSyncUrl;
@@ -121,8 +122,9 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 }
             }
         } finally {
-            if (cursor != null)
+            if (cursor != null) {
                 cursor.close();
+            }
         }
 
         return mListSyncUrl;
@@ -162,7 +164,6 @@ public class SyncUrlContentProvider extends DbContentProvider implements
      * Delete a particular sync URL.
      *
      * @param id The sync url it's id
-     *
      * @return boolean
      */
     public boolean deleteSyncUrlById(int id) {
@@ -234,7 +235,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         if (Util.isHoneycomb()) {
             return (int) DatabaseUtils.queryNumEntries(mDb, TABLE, selection, selectionArgs);
         }
-        
+
         // For API < 11
         try {
             String sql = "SELECT COUNT(*) FROM " + TABLE + " WHERE " + STATUS + " =1";

@@ -27,36 +27,37 @@ import org.addhen.smssync.util.ServicesConstants;
 import android.content.Intent;
 
 /**
- * A this class handles background services for periodic checks of task that
- * needs to be executed by the app. Task for now is sending SMS. In the future,
- * it will support other tasks. Maybe send email.
- * 
+ * A this class handles background services for periodic checks of task that needs to be executed by
+ * the app. Task for now is sending SMS. In the future, it will support other tasks. Maybe send
+ * email.
+ *
  * @author eyedol
  */
 public class CheckTaskService extends SmsSyncServices {
 
-	private final static String CLASS_TAG = CheckTaskService.class
-			.getSimpleName();
-	private SyncUrl model;
+    private final static String CLASS_TAG = CheckTaskService.class
+            .getSimpleName();
 
-	public CheckTaskService() {
-		super(CLASS_TAG);
-		model = new SyncUrl();
-	}
+    private SyncUrl model;
 
-	/**
-	 * Starts the background service
-	 * 
-	 * @return void
-	 */
-	protected void executeTask(Intent intent) {
-		log("checkTaskService: check if a task has been enabled.");
-		// Perform a task
-		// get enabled Sync URL
-		for (SyncUrl syncUrl : model
-				.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+    public CheckTaskService() {
+        super(CLASS_TAG);
+        model = new SyncUrl();
+    }
+
+    /**
+     * Starts the background service
+     *
+     * @return void
+     */
+    protected void executeTask(Intent intent) {
+        log("checkTaskService: check if a task has been enabled.");
+        // Perform a task
+        // get enabled Sync URL
+        for (SyncUrl syncUrl : model
+                .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
             new ProcessMessage(CheckTaskService.this).performTask(syncUrl);
-		}
-	}
+        }
+    }
 
 }

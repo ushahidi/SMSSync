@@ -44,14 +44,14 @@ public class RunServicesUtil {
             .getSimpleName();
 
     /**
-     * Runs any enabled services. Making sure the device has internet connection
-     * before it attempts to start any of the enabled services.
-     * 
-     * @param context The calling context.
-     * @param intent The intent to be started.
-     * @param cls The scheduler's receiver.
+     * Runs any enabled services. Making sure the device has internet connection before it attempts
+     * to start any of the enabled services.
+     *
+     * @param context     The calling context.
+     * @param intent      The intent to be started.
+     * @param cls         The scheduler's receiver.
      * @param requestCode The private request code
-     * @param interval The interval in which to run the scheduled service.
+     * @param interval    The interval in which to run the scheduled service.
      * @return void
      */
     public static void runServices(Context context, Intent intent,
@@ -79,12 +79,12 @@ public class RunServicesUtil {
 
     /**
      * stop any enabled services.
-     * 
-     * @param context The calling context.
-     * @param intent The intent to be started.
-     * @param cls The scheduler's receiver.
+     *
+     * @param context     The calling context.
+     * @param intent      The intent to be started.
+     * @param cls         The scheduler's receiver.
      * @param requestCode The private request code
-     * @param interval The interval in which to run the scheduled service.
+     * @param interval    The interval in which to run the scheduled service.
      * @return void
      */
     public static void stopServices(Context context, Intent intent,
@@ -97,7 +97,7 @@ public class RunServicesUtil {
     /**
      * Runs the {@link org.addhen.smssync.services.CheckTaskScheduledService
      * CheckTaskScheduledService}
-     * 
+     *
      * @param context the calling context
      * @return ScheduleServices
      */
@@ -134,7 +134,7 @@ public class RunServicesUtil {
     /**
      * Runs the {@link org.addhen.smssync.services.AutoSyncScheduledService
      * AutoSyncScheduledService}
-     * 
+     *
      * @param context the calling context
      * @return ScheduleServices
      */
@@ -160,7 +160,7 @@ public class RunServicesUtil {
     /**
      * Stops the {@link org.addhen.smssync.services.CheckTaskScheduledService
      * CheckTaskScheduledService}
-     * 
+     *
      * @param context the calling context
      * @return void
      */
@@ -180,7 +180,7 @@ public class RunServicesUtil {
     /**
      * Stops the {@link org.addhen.smssync.services.AutoSyncScheduledService
      * AutoSyncScheduledService}
-     * 
+     *
      * @param context the calling context
      * @return void
      */

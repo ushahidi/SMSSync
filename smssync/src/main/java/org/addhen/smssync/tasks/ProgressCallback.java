@@ -26,5 +26,6 @@ package org.addhen.smssync.tasks;
  * Callback interface for ProgressTask
  */
 public interface ProgressCallback {
+
     public void execute();
 }

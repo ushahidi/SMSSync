@@ -20,13 +20,11 @@
 
 package org.addhen.smssync.services;
 
-import java.lang.ref.WeakReference;
-
 import org.addhen.smssync.Prefs;
-import org.addhen.smssync.messages.ProcessMessage;
-import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
+import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -45,7 +43,10 @@ import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
 
+import java.lang.ref.WeakReference;
+
 public class SmsReceiverService extends Service {
+
     private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
 
     private ServiceHandler mServiceHandler;
@@ -124,6 +125,7 @@ public class SmsReceiverService extends Service {
     }
 
     private static class ServiceHandler extends Handler {
+
         private final WeakReference<SmsReceiverService> mSmsReceiverService;
 
         public ServiceHandler(SmsReceiverService mSmsReceiverService,
@@ -160,7 +162,7 @@ public class SmsReceiverService extends Service {
         Bundle bundle = intent.getExtras();
         Prefs.loadPreferences(SmsReceiverService.this);
         //TODO:: refactor to use a different name for this
-        org.addhen.smssync.models.Message msg  = new org.addhen.smssync.models.Message();
+        org.addhen.smssync.models.Message msg = new org.addhen.smssync.models.Message();
 
         log("handleSmsReceived() bundle " + bundle);
 
@@ -207,7 +209,7 @@ public class SmsReceiverService extends Service {
 
     /**
      * Get the SMS message.
-     * 
+     *
      * @param intent - The SMS message intent.
      * @return SmsMessage
      */
@@ -244,11 +246,11 @@ public class SmsReceiverService extends Service {
     }
 
     /**
-     * Start the service to process the current event notifications, acquiring
-     * the wake lock before returning to ensure that the service will run.
-     * 
+     * Start the service to process the current event notifications, acquiring the wake lock before
+     * returning to ensure that the service will run.
+     *
      * @param context - The context of the calling activity.
-     * @param intent - The calling intent.
+     * @param intent  - The calling intent.
      * @return void
      */
     public static void beginStartingService(Context context, Intent intent) {
@@ -263,16 +265,17 @@ public class SmsReceiverService extends Service {
             }
 
             mStartingService.acquire();
-            if (!getWifiLock(context).isHeld())
+            if (!getWifiLock(context).isHeld()) {
                 getWifiLock(context).acquire();
+            }
             context.startService(intent);
         }
     }
 
     /**
-     * Called back by the service when it has finished processing notifications,
-     * releasing the wake lock and wifi lock if the service is now stopping.
-     * 
+     * Called back by the service when it has finished processing notifications, releasing the wake
+     * lock and wifi lock if the service is now stopping.
+     *
      * @param service - The calling service.
      * @param startId - The service start id.
      * @return void

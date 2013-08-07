@@ -21,7 +21,6 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -216,7 +215,7 @@ public class FilterContentProvider extends DbContentProvider implements
         mInitialValues = new ContentValues();
         mInitialValues.put(PHONE_NUMBER, filter.getPhoneNumber());
         mInitialValues.put(ID, filter.getId());
-        mInitialValues.put(STATUS, filter.getStatus());
+        mInitialValues.put(STATUS, filter.getStatus().code);
 
     }
 
@@ -236,7 +235,9 @@ public class FilterContentProvider extends DbContentProvider implements
             }
             if (cursor.getColumnIndex(STATUS) != -1) {
                 statusIndex = cursor.getColumnIndexOrThrow(STATUS);
-                filter.setStatus(cursor.getInt(statusIndex));
+                int status = cursor.getInt(statusIndex);
+                if(status == Filter.Status.BLACKLIST.code)
+                filter.setStatus(Filter.Status.BLACKLIST);
             }
 
             if (cursor.getColumnIndex(PHONE_NUMBER) != -1) {

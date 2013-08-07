@@ -48,6 +48,7 @@ public abstract class BaseService extends Service {
      * A wakelock held while this service is working.
      */
     private PowerManager.WakeLock sWakeLock;
+
     /**
      * A wifilock held while this service is working.
      */
@@ -77,7 +78,7 @@ public abstract class BaseService extends Service {
 
     /**
      * Acquire locks
-     * 
+     *
      * @throws ConnectivityException when unable to connect
      */
     public void acquireLocks() throws ConnectivityException {
@@ -109,10 +110,12 @@ public abstract class BaseService extends Service {
     }
 
     public void releaseLocks() {
-        if (sWakeLock != null && sWakeLock.isHeld())
+        if (sWakeLock != null && sWakeLock.isHeld()) {
             sWakeLock.release();
-        if (sWifiLock != null && sWifiLock.isHeld())
+        }
+        if (sWifiLock != null && sWifiLock.isHeld()) {
             sWifiLock.release();
+        }
     }
 
     protected boolean isBackgroundTask() {

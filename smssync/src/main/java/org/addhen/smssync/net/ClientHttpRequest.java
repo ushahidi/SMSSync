@@ -20,31 +20,28 @@
 
 package org.addhen.smssync.net;
 
-import java.net.URLConnection;
-import java.net.URL;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.File;
-import java.io.InputStream;
-import java.util.Random;
-import java.io.OutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Random;
 
 /**
- * <p>
- * Title: Client HTTP Request class
- * </p>
- * <p>
- * Description: this class helps to send POST HTTP requests with various form
- * data, including files. Cookies can be added to be included in the request.
- * </p>
- * 
+ * <p> Title: Client HTTP Request class </p> <p> Description: this class helps to send POST HTTP
+ * requests with various form data, including files. Cookies can be added to be included in the
+ * request. </p>
+ *
  * @author Vlad Patryshev
  * @version 1.0
  */
 public class ClientHttpRequest {
+
     URLConnection connection;
 
     OutputStream os = null;
@@ -53,8 +50,9 @@ public class ClientHttpRequest {
     Map cookies = new HashMap();
 
     protected void connect() throws IOException {
-        if (os == null)
+        if (os == null) {
             os = connection.getOutputStream();
+        }
     }
 
     protected void write(char c) throws IOException {
@@ -93,11 +91,9 @@ public class ClientHttpRequest {
     }
 
     /**
-     * Creates a new multipart POST HTTP request on a freshly opened
-     * URLConnection
-     * 
+     * Creates a new multipart POST HTTP request on a freshly opened URLConnection
+     *
      * @param connection an already open URL connection
-     * @throws IOException
      */
     public ClientHttpRequest(URLConnection connection) throws IOException {
         this.connection = connection;
@@ -107,9 +103,8 @@ public class ClientHttpRequest {
 
     /**
      * Creates a new multipart POST HTTP request for a specified URL
-     * 
+     *
      * @param url the URL to send request to
-     * @throws IOException
      */
     public ClientHttpRequest(URL url) throws IOException {
         this(url.openConnection());
@@ -117,9 +112,8 @@ public class ClientHttpRequest {
 
     /**
      * Creates a new multipart POST HTTP request for a specified URL string
-     * 
+     *
      * @param urlString the string representation of the URL to send request to
-     * @throws IOException
      */
     public ClientHttpRequest(String urlString) throws IOException {
         this(new URL(urlString));
@@ -131,8 +125,8 @@ public class ClientHttpRequest {
     private void postCookies() {
         StringBuffer cookieList = new StringBuffer();
 
-        for (Iterator i = cookies.entrySet().iterator(); i.hasNext();) {
-            Map.Entry entry = (Map.Entry)(i.next());
+        for (Iterator i = cookies.entrySet().iterator(); i.hasNext(); ) {
+            Map.Entry entry = (Map.Entry) (i.next());
             cookieList.append(entry.getKey().toString() + "=" + entry.getValue());
 
             if (i.hasNext()) {
@@ -146,10 +140,9 @@ public class ClientHttpRequest {
 
     /**
      * adds a cookie to the requst
-     * 
-     * @param name cookie name
+     *
+     * @param name  cookie name
      * @param value cookie value
-     * @throws IOException
      */
     @SuppressWarnings("unchecked")
     public void setCookie(String name, String value) throws IOException {
@@ -158,27 +151,27 @@ public class ClientHttpRequest {
 
     /**
      * adds cookies to the request
-     * 
+     *
      * @param cookies the cookie "name-to-value" map
-     * @throws IOException
      */
     @SuppressWarnings("unchecked")
     public void setCookies(Map cookies) throws IOException {
-        if (cookies == null)
+        if (cookies == null) {
             return;
+        }
         this.cookies.putAll(cookies);
     }
 
     /**
      * adds cookies to the request
-     * 
-     * @param cookies array of cookie names and values (cookies[2*i] is a name,
-     *            cookies[2*i + 1] is a value)
-     * @throws IOException
+     *
+     * @param cookies array of cookie names and values (cookies[2*i] is a name, cookies[2*i + 1] is
+     *                a value)
      */
     public void setCookies(String[] cookies) throws IOException {
-        if (cookies == null)
+        if (cookies == null) {
             return;
+        }
         for (int i = 0; i < cookies.length - 1; i += 2) {
             setCookie(cookies[i], cookies[i + 1]);
         }
@@ -193,10 +186,9 @@ public class ClientHttpRequest {
 
     /**
      * adds a string parameter to the request
-     * 
-     * @param name parameter name
+     *
+     * @param name  parameter name
      * @param value parameter value
-     * @throws IOException
      */
     public void setParameter(String name, String value) throws IOException {
         boundary();
@@ -224,11 +216,10 @@ public class ClientHttpRequest {
 
     /**
      * adds a file parameter to the request
-     * 
-     * @param name parameter name
+     *
+     * @param name     parameter name
      * @param filename the name of the file
-     * @param is input stream to read the contents of the file from
-     * @throws IOException
+     * @param is       input stream to read the contents of the file from
      */
     @SuppressWarnings("static-access")
     public void setParameter(String name, String filename, InputStream is) throws IOException {
@@ -240,8 +231,9 @@ public class ClientHttpRequest {
         newline();
         write("Content-Type: ");
         String type = connection.guessContentTypeFromName(filename);
-        if (type == null)
+        if (type == null) {
             type = "application/octet-stream";
+        }
         writeln(type);
         newline();
         pipe(is, os);
@@ -250,28 +242,24 @@ public class ClientHttpRequest {
 
     /**
      * adds a file parameter to the request
-     * 
+     *
      * @param name parameter name
      * @param file the file to upload
-     * @throws IOException
      */
     public void setParameter(String name, File file) throws IOException {
         setParameter(name, file.getPath(), new FileInputStream(file));
     }
 
     /**
-     * adds a parameter to the request; if the parameter is a File, the file is
-     * uploaded, otherwise the string value of the parameter is passed in the
-     * request
-     * 
-     * @param name parameter name
-     * @param object parameter value, a File or anything else that can be
-     *            stringified
-     * @throws IOException
+     * adds a parameter to the request; if the parameter is a File, the file is uploaded, otherwise
+     * the string value of the parameter is passed in the request
+     *
+     * @param name   parameter name
+     * @param object parameter value, a File or anything else that can be stringified
      */
     public void setParameter(String name, Object object) throws IOException {
         if (object instanceof File) {
-            setParameter(name, (File)object);
+            setParameter(name, (File) object);
         } else {
             setParameter(name, object.toString());
         }
@@ -279,45 +267,41 @@ public class ClientHttpRequest {
 
     /**
      * adds parameters to the request
-     * 
-     * @param parameters "name-to-value" map of parameters; if a value is a
-     *            file, the file is uploaded, otherwise it is stringified and
-     *            sent in the request
-     * @throws IOException
+     *
+     * @param parameters "name-to-value" map of parameters; if a value is a file, the file is
+     *                   uploaded, otherwise it is stringified and sent in the request
      */
     @SuppressWarnings("unchecked")
     public void setParameters(Map parameters) throws IOException {
-        if (parameters == null)
+        if (parameters == null) {
             return;
-        for (Iterator i = parameters.entrySet().iterator(); i.hasNext();) {
-            Map.Entry entry = (Map.Entry)i.next();
+        }
+        for (Iterator i = parameters.entrySet().iterator(); i.hasNext(); ) {
+            Map.Entry entry = (Map.Entry) i.next();
             setParameter(entry.getKey().toString(), entry.getValue());
         }
     }
 
     /**
      * adds parameters to the request
-     * 
-     * @param parameters array of parameter names and values (parameters[2*i] is
-     *            a name, parameters[2*i + 1] is a value); if a value is a file,
-     *            the file is uploaded, otherwise it is stringified and sent in
-     *            the request
-     * @throws IOException
+     *
+     * @param parameters array of parameter names and values (parameters[2*i] is a name,
+     *                   parameters[2*i + 1] is a value); if a value is a file, the file is
+     *                   uploaded, otherwise it is stringified and sent in the request
      */
     public void setParameters(Object[] parameters) throws IOException {
-        if (parameters == null)
+        if (parameters == null) {
             return;
+        }
         for (int i = 0; i < parameters.length - 1; i += 2) {
             setParameter(parameters[i].toString(), parameters[i + 1]);
         }
     }
 
     /**
-     * posts the requests to the server, with all the cookies and parameters
-     * that were added
-     * 
+     * posts the requests to the server, with all the cookies and parameters that were added
+     *
      * @return input stream with the server response
-     * @throws IOException
      */
     public InputStream post() throws IOException {
         boundary();
@@ -327,13 +311,11 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts the requests to the server, with all the cookies and parameters
-     * that were added before (if any), and with parameters that are passed in
-     * the argument
-     * 
+     * posts the requests to the server, with all the cookies and parameters that were added before
+     * (if any), and with parameters that are passed in the argument
+     *
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameters
      */
     @SuppressWarnings("unchecked")
@@ -343,13 +325,11 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts the requests to the server, with all the cookies and parameters
-     * that were added before (if any), and with parameters that are passed in
-     * the argument
-     * 
+     * posts the requests to the server, with all the cookies and parameters that were added before
+     * (if any), and with parameters that are passed in the argument
+     *
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameters
      */
     public InputStream post(Object[] parameters) throws IOException {
@@ -358,14 +338,12 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts the requests to the server, with all the cookies and parameters
-     * that were added before (if any), and with cookies and parameters that are
-     * passed in the arguments
-     * 
-     * @param cookies request cookies
+     * posts the requests to the server, with all the cookies and parameters that were added before
+     * (if any), and with cookies and parameters that are passed in the arguments
+     *
+     * @param cookies    request cookies
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameters
      * @see setCookies
      */
@@ -377,14 +355,12 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts the requests to the server, with all the cookies and parameters
-     * that were added before (if any), and with cookies and parameters that are
-     * passed in the arguments
-     * 
-     * @param cookies request cookies
+     * posts the requests to the server, with all the cookies and parameters that were added before
+     * (if any), and with cookies and parameters that are passed in the arguments
+     *
+     * @param cookies    request cookies
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameters
      * @see setCookies
      */
@@ -396,11 +372,10 @@ public class ClientHttpRequest {
 
     /**
      * post the POST request to the server, with the specified parameter
-     * 
-     * @param name parameter name
+     *
+     * @param name  parameter name
      * @param value parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
     public InputStream post(String name, Object value) throws IOException {
@@ -410,13 +385,12 @@ public class ClientHttpRequest {
 
     /**
      * post the POST request to the server, with the specified parameters
-     * 
-     * @param name1 first parameter name
+     *
+     * @param name1  first parameter name
      * @param value1 first parameter value
-     * @param name2 second parameter name
+     * @param name2  second parameter name
      * @param value2 second parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
     public InputStream post(String name1, Object value1, String name2, Object value2)
@@ -427,15 +401,14 @@ public class ClientHttpRequest {
 
     /**
      * post the POST request to the server, with the specified parameters
-     * 
-     * @param name1 first parameter name
+     *
+     * @param name1  first parameter name
      * @param value1 first parameter value
-     * @param name2 second parameter name
+     * @param name2  second parameter name
      * @param value2 second parameter value
-     * @param name3 third parameter name
+     * @param name3  third parameter name
      * @param value3 third parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
     public InputStream post(String name1, Object value1, String name2, Object value2, String name3,
@@ -446,17 +419,16 @@ public class ClientHttpRequest {
 
     /**
      * post the POST request to the server, with the specified parameters
-     * 
-     * @param name1 first parameter name
+     *
+     * @param name1  first parameter name
      * @param value1 first parameter value
-     * @param name2 second parameter name
+     * @param name2  second parameter name
      * @param value2 second parameter value
-     * @param name3 third parameter name
+     * @param name3  third parameter name
      * @param value3 third parameter value
-     * @param name4 fourth parameter name
+     * @param name4  fourth parameter name
      * @param value4 fourth parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
     public InputStream post(String name1, Object value1, String name2, Object value2, String name3,
@@ -466,12 +438,10 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts a new request to specified URL, with parameters that are passed in
-     * the argument
-     * 
+     * posts a new request to specified URL, with parameters that are passed in the argument
+     *
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameters
      */
     @SuppressWarnings("unchecked")
@@ -480,12 +450,10 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts a new request to specified URL, with parameters that are passed in
-     * the argument
-     * 
+     * posts a new request to specified URL, with parameters that are passed in the argument
+     *
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameters
      */
     public static InputStream post(URL url, Object[] parameters) throws IOException {
@@ -493,13 +461,12 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts a new request to specified URL, with cookies and parameters that
-     * are passed in the argument
-     * 
-     * @param cookies request cookies
+     * posts a new request to specified URL, with cookies and parameters that are passed in the
+     * argument
+     *
+     * @param cookies    request cookies
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setCookies
      * @see setParameters
      */
@@ -509,13 +476,12 @@ public class ClientHttpRequest {
     }
 
     /**
-     * posts a new request to specified URL, with cookies and parameters that
-     * are passed in the argument
-     * 
-     * @param cookies request cookies
+     * posts a new request to specified URL, with cookies and parameters that are passed in the
+     * argument
+     *
+     * @param cookies    request cookies
      * @param parameters request parameters
      * @return input stream with the server response
-     * @throws IOException
      * @see setCookies
      * @see setParameters
      */
@@ -526,11 +492,10 @@ public class ClientHttpRequest {
 
     /**
      * post the POST request specified URL, with the specified parameter
-     * 
-     * @param name parameter name
+     *
+     * @param name  parameter name
      * @param value parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
     public static InputStream post(URL url, String name1, Object value1) throws IOException {
@@ -539,31 +504,30 @@ public class ClientHttpRequest {
 
     /**
      * post the POST request to specified URL, with the specified parameters
-     * 
-     * @param name1 first parameter name
+     *
+     * @param name1  first parameter name
      * @param value1 first parameter value
-     * @param name2 second parameter name
+     * @param name2  second parameter name
      * @param value2 second parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
-    public static InputStream post(URL url, String name1, Object value1, String name2, Object value2)
+    public static InputStream post(URL url, String name1, Object value1, String name2,
+            Object value2)
             throws IOException {
         return new ClientHttpRequest(url).post(name1, value1, name2, value2);
     }
 
     /**
      * post the POST request to specified URL, with the specified parameters
-     * 
-     * @param name1 first parameter name
+     *
+     * @param name1  first parameter name
      * @param value1 first parameter value
-     * @param name2 second parameter name
+     * @param name2  second parameter name
      * @param value2 second parameter value
-     * @param name3 third parameter name
+     * @param name3  third parameter name
      * @param value3 third parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
     public static InputStream post(URL url, String name1, Object value1, String name2,
@@ -573,17 +537,16 @@ public class ClientHttpRequest {
 
     /**
      * post the POST request to specified URL, with the specified parameters
-     * 
-     * @param name1 first parameter name
+     *
+     * @param name1  first parameter name
      * @param value1 first parameter value
-     * @param name2 second parameter name
+     * @param name2  second parameter name
      * @param value2 second parameter value
-     * @param name3 third parameter name
+     * @param name3  third parameter name
      * @param value3 third parameter value
-     * @param name4 fourth parameter name
+     * @param name4  fourth parameter name
      * @param value4 fourth parameter value
      * @return input stream with the server response
-     * @throws IOException
      * @see setParameter
      */
     public static InputStream post(URL url, String name1, Object value1, String name2,

@@ -155,7 +155,7 @@ public class Filter extends Model {
         WHITELIST(0),
         BLACKLIST(1);
 
-        final int code;
+        public final int code;
 
         Status(int code) {
             this.code = code;

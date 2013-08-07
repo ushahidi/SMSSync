@@ -20,10 +20,10 @@
 
 package org.addhen.smssync.navdrawer;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import org.addhen.smssync.fragments.SentMessageFragment;
 import org.addhen.smssync.models.SentMessagesModel;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * Menu Item for Sent messages

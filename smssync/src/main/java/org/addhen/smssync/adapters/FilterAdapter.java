@@ -22,7 +22,6 @@ package org.addhen.smssync.adapters;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.models.SyncUrl;
 
 import android.content.Context;
 import android.view.View;

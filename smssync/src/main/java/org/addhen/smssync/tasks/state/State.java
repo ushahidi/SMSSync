@@ -1,16 +1,16 @@
 
 package org.addhen.smssync.tasks.state;
 
-import java.util.EnumSet;
-
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.exceptions.I8nException;
 
 import android.content.res.Resources;
 
+import java.util.EnumSet;
+
 /**
  * Base class to provide state of a running task
- * 
+ *
  * @author eyedol
  */
 public abstract class State {
@@ -21,8 +21,8 @@ public abstract class State {
 
     /**
      * Default constructor
-     * 
-     * @param state The state of the task
+     *
+     * @param state     The state of the task
      * @param exception Exception to throw.
      */
     public State(SyncState state, Exception exception) {
@@ -55,14 +55,12 @@ public abstract class State {
 
     /**
      * Get any error state of the task under execution.
-     * 
-     * @param resources
-     * @return
      */
     public String getError(Resources resources) {
         // exception shouldn't be null
-        if (exception == null)
+        if (exception == null) {
             return null;
+        }
 
         // Is the exception message localizable
         if (exception instanceof I8nException) {
@@ -77,9 +75,6 @@ public abstract class State {
 
     /**
      * Pass notification messages to the main UI
-     * 
-     * @param resources
-     * @return
      */
     public String getNotificationMessage(Resources resources) {
         switch (state) {

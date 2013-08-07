@@ -17,33 +17,44 @@
  ** Ushahidi developers at team@ushahidi.com.
  **
  *****************************************************************************/
-package org.addhen.smssync.database;
+
+package org.addhen.smssync.navdrawer;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import org.addhen.smssync.activities.FilterTabActivity;
+
+import android.content.Intent;
 
 /**
- * @author eyedol
+ * Filter Nav Drawer Item
  */
-public interface IMessagesSchema {
+public class FilterNavDrawerItem extends BaseNavDrawerItem {
 
-    public static final String FROM = "messages_from";
+    /**
+     * Filter Nav Drawer
+     */
+    public FilterNavDrawerItem(String title, int iconRes,
+            SherlockFragmentActivity activity) {
+        super(title, iconRes, activity);
+    }
 
-    public static final String BODY = "messages_body";
+    @Override
+    protected void onSelectItem() {
+        if (!isSelected()) {
+            Intent i = new Intent(mActivity, FilterTabActivity.class);
+            launchActivity(i);
+        }
+    }
 
-    public static final String DATE = "messages_date";
+    @Override
+    public boolean isSelected() {
+        return mActivity instanceof FilterTabActivity;
+    }
 
-    public static final String MESSAGE_UUID = "message_uuid";
 
-    public static final String TABLE = "messages";
+    @Override
+    public void setCounter() {
 
-    public static final String[] COLUMNS = new String[]{MESSAGE_UUID,
-            FROM, BODY, DATE};
-
-    // NOTE: the message ID is used as the row ID.
-    // Furthermore, if a row already exists, an insert will replace
-    // the old row upon conflict.
-
-    public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE + " (" + MESSAGE_UUID + " TEXT, " + FROM
-            + " TEXT NOT NULL, " + BODY + " TEXT, " + DATE + " DATE NOT NULL "
-            + ")";
-
+    }
 }

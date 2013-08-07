@@ -32,16 +32,16 @@ public interface IFilterContentProvider {
 
     public List<Filter> fetchByStatus(int status);
 
-	public boolean add(Filter syncUrl);
+    public boolean add(Filter syncUrl);
 
-	public boolean add(List<Filter> filterLists);
+    public boolean add(List<Filter> filterLists);
 
-	public boolean deleteAll();
+    public boolean deleteAll();
 
-	public boolean deleteById(int id);
+    public boolean deleteById(int id);
 
-	public boolean update(Filter filter);
-	
-	public int total();
+    public boolean update(Filter filter);
+
+    public int total();
 
 }

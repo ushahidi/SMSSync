@@ -29,79 +29,79 @@ import android.database.sqlite.SQLiteException;
 
 public abstract class DbContentProvider {
 
-	public SQLiteDatabase mDb;
+    public SQLiteDatabase mDb;
 
-	public int delete(String tableName, String selection, String[] selectionArgs) {
-		return mDb.delete(tableName, selection, selectionArgs);
+    public int delete(String tableName, String selection, String[] selectionArgs) {
+        return mDb.delete(tableName, selection, selectionArgs);
 
-	}
+    }
 
-	public long insert(String tableName, ContentValues values) {
-		return mDb.insert(tableName, null, values);
+    public long insert(String tableName, ContentValues values) {
+        return mDb.insert(tableName, null, values);
 
-	}
+    }
 
-	protected abstract Object cursorToEntity(Cursor cursor);
+    protected abstract Object cursorToEntity(Cursor cursor);
 
-	public DbContentProvider(SQLiteDatabase db) {
+    public DbContentProvider(SQLiteDatabase db) {
 
-		this.mDb = db;
+        this.mDb = db;
 
-	}
+    }
 
-	public Cursor query(String tableName, String[] columns, String selection,
-			String[] selectionArgs, String sortOrder) {
-		try {
-			return mDb.query(tableName, columns, selection,
-					selectionArgs, null, null, sortOrder);
-		} catch (SQLiteException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public Cursor query(String tableName, String[] columns, String selection,
+            String[] selectionArgs, String sortOrder) {
+        try {
+            return mDb.query(tableName, columns, selection,
+                    selectionArgs, null, null, sortOrder);
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public Cursor query(String tableName, String[] columns, String selection,
-			String[] selectionArgs, String sortOrder, String limit) {
-		try {
-			return mDb.query(tableName, columns, selection, selectionArgs,
-					null, null, sortOrder, limit);
-		} catch (SQLiteException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public Cursor query(String tableName, String[] columns, String selection,
+            String[] selectionArgs, String sortOrder, String limit) {
+        try {
+            return mDb.query(tableName, columns, selection, selectionArgs,
+                    null, null, sortOrder, limit);
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	public int update(String tableName, ContentValues values, String selection,
-			String[] selectionArgs) {
-		try {
-			return mDb.update(tableName, values, selection, selectionArgs);
-		} catch (SQLiteException e) {
-			e.printStackTrace();
-		}
-		return -1;
-	}
+    public int update(String tableName, ContentValues values, String selection,
+            String[] selectionArgs) {
+        try {
+            return mDb.update(tableName, values, selection, selectionArgs);
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
-	public Cursor rawQuery(String sql, String[] selectionArgs) {
-		try {
-			return mDb.rawQuery(sql, selectionArgs);
-		} catch (SQLiteException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    public Cursor rawQuery(String sql, String[] selectionArgs) {
+        try {
+            return mDb.rawQuery(sql, selectionArgs);
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	protected void log(String message) {
-		Logger.log(getClass().getName(), message);
-	}
+    protected void log(String message) {
+        Logger.log(getClass().getName(), message);
+    }
 
-	protected void log(String format, Object... args) {
+    protected void log(String format, Object... args) {
 
-		Logger.log(getClass().getName(), String.format(format, args));
-	}
+        Logger.log(getClass().getName(), String.format(format, args));
+    }
 
-	protected void log(String message, Exception ex) {
+    protected void log(String message, Exception ex) {
 
-		Logger.log(getClass().getName(), message, ex);
-	}
+        Logger.log(getClass().getName(), message, ex);
+    }
 
 }

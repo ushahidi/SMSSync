@@ -30,10 +30,10 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * The manifest Receiver is used to detect changes in battery state. When the
- * system broadcasts a "Battery Low" warning we turn off we stop all enabled
- * services When the system broadcasts "Battery OK" to indicate the battery has
- * returned to an okay state, we start all enabled services
+ * The manifest Receiver is used to detect changes in battery state. When the system broadcasts a
+ * "Battery Low" warning we turn off we stop all enabled services When the system broadcasts
+ * "Battery OK" to indicate the battery has returned to an okay state, we start all enabled
+ * services
  */
 
 public class PowerStateChangedReceiver extends BroadcastReceiver {
@@ -58,7 +58,8 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
 
                 // Stop the service that pushes pending messages
                 if (Prefs.enableAutoSync) {
-                    smsSyncAutoSyncServiceIntent = new Intent(context, SyncPendingMessagesService.class);
+                    smsSyncAutoSyncServiceIntent = new Intent(context,
+                            SyncPendingMessagesService.class);
                     context.stopService(smsSyncAutoSyncServiceIntent);
                 }
 

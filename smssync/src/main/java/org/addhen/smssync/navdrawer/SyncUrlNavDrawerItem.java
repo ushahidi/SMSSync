@@ -20,10 +20,10 @@
 
 package org.addhen.smssync.navdrawer;
 
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
 import org.addhen.smssync.fragments.SyncUrlFragment;
 import org.addhen.smssync.models.SyncUrl;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * Menu Item for SyncUrlFragment

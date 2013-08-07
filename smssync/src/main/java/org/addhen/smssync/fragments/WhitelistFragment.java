@@ -33,7 +33,6 @@ import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddPhoneNumber;
 import org.addhen.smssync.views.AddSyncUrl;
-import org.addhen.smssync.views.BlacklistView;
 import org.addhen.smssync.views.WhitelistView;
 
 import android.app.Activity;

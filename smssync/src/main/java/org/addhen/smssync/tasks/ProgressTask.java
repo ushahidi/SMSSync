@@ -20,60 +20,59 @@
 
 package org.addhen.smssync.tasks;
 
+import org.addhen.smssync.R;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 
-import org.addhen.smssync.R;
-
 /**
- * ProgressTask Parent class for all AsyncTasks that need to show ProgressDialog
- * while executing
+ * ProgressTask Parent class for all AsyncTasks that need to show ProgressDialog while executing
  */
 public abstract class ProgressTask extends Task<String, String, Boolean> {
 
-	protected final ProgressDialog dialog;
+    protected final ProgressDialog dialog;
 
-	protected ProgressCallback callback;
+    protected ProgressCallback callback;
 
-	protected ProgressTask(Activity activity) {
-		this(activity, R.string.loading);
-	}
+    protected ProgressTask(Activity activity) {
+        this(activity, R.string.loading);
+    }
 
-	protected ProgressTask(Activity activity, int message) {
-		super(activity);
-		this.dialog = new ProgressDialog(activity);
-		this.dialog.setCancelable(false);
-		this.dialog.setIndeterminate(true);
-		this.dialog.setMessage(activity.getString(message));
-	}
-	
-	public void register(ProgressCallback callback) {
-		this.callback = callback;
-	}
+    protected ProgressTask(Activity activity, int message) {
+        super(activity);
+        this.dialog = new ProgressDialog(activity);
+        this.dialog.setCancelable(false);
+        this.dialog.setIndeterminate(true);
+        this.dialog.setMessage(activity.getString(message));
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		dialog.show();
-	}
+    public void register(ProgressCallback callback) {
+        this.callback = callback;
+    }
 
-	@Override
-	protected void onProgressUpdate(String... values) {
-		super.onProgressUpdate(values);
-		if (values != null && values.length > 0) {
-			dialog.setMessage(values[0]);
-		}
-		if (!dialog.isShowing()) {
-			dialog.show();
-		}
-	}
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        dialog.show();
+    }
 
-	@Override
-	protected void onPostExecute(Boolean success) {
-		super.onPostExecute(success);
-		dialog.dismiss();
-		if (callback != null) {
-			callback.execute();
-		}
-	}
+    @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+        if (values != null && values.length > 0) {
+            dialog.setMessage(values[0]);
+        }
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+    }
+
+    @Override
+    protected void onPostExecute(Boolean success) {
+        super.onPostExecute(success);
+        dialog.dismiss();
+        if (callback != null) {
+            callback.execute();
+        }
+    }
 }

@@ -31,7 +31,7 @@ import android.os.SystemClock;
 
 /**
  * This class schedules the various tasks that needs to be executed periodically
- * 
+ *
  * @author eyedol
  */
 public class ScheduleServices {
@@ -59,7 +59,7 @@ public class ScheduleServices {
 
     /**
      * Stops the schedule service or task
-     * 
+     *
      * @param context The calling context
      */
     public void stopScheduler() {

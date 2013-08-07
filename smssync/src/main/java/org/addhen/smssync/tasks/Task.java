@@ -26,36 +26,36 @@ import android.util.Log;
 
 /**
  * BaseTask
- * 
+ *
  * Parent class for all AsyncTasks
  */
 public abstract class Task<A, P, R> extends AsyncTask<A, P, R> {
 
-	protected Activity activity;
+    protected Activity activity;
 
-	protected Task(Activity activity) {
-		this.activity = activity;
-	}
+    protected Task(Activity activity) {
+        this.activity = activity;
+    }
 
-	@Override
-	protected void onPreExecute() {
-		log("onPreExecute");
-	}
+    @Override
+    protected void onPreExecute() {
+        log("onPreExecute");
+    }
 
-	@Override
-	protected void onPostExecute(R result) {
-		log("onPostExecute %s", result);
-	}
+    @Override
+    protected void onPostExecute(R result) {
+        log("onPostExecute %s", result);
+    }
 
-	protected void log(String message) {
-		Log.i(getClass().getName(), message);
-	}
+    protected void log(String message) {
+        Log.i(getClass().getName(), message);
+    }
 
-	protected void log(String format, Object... args) {
-		Log.i(getClass().getName(), String.format(format, args));
-	}
+    protected void log(String format, Object... args) {
+        Log.i(getClass().getName(), String.format(format, args));
+    }
 
-	protected void log(String message, Exception ex) {
-		Log.e(getClass().getName(), message, ex);
-	}
+    protected void log(String message, Exception ex) {
+        Log.e(getClass().getName(), message, ex);
+    }
 }

@@ -4,7 +4,6 @@ import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;

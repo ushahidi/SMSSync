@@ -36,8 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 /**
- * BaseListActivity Add shared functionality that exists between all List
- * Activities
+ * BaseListActivity Add shared functionality that exists between all List Activities
  */
 public abstract class BaseListActivity<V extends View, M extends Model, L extends BaseListAdapter<M>>
         extends BaseActivity<V> implements AdapterView.OnItemClickListener,
@@ -65,11 +64,11 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
 
     /**
      * BaseListActivity
-     * 
-     * @param view View clas type
-     * @param adapter List adapter class type
-     * @param layout layout resource id
-     * @param menu menu resource id
+     *
+     * @param view     View clas type
+     * @param adapter  List adapter class type
+     * @param layout   layout resource id
+     * @param menu     menu resource id
      * @param listView list view resource id
      */
     protected BaseListActivity(Class<V> view, Class<L> adapter, int layout,
@@ -104,7 +103,7 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
 
     /**
      * Called after ListAdapter has been loaded
-     * 
+     *
      * @param success true is successfully loaded
      */
     protected abstract void onLoaded(boolean success);
@@ -147,10 +146,11 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
     }
 
     /**
-     * ProgressTask sub-class for showing Loading... dialog while the
-     * BaseListAdapter loads the data
+     * ProgressTask sub-class for showing Loading... dialog while the BaseListAdapter loads the
+     * data
      */
     protected class LoadingTask extends ProgressTask {
+
         public LoadingTask(FragmentActivity activity) {
             super(activity, R.string.loading);
         }

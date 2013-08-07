@@ -20,16 +20,12 @@
 package org.addhen.smssync.exceptions;
 
 /**
- * 
  * Localize exception messages
- *
  */
 public interface I8nException {
 
-    /** 
+    /**
      * Exception message resource ID
-     * 
-     * @return
      */
     int resId();
 

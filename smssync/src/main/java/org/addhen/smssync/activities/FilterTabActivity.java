@@ -20,6 +20,8 @@
 
 package org.addhen.smssync.activities;
 
+import com.actionbarsherlock.app.ActionBar;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.TabAdapter;
 import org.addhen.smssync.fragments.PendingMessages;
@@ -33,17 +35,15 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 
-import com.actionbarsherlock.app.ActionBar;
-
 public class FilterTabActivity extends BaseActivity<FilterTabView> {
 
     private ViewPager mViewPager;
 
     public TabAdapter mTabsAdapter;
 
-    public FilterTabActivity(Class<FilterTabView> view, int layout, int menu, int drawerLayoutId,
-            int listViewId) {
-        super(FilterTabView.class, R.layout.filter_tab, menu, drawerLayoutId, listViewId);
+    public FilterTabActivity() {
+        super(FilterTabView.class, R.layout.filter_tab, R.menu.main_activity, R.id.drawer_layout,
+                R.id.left_drawer);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class FilterTabActivity extends BaseActivity<FilterTabView> {
         if (savedInstanceState != null) {
             final int index = savedInstanceState.getInt("index");
             getSupportActionBar().setSelectedNavigationItem(index
-                    );
+            );
 
         }
 

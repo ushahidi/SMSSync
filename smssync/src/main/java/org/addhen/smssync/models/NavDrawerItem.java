@@ -29,6 +29,7 @@ public class NavDrawerItem extends Model {
 
     // Resource id for the title string
     protected String mTitle;
+
     // Resource id for the icon drawable
     protected int mIconRes;
 
@@ -65,7 +66,7 @@ public class NavDrawerItem extends Model {
 
     /**
      * Get the counter attached to a
-     * 
+     *
      * @return int
      */
     public int getCounter() {
