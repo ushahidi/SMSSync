@@ -23,13 +23,15 @@ package org.addhen.smssync.navdrawer;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import org.addhen.smssync.activities.FilterTabActivity;
-
-import android.content.Intent;
+import org.addhen.smssync.fragments.WhitelistFragment;
+import org.addhen.smssync.models.Filter;
 
 /**
  * Filter Nav Drawer Item
  */
 public class WhitelistNavDrawerItem extends BaseNavDrawerItem {
+
+    private static final String TAG = "whitelist";
 
     /**
      * Filter Nav Drawer
@@ -41,10 +43,8 @@ public class WhitelistNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
-        if (!isSelected()) {
-            Intent i = new Intent(mActivity, FilterTabActivity.class);
-            launchActivity(i);
-        }
+        fragment = new WhitelistFragment();
+        showFragment(TAG);
     }
 
     @Override
@@ -55,6 +55,8 @@ public class WhitelistNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-
+        Filter filter = new Filter();
+        filter.loadByStatus(Filter.Status.WHITELIST);
+        mCounter = filter.getFilterList().size();
     }
 }

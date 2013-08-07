@@ -22,14 +22,15 @@ package org.addhen.smssync.navdrawer;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-import org.addhen.smssync.activities.FilterTabActivity;
-
-import android.content.Intent;
+import org.addhen.smssync.fragments.BlacklistFragment;
+import org.addhen.smssync.models.Filter;
 
 /**
  * Filter Nav Drawer Item
  */
 public class BlacklistNavDrawerItem extends BaseNavDrawerItem {
+
+    private static final String TAG = "blacklist";
 
     /**
      * Filter Nav Drawer
@@ -41,20 +42,15 @@ public class BlacklistNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
-        if (!isSelected()) {
-            Intent i = new Intent(mActivity, FilterTabActivity.class);
-            launchActivity(i);
-        }
-    }
-
-    @Override
-    public boolean isSelected() {
-        return mActivity instanceof FilterTabActivity;
+        fragment = new BlacklistFragment();
+        showFragment(TAG);
     }
 
 
     @Override
     public void setCounter() {
-
+        Filter filter = new Filter();
+        filter.loadByStatus(Filter.Status.BLACKLIST);
+        mCounter = filter.getFilterList().size();
     }
 }

@@ -85,7 +85,6 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     }
 
 
-
     protected void launchActivity(Intent intent) {
         mActivity.startActivity(intent);
     }
