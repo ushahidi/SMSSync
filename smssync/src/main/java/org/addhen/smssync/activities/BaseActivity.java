@@ -34,6 +34,7 @@ import org.addhen.smssync.navdrawer.DonationNavDrawerItem;
 import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
+import org.addhen.smssync.navdrawer.WhitelistNavDrawerItem;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
@@ -432,6 +433,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
         BlacklistNavDrawerItem filterNavDrawerItem;
 
+        WhitelistNavDrawerItem whitelistNavDrawerItem;
+
         List<BaseNavDrawerItem> navDrawerItem;
 
         protected NavDrawerItemTask(Activity activity) {
@@ -444,13 +447,20 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             sentMessagesNavDrawerItem = new SentMessagesNavDrawerItem(
                     getString(R.string.sent_messages),
                     R.drawable.sent, BaseActivity.this);
+
             syncUrlNavDrawerItem = new SyncUrlNavDrawerItem(getString(
                     R.string.sync_url),
                     R.drawable.sync_url, BaseActivity.this);
+
             donationNavDrawerItem = new DonationNavDrawerItem(getString(R.string.donate),
                     R.drawable.donate, BaseActivity.this);
-            filterNavDrawerItem = new BlacklistNavDrawerItem(getString(R.string.filter),
-                    R.drawable.whitelist_blacklist, BaseActivity.this);
+
+            filterNavDrawerItem = new BlacklistNavDrawerItem(getString(R.string.blacklist),
+                    R.drawable.blacklist, BaseActivity.this);
+
+            whitelistNavDrawerItem = new WhitelistNavDrawerItem(getString(R.string.whitelist),
+                    R.drawable.whitelist, BaseActivity.this);
+
             navDrawerItem = new ArrayList<BaseNavDrawerItem>();
 
         }
@@ -469,10 +479,12 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             syncUrlNavDrawerItem.setCounter();
             donationNavDrawerItem.setCounter();
             filterNavDrawerItem.setCounter();
+            whitelistNavDrawerItem.setCounter();
             navDrawerItem.add(pendingMessagesNavDrawerItem);
             navDrawerItem.add(sentMessagesNavDrawerItem);
             navDrawerItem.add(syncUrlNavDrawerItem);
             navDrawerItem.add(donationNavDrawerItem);
+            navDrawerItem.add(whitelistNavDrawerItem);
             navDrawerItem.add(filterNavDrawerItem);
 
             return true;
@@ -483,7 +495,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             super.onPostExecute(success);
             navDrawerAdapter.setItems(navDrawerItem);
             listView.setAdapter(navDrawerAdapter);
-            //selectItem(0);
+            selectItem(0);
         }
     }
 

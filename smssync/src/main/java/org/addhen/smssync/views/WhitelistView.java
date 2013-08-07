@@ -29,13 +29,13 @@ import android.widget.TextView;
 
 public class WhitelistView extends View {
 
-    @Widget(R.id.enable_whitelist_checkbox)
+    @Widget(R.id.enable_checkbox)
     public CheckBox enableWhitelist;
 
     @Widget(R.id.loading_list_progress)
     public ProgressBar listLoadingProgress;
 
-    @Widget(R.id.empty_list)
+    @Widget(android.R.id.empty)
     public TextView emptyView;
 
     public WhitelistView(Activity activity) {

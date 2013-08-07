@@ -25,9 +25,6 @@ import com.actionbarsherlock.app.ActionBar;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.TabAdapter;
 import org.addhen.smssync.fragments.BlacklistFragment;
-import org.addhen.smssync.fragments.PendingMessages;
-import org.addhen.smssync.fragments.SentMessageFragment;
-import org.addhen.smssync.fragments.SyncUrlFragment;
 import org.addhen.smssync.fragments.WhitelistFragment;
 import org.addhen.smssync.views.FilterTabView;
 
@@ -64,7 +61,6 @@ public class FilterTabActivity extends BaseActivity<FilterTabView> {
         mTabsAdapter = new TabAdapter(this, getSupportActionBar(), mViewPager);
         mTabsAdapter.addTab(whitelistTab, WhitelistFragment.class);
         mTabsAdapter.addTab(blacklistTab, BlacklistFragment.class);
-
 
         if (savedInstanceState != null) {
             final int index = savedInstanceState.getInt("index");

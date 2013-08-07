@@ -15,12 +15,12 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
     <CheckBox
-            android:id="@+id/enable_blacklist_checkbox"
+            android:id="@+id/enable_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/enable_blacklist" android:layout_gravity="center"/>
+            android:text="@string/enable_whitelist" android:layout_gravity="center"/>
 
     <!-- List pending messages -->
 

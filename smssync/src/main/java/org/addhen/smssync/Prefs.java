@@ -30,6 +30,8 @@ import android.content.SharedPreferences;
  */
 public class Prefs {
 
+    public static final String PREF_NAME = "SMS_SYNC_PREF";
+
     public static int autoTime = 5;
 
     public static int taskCheckTime = 5;
@@ -56,14 +58,16 @@ public class Prefs {
 
     public static long lastSyncDate = 0;
 
-    private static SharedPreferences.Editor editor;
+    public static Boolean enableWhitelist = false;
 
-    public static final String PREF_NAME = "SMS_SYNC_PREF";
+    public static Boolean enableBlacklist = false;
+
+    private static SharedPreferences.Editor editor;
 
     /**
      * Load the value of the settings / preference variable.
      *
-     * @param Context context - The context of the calling activity.
+     * @param context - The context of the calling activity.
      * @return void
      */
     public static void loadPreferences(Context context) {
@@ -85,6 +89,8 @@ public class Prefs {
         uniqueId = settings.getString("UniqueId", "");
         taskCheckTime = settings.getInt("taskCheck", taskCheckTime);
         lastSyncDate = settings.getLong("LastSyncDate", 0);
+        enableBlacklist = settings.getBoolean("EnableBlacklist", false);
+        enableWhitelist = settings.getBoolean("EnableWhitelist", false);
     }
 
     /**
@@ -106,6 +112,8 @@ public class Prefs {
         editor.putInt("taskCheck", taskCheckTime);
         editor.putString("UniqueId", uniqueId);
         editor.putLong("LastSyncDate", lastSyncDate);
+        editor.putBoolean("EnableBlackList", enableBlacklist);
+        editor.putBoolean("EnableWhiteList", enableWhitelist);
         editor.commit();
     }
 }

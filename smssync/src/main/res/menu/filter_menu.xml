@@ -19,7 +19,7 @@
             android:showAsAction="ifRoom"
             android:title="@string/add_phone_number"/>
     <item
-            android:id="@+id/delete_all_sync_url"
+            android:id="@+id/delete_all_phone_numbers"
             android:icon="@drawable/delete"
             android:orderInCategory="1"
             android:showAsAction="never"

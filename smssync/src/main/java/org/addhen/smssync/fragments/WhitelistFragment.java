@@ -132,15 +132,15 @@ public class WhitelistFragment extends
             edit = false;
             addPhoneNumber();
             return (true);
-        } else if (item.getItemId() == R.id.delete_all_sync_url) {
+        } else if (item.getItemId() == R.id.delete_all_phone_numbers) {
             // load all blacklisted phone numbers
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
                 showMessage(R.string.disable_to_delete_all_syncurl);
 
                 // check if a service is running
-            } else if (Prefs.enabled) {
-                showMessage(R.string.disable_smssync_service);
+            } else if (Prefs.enableWhitelist) {
+                showMessage(R.string.disable_whitelist);
             } else {
                 performDeleteAll();
             }
@@ -170,26 +170,6 @@ public class WhitelistFragment extends
                         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    /**
-     * Validates the Sync URL to be added
-     *
-     * @return boolean
-     */
-    public boolean validateSyncUrlEntry(AddSyncUrl addSyncUrl) {
-        boolean noError = false;
-        if (addSyncUrl != null) {
-            if (TextUtils.isEmpty(addSyncUrl.title.getText().toString())) {
-                toastLong(R.string.empty_sync_url_title);
-            } else if (Util.validateCallbackUrl(addSyncUrl.url.getText()
-                    .toString()) == 1) {
-                toastLong(R.string.valid_sync_url);
-            } else {
-                noError = true;
-            }
-        }
-        return noError;
     }
 
     /**
@@ -321,26 +301,22 @@ public class WhitelistFragment extends
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
                 if (view.enableWhitelist.isChecked()) {
-                    // start sms receiver
-
-                    //Prefs.enabled = true;
+                    Prefs.enableWhitelist = true;
                     view.enableWhitelist.setChecked(true);
-
-
                 } else {
 
                     //Prefs.enabled = false;
                     view.enableWhitelist.setChecked(false);
                 }
             } else {
-                toastLong(R.string.no_enabled_sync_url);
-                Prefs.enabled = false;
+                toastLong(R.string.no_phone_number_to_enable_whitelist);
+                Prefs.enableWhitelist = false;
                 view.enableWhitelist.setChecked(false);
             }
 
         } else {
-            toastLong(R.string.no_sync_url_added);
-            Prefs.enabled = false;
+            toastLong(R.string.no_phone_number_to_enable_whitelist);
+            Prefs.enableWhitelist = false;
             view.enableWhitelist.setChecked(false);
         }
         Prefs.savePreferences(getActivity());
@@ -421,13 +397,13 @@ public class WhitelistFragment extends
             view.emptyView.setVisibility(View.VISIBLE);
             if (success) {
                 if (deleted == 1) {
-                    toastLong(R.string.no_sync_url_to_delete);
+                    toastLong(R.string.no_phone_number_to_delete);
                 } else {
                     if (deleted == 2) {
-                        toastLong(R.string.sync_url_deleted);
+                        toastLong(R.string.phone_number_deleted);
 
                     } else {
-                        toastLong(R.string.sync_url_deleted_failed);
+                        toastLong(R.string.deleting_phone_number_failed);
                     }
 
                 }

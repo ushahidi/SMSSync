@@ -15,7 +15,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
     <CheckBox
-            android:id="@+id/enable_whitelist_checkbox"
+            android:id="@+id/enable_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -29,17 +29,6 @@
             android:layout_height="match_parent"
             android:padding="5dp">
 
-        <ListView
-                android:id="@id/android:list"
-                style="@style/ListView"/>
-
-        <TextView
-                android:id="@+id/empty_list"
-                style="@style/TextView.Empty"
-                android:visibility="gone"
-                android:text="@string/no_whitelist"/>
-        <ProgressBar android:id="@+id/loading_list_progress" android:layout_width="wrap_content"
-                     android:layout_height="wrap_content" android:layout_centerInParent="true"
-                     style="@style/Widget.Sherlock.ProgressBar"/>
+        <include layout="@layout/list_items"/>
     </RelativeLayout>
 </LinearLayout>

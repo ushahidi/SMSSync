@@ -29,7 +29,7 @@ import android.widget.TextView;
 
 public class BlacklistView extends View {
 
-    @Widget(R.id.enable_blacklist_checkbox)
+    @Widget(R.id.enable_checkbox)
     public CheckBox enableBlacklist;
 
     @Widget(R.id.loading_list_progress)
@@ -41,6 +41,7 @@ public class BlacklistView extends View {
     public BlacklistView(Activity activity) {
         super(activity);
         emptyView.setText(R.string.no_blacklist);
+        enableBlacklist.setText(R.string.enable_blacklist);
     }
 
 }

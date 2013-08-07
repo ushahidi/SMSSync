@@ -281,7 +281,7 @@
     <string name="filter">Filter</string>
     <string name="enable_whitelist">Enable Whitelist</string>
     <string name="enable_blacklist">Enable Blacklist</string>
-    <string name="no_whitelist">No Whitelisted Phone Numbers. \nUse the "+" button above to add
+    <string name="no_whitelist">No whitelisted phone numbers. \nUse the "+" button above to add
         one.
     </string>
     <string name="no_blacklist">No blacklisted phone numbers. \nUse the "+" button above to add
@@ -290,4 +290,11 @@
     <string name="enter_phone_number">Enter a phone number</string>
     <string name="add_phone_number">Add a phone number</string>
     <string name="add_phone_number_list">Add a phone number to the list</string>
+    <string name="no_phone_number_to_enable_whitelist">Add at least one phone number to enable whitelist feature.</string>
+    <string name="no_phone_number_to_enable_blacklist">Add at least one phone number to enable blacklist feature.</string>
+    <string name="no_phone_number_to_delete">There are no phone numbers to delete.</string>
+    <string name="phone_number_deleted">Phone number successfully deleted.</string>
+    <string name="deleting_phone_number_failed">Phone number couldn\'t be deleted.</string>
+    <string name="disable_whitelist">Whitelist is enabled. You cannot perform a deletion until you disable the whitelist feature. Disable Whitelist then try this action again.</string>
+
 </resources>
