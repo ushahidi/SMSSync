@@ -34,7 +34,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 
 import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 public class FilterTabActivity extends BaseActivity<FilterTabView> {
 
@@ -44,13 +43,13 @@ public class FilterTabActivity extends BaseActivity<FilterTabView> {
 
     public FilterTabActivity(Class<FilterTabView> view, int layout, int menu, int drawerLayoutId,
             int listViewId) {
-        super(FilterTabView.class, R.layout.list_messages_tab, menu, drawerLayoutId, listViewId);
+        super(FilterTabView.class, R.layout.filter_tab, menu, drawerLayoutId, listViewId);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_messages_tab);
+        setContentView(R.layout.filter_tab);
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         ActionBar.Tab pendingTab = getSupportActionBar().newTab().setText(
                 getString(R.string.pending_messages));
