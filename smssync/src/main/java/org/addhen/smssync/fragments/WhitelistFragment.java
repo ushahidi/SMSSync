@@ -25,7 +25,6 @@ import com.actionbarsherlock.view.MenuItem;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.FilterAdapter;
-import org.addhen.smssync.listeners.BlacklistActionModeListener;
 import org.addhen.smssync.listeners.WhitelistActionModeListener;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.tasks.ProgressTask;
@@ -64,7 +63,7 @@ public class WhitelistFragment extends
 
     private LinkedHashSet<Integer> mSelectedItemsPositions;
 
-    private BlacklistActionModeListener multichoiceActionModeListener;
+    private WhitelistActionModeListener multichoiceActionModeListener;
 
     public WhitelistFragment() {
         super(WhitelistView.class, FilterAdapter.class, R.layout.whitelist,
@@ -78,12 +77,13 @@ public class WhitelistFragment extends
         setHasOptionsMenu(true);
 
         Prefs.loadPreferences(getActivity());
+        multichoiceActionModeListener = new WhitelistActionModeListener(this,
+                listView);
 
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setOnItemLongClickListener(new WhitelistActionModeListener(this,
-                listView));
+        listView.setOnItemLongClickListener(multichoiceActionModeListener);
         listView.setOnItemClickListener(this);
         view.enableWhitelist.setChecked(Prefs.enabled);
         view.enableWhitelist.setOnClickListener(this);
@@ -113,8 +113,8 @@ public class WhitelistFragment extends
 
     public boolean performAction(MenuItem item) {
 
-        //id = adapter.getItem(position).getId();
-        if (item.getItemId() == R.id.sync_url_context_delete_sync_url) {
+        if (item.getItemId() == R.id.context_delete) {
+            mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
             performDeleteById();
             return (true);
         }
@@ -217,7 +217,7 @@ public class WhitelistFragment extends
         // if edit was selected at the context menu, populate fields
         // with existing sync URL details
         if (edit) {
-           new Handler().post( new Runnable(){
+            new Handler().post(new Runnable() {
                 @Override
                 public void run() {
                     model.loadById(id);
@@ -226,7 +226,7 @@ public class WhitelistFragment extends
                         addPhoneNumber.phoneNumber.setText(filters.get(0).getPhoneNumber());
                     }
                 }
-            } );
+            });
 
         }
 
@@ -298,7 +298,7 @@ public class WhitelistFragment extends
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
                 if (view.enableWhitelist.isChecked()) {
-
+                    Prefs.enableWhitelist = true;
                     view.enableWhitelist.setChecked(true);
                 } else {
 
@@ -331,8 +331,6 @@ public class WhitelistFragment extends
     }
 
     private class LoadingTask extends ProgressTask {
-
-        protected boolean loadSyncUrlByStatus = false;
 
         public LoadingTask(Activity activity) {
             super(activity);
@@ -385,7 +383,9 @@ public class WhitelistFragment extends
                 deleted = 1;
             } else {
                 if (deletebyUuid) {
-                    model.deleteById(id);
+                    for (Integer position : mSelectedItemsPositions) {
+                        model.deleteById(adapter.getItem(position).getId());
+                    }
                 } else {
                     model.deleteAll();
                 }
@@ -411,6 +411,10 @@ public class WhitelistFragment extends
 
                 }
                 adapter.setItems(model.getFilterList());
+                if (multichoiceActionModeListener.activeMode != null) {
+                    multichoiceActionModeListener.activeMode.finish();
+                    multichoiceActionModeListener.getSelectedItemPositions().clear();
+                }
             }
         }
     }

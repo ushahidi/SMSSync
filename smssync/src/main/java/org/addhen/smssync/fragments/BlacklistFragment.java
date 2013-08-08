@@ -29,9 +29,7 @@ import org.addhen.smssync.listeners.BlacklistActionModeListener;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddPhoneNumber;
-import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.BlacklistView;
 
 import android.app.Activity;
@@ -39,7 +37,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -52,7 +50,7 @@ import static org.addhen.smssync.models.Filter.Status.BLACKLIST;
 
 public class BlacklistFragment extends
         BaseListFragment<BlacklistView, Filter, FilterAdapter> implements
-        View.OnClickListener {
+        View.OnClickListener, AdapterView.OnItemClickListener {
 
     private Filter model;
 
@@ -78,12 +76,13 @@ public class BlacklistFragment extends
         setHasOptionsMenu(true);
 
         Prefs.loadPreferences(getActivity());
-
+        multichoiceActionModeListener = new BlacklistActionModeListener(this,
+                listView);
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setOnItemLongClickListener(new BlacklistActionModeListener(this,
-                listView));
+        listView.setOnItemLongClickListener(multichoiceActionModeListener);
+
         view.enableBlacklist.setChecked(Prefs.enabled);
         view.enableBlacklist.setOnClickListener(this);
 
@@ -112,13 +111,8 @@ public class BlacklistFragment extends
 
     public boolean performAction(MenuItem item) {
 
-        //id = adapter.getItem(position).getId();
-
-        if (item.getItemId() == R.id.sync_url_context_edit_sync_url) {
-            edit = true;
-            addPhoneNumber();
-            return (true);
-        } else if (item.getItemId() == R.id.sync_url_context_delete_sync_url) {
+        if (item.getItemId() == R.id.context_delete) {
+            mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
             performDeleteById();
             return (true);
         }
@@ -134,13 +128,8 @@ public class BlacklistFragment extends
             return (true);
         } else if (item.getItemId() == R.id.delete_all_sync_url) {
             // load all blacklisted phone numbers
-            load();
-            if (model.getFilterList() != null && model.getFilterList().size() > 0) {
-                showMessage(R.string.disable_to_delete_all_syncurl);
-
-                // check if a service is running
-            } else if (Prefs.enabled) {
-                showMessage(R.string.disable_smssync_service);
+            if (Prefs.enableBlacklist) {
+                showMessage(R.string.disable_blacklist);
             } else {
                 performDeleteAll();
             }
@@ -170,26 +159,6 @@ public class BlacklistFragment extends
                         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    /**
-     * Validates the Sync URL to be added
-     *
-     * @return boolean
-     */
-    public boolean validateSyncUrlEntry(AddSyncUrl addSyncUrl) {
-        boolean noError = false;
-        if (addSyncUrl != null) {
-            if (TextUtils.isEmpty(addSyncUrl.title.getText().toString())) {
-                toastLong(R.string.empty_sync_url_title);
-            } else if (Util.validateCallbackUrl(addSyncUrl.url.getText()
-                    .toString()) == 1) {
-                toastLong(R.string.valid_sync_url);
-            } else {
-                noError = true;
-            }
-        }
-        return noError;
     }
 
     /**
@@ -246,11 +215,17 @@ public class BlacklistFragment extends
         // if edit was selected at the context menu, populate fields
         // with existing sync URL details
         if (edit) {
-            model.loadById(id);
-            filters = model.getFilterList();
-            if (filters != null && filters.size() > 0) {
-                addPhoneNumber.phoneNumber.setText(filters.get(0).getPhoneNumber());
-            }
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    model.loadById(id);
+                    filters = model.getFilterList();
+                    if (filters != null && filters.size() > 0) {
+                        addPhoneNumber.phoneNumber.setText(filters.get(0).getPhoneNumber());
+                    }
+                }
+            });
+
         }
 
         final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
@@ -323,23 +298,23 @@ public class BlacklistFragment extends
                 if (view.enableBlacklist.isChecked()) {
                     // start sms receiver
 
-                    //Prefs.enabled = true;
+                    Prefs.enableBlacklist = true;
                     view.enableBlacklist.setChecked(true);
 
 
                 } else {
 
-                    //Prefs.enabled = false;
+                    Prefs.enableBlacklist = false;
                     view.enableBlacklist.setChecked(false);
                 }
             } else {
-                toastLong(R.string.no_enabled_sync_url);
-                Prefs.enabled = false;
+                toastLong(R.string.no_phone_number_to_enable_blacklist);
+                Prefs.enableBlacklist = false;
                 view.enableBlacklist.setChecked(false);
             }
 
         } else {
-            toastLong(R.string.no_sync_url_added);
+            toastLong(R.string.no_phone_number_to_enable_blacklist);
             Prefs.enabled = false;
             view.enableBlacklist.setChecked(false);
         }
@@ -350,14 +325,14 @@ public class BlacklistFragment extends
         return model.loadByStatus(BLACKLIST);
     }
 
-    public void onItemSelected(AdapterView<?> adapterView,
-            android.view.View view, int position, long id) {
-        toastLong("hello");
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        this.id = adapter.getItem(position).getId();
+        edit = true;
+        addPhoneNumber();
     }
 
     private class LoadingTask extends ProgressTask {
-
-        protected boolean loadSyncUrlByStatus = false;
 
         public LoadingTask(Activity activity) {
             super(activity);
@@ -383,7 +358,6 @@ public class BlacklistFragment extends
             if (success) {
 
                 adapter.setItems(model.getFilterList());
-                listView.setAdapter(adapter);
             }
         }
     }
@@ -411,7 +385,9 @@ public class BlacklistFragment extends
                 deleted = 1;
             } else {
                 if (deletebyUuid) {
-                    model.deleteById(id);
+                    for (Integer position : mSelectedItemsPositions) {
+                        model.deleteById(adapter.getItem(position).getId());
+                    }
                 } else {
                     model.deleteAll();
                 }
@@ -426,18 +402,21 @@ public class BlacklistFragment extends
             view.emptyView.setVisibility(View.VISIBLE);
             if (success) {
                 if (deleted == 1) {
-                    toastLong(R.string.no_sync_url_to_delete);
+                    toastLong(R.string.no_phone_number_to_delete);
                 } else {
                     if (deleted == 2) {
-                        toastLong(R.string.sync_url_deleted);
+                        toastLong(R.string.phone_number_deleted);
 
                     } else {
-                        toastLong(R.string.sync_url_deleted_failed);
+                        toastLong(R.string.deleting_phone_number_failed);
                     }
 
                 }
                 adapter.setItems(model.getFilterList());
-                listView.setAdapter(adapter);
+                if (multichoiceActionModeListener.activeMode != null) {
+                    multichoiceActionModeListener.activeMode.finish();
+                    multichoiceActionModeListener.getSelectedItemPositions().clear();
+                }
             }
         }
     }
@@ -475,9 +454,9 @@ public class BlacklistFragment extends
                 listView.setAdapter(adapter);
             } else {
                 if (editPhoneNumber) {
-                    toastLong(R.string.failed_to_update_sync_url);
+                    toastLong(R.string.failed_to_update_phone_number);
                 } else {
-                    toastLong(R.string.failed_to_add_sync_url);
+                    toastLong(R.string.failed_to_add_phone_number);
                 }
             }
         }
