@@ -49,6 +49,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import static org.addhen.smssync.models.Filter.Status.BLACKLIST;
+import static org.addhen.smssync.models.Filter.Status.WHITELIST;
 
 public class WhitelistFragment extends
         BaseListFragment<WhitelistView, Filter, FilterAdapter> implements
@@ -134,12 +135,7 @@ public class WhitelistFragment extends
             return (true);
         } else if (item.getItemId() == R.id.delete_all_phone_numbers) {
             // load all blacklisted phone numbers
-            load();
-            if (model.getFilterList() != null && model.getFilterList().size() > 0) {
-                showMessage(R.string.disable_to_delete_all_syncurl);
-
-                // check if a service is running
-            } else if (Prefs.enableWhitelist) {
+            if (Prefs.enableWhitelist) {
                 showMessage(R.string.disable_whitelist);
             } else {
                 performDeleteAll();
@@ -323,7 +319,7 @@ public class WhitelistFragment extends
     }
 
     private boolean load() {
-        return model.loadByStatus(BLACKLIST);
+        return model.loadByStatus(WHITELIST);
     }
 
     private class LoadingTask extends ProgressTask {
@@ -430,9 +426,9 @@ public class WhitelistFragment extends
         protected Boolean doInBackground(String... strings) {
             if (editPhoneNumber) {
 
-                status = addPhoneNumber.update(id, BLACKLIST);
+                status = addPhoneNumber.update(id, WHITELIST);
             } else {
-                status = addPhoneNumber.add(BLACKLIST);
+                status = addPhoneNumber.add(WHITELIST);
             }
             load();
             return status;
@@ -446,9 +442,9 @@ public class WhitelistFragment extends
                 listView.setAdapter(adapter);
             } else {
                 if (editPhoneNumber) {
-                    toastLong(R.string.failed_to_update_sync_url);
+                    toastLong(R.string.failed_to_update_phone_number);
                 } else {
-                    toastLong(R.string.failed_to_add_sync_url);
+                    toastLong(R.string.failed_to_add_phone_number);
                 }
             }
         }

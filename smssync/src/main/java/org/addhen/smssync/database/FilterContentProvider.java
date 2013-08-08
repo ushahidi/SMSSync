@@ -21,6 +21,7 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -50,7 +51,7 @@ public class FilterContentProvider extends DbContentProvider implements
     public List<Filter> fetchAll() {
 
         try {
-            cursor = super.query(TABLE, COLUMNS, null, null, ID);
+            cursor = super.query(TABLE, COLUMNS, null, null, ID +" DESC");
             if (cursor != null) {
 
                 mListFilter = new ArrayList<Filter>();
@@ -81,7 +82,7 @@ public class FilterContentProvider extends DbContentProvider implements
         };
 
         try {
-            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID +" DESC");
 
             if (cursor != null) {
                 mListFilter = new ArrayList<Filter>();
@@ -89,7 +90,6 @@ public class FilterContentProvider extends DbContentProvider implements
                 while (cursor.moveToNext()) {
                     Filter filter = cursorToEntity(cursor);
                     mListFilter.add(filter);
-
                 }
             }
         } finally {
@@ -111,7 +111,7 @@ public class FilterContentProvider extends DbContentProvider implements
         };
 
         try {
-            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID +" DESC");
             if (cursor != null) {
                 mListFilter = new ArrayList<Filter>();
                 while (cursor.moveToNext()) {
@@ -211,12 +211,9 @@ public class FilterContentProvider extends DbContentProvider implements
     }
 
     private void setContentValue(Filter filter) {
-
         mInitialValues = new ContentValues();
         mInitialValues.put(PHONE_NUMBER, filter.getPhoneNumber());
-        mInitialValues.put(ID, filter.getId());
         mInitialValues.put(STATUS, filter.getStatus().code);
-
     }
 
     @SuppressWarnings("unchecked")

@@ -13,8 +13,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip"
-                android:padding="5dip">
+                android:layout_marginBottom="5dp"
+                android:padding="10dp">
 
     <TextView
             android:id="@+id/filter_phone_number"
