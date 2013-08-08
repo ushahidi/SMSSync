@@ -253,7 +253,10 @@ public class ProcessMessage {
                 }
                 return true;
             } else {
-                saveMessage(message);
+                //only save to pending when the number is not blacklisted
+                if(!Prefs.enableBlacklist){
+                    saveMessage(message);
+                }
             }
         }
         return false;
@@ -339,22 +342,25 @@ public class ProcessMessage {
             if (Prefs.enableWhitelist) {
                 filters.loadByStatus(Filter.Status.WHITELIST);
                 for (Filter filter : filters.getFilterList()) {
-                    if (filter.getPhoneNumber() == message.getFrom()) {
+                    if (filter.getPhoneNumber().equals(message.getFrom())) {
                         return processMessage(message, syncUrl);
                     }
                 }
+                return false;
             }
 
             if (Prefs.enableBlacklist) {
+
                 filters.loadByStatus(Filter.Status.BLACKLIST);
                 for (Filter filter : filters.getFilterList()) {
-                    if (filter.getPhoneNumber() == message.getFrom()) {
-                        return processMessage(message, syncUrl);
-                    } else {
+
+                    if (filter.getPhoneNumber().equals(message.getFrom())) {
+                        Logger.log("message", " from:"+message.getFrom()+" filter:"+ filter.getPhoneNumber());
                         return false;
                     }
                 }
             } else {
+
                 return processMessage(message, syncUrl);
             }
 
