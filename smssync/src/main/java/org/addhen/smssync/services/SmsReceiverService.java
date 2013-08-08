@@ -293,24 +293,6 @@ public class SmsReceiverService extends Service {
         }
     }
 
-    // Display pending messages.
-    final Runnable mDisplayMessages = new Runnable() {
-
-        public void run() {
-            new PendingMessages().showMessages();
-        }
-
-    };
-
-    // Display pending messages.
-    final Runnable mDisplaySentMessages = new Runnable() {
-
-        public void run() {
-            // SentMessagesActivity.showMessages();
-        }
-
-    };
-
     protected void log(String message) {
         Logger.log(getClass().getName(), message);
     }

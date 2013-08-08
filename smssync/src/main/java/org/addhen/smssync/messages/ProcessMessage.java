@@ -2,6 +2,7 @@ package org.addhen.smssync.messages;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MessageSyncHttpClient;
@@ -242,20 +243,19 @@ public class ProcessMessage {
                 // send auto response as SMS to user's phone
                 processSms.sendSms(message.getFrom(), Prefs.reply);
             }
-        }
 
-        if (routeMessage(message)) {
+            if (routeMessage(message)) {
 
-            // Delete messages from message app's inbox, only
-            // when SMSSync has that feature turned on
-            if (Prefs.autoDelete) {
-                processSms.delSmsFromInbox(message.getBody(), message.getFrom());
+                // Delete messages from message app's inbox, only
+                // when SMSSync has that feature turned on
+                if (Prefs.autoDelete) {
+                    processSms.delSmsFromInbox(message.getBody(), message.getFrom());
+                }
+                return true;
+            } else {
+                saveMessage(message);
             }
-            return true;
-        } else {
-            saveMessage(message);
         }
-
         return false;
 
     }
@@ -268,6 +268,56 @@ public class ProcessMessage {
     }
 
     /**
+     *
+     * @param message
+     * @param syncUrl
+     * @return
+     */
+    private boolean processMessage(Message message, SyncUrl syncUrl) {
+        boolean posted = false;
+
+        // process filter text (keyword or RegEx)
+        if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
+            String filterText = syncUrl.getKeywords();
+            if (processSms.filterByKeywords(message.getBody(), filterText)
+                    || processSms.filterByRegex(message.getBody(), filterText)) {
+                Logger.log(TAG, syncUrl.getUrl());
+
+                posted = syncReceivedSms(message, syncUrl);
+                if (!posted) {
+                    // Note: HTTP Error code or custom error message
+                    // will have been shown already
+
+                    // attempt to make a data connection to sync
+                    // the failed messages.
+                    Util.connectToDataNetwork(context);
+
+                } else {
+
+                    processSms.postToSentBox(message, PENDING);
+                }
+
+            }
+
+        } else { // there is no filter text set up on a sync URL
+            posted = syncReceivedSms(message,
+                    syncUrl);
+            setErrorMessage(syncUrl.getUrl());
+            if (!posted) {
+
+                // attempt to make a data connection to the sync
+                // url
+                Util.connectToDataNetwork(context);
+
+            } else {
+
+                processSms.postToSentBox(message, PENDING);
+            }
+        }
+        return posted;
+    }
+
+    /**
      * Routes both incoming SMS and pending messages.
      *
      * @param message The message to be rounted
@@ -276,55 +326,38 @@ public class ProcessMessage {
 
         // load preferences
         Prefs.loadPreferences(context);
-
         boolean posted = false;
-
         // is SMSSync service running?
         if (!Prefs.enabled || !Util.isConnected(context)) {
             return posted;
         }
         SyncUrl model = new SyncUrl();
+        Filter filters = new Filter();
         // get enabled Sync URLs
         for (SyncUrl syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
-
-            // process filter text (keyword or RegEx)
-            if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
-                String filterText = syncUrl.getKeywords();
-                if (processSms.filterByKeywords(message.getBody(), filterText)
-                        || processSms.filterByRegex(message.getBody(), filterText)) {
-                    Logger.log(TAG, syncUrl.getUrl());
-
-                    posted = syncReceivedSms(message, syncUrl);
-                    if (!posted) {
-                        // Note: HTTP Error code or custom error message
-                        // will have been shown already
-
-                        // attempt to make a data connection to sync
-                        // the failed messages.
-                        Util.connectToDataNetwork(context);
-
-                    } else {
-
-                        processSms.postToSentBox(message, PENDING);
+            // white listed is enabled
+            if (Prefs.enableWhitelist) {
+                filters.loadByStatus(Filter.Status.WHITELIST);
+                for (Filter filter : filters.getFilterList()) {
+                    if (filter.getPhoneNumber() == message.getFrom()) {
+                        return processMessage(message, syncUrl);
                     }
-
-                }
-
-            } else { // there is no filter text set up on a sync URL
-                posted = syncReceivedSms(message,
-                        syncUrl);
-                setErrorMessage(syncUrl.getUrl());
-                if (!posted) {
-
-                    // attempt to make a data connection to the sync
-                    // url
-                    Util.connectToDataNetwork(context);
-
-                } else {
-
-                    processSms.postToSentBox(message, PENDING);
                 }
             }
+
+            if (Prefs.enableBlacklist) {
+                filters.loadByStatus(Filter.Status.BLACKLIST);
+                for (Filter filter : filters.getFilterList()) {
+                    if (filter.getPhoneNumber() == message.getFrom()) {
+                        return processMessage(message, syncUrl);
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return processMessage(message, syncUrl);
+            }
+
         }
 
         return posted;

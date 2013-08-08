@@ -121,9 +121,9 @@ public class WhitelistFragment extends
             } else {
                 performDeleteById();
             }
-            return (true);
+            return true;
         }
-        return (false);
+        return false;
     }
 
     @Override
