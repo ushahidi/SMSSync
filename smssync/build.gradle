@@ -55,7 +55,7 @@ android {
         }
 
         release {
-            signingConfig signingConfigs.release
+            signingConfigs.release
 
         }
 
