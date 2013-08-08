@@ -85,7 +85,8 @@ public class WhitelistFragment extends
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(multichoiceActionModeListener);
         listView.setOnItemClickListener(this);
-        view.enableWhitelist.setChecked(Prefs.enabled);
+
+        view.enableWhitelist.setChecked(Prefs.enableWhitelist);
         view.enableWhitelist.setOnClickListener(this);
 
     }
@@ -115,7 +116,11 @@ public class WhitelistFragment extends
 
         if (item.getItemId() == R.id.context_delete) {
             mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
-            performDeleteById();
+            if (Prefs.enableWhitelist && (adapter.getCount() == 1 || adapter.getCount() == mSelectedItemsPositions.size() )) {
+                showMessage(R.string.disable_whitelist);
+            } else {
+                performDeleteById();
+            }
             return (true);
         }
         return (false);
@@ -293,8 +298,7 @@ public class WhitelistFragment extends
     public void onClick(View v) {
 
         if (adapter.getCount() > 0) {
-            // check if there are any enabled sync urls
-            // load all checked syncurl
+
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
                 if (view.enableWhitelist.isChecked()) {
@@ -316,6 +320,7 @@ public class WhitelistFragment extends
             Prefs.enableWhitelist = false;
             view.enableWhitelist.setChecked(false);
         }
+
         Prefs.savePreferences(getActivity());
     }
 

@@ -112,8 +112,8 @@ public class Prefs {
         editor.putInt("taskCheck", taskCheckTime);
         editor.putString("UniqueId", uniqueId);
         editor.putLong("LastSyncDate", lastSyncDate);
-        editor.putBoolean("EnableBlackList", enableBlacklist);
-        editor.putBoolean("EnableWhiteList", enableWhitelist);
+        editor.putBoolean("EnableBlacklist", enableBlacklist);
+        editor.putBoolean("EnableWhitelist", enableWhitelist);
         editor.commit();
     }
 }

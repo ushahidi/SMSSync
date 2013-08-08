@@ -296,7 +296,7 @@
     <string name="phone_number_deleted">Phone number successfully deleted.</string>
     <string name="deleting_phone_number_failed">Phone number couldn\'t be deleted.</string>
     <string name="disable_whitelist">Whitelist is enabled. You cannot perform a deletion until you disable the whitelist feature. Disable whitelist then try this action again.</string>
-    <string name="disable_blacklist">Whitelist is enabled. You cannot perform a deletion until you disable the blacklist feature. Disable blacklist then try this action again.</string>
+    <string name="disable_blacklist">Blacklist enabled. You cannot perform a deletion until you disable the blacklist feature. Disable blacklist then try this action again.</string>
     <string name="failed_to_add_phone_number">Failed to add the phone number</string>
     <string name="failed_to_update_phone_number">Failed to update phone number</string>
 </resources>

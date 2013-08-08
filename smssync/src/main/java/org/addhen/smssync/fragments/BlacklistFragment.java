@@ -83,7 +83,7 @@ public class BlacklistFragment extends
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(multichoiceActionModeListener);
 
-        view.enableBlacklist.setChecked(Prefs.enabled);
+        view.enableBlacklist.setChecked(Prefs.enableBlacklist);
         view.enableBlacklist.setOnClickListener(this);
 
     }
@@ -112,11 +112,16 @@ public class BlacklistFragment extends
     public boolean performAction(MenuItem item) {
 
         if (item.getItemId() == R.id.context_delete) {
+
             mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
-            performDeleteById();
-            return (true);
+            if (Prefs.enableWhitelist && (adapter.getCount() == 1 || adapter.getCount() == mSelectedItemsPositions.size() )) {
+                showMessage(R.string.disable_blacklist);
+            } else {
+                performDeleteById();
+            }
+            return true;
         }
-        return (false);
+        return false;
     }
 
     @Override
