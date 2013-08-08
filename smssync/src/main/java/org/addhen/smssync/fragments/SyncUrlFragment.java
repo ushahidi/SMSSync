@@ -397,6 +397,7 @@ public class SyncUrlFragment extends
         Prefs.savePreferences(getActivity());
     }
 
+
     private class LoadingTask extends ProgressTask {
 
         protected boolean loadSyncUrlByStatus = false;

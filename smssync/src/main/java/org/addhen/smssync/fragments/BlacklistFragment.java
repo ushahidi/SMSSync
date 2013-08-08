@@ -42,6 +42,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.LinkedHashSet;
@@ -347,6 +348,11 @@ public class BlacklistFragment extends
 
     private boolean load() {
         return model.loadByStatus(BLACKLIST);
+    }
+
+    public void onItemSelected(AdapterView<?> adapterView,
+            android.view.View view, int position, long id) {
+        toastLong("hello");
     }
 
     private class LoadingTask extends ProgressTask {

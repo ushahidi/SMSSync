@@ -23,6 +23,9 @@
             android:layout_alignParentLeft="true"
             android:ellipsize="end"
             android:lines="1"
+            android:focusableInTouchMode="false"
+            android:clickable="false"
+            android:focusable="false"
             android:paddingLeft="3dp"
             android:textStyle="bold"/>
 

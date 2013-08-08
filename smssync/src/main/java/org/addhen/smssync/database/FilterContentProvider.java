@@ -176,6 +176,7 @@ public class FilterContentProvider extends DbContentProvider implements
 
     @Override
     public boolean update(Filter filter) {
+
         setContentValue(filter);
         final String selectionArgs[] = {
                 String.valueOf(filter.getId())

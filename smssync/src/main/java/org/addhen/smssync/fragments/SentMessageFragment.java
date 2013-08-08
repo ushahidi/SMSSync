@@ -297,6 +297,7 @@ public class SentMessageFragment
         }
     };
 
+
     private class LoadingTask extends ProgressTask {
 
         public LoadingTask(Activity activity) {

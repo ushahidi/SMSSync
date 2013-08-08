@@ -21,6 +21,7 @@
 package org.addhen.smssync.models;
 
 import org.addhen.smssync.database.Database;
+import org.addhen.smssync.util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,7 @@ public class Filter extends Model {
     }
 
     public boolean loadById(int id) {
+        Logger.log("Filter", " ID: " + id);
         mFilterList = Database.filterContentProvider.fetchById(id);
         return mFilterList != null;
     }

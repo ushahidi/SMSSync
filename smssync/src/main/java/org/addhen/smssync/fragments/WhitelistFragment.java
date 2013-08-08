@@ -30,9 +30,7 @@ import org.addhen.smssync.listeners.WhitelistActionModeListener;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddPhoneNumber;
-import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.WhitelistView;
 
 import android.app.Activity;
@@ -40,20 +38,21 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import static org.addhen.smssync.models.Filter.Status.BLACKLIST;
 import static org.addhen.smssync.models.Filter.Status.WHITELIST;
 
 public class WhitelistFragment extends
         BaseListFragment<WhitelistView, Filter, FilterAdapter> implements
-        View.OnClickListener {
+        View.OnClickListener, OnItemClickListener {
 
     private Filter model;
 
@@ -85,6 +84,7 @@ public class WhitelistFragment extends
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(new WhitelistActionModeListener(this,
                 listView));
+        listView.setOnItemClickListener(this);
         view.enableWhitelist.setChecked(Prefs.enabled);
         view.enableWhitelist.setOnClickListener(this);
 
@@ -114,12 +114,7 @@ public class WhitelistFragment extends
     public boolean performAction(MenuItem item) {
 
         //id = adapter.getItem(position).getId();
-
-        if (item.getItemId() == R.id.sync_url_context_edit_sync_url) {
-            edit = true;
-            addPhoneNumber();
-            return (true);
-        } else if (item.getItemId() == R.id.sync_url_context_delete_sync_url) {
+        if (item.getItemId() == R.id.sync_url_context_delete_sync_url) {
             performDeleteById();
             return (true);
         }
@@ -222,11 +217,17 @@ public class WhitelistFragment extends
         // if edit was selected at the context menu, populate fields
         // with existing sync URL details
         if (edit) {
-            model.loadById(id);
-            filters = model.getFilterList();
-            if (filters != null && filters.size() > 0) {
-                addPhoneNumber.phoneNumber.setText(filters.get(0).getPhoneNumber());
-            }
+           new Handler().post( new Runnable(){
+                @Override
+                public void run() {
+                    model.loadById(id);
+                    filters = model.getFilterList();
+                    if (filters != null && filters.size() > 0) {
+                        addPhoneNumber.phoneNumber.setText(filters.get(0).getPhoneNumber());
+                    }
+                }
+            } );
+
         }
 
         final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
@@ -297,11 +298,11 @@ public class WhitelistFragment extends
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
                 if (view.enableWhitelist.isChecked()) {
-                    Prefs.enableWhitelist = true;
+
                     view.enableWhitelist.setChecked(true);
                 } else {
 
-                    //Prefs.enabled = false;
+                    Prefs.enableWhitelist = false;
                     view.enableWhitelist.setChecked(false);
                 }
             } else {
@@ -320,6 +321,13 @@ public class WhitelistFragment extends
 
     private boolean load() {
         return model.loadByStatus(WHITELIST);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        this.id = adapter.getItem(position).getId();
+        edit = true;
+        addPhoneNumber();
     }
 
     private class LoadingTask extends ProgressTask {
@@ -350,7 +358,6 @@ public class WhitelistFragment extends
             if (success) {
 
                 adapter.setItems(model.getFilterList());
-                listView.setAdapter(adapter);
             }
         }
     }
@@ -404,7 +411,6 @@ public class WhitelistFragment extends
 
                 }
                 adapter.setItems(model.getFilterList());
-                listView.setAdapter(adapter);
             }
         }
     }
@@ -439,7 +445,6 @@ public class WhitelistFragment extends
             super.onPostExecute(success);
             if (success) {
                 adapter.setItems(model.getFilterList());
-                listView.setAdapter(adapter);
             } else {
                 if (editPhoneNumber) {
                     toastLong(R.string.failed_to_update_phone_number);
