@@ -45,6 +45,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -261,7 +262,66 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     protected void createNavDrawer() {
         navDrawerAdapter = new NavDrawerAdapter(this);
-        new NavDrawerItemTask(this).execute((String) null);
+        //new NavDrawerItemTask(this).execute((String) null);
+        final PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem;
+
+        final SentMessagesNavDrawerItem sentMessagesNavDrawerItem;
+
+        final SyncUrlNavDrawerItem syncUrlNavDrawerItem;
+
+        //final DonationNavDrawerItem donationNavDrawerItem;
+
+        final BlacklistNavDrawerItem filterNavDrawerItem;
+
+        final WhitelistNavDrawerItem whitelistNavDrawerItem;
+
+        final List<BaseNavDrawerItem> navDrawerItem;
+
+        pendingMessagesNavDrawerItem
+                = new PendingMessagesNavDrawerItem(
+                getString(R.string.pending_messages),
+                R.drawable.pending, BaseActivity.this);
+
+        sentMessagesNavDrawerItem = new SentMessagesNavDrawerItem(
+                getString(R.string.sent_messages),
+                R.drawable.sent, BaseActivity.this);
+
+        syncUrlNavDrawerItem = new SyncUrlNavDrawerItem(getString(
+                R.string.sync_url),
+                R.drawable.sync_url, BaseActivity.this);
+
+        /*donationNavDrawerItem = new DonationNavDrawerItem(getString(R.string.donate),
+                R.drawable.donate, BaseActivity.this);*/
+
+        filterNavDrawerItem = new BlacklistNavDrawerItem(getString(R.string.blacklist),
+                R.drawable.blacklist, BaseActivity.this);
+
+        whitelistNavDrawerItem = new WhitelistNavDrawerItem(getString(R.string.whitelist),
+                R.drawable.whitelist, BaseActivity.this);
+
+        navDrawerItem = new ArrayList<BaseNavDrawerItem>();
+
+        new Handler().post(new Runnable(){
+
+            @Override
+            public void run() {
+                sentMessagesNavDrawerItem.setCounter();
+                pendingMessagesNavDrawerItem.setCounter();
+                syncUrlNavDrawerItem.setCounter();
+                //donationNavDrawerItem.setCounter();
+                filterNavDrawerItem.setCounter();
+                whitelistNavDrawerItem.setCounter();
+                navDrawerItem.add(pendingMessagesNavDrawerItem);
+                navDrawerItem.add(sentMessagesNavDrawerItem);
+                navDrawerItem.add(syncUrlNavDrawerItem);
+                //navDrawerItem.add(donationNavDrawerItem);
+                navDrawerItem.add(whitelistNavDrawerItem);
+                navDrawerItem.add(filterNavDrawerItem);
+                navDrawerAdapter.setItems(navDrawerItem);
+                listView.setAdapter(navDrawerAdapter);
+                selectItem(0);
+            }
+        });
         initNavDrawer();
     }
 
@@ -421,6 +481,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     }
 
+    //TODO:: remove this code at some point
     private class NavDrawerItemTask extends ProgressTask {
 
         PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem;
