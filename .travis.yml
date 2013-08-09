@@ -7,25 +7,24 @@ before_install:
   # download the latest android sdk and unzip
   - sudo apt-get update -qq
   - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null; fi
-  - wget http://dl.google.com/android/android-sdk_r22.0.5-linux.tgz
-  - tar xzf android-sdk_r22.0.5-linux.tgz
+  - wget http://dl.google.com/android/android-sdk_r22-linux.tgz
+  - tar xzf android-sdk_r22-linux.tgz
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
   # install android build tools
-  - wget https://dl-ssl.google.com/android/repository/build-tools_r18-linux.zip
-  - unzip build-tools_r18-linux.zip -d $ANDROID_HOME
+  - wget https://dl-ssl.google.com/android/repository/build-tools_r17-linux.zip
+  - unzip build-tools_r17-linux.zip -d $ANDROID_HOME
   - mkdir -p $ANDROID_HOME/build-tools/
-  - mv $ANDROID_HOME/android-4.3 $ANDROID_HOME/build-tools/18.0.1
-  - android list sdk --extended
-  - echo yes | android update sdk --filter platform-tools --no-ui --force
-  #- echo yes | android update sdk --filter tools --no-ui --force
-  - echo yes | android update sdk --filter android-16 --no-ui --force
-  - echo yes | android update sdk --filter android-14 --no-ui --force
-  - echo yes | android update sdk --filter android-18 --no-ui --force
-  - echo yes | android update sdk --filter sysimg-18 --no-ui --force
-  - echo yes | android update sdk --filter extra-android-support --no-ui --force
-  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force
+  - mv $ANDROID_HOME/android-4.2.2 $ANDROID_HOME/build-tools/17.0.0
+  - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-16 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-17 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter sysimg-17 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter android-18 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter sysimg-18 --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 
   # Create and start emulator
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
