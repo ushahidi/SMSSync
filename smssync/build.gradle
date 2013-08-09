@@ -81,7 +81,7 @@ android {
 
     android.applicationVariants.all { variant ->
         // add google analytics code here. This is defined in the gradle.properties file
-        variant.mergeResources.doLast {
+        /*variant.mergeResources.doLast {
             if (project.hasProperty('googleAnalyticsCode')) {
                 File valuesFile =
                         file("${buildDir}/res/all/${variant.dirName}/values/values.xml")
@@ -92,7 +92,7 @@ android {
                         analyticsCode)
                 valuesFile.write(content, 'UTF-8')
             }
-        }
+        }*/
 
         def apk = variant.outputFile;
 
