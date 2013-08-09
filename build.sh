@@ -62,7 +62,7 @@ fi
 log "Config looks OK."
 
 log "Building smssync..."
-./gradlew assemble
+./gradlew clean assemble
 log "Smssync built."
 
 # test build requires a running emulator. Create and run and emulator

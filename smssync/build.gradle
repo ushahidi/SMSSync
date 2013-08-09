@@ -43,7 +43,8 @@ android {
     }
 
     signingConfigs {
-        release
+
+        releaseSign
     }
 
     buildTypes {
@@ -51,12 +52,11 @@ android {
         proguard.initWith(buildTypes.debug)
         proguard {
             runProguard true
-            proguardFile getDefaultProguardFile('proguard-andronid.txt')
+            proguardFile getDefaultProguardFile('proguard-android.txt')
         }
 
         release {
-            signingConfigs.release
-
+            signingConfig signingConfigs.releaseSign
         }
 
         debug {
@@ -73,7 +73,7 @@ android {
     }
 
     defaultConfig {
-        versionCode 16
+        versionCode 17
         versionName "2.4"
         minSdkVersion 8
         targetSdkVersion 18
@@ -106,19 +106,22 @@ android {
                     file("$project.buildDir/apk/" + newName.replace("-unaligned", ""));
         }
     }
-
-    if (project.hasProperty('releaseKeyStore') &&
-            project.hasProperty('releaseKeyPassword') &&
-            project.hasProperty('releaseKeyStorePassword') &&
-            project.hasProperty('releaseKeyAlias')) {
-        android.signingConfigs.release.keyAlias = releaseKeyAlias
-        android.signingConfigs.release.storeFile = file(releaseKeyStore)
-        android.signingConfigs.release.storePassword = releaseKeyStorePassword
-        android.signingConfigs.release.keyPassword = releaseKeyPassword
-    } else {
-        buildTypes.release.signingConfig = null
-    }
-
 }
+
+if (project.hasProperty('releaseKeyStore') &&
+        project.hasProperty('releaseKeyPassword') &&
+        project.hasProperty('releaseKeyStorePassword') &&
+        project.hasProperty('releaseKeyAlias')) {
+    android.signingConfigs.releaseSign.keyAlias = releaseKeyAlias
+    android.signingConfigs.releaseSign.storeFile = file(releaseKeyStore)
+    android.signingConfigs.releaseSign.storePassword = releaseKeyStorePassword
+    android.signingConfigs.releaseSign.keyPassword = releaseKeyPassword
+} else {
+    android.signingConfigs.releaseSign.keyAlias ""
+    android.signingConfigs.releaseSign.storeFile null
+    android.signingConfigs.releaseSign.storePassword ""
+    android.signingConfigs.releaseSign.keyPassword ""
+}
+
 
 
