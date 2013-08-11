@@ -12,7 +12,8 @@ your sdk stored. Eg. `sdk.dir=/home/username/android-sdk-linux_x86`
 `./build.sh`
 
 ### Build with Android Studio.
-* Import Project.
+* Go to File
+* Select Import Project...
 * Select `build.gradle` located in the project's root document.
 * After it finishes the import, hit Shift + F10 to build the project.
 
