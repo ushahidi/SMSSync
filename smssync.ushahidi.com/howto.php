@@ -88,7 +88,7 @@
 <h4>Add new Sync URL</h4>
 <p>To add a new Sync URL:</p>
 <ol>
-<li>Tap on the <strong><em>Sync URL</em></strong> tab.</li>
+<li>Tap on the <strong><em>Sync URL</em></strong> from the navigation drawer.</li>
 <li>Tap on the <img alt="Add icon" src="images/icons/new.png" /> icon on the actionbar. An input dialog should open.</li>
 <li>Enter a title for the Sync URL.</li>
 <li>Enter a secret key if required by the webservices. Make sure you enter the exact key here.</li>
@@ -134,14 +134,14 @@
 <p>To start the SMSSync service:</p>
 <ol>
 <li>Make sure you have added and enabled&nbsp;(checked) at least one Sync URL.</li>
-<li>On the <strong><em>SYNC URL</em></strong> tab, tap on the <strong><em>Start SMSSync service</em></strong> to start the service. You do this if the service is disabled.</li>
+<li>On the <strong><em>SYNC URL</em></strong> screen, tap on the <strong><em>Start SMSSync service</em></strong> to start the service. You do this if the service is disabled.</li>
 </ol>
 <p></div>
 <div class="span6"></p>
 <h4>Stop SMSSync service</h4>
 <p>To stop the SMSSync service:</p>
 <ol>
-<li>On the <strong><em>SYNC URL</em></strong> tab, uncheck the <strong><em>Start SMSSync service</em></strong> option to stop the service.</li>
+<li>On the <strong><em>SYNC URL</em></strong> screen, uncheck the <strong><em>Start SMSSync service</em></strong> option to stop the service.</li>
 </ol>
 <p></div>
 </div>
@@ -261,7 +261,7 @@ You can either configure the app to automatically or manually sync these failed 
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 27-06-2013
+                Generated: 12-08-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>

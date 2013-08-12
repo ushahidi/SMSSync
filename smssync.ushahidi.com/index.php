@@ -99,6 +99,7 @@
     </div>
 </div>
 <!-- header ends -->
+
 <!-- body starts -->
 
 <div class="container">
@@ -138,8 +139,8 @@
                 <p>
                     <strong>Public release:</strong>
                         <ul>
-                            <li>Released June 27<sup>th</sup>, 2013</li>
-                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.3">v2.3</a></li>
+                            <li>Released August 12<sup>th</sup>, 2013</li>
+                            <li>Version <a href="https://github.com/ushahidi/SMSSync/zipball/v2.4">v2.4</a></li>
                         </ul>
                     <strong>Stable branch:</strong>
                         <ul>
@@ -150,7 +151,7 @@
                     <strong>Development branch:</strong>
                         <ul>
                         <li>
-                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.4</li>
+                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.5</li>
                         </ul>
                         <a href="releases">More</a>
                 </p>
@@ -182,7 +183,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 27-06-2013
+                Generated: 12-08-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>

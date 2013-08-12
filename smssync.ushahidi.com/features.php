@@ -88,6 +88,7 @@
 <li>Multiple languages</li>
 <li>Task scheduling</li>
 <li>Multiple Sync URLs</li>
+<li>Filter by phone number. Either Whitelist or Blacklist a phone number.</li>
 </ul>
 <h1>Limitations</h1>
 <ul>
@@ -102,7 +103,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 27-06-2013
+                Generated: 12-08-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>

@@ -80,8 +80,13 @@
 
 <h1>Current Release</h1>
 <ul>
+<li>Released August 12th<sup>th</sup>, 2013</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.4">v2.4 beta</a></li>
+</ul>
+<h1>Previous Releases</h1>
+<ul>
 <li>Released June 27<sup>th</sup>, 2013</li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.3">v2.3</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.3">v2.3 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -101,11 +106,10 @@
 <li>Fix duplicate reply responses.</li>
 </ul>
 </li>
-</ul>
-<h1>Previous releases</h1>
-<ul>
-<li>Released March 20<sup>th</sup>, 2013</li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.2">v2.0.2</a></li>
+<li>
+<p>Released March 20<sup>th</sup>, 2013</p>
+</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.2">v2.0.2 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -133,7 +137,7 @@
 <li>
 <p>Released October 22<sup>nd</sup>, 2012</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.1">v2.0.1</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.1">v2.0.1 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -155,7 +159,7 @@
 <li>
 <p>Released September 3<sup>rd</sup>, 2012</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.0">v2.0.0</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.0.0">v2.0.0 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -181,7 +185,7 @@
 <li>
 <p>Released December 12<sup>th</sup>, 2011</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.1.9">v1.1.9</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.1.9">v1.1.9 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -196,7 +200,7 @@
 <li>
 <p>Released November 10<sup>th</sup>, 2011</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.9">v1.0.9</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.9">v1.0.9 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -211,7 +215,7 @@
 <li>
 <p>Released October 27<sup>th</sup>, 2011</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.8">v1.0.8</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.8">v1.0.8 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -234,12 +238,12 @@
 <li>
 <p>Released September 25<sup>th</sup>, 2011</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.7">v1.0.7</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.7">v1.0.7 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
 <li>Released September 23<sup>rd</sup>, 2011</li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.6">v1.0.6</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.6">v1.0.6 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -261,7 +265,7 @@
     * Fixed the issue of 'pending messages' view not updating after pending messages are deleted by a background service.</p>
 <ul>
 <li>Released February 25<sup>th</sup>, 2011</li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.5">v1.0.5</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.5">v1.0.5 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -290,7 +294,7 @@
 <li>
 <p>Released January 31<sup>st</sup>, 2011</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.4</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.4 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -304,7 +308,7 @@
 <li>
 <p>Released January 31<sup>st<sup>, 2011</p>
 </li>
-<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.3</a></li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v1.0.4">v1.0.3 beta</a></li>
 </ul>
 <h3>Changelog</h3>
 <ul>
@@ -329,7 +333,7 @@
     <div class="container">
         <div class="row-fluid">
             <div class="span4">
-                Generated: 27-06-2013
+                Generated: 12-08-2013
             </div>
             <div class="span4">
                 Copyright &copy; 2010 - 2013 <a href="http://www.ushahidi.com">Ushahidi.com</a>

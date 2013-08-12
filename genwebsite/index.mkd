@@ -46,7 +46,7 @@
                     <strong>Development branch:</strong>
                         <ul>
                         <li>
-                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.4</li>
+                            <a href="https://github.com/ushahidi/SMSSync">develop branch</a> open for commit/contributions for SMSSync 2.5</li>
                         </ul>
                         <a href="releases">More</a>
                 </p>
