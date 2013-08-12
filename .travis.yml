@@ -13,7 +13,7 @@ before_install:
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
   # install android build tools
-  - $ANDROID_HOME/build-tools/
+  - ls $ANDROID_HOME/build-tools/
   - wget https://dl-ssl.google.com/android/repository/build-tools_r18-linux.zip
   - unzip build-tools_r18-linux.zip -d $ANDROID_HOME
   - mkdir -p $ANDROID_HOME/build-tools/
