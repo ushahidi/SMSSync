@@ -1,8 +1,8 @@
 apply plugin: 'android-library'
 
 android {
-    compileSdkVersion 14
-    buildToolsVersion "18.0.1"
+    compileSdkVersion 17
+    buildToolsVersion "17.0.0"
 
     sourceSets {
         main {

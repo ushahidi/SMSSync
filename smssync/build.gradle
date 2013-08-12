@@ -2,6 +2,9 @@ apply plugin: 'android'
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
 }
 
 dependencies {
@@ -16,8 +19,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 14
-    buildToolsVersion "18.0.1"
+    compileSdkVersion 17
+    buildToolsVersion "17.0.0"
 
     sourceSets {
 
