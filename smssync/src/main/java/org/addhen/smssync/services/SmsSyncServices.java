@@ -36,7 +36,7 @@ import android.os.PowerManager;
 
 public abstract class SmsSyncServices extends IntentService {
 
-    protected static String CLASS_TAG = SmsSyncServices.class.getSimpleName();
+    protected static String TAG = SmsSyncServices.class.getSimpleName();
 
     protected static PowerManager.WakeLock mStartingService = null;
 
@@ -56,7 +56,7 @@ public abstract class SmsSyncServices extends IntentService {
             PowerManager mgr = (PowerManager) context
                     .getSystemService(Context.POWER_SERVICE);
             mStartingService = mgr.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-                    CLASS_TAG);
+                    TAG);
         }
         return mStartingService;
     }
@@ -68,7 +68,7 @@ public abstract class SmsSyncServices extends IntentService {
             WifiManager manager = (WifiManager) context
                     .getSystemService(Context.WIFI_SERVICE);
             wifilock = manager.createWifiLock(WifiManager.WIFI_MODE_FULL,
-                    CLASS_TAG);
+                    TAG);
         }
         return wifilock;
     }
