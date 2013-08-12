@@ -1,3 +1,15 @@
+v2.4
+Feature:
+  * Added secret key as GET variable when invoking the GET Task feature.
+  * Added navigation drawer.
+  * How number of items in the list view.
+  * Moved heavy operations off the main UI thread. This has improved speed greatly.
+  * Added ability to filter phone number so you can either blacklist or whitelist a phone number.
+
+Bug:
+  * Fixed issue with "Get Response From Server" feature.
+  * Fixed issue with smssync service not turning off.
+
 v2.3
 Feature:
   * Manually synchronizing pending messages now shows a progress bar.
@@ -5,9 +17,9 @@ Feature:
   * Added user agent header to all HTTP requests.
 
 Bug:
-  * Fix crashes when synchronizing huge pending messages
-  * Fix incorrect date display in sent inbox
-  * Fix duplicate reply responses.
+  * Fixed crashes when synchronizing huge pending messages
+  * Fixed incorrect date display in sent inbox
+  * Fixed duplicate reply responses.
 
 
 
@@ -18,14 +30,14 @@ Feature:
   * Added more useful HTTP and server error messages
   * Simplified the actionbar menu. Only show the relevant menus
   * Updated notification code to make use of the notification.compact library
-  * Add Russian, Ukrainian, Belarusian languages
+  * Added Russian, Ukrainian, Belarusian languages
 
 Bug:
-  * Fix wifi lock issue. See #56
+  * Fixed wifi lock issue. See #56
   * Improved wording and typos in the strings file
   * Disable excessive "no task enabled" notifications
-  * Fix ID issue. Now uses UUID instead. See #60
-  * Fix issue with auto sync failing.
+  * Fixed ID issue. Now uses UUID instead. See #60
+  * Fixed issue with auto sync failing.
 
 
 Bug:

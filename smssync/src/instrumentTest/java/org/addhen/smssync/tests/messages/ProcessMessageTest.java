@@ -70,6 +70,20 @@ public class ProcessMessageTest extends BaseTest {
     }
 
     @MediumTest
+    public void testShouldPerformTaskEnabledOnLocalInstall() throws Exception {
+        SyncUrl syncUrlDemo = new SyncUrl();
+        syncUrlDemo.setKeywords("");
+        syncUrlDemo.setSecret("");
+        syncUrlDemo.setTitle("ushahidi demo");
+        syncUrlDemo.setUrl("http://192.168.6.13/smssync2.php");
+        mProcessMessage.performTask(syncUrlDemo);
+
+        // there is no proper way of testing if a task went successfuly. Right now falling on error
+        // message to assert the status. ProcessMessage.performTask needs refactoring
+        assertNull("Could not perform task on enabled sync url ", mProcessMessage.getErrorMessage());
+    }
+
+    @MediumTest
     public void testShouldRouteMessage() throws Exception {
         SyncUrl syncUrlEyedol = new SyncUrl();
         syncUrlEyedol.setKeywords("");
