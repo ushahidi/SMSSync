@@ -103,6 +103,22 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     protected ListView listView;
 
+    private PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem;
+
+    private SentMessagesNavDrawerItem sentMessagesNavDrawerItem;
+
+    private SyncUrlNavDrawerItem syncUrlNavDrawerItem;
+
+    //final DonationNavDrawerItem donationNavDrawerItem;
+
+    private BlacklistNavDrawerItem filterNavDrawerItem;
+
+    private WhitelistNavDrawerItem whitelistNavDrawerItem;
+
+    private List<BaseNavDrawerItem> navDrawerItem;
+
+    private static int mPosition = 0;
+
     /**
      * BaseActivity
      *
@@ -260,23 +276,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         startActivity(intent);
     }
 
-    protected void createNavDrawer() {
-        navDrawerAdapter = new NavDrawerAdapter(this);
-        //new NavDrawerItemTask(this).execute((String) null);
-        final PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem;
-
-        final SentMessagesNavDrawerItem sentMessagesNavDrawerItem;
-
-        final SyncUrlNavDrawerItem syncUrlNavDrawerItem;
-
-        //final DonationNavDrawerItem donationNavDrawerItem;
-
-        final BlacklistNavDrawerItem filterNavDrawerItem;
-
-        final WhitelistNavDrawerItem whitelistNavDrawerItem;
-
-        final List<BaseNavDrawerItem> navDrawerItem;
-
+    private void initNavDrawerMenuItems() {
         pendingMessagesNavDrawerItem
                 = new PendingMessagesNavDrawerItem(
                 getString(R.string.pending_messages),
@@ -300,7 +300,10 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                 R.drawable.whitelist, BaseActivity.this);
 
         navDrawerItem = new ArrayList<BaseNavDrawerItem>();
+        navDrawerAdapter = new NavDrawerAdapter(this);
+    }
 
+    private void setNavDrawerAdapterItems() {
         new Handler().post(new Runnable(){
 
             @Override
@@ -311,6 +314,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                 //donationNavDrawerItem.setCounter();
                 filterNavDrawerItem.setCounter();
                 whitelistNavDrawerItem.setCounter();
+                navDrawerItem.clear();
                 navDrawerItem.add(pendingMessagesNavDrawerItem);
                 navDrawerItem.add(sentMessagesNavDrawerItem);
                 navDrawerItem.add(syncUrlNavDrawerItem);
@@ -319,14 +323,21 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                 navDrawerItem.add(filterNavDrawerItem);
                 navDrawerAdapter.setItems(navDrawerItem);
                 listView.setAdapter(navDrawerAdapter);
-                selectItem(0);
+                selectItem(mPosition);
             }
         });
+    }
+
+    protected void createNavDrawer() {
+        initNavDrawerMenuItems();
+        setNavDrawerAdapterItems();
+
+        //selectItem(0);
         initNavDrawer();
     }
 
     protected void selectItem(int position) {
-        if (navDrawerAdapter != null) {
+        if (navDrawerAdapter != null && navDrawerAdapter.getCount() > 0) {
             BaseNavDrawerItem item = navDrawerAdapter.getItem(position);
 
             // Perform selection only if item is not selected
@@ -355,6 +366,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                     R.string.open, R.string.close) {
                 public void onDrawerClosed(android.view.View view) {
                     getSupportActionBar().setTitle(getTitle());
+
                     super.onDrawerClosed(view);
                 }
 
@@ -474,7 +486,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         @Override
         public void onItemClick(AdapterView<?> parent, android.view.View view, int position,
                 long id) {
-            selectItem(position);
+            mPosition = position;
+            setNavDrawerAdapterItems();
             view.getFocusables(position);
             view.setSelected(true);
         }
