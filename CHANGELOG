@@ -6,6 +6,7 @@ Feature:
   * Moved heavy operations off the main UI thread. This has improved speed greatly.
   * Added ability to filter phone number so you can either blacklist or whitelist a phone number.
   * Refactored most of the code to make them testable.
+  * Dropped API level 7 support.
 
 Bug:
   * Fixed issue with "Get Response From Server" feature.
