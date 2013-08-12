@@ -11,6 +11,7 @@
 * Multiple languages
 * Task scheduling
 * Multiple Sync URLs
+* Filter by phone number. Either Whitelist or Blacklist a phone number.
 
 # Limitations
 
@@ -18,4 +19,3 @@
 
 ## Caveats
 * There may be security holes. Patches are humbly accepted.
-

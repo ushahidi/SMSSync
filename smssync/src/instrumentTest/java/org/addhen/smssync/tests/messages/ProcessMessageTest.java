@@ -70,7 +70,7 @@ public class ProcessMessageTest extends BaseTest {
     }
 
     @MediumTest
-    public void testShouldPerformTaskEnabledOnLocalInstall() throws Exception {
+    public void ShouldPerformTaskEnabledOnLocalInstall() throws Exception {
         SyncUrl syncUrlDemo = new SyncUrl();
         syncUrlDemo.setKeywords("");
         syncUrlDemo.setSecret("");

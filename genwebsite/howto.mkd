@@ -15,7 +15,7 @@ Here you can manage multiple Sync URLs. Sync URLs are the URLs of your webservic
 #### Add new Sync URL
 To add a new Sync URL:
 
-1. Tap on the **_Sync URL_** tab.
+1. Tap on the **_Sync URL_** from the navigation drawer.
 2. Tap on the ![Add icon](images/icons/new.png) icon on the actionbar. An input dialog should open.
 3. Enter a title for the Sync URL.
 4. Enter a secret key if required by the webservices. Make sure you enter the exact key here.
@@ -61,14 +61,14 @@ Delete an existing Sync URL by:
 To start the SMSSync service:
 
 1. Make sure you have added and enabled&nbsp;(checked) at least one Sync URL.
-2. On the **_SYNC URL_** tab, tap on the **_Start SMSSync service_** to start the service. You do this if the service is disabled.
+2. On the **_SYNC URL_** screen, tap on the **_Start SMSSync service_** to start the service. You do this if the service is disabled.
 
 </div>
 <div class="span6">
 #### Stop SMSSync service
 To stop the SMSSync service:
 
-1. On the **_SYNC URL_** tab, uncheck the **_Start SMSSync service_** option to stop the service.
+1. On the **_SYNC URL_** screen, uncheck the **_Start SMSSync service_** option to stop the service.
 
 </div>
 </div>
