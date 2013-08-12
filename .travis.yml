@@ -13,11 +13,11 @@ before_install:
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
   # install android build tools
-  - ls $ANDROID_HOME/build-tools/
   - wget https://dl-ssl.google.com/android/repository/build-tools_r18-linux.zip
   - unzip build-tools_r18-linux.zip -d $ANDROID_HOME
   - mkdir -p $ANDROID_HOME/build-tools/
   - mv $ANDROID_HOME/android-4.3 $ANDROID_HOME/build-tools/18.0.1
+  - ls $ANDROID_HOME/build-tools/18.0.1
   - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-16 --no-ui --force > /dev/null
   - echo yes | android update sdk --filter android-17 --no-ui --force > /dev/null
