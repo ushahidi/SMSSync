@@ -83,6 +83,28 @@
 <li>Released August 12th<sup>th</sup>, 2013</li>
 <li>Version <a href="https://github.com/ushahidi/SMSSync/tree/v2.4">v2.4 beta</a></li>
 </ul>
+<h3>Changelog</h3>
+<ul>
+<li>
+<p>Feature:</p>
+<ul>
+<li>Added secret key as GET variable when invoking the GET Task feature.</li>
+<li>Added navigation drawer.</li>
+<li>How number of items in the list view.</li>
+<li>Moved heavy operations off the main UI thread. This has improved speed greatly.</li>
+<li>Added ability to filter phone number so you can either blacklist or whitelist a phone number.</li>
+<li>Refactored most of the code to make them testable.</li>
+<li>Dropped API level 7 support.</li>
+</ul>
+</li>
+<li>
+<p>Bug:</p>
+<ul>
+<li>Fixed issue with "Get Response From Server" feature.</li>
+<li>Fixed issue with smssync service not turning off.</li>
+</ul>
+</li>
+</ul>
 <h1>Previous Releases</h1>
 <ul>
 <li>Released June 27<sup>th</sup>, 2013</li>
