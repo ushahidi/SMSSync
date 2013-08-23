@@ -21,6 +21,7 @@
 package org.addhen.smssync.models;
 
 import org.addhen.smssync.database.Database;
+import org.addhen.smssync.net.SyncScheme;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +45,13 @@ public class SyncUrl extends Model {
 
     private List<SyncUrl> mSyncUrlList;
 
+    private SyncScheme syncScheme; //TODO: Save same as url & secret and the rest
+
     public SyncUrl() {
         this.mSyncUrlList = new ArrayList<SyncUrl>();
+
+        //TODO: Remove, should be loaded from DB same as the rest of the properties
+        setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON));
     }
 
     /**
@@ -144,6 +150,14 @@ public class SyncUrl extends Model {
 
     public void setKeywords(String keywords) {
         this.keywords = keywords;
+    }
+
+    public SyncScheme getSyncScheme(){
+        return syncScheme;
+    }
+
+    public void setSyncScheme(SyncScheme scheme){
+        syncScheme = scheme;
     }
 
     public String getUrl() {

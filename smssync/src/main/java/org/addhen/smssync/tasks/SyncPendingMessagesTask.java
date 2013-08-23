@@ -19,7 +19,7 @@
  *****************************************************************************/
 
 package org.addhen.smssync.tasks;
-
+import android.os.AsyncTask;
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
@@ -31,8 +31,6 @@ import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.Logger;
-
-import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
