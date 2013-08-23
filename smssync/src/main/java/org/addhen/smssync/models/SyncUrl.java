@@ -49,9 +49,6 @@ public class SyncUrl extends Model {
 
     public SyncUrl() {
         this.mSyncUrlList = new ArrayList<SyncUrl>();
-
-        //TODO: Remove, should be loaded from DB same as the rest of the properties
-        setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON));
     }
 
     /**
@@ -75,7 +72,6 @@ public class SyncUrl extends Model {
 
     @Override
     public boolean load() {
-
         mSyncUrlList = Database.syncUrlContentProvider.fetchSyncUrl();
         return mSyncUrlList != null;
 

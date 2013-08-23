@@ -20,23 +20,6 @@
 
 package org.addhen.smssync.fragments;
 
-import com.actionbarsherlock.view.MenuItem;
-
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.adapters.SyncUrlAdapter;
-import org.addhen.smssync.listeners.SyncUrlActionModeListener;
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.receivers.SmsReceiver;
-import org.addhen.smssync.services.CheckTaskScheduledService;
-import org.addhen.smssync.services.CheckTaskService;
-import org.addhen.smssync.tasks.ProgressTask;
-import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.util.RunServicesUtil;
-import org.addhen.smssync.util.Util;
-import org.addhen.smssync.views.AddSyncUrl;
-import org.addhen.smssync.views.SyncUrlView;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -49,6 +32,25 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
+
+import com.actionbarsherlock.view.MenuItem;
+
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.adapters.SyncUrlAdapter;
+import org.addhen.smssync.listeners.SyncUrlActionModeListener;
+import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.SyncScheme;
+import org.addhen.smssync.receivers.SmsReceiver;
+import org.addhen.smssync.services.CheckTaskScheduledService;
+import org.addhen.smssync.services.CheckTaskService;
+import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.util.RunServicesUtil;
+import org.addhen.smssync.util.Util;
+import org.addhen.smssync.views.AddSyncUrl;
+import org.addhen.smssync.views.EditSyncScheme;
+import org.addhen.smssync.views.SyncUrlView;
 
 import java.util.List;
 
@@ -132,6 +134,9 @@ public class SyncUrlFragment extends
                 performDeleteById();
             }
             return (true);
+        } else if (item.getItemId() == R.id.sync_url_context_sync_scheme) {
+            editSyncScheme();
+            return true;
         }
         return (false);
     }
@@ -317,6 +322,66 @@ public class SyncUrlFragment extends
                     }
                 });
 
+    }
+
+    private void editSyncScheme(){
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        final View textEntryView = factory.inflate(R.layout.edit_sync_url_scheme, null);
+        final EditSyncScheme editScheme = new EditSyncScheme(textEntryView);
+
+        final List<SyncUrl> listSyncUrl = model.loadById(id);
+        if (listSyncUrl != null && listSyncUrl.size() > 0) {
+            SyncScheme scheme = listSyncUrl.get(0).getSyncScheme();
+
+            editScheme.keyMessage.setText(scheme.getKey(SyncScheme.SyncDataKey.MESSAGE));
+            editScheme.keyMessageID.setText(scheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID));
+            editScheme.keyFrom.setText(scheme.getKey(SyncScheme.SyncDataKey.FROM));
+            editScheme.keySecret.setText(scheme.getKey(SyncScheme.SyncDataKey.SECRET));
+            editScheme.keySentTimeStamp.setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TIMESTAMP));
+            editScheme.keySentTo.setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TO));
+
+            editScheme.methods.setSelection(scheme.getMethod().ordinal());
+            editScheme.dataFormats.setSelection(scheme.getDataFormat().ordinal());
+        }else{
+            //SHOULD NOT GET HERE!!
+            return;
+        }
+
+
+        final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
+                getActivity());
+        addBuilder
+                .setTitle(R.string.sync_sheme)
+                .setView(textEntryView)
+                .setPositiveButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) { }
+                        })
+                .setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton) {
+                                dialog.dismiss();
+                            }
+                        });
+
+        final AlertDialog deploymentDialog = addBuilder.create();
+        deploymentDialog.show();
+
+        deploymentDialog.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener(
+                new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        //TODO: validate entry
+                        if(editScheme.validEntries()){
+                            editScheme.updateSyncScheme(listSyncUrl.get(0));
+                            deploymentDialog.dismiss();
+                        }else {
+                            toastLong(R.string.all_fields_are_required);
+                        }
+                    }
+                });
     }
 
     // Display pending messages.
@@ -507,8 +572,8 @@ public class SyncUrlFragment extends
         @Override
         protected Boolean doInBackground(String... strings) {
             if (editSyncUrl) {
-
-                status = addSyncUrl.updateSyncUrl(id);
+                final List<SyncUrl> listSyncUrl = model.loadById(id);
+                status = addSyncUrl.updateSyncUrl(id,listSyncUrl.get(0).getSyncScheme());
             } else {
                 status = addSyncUrl.addSyncUrl();
             }

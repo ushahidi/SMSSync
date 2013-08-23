@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="8dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/sync_scheme_method"
+                android:layout_weight="2.5"
+                android:layout_gravity="left|center_vertical"/>
+
+        <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sync_method"
+                android:layout_weight="1.5"
+                android:entries="@array/sync_methods"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/sync_scheme_data_format"
+                android:layout_weight="2.5"
+                android:layout_gravity="left|center_vertical"/>
+
+        <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sync_data_format"
+                android:layout_weight="1.5"
+                android:entries="@array/sync_formats"/>
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/sync_scheme_keys"
+            android:layout_gravity="left|center_vertical"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"/>
+
+    <EditText
+            android:id="@+id/sync_kSecret"
+            style="@style/EditText.SyncUrl"
+            android:hint="@string/enter_key_for_secret"/>
+
+    <EditText
+            android:id="@+id/sync_kFrom"
+            style="@style/EditText.SyncUrl"
+            android:hint="@string/enter_key_for_from"/>
+
+    <EditText
+            android:id="@+id/sync_kMessageID"
+            style="@style/EditText.SyncUrl"
+            android:hint="@string/enter_key_for_message_id"/>
+
+    <EditText
+            android:id="@+id/sync_kMessage"
+            style="@style/EditText.SyncUrl"
+            android:hint="@string/enter_key_for_message"/>
+
+    <EditText
+            android:id="@+id/sync_kSentTimestamp"
+            style="@style/EditText.SyncUrl"
+            android:hint="@string/enter_key_for_sent_timestamp"/>
+
+    <EditText
+            android:id="@+id/sync_kSentTo"
+            style="@style/EditText.SyncUrl"
+            android:hint="@string/enter_key_for_sent_to"/>
+
+
+</LinearLayout>

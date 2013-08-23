@@ -20,6 +20,15 @@
 package org.addhen.smssync.net;
 
 
+import org.addhen.smssync.util.DataFormatUtil;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * Class: SyncScheme
@@ -31,7 +40,7 @@ package org.addhen.smssync.net;
 public class SyncScheme {
 
     public static enum SyncMethod { POST, PUT };
-    public static enum SyncDataFormat { URLEncoded, JSON, XML, YAML};
+    public static enum SyncDataFormat { URLEncoded, JSON, XML, YAML };
     public static enum SyncDataKey { SECRET, FROM, MESSAGE, SENT_TIMESTAMP, MESSAGE_ID, SENT_TO };
 
 
@@ -54,6 +63,22 @@ public class SyncScheme {
                 "message_id","sent_timestamp","sent_to");
     }
 
+    public SyncScheme(String json){
+        try{
+            if(!json.contentEquals(""))
+                init(json);
+            else
+                throw new Exception("Empty scheme spec, loading default");
+        }catch (Exception ex){
+            //Init default
+            init(
+                    SyncMethod.POST,
+                    SyncDataFormat.URLEncoded,
+                    "secret","from","message",
+                    "message_id","sent_timestamp","sent_to");
+        }
+    }
+
     public SyncScheme(SyncMethod method, SyncDataFormat dataFormat){
         init(
                 method,
@@ -71,13 +96,13 @@ public class SyncScheme {
      * @param kSecret
      * @param kFrom
      * @param kMessage
-     * @param keyMessageID
+     * @param kMessageID
      * @param kSentTimestamp
      * @param kSentTo
      */
     public void init(SyncMethod method, SyncDataFormat dataFormat,
                             String kSecret, String kFrom, String kMessage,
-                            String keyMessageID, String kSentTimestamp,
+                            String kMessageID, String kSentTimestamp,
                             String kSentTo){
         this.method = method;
         this.format = dataFormat;
@@ -87,7 +112,28 @@ public class SyncScheme {
         this.keySentTimeStamp = kSentTimestamp;
         this.keyMessage = kMessage;
         this.keySentTo = kSentTo;
-        this.keyMessageID = keyMessageID;
+        this.keyMessageID = kMessageID;
+    }
+
+    /**
+     * Initialize sync scheme from json string
+     *
+     * @param json
+     * @throws JSONException
+     */
+    public void init(String json) throws  JSONException{
+        JSONObject obj = new JSONObject(json);
+
+        this.method = SyncMethod.valueOf(obj.getString("method"));
+        this.format = SyncDataFormat.valueOf(obj.getString("dataFormat"));
+
+        this.keySecret = obj.getString("kSecret");
+        this.keyFrom = obj.getString("kFrom");
+        this.keySentTimeStamp = obj.getString("kSentTimestamp");
+        this.keyMessage = obj.getString("kMessage");
+        this.keySentTo = obj.getString("kSentTo");
+        this.keyMessageID = obj.getString("kMessageID");
+
     }
 
     /**
@@ -144,6 +190,29 @@ public class SyncScheme {
                 return keySentTo;
             default:
                 return "value";
+        }
+    }
+
+    /**
+     * Get string JSON representation of this scheme
+     * @return
+     */
+    public String toJSONString(){
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("method", method.toString()));
+        nameValuePairs.add(new BasicNameValuePair("dataFormat", format.toString()));
+        nameValuePairs.add(new BasicNameValuePair("kSecret", keySecret));
+        nameValuePairs.add(new BasicNameValuePair("kFrom", keyFrom));
+        nameValuePairs.add(new BasicNameValuePair("kSentTimestamp", keySentTimeStamp));
+        nameValuePairs.add(new BasicNameValuePair("kMessage", keyMessage));
+        nameValuePairs.add(new BasicNameValuePair("kSentTo", keySentTo));
+        nameValuePairs.add(new BasicNameValuePair("kMessageID", keyMessageID));
+
+        try{
+            return DataFormatUtil.makeJSONString(nameValuePairs);
+        }catch (JSONException ex){
+            return null;
         }
     }
 
