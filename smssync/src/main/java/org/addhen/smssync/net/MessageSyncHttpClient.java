@@ -27,8 +27,9 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme.SyncDataFormat;
-import org.addhen.smssync.net.SyncScheme.SyncMethod;
 import org.addhen.smssync.net.SyncScheme.SyncDataKey;
+import org.addhen.smssync.net.SyncScheme.SyncMethod;
+import org.addhen.smssync.util.DataFormatUtil;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -42,7 +43,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -78,8 +78,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
             // Add your data
             HttpUriRequest request = getRequest(message,toNumber);
 
-            if(request == null)
-                return false;
+            if(request == null) return false;
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(request);
@@ -129,6 +128,9 @@ public class MessageSyncHttpClient extends MainHttpClient {
         SyncDataFormat format = syncScheme.getDataFormat();
         HttpEntity httpEntity = getHttpEntity(format,message,toNumber);
 
+        if (httpEntity == null)
+            return null;
+
         switch (method){
             case POST:
                 request = new HttpPost(url);
@@ -155,56 +157,46 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
         HttpEntity httpEntity;
         SyncScheme syncScheme = syncUrl.getSyncScheme();
-        String kSecret = syncScheme.getKey(SyncDataKey.SECRET);
-        String kFrom = syncScheme.getKey(SyncDataKey.FROM);
-        String kMessage = syncScheme.getKey(SyncDataKey.MESSAGE);
-        String kSentTimestamp = syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP);
-        String kSentTo = syncScheme.getKey(SyncDataKey.SENT_TO);
-        String kMessageID = syncScheme.getKey(SyncDataKey.MESSAGE_ID);
 
         try{
 
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret()));
+            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.FROM), message.getFrom()));
+            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody()));
+            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), message.getTimestamp()));
+            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber));
+            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid()));
+
             switch (format){
                 case JSON:
-                    JSONObject obj = new JSONObject();
-                    obj.put(kSecret, syncUrl.getSecret());
-                    obj.put(kFrom, message.getFrom());
-                    obj.put(kMessage, message.getBody());
-                    obj.put(kSentTimestamp, message.getTimestamp());
-                    obj.put(kSentTo, toNumber);
-                    obj.put(kMessageID, message.getUuid());
-
-                    httpEntity = new StringEntity(obj.toString(),HTTP.UTF_8);
-
+                    httpEntity = new StringEntity(DataFormatUtil.makeJSONString(nameValuePairs), HTTP.UTF_8);
                     break;
-
-                case XML: //TODO: Implement xml parser
-                case YAML: //TODO: Implement yaml parser
-                case URLEncoded: //Default name value pairs
-                    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-
-                    nameValuePairs.add(new BasicNameValuePair(kSecret, syncUrl.getSecret()));
-                    nameValuePairs.add(new BasicNameValuePair(kFrom, message.getFrom()));
-                    nameValuePairs.add(new BasicNameValuePair(kMessage, message.getBody()));
-                    nameValuePairs.add(new BasicNameValuePair(kSentTimestamp, message.getTimestamp()));
-                    nameValuePairs.add(new BasicNameValuePair(kSentTo, toNumber));
-                    nameValuePairs.add(new BasicNameValuePair(kMessageID, message.getUuid()));
-
+                case XML:
+                    httpEntity = new StringEntity(DataFormatUtil.makeXMLString(nameValuePairs,HTTP.UTF_8), HTTP.UTF_8);
+                    break;
+                case YAML:
+                    httpEntity = new StringEntity(DataFormatUtil.makeYAMLString(nameValuePairs), HTTP.UTF_8);
+                    break;
+                case URLEncoded:
                     httpEntity = new UrlEncodedFormEntity(nameValuePairs,  HTTP.UTF_8);
-
                     break;
-
                 default:
-                    log("Invalid data format");
-                    return null;
+                    throw  new Exception("Invalid data format");
             }
 
         }catch (JSONException ex){
             log("Failed to format json",ex);
-            return null;
+            httpEntity = null;;
         }catch (UnsupportedEncodingException ex){
             log("Failed to encode data",ex);
-            return null;
+            httpEntity = null;;
+        }catch (IOException ioex){
+            log("Failed to format xml",ioex);
+            httpEntity = null;
+        }catch (Exception ex){
+            log("Failed to format data",ex);
+            httpEntity = null;
         }
 
         return httpEntity;
