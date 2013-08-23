@@ -45,10 +45,11 @@ public class SyncUrl extends Model {
 
     private List<SyncUrl> mSyncUrlList;
 
-    private SyncScheme syncScheme; //TODO: Save same as url & secret and the rest
+    private SyncScheme syncScheme;
 
     public SyncUrl() {
         this.mSyncUrlList = new ArrayList<SyncUrl>();
+        syncScheme = new SyncScheme();
     }
 
     /**
