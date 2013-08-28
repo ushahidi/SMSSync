@@ -13,6 +13,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+            android:id="@+id/sync_url_context_sync_scheme"
+            android:icon="@drawable/settings"
+            android:showAsAction="ifRoom"
+            android:title="@string/sync_sheme"/>
+
+    <item
             android:id="@+id/sync_url_context_edit_sync_url"
             android:icon="@drawable/edit"
             android:showAsAction="ifRoom"

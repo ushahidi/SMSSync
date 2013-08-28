@@ -20,15 +20,16 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.util.Util;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteStatement;
+
+import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.SyncScheme;
+import org.addhen.smssync.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,6 +191,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         mInitialValues.put(KEYWORDS, syncUrl.getKeywords());
         mInitialValues.put(SECRET, syncUrl.getSecret());
         mInitialValues.put(STATUS, syncUrl.getStatus());
+        mInitialValues.put(SYNCSCHEME, syncUrl.getSyncScheme().toJSONString());
 
         final String selectionArgs[] = {
                 String.valueOf(syncUrl.getId())
@@ -207,6 +209,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         mInitialValues.put(KEYWORDS, syncUrl.getKeywords());
         mInitialValues.put(SECRET, syncUrl.getSecret());
         mInitialValues.put(STATUS, syncUrl.getStatus());
+        mInitialValues.put(SYNCSCHEME, syncUrl.getSyncScheme().toJSONString());
 
     }
 
@@ -218,6 +221,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         mInitialValues.put(KEYWORDS, syncUrl.getKeywords());
         mInitialValues.put(SECRET, syncUrl.getSecret());
         mInitialValues.put(STATUS, syncUrl.getStatus());
+        mInitialValues.put(SYNCSCHEME, syncUrl.getSyncScheme().toJSONString());
         final String selectionArgs[] = {
                 String.valueOf(syncUrl.getId())
         };
@@ -262,6 +266,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         int keywordsIndex;
         int urlIndex;
         int secretIndex;
+        int syncSchemeIndex;
 
         if (cursor != null) {
             if (cursor.getColumnIndex(ID) != -1) {
@@ -291,6 +296,11 @@ public class SyncUrlContentProvider extends DbContentProvider implements
             if (cursor.getColumnIndex(SECRET) != -1) {
                 secretIndex = cursor.getColumnIndex(SECRET);
                 syncUrl.setSecret(cursor.getString(secretIndex));
+            }
+
+            if (cursor.getColumnIndex(SYNCSCHEME) != -1) {
+                syncSchemeIndex = cursor.getColumnIndex(SYNCSCHEME);
+                syncUrl.setSyncScheme(new SyncScheme(cursor.getString(syncSchemeIndex)));
             }
 
         }
