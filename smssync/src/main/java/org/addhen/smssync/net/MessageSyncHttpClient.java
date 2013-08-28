@@ -119,7 +119,15 @@ public class MessageSyncHttpClient extends MainHttpClient {
         return false;
     }
 
-    private HttpUriRequest getRequest(Message message, String toNumber){
+    /**
+     *
+     * Get an appropriate HTTP request to send message with based on current sync scheme
+     *
+     * @param message
+     * @param toNumber
+     * @return
+     */
+    public HttpUriRequest getRequest(Message message, String toNumber){
 
         HttpUriRequest request;
 
@@ -153,6 +161,15 @@ public class MessageSyncHttpClient extends MainHttpClient {
         return request;
     }
 
+    /**
+     *
+     * Get HTTP Entity populated with data in a format specified by the current sync scheme
+     *
+     * @param format
+     * @param message
+     * @param toNumber
+     * @return
+     */
     private HttpEntity getHttpEntity(SyncDataFormat format, Message message, String toNumber){
 
         HttpEntity httpEntity;
@@ -173,7 +190,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
                     httpEntity = new StringEntity(DataFormatUtil.makeJSONString(nameValuePairs), HTTP.UTF_8);
                     break;
                 case XML:
-                    httpEntity = new StringEntity(DataFormatUtil.makeXMLString(nameValuePairs,HTTP.UTF_8), HTTP.UTF_8);
+                    //TODO: Make parent node URL specific as well
+                    httpEntity = new StringEntity(DataFormatUtil.makeXMLString(nameValuePairs,"payload",HTTP.UTF_8), HTTP.UTF_8);
                     break;
                 case YAML:
                     httpEntity = new StringEntity(DataFormatUtil.makeYAMLString(nameValuePairs), HTTP.UTF_8);
@@ -187,10 +205,10 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
         }catch (JSONException ex){
             log("Failed to format json",ex);
-            httpEntity = null;;
+            httpEntity = null;
         }catch (UnsupportedEncodingException ex){
             log("Failed to encode data",ex);
-            httpEntity = null;;
+            httpEntity = null;
         }catch (IOException ioex){
             log("Failed to format xml",ioex);
             httpEntity = null;

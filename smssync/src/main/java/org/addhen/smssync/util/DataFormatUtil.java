@@ -49,18 +49,18 @@ public class DataFormatUtil {
         return obj.toString();
     }
 
-    public static String makeXMLString(List<NameValuePair> pairs, String charset) throws IOException {
+    public static String makeXMLString(List<NameValuePair> pairs, String parentNode, String charset) throws IOException {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
         serializer.setOutput(writer);
         serializer.startDocument(charset, true);
-        serializer.startTag("", "payload");
+        serializer.startTag("", parentNode);
         for (NameValuePair pair: pairs){
             serializer.startTag("", pair.getName());
             serializer.text(pair.getValue());
             serializer.endTag("", pair.getName());
         }
-        serializer.endTag("", "payload");
+        serializer.endTag("", parentNode);
         serializer.endDocument();
         return writer.toString();
     }
