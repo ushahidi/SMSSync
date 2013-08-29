@@ -15,16 +15,22 @@ W: http://m.andric.us/
 D: Bug fixes
 C: United States
 
-N: Ollie Bennett
-E: olliebennett@gmail.com
-W: http://olliebennett.co.uk
-D: Bug fixes and RegExp support
-C: http://olliebennett.co.uk
+N: Salama A. Balekage
+E: aksalj@aksalj.me
+W: http://www.aksalj.me
+D: Add ability to customize sync HTTP method, data format and payload keys
+C: Kenya
 
 N: Sándor Balikó
 W: https://www.transifex.net/accounts/profile/vo101sanyo/
 D: Helped translate the app into Hungarian
 C: Hungary
+
+N: Ollie Bennett
+E: olliebennett@gmail.com
+W: http://olliebennett.co.uk
+D: Bug fixes and RegExp support
+C: http://olliebennett.co.uk
 
 N: Juergen Eichholz
 W: http://about.me/jke
