@@ -36,12 +36,18 @@ public interface ISyncUrlSchema {
 
     public static final String TABLE = "syncurl";
 
+    public static final String SYNCSCHEME = "syncscheme";
+
     public static final String[] COLUMNS = new String[]{ID, TITLE, KEYWORDS,
-            URL, SECRET, STATUS};
+            URL, SECRET, STATUS, SYNCSCHEME };
 
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + STATUS + " INTEGER , " + KEYWORDS + " TEXT, " + TITLE
             + " TEXT NOT NULL, " + SECRET + " TEXT, " + URL + " TEXT NOT NULL "
+            + ", " + SYNCSCHEME + " TEXT NOT NULL DEFAULT '' "
             + ")";
+
+    public static final String ALTER_TABLE_ADD_SYNCSCHEME = "ALTER TABLE " + TABLE
+            +" ADD COLUMN " + SYNCSCHEME + " TEXT NOT NULL DEFAULT ''";
 }

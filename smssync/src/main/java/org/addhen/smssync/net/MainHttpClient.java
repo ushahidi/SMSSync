@@ -20,6 +20,8 @@
 
 package org.addhen.smssync.net;
 
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -36,9 +38,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
-
-import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
