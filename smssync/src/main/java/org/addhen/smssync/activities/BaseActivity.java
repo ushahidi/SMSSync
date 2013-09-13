@@ -117,6 +117,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     private List<BaseNavDrawerItem> navDrawerItem;
 
+    private List<BaseNavDrawerItem> logNavDrawerItem;
+
     private static int mPosition = 0;
 
     /**
