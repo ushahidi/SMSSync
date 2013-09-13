@@ -20,10 +20,6 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.models.SyncUrl;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -33,6 +29,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
+
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.SyncScheme;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +70,7 @@ public class Database {
 
     private static final String SENT_MESSAGES_TABLE = "sent_messages";
 
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     private static final String SENT_MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + SENT_MESSAGES_TABLE
@@ -127,7 +128,13 @@ public class Database {
             // TODO:: write code to populate UUID field
 
             // upgrade syncurl table
-            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
+            if (newVersion > oldVersion) {
+                //TODO: Add sych scheme table; should check if table available?
+                db.execSQL(ISyncUrlSchema.ALTER_TABLE_ADD_SYNCSCHEME);
+
+            }else{
+                db.execSQL(ISyncUrlSchema.CREATE_TABLE);
+            }
 
             db.execSQL(IFilterSchema.CREATE_TABLE);
             // add old sync url configuration to the database,
@@ -293,6 +300,7 @@ public class Database {
         initialValues.put(ISyncUrlSchema.KEYWORDS, syncUrl.getKeywords());
         initialValues.put(ISyncUrlSchema.SECRET, syncUrl.getSecret());
         initialValues.put(ISyncUrlSchema.STATUS, syncUrl.getStatus());
+        initialValues.put(ISyncUrlSchema.SYNCSCHEME, syncUrl.getSyncScheme().toJSONString());
         return db.insert(ISyncUrlSchema.TABLE, null, initialValues) > 0;
     }
 
@@ -378,6 +386,7 @@ public class Database {
             syncUrl.setTitle(context.getString(R.string.sync_url));
             syncUrl.setUrl(website);
             syncUrl.setStatus(1);
+            syncUrl.setSyncScheme(new SyncScheme());
             listSyncUrl.add(syncUrl);
             addSyncUrl(listSyncUrl, db);
         }

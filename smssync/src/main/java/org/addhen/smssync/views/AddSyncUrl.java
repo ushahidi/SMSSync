@@ -20,14 +20,15 @@
 
 package org.addhen.smssync.views;
 
-import org.addhen.smssync.R;
-import org.addhen.smssync.models.SyncUrl;
-
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.EditText;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.SyncScheme;
 
 public class AddSyncUrl {
 
@@ -77,6 +78,7 @@ public class AddSyncUrl {
         syncUrl.setTitle(title.getText().toString());
         syncUrl.setUrl(url.getText().toString());
         syncUrl.setStatus(0);
+        syncUrl.setSyncScheme(new SyncScheme());
         return syncUrl.save();
 
     }
@@ -86,7 +88,7 @@ public class AddSyncUrl {
      *
      * @return boolean
      */
-    public boolean updateSyncUrl(int id) {
+    public boolean updateSyncUrl(int id, SyncScheme scheme) {
         SyncUrl syncUrl = new SyncUrl();
         syncUrl.setId(id);
         syncUrl.setKeywords(keywords.getText().toString());
@@ -94,6 +96,7 @@ public class AddSyncUrl {
         syncUrl.setTitle(title.getText().toString());
         syncUrl.setUrl(url.getText().toString());
         syncUrl.setStatus(status);
+        syncUrl.setSyncScheme(scheme);
         return syncUrl.update();
     }
 }

@@ -299,4 +299,30 @@
     <string name="disable_blacklist">Blacklist enabled. You cannot perform a deletion until you disable the blacklist feature. Disable blacklist then try this action again.</string>
     <string name="failed_to_add_phone_number">Failed to add the phone number</string>
     <string name="failed_to_update_phone_number">Failed to update phone number</string>
+
+
+    <!-- sync scheme -->
+    <string name="sync_sheme">Sync Scheme</string>
+    <string name="sync_scheme_keys">Payload Keys</string>
+    <string name="sync_scheme_method">HTTP Method</string>
+    <string name="sync_scheme_data_format">Data Format</string>
+    <string-array name="sync_methods">
+        <item>POST</item>
+        <item>PUT</item>
+    </string-array>
+
+    <string-array name="sync_formats">
+        <item>URLEncoded</item>
+        <item>JSON</item>
+        <item>XML</item>
+    </string-array>
+
+    <string name="all_fields_are_required">All fields are required</string>
+    <string name="enter_key_for_secret">Enter key for \'secret\'</string>
+    <string name="enter_key_for_from">Enter key for \'from\'</string>
+    <string name="enter_key_for_message_id">Enter key for \'message_id\'</string>
+    <string name="enter_key_for_message">Enter key for \'message\'</string>
+    <string name="enter_key_for_sent_timestamp">Enter key for \'sent_timestamp\'</string>
+    <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
+
 </resources>

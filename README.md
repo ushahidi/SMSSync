@@ -14,6 +14,10 @@ Insallation and configuration details are [here][1].
 
 Documentation for developers can be found [here][2].
 
+## Support
+
+Post on our [forums][3]
 
 [1]: http://smssync.ushahidi.com/howto
 [2]: http://smssync.ushahidi.com/doc
+[3]: https://wiki.ushahidi.com/pages/viewpage.action?pageId=8357140
