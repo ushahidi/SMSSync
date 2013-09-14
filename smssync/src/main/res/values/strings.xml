@@ -271,9 +271,18 @@
     <string name="enter_key_for_message">Enter key for \'message\'</string>
     <string name="enter_key_for_sent_timestamp">Enter key for \'sent_timestamp\'</string>
     <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
+
+    <!-- Logs -->
     <string name="logs">Logs</string>
     <string name="action_settings">Settings</string>
     <string name="enable_logs">Enable logs</string>
     <string name="share">Share</string>
-
+    <string name="data_connection">Data connection</string>
+    <string name="battery_level">Battery level</string>
+    <string name="can_ping_server">Can ping server</string>
+    <string name="server_properly_configured">Server properly configured</string>
+    <string name="data_connection_status">[ %1$s ]</string>
+    <string name="battery_level_status">[ %1$s ]</string>
+    <string name="can_ping_server_status">[ %1$s ]</string>
+    <string name="server_properly_configured_status">[ %1$s ]</string>
 </resources>

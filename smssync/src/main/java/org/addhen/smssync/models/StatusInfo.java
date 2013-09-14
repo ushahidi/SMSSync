@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  *  Copyright (c) 2010 - 2013 Ushahidi Inc
  *  All rights reserved
@@ -15,34 +16,11 @@
  * Ushahidi developers at team@ushahidi.com.
  ******************************************************************************/
 
-package org.addhen.smssync.services;
+package org.addhen.smssync.models;
 
-import org.addhen.smssync.messages.ProcessMessage;
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.util.ServicesConstants;
+/**
+ * Created by eyedol on 9/14/13.
+ */
+public class StatusInfo {
 
-import android.content.Intent;
-
-public class CheckTaskScheduledService extends SmsSyncServices {
-
-    private static final String CLASS_TAG = CheckTaskScheduledService.class
-            .getSimpleName();
-
-    private SyncUrl model;
-
-    public CheckTaskScheduledService() {
-        super(CLASS_TAG);
-        model = new SyncUrl();
-    }
-
-    @Override
-    public void executeTask(Intent intent) {
-        log("checkin scheduled task services");
-        // Perform a task
-        for (SyncUrl syncUrl : model
-                .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            new ProcessMessage(CheckTaskScheduledService.this).performTask(syncUrl);
-
-        }
-    }
 }
