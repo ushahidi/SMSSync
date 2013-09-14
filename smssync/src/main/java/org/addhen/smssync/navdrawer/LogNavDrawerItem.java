@@ -22,6 +22,7 @@ package org.addhen.smssync.navdrawer;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
+import org.addhen.smssync.fragments.LogFragment;
 import org.addhen.smssync.fragments.SyncUrlFragment;
 import org.addhen.smssync.models.SyncUrl;
 
@@ -43,13 +44,12 @@ public class LogNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     protected void onSelectItem() {
-        fragment = new SyncUrlFragment();
+        fragment = new LogFragment();
         showFragment(TAG);
     }
 
     @Override
     public void setCounter() {
-        mCounter = new SyncUrl().totalActiveSynUrl();
     }
 
 }

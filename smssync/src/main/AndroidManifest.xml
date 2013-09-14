@@ -129,7 +129,7 @@
 
         <activity
             android:name="org.addhen.smssync.activities.LogActivity"
-            android:label="@string/title_activity_log" >
+            android:label="@string/logs" >
         </activity>
     </application>
 

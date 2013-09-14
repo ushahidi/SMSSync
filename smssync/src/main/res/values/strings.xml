@@ -271,8 +271,9 @@
     <string name="enter_key_for_message">Enter key for \'message\'</string>
     <string name="enter_key_for_sent_timestamp">Enter key for \'sent_timestamp\'</string>
     <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
-    <string name="title_activity_log">Logs</string>
+    <string name="logs">Logs</string>
     <string name="action_settings">Settings</string>
     <string name="enable_logs">Enable logs</string>
+    <string name="share">Share</string>
 
 </resources>
