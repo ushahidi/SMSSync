@@ -118,6 +118,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
             info.setBatteryLevel(level);
             info.setDataConnection(Util.isConnected(getActivity()));
+            info.setPhoneNumber(Util.getPhoneNumber(getActivity()));
             mLogController.setPhoneStatusInfo(info);
         }
     };
@@ -127,7 +128,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         view.batteryLevelStatus.setText(getString(R.string.battery_level_status, info.getBatteryLevel()+ "%"));
         final String status = info.isDataConnection() ? getString(R.string.confirm_yes) : getString(R.string.confirm_no);
         view.dataConnection.setText(getString(R.string.data_connection_status, status));
-
+        view.phoneStatusLable.setText(info.getPhoneNumber());
         // Set text colors
         if(info.getBatteryLevel() < 30)
             view.batteryLevelStatus.setTextColor(getResources().getColor(R.color.status_error));
