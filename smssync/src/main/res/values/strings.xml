@@ -285,4 +285,5 @@
     <string name="battery_level_status">[ %1$s ]</string>
     <string name="can_ping_server_status">[ %1$s ]</string>
     <string name="server_properly_configured_status">[ %1$s ]</string>
+    <string name="no_logs">No logs.</string>
 </resources>

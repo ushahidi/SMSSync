@@ -38,16 +38,17 @@ public class LogView extends View {
     @Widget(android.R.id.empty)
     public TextView emptyView;
 
+    @Widget(R.id.data_connection_status)
+    public TextView dataConnection;
+
     @Widget(R.id.phone_status_label)
     public TextView phoneStatusLable;
 
     @Widget(R.id.battery_level_status)
     public TextView batteryLevelStatus;
 
-    @Widget(R.id.can_ping_server_label)
-    public TextView canPingServer;
-
     public LogView(Activity activity) {
         super(activity);
+        emptyView.setText(activity.getString(R.string.no_logs));
     }
 }

@@ -26,9 +26,15 @@ public class PhoneStatusInfo {
 
     private boolean mDataConnection;
 
-    private boolean mCanPingServer;
+    public int getBatteryLevel() {
+        return mBatteryLevel;
+    }
 
-    private boolean mServerProperlyConfigured;
+    public void setBatteryLevel(int batteryLevel) {
+        mBatteryLevel = batteryLevel;
+    }
+
+    private int mBatteryLevel;
 
     public String getPhoneNumber() {
         return mPhoneNumber;
@@ -46,20 +52,12 @@ public class PhoneStatusInfo {
         this.mDataConnection = dataConnection;
     }
 
-    public boolean isCanPingServer() {
-        return mCanPingServer;
+    @Override
+    public String toString() {
+        return "PhoneStatusInfo{" +
+                "mPhoneNumber='" + mPhoneNumber + '\'' +
+                ", mDataConnection=" + mDataConnection +
+                ", mBatteryLevel=" + mBatteryLevel +
+                '}';
     }
-
-    public void setCanPingServer(boolean canPingServer) {
-        this.mCanPingServer = canPingServer;
-    }
-
-    public boolean isServerProperlyConfigured() {
-        return mServerProperlyConfigured;
-    }
-
-    public void setServerProperlyConfigured(boolean serverProperlyConfigured) {
-        this.mServerProperlyConfigured = serverProperlyConfigured;
-    }
-
 }

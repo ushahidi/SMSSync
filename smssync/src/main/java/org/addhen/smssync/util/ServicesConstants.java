@@ -39,6 +39,8 @@ public class ServicesConstants {
 
     public static String FAILED_ACTION = "org.addhen.smssync.syncservices.failed";
 
+    public static String BATTERY_LEVEL = "org.addhen.smssync.syncservices.batterylevel";
+
     public static String MESSAGE_UUID = "message_uuid";
 
     public static String SENT = "SMS_SENT";

@@ -11,8 +11,10 @@
         android:text="@string/data_connection_status"
         android:id="@+id/data_connection_status"
         android:paddingBottom="10dp"
+        android:textColor="@color/status_done"
         android:layout_alignBottom="@+id/data_connection"
         android:layout_alignParentRight="true"/>
+
     <TextView
             android:id="@+id/phone_status_label"
             android:layout_width="wrap_content"
@@ -21,6 +23,7 @@
             android:text="+819094220927 - status"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"/>
+
     <TextView
             android:id="@+id/data_connection"
             android:layout_width="wrap_content"
@@ -29,6 +32,7 @@
             android:paddingBottom="10dp"
             android:layout_below="@+id/phone_status_label"
             android:layout_alignParentLeft="true"/>
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,50 +41,21 @@
             android:paddingBottom="10dp"
             android:layout_below="@+id/data_connection"
             android:layout_alignParentLeft="true"/>
+
     <TextView
             android:id="@+id/battery_level_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/battery_level_status"
+            android:textColor="@color/status_done"
             android:paddingBottom="10dp"
             android:layout_alignTop="@+id/battery_level"
             android:layout_alignParentRight="true"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/can_ping_server"
-            android:paddingBottom="10dp"
-            android:id="@+id/ping_server"
-            android:layout_above="@+id/server_properly_configured"
-            android:layout_alignParentLeft="true"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/can_ping_server_status"
-            android:paddingBottom="10dp"
-            android:id="@+id/can_ping_server_label"
-            android:layout_below="@+id/battery_level"
-            android:layout_alignParentRight="true"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/server_properly_configured"
-            android:id="@+id/server_properly_configured"
-            android:layout_below="@+id/can_ping_server_label"
-            android:paddingBottom="10dp"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/server_properly_configured_status"
-            android:id="@+id/server_properly_configured_label"
-            android:layout_below="@+id/can_ping_server_label"
-            android:paddingBottom="20dp"
-            android:layout_alignParentRight="true"/>
+
     <TextView
             android:id="@+id/seperator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/server_properly_configured_label"
+            android:layout_below="@+id/battery_level_status"
             android:background="?android:attr/listDivider"/>
 </RelativeLayout>
