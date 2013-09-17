@@ -146,11 +146,11 @@ public class SyncUrl extends Model {
         this.keywords = keywords;
     }
 
-    public SyncScheme getSyncScheme(){
+    public SyncScheme getSyncScheme() {
         return syncScheme;
     }
 
-    public void setSyncScheme(SyncScheme scheme){
+    public void setSyncScheme(SyncScheme scheme) {
         syncScheme = scheme;
     }
 

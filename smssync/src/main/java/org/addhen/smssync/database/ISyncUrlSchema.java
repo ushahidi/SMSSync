@@ -36,7 +36,7 @@ public interface ISyncUrlSchema {
     public static final String SYNCSCHEME = "syncscheme";
 
     public static final String[] COLUMNS = new String[]{ID, TITLE, KEYWORDS,
-            URL, SECRET, STATUS, SYNCSCHEME };
+            URL, SECRET, STATUS, SYNCSCHEME};
 
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE + " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -46,5 +46,5 @@ public interface ISyncUrlSchema {
             + ")";
 
     public static final String ALTER_TABLE_ADD_SYNCSCHEME = "ALTER TABLE " + TABLE
-            +" ADD COLUMN " + SYNCSCHEME + " TEXT NOT NULL DEFAULT ''";
+            + " ADD COLUMN " + SYNCSCHEME + " TEXT NOT NULL DEFAULT ''";
 }

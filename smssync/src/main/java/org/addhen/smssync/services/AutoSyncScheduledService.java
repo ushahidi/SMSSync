@@ -57,7 +57,8 @@ public class AutoSyncScheduledService extends SmsSyncServices {
             logActivities(getString(R.string.auto_sending_pending_messages));
             ProcessMessage processMessage = new ProcessMessage(AutoSyncScheduledService.this);
             processMessage.syncPendingMessages("");
-            logActivities(getString(R.string.auto_sending_pending_messages_status, processMessage.getErrorMessage()));
+            logActivities(getString(R.string.auto_sending_pending_messages_status,
+                    processMessage.getErrorMessage()));
             statusIntent.putExtra("status", processMessage.getErrorMessage());
             sendBroadcast(statusIntent);
         }

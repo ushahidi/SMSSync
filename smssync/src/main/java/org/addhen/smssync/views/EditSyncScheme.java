@@ -16,30 +16,32 @@
  ******************************************************************************/
 package org.addhen.smssync.views;
 
-import android.text.TextUtils;
-import android.widget.EditText;
-import android.widget.Spinner;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 
+import android.text.TextUtils;
+import android.widget.EditText;
+import android.widget.Spinner;
+
 /**
- *
- * Class: EditSyncScheme
- * Description: Update sync scheme to SyncUrl
- * Author: Salama A.B. <devaksal@gmail.com>
- *
+ * Class: EditSyncScheme Description: Update sync scheme to SyncUrl Author: Salama A.B.
+ * <devaksal@gmail.com>
  */
 public class EditSyncScheme {
 
     public Spinner methods, dataFormats;
 
     public EditText keySecret;
+
     public EditText keyFrom;
+
     public EditText keyMessage;
+
     public EditText keySentTimeStamp;
+
     public EditText keySentTo;
+
     public EditText keyMessageID;
 
     /**
@@ -69,12 +71,14 @@ public class EditSyncScheme {
 
         SyncScheme scheme = new SyncScheme();
 
-        SyncScheme.SyncMethod method = SyncScheme.SyncMethod.valueOf(methods.getSelectedItem().toString());
-        SyncScheme.SyncDataFormat format = SyncScheme.SyncDataFormat.valueOf(dataFormats.getSelectedItem().toString());
-        scheme.init(method,format,
-                keySecret.getText().toString(),keyFrom.getText().toString(),
+        SyncScheme.SyncMethod method = SyncScheme.SyncMethod
+                .valueOf(methods.getSelectedItem().toString());
+        SyncScheme.SyncDataFormat format = SyncScheme.SyncDataFormat
+                .valueOf(dataFormats.getSelectedItem().toString());
+        scheme.init(method, format,
+                keySecret.getText().toString(), keyFrom.getText().toString(),
                 keyMessage.getText().toString(), keyMessageID.getText().toString(),
-                keySentTimeStamp.getText().toString(),keySentTo.getText().toString());
+                keySentTimeStamp.getText().toString(), keySentTo.getText().toString());
 
         syncUrl.setSyncScheme(scheme);
 
@@ -83,9 +87,10 @@ public class EditSyncScheme {
 
     /**
      * Validate dialog entries
+     *
      * @return true if valid false otherwise
      */
-    public boolean validEntries(){
+    public boolean validEntries() {
 
         //TODO: Add adequate sanitation
 

@@ -20,8 +20,6 @@ package org.addhen.smssync.navdrawer;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import org.addhen.smssync.fragments.LogFragment;
-import org.addhen.smssync.fragments.SyncUrlFragment;
-import org.addhen.smssync.models.SyncUrl;
 
 /**
  * Menu Item for LogFragment

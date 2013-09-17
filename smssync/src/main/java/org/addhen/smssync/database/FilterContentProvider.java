@@ -18,7 +18,6 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -48,7 +47,7 @@ public class FilterContentProvider extends DbContentProvider implements
     public List<Filter> fetchAll() {
 
         try {
-            cursor = super.query(TABLE, COLUMNS, null, null, ID +" DESC");
+            cursor = super.query(TABLE, COLUMNS, null, null, ID + " DESC");
             if (cursor != null) {
 
                 mListFilter = new ArrayList<Filter>();
@@ -79,7 +78,7 @@ public class FilterContentProvider extends DbContentProvider implements
         };
 
         try {
-            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID +" DESC");
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID + " DESC");
 
             if (cursor != null) {
                 mListFilter = new ArrayList<Filter>();
@@ -108,7 +107,7 @@ public class FilterContentProvider extends DbContentProvider implements
         };
 
         try {
-            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID +" DESC");
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID + " DESC");
             if (cursor != null) {
                 mListFilter = new ArrayList<Filter>();
                 while (cursor.moveToNext()) {
@@ -231,8 +230,9 @@ public class FilterContentProvider extends DbContentProvider implements
             if (cursor.getColumnIndex(STATUS) != -1) {
                 statusIndex = cursor.getColumnIndexOrThrow(STATUS);
                 int status = cursor.getInt(statusIndex);
-                if(status == Filter.Status.BLACKLIST.code)
-                filter.setStatus(Filter.Status.BLACKLIST);
+                if (status == Filter.Status.BLACKLIST.code) {
+                    filter.setStatus(Filter.Status.BLACKLIST);
+                }
             }
 
             if (cursor.getColumnIndex(PHONE_NUMBER) != -1) {

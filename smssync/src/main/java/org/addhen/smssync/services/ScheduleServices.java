@@ -46,6 +46,7 @@ public class ScheduleServices {
             .getSimpleName();
 
     private Context mContext;
+
     public ScheduleServices(Context context, Intent intent, Class<?> cls,
             int requestCode, int flags) {
         mContext = context;
@@ -62,7 +63,6 @@ public class ScheduleServices {
 
     /**
      * Stops the schedule service or task
-     *
      */
     public void stopScheduler() {
         if (mgr != null && pendingIntent != null) {

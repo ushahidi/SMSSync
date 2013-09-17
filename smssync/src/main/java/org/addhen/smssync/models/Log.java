@@ -17,10 +17,6 @@
 
 package org.addhen.smssync.models;
 
-import org.addhen.smssync.util.Util;
-
-import java.util.Date;
-
 /**
  * Log messages
  */

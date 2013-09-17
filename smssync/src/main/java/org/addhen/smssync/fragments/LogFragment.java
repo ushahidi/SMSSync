@@ -55,6 +55,8 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     private static PhoneStatusInfo info;
 
+    private static int batteryLevel;
+
     public LogFragment() {
         super(LogView.class, LogAdapter.class, R.layout.list_logs,
                 R.menu.log_menu, android.R.id.list);
@@ -114,14 +116,13 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (Prefs.enableLog) {
-            MenuItem actionItem = menu.findItem(R.id.share_menu);
-            ShareActionProvider actionProvider = (ShareActionProvider) actionItem
-                    .getActionProvider();
-            actionProvider
-                    .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-            actionProvider.setShareIntent(createShareIntent());
-        }
+
+        MenuItem actionItem = menu.findItem(R.id.share_menu);
+        ShareActionProvider actionProvider = (ShareActionProvider) actionItem
+                .getActionProvider();
+        actionProvider
+                .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+        actionProvider.setShareIntent(createShareIntent());
 
     }
 
@@ -171,6 +172,9 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     @Override
     public void setPhoneStatus(PhoneStatusInfo info) {
+        // save this in prefs for later retrieval
+        Prefs.batteryLevel = info.getBatteryLevel();
+        Prefs.savePreferences(getActivity());
         view.batteryLevelStatus
                 .setText(getString(R.string.battery_level_status, info.getBatteryLevel() + "%"));
         final String status = info.isDataConnection() ? getString(R.string.confirm_yes)
@@ -184,8 +188,6 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         if (!info.isDataConnection()) {
             view.dataConnection.setTextColor(getResources().getColor(R.color.status_error));
         }
-
-        this.info = info;
     }
 
     public PhoneStatusInfo getPhoneStatus() {
@@ -239,28 +241,32 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
         final String newLine = "\n";
 
-        if ((info.getPhoneNumber() != null) && (!TextUtils.isEmpty(info.getPhoneNumber()))) {
-            build.append(getString(R.string.log_message_from, info.getPhoneNumber()));
+        if ((Util.getPhoneNumber(getActivity()) != null) && (!TextUtils
+                .isEmpty(Util.getPhoneNumber(getActivity())))) {
+            build.append(getString(R.string.log_message_from, Util.getPhoneNumber(getActivity())));
             build.append(newLine);
         }
 
         build.append(getString(R.string.phone_status));
         build.append(newLine);
         build.append(getString(R.string.battery_level));
-        build.append(getPhoneStatus().getBatteryLevel());
+        build.append(getString(R.string.battery_level_status, Prefs.batteryLevel));
         build.append(newLine);
         build.append(getString(R.string.data_connection));
         build.append(getString(R.string.data_connection_status,
-                info.isDataConnection() ? getString(R.string.confirm_yes)
+                Util.isConnected(getActivity()) ? getString(R.string.confirm_yes)
                         : getString(R.string.confirm_no)));
-        build.append(newLine);
-        build.append(newLine);
-        // Get the log entries
+
+        // Get the log entries if they exist
         final String logs = LogUtil.readLogs(LogUtil.LOG_NAME);
+
         if ((logs != null) && (!TextUtils.isEmpty(logs))) {
+            build.append(newLine);
+            build.append(newLine);
             build.append(getString(R.string.log_entries_below));
             build.append(newLine);
         }
+
         return build.toString();
     }
 }

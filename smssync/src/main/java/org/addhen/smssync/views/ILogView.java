@@ -9,5 +9,4 @@ public interface ILogView {
 
     public void setPhoneStatus(PhoneStatusInfo info);
 
-    public PhoneStatusInfo getPhoneStatus();
 }

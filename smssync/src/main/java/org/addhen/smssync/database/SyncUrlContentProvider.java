@@ -17,16 +17,16 @@
 
 package org.addhen.smssync.database;
 
+import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.SyncScheme;
+import org.addhen.smssync.util.Util;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteStatement;
-
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.net.SyncScheme;
-import org.addhen.smssync.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -248,8 +248,8 @@ public class ProcessMessage {
     }
 
     /**
-     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to
-     * be synced online, cache it and queue it up for the scheduler to process it when it next runs.
+     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to be
+     * synced online, cache it and queue it up for the scheduler to process it when it next runs.
      *
      * @param message The sms to be routed
      * @return boolean
@@ -399,7 +399,7 @@ public class ProcessMessage {
         this.errorMessage = errorMessage;
     }
 
-    private void log( String message) {
+    private void log(String message) {
         Logger.log(TAG, message);
         if (Prefs.enableLog) {
             new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);

@@ -59,9 +59,11 @@ public class Prefs {
 
     public static Boolean enableBlacklist = false;
 
-    public static Boolean enableLog= false;
+    public static Boolean enableLog = false;
 
     private static SharedPreferences.Editor editor;
+
+    public static int batteryLevel = 0;
 
     /**
      * Load the value of the settings / preference variable.
@@ -90,7 +92,8 @@ public class Prefs {
         lastSyncDate = settings.getLong("LastSyncDate", 0);
         enableBlacklist = settings.getBoolean("EnableBlacklist", false);
         enableWhitelist = settings.getBoolean("EnableWhitelist", false);
-        enableLog = settings.getBoolean("EnableLog",false);
+        enableLog = settings.getBoolean("EnableLog", false);
+        batteryLevel = settings.getInt("BatteryLevel", 0);
     }
 
     /**
@@ -115,6 +118,7 @@ public class Prefs {
         editor.putBoolean("EnableBlacklist", enableBlacklist);
         editor.putBoolean("EnableWhitelist", enableWhitelist);
         editor.putBoolean("EnableLog", enableLog);
+        editor.putInt("BatteryLevel", batteryLevel);
         editor.commit();
     }
 }

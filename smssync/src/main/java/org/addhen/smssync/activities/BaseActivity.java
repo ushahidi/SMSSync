@@ -33,7 +33,6 @@ import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
 import org.addhen.smssync.navdrawer.WhitelistNavDrawerItem;
-import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.util.Util;
@@ -49,13 +48,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -299,7 +292,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         whitelistNavDrawerItem = new WhitelistNavDrawerItem(getString(R.string.whitelist),
                 R.drawable.whitelist, BaseActivity.this);
 
-        logNavDrawerItem = new LogNavDrawerItem(getString(R.string.logs),R.drawable.log, BaseActivity.this);
+        logNavDrawerItem = new LogNavDrawerItem(getString(R.string.logs), R.drawable.log,
+                BaseActivity.this);
 
         navDrawerItem = new ArrayList<BaseNavDrawerItem>();
 
@@ -307,7 +301,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     }
 
     private void setNavDrawerAdapterItems() {
-        new Handler().post(new Runnable(){
+        new Handler().post(new Runnable() {
 
             @Override
             public void run() {

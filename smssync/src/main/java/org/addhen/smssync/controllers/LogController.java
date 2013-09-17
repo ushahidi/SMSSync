@@ -21,8 +21,4 @@ public class LogController {
     public void setPhoneStatusInfo(PhoneStatusInfo info) {
         getView().setPhoneStatus(info);
     }
-
-    public PhoneStatusInfo getPhoneStatusInfo() {
-        return getView().getPhoneStatus();
-    }
 }

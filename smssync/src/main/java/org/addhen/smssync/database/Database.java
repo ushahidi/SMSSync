@@ -17,6 +17,11 @@
 
 package org.addhen.smssync.database;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.SyncScheme;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -26,11 +31,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
-
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.net.SyncScheme;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,7 +129,7 @@ public class Database {
                 //TODO: Add sych scheme table; should check if table available?
                 db.execSQL(ISyncUrlSchema.ALTER_TABLE_ADD_SYNCSCHEME);
 
-            }else{
+            } else {
                 db.execSQL(ISyncUrlSchema.CREATE_TABLE);
             }
 
