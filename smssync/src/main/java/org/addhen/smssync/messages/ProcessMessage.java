@@ -23,6 +23,7 @@ import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MessageSyncHttpClient;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -81,6 +83,7 @@ public class ProcessMessage {
     public boolean syncReceivedSms(Message message, SyncUrl syncUrl) {
         Logger.log(TAG, "postToAWebService(): Post received SMS to configured URL:" +
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
+
         MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
         final boolean posted = msgSyncHttpClient
                 .postSmsToWebService(message, Util.getPhoneNumber(context));
@@ -168,6 +171,7 @@ public class ProcessMessage {
 
     public void performTask(SyncUrl syncUrl) {
         Logger.log(TAG, "performTask(): perform a task");
+        log(context.getString(R.string.perform_task));
         // load Prefs
         Prefs.loadPreferences(context);
 
@@ -244,8 +248,8 @@ public class ProcessMessage {
     }
 
     /**
-     * Processes the incoming SMS to figure out how to exactly to route the message. If it fails to
-     * be synced online, cache it and queue it up for the scheduler to process it.
+     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to
+     * be synced online, cache it and queue it up for the scheduler to process it when it next runs.
      *
      * @param message The sms to be routed
      * @return boolean
@@ -271,7 +275,7 @@ public class ProcessMessage {
                 return true;
             } else {
                 //only save to pending when the number is not blacklisted
-                if(!Prefs.enableBlacklist){
+                if (!Prefs.enableBlacklist) {
                     saveMessage(message);
                 }
             }
@@ -372,7 +376,8 @@ public class ProcessMessage {
                 for (Filter filter : filters.getFilterList()) {
 
                     if (filter.getPhoneNumber().equals(message.getFrom())) {
-                        Logger.log("message", " from:"+message.getFrom()+" filter:"+ filter.getPhoneNumber());
+                        Logger.log("message", " from:" + message.getFrom() + " filter:" + filter
+                                .getPhoneNumber());
                         return false;
                     }
                 }
@@ -393,4 +398,12 @@ public class ProcessMessage {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
+    private void log( String message) {
+        Logger.log(TAG, message);
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
+        }
+    }
+
 }

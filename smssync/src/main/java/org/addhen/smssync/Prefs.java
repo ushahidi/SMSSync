@@ -59,6 +59,8 @@ public class Prefs {
 
     public static Boolean enableBlacklist = false;
 
+    public static Boolean enableLog= false;
+
     private static SharedPreferences.Editor editor;
 
     /**
@@ -88,6 +90,7 @@ public class Prefs {
         lastSyncDate = settings.getLong("LastSyncDate", 0);
         enableBlacklist = settings.getBoolean("EnableBlacklist", false);
         enableWhitelist = settings.getBoolean("EnableWhitelist", false);
+        enableLog = settings.getBoolean("EnableLog",false);
     }
 
     /**
@@ -111,6 +114,7 @@ public class Prefs {
         editor.putLong("LastSyncDate", lastSyncDate);
         editor.putBoolean("EnableBlacklist", enableBlacklist);
         editor.putBoolean("EnableWhitelist", enableWhitelist);
+        editor.putBoolean("EnableLog", enableLog);
         editor.commit();
     }
 }

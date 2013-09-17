@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.ServicesConstants;
@@ -53,9 +54,10 @@ public class AutoSyncScheduledService extends SmsSyncServices {
         log(CLASS_TAG, "executeTask() executing this scheduled task");
         if (mMessage.totalMessages() > 0) {
             log(CLASS_TAG, "Sending pending messages");
-
+            logActivities(getString(R.string.auto_sending_pending_messages));
             ProcessMessage processMessage = new ProcessMessage(AutoSyncScheduledService.this);
             processMessage.syncPendingMessages("");
+            logActivities(getString(R.string.auto_sending_pending_messages_status, processMessage.getErrorMessage()));
             statusIntent.putExtra("status", processMessage.getErrorMessage());
             sendBroadcast(statusIntent);
         }

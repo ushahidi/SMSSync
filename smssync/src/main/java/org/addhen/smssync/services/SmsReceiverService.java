@@ -19,9 +19,9 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -39,6 +39,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
+import android.text.format.DateFormat;
 
 import java.lang.ref.WeakReference;
 
@@ -193,12 +194,14 @@ public class SmsReceiverService extends Service {
         if (!sent) {
             Util.showFailNotification(this, messagesBody,
                     getString(R.string.sending_failed));
+            logActivities(getString(R.string.sending_failed));
             statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
             statusIntent.putExtra("failed", 0);
             sendBroadcast(statusIntent);
         } else {
             Util.showFailNotification(this, messagesBody,
                     getString(R.string.sending_succeeded));
+            logActivities(getString(R.string.sending_succeeded));
             statusIntent.putExtra("sentstatus", 0);
             sendBroadcast(statusIntent);
         }
@@ -302,4 +305,12 @@ public class SmsReceiverService extends Service {
         Logger.log(getClass().getName(), message, ex);
     }
 
+    public void logActivities(String message) {
+
+        Logger.log(CLASS_TAG, message);
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(mContext)).appendAndClose(message);
+        }
+
+    }
 }

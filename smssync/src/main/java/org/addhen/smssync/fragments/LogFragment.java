@@ -17,28 +17,32 @@
 
 package org.addhen.smssync.fragments;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.ShareActionProvider;
+
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.adapters.LogAdapter;
 import org.addhen.smssync.controllers.LogController;
-import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Log;
 import org.addhen.smssync.models.PhoneStatusInfo;
-import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.ILogView;
 import org.addhen.smssync.views.LogView;
-import org.addhen.smssync.views.WhitelistView;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -49,7 +53,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     private LogController mLogController;
 
-    private PhoneStatusInfo info;
+    private static PhoneStatusInfo info;
 
     public LogFragment() {
         super(LogView.class, LogAdapter.class, R.layout.list_logs,
@@ -65,8 +69,8 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         setHasOptionsMenu(true);
         listView.setItemsCanFocus(false);
         listView.setOnItemClickListener(this);
-
-        view.enableLogs.setChecked(Prefs.enableWhitelist);
+        Prefs.loadPreferences(getActivity());
+        view.enableLogs.setChecked(Prefs.enableLog);
         view.enableLogs.setOnClickListener(this);
         mLogController.setView(this);
     }
@@ -77,24 +81,66 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         super.onResume();
         getActivity().registerReceiver(batteryLevelReceiver,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
+        loadLogs();
     }
 
     @Override
     public void onDestroy() {
         log("onDestroy()");
         super.onDestroy();
-        getActivity().unregisterReceiver(batteryLevelReceiver);
+        //getActivity().unregisterReceiver(batteryLevelReceiver);
     }
 
     @Override
-    public void onClick(View view) {
+    public void onClick(View v) {
 
+        if (view.enableLogs.isChecked()) {
+            Prefs.enableLog = true;
+            view.enableLogs.setChecked(true);
+        } else {
+
+            Prefs.enableLog = false;
+            view.enableLogs.setChecked(false);
+        }
+
+        Prefs.savePreferences(getActivity());
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        if (Prefs.enableLog) {
+            MenuItem actionItem = menu.findItem(R.id.share_menu);
+            ShareActionProvider actionProvider = (ShareActionProvider) actionItem
+                    .getActionProvider();
+            actionProvider
+                    .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+            actionProvider.setShareIntent(createShareIntent());
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.delete_log_menu) {
+            // load all blacklisted phone numbers
+            performDelete();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.log_entries));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, makeShareableMessage());
+        return shareIntent;
     }
 
     /**
@@ -125,14 +171,96 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     @Override
     public void setPhoneStatus(PhoneStatusInfo info) {
-        view.batteryLevelStatus.setText(getString(R.string.battery_level_status, info.getBatteryLevel()+ "%"));
-        final String status = info.isDataConnection() ? getString(R.string.confirm_yes) : getString(R.string.confirm_no);
+        view.batteryLevelStatus
+                .setText(getString(R.string.battery_level_status, info.getBatteryLevel() + "%"));
+        final String status = info.isDataConnection() ? getString(R.string.confirm_yes)
+                : getString(R.string.confirm_no);
         view.dataConnection.setText(getString(R.string.data_connection_status, status));
         view.phoneStatusLable.setText(info.getPhoneNumber());
         // Set text colors
-        if(info.getBatteryLevel() < 30)
+        if (info.getBatteryLevel() < 30) {
             view.batteryLevelStatus.setTextColor(getResources().getColor(R.color.status_error));
-        if(!info.isDataConnection())
+        }
+        if (!info.isDataConnection()) {
             view.dataConnection.setTextColor(getResources().getColor(R.color.status_error));
+        }
+
+        this.info = info;
+    }
+
+    public PhoneStatusInfo getPhoneStatus() {
+        return info;
+    }
+
+    private void loadLogs() {
+        new Handler().post(new Runnable() {
+
+            @Override
+            public void run() {
+                adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
+            }
+        });
+    }
+
+    private void deleteLogs() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                LogUtil.deleteLog(LogUtil.LOG_NAME);
+                adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
+            }
+        });
+    }
+
+    private void performDelete() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getString(R.string.confirm_message))
+                .setCancelable(false)
+                .setNegativeButton(getString(R.string.confirm_no),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton(getString(R.string.confirm_yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // delete all messages
+                                deleteLogs();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private String makeShareableMessage() {
+
+        StringBuilder build = new StringBuilder();
+
+        final String newLine = "\n";
+
+        if ((info.getPhoneNumber() != null) && (!TextUtils.isEmpty(info.getPhoneNumber()))) {
+            build.append(getString(R.string.log_message_from, info.getPhoneNumber()));
+            build.append(newLine);
+        }
+
+        build.append(getString(R.string.phone_status));
+        build.append(newLine);
+        build.append(getString(R.string.battery_level));
+        build.append(getPhoneStatus().getBatteryLevel());
+        build.append(newLine);
+        build.append(getString(R.string.data_connection));
+        build.append(getString(R.string.data_connection_status,
+                info.isDataConnection() ? getString(R.string.confirm_yes)
+                        : getString(R.string.confirm_no)));
+        build.append(newLine);
+        build.append(newLine);
+        // Get the log entries
+        final String logs = LogUtil.readLogs(LogUtil.LOG_NAME);
+        if ((logs != null) && (!TextUtils.isEmpty(logs))) {
+            build.append(getString(R.string.log_entries_below));
+            build.append(newLine);
+        }
+        return build.toString();
     }
 }

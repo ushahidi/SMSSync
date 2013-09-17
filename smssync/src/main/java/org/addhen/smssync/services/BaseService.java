@@ -18,10 +18,12 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.tasks.state.State;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
@@ -35,6 +37,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.text.format.DateFormat;
 
 /**
  * @author eyedol
@@ -51,7 +54,11 @@ public abstract class BaseService extends Service {
      */
     private WifiManager.WifiLock sWifiLock;
 
+    private LogUtil mLogUtil;
+
     protected final static String CLASS_TAG = BaseService.class.getSimpleName();
+
+    private String TAG = LogUtil.class.getSimpleName();
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -61,7 +68,10 @@ public abstract class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Prefs.loadPreferences(this);
+        if (Prefs.enableLog) {
+            mLogUtil = new LogUtil(DateFormat.getDateFormatOrder(this));
+        }
         MainApplication.bus.register(this);
     }
 
@@ -115,9 +125,6 @@ public abstract class BaseService extends Service {
         }
     }
 
-    protected boolean isBackgroundTask() {
-        return false;
-    }
 
     protected abstract void handleIntent(final Intent intent);
 
@@ -172,4 +179,11 @@ public abstract class BaseService extends Service {
         Logger.log(getClass().getName(), message, ex);
     }
 
+    protected void logActivities(int id, Object... args) {
+        final String msg = getString(id, args);
+        if (mLogUtil != null) {
+            mLogUtil.append(msg);
+        }
+        Logger.log(TAG, "Activity " + msg);
+    }
 }

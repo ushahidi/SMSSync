@@ -326,7 +326,6 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                 navDrawerItem.add(filterNavDrawerItem);
                 navDrawerItem.add(logNavDrawerItem);
                 navDrawerAdapter.setItems(navDrawerItem);
-
                 listView.setAdapter(navDrawerAdapter);
                 selectItem(mPosition);
             }

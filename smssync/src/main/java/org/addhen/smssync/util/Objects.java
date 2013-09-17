@@ -27,7 +27,8 @@ import java.lang.reflect.Type;
 public class Objects {
 
     /**
-     * Helps to avoid using {@code @SuppressWarnings( "unchecked"})} when casting to a generic type.
+     * Helps to avoid using {@code @SuppressWarnings( "unchecked"})} when casting to a generic
+     * type.
      */
     @SuppressWarnings("unchecked")
     public static <T, X extends T> X cast(T o) {

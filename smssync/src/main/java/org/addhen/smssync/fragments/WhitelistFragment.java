@@ -113,7 +113,8 @@ public class WhitelistFragment extends
 
         if (item.getItemId() == R.id.context_delete) {
             mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
-            if (Prefs.enableWhitelist && (adapter.getCount() == 1 || adapter.getCount() == mSelectedItemsPositions.size() )) {
+            if (Prefs.enableWhitelist && (adapter.getCount() == 1
+                    || adapter.getCount() == mSelectedItemsPositions.size())) {
                 showMessage(R.string.disable_whitelist);
             } else {
                 performDeleteById();

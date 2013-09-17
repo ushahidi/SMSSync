@@ -8,4 +8,6 @@ import org.addhen.smssync.models.PhoneStatusInfo;
 public interface ILogView {
 
     public void setPhoneStatus(PhoneStatusInfo info);
+
+    public PhoneStatusInfo getPhoneStatus();
 }

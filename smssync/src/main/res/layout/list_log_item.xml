@@ -17,19 +17,10 @@
                 android:padding="5dip">
 
     <TextView
-            android:id="@+id/log_timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:ellipsize="end"
-            android:lines="1"
-            android:paddingLeft="3dp"/>
-
-    <TextView
             android:id="@+id/log_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="3dp"
-            android:layout_alignTop="@+id/log_timestamp" android:layout_alignParentRight="true"/>
+            android:layout_alignTop="@+id/log_timestamp"/>
 
 </RelativeLayout>

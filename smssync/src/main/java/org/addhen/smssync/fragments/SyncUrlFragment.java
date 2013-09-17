@@ -17,19 +17,6 @@
 
 package org.addhen.smssync.fragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ListView;
-
 import com.actionbarsherlock.view.MenuItem;
 
 import org.addhen.smssync.Prefs;
@@ -43,11 +30,26 @@ import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.EditSyncScheme;
 import org.addhen.smssync.views.SyncUrlView;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.format.DateFormat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -321,7 +323,7 @@ public class SyncUrlFragment extends
 
     }
 
-    private void editSyncScheme(){
+    private void editSyncScheme() {
         LayoutInflater factory = LayoutInflater.from(getActivity());
         final View textEntryView = factory.inflate(R.layout.edit_sync_url_scheme, null);
         final EditSyncScheme editScheme = new EditSyncScheme(textEntryView);
@@ -334,16 +336,16 @@ public class SyncUrlFragment extends
             editScheme.keyMessageID.setText(scheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID));
             editScheme.keyFrom.setText(scheme.getKey(SyncScheme.SyncDataKey.FROM));
             editScheme.keySecret.setText(scheme.getKey(SyncScheme.SyncDataKey.SECRET));
-            editScheme.keySentTimeStamp.setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TIMESTAMP));
+            editScheme.keySentTimeStamp
+                    .setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TIMESTAMP));
             editScheme.keySentTo.setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TO));
 
             editScheme.methods.setSelection(scheme.getMethod().ordinal());
             editScheme.dataFormats.setSelection(scheme.getDataFormat().ordinal());
-        }else{
+        } else {
             //SHOULD NOT GET HERE!!
             return;
         }
-
 
         final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
                 getActivity());
@@ -352,12 +354,13 @@ public class SyncUrlFragment extends
                 .setView(textEntryView)
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) { }
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
                         })
                 .setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
-                                                int whichButton) {
+                                    int whichButton) {
                                 dialog.dismiss();
                             }
                         });
@@ -371,10 +374,10 @@ public class SyncUrlFragment extends
                     @Override
                     public void onClick(View v) {
                         //TODO: validate entry
-                        if(editScheme.validEntries()){
+                        if (editScheme.validEntries()) {
                             editScheme.updateSyncScheme(listSyncUrl.get(0));
                             deploymentDialog.dismiss();
-                        }else {
+                        } else {
                             toastLong(R.string.all_fields_are_required);
                         }
                     }
@@ -498,6 +501,7 @@ public class SyncUrlFragment extends
         }
     }
 
+
     protected class DeleteTask extends ProgressTask {
 
         protected boolean deletebyUuid = false;
@@ -570,7 +574,7 @@ public class SyncUrlFragment extends
         protected Boolean doInBackground(String... strings) {
             if (editSyncUrl) {
                 final List<SyncUrl> listSyncUrl = model.loadById(id);
-                status = addSyncUrl.updateSyncUrl(id,listSyncUrl.get(0).getSyncScheme());
+                status = addSyncUrl.updateSyncUrl(id, listSyncUrl.get(0).getSyncScheme());
             } else {
                 status = addSyncUrl.addSyncUrl();
             }
@@ -594,4 +598,9 @@ public class SyncUrlFragment extends
         }
     }
 
+    private void logActivities(String message) {
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(getActivity())).appendAndClose(message);
+        }
+    }
 }

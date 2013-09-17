@@ -68,15 +68,20 @@ public class SyncPendingMessagesService extends BaseService {
             messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG, "executeTask() executing this task ");
+            logActivities(R.string.sync_pending_messages);
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
+                    logActivities(R.string.sync_started);
+                    // log activity
+                    logActivities(R.string.smssync_service_running);
                     mState = new SyncPendingMessagesState(INITIAL, 0, 0, 0, 0, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
                         new SyncPendingMessagesTask(this).execute(config);
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
+                        logActivities(R.string.not_syncing);
                         MainApplication.bus.post(mState.transition(ERROR, e));
                     }
                 } else {
@@ -110,7 +115,7 @@ public class SyncPendingMessagesService extends BaseService {
             }
         } else {
             log(state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done));
-
+            logActivities(state.isCanceled() ? R.string.canceled : R.string.done);
             stopForeground(true);
             stopSelf();
         }
@@ -135,11 +140,6 @@ public class SyncPendingMessagesService extends BaseService {
 
     public boolean isWorking() {
         return getState().isRunning();
-    }
-
-    @Override
-    protected boolean isBackgroundTask() {
-        return mState.syncType.isBackground();
     }
 
     public static boolean isServiceWorking() {

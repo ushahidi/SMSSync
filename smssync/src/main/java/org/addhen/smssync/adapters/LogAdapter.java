@@ -51,31 +51,20 @@ public class LogAdapter extends BaseListAdapter<Log> {
         }
 
         // initialize view with content
-        widgets.message.setText(getItem(position).getTimestamp());
-        widgets.timestamp.setText(getItem(position)
-                .getTimestamp());
+        widgets.message.setText(getItem(position).getMessage());
 
         return view;
     }
 
-    public class Widgets extends org.addhen.smssync.views.View implements
-            View.OnClickListener {
-
-        TextView timestamp;
+    public class Widgets extends org.addhen.smssync.views.View {
 
         TextView message;
 
         public Widgets(View convertView) {
             super(convertView);
-            timestamp = (TextView) convertView
-                    .findViewById(R.id.log_timestamp);
             message = (TextView) convertView
                     .findViewById(R.id.log_message);
         }
 
-        @Override
-        public void onClick(View v) {
-
-        }
     }
 }

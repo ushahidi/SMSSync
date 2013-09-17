@@ -19,6 +19,7 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
@@ -30,6 +31,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
+import android.text.format.DateFormat;
 
 public abstract class SmsSyncServices extends IntentService {
 
@@ -168,4 +170,12 @@ public abstract class SmsSyncServices extends IntentService {
         Logger.log(getClass().getName(), message, ex);
     }
 
+    public void logActivities(String message) {
+
+        Logger.log(TAG, message);
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(this)).appendAndClose(message);
+        }
+
+    }
 }

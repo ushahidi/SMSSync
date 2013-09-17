@@ -26,8 +26,6 @@ import java.util.Date;
  */
 public class Log extends Model {
 
-    public final static String FORMAT = "MM-dd kk:mm";
-
     public String message;
 
     public CharSequence timestamp;
@@ -45,7 +43,7 @@ public class Log extends Model {
     }
 
     public void setTimestamp(long timestamp) {
-        this.timestamp = Util.formatDateTime(timestamp, FORMAT);
+        this.timestamp = "";
     }
 
     @Override

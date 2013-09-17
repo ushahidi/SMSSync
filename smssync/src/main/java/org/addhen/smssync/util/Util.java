@@ -18,7 +18,6 @@
 package org.addhen.smssync.util;
 
 import org.addhen.smssync.BuildConfig;
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
@@ -93,7 +92,7 @@ public class Util {
     /**
      * Joins two strings together.
      *
-     * @param first - The first String to be joined to a second string.
+     * @param first  - The first String to be joined to a second string.
      * @param second - The second String to join to the first string.
      * @return String
      */
@@ -144,7 +143,7 @@ public class Util {
     /**
      * Limit a string to a defined length.
      *
-     * @param value - the string to limit.
+     * @param value  - the string to limit.
      * @param length - the total length of the string.
      * @return the limited string
      */
@@ -269,7 +268,7 @@ public class Util {
     /**
      * Show a notification
      *
-     * @param message to display
+     * @param message           to display
      * @param notificationTitle notification title
      */
     public static void showFailNotification(Context context, String message,
@@ -385,7 +384,7 @@ public class Util {
      * Format an Unix timestamp to a string suitable for display to the user according to their
      * system settings (12 or 24 hour time).
      *
-     * @param context - The context of the calling activity.
+     * @param context   - The context of the calling activity.
      * @param timestamp - The human unfriendly timestamp.
      * @return String
      */
@@ -453,8 +452,9 @@ public class Util {
         mTelephonyMgr = (TelephonyManager)
                 context.getSystemService(Context.TELEPHONY_SERVICE);
         String number = mTelephonyMgr.getLine1Number();
-        if(number != null)
+        if (number != null) {
             return number.substring(2);
+        }
         return "";
 
     }
@@ -503,12 +503,10 @@ public class Util {
     }
 
     public void log(String format, Object... args) {
-
         Logger.log(getClass().getName(), String.format(format, args));
     }
 
     public void log(String message, Exception ex) {
-
         Logger.log(getClass().getName(), message, ex);
     }
 }

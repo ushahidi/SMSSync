@@ -112,7 +112,8 @@ public class BlacklistFragment extends
         if (item.getItemId() == R.id.context_delete) {
 
             mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
-            if (Prefs.enableBlacklist && (adapter.getCount() == 1 || adapter.getCount() == mSelectedItemsPositions.size() )) {
+            if (Prefs.enableBlacklist && (adapter.getCount() == 1
+                    || adapter.getCount() == mSelectedItemsPositions.size())) {
                 showMessage(R.string.disable_blacklist);
             } else {
                 performDeleteById();

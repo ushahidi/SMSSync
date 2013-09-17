@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
@@ -37,7 +38,8 @@ public class CheckTaskScheduledService extends SmsSyncServices {
 
     @Override
     public void executeTask(Intent intent) {
-        log("checkin scheduled task services");
+        log("checking scheduled task services");
+        logActivities(getString(R.string.task_scheduler_running));
         // Perform a task
         for (SyncUrl syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
