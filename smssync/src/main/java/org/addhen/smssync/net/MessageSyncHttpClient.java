@@ -22,6 +22,7 @@ package org.addhen.smssync.net;
 import android.content.Context;
 import android.content.res.Resources;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
@@ -155,6 +156,12 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
 
         if(request != null){
+            String userInfo = request.getURI().getUserInfo();
+            if (userInfo != null) {
+                request.addHeader(
+                    "Authorization", "Basic " + base64Encode(userInfo)
+                );
+            }
             request.addHeader("User-Agent", userAgent.toString());
             request.setHeader("Content-Type", syncScheme.getContentType());
         }
@@ -218,6 +225,11 @@ public class MessageSyncHttpClient extends MainHttpClient {
         }
 
         return httpEntity;
+    }
+
+    private String base64Encode(String str) {
+        byte[] bytes = str.getBytes();
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
     public String getServerError() {
