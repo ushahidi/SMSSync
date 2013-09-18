@@ -47,6 +47,9 @@ public class LogView extends View {
     @Widget(R.id.battery_level_status)
     public TextView batteryLevelStatus;
 
+    @Widget(R.id.log_location)
+    public TextView logLcation;
+
     public LogView(Activity activity) {
         super(activity);
         emptyView.setText(activity.getString(R.string.no_logs));

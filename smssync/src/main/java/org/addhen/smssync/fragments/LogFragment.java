@@ -99,6 +99,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         if (view.enableLogs.isChecked()) {
             Prefs.enableLog = true;
             view.enableLogs.setChecked(true);
+            view.logLcation.setVisibility(View.VISIBLE);
         } else {
 
             Prefs.enableLog = false;
@@ -172,7 +173,8 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     @Override
     public void setPhoneStatus(PhoneStatusInfo info) {
-        // save this in prefs for later retrieval
+        // Save this in prefs for later retrieval
+        // Not elegant but works
         Prefs.batteryLevel = info.getBatteryLevel();
         Prefs.savePreferences(getActivity());
         view.batteryLevelStatus
@@ -181,6 +183,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
                 : getString(R.string.confirm_no);
         view.dataConnection.setText(getString(R.string.data_connection_status, status));
         view.phoneStatusLable.setText(info.getPhoneNumber());
+
         // Set text colors
         if (info.getBatteryLevel() < 30) {
             view.batteryLevelStatus.setTextColor(getResources().getColor(R.color.status_error));
@@ -200,6 +203,13 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
             @Override
             public void run() {
                 adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
+
+                // Set the location of the log file
+                if (adapter.getCount() > 0) {
+                    view.logLcation.setText(getString(R.string.log_saved_at,
+                            LogUtil.getFile(LogUtil.LOG_NAME).getAbsolutePath()));
+                    view.logLcation.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -210,6 +220,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
             public void run() {
                 LogUtil.deleteLog(LogUtil.LOG_NAME);
                 adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
+                view.logLcation.setVisibility(View.GONE);
             }
         });
     }

@@ -303,4 +303,5 @@
     <string name="phone_status">Phone status</string>
     <string name="log_message_from">Log message from phone number %1$s</string>
     <string name="log_entries">SMSSync log entries</string>
+    <string name="log_saved_at">Log is saved on the SD card at %1$s</string>
 </resources>
