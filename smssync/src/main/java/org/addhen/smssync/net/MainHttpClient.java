@@ -132,8 +132,8 @@ public class MainHttpClient {
         String userInfo = httpGet.getURI().getUserInfo();
         if (userInfo != null) {
             httpGet.addHeader(
-                    "Authorization", "Basic " + base64Encode(userInfo)
-                    );
+                "Authorization", "Basic " + base64Encode(userInfo)
+            );
         }
 
         try {
