@@ -22,6 +22,8 @@ package org.addhen.smssync.net;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Base64;
+
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -127,6 +129,13 @@ public class MainHttpClient {
 
         httpGet.addHeader("User-Agent", userAgent.toString());
 
+        String userInfo = httpGet.getURI().getUserInfo();
+        if (userInfo != null) {
+            httpGet.addHeader(
+                "Authorization", "Basic " + base64Encode(userInfo)
+            );
+        }
+
         try {
             // Execute HTTP Get Request
             HttpResponse response = httpclient.execute(httpGet);
@@ -177,6 +186,11 @@ public class MainHttpClient {
             }
         }
         return text;
+    }
+
+    private String base64Encode(String str) {
+        byte[] bytes = str.getBytes();
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
 
     protected void log(String message) {
