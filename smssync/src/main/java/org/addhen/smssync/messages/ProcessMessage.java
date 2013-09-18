@@ -88,6 +88,8 @@ public class ProcessMessage {
         final boolean posted = msgSyncHttpClient
                 .postSmsToWebService(message, Util.getPhoneNumber(context));
         if (posted) {
+            log(context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
+                    syncUrl.getUrl()));
             smsServerResponse(msgSyncHttpClient.getServerSuccessResp());
         } else {
             setErrorMessage(msgSyncHttpClient.getServerError());
@@ -179,10 +181,13 @@ public class ProcessMessage {
         int status = Util.validateCallbackUrl(syncUrl.getUrl());
         if (status == 1) {
             setErrorMessage(context.getString(R.string.no_configured_url));
+            log(context.getString(R.string.no_configured_url));
         } else if (status == 2) {
             setErrorMessage(context.getString(R.string.invalid_url));
+            log(context.getString(R.string.invalid_url) + syncUrl.getUrl());
         } else if (status == 3) {
             setErrorMessage(context.getString(R.string.no_connection));
+            log(context.getString(R.string.no_connection));
         } else {
 
             StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
@@ -224,16 +229,20 @@ public class ProcessMessage {
 
                                 processSms.sendSms(jsonObject.getString("to"),
                                         jsonObject.getString("message"));
+                                log(context.getString(R.string.processed_task,
+                                        jsonObject.getString("message")));
                             }
 
                         } else {
                             Logger.log(TAG, context.getString(R.string.no_task));
+                            log(context.getString(R.string.no_task));
                             setErrorMessage(context.getString(R.string.no_task));
                         }
 
                     } else { // 'payload' data may not be present in JSON
                         // response
                         Logger.log(TAG, context.getString(R.string.no_task));
+                        log(context.getString(R.string.no_task));
                         setErrorMessage(context.getString(R.string.no_task));
                     }
 
@@ -262,6 +271,7 @@ public class ProcessMessage {
             // send auto response from phone not server.
             if (Prefs.enableReply) {
                 // send auto response as SMS to user's phone
+                log(context.getString(R.string.auto_response_sent));
                 processSms.sendSms(message.getFrom(), Prefs.reply);
             }
 
@@ -270,7 +280,9 @@ public class ProcessMessage {
                 // Delete messages from message app's inbox, only
                 // when SMSSync has that feature turned on
                 if (Prefs.autoDelete) {
+
                     processSms.delSmsFromInbox(message.getBody(), message.getFrom());
+                    log(context.getString(R.string.auto_message_deleted, message.getBody()));
                 }
                 return true;
             } else {
@@ -329,8 +341,7 @@ public class ProcessMessage {
             setErrorMessage(syncUrl.getUrl());
             if (!posted) {
 
-                // attempt to make a data connection to the sync
-                // url
+                // attempt to make a data connection
                 Util.connectToDataNetwork(context);
 
             } else {

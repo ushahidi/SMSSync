@@ -304,4 +304,8 @@
     <string name="log_message_from">Log message from phone number %1$s</string>
     <string name="log_entries">SMSSync log entries</string>
     <string name="log_saved_at">Log is saved on the SD card at %1$s</string>
+    <string name="auto_response_sent">Auto response sent</string>
+    <string name="auto_message_deleted"> %1$s auto deleted</string>
+    <string name="sms_sent_to_webserivce">SMS [ %1$s ] successfully sent to %1$s</string>
+    <string name="processed_task">Processed task to send message [%1$s] as SMS</string>
 </resources>

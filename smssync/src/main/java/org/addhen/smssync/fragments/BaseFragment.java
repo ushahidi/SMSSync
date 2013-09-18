@@ -24,9 +24,12 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.widget.Toast;
 
 public class BaseFragment extends SherlockFragment {
@@ -142,6 +145,12 @@ public class BaseFragment extends SherlockFragment {
     protected void toastShort(CharSequence message) {
         Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    protected void logActivities(String message) {
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(getActivity())).appendAndClose(message);
+        }
     }
 
 }

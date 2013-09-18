@@ -97,18 +97,23 @@ public class PendingMessages
             switch (result) {
                 case Activity.RESULT_OK:
                     toastLong(R.string.sms_status_success);
+                    logActivities(getString(R.string.sms_status_success));
                     break;
                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                     toastLong(R.string.sms_delivery_status_failed);
+                    logActivities(getString(R.string.sms_delivery_status_failed));
                     break;
                 case SmsManager.RESULT_ERROR_NO_SERVICE:
                     toastLong(R.string.sms_delivery_status_no_service);
+                    logActivities(getString(R.string.sms_delivery_status_no_service));
                     break;
                 case SmsManager.RESULT_ERROR_NULL_PDU:
                     toastLong(R.string.sms_delivery_status_null_pdu);
+                    logActivities(getString(R.string.sms_delivery_status_null_pdu));
                     break;
                 case SmsManager.RESULT_ERROR_RADIO_OFF:
                     toastLong(R.string.sms_delivery_status_radio_off);
+                    logActivities(getString(R.string.sms_delivery_status_radio_off));
                     break;
             }
         }
@@ -123,9 +128,11 @@ public class PendingMessages
             switch (result) {
                 case Activity.RESULT_OK:
                     toastLong(R.string.sms_delivered);
+                    logActivities(getString(R.string.sms_delivered));
                     break;
                 case Activity.RESULT_CANCELED:
                     toastLong(R.string.sms_not_delivered);
+                    logActivities(getString(R.string.sms_not_delivered));
                     break;
             }
         }
@@ -339,6 +346,7 @@ public class PendingMessages
      */
     private void importAllSms() {
         log("importAllSms()");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getString(R.string.confirm_sms_import))
                 .setCancelable(false)

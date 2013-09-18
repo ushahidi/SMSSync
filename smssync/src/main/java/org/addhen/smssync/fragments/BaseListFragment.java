@@ -23,8 +23,10 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.adapters.BaseListAdapter;
 import org.addhen.smssync.models.Model;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.views.View;
@@ -32,6 +34,7 @@ import org.addhen.smssync.views.View;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -203,6 +206,12 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
     protected void toastShort(CharSequence message) {
         Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    protected void logActivities(String message) {
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(getActivity())).appendAndClose(message);
+        }
     }
 
 }

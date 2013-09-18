@@ -23,6 +23,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.NavDrawerAdapter;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
@@ -33,6 +34,7 @@ import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
 import org.addhen.smssync.navdrawer.WhitelistNavDrawerItem;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.util.Util;
@@ -46,6 +48,7 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.format.DateFormat;
 import android.view.KeyEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -466,6 +469,12 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
             view.setSelected(true);
         }
 
+    }
+
+    protected void logActivities(String message) {
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(this)).appendAndClose(message);
+        }
     }
 
 }
