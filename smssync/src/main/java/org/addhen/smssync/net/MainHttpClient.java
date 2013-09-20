@@ -168,12 +168,12 @@ public class MainHttpClient {
     }
 
     public String getResponse() {
-		return response;
+        return response;
     }
 
-	public HttpResponse getResponseObject() {
+    public HttpResponse getResponseObject() {
         return httpResponse;
-	}
+    }
 
     public String getErrorMessage() {
         return errorMessage;
@@ -193,8 +193,9 @@ public class MainHttpClient {
     }
 
     public static Throwable getRootCause(Throwable throwable) {
-        if (throwable.getCause() != null)
+        if (throwable.getCause() != null) {
             return getRootCause(throwable.getCause());
+        }
         return throwable;
     }
 
