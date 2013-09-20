@@ -76,16 +76,16 @@ public class MessageSyncHttpClient extends MainHttpClient {
         try {
 
             // Add your data
-            HttpUriRequest request = getRequest(message,toNumber);
+            HttpUriRequest request = getRequest(message, toNumber);
 
             if(request == null) return false;
 
             // Execute HTTP Post Request
             HttpResponse response = httpclient.execute(request);
-            int statusCode = response.getStatusLine().getStatusCode();
+            int statusCode = response.getStatusLine().getStatusCode(); 
             log("statusCode: " + statusCode);
             if (statusCode == 200 || statusCode == 201) {
-                String resp = getText(response);
+                String resp = convertStreamToString(response.getEntity().getContent());
                 // Check JSON "success" status
                 if (Util.getJsonSuccessStatus(resp)) {
                     // auto response message is enabled to be received from the
@@ -153,9 +153,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
                 request = null;
         }
 
-
         if(request != null){
-            request.addHeader("User-Agent", userAgent.toString());
             request.setHeader("Content-Type", syncScheme.getContentType());
         }
         return request;
