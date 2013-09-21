@@ -62,15 +62,24 @@ public class ProcessMessage {
      * @return boolean
      */
     public boolean syncReceivedSms(Message message, SyncUrl syncUrl) {
-        Logger.log(TAG, "postToAWebService(): Post received SMS to configured URL:" +
+        Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
-        MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
-        final boolean posted = msgSyncHttpClient
-                .postSmsToWebService(message, Util.getPhoneNumber(context));
+
+        MessageSyncHttpClient client = new MessageSyncHttpClient(context, syncUrl);
+        final boolean posted = client.postSmsToWebService(
+            message, Util.getPhoneNumber(context)
+        );
+        
         if (posted) {
-            smsServerResponse(msgSyncHttpClient.getServerSuccessResp());
+            smsServerResponse(client.getServerSuccessResp());
         } else {
-            setErrorMessage(msgSyncHttpClient.getServerError());
+            String clientError = client.getClientError();
+            String serverError = client.getServerError();
+            if (clientError != null) {
+                setErrorMessage(clientError);
+            } else if (serverError != null) {
+                setErrorMessage(serverError);
+            }
         }
 
         return posted;
@@ -303,8 +312,7 @@ public class ProcessMessage {
             }
 
         } else { // there is no filter text set up on a sync URL
-            posted = syncReceivedSms(message,
-                    syncUrl);
+            posted = syncReceivedSms(message, syncUrl);
             setErrorMessage(syncUrl.getUrl());
             if (!posted) {
 
