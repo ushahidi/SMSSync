@@ -167,6 +167,10 @@ public class MainHttpClient {
         }
     }
 
+    public ArrayList getParams() {
+        return params;
+    }
+
     public String getResponse() {
         return response;
     }
@@ -181,6 +185,11 @@ public class MainHttpClient {
 
     public int getResponseCode() {
         return responseCode;
+    }
+
+    public void setEntity(StringEntity data) throws Exception {
+        data.setContentEncoding("UTF-8");
+        entity = data;
     }
 
     public void setEntity(String data) throws Exception {
@@ -227,18 +236,26 @@ public class MainHttpClient {
 
     public void executePost() throws Exception {
         HttpPost request = new HttpPost(url);
-        if (!params.isEmpty()) {
-            entity = new UrlEncodedFormEntity(params, HTTP.UTF_8);
+        if (entity.getContentLength() > 0) {
             request.setEntity(entity);
+        } else {
+            if (!params.isEmpty()) {
+                // construct entity if not already set
+                request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+            }
         }
         executeRequest(request);
     }
 
     public void executePut() throws Exception {
         HttpPost request = new HttpPost(url);
-        if (!params.isEmpty()) {
-            entity = new UrlEncodedFormEntity(params, HTTP.UTF_8);
+        if (entity.getContentLength() > 0) {
             request.setEntity(entity);
+        } else {
+            if (!params.isEmpty()) {
+                // construct entity if not already set
+                request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+            }
         }
         executeRequest(request);
     }
