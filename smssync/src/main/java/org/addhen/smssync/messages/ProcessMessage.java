@@ -189,8 +189,16 @@ public class ProcessMessage {
                 uriBuilder.append(urlSecretEncoded);
                 syncUrl.setUrl(uriBuilder.toString());
             }
+
             MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
-            String response = client.getFromWebService();
+            String response = null;
+            try {
+                client.execute("GET");
+                response = client.getResponse();
+            } catch (Exception e) {
+                Logger.log(TAG, e.getMessage());
+            }
+
             Logger.log(TAG, "TaskCheckResponse: " + response);
             if (response != null && !TextUtils.isEmpty(response)) {
 

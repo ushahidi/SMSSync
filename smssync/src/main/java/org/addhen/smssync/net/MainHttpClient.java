@@ -237,24 +237,6 @@ public class MainHttpClient {
         }
     }
 
-    /**
-     * Does a HTTP GET request
-     *
-     * @return String - the HTTP response or null
-     */
-    public String getFromWebService() {
-        try {
-            setMethod("GET");
-            execute();
-            if (getResponseCode() == 200) {
-                return getResponse();
-            }
-        } catch (Exception e) {
-            debug(e);
-        }
-        return null;
-    }
-
     public static String convertStreamToString(InputStream is) {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -315,6 +297,11 @@ public class MainHttpClient {
             req.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
         }
         request = req;
+    }
+
+    public void execute(String method) throws Exception {
+        setMethod(method);
+        execute();
     }
 
     public void execute() throws Exception {
