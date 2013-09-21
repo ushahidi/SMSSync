@@ -62,19 +62,15 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
     private String serverSuccessResp;
 
-    public MessageSyncHttpClient(Context context, SyncUrl syncUrl) {
+    public MessageSyncHttpClient(
+        Context context, SyncUrl syncUrl, Message message, String toNumber
+    ) {
         super(syncUrl.getUrl(), context);
         this.syncUrl = syncUrl;
+        initRequest(message, toNumber);
     }
 
-    /**
-     * Post sms to the configured sync URL
-     *
-     * @param message  The sms sent
-     * @param toNumber The phone number the sms was sent to
-     * @return boolean
-     */
-    public boolean postSmsToWebService(Message message, String toNumber) {
+    private void initRequest(Message message, String toNumber) {
 
         SyncScheme syncScheme = syncUrl.getSyncScheme();
         SyncMethod method = syncScheme.getMethod();
@@ -84,7 +80,9 @@ public class MessageSyncHttpClient extends MainHttpClient {
         addParam(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncDataKey.FROM), message.getFrom());
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
-        addParam(syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), message.getTimestamp());
+        addParam(
+            syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), message.getTimestamp()
+        );
         addParam(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber);
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid());
 
@@ -93,24 +91,41 @@ public class MessageSyncHttpClient extends MainHttpClient {
         } catch (Exception e) {
             log("Failed to set request body", e);
             setClientError("Failed to format request body");
-            return false;
         }
 
         try {
             switch (method){
                 case POST:
-                    executePost();
+                    setMethod("POST");
                     break;
                 case PUT:
-                    executePut();
+                    setMethod("PUT");
                     break;
                 default:
                     log("Invalid server method");
-                    return false;
+                    setClientError("Failed to set request method.");
             }
         } catch (Exception e) {
-            log("failed to execute request", e);
-            return false;
+            log("failed to set request method.", e);
+            setClientError("Failed to set request method.");
+        }
+
+    }
+
+    /**
+     * Post sms to the configured sync URL
+     *
+     * @param message  The sms sent
+     * @param toNumber The phone number the sms was sent to
+     * @return boolean
+     */
+    public boolean postSmsToWebService() {
+
+        try {
+            execute();
+        } catch (Exception e) {
+            log("Request failed", e);
+            setClientError("Request failed. " + e.getMessage());
         }
 
         String response = getResponse();
@@ -161,7 +176,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
                 break;
             case URLEncoded:
                 log("setHttpEntity format URLEncoded");
-                setEntity(new UrlEncodedFormEntity(getParams()));
+                setEntity(new UrlEncodedFormEntity(getParams(), HTTP.UTF_8));
                 break;
             default:
                 throw  new Exception("Invalid data format");
@@ -198,11 +213,11 @@ public class MessageSyncHttpClient extends MainHttpClient {
             "%s, %s ", 
             String.format(
                 res.getString(R.string.sending_failed_custom_error),
-                error, 
-                String.format(
-                    res.getString(R.string.sending_failed_http_code),
-                    statusCode
-                )
+                error
+            ), 
+            String.format(
+                res.getString(R.string.sending_failed_http_code),
+                statusCode
             )
         );
     }

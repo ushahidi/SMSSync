@@ -35,7 +35,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.params.ConnManagerPNames;
 import org.apache.http.conn.params.ConnPerRouteBean;
 import org.apache.http.conn.scheme.PlainSocketFactory;
@@ -65,11 +65,13 @@ import java.util.ArrayList;
 
 public class MainHttpClient {
 
-    protected static DefaultHttpClient httpclient;
+    protected static DefaultHttpClient httpClient;
 
     protected static StringBuilder userAgent;
 
     protected Context context;
+
+    protected String url;
 
     private HttpParams httpParameters;
 
@@ -77,7 +79,7 @@ public class MainHttpClient {
 
     private int timeoutSocket = 60000;
 
-    protected String url;
+    private static final String DEFAULT_ENCODING = "UTF-8";
 
     private static final String CLASS_TAG = MainHttpClient.class.getSimpleName();
 
@@ -85,11 +87,13 @@ public class MainHttpClient {
 
     private ArrayList <NameValuePair> headers;
 
-    private StringEntity entity;
+    private HttpEntity entity;
 
     private int responseCode;
 
     private String response;
+
+    private HttpRequestBase request; 
 
     private HttpResponse httpResponse;
 
@@ -138,7 +142,7 @@ public class MainHttpClient {
         ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(
                 httpParameters, schemeRegistry);
 
-        httpclient = new DefaultHttpClient(manager, httpParameters);
+        httpClient = new DefaultHttpClient(manager, httpParameters);
 
         // support basic auth header
         try {
@@ -187,13 +191,12 @@ public class MainHttpClient {
         return responseCode;
     }
 
-    public void setEntity(StringEntity data) throws Exception {
-        data.setContentEncoding("UTF-8");
+    public void setEntity(HttpEntity data) throws Exception {
         entity = data;
     }
 
     public void setEntity(String data) throws Exception {
-        entity = new StringEntity(data, "UTF-8");
+        entity = new StringEntity(data, DEFAULT_ENCODING);
     }
 
     public String base64Encode(String str) {
@@ -216,48 +219,22 @@ public class MainHttpClient {
         headers.add(new BasicNameValuePair(name, value));
     }
 
-    public void executeGet() throws Exception {
-        //add query parameters
-        String combinedParams = "";
-        if (!params.isEmpty()) {
-            combinedParams += "?";
-            for(NameValuePair p : params) {
-                String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(),"UTF-8");
-                if(combinedParams.length() > 1) {
-                    combinedParams  +=  "&" + paramString;
-                } else {
-                    combinedParams += paramString;
-                }
-            }
-        }
-        HttpGet request = new HttpGet(url + combinedParams);
-        executeRequest(request);
+    public HttpRequestBase getRequest() {
+        return request;
     }
 
-    public void executePost() throws Exception {
-        HttpPost request = new HttpPost(url);
-        if (entity.getContentLength() > 0) {
-            request.setEntity(entity);
+    public void setMethod(String method) throws Exception {
+        if (method == "POST") {
+            setMethodPost();
+        } else if (method == "PUT") {
+            setMethodPut();
+        } else if (method == "GET") {
+            setMethodGet();
         } else {
-            if (!params.isEmpty()) {
-                // construct entity if not already set
-                request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-            }
+            throw new Exception(
+                "Invalid method. POST, PUT and GET currently supported."
+            );
         }
-        executeRequest(request);
-    }
-
-    public void executePut() throws Exception {
-        HttpPost request = new HttpPost(url);
-        if (entity.getContentLength() > 0) {
-            request.setEntity(entity);
-        } else {
-            if (!params.isEmpty()) {
-                // construct entity if not already set
-                request.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-            }
-        }
-        executeRequest(request);
     }
 
     /**
@@ -267,7 +244,8 @@ public class MainHttpClient {
      */
     public String getFromWebService() {
         try {
-            executeGet();
+            setMethod("GET");
+            execute();
             if (getResponseCode() == 200) {
                 return getResponse();
             }
@@ -299,8 +277,47 @@ public class MainHttpClient {
         return sb.toString();
     }
 
+    private void setMethodGet() throws Exception {
+        //add query parameters
+        String combinedParams = "";
+        if (!params.isEmpty()) {
+            combinedParams += "?";
+            for(NameValuePair p : params) {
+                String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(), DEFAULT_ENCODING);
+                if(combinedParams.length() > 1) {
+                    combinedParams  +=  "&" + paramString;
+                } else {
+                    combinedParams += paramString;
+                }
+            }
+        }
+        request = new HttpGet(url + combinedParams);
+    }
 
-    private void executeRequest(HttpUriRequest request) throws Exception {
+
+    private void setMethodPost() throws Exception {
+        HttpPost req = new HttpPost(url);
+        if (entity.getContentLength() > 0) {
+            req.setEntity(entity);
+        } else if (!params.isEmpty()) {
+            // construct entity if not already set
+            req.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+        }
+        request = req;
+    }
+
+    private void setMethodPut() throws Exception {
+        HttpPut req = new HttpPut(url);
+        if (entity.getContentLength() > 0) {
+            req.setEntity(entity);
+        } else if (!params.isEmpty()) {
+            // construct entity if not already set
+            req.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+        }
+        request = req;
+    }
+
+    public void execute() throws Exception {
 
         // add headers
         for(NameValuePair h : headers) {
@@ -308,7 +325,7 @@ public class MainHttpClient {
         }
 
         try {
-            httpResponse = httpclient.execute(request);
+            httpResponse = httpClient.execute(request);
             responseCode = httpResponse.getStatusLine().getStatusCode();
             errorMessage = httpResponse.getStatusLine().getReasonPhrase();
             HttpEntity entity = httpResponse.getEntity();
@@ -321,10 +338,10 @@ public class MainHttpClient {
             }
 
         } catch (ClientProtocolException e)  {
-            httpclient.getConnectionManager().shutdown();
+            httpClient.getConnectionManager().shutdown();
             throw e;
         } catch (IOException e) {
-            httpclient.getConnectionManager().shutdown();
+            httpClient.getConnectionManager().shutdown();
             throw e;
         }
     }

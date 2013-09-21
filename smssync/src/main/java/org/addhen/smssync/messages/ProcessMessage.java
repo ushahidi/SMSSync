@@ -5,6 +5,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
@@ -65,10 +66,10 @@ public class ProcessMessage {
         Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(context, syncUrl);
-        final boolean posted = client.postSmsToWebService(
-            message, Util.getPhoneNumber(context)
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            context, syncUrl, message, Util.getPhoneNumber(context)
         );
+        final boolean posted = client.postSmsToWebService();
         
         if (posted) {
             smsServerResponse(client.getServerSuccessResp());
@@ -188,8 +189,8 @@ public class ProcessMessage {
                 uriBuilder.append(urlSecretEncoded);
                 syncUrl.setUrl(uriBuilder.toString());
             }
-            MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
-            String response = msgSyncHttpClient.getFromWebService();
+            MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
+            String response = client.getFromWebService();
             Logger.log(TAG, "TaskCheckResponse: " + response);
             if (response != null && !TextUtils.isEmpty(response)) {
 
