@@ -193,7 +193,7 @@ public class ProcessMessage {
             MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
             String response = null;
             try {
-                client.execute("GET");
+                client.execute();
                 response = client.getResponse();
             } catch (Exception e) {
                 Logger.log(TAG, e.getMessage());

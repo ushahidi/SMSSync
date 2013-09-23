@@ -49,7 +49,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -61,6 +60,8 @@ import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 
 public class MainHttpClient {
@@ -85,26 +86,32 @@ public class MainHttpClient {
 
     private ArrayList <NameValuePair> params;
 
-    private ArrayList <NameValuePair> headers;
+    private Map<String,String> headers;
 
     private HttpEntity entity;
+
+    private String method;
 
     private int responseCode;
 
     private String response;
 
-    private HttpRequestBase request; 
-
     private HttpResponse httpResponse;
 
-    private String errorMessage;
+    private HttpRequestBase request; 
+
+    private String responseErrorMessage;
 
     public MainHttpClient(String url, Context context) {
 
         this.url = url;
         this.context = context;
         this.params = new ArrayList<NameValuePair>();
-        this.headers = new ArrayList<NameValuePair>();
+        this.headers = new HashMap<String,String>();
+
+        // default to GET
+        this.method = "GET";
+        request = new HttpGet(url);
 
         httpParameters = new BasicHttpParams();
         httpParameters.setParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, 1);
@@ -149,11 +156,10 @@ public class MainHttpClient {
             URI uri = new URI(url);
             String userInfo = uri.getUserInfo();
             if (userInfo != null) {
-                addHeader("Authorization", "Basic " + base64Encode(userInfo));
+                setHeader("Authorization", "Basic " + base64Encode(userInfo));
             }
         } catch (URISyntaxException e) {
             debug(e);
-            //log("URISyntaxException", e);
         }
 
         // add user-agent header
@@ -164,15 +170,11 @@ public class MainHttpClient {
             userAgent = new StringBuilder("SMSSync-Android/");
             userAgent.append("v");
             userAgent.append(versionName);
-            headers.add(new BasicNameValuePair("User-Agent", userAgent.toString()));
+            setHeader("User-Agent", userAgent.toString());
         } catch (NameNotFoundException e) {
             debug(e);
             //e.printStackTrace();
         }
-    }
-
-    public ArrayList getParams() {
-        return params;
     }
 
     public String getResponse() {
@@ -183,12 +185,30 @@ public class MainHttpClient {
         return httpResponse;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getResponseErrorMessage() {
+        return responseErrorMessage;
     }
 
     public int getResponseCode() {
         return responseCode;
+    }
+
+    public void addParam(String name, String value) {
+        params.add(new BasicNameValuePair(name, value));
+    }
+
+    public ArrayList getParams() {
+        return params;
+    }
+
+    public void setHeader(String name, String value) {
+        headers.put(name, value);
+        request.setHeader(name, value);
+    }
+
+    public HttpRequestBase getRequest() throws Exception {
+        prepareRequest();
+        return request;
     }
 
     public void setEntity(HttpEntity data) throws Exception {
@@ -199,7 +219,45 @@ public class MainHttpClient {
         entity = new StringEntity(data, DEFAULT_ENCODING);
     }
 
-    public String base64Encode(String str) {
+    public void setMethod(String method) throws Exception {
+        // if not GET/default then prepare new request
+        if (method != "POST" && method != "PUT" && method != "GET") {
+            throw new Exception(
+                "Invalid method. POST, PUT and GET currently supported."
+            );
+        }
+        this.method = method;
+    }
+
+    public String getQueryString() throws Exception {
+        //add query parameters
+        String combinedParams = "";
+        if (!params.isEmpty()) {
+            combinedParams += "?";
+            for(NameValuePair p : params) {
+                String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(), DEFAULT_ENCODING);
+                if(combinedParams.length() > 1) {
+                    combinedParams  +=  "&" + paramString;
+                } else {
+                    combinedParams += paramString;
+                }
+            }
+        }
+        return combinedParams;
+    }
+
+    public HttpEntity getEntity() throws Exception {
+        // check if entity was explictly set otherwise return params as entity
+        if (entity.getContentLength() > 0) {
+            return entity;
+        } else if (!params.isEmpty()) {
+            // construct entity if not already set
+            return new UrlEncodedFormEntity(params, DEFAULT_ENCODING);
+        }
+        return null;
+    }
+
+    public static String base64Encode(String str) {
         byte[] bytes = str.getBytes();
         return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
@@ -209,32 +267,6 @@ public class MainHttpClient {
             return getRootCause(throwable.getCause());
         }
         return throwable;
-    }
-
-    public void addParam(String name, String value) {
-        params.add(new BasicNameValuePair(name, value));
-    }
-
-    public void addHeader(String name, String value) {
-        headers.add(new BasicNameValuePair(name, value));
-    }
-
-    public HttpRequestBase getRequest() {
-        return request;
-    }
-
-    public void setMethod(String method) throws Exception {
-        if (method == "POST") {
-            setMethodPost();
-        } else if (method == "PUT") {
-            setMethodPut();
-        } else if (method == "GET") {
-            setMethodGet();
-        } else {
-            throw new Exception(
-                "Invalid method. POST, PUT and GET currently supported."
-            );
-        }
     }
 
     public static String convertStreamToString(InputStream is) {
@@ -259,62 +291,13 @@ public class MainHttpClient {
         return sb.toString();
     }
 
-    private void setMethodGet() throws Exception {
-        //add query parameters
-        String combinedParams = "";
-        if (!params.isEmpty()) {
-            combinedParams += "?";
-            for(NameValuePair p : params) {
-                String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(), DEFAULT_ENCODING);
-                if(combinedParams.length() > 1) {
-                    combinedParams  +=  "&" + paramString;
-                } else {
-                    combinedParams += paramString;
-                }
-            }
-        }
-        request = new HttpGet(url + combinedParams);
-    }
-
-
-    private void setMethodPost() throws Exception {
-        HttpPost req = new HttpPost(url);
-        if (entity.getContentLength() > 0) {
-            req.setEntity(entity);
-        } else if (!params.isEmpty()) {
-            // construct entity if not already set
-            req.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-        }
-        request = req;
-    }
-
-    private void setMethodPut() throws Exception {
-        HttpPut req = new HttpPut(url);
-        if (entity.getContentLength() > 0) {
-            req.setEntity(entity);
-        } else if (!params.isEmpty()) {
-            // construct entity if not already set
-            req.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-        }
-        request = req;
-    }
-
-    public void execute(String method) throws Exception {
-        setMethod(method);
-        execute();
-    }
-
     public void execute() throws Exception {
 
-        // add headers
-        for(NameValuePair h : headers) {
-            request.addHeader(h.getName(), h.getValue());
-        }
-
         try {
+            prepareRequest();
             httpResponse = httpClient.execute(request);
             responseCode = httpResponse.getStatusLine().getStatusCode();
-            errorMessage = httpResponse.getStatusLine().getReasonPhrase();
+            responseErrorMessage = httpResponse.getStatusLine().getReasonPhrase();
             HttpEntity entity = httpResponse.getEntity();
 
             if (entity != null) {
@@ -327,9 +310,26 @@ public class MainHttpClient {
         } catch (ClientProtocolException e)  {
             httpClient.getConnectionManager().shutdown();
             throw e;
-        } catch (IOException e) {
+        } catch (Exception e) {
             httpClient.getConnectionManager().shutdown();
             throw e;
+        }
+    }
+
+    private void prepareRequest() throws Exception {
+        // setup parameters on request
+        if (method == "GET") {
+            request = new HttpGet(url + getQueryString());
+        } else if (method == "POST") {
+            request = new HttpPost(url);
+            ((HttpPost)request).setEntity(getEntity());
+        } else if (method == "PUT") {
+            request = new HttpPut(url);
+            ((HttpPut)request).setEntity(getEntity());
+        }
+        // set headers on request
+        for (String key : headers.keySet() ) {
+            request.setHeader(key, headers.get(key));
         }
     }
 

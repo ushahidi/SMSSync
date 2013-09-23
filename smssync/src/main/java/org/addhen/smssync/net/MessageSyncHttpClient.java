@@ -76,7 +76,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
         SyncMethod method = syncScheme.getMethod();
         SyncDataFormat format = syncScheme.getDataFormat();
 
-        addHeader("Content-Type", syncScheme.getContentType());
+        setHeader("Content-Type", syncScheme.getContentType());
         addParam(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncDataKey.FROM), message.getFrom());
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
