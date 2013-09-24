@@ -173,7 +173,6 @@ public class MainHttpClient {
             setHeader("User-Agent", userAgent.toString());
         } catch (NameNotFoundException e) {
             debug(e);
-            //e.printStackTrace();
         }
     }
 
