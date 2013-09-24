@@ -24,8 +24,8 @@ To add a new Sync URL:
 7. Tap **_OK_** to save the new entry.
 
 Note: Version 2.5 or higher supports [basic auth](http://en.wikipedia.org/wiki/Basic_access_authentication) credentials in the URL, e.g. `https://username:pass@example.com/api-v1/add-record/`.
--</div>
--<div class="span6">
+</div>
+<div class="span6">
 
 #### Edit a Sync URL
 To edit an existing Sync URL:
