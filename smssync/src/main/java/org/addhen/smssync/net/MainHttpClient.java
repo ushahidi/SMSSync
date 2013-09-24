@@ -218,11 +218,22 @@ public class MainHttpClient {
         entity = new StringEntity(data, DEFAULT_ENCODING);
     }
 
+    public boolean isMethodSupported(String method) {
+        if (method.equals("POST")) {
+            return true;
+        } else if (method.equals("PUT")) {
+            return true;
+        } else if (method.equals("GET")) {
+            return true;
+        }
+        return false;
+    }
+
     public void setMethod(String method) throws Exception {
-        // if not GET/default then prepare new request
-        if (method != "POST" && method != "PUT" && method != "GET") {
+        if (!isMethodSupported(method)) {
             throw new Exception(
-                "Invalid method. POST, PUT and GET currently supported."
+                "Invalid method '" + method + "'."
+                + " POST, PUT and GET currently supported."
             );
         }
         this.method = method;
@@ -317,12 +328,12 @@ public class MainHttpClient {
 
     private void prepareRequest() throws Exception {
         // setup parameters on request
-        if (method == "GET") {
+        if (method.equals("GET")) {
             request = new HttpGet(url + getQueryString());
-        } else if (method == "POST") {
+        } else if (method.equals("POST")) {
             request = new HttpPost(url);
             ((HttpPost)request).setEntity(getEntity());
-        } else if (method == "PUT") {
+        } else if (method.equals("PUT")) {
             request = new HttpPut(url);
             ((HttpPut)request).setEntity(getEntity());
         }
