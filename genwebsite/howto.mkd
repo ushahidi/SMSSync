@@ -23,7 +23,7 @@ To add a new Sync URL:
 6. Enter the URL for your webservice. Don't forget to start with the **_HTTP_** or **_HTTPS_** protocol. e.g. `https://example.com/api-v1/add-record/`
 7. Tap **_OK_** to save the new entry.
 
-Note: Version 2.5 or higher supports [basic auth](https://en.wikipedia.org/wiki/Basic_access_authentication) credentials in the URL, e.g. `http://username:pass@example.com/api-v1/add-record/`.
+Note: Version 2.5 or higher supports [basic auth](http://en.wikipedia.org/wiki/Basic_access_authentication) credentials in the URL, e.g. `https://username:pass@example.com/api-v1/add-record/`.
 -</div>
 -<div class="span6">
 
