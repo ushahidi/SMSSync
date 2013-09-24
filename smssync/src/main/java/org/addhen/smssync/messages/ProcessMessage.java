@@ -5,6 +5,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
@@ -62,15 +63,24 @@ public class ProcessMessage {
      * @return boolean
      */
     public boolean syncReceivedSms(Message message, SyncUrl syncUrl) {
-        Logger.log(TAG, "postToAWebService(): Post received SMS to configured URL:" +
+        Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
-        MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
-        final boolean posted = msgSyncHttpClient
-                .postSmsToWebService(message, Util.getPhoneNumber(context));
+
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            context, syncUrl, message, Util.getPhoneNumber(context)
+        );
+        final boolean posted = client.postSmsToWebService();
+        
         if (posted) {
-            smsServerResponse(msgSyncHttpClient.getServerSuccessResp());
+            smsServerResponse(client.getServerSuccessResp());
         } else {
-            setErrorMessage(msgSyncHttpClient.getServerError());
+            String clientError = client.getClientError();
+            String serverError = client.getServerError();
+            if (clientError != null) {
+                setErrorMessage(clientError);
+            } else if (serverError != null) {
+                setErrorMessage(serverError);
+            }
         }
 
         return posted;
@@ -179,8 +189,16 @@ public class ProcessMessage {
                 uriBuilder.append(urlSecretEncoded);
                 syncUrl.setUrl(uriBuilder.toString());
             }
-            MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
-            String response = msgSyncHttpClient.getFromWebService();
+
+            MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
+            String response = null;
+            try {
+                client.execute();
+                response = client.getResponse();
+            } catch (Exception e) {
+                Logger.log(TAG, e.getMessage());
+            }
+
             Logger.log(TAG, "TaskCheckResponse: " + response);
             if (response != null && !TextUtils.isEmpty(response)) {
 
@@ -303,8 +321,7 @@ public class ProcessMessage {
             }
 
         } else { // there is no filter text set up on a sync URL
-            posted = syncReceivedSms(message,
-                    syncUrl);
+            posted = syncReceivedSms(message, syncUrl);
             setErrorMessage(syncUrl.getUrl());
             if (!posted) {
 
