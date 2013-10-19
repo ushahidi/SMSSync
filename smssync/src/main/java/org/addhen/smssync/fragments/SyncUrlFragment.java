@@ -598,9 +598,4 @@ public class SyncUrlFragment extends
         }
     }
 
-    private void logActivities(String message) {
-        if (Prefs.enableLog) {
-            new LogUtil(DateFormat.getDateFormatOrder(getActivity())).appendAndClose(message);
-        }
-    }
 }
