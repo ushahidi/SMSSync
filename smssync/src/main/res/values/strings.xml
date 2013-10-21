@@ -135,9 +135,9 @@
     <!-- SMS delivery status -->
     <string name="sms_delivery_status_failed">Failed to send SMS - Maybe insufficient air time on
         the phone.</string>
-    <string name="sms_delivery_status_no_service">No service</string>
-    <string name="sms_delivery_status_radio_off">Radio off</string>
-    <string name="sms_delivery_status_null_pdu">No PDU</string>
+    <string name="sms_delivery_status_no_service">Failed to send SMS because service is currently unavailable</string>
+    <string name="sms_delivery_status_radio_off">Failed to send SMS because radio was explicitly turned off</string>
+    <string name="sms_delivery_status_null_pdu">Failed to send SMS because no pdu provided</string>
     <string name="sms_delivered">SMS delivered</string>
     <string name="sms_not_delivered">SMS not delivered</string>
 
@@ -309,5 +309,5 @@
     <string name="sms_sent_to_webserivce">SMS [ %1$s ] successfully sent to %1$s</string>
     <string name="processed_task">Processed task to send message - [%1$s] as SMS</string>
     <string name="received_msg">Received SMS - %1$s - from %2$s</string>
-    <string name="sent_msg">Sent SMS - %1$s - to %2$s</string>
+    <string name="sent_msg">Sending - %1$s - as SMS to %2$s</string>
 </resources>
