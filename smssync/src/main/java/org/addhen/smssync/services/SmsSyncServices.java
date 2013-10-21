@@ -170,6 +170,7 @@ public abstract class SmsSyncServices extends IntentService {
         Logger.log(getClass().getName(), message, ex);
     }
 
+    //TODO Deprecate this method
     public void logActivities(String message) {
 
         Logger.log(TAG, message);

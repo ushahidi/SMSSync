@@ -18,10 +18,12 @@
 package org.addhen.smssync.messages;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -251,6 +253,8 @@ public class ProcessSms {
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
         Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
                 + sendTo + " message: " + msg);
+
+        Util.logActivities(context, context.getString(R.string.sent_msg, msg, sendTo));
 
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(msg);

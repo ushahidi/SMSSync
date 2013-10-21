@@ -188,6 +188,9 @@ public class SmsReceiverService extends Service {
         }
 
         log("handleSmsReceived() messagesUuid: " + messagesUuid);
+        // Log received SMS
+
+        Util.logActivities(this, getString(R.string.received_msg, msg.getBody(), msg.getFrom()));
 
         // route the sms
         boolean sent = mProcessMessage.routeSms(msg);

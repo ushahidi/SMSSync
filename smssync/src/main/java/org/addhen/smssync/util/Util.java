@@ -18,6 +18,7 @@
 package org.addhen.smssync.util;
 
 import org.addhen.smssync.BuildConfig;
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
@@ -508,5 +509,12 @@ public class Util {
 
     public void log(String message, Exception ex) {
         Logger.log(getClass().getName(), message, ex);
+    }
+
+    public static void logActivities(Context context, String message) {
+        Logger.log(CLASS_TAG, message);
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
+        }
     }
 }
