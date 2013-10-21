@@ -277,7 +277,7 @@ public class ProcessSms {
              */
 
             sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-                    null);
+                    deliveryIntents);
 
             // Get current Time Millis
             final Long timeMills = System.currentTimeMillis();

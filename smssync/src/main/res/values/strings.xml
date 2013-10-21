@@ -86,13 +86,13 @@
     <string name="app_name">SMSSync</string>
     <string name="outbox">SMSSync Pending Messages</string>
     <string name="version_status">Beta</string>
-    <string name="sms_status_success">SMSSync Message Sent</string>
-    <string name="sms_status_failed">SMSSync Message Sending failed</string>
+    <string name="sms_status_success">SMS sent</string>
+    <string name="sms_status_failed">SMS failed to be delivered</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
-    <string name="sending_failed">SMSSync Message Sending failed.</string>
-    <string name="sending_failed_http_code">SMSSync message sending failed. Server returned HTTP
+    <string name="sending_failed">SMSSync failed to send message to server.</string>
+    <string name="sending_failed_http_code">Server returned HTTP
         status code %1$d.</string>
-    <string name="sending_failed_custom_error">SMSSync message sending failed. Server error: %1$s.</string>
+    <string name="sending_failed_custom_error">Sending message to the server failed. Server error: %1$s.</string>
     <string name="sending_succeeded">SMSSync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to send.</string>
     <string name="no_messages_to_delete">There are no messages to delete.</string>
@@ -304,10 +304,11 @@
     <string name="log_message_from">Log message from phone number %1$s</string>
     <string name="log_entries">SMSSync log entries</string>
     <string name="log_saved_at">Log is saved on the SD card at %1$s</string>
-    <string name="auto_response_sent">Auto response</string>
+    <string name="auto_response_sent">Sending configured auto response message as SMS</string>
     <string name="auto_message_deleted"> %1$s auto deleted</string>
     <string name="sms_sent_to_webserivce">SMS [ %1$s ] successfully sent to %1$s</string>
     <string name="processed_task">Processed task to send message - [%1$s] as SMS</string>
     <string name="received_msg">Received SMS - %1$s - from %2$s</string>
     <string name="sent_msg">Sending - %1$s - as SMS to %2$s</string>
+    <string name="no_json_response">Did not receive expected JSON response from the server</string>
 </resources>

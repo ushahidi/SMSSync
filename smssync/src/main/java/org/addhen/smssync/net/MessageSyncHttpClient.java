@@ -76,6 +76,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
             HttpUriRequest request = getRequest(message, toNumber);
 
             if (request == null) {
+                log("No request data");
                 return false;
             }
 
@@ -83,8 +84,10 @@ public class MessageSyncHttpClient extends MainHttpClient {
             HttpResponse response = httpclient.execute(request);
             int statusCode = response.getStatusLine().getStatusCode();
             log("statusCode: " + statusCode);
+
             if (statusCode == 200 || statusCode == 201) {
                 String resp = getText(response);
+                log("statusMessage: " + resp);
                 // Check JSON "success" status
                 if (Util.getJsonSuccessStatus(resp)) {
                     // auto response message is enabled to be received from the
@@ -99,22 +102,36 @@ public class MessageSyncHttpClient extends MainHttpClient {
                 if (!TextUtils.isEmpty(payloadError)) {
 
                     Resources res = context.getResources();
+                    final String errMsg = String.format(Locale.getDefault(), "%s, %s ",
+                            res.getString(R.string.sending_failed_custom_error, payloadError),
+                            res.getString(R.string.sending_failed_http_code, statusCode));
 
-                    setServerError(String.format(Locale.getDefault(), "%s, %s ", String.format(
-                            res.getString(R.string.sending_failed_custom_error),
-                            payloadError, String.format(
-                            res.getString(R.string.sending_failed_http_code),
-                            statusCode))));
+                    setServerError(errMsg);
+
+                    // log failure message.
+                    Util.logActivities(context, errMsg);
+                } else {
+                    Util.logActivities(context, context.getString(R.string.no_json_response));
                 }
             }
 
         } catch (ClientProtocolException e) {
+            log(MessageSyncHttpClient.class.getSimpleName(), e);
+            Util.logActivities(context, context.getString(R.string.sending_failed_custom_error,
+                    e.getLocalizedMessage()));
             return false;
         } catch (IOException e) {
+            Util.logActivities(context, context.getString(R.string.sending_failed_custom_error,
+                    e.getLocalizedMessage()));
+            log(MessageSyncHttpClient.class.getSimpleName(), e);
             return false;
         } catch (IllegalArgumentException e) {
+            Util.logActivities(context, context.getString(R.string.sending_failed_custom_error,
+                    e.getLocalizedMessage()));
+            log(MessageSyncHttpClient.class.getSimpleName(), e);
             return false;
         }
+        log("messages failed");
         return false;
     }
 
