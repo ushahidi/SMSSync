@@ -18,6 +18,7 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
 import org.addhen.smssync.services.SmsSyncServices;
@@ -44,6 +45,7 @@ public class BootReceiver extends BroadcastReceiver {
         // load current settings
         Prefs.loadPreferences(context);
 
+        Util.logActivities(context, context.getString(R.string.device_reboot));
         // is smssync enabled
         if (Prefs.enabled) {
 
