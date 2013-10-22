@@ -86,9 +86,9 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                 if (Prefs.enableTaskCheck) {
                     SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
                 }
+            } else {
+                Util.logActivities(context, context.getString(R.string.no_data_connection));
             }
-        } else {
-            Util.logActivities(context, context.getString(R.string.no_data_connection));
         }
     }
 }
