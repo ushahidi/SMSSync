@@ -18,6 +18,7 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.util.Util;
@@ -28,7 +29,7 @@ import android.content.Intent;
 
 /**
  * The manifest Receiver is used to detect changes in battery state. When the system broadcasts a
- * "Battery Low" warning we turn off we stop all enabled services When the system broadcasts
+ * "Battery Low" warning we turn off we stop all enabled services. When the system broadcasts
  * "Battery OK" to indicate the battery has returned to an okay state, we start all enabled
  * services
  */
@@ -44,10 +45,12 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         batteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
+        boolean batteryOkay = intent.getAction().equals(Intent.ACTION_BATTERY_OKAY);
         // load current settings
         Prefs.loadPreferences(context);
         if (batteryLow) {
             // is smssync enabled
+            Util.logActivities(context, context.getString(R.string.battery_low));
             if (Prefs.enabled) {
 
                 // clear all notifications
@@ -68,5 +71,30 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
                 }
             }
         }
+
+        if (batteryOkay) {
+            Util.logActivities(context, context.getString(R.string.battery_okay));
+            // is smssync enabled
+            if (Prefs.enabled) {
+
+                // clear all notifications
+                Util.clearNotify(context);
+
+                // Stop the service that pushes pending messages
+                if (Prefs.enableAutoSync) {
+                    smsSyncAutoSyncServiceIntent = new Intent(context,
+                            SyncPendingMessagesService.class);
+                    context.startService(smsSyncAutoSyncServiceIntent);
+                }
+
+                // Stop the service that checks for tasks
+                if (Prefs.enableTaskCheck) {
+                    smsSyncTaskCheckServiceIntent = new Intent(context,
+                            CheckTaskService.class);
+                    context.startService(smsSyncTaskCheckServiceIntent);
+                }
+            }
+        }
+
     }
 }

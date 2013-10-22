@@ -313,4 +313,8 @@
     <string name="no_json_response">Did not receive expected JSON response from the server</string>
     <string name="no_data_connection">There is no active data connection</string>
     <string name="active_data_connection">There is active data connection</string>
+    <string name="device_reboot">The device has rebooted</string>
+    <string name="device_shutdown">The device has shutdown</string>
+    <string name="battery_low">The device battery level is low</string>
+    <string name="battery_okay">The device battery level is okay</string>
 </resources>
