@@ -18,6 +18,7 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.services.SyncPendingMessagesService;
@@ -59,6 +60,7 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
             isConnected = Util.isConnected(context);
 
             if (isConnected) {
+                Util.logActivities(context, context.getString(R.string.active_data_connection));
                 pm = context.getPackageManager();
                 connectivityReceiver = new ComponentName(context,
                         ConnectivityChangedReceiver.class);
@@ -85,6 +87,8 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                     SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
                 }
             }
+        } else {
+            Util.logActivities(context, context.getString(R.string.no_data_connection));
         }
     }
 }

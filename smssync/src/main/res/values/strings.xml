@@ -311,4 +311,6 @@
     <string name="received_msg">Received SMS - %1$s - from %2$s</string>
     <string name="sent_msg">Sending - %1$s - as SMS to %2$s</string>
     <string name="no_json_response">Did not receive expected JSON response from the server</string>
+    <string name="no_data_connection">There is no active data connection</string>
+    <string name="active_data_connection">There is active data connection</string>
 </resources>
