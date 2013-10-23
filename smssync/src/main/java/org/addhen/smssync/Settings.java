@@ -294,12 +294,28 @@ public class Settings extends SherlockPreferenceActivity implements
             taskCheckTimes.setEnabled(false);
         }
 
-        // Initialize the selected time to frequently to auto check for tasks
+        // Initialize the selected frequency to automatically check for tasks
         taskCheckTime = initializeAutoTaskTime();
 
         editor = settings.edit();
         editor.putString("ReplyPref", replyPref.getText());
+        // log reply changes.
+        if (!Prefs.reply.equals(replyPref.getText().toString())) {
+            // Log old value and new value.
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    replyPref.getDialogTitle().toString(), Prefs.reply,
+                    replyPref.getText().toString()));
+        }
         editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
+        if (Prefs.autoDelete != enableAutoDelete.isChecked()) {
+            String checked = getCheckedStatus(enableAutoDelete.isChecked());
+
+            String status = getCheckedStatus(Prefs.autoDelete);
+
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    enableAutoDelete.getTitle().toString(), status,
+                    checked));
+        }
         editor.putBoolean("EnableReply", enableReply.isChecked());
         editor.putBoolean("EnableReplyFrmServer",
                 enableReplyFrmServer.isChecked());
@@ -346,7 +362,7 @@ public class Settings extends SherlockPreferenceActivity implements
     /**
      * Perform sanity checks on settings changes.
      *
-     * @param SharedPreferences sharedPreferences -
+     * @param sharedPreferences The shared preferences
      * @return void
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -477,7 +493,6 @@ public class Settings extends SherlockPreferenceActivity implements
      * Create a child thread and validate the callback URL in it when enabling auto task check
      * preference.
      *
-     * @param String Url - The Callback URL to be validated.
      * @return void
      */
     public void autoTaskCheckValidateCallbackURL() {
@@ -520,7 +535,7 @@ public class Settings extends SherlockPreferenceActivity implements
     /**
      * Thread to validate unique id
      *
-     * @param String uniqueId - The Callback Url to be validated.
+     * @param uniqueId The Callback Url to be validated.
      * @return void
      */
     public void uniqueIdValidate(final String uniqueId) {
@@ -548,4 +563,14 @@ public class Settings extends SherlockPreferenceActivity implements
         t.start();
     }
 
+    /**
+     * A convientent method to return boolean values to a more meaningful format
+     *
+     * @param status The boolean value
+     * @return The meaningful format
+     */
+    private String getCheckedStatus(boolean status) {
+        return status ? getString(R.string.enabled)
+                : getString(R.string.disabled);
+    }
 }
