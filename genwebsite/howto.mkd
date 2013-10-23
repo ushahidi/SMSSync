@@ -20,11 +20,13 @@ To add a new Sync URL:
 3. Enter a title for the Sync URL.
 4. Enter a secret key if required by the webservices. Make sure you enter the exact key here.
 5. Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding. As of v2.0.2. You can now add Regular Expresssion code for filtering. This means, it can either be CSV or RegExp. It cannot be both.
-6. Enter the URL for your webservice. Don't forget to start with the **_HTTP_** or **_HTTPS_** protocol.
+6. Enter the URL for your webservice. Don't forget to start with the **_HTTP_** or **_HTTPS_** protocol. e.g. `https://example.com/api-v1/add-record/`
 7. Tap **_OK_** to save the new entry.
 
+Note: Version 2.5 or higher supports [basic auth](http://en.wikipedia.org/wiki/Basic_access_authentication) credentials in the URL, e.g. `https://username:pass@example.com/api-v1/add-record/`.
 </div>
 <div class="span6">
+
 #### Edit a Sync URL
 To edit an existing Sync URL:
 

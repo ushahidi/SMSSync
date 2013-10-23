@@ -7,6 +7,8 @@ import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.tests.BaseTest;
+
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -54,8 +56,13 @@ public class SyncSchemeTest extends BaseTest {
     public void testSyncWithPOSTAndURLEncoded(){
         syncUrl.setSyncScheme(new SyncScheme());
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(getContext(),syncUrl);
-        HttpUriRequest req = client.getRequest(msg, "777777777");
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            getContext(), syncUrl, msg, "777777777"
+        );
+        HttpUriRequest req = null;
+        try {
+            req = client.getRequest();
+        } catch (Exception e) {} 
 
         assertNotNull(req);
 
@@ -72,8 +79,13 @@ public class SyncSchemeTest extends BaseTest {
     public void testSyncWithPOSTAndJSON(){
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON));
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(getContext(),syncUrl);
-        HttpUriRequest req = client.getRequest(msg, "777777777");
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            getContext(), syncUrl, msg, "777777777"
+        );
+        HttpUriRequest req = null;
+        try {
+            req = client.getRequest();
+        } catch (Exception e) {} 
 
         assertNotNull(req);
 
@@ -90,8 +102,13 @@ public class SyncSchemeTest extends BaseTest {
     public void testSyncWithPOSTAndXML(){
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.XML));
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(getContext(),syncUrl);
-        HttpUriRequest req = client.getRequest(msg, "777777777");
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            getContext(), syncUrl, msg, "777777777"
+        );
+        HttpUriRequest req = null;
+        try {
+            req = client.getRequest();
+        } catch (Exception e) {} 
 
         assertNotNull(req);
 
@@ -108,8 +125,13 @@ public class SyncSchemeTest extends BaseTest {
     public void testSyncWithPUTAndJSON(){
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.JSON));
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(getContext(),syncUrl);
-        HttpUriRequest req = client.getRequest(msg, "777777777");
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            getContext(), syncUrl, msg, "777777777"
+        );
+        HttpUriRequest req = null;
+        try {
+            req = client.getRequest();
+        } catch (Exception e) {} 
 
         assertNotNull(req);
 
@@ -126,8 +148,13 @@ public class SyncSchemeTest extends BaseTest {
     public void testSyncWithPUTAndXML(){
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.XML));
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(getContext(),syncUrl);
-        HttpUriRequest req = client.getRequest(msg, "777777777");
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            getContext(), syncUrl, msg, "777777777"
+        );
+        HttpUriRequest req = null;
+        try {
+            req = client.getRequest();
+        } catch (Exception e) {} 
 
         assertNotNull(req);
 
@@ -144,8 +171,13 @@ public class SyncSchemeTest extends BaseTest {
     public void testSyncWithPUTAndURLEncoded(){
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.URLEncoded));
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(getContext(),syncUrl);
-        HttpUriRequest req = client.getRequest(msg, "777777777");
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            getContext(), syncUrl, msg, "777777777"
+        );
+        HttpUriRequest req = null;
+        try {
+            req = client.getRequest();
+        } catch (Exception e) {} 
 
         assertNotNull(req);
 
@@ -156,5 +188,31 @@ public class SyncSchemeTest extends BaseTest {
         assertNotNull(entity);
 
         assertEquals(UrlEncodedFormEntity.class.getCanonicalName(),entity.getClass().getCanonicalName());
+    }
+
+    @SmallTest
+    public void testSyncWithBasicAuth(){
+        syncUrl.setUrl("http://admin:123qwe!$@demo.ushahidi.com/smssync4");
+        syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.URLEncoded));
+
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            getContext(), syncUrl, msg, "777777777"
+        );
+
+        HttpUriRequest req = null;
+        try {
+            req = client.getRequest();
+        } catch (Exception e) {} 
+
+        Header header = req.getFirstHeader("Authorization");
+
+        assertNotNull(req);
+        assertNotNull(header);
+        assertNotNull(req.getFirstHeader("Authorization"));
+
+        assertEquals( 
+            req.getFirstHeader("Authorization").getValue(),
+            "Basic YWRtaW46MTIzcXdlISQ="
+        );
     }
 }

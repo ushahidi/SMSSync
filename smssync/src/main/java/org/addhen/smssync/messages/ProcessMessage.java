@@ -1,20 +1,3 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
- *
- * If you have questions regarding the use of this file, please contact
- * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
-
 package org.addhen.smssync.messages;
 
 import org.addhen.smssync.Prefs;
@@ -22,6 +5,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
@@ -81,18 +65,26 @@ public class ProcessMessage {
      * @return boolean
      */
     public boolean syncReceivedSms(Message message, SyncUrl syncUrl) {
-        Logger.log(TAG, "postToAWebService(): Post received SMS to configured URL:" +
+        Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
 
-        MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
-        final boolean posted = msgSyncHttpClient
-                .postSmsToWebService(message, Util.getPhoneNumber(context));
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+            context, syncUrl, message, Util.getPhoneNumber(context)
+        );
+        final boolean posted = client.postSmsToWebService();
+        
         if (posted) {
             log(context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
                     syncUrl.getUrl()));
-            smsServerResponse(msgSyncHttpClient.getServerSuccessResp());
+            smsServerResponse(client.getServerSuccessResp());
         } else {
-            setErrorMessage(msgSyncHttpClient.getServerError());
+            String clientError = client.getClientError();
+            String serverError = client.getServerError();
+            if (clientError != null) {
+                setErrorMessage(clientError);
+            } else if (serverError != null) {
+                setErrorMessage(serverError);
+            }
         }
 
         return posted;
@@ -205,8 +197,16 @@ public class ProcessMessage {
                 uriBuilder.append(urlSecretEncoded);
                 syncUrl.setUrl(uriBuilder.toString());
             }
-            MessageSyncHttpClient msgSyncHttpClient = new MessageSyncHttpClient(context, syncUrl);
-            String response = msgSyncHttpClient.getFromWebService();
+
+            MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
+            String response = null;
+            try {
+                client.execute();
+                response = client.getResponse();
+            } catch (Exception e) {
+                Logger.log(TAG, e.getMessage());
+            }
+
             Logger.log(TAG, "TaskCheckResponse: " + response);
             if (response != null && !TextUtils.isEmpty(response)) {
 
@@ -257,8 +257,8 @@ public class ProcessMessage {
     }
 
     /**
-     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to be
-     * synced online, cache it and queue it up for the scheduler to process it when it next runs.
+     * Processes the incoming SMS to figure out how to exactly to route the message. If it fails to
+     * be synced online, cache it and queue it up for the scheduler to process it.
      *
      * @param message The sms to be routed
      * @return boolean
@@ -287,7 +287,7 @@ public class ProcessMessage {
                 return true;
             } else {
                 //only save to pending when the number is not blacklisted
-                if (!Prefs.enableBlacklist) {
+                if(!Prefs.enableBlacklist){
                     saveMessage(message);
                 }
             }
@@ -336,12 +336,12 @@ public class ProcessMessage {
             }
 
         } else { // there is no filter text set up on a sync URL
-            posted = syncReceivedSms(message,
-                    syncUrl);
+            posted = syncReceivedSms(message, syncUrl);
             setErrorMessage(syncUrl.getUrl());
             if (!posted) {
 
-                // attempt to make a data connection
+                // attempt to make a data connection to the sync
+                // url
                 Util.connectToDataNetwork(context);
 
             } else {
@@ -387,8 +387,7 @@ public class ProcessMessage {
                 for (Filter filter : filters.getFilterList()) {
 
                     if (filter.getPhoneNumber().equals(message.getFrom())) {
-                        Logger.log("message", " from:" + message.getFrom() + " filter:" + filter
-                                .getPhoneNumber());
+                        Logger.log("message", " from:"+message.getFrom()+" filter:"+ filter.getPhoneNumber());
                         return false;
                     }
                 }

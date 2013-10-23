@@ -16,6 +16,10 @@
  ******************************************************************************/
 package org.addhen.smssync.net;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.text.TextUtils;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
@@ -23,7 +27,9 @@ import org.addhen.smssync.net.SyncScheme.SyncDataFormat;
 import org.addhen.smssync.net.SyncScheme.SyncDataKey;
 import org.addhen.smssync.net.SyncScheme.SyncMethod;
 import org.addhen.smssync.util.DataFormatUtil;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -53,12 +59,58 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
     private String serverError;
 
+    private String clientError;
+
     private String serverSuccessResp;
 
-
-    public MessageSyncHttpClient(Context context, SyncUrl syncUrl) {
+    public MessageSyncHttpClient(
+        Context context, SyncUrl syncUrl, Message message, String toNumber
+    ) {
         super(syncUrl.getUrl(), context);
         this.syncUrl = syncUrl;
+        initRequest(message, toNumber);
+    }
+
+    private void initRequest(Message message, String toNumber) {
+
+        SyncScheme syncScheme = syncUrl.getSyncScheme();
+        SyncMethod method = syncScheme.getMethod();
+        SyncDataFormat format = syncScheme.getDataFormat();
+
+        setHeader("Content-Type", syncScheme.getContentType());
+        addParam(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret());
+        addParam(syncScheme.getKey(SyncDataKey.FROM), message.getFrom());
+        addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
+        addParam(
+            syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), message.getTimestamp()
+        );
+        addParam(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber);
+        addParam(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid());
+
+        try {
+            setHttpEntity(format);
+        } catch (Exception e) {
+            log("Failed to set request body", e);
+            setClientError("Failed to format request body");
+        }
+
+        try {
+            switch (method){
+                case POST:
+                    setMethod("POST");
+                    break;
+                case PUT:
+                    setMethod("PUT");
+                    break;
+                default:
+                    log("Invalid server method");
+                    setClientError("Failed to set request method.");
+            }
+        } catch (Exception e) {
+            log("failed to set request method.", e);
+            setClientError("Failed to set request method.");
+        }
+
     }
 
     /**
@@ -68,179 +120,107 @@ public class MessageSyncHttpClient extends MainHttpClient {
      * @param toNumber The phone number the sms was sent to
      * @return boolean
      */
-    public boolean postSmsToWebService(Message message, String toNumber) {
+    public boolean postSmsToWebService() {
 
         try {
+            execute();
+        } catch (Exception e) {
+            log("Request failed", e);
+            setClientError("Request failed. " + e.getMessage());
+        }
 
-            // Add your data
-            HttpUriRequest request = getRequest(message, toNumber);
+        String response = getResponse();
+        int statusCode = getResponseCode();
 
-            if (request == null) {
-                log("No request data");
-                return false;
-            }
-
-            // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(request);
-            int statusCode = response.getStatusLine().getStatusCode();
-            log("statusCode: " + statusCode);
-
-            if (statusCode == 200 || statusCode == 201) {
-                String resp = getText(response);
-                log("statusMessage: " + resp);
-                // Check JSON "success" status
-                if (Util.getJsonSuccessStatus(resp)) {
-                    // auto response message is enabled to be received from the
-                    // server.
-                    setServerSuccessResp(resp);
-                    return true;
-                }
-
-                // Display error from server, if any
-                // see https://github.com/ushahidi/SMSSync/issues/68
-                String payloadError = Util.getJsonError(resp);
-                if (!TextUtils.isEmpty(payloadError)) {
-
-                    Resources res = context.getResources();
-                    final String errMsg = String.format(Locale.getDefault(), "%s, %s ",
-                            res.getString(R.string.sending_failed_custom_error, payloadError),
-                            res.getString(R.string.sending_failed_http_code, statusCode));
-
-                    setServerError(errMsg);
-
-                    // log failure message.
-                    Util.logActivities(context, errMsg);
-                } else {
-                    Util.logActivities(context, context.getString(R.string.no_json_response));
-                }
-            }
-
-        } catch (ClientProtocolException e) {
-            log(MessageSyncHttpClient.class.getSimpleName(), e);
-            Util.logActivities(context, context.getString(R.string.sending_failed_custom_error,
-                    e.getLocalizedMessage()));
-            return false;
-        } catch (IOException e) {
-            Util.logActivities(context, context.getString(R.string.sending_failed_custom_error,
-                    e.getLocalizedMessage()));
-            log(MessageSyncHttpClient.class.getSimpleName(), e);
-            return false;
-        } catch (IllegalArgumentException e) {
-            Util.logActivities(context, context.getString(R.string.sending_failed_custom_error,
-                    e.getLocalizedMessage()));
-            log(MessageSyncHttpClient.class.getSimpleName(), e);
+        if (statusCode != 200 && statusCode != 201) {
+            setServerError("bad http return code", statusCode);
             return false;
         }
-        log("messages failed");
+
+        if (Util.getJsonSuccessStatus(response)) {
+            // auto response message is enabled to be received from the
+            // server.
+            setServerSuccessResp(response);
+            return true;
+        }
+
+        String payloadError = Util.getJsonError(response);
+        if (!TextUtils.isEmpty(payloadError)) {
+            setServerError(payloadError, statusCode);
+        }
+
         return false;
+
     }
 
     /**
-     * Get an appropriate HTTP request to send message with based on current sync scheme
+     *
+     * Get HTTP Entity populated with data in a format specified by the current sync scheme
+     *
+     * @param SyncDataFormat format
      */
-    public HttpUriRequest getRequest(Message message, String toNumber) {
+    private void setHttpEntity(SyncDataFormat format) throws Exception {
 
-        HttpUriRequest request;
-
-        SyncScheme syncScheme = syncUrl.getSyncScheme();
-        SyncMethod method = syncScheme.getMethod();
-        SyncDataFormat format = syncScheme.getDataFormat();
-        HttpEntity httpEntity = getHttpEntity(format, message, toNumber);
-
-        if (httpEntity == null) {
-            return null;
-        }
-
-        switch (method) {
-            case POST:
-                request = new HttpPost(url);
-                ((HttpPost) request).setEntity(httpEntity);
+        switch (format){
+            case JSON:
+                setEntity(DataFormatUtil.makeJSONString(getParams()));
+                log("setHttpEntity format JSON");
                 break;
-            case PUT:
-                request = new HttpPut(url);
-                ((HttpPut) request).setEntity(httpEntity);
+            case XML:
+                //TODO: Make parent node URL specific as well
+                setEntity(DataFormatUtil.makeXMLString(getParams(), "payload", HTTP.UTF_8));
+                log("setHttpEntity format XML");
+                break;
+            case YAML:
+                setEntity(DataFormatUtil.makeYAMLString(getParams()));
+                log("setHttpEntity format YAML");
+                break;
+            case URLEncoded:
+                log("setHttpEntity format URLEncoded");
+                setEntity(new UrlEncodedFormEntity(getParams(), HTTP.UTF_8));
                 break;
             default:
-                log("Invalid server method");
-                request = null;
+                throw  new Exception("Invalid data format");
         }
 
-        if (request != null) {
-            request.addHeader("User-Agent", userAgent.toString());
-            request.setHeader("Content-Type", syncScheme.getContentType());
-        }
-        return request;
     }
 
-    /**
-     * Get HTTP Entity populated with data in a format specified by the current sync scheme
-     */
-    private HttpEntity getHttpEntity(SyncDataFormat format, Message message, String toNumber) {
-
-        HttpEntity httpEntity;
-        SyncScheme syncScheme = syncUrl.getSyncScheme();
-
-        try {
-
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.SECRET),
-                    syncUrl.getSecret()));
-            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.FROM),
-                    message.getFrom()));
-            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.MESSAGE),
-                    message.getBody()));
-            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP),
-                    message.getTimestamp()));
-            nameValuePairs
-                    .add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber));
-            nameValuePairs.add(new BasicNameValuePair(syncScheme.getKey(SyncDataKey.MESSAGE_ID),
-                    message.getUuid()));
-
-            switch (format) {
-                case JSON:
-                    httpEntity = new StringEntity(DataFormatUtil.makeJSONString(nameValuePairs),
-                            HTTP.UTF_8);
-                    break;
-                case XML:
-                    //TODO: Make parent node URL specific as well
-                    httpEntity = new StringEntity(
-                            DataFormatUtil.makeXMLString(nameValuePairs, "payload", HTTP.UTF_8),
-                            HTTP.UTF_8);
-                    break;
-                case YAML:
-                    httpEntity = new StringEntity(DataFormatUtil.makeYAMLString(nameValuePairs),
-                            HTTP.UTF_8);
-                    break;
-                case URLEncoded:
-                    httpEntity = new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8);
-                    break;
-                default:
-                    throw new Exception("Invalid data format");
-            }
-
-        } catch (JSONException ex) {
-            log("Failed to format json", ex);
-            httpEntity = null;
-        } catch (UnsupportedEncodingException ex) {
-            log("Failed to encode data", ex);
-            httpEntity = null;
-        } catch (IOException ioex) {
-            log("Failed to format xml", ioex);
-            httpEntity = null;
-        } catch (Exception ex) {
-            log("Failed to format data", ex);
-            httpEntity = null;
-        }
-
-        return httpEntity;
+    public String getClientError() {
+        return this.clientError;
     }
 
     public String getServerError() {
         return this.serverError;
     }
 
-    public void setServerError(String serverError) {
-        this.serverError = serverError;
+    public void setClientError(String error) {
+        log("Client error " + error);
+        Resources res = context.getResources();
+        this.serverError = String.format(
+            Locale.getDefault(), 
+            "%s", 
+            String.format(
+                res.getString(R.string.sending_failed_custom_error),
+                error
+            )
+        );
+    }
+
+    public void setServerError(String error, int statusCode) {
+        log("Server error " + error);
+        Resources res = context.getResources();
+        this.serverError = String.format(
+            Locale.getDefault(), 
+            "%s, %s ", 
+            String.format(
+                res.getString(R.string.sending_failed_custom_error),
+                error
+            ), 
+            String.format(
+                res.getString(R.string.sending_failed_http_code),
+                statusCode
+            )
+        );
     }
 
     public String getServerSuccessResp() {
@@ -249,5 +229,17 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
     public void setServerSuccessResp(String serverSuccessResp) {
         this.serverSuccessResp = serverSuccessResp;
+    }
+
+    protected void log(String message) {
+        Logger.log(getClass().getName(), message);
+    }
+
+    protected void log(String format, Object... args) {
+        Logger.log(getClass().getName(), format, args);
+    }
+
+    protected void log(String message, Exception ex) {
+        Logger.log(getClass().getName(), message, ex);
     }
 }
