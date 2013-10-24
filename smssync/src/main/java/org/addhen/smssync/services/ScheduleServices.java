@@ -52,7 +52,6 @@ public class ScheduleServices {
         mContext = context;
         Logger.log(CLASS_TAG,
                 "ScheduleServices() executing scheduled services ");
-        logActivities(mContext.getString(R.string.run_scheduled_services));
         Prefs.loadPreferences(context);
 
         mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -78,7 +77,7 @@ public class ScheduleServices {
         Logger.log(CLASS_TAG, "updating scheduler");
         if (mgr != null && pendingIntent != null) {
             Logger.log(CLASS_TAG, "Update scheduler to " + interval);
-            logActivities(mContext.getString(R.string.scheduler_updated_to, interval));
+            logActivities(mContext.getString(R.string.scheduler_updated_to));
             mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + 60000, interval,
                     pendingIntent);

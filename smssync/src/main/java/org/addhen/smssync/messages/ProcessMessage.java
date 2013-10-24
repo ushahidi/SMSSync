@@ -7,7 +7,6 @@ import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
-import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 import org.json.JSONArray;
@@ -16,7 +15,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -74,8 +72,9 @@ public class ProcessMessage {
         final boolean posted = client.postSmsToWebService();
 
         if (posted) {
-            log(context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
-                    syncUrl.getUrl()));
+            Util.logActivities(context,
+                    context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
+                            syncUrl.getUrl()));
             smsServerResponse(client.getServerSuccessResp());
         } else {
             String clientError = client.getClientError();
@@ -165,7 +164,7 @@ public class ProcessMessage {
 
     public void performTask(SyncUrl syncUrl) {
         Logger.log(TAG, "performTask(): perform a task");
-        log(context.getString(R.string.perform_task));
+        Util.logActivities(context, context.getString(R.string.perform_task));
         // load Prefs
         Prefs.loadPreferences(context);
 
@@ -173,13 +172,13 @@ public class ProcessMessage {
         int status = Util.validateCallbackUrl(syncUrl.getUrl());
         if (status == 1) {
             setErrorMessage(context.getString(R.string.no_configured_url));
-            log(context.getString(R.string.no_configured_url));
+            Util.logActivities(context, context.getString(R.string.no_configured_url));
         } else if (status == 2) {
             setErrorMessage(context.getString(R.string.invalid_url));
-            log(context.getString(R.string.invalid_url) + syncUrl.getUrl());
+            Util.logActivities(context, context.getString(R.string.invalid_url) + syncUrl.getUrl());
         } else if (status == 3) {
             setErrorMessage(context.getString(R.string.no_connection));
-            log(context.getString(R.string.no_connection));
+            Util.logActivities(context, context.getString(R.string.no_connection));
         } else {
 
             StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
@@ -229,20 +228,21 @@ public class ProcessMessage {
 
                                 processSms.sendSms(jsonObject.getString("to"),
                                         jsonObject.getString("message"));
-                                log(context.getString(R.string.processed_task,
-                                        jsonObject.getString("message")));
+                                Util.logActivities(context,
+                                        context.getString(R.string.processed_task,
+                                                jsonObject.getString("message")));
                             }
 
                         } else {
                             Logger.log(TAG, context.getString(R.string.no_task));
-                            log(context.getString(R.string.no_task));
+                            Util.logActivities(context, context.getString(R.string.no_task));
                             setErrorMessage(context.getString(R.string.no_task));
                         }
 
                     } else { // 'payload' data may not be present in JSON
                         // response
                         Logger.log(TAG, context.getString(R.string.no_task));
-                        log(context.getString(R.string.no_task));
+                        Util.logActivities(context, context.getString(R.string.no_task));
                         setErrorMessage(context.getString(R.string.no_task));
                     }
 
@@ -252,8 +252,7 @@ public class ProcessMessage {
                 }
             }
         }
-
-
+        Util.logActivities(context, context.getString(R.string.finish_task_check));
     }
 
     /**
@@ -271,7 +270,7 @@ public class ProcessMessage {
             // send auto response from phone not server.
             if (Prefs.enableReply) {
                 // send auto response as SMS to user's phone
-                log(context.getString(R.string.auto_response_sent));
+                Util.logActivities(context, context.getString(R.string.auto_response_sent));
                 processSms.sendSms(message.getFrom(), Prefs.reply);
             }
 
@@ -282,7 +281,8 @@ public class ProcessMessage {
                 if (Prefs.autoDelete) {
 
                     processSms.delSmsFromInbox(message.getBody(), message.getFrom());
-                    log(context.getString(R.string.auto_message_deleted, message.getBody()));
+                    Util.logActivities(context,
+                            context.getString(R.string.auto_message_deleted, message.getBody()));
                 }
                 return true;
             } else {
@@ -408,13 +408,6 @@ public class ProcessMessage {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    private void log(String message) {
-        Logger.log(TAG, message);
-        if (Prefs.enableLog) {
-            new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
-        }
     }
 
 }

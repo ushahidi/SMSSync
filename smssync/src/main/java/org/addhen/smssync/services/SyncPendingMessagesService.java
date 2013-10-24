@@ -68,7 +68,6 @@ public class SyncPendingMessagesService extends BaseService {
             messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG, "executeTask() executing this task ");
-            logActivities(R.string.sync_pending_messages);
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
