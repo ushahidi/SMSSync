@@ -194,8 +194,9 @@ public class ProcessMessage {
                     Logger.log(TAG, e.getMessage());
                 }
                 uriBuilder.append(urlSecretEncoded);
-                syncUrl.setUrl(uriBuilder.toString());
             }
+
+            syncUrl.setUrl(uriBuilder.toString());
 
             MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
             String response = null;
