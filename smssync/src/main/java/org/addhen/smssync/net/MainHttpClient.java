@@ -1,28 +1,26 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
- *
- * If you have questions regarding the use of this file, please contact
- * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+/*****************************************************************************
+ ** Copyright (c) 2010 - 2013 Ushahidi Inc
+ ** All rights reserved
+ ** Contact: team@ushahidi.com
+ ** Website: http://www.ushahidi.com
+ **
+ ** GNU Lesser General Public License Usage
+ ** This file may be used under the terms of the GNU Lesser
+ ** General Public License version 3 as published by the Free Software
+ ** Foundation and appearing in the file LICENSE.LGPL included in the
+ ** packaging of this file. Please review the following information to
+ ** ensure the GNU Lesser General Public License version 3 requirements
+ ** will be met: http://www.gnu.org/licenses/lgpl.html.
+ **
+ **
+ ** If you have questions regarding the use of this file, please contact
+ ** Ushahidi developers at team@ushahidi.com.
+ **
+ *****************************************************************************/
 
 package org.addhen.smssync.net;
 
-import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.util.Base64;
-
 import org.addhen.smssync.util.Logger;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
@@ -49,6 +47,7 @@ import org.apache.http.params.HttpProtocolParams;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Base64;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -60,13 +59,19 @@ import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainHttpClient {
 
-    protected static DefaultHttpClient httpclient;
+    protected static DefaultHttpClient httpClient;
+
+    protected static StringBuilder userAgent;
+
+    protected Context context;
+
+    protected String url;
 
     private HttpParams httpParameters;
 
@@ -78,9 +83,9 @@ public class MainHttpClient {
 
     private static final String CLASS_TAG = MainHttpClient.class.getSimpleName();
 
-    private ArrayList <NameValuePair> params;
+    private ArrayList<NameValuePair> params;
 
-    private Map<String,String> headers;
+    private Map<String, String> headers;
 
     private HttpEntity entity;
 
@@ -92,7 +97,7 @@ public class MainHttpClient {
 
     private HttpResponse httpResponse;
 
-    private HttpRequestBase request; 
+    private HttpRequestBase request;
 
     private String responseErrorMessage;
 
@@ -101,7 +106,7 @@ public class MainHttpClient {
         this.url = url;
         this.context = context;
         this.params = new ArrayList<NameValuePair>();
-        this.headers = new HashMap<String,String>();
+        this.headers = new HashMap<String, String>();
 
         // default to GET
         this.method = "GET";
@@ -226,8 +231,8 @@ public class MainHttpClient {
     public void setMethod(String method) throws Exception {
         if (!isMethodSupported(method)) {
             throw new Exception(
-                "Invalid method '" + method + "'."
-                + " POST, PUT and GET currently supported."
+                    "Invalid method '" + method + "'."
+                            + " POST, PUT and GET currently supported."
             );
         }
         this.method = method;
@@ -238,10 +243,11 @@ public class MainHttpClient {
         String combinedParams = "";
         if (!params.isEmpty()) {
             combinedParams += "?";
-            for(NameValuePair p : params) {
-                String paramString = p.getName() + "=" + URLEncoder.encode(p.getValue(), DEFAULT_ENCODING);
-                if(combinedParams.length() > 1) {
-                    combinedParams  +=  "&" + paramString;
+            for (NameValuePair p : params) {
+                String paramString = p.getName() + "=" + URLEncoder
+                        .encode(p.getValue(), DEFAULT_ENCODING);
+                if (combinedParams.length() > 1) {
+                    combinedParams += "&" + paramString;
                 } else {
                     combinedParams += paramString;
                 }
@@ -311,7 +317,7 @@ public class MainHttpClient {
                 instream.close();
             }
 
-        } catch (ClientProtocolException e)  {
+        } catch (ClientProtocolException e) {
             httpClient.getConnectionManager().shutdown();
             throw e;
         } catch (Exception e) {
@@ -326,21 +332,21 @@ public class MainHttpClient {
             request = new HttpGet(url + getQueryString());
         } else if (method.equals("POST")) {
             request = new HttpPost(url);
-            ((HttpPost)request).setEntity(getEntity());
+            ((HttpPost) request).setEntity(getEntity());
         } else if (method.equals("PUT")) {
             request = new HttpPut(url);
-            ((HttpPut)request).setEntity(getEntity());
+            ((HttpPut) request).setEntity(getEntity());
         }
         // set headers on request
-        for (String key : headers.keySet() ) {
+        for (String key : headers.keySet()) {
             request.setHeader(key, headers.get(key));
         }
     }
 
     private static void debug(Exception e) {
-        Logger.log(CLASS_TAG, "Exception: " 
-            + e.getClass().getName()
-            + " " + getRootCause(e).getMessage());
+        Logger.log(CLASS_TAG, "Exception: "
+                + e.getClass().getName()
+                + " " + getRootCause(e).getMessage());
     }
 
     protected void log(String message) {
