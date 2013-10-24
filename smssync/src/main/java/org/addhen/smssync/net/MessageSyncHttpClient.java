@@ -72,7 +72,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
             setHttpEntity(format);
         } catch (Exception e) {
             log("Failed to set request body", e);
-            setClientError("Failed to format request body");
+            setClientError("Failed to format request body"+ e.getLocalizedMessage());
         }
 
         try {
@@ -141,21 +141,26 @@ public class MessageSyncHttpClient extends MainHttpClient {
             case JSON:
                 setEntity(DataFormatUtil.makeJSONString(getParams()));
                 log("setHttpEntity format JSON");
+                Util.logActivities(context, "setHttpEntity format JSON");
                 break;
             case XML:
                 //TODO: Make parent node URL specific as well
                 setEntity(DataFormatUtil.makeXMLString(getParams(), "payload", HTTP.UTF_8));
                 log("setHttpEntity format XML");
+                Util.logActivities(context, context.getString(R.string.http_entity_format,"XML"));
                 break;
             case YAML:
                 setEntity(DataFormatUtil.makeYAMLString(getParams()));
                 log("setHttpEntity format YAML");
+                Util.logActivities(context, context.getString(R.string.http_entity_format,"YAML"));
                 break;
             case URLEncoded:
                 log("setHttpEntity format URLEncoded");
+                Util.logActivities(context, context.getString(R.string.http_entity_format, "URLEncoded"));
                 setEntity(new UrlEncodedFormEntity(getParams(), HTTP.UTF_8));
                 break;
             default:
+                Util.logActivities(context, context.getString(R.string.invalid_data_format));
                 throw new Exception("Invalid data format");
         }
 
@@ -180,6 +185,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
                         error
                 )
         );
+
+        Util.logActivities(context, serverError);
     }
 
     public void setServerError(String error, int statusCode) {
@@ -187,7 +194,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
         Resources res = context.getResources();
         this.serverError = String.format(
                 Locale.getDefault(),
-                "%s, %s ",
+                "%s %s ",
                 String.format(
                         res.getString(R.string.sending_failed_custom_error),
                         error
@@ -197,6 +204,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
                         statusCode
                 )
         );
+
+        Util.logActivities(context, serverError);
     }
 
     public String getServerSuccessResp() {
@@ -207,15 +216,4 @@ public class MessageSyncHttpClient extends MainHttpClient {
         this.serverSuccessResp = serverSuccessResp;
     }
 
-    protected void log(String message) {
-        Logger.log(getClass().getName(), message);
-    }
-
-    protected void log(String format, Object... args) {
-        Logger.log(getClass().getName(), format, args);
-    }
-
-    protected void log(String message, Exception ex) {
-        Logger.log(getClass().getName(), message, ex);
-    }
 }

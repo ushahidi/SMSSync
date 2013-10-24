@@ -53,11 +53,7 @@ public class SmsReceiverService extends Service {
 
     private Context mContext;
 
-    private String messagesFrom = "";
-
     private String messagesBody = "";
-
-    private String messagesTimestamp = "";
 
     private String messagesUuid = "";
 
@@ -197,7 +193,7 @@ public class SmsReceiverService extends Service {
         if (!sent) {
             Util.showFailNotification(this, messagesBody,
                     getString(R.string.sending_failed));
-            logActivities(getString(R.string.sending_failed));
+
             statusIntent = new Intent(ServicesConstants.FAILED_ACTION);
             statusIntent.putExtra("failed", 0);
             sendBroadcast(statusIntent);

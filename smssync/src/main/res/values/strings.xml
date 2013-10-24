@@ -91,7 +91,7 @@
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="sending_failed">SMSSync failed to send message to server.</string>
     <string name="sending_failed_http_code">Server returned HTTP
-        status code %1$d.</string>
+        status code is %1$d.</string>
     <string name="sending_failed_custom_error">Sending message to the server failed. Server error: %1$s.</string>
     <string name="sending_succeeded">SMSSync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to send.</string>
@@ -320,4 +320,6 @@
     <string name="settings_changed">SMSSync settings - \"%1$s\" has changed from \"%2$s\" to \"%3$s\"</string>
     <string name="enabled">enabled</string>
     <string name="disabled">disabled</string>
+    <string name="invalid_data_format">Invalid data format</string>
+    <string name="http_entity_format">HTTP Entity format is %1$s</string>
 </resources>
