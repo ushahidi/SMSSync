@@ -69,10 +69,10 @@ public class ProcessMessage {
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            context, syncUrl, message, Util.getPhoneNumber(context)
+                context, syncUrl, message, Util.getPhoneNumber(context)
         );
         final boolean posted = client.postSmsToWebService();
-        
+
         if (posted) {
             log(context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
                     syncUrl.getUrl()));
@@ -287,7 +287,7 @@ public class ProcessMessage {
                 return true;
             } else {
                 //only save to pending when the number is not blacklisted
-                if(!Prefs.enableBlacklist){
+                if (!Prefs.enableBlacklist) {
                     saveMessage(message);
                 }
             }
@@ -387,7 +387,8 @@ public class ProcessMessage {
                 for (Filter filter : filters.getFilterList()) {
 
                     if (filter.getPhoneNumber().equals(message.getFrom())) {
-                        Logger.log("message", " from:"+message.getFrom()+" filter:"+ filter.getPhoneNumber());
+                        Logger.log("message", " from:" + message.getFrom() + " filter:" + filter
+                                .getPhoneNumber());
                         return false;
                     }
                 }

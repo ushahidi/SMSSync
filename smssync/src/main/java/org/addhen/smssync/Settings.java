@@ -308,21 +308,80 @@ public class Settings extends SherlockPreferenceActivity implements
         }
         editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
         if (Prefs.autoDelete != enableAutoDelete.isChecked()) {
-            String checked = getCheckedStatus(enableAutoDelete.isChecked());
+            boolean checked = enableAutoDelete.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
 
             String status = getCheckedStatus(Prefs.autoDelete);
 
-            Util.logActivities(this, getString(R.string.settings_changed,
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
                     enableAutoDelete.getTitle().toString(), status,
-                    checked));
+                    check));
         }
+
         editor.putBoolean("EnableReply", enableReply.isChecked());
+        if (Prefs.enableReply != enableReply.isChecked()) {
+            boolean checked = enableReply.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableReply);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableReply.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putBoolean("EnableReplyFrmServer",
                 enableReplyFrmServer.isChecked());
+        if (Prefs.enableReplyFrmServer != enableReplyFrmServer.isChecked()) {
+            boolean checked = enableReplyFrmServer.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableReplyFrmServer);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableReplyFrmServer.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putBoolean("EnableTaskCheck", taskCheck.isChecked());
+        if (Prefs.enableTaskCheck != taskCheck.isChecked()) {
+            boolean checked = taskCheck.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableTaskCheck);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    taskCheck.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putBoolean("AutoSync", autoSync.isChecked());
+        if (Prefs.enableReply != enableReply.isChecked()) {
+            boolean checked = enableReply.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableReply);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableAutoDelete.getTitle().toString(), status,
+                    check));
+        }
+
+        if (Prefs.autoTime != autoTime) {
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    autoSyncTimes.getTitle().toString(),
+                    autoSyncTimes.getEntries()[Prefs.autoTime - 1],
+                    autoSyncTimes.getEntries()[autoTime - 1]));
+        }
         editor.putInt("AutoTime", autoTime);
         editor.putInt("taskCheck", taskCheckTime);
+
+        if (Prefs.taskCheckTime != taskCheckTime) {
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    taskCheckTimes.getTitle().toString(),
+                    taskCheckTimes.getEntries()[Prefs.taskCheckTime - 1],
+                    taskCheckTimes.getEntries()[taskCheckTime - 1]));
+        }
 
         if (!TextUtils.isEmpty(uniqueId.getText())) {
             uniqueIdValidate(uniqueId.getText());
@@ -447,7 +506,6 @@ public class Settings extends SherlockPreferenceActivity implements
         public void run() {
 
             if (!Prefs.enabled) {
-
                 Util.showToast(Settings.this, R.string.no_configured_url);
                 taskCheck.setChecked(false);
 
@@ -570,7 +628,9 @@ public class Settings extends SherlockPreferenceActivity implements
      * @return The meaningful format
      */
     private String getCheckedStatus(boolean status) {
-        return status ? getString(R.string.enabled)
-                : getString(R.string.disabled);
+        if (status) {
+            return getString(R.string.enabled);
+        }
+        return getString(R.string.disabled);
     }
 }
