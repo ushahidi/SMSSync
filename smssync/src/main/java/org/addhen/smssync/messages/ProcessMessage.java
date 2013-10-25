@@ -67,11 +67,14 @@ public class ProcessMessage {
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            context, syncUrl, message, Util.getPhoneNumber(context)
+                context, syncUrl, message, Util.getPhoneNumber(context)
         );
         final boolean posted = client.postSmsToWebService();
-        
+
         if (posted) {
+            Util.logActivities(context,
+                    context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
+                            syncUrl.getUrl()));
             smsServerResponse(client.getServerSuccessResp());
         } else {
             String clientError = client.getClientError();
@@ -161,6 +164,7 @@ public class ProcessMessage {
 
     public void performTask(SyncUrl syncUrl) {
         Logger.log(TAG, "performTask(): perform a task");
+        Util.logActivities(context, context.getString(R.string.perform_task));
         // load Prefs
         Prefs.loadPreferences(context);
 
@@ -168,10 +172,13 @@ public class ProcessMessage {
         int status = Util.validateCallbackUrl(syncUrl.getUrl());
         if (status == 1) {
             setErrorMessage(context.getString(R.string.no_configured_url));
+            Util.logActivities(context, context.getString(R.string.no_configured_url));
         } else if (status == 2) {
             setErrorMessage(context.getString(R.string.invalid_url));
+            Util.logActivities(context, context.getString(R.string.invalid_url) + syncUrl.getUrl());
         } else if (status == 3) {
             setErrorMessage(context.getString(R.string.no_connection));
+            Util.logActivities(context, context.getString(R.string.no_connection));
         } else {
 
             StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
@@ -187,8 +194,9 @@ public class ProcessMessage {
                     Logger.log(TAG, e.getMessage());
                 }
                 uriBuilder.append(urlSecretEncoded);
-                syncUrl.setUrl(uriBuilder.toString());
             }
+
+            syncUrl.setUrl(uriBuilder.toString());
 
             MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
             String response = null;
@@ -221,16 +229,21 @@ public class ProcessMessage {
 
                                 processSms.sendSms(jsonObject.getString("to"),
                                         jsonObject.getString("message"));
+                                Util.logActivities(context,
+                                        context.getString(R.string.processed_task,
+                                                jsonObject.getString("message")));
                             }
 
                         } else {
                             Logger.log(TAG, context.getString(R.string.no_task));
+                            Util.logActivities(context, context.getString(R.string.no_task));
                             setErrorMessage(context.getString(R.string.no_task));
                         }
 
                     } else { // 'payload' data may not be present in JSON
                         // response
                         Logger.log(TAG, context.getString(R.string.no_task));
+                        Util.logActivities(context, context.getString(R.string.no_task));
                         setErrorMessage(context.getString(R.string.no_task));
                     }
 
@@ -240,8 +253,7 @@ public class ProcessMessage {
                 }
             }
         }
-
-
+        Util.logActivities(context, context.getString(R.string.finish_task_check));
     }
 
     /**
@@ -259,6 +271,7 @@ public class ProcessMessage {
             // send auto response from phone not server.
             if (Prefs.enableReply) {
                 // send auto response as SMS to user's phone
+                Util.logActivities(context, context.getString(R.string.auto_response_sent));
                 processSms.sendSms(message.getFrom(), Prefs.reply);
             }
 
@@ -267,12 +280,15 @@ public class ProcessMessage {
                 // Delete messages from message app's inbox, only
                 // when SMSSync has that feature turned on
                 if (Prefs.autoDelete) {
+
                     processSms.delSmsFromInbox(message.getBody(), message.getFrom());
+                    Util.logActivities(context,
+                            context.getString(R.string.auto_message_deleted, message.getBody()));
                 }
                 return true;
             } else {
                 //only save to pending when the number is not blacklisted
-                if(!Prefs.enableBlacklist){
+                if (!Prefs.enableBlacklist) {
                     saveMessage(message);
                 }
             }
@@ -372,7 +388,8 @@ public class ProcessMessage {
                 for (Filter filter : filters.getFilterList()) {
 
                     if (filter.getPhoneNumber().equals(message.getFrom())) {
-                        Logger.log("message", " from:"+message.getFrom()+" filter:"+ filter.getPhoneNumber());
+                        Logger.log("message", " from:" + message.getFrom() + " filter:" + filter
+                                .getPhoneNumber());
                         return false;
                     }
                 }
@@ -393,4 +410,5 @@ public class ProcessMessage {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
+
 }

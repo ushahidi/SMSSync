@@ -1,30 +1,29 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync.messages;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -255,6 +254,8 @@ public class ProcessSms {
         Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
                 + sendTo + " message: " + msg);
 
+        Util.logActivities(context, context.getString(R.string.sent_msg, msg, sendTo));
+
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(msg);
 
@@ -276,7 +277,7 @@ public class ProcessSms {
              */
 
             sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-                    null);
+                    deliveryIntents);
 
             // Get current Time Millis
             final Long timeMills = System.currentTimeMillis();

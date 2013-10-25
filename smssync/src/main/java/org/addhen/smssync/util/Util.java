@@ -1,22 +1,19 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync.util;
 
@@ -41,6 +38,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -95,8 +93,8 @@ public class Util {
     /**
      * Joins two strings together.
      *
-     * @param String first - The first String to be joined to a second string.
-     * @param String second - The second String to join to the first string.
+     * @param first  - The first String to be joined to a second string.
+     * @param second - The second String to join to the first string.
      * @return String
      */
     public static String joinString(String first, String second) {
@@ -106,7 +104,7 @@ public class Util {
     /**
      * Converts a string into an int value.
      *
-     * @param String value - The string to be converted into int value.
+     * @param value - The string to be converted into int value.
      * @return int
      */
     public static int toInt(String value) {
@@ -116,7 +114,7 @@ public class Util {
     /**
      * Capitalize any String given to it.
      *
-     * @param String text - The string to be capitalized.
+     * @param text - The string to be capitalized.
      * @return String
      */
     public static String capitalizeFirstLetter(String text) {
@@ -126,7 +124,7 @@ public class Util {
     /**
      * Checks if there is Internet connection or data connection on the device.
      *
-     * @param Context context - The activity calling this method.
+     * @param context - The activity calling this method.
      * @return boolean
      */
     public static boolean isConnected(Context context) {
@@ -146,9 +144,9 @@ public class Util {
     /**
      * Limit a string to a defined length.
      *
-     * @param int    limit - the total length.
-     * @param string limited - the limited string.
-     * @return String
+     * @param value  - the string to limit.
+     * @param length - the total length of the string.
+     * @return the limited string
      */
     public static String limitString(String value, int length) {
         StringBuilder buf = new StringBuilder(value);
@@ -271,8 +269,8 @@ public class Util {
     /**
      * Show a notification
      *
-     * @param String message to display
-     * @param String notification title
+     * @param message           to display
+     * @param notificationTitle notification title
      */
     public static void showFailNotification(Context context, String message,
             String notificationTitle) {
@@ -322,7 +320,7 @@ public class Util {
      * Validates an email address Credits: http://www.mkyong.com/regular-expressions
      * /how-to-validate-email-address-with-regular-expression/
      *
-     * @param String - email address to be validated
+     * @param emailAddress address to be validated
      * @return boolean
      */
     public static boolean validateEmail(String emailAddress) {
@@ -338,7 +336,7 @@ public class Util {
     /**
      * Clear the standard notification alert.
      *
-     * @param Context context - The context of the calling activity.
+     * @param context - The context of the calling activity.
      * @return void
      */
     public static void clear(Context context) {
@@ -348,7 +346,7 @@ public class Util {
     /**
      * Clear all notifications shown to the user.
      *
-     * @param Context context - The context of the calling activity.
+     * @param context - The context of the calling activity.
      * @return void.
      */
     public static void clearAll(Context context) {
@@ -360,7 +358,7 @@ public class Util {
     /**
      * Clear a running notification.
      *
-     * @param Context context - The context of the calling activity.
+     * @param context - The context of the calling activity.
      * @return void
      */
     public static void clearNotify(Context context) {
@@ -387,8 +385,8 @@ public class Util {
      * Format an Unix timestamp to a string suitable for display to the user according to their
      * system settings (12 or 24 hour time).
      *
-     * @param Context context - The context of the calling activity.
-     * @param long    timestamp - The human unfriendly timestamp.
+     * @param context   - The context of the calling activity.
+     * @param timestamp - The human unfriendly timestamp.
      * @return String
      */
     public static String formatTimestamp(Context context, long timestamp) {
@@ -406,7 +404,7 @@ public class Util {
     /**
      * Validate the callback URL
      *
-     * @param String callbackURL - The callback URL to be validated.
+     * @param callbackUrl - The callback URL to be validated.
      * @return int - 0 = well formed URL, 1 = no configured url
      */
     public static int validateCallbackUrl(String callbackUrl) {
@@ -451,8 +449,12 @@ public class Util {
 
     public static String getPhoneNumber(Context context) {
 
-        if (!TextUtils.isEmpty(Prefs.uniqueId)) {
-            return Prefs.uniqueId;
+        TelephonyManager mTelephonyMgr;
+        mTelephonyMgr = (TelephonyManager)
+                context.getSystemService(Context.TELEPHONY_SERVICE);
+        String number = mTelephonyMgr.getLine1Number();
+        if (number != null) {
+            return number.substring(2);
         }
         return "";
 
@@ -502,12 +504,17 @@ public class Util {
     }
 
     public void log(String format, Object... args) {
-
         Logger.log(getClass().getName(), String.format(format, args));
     }
 
     public void log(String message, Exception ex) {
-
         Logger.log(getClass().getName(), message, ex);
+    }
+
+    public static void logActivities(Context context, String message) {
+        Logger.log(CLASS_TAG, message);
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
+        }
     }
 }

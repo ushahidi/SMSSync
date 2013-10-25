@@ -1,22 +1,19 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync;
 
@@ -297,19 +294,94 @@ public class Settings extends SherlockPreferenceActivity implements
             taskCheckTimes.setEnabled(false);
         }
 
-        // Initialize the selected time to frequently to auto check for tasks
+        // Initialize the selected frequency to automatically check for tasks
         taskCheckTime = initializeAutoTaskTime();
 
         editor = settings.edit();
         editor.putString("ReplyPref", replyPref.getText());
+        // log reply changes.
+        if (!Prefs.reply.equals(replyPref.getText().toString())) {
+            // Log old value and new value.
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    replyPref.getDialogTitle().toString(), Prefs.reply,
+                    replyPref.getText().toString()));
+        }
         editor.putBoolean("EnableAutoDelete", enableAutoDelete.isChecked());
+        if (Prefs.autoDelete != enableAutoDelete.isChecked()) {
+            boolean checked = enableAutoDelete.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.autoDelete);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableAutoDelete.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putBoolean("EnableReply", enableReply.isChecked());
+        if (Prefs.enableReply != enableReply.isChecked()) {
+            boolean checked = enableReply.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableReply);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableReply.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putBoolean("EnableReplyFrmServer",
                 enableReplyFrmServer.isChecked());
+        if (Prefs.enableReplyFrmServer != enableReplyFrmServer.isChecked()) {
+            boolean checked = enableReplyFrmServer.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableReplyFrmServer);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableReplyFrmServer.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putBoolean("EnableTaskCheck", taskCheck.isChecked());
+        if (Prefs.enableTaskCheck != taskCheck.isChecked()) {
+            boolean checked = taskCheck.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableTaskCheck);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    taskCheck.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putBoolean("AutoSync", autoSync.isChecked());
+        if (Prefs.enableReply != enableReply.isChecked()) {
+            boolean checked = enableReply.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.enableReply);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableAutoDelete.getTitle().toString(), status,
+                    check));
+        }
+
+        if (Prefs.autoTime != autoTime) {
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    autoSyncTimes.getTitle().toString(),
+                    autoSyncTimes.getEntries()[Prefs.autoTime - 1],
+                    autoSyncTimes.getEntries()[autoTime - 1]));
+        }
         editor.putInt("AutoTime", autoTime);
         editor.putInt("taskCheck", taskCheckTime);
+
+        if (Prefs.taskCheckTime != taskCheckTime) {
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    taskCheckTimes.getTitle().toString(),
+                    taskCheckTimes.getEntries()[Prefs.taskCheckTime - 1],
+                    taskCheckTimes.getEntries()[taskCheckTime - 1]));
+        }
 
         if (!TextUtils.isEmpty(uniqueId.getText())) {
             uniqueIdValidate(uniqueId.getText());
@@ -349,7 +421,7 @@ public class Settings extends SherlockPreferenceActivity implements
     /**
      * Perform sanity checks on settings changes.
      *
-     * @param SharedPreferences sharedPreferences -
+     * @param sharedPreferences The shared preferences
      * @return void
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -434,7 +506,6 @@ public class Settings extends SherlockPreferenceActivity implements
         public void run() {
 
             if (!Prefs.enabled) {
-
                 Util.showToast(Settings.this, R.string.no_configured_url);
                 taskCheck.setChecked(false);
 
@@ -480,7 +551,6 @@ public class Settings extends SherlockPreferenceActivity implements
      * Create a child thread and validate the callback URL in it when enabling auto task check
      * preference.
      *
-     * @param String Url - The Callback URL to be validated.
      * @return void
      */
     public void autoTaskCheckValidateCallbackURL() {
@@ -523,7 +593,7 @@ public class Settings extends SherlockPreferenceActivity implements
     /**
      * Thread to validate unique id
      *
-     * @param String uniqueId - The Callback Url to be validated.
+     * @param uniqueId The Callback Url to be validated.
      * @return void
      */
     public void uniqueIdValidate(final String uniqueId) {
@@ -551,4 +621,16 @@ public class Settings extends SherlockPreferenceActivity implements
         t.start();
     }
 
+    /**
+     * A convenient method to return boolean values to a more meaningful format
+     *
+     * @param status The boolean value
+     * @return The meaningful format
+     */
+    private String getCheckedStatus(boolean status) {
+        if (status) {
+            return getString(R.string.enabled);
+        }
+        return getString(R.string.disabled);
+    }
 }

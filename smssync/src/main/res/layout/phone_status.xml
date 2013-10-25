@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                tools:context=".LogActivity">
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_connection_status"
+            android:id="@+id/data_connection_status"
+            android:paddingBottom="10dp"
+            android:textColor="@color/status_done"
+            android:layout_alignBottom="@+id/data_connection"
+            android:layout_alignParentRight="true"/>
+
+    <TextView
+            android:id="@+id/phone_status_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="+819094220927 - status"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+    <TextView
+            android:id="@+id/data_connection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/data_connection"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/phone_status_label"
+            android:layout_alignParentLeft="true"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/battery_level"
+            android:id="@+id/battery_level"
+            android:paddingBottom="10dp"
+            android:layout_below="@+id/data_connection"
+            android:layout_alignParentLeft="true"/>
+
+    <TextView
+            android:id="@+id/battery_level_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/battery_level_status"
+            android:textColor="@color/status_done"
+            android:paddingBottom="10dp"
+            android:layout_alignTop="@+id/battery_level"
+            android:layout_alignParentRight="true"/>
+
+    <TextView
+            android:id="@+id/seperator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/battery_level_status"
+            android:background="?android:attr/listDivider"/>
+</RelativeLayout>

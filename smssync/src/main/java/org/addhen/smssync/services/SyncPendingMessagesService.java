@@ -1,22 +1,19 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync.services;
 
@@ -74,12 +71,16 @@ public class SyncPendingMessagesService extends BaseService {
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
+                    logActivities(R.string.sync_started);
+                    // log activity
+                    logActivities(R.string.smssync_service_running);
                     mState = new SyncPendingMessagesState(INITIAL, 0, 0, 0, 0, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
                         new SyncPendingMessagesTask(this).execute(config);
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
+                        logActivities(R.string.not_syncing);
                         MainApplication.bus.post(mState.transition(ERROR, e));
                     }
                 } else {
@@ -113,7 +114,7 @@ public class SyncPendingMessagesService extends BaseService {
             }
         } else {
             log(state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done));
-
+            logActivities(state.isCanceled() ? R.string.canceled : R.string.done);
             stopForeground(true);
             stopSelf();
         }
@@ -138,11 +139,6 @@ public class SyncPendingMessagesService extends BaseService {
 
     public boolean isWorking() {
         return getState().isRunning();
-    }
-
-    @Override
-    protected boolean isBackgroundTask() {
-        return mState.syncType.isBackground();
     }
 
     public static boolean isServiceWorking() {

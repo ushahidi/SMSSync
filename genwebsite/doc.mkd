@@ -121,7 +121,7 @@ The secret key provided by the server must match the secret key configured withi
 To ensure the message is sent to the correct recipient, add the country code to the phone number. Eg. <strong>+254</strong>700709142. Without this, the message is sent to the number in the country where the phone is.
 </li>
 <li>
-The web-service should check the value of the secret passed with each task http request that smsync makes to the web-service for messages to send and respond appropriately so that not just any running smssync instance can communicate with your web-service.
+The web-service should check the value of the secret passed with each task http request that SMSSync makes to the web-service for messages to send and respond appropriately so that not just any running smssync instance can communicate with your web-service.
 </li>
 </ul>
 

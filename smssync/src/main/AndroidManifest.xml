@@ -11,116 +11,127 @@
 	developers at team@ushahidi.com.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.addhen.smssync"
-          android:versionCode="18"
-          android:versionName="2.4">
+    package="org.addhen.smssync"
+    android:versionCode="19"
+    android:versionName="2.5" >
 
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.READ_SMS"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.WRITE_SMS"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
     <uses-sdk
-            android:minSdkVersion="8"
-            android:targetSdkVersion="18"/>
+        android:minSdkVersion="8"
+        android:targetSdkVersion="18" />
 
     <application
-            android:name=".MainApplication"
-            android:icon="@drawable/icon"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.SmsSync"
-            android:installLocation="auto">
-        <service android:name=".services.SmsReceiverService"/>
-        <service android:name=".services.AutoSyncScheduledService"/>
-        <service android:name=".services.CheckTaskScheduledService"/>
-        <service android:name=".services.CheckTaskService"/>
-        <service android:name=".services.SyncPendingMessagesService"/>
+        android:name="org.addhen.smssync.MainApplication"
+        android:icon="@drawable/icon"
+        android:installLocation="auto"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.SmsSync" >
+        <service android:name="org.addhen.smssync.services.SmsReceiverService" />
+        <service android:name="org.addhen.smssync.services.AutoSyncScheduledService" />
+        <service android:name="org.addhen.smssync.services.CheckTaskScheduledService" />
+        <service android:name="org.addhen.smssync.services.CheckTaskService" />
+        <service android:name="org.addhen.smssync.services.SyncPendingMessagesService" />
 
         <activity
-                android:name=".Settings"
-                android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
-                android:exported="false"
-                android:label="@string/app_name"
-                android:launchMode="singleTop">
+            android:name="org.addhen.smssync.Settings"
+            android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.PREFERENCE"/>
+                <category android:name="android.intent.category.PREFERENCE" />
             </intent-filter>
         </activity>
 
         <!-- messages tab -->
         <activity
-                android:name=".activities.MainActivity"
-                android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
-                android:label="@string/app_name"
-                android:launchMode="singleTop">
+            android:name="org.addhen.smssync.activities.MainActivity"
+            android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <!-- donation -->
-        <activity android:name=".activities.DonationActivity" android:label="@string/donate"/>
-        <activity android:name=".activities.FilterTabActivity" android:label="@string/filter"/>
+        <activity
+            android:name="org.addhen.smssync.activities.DonationActivity"
+            android:label="@string/donate" />
+        <activity
+            android:name="org.addhen.smssync.activities.FilterTabActivity"
+            android:label="@string/filter" />
         <!-- sms -->
-        <receiver android:name=".receivers.SmsReceiver">
+        <receiver android:name="org.addhen.smssync.receivers.SmsReceiver" >
             <intent-filter>
-                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <!-- connectivity changed -->
-        <receiver android:name=".receivers.ConnectivityChangedReceiver">
+        <receiver android:name="org.addhen.smssync.receivers.ConnectivityChangedReceiver" >
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <!-- power changed -->
-        <receiver android:name=".receivers.PowerStateChangedReceiver">
+        <receiver android:name="org.addhen.smssync.receivers.PowerStateChangedReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_BATTERY_LOW"/>
-                <action android:name="android.intent.action.ACTION_BATTERY_OKAY"/>
+                <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
+                <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
             </intent-filter>
         </receiver>
 
         <!-- boot -->
-        <receiver android:name=".receivers.BootReceiver">
+        <receiver android:name="org.addhen.smssync.receivers.BootReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
             </intent-filter>
         </receiver>
 
         <!-- task check scheduled -->
-        <receiver android:name=".receivers.CheckTaskScheduledReceiver"/>
+        <receiver android:name="org.addhen.smssync.receivers.CheckTaskScheduledReceiver" />
 
         <!-- auto sync scheduled -->
-        <receiver android:name=".receivers.AutoSyncScheduledReceiver"/>
+        <receiver android:name="org.addhen.smssync.receivers.AutoSyncScheduledReceiver" />
 
         <!-- app widget provider -->
         <receiver
-                android:name=".widget.SmsSyncAppWidgetProvider"
-                android:exported="false">
+            android:name="org.addhen.smssync.widget.SmsSyncAppWidgetProvider"
+            android:exported="false" >
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/appwidget_info"/>
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget_info" />
         </receiver>
 
-        <service android:name=".widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService"/>
+        <service android:name="org.addhen.smssync.widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService" />
+
+        <activity
+            android:name="org.addhen.smssync.activities.LogActivity"
+            android:label="@string/logs" >
+        </activity>
     </application>
 
 </manifest>

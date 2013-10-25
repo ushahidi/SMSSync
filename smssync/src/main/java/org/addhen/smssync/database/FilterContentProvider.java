@@ -1,27 +1,23 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
@@ -51,7 +47,7 @@ public class FilterContentProvider extends DbContentProvider implements
     public List<Filter> fetchAll() {
 
         try {
-            cursor = super.query(TABLE, COLUMNS, null, null, ID +" DESC");
+            cursor = super.query(TABLE, COLUMNS, null, null, ID + " DESC");
             if (cursor != null) {
 
                 mListFilter = new ArrayList<Filter>();
@@ -82,7 +78,7 @@ public class FilterContentProvider extends DbContentProvider implements
         };
 
         try {
-            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID +" DESC");
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID + " DESC");
 
             if (cursor != null) {
                 mListFilter = new ArrayList<Filter>();
@@ -111,7 +107,7 @@ public class FilterContentProvider extends DbContentProvider implements
         };
 
         try {
-            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID +" DESC");
+            cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID + " DESC");
             if (cursor != null) {
                 mListFilter = new ArrayList<Filter>();
                 while (cursor.moveToNext()) {
@@ -234,8 +230,9 @@ public class FilterContentProvider extends DbContentProvider implements
             if (cursor.getColumnIndex(STATUS) != -1) {
                 statusIndex = cursor.getColumnIndexOrThrow(STATUS);
                 int status = cursor.getInt(statusIndex);
-                if(status == Filter.Status.BLACKLIST.code)
-                filter.setStatus(Filter.Status.BLACKLIST);
+                if (status == Filter.Status.BLACKLIST.code) {
+                    filter.setStatus(Filter.Status.BLACKLIST);
+                }
             }
 
             if (cursor.getColumnIndex(PHONE_NUMBER) != -1) {

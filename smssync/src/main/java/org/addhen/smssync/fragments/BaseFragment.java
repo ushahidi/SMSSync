@@ -1,22 +1,19 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync.fragments;
 
@@ -27,9 +24,12 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.widget.Toast;
 
 public class BaseFragment extends SherlockFragment {
@@ -145,6 +145,12 @@ public class BaseFragment extends SherlockFragment {
     protected void toastShort(CharSequence message) {
         Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    protected void logActivities(String message) {
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(getActivity())).appendAndClose(message);
+        }
     }
 
 }

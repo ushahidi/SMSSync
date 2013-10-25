@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".LogActivity">
+    <include layout="@layout/phone_status"/>
+    <CheckBox
+            android:id="@+id/start_logs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/enable_logs"
+            android:layout_gravity="center"/>
+    <TextView android:id="@+id/log_location"
+              android:layout_gravity="center_horizontal"
+              style="@style/TextView.Title"
+              android:visibility="gone"/>
+    <include layout="@layout/list_items"/>
+</LinearLayout>

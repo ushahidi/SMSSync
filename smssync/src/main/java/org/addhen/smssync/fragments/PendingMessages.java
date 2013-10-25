@@ -1,22 +1,19 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync.fragments;
 
@@ -100,18 +97,23 @@ public class PendingMessages
             switch (result) {
                 case Activity.RESULT_OK:
                     toastLong(R.string.sms_status_success);
+                    logActivities(getString(R.string.sms_status_success));
                     break;
                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                     toastLong(R.string.sms_delivery_status_failed);
+                    logActivities(getString(R.string.sms_delivery_status_failed));
                     break;
                 case SmsManager.RESULT_ERROR_NO_SERVICE:
                     toastLong(R.string.sms_delivery_status_no_service);
+                    logActivities(getString(R.string.sms_delivery_status_no_service));
                     break;
                 case SmsManager.RESULT_ERROR_NULL_PDU:
                     toastLong(R.string.sms_delivery_status_null_pdu);
+                    logActivities(getString(R.string.sms_delivery_status_null_pdu));
                     break;
                 case SmsManager.RESULT_ERROR_RADIO_OFF:
                     toastLong(R.string.sms_delivery_status_radio_off);
+                    logActivities(getString(R.string.sms_delivery_status_radio_off));
                     break;
             }
         }
@@ -126,9 +128,11 @@ public class PendingMessages
             switch (result) {
                 case Activity.RESULT_OK:
                     toastLong(R.string.sms_delivered);
+                    logActivities(getString(R.string.sms_delivered));
                     break;
                 case Activity.RESULT_CANCELED:
                     toastLong(R.string.sms_not_delivered);
+                    logActivities(getString(R.string.sms_not_delivered));
                     break;
             }
         }
@@ -342,6 +346,7 @@ public class PendingMessages
      */
     private void importAllSms() {
         log("importAllSms()");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(getString(R.string.confirm_sms_import))
                 .setCancelable(false)

@@ -1,22 +1,19 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync;
 
@@ -62,7 +59,11 @@ public class Prefs {
 
     public static Boolean enableBlacklist = false;
 
+    public static Boolean enableLog = false;
+
     private static SharedPreferences.Editor editor;
+
+    public static int batteryLevel = 0;
 
     /**
      * Load the value of the settings / preference variable.
@@ -91,6 +92,8 @@ public class Prefs {
         lastSyncDate = settings.getLong("LastSyncDate", 0);
         enableBlacklist = settings.getBoolean("EnableBlacklist", false);
         enableWhitelist = settings.getBoolean("EnableWhitelist", false);
+        enableLog = settings.getBoolean("EnableLog", false);
+        batteryLevel = settings.getInt("BatteryLevel", 0);
     }
 
     /**
@@ -114,6 +117,8 @@ public class Prefs {
         editor.putLong("LastSyncDate", lastSyncDate);
         editor.putBoolean("EnableBlacklist", enableBlacklist);
         editor.putBoolean("EnableWhitelist", enableWhitelist);
+        editor.putBoolean("EnableLog", enableLog);
+        editor.putInt("BatteryLevel", batteryLevel);
         editor.commit();
     }
 }

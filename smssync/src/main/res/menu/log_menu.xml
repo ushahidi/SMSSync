@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/share_menu"
+        android:title="@string/share"
+        android:icon="@drawable/share"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:actionProviderClass="com.actionbarsherlock.widget.ShareActionProvider"/>
+
+    <item android:id="@+id/delete_log_menu"
+          android:title="@string/menu_delete_all"
+          android:icon="@drawable/delete"
+          android:orderInCategory="1"
+          android:showAsAction="ifRoom" />
+</menu>

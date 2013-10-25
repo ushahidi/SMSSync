@@ -1,22 +1,19 @@
-/*****************************************************************************
- ** Copyright (c) 2010 - 2012 Ushahidi Inc
- ** All rights reserved
- ** Contact: team@ushahidi.com
- ** Website: http://www.ushahidi.com
- **
- ** GNU Lesser General Public License Usage
- ** This file may be used under the terms of the GNU Lesser
- ** General Public License version 3 as published by the Free Software
- ** Foundation and appearing in the file LICENSE.LGPL included in the
- ** packaging of this file. Please review the following information to
- ** ensure the GNU Lesser General Public License version 3 requirements
- ** will be met: http://www.gnu.org/licenses/lgpl.html.
- **
- **
- ** If you have questions regarding the use of this file, please contact
- ** Ushahidi developers at team@ushahidi.com.
- **
- *****************************************************************************/
+/*******************************************************************************
+ *  Copyright (c) 2010 - 2013 Ushahidi Inc
+ *  All rights reserved
+ *  Contact: team@ushahidi.com
+ *  Website: http://www.ushahidi.com
+ *  GNU Lesser General Public License Usage
+ *  This file may be used under the terms of the GNU Lesser
+ *  General Public License version 3 as published by the Free Software
+ *  Foundation and appearing in the file LICENSE.LGPL included in the
+ *  packaging of this file. Please review the following information to
+ *  ensure the GNU Lesser General Public License version 3 requirements
+ *  will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ ******************************************************************************/
 
 package org.addhen.smssync.activities;
 
@@ -26,16 +23,18 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.NavDrawerAdapter;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
 import org.addhen.smssync.navdrawer.BlacklistNavDrawerItem;
 import org.addhen.smssync.navdrawer.DonationNavDrawerItem;
+import org.addhen.smssync.navdrawer.LogNavDrawerItem;
 import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
 import org.addhen.smssync.navdrawer.WhitelistNavDrawerItem;
-import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.util.Util;
@@ -49,15 +48,10 @@ import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.format.DateFormat;
 import android.view.KeyEvent;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -109,11 +103,13 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     private SyncUrlNavDrawerItem syncUrlNavDrawerItem;
 
-    //final DonationNavDrawerItem donationNavDrawerItem;
+    private DonationNavDrawerItem donationNavDrawerItem;
 
     private BlacklistNavDrawerItem filterNavDrawerItem;
 
     private WhitelistNavDrawerItem whitelistNavDrawerItem;
+
+    private LogNavDrawerItem logNavDrawerItem;
 
     private List<BaseNavDrawerItem> navDrawerItem;
 
@@ -290,8 +286,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                 R.string.sync_url),
                 R.drawable.sync_url, BaseActivity.this);
 
-        /*donationNavDrawerItem = new DonationNavDrawerItem(getString(R.string.donate),
-                R.drawable.donate, BaseActivity.this);*/
+        donationNavDrawerItem = new DonationNavDrawerItem(getString(R.string.donate),
+                R.drawable.donate, BaseActivity.this);
 
         filterNavDrawerItem = new BlacklistNavDrawerItem(getString(R.string.blacklist),
                 R.drawable.blacklist, BaseActivity.this);
@@ -299,12 +295,16 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         whitelistNavDrawerItem = new WhitelistNavDrawerItem(getString(R.string.whitelist),
                 R.drawable.whitelist, BaseActivity.this);
 
+        logNavDrawerItem = new LogNavDrawerItem(getString(R.string.logs), R.drawable.log,
+                BaseActivity.this);
+
         navDrawerItem = new ArrayList<BaseNavDrawerItem>();
+
         navDrawerAdapter = new NavDrawerAdapter(this);
     }
 
     private void setNavDrawerAdapterItems() {
-        new Handler().post(new Runnable(){
+        new Handler().post(new Runnable() {
 
             @Override
             public void run() {
@@ -318,9 +318,10 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
                 navDrawerItem.add(pendingMessagesNavDrawerItem);
                 navDrawerItem.add(sentMessagesNavDrawerItem);
                 navDrawerItem.add(syncUrlNavDrawerItem);
-                //navDrawerItem.add(donationNavDrawerItem);
+                navDrawerItem.add(donationNavDrawerItem);
                 navDrawerItem.add(whitelistNavDrawerItem);
                 navDrawerItem.add(filterNavDrawerItem);
+                navDrawerItem.add(logNavDrawerItem);
                 navDrawerAdapter.setItems(navDrawerItem);
                 listView.setAdapter(navDrawerAdapter);
                 selectItem(mPosition);
@@ -405,32 +406,8 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         }
     }
 
-    protected EditText findEditTextById(int id) {
-        return (EditText) findViewById(id);
-    }
-
     protected ListView findListViewById(int id) {
         return (ListView) findViewById(id);
-    }
-
-    protected TextView findTextViewById(int id) {
-        return (TextView) findViewById(id);
-    }
-
-    protected Spinner findSpinnerById(int id) {
-        return (Spinner) findViewById(id);
-    }
-
-    protected TimePicker findTimePickerById(int id) {
-        return (TimePicker) findViewById(id);
-    }
-
-    protected Button findButtonById(int id) {
-        return (Button) findViewById(id);
-    }
-
-    protected ImageView findImageViewById(int id) {
-        return (ImageView) findViewById(id);
     }
 
     protected void log(String message) {
@@ -494,82 +471,9 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
 
     }
 
-    //TODO:: remove this code at some point
-    private class NavDrawerItemTask extends ProgressTask {
-
-        PendingMessagesNavDrawerItem pendingMessagesNavDrawerItem;
-
-        SentMessagesNavDrawerItem sentMessagesNavDrawerItem;
-
-        SyncUrlNavDrawerItem syncUrlNavDrawerItem;
-
-        DonationNavDrawerItem donationNavDrawerItem;
-
-        BlacklistNavDrawerItem filterNavDrawerItem;
-
-        WhitelistNavDrawerItem whitelistNavDrawerItem;
-
-        List<BaseNavDrawerItem> navDrawerItem;
-
-        protected NavDrawerItemTask(Activity activity) {
-            super(activity);
-            pendingMessagesNavDrawerItem
-                    = new PendingMessagesNavDrawerItem(
-                    getString(R.string.pending_messages),
-                    R.drawable.pending, BaseActivity.this);
-
-            sentMessagesNavDrawerItem = new SentMessagesNavDrawerItem(
-                    getString(R.string.sent_messages),
-                    R.drawable.sent, BaseActivity.this);
-
-            syncUrlNavDrawerItem = new SyncUrlNavDrawerItem(getString(
-                    R.string.sync_url),
-                    R.drawable.sync_url, BaseActivity.this);
-
-            donationNavDrawerItem = new DonationNavDrawerItem(getString(R.string.donate),
-                    R.drawable.donate, BaseActivity.this);
-
-            filterNavDrawerItem = new BlacklistNavDrawerItem(getString(R.string.blacklist),
-                    R.drawable.blacklist, BaseActivity.this);
-
-            whitelistNavDrawerItem = new WhitelistNavDrawerItem(getString(R.string.whitelist),
-                    R.drawable.whitelist, BaseActivity.this);
-
-            navDrawerItem = new ArrayList<BaseNavDrawerItem>();
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.cancel();
-        }
-
-        @Override
-        protected Boolean doInBackground(String... strings) {
-            // load all checked syncurl
-            sentMessagesNavDrawerItem.setCounter();
-            pendingMessagesNavDrawerItem.setCounter();
-            syncUrlNavDrawerItem.setCounter();
-            donationNavDrawerItem.setCounter();
-            filterNavDrawerItem.setCounter();
-            whitelistNavDrawerItem.setCounter();
-            navDrawerItem.add(pendingMessagesNavDrawerItem);
-            navDrawerItem.add(sentMessagesNavDrawerItem);
-            navDrawerItem.add(syncUrlNavDrawerItem);
-            navDrawerItem.add(donationNavDrawerItem);
-            navDrawerItem.add(whitelistNavDrawerItem);
-            navDrawerItem.add(filterNavDrawerItem);
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
-            navDrawerAdapter.setItems(navDrawerItem);
-            listView.setAdapter(navDrawerAdapter);
-            selectItem(0);
+    protected void logActivities(String message) {
+        if (Prefs.enableLog) {
+            new LogUtil(DateFormat.getDateFormatOrder(this)).appendAndClose(message);
         }
     }
 
