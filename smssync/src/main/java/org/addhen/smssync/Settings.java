@@ -622,7 +622,7 @@ public class Settings extends SherlockPreferenceActivity implements
     }
 
     /**
-     * A convientent method to return boolean values to a more meaningful format
+     * A convenient method to return boolean values to a more meaningful format
      *
      * @param status The boolean value
      * @return The meaningful format
