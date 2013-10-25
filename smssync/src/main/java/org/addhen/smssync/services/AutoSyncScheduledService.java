@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.ServicesConstants;

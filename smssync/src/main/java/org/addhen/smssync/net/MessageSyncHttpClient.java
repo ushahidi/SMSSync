@@ -125,8 +125,9 @@ public class MessageSyncHttpClient extends MainHttpClient {
         String payloadError = Util.getJsonError(response);
         if (!TextUtils.isEmpty(payloadError)) {
             setServerError(payloadError, statusCode);
+        } else {
+            setServerError(response, statusCode);
         }
-
         return false;
 
     }
@@ -177,34 +178,17 @@ public class MessageSyncHttpClient extends MainHttpClient {
     public void setClientError(String error) {
         log("Client error " + error);
         Resources res = context.getResources();
-        this.serverError = String.format(
-                Locale.getDefault(),
-                "%s",
-                String.format(
-                        res.getString(R.string.sending_failed_custom_error),
-                        error
-                )
-        );
-
-        Util.logActivities(context, serverError);
+        this.clientError = String.format(Locale.getDefault(), "%s",
+                res.getString(R.string.sending_failed_custom_error, error));
+        Util.logActivities(context, clientError);
     }
 
     public void setServerError(String error, int statusCode) {
         log("Server error " + error);
         Resources res = context.getResources();
-        this.serverError = String.format(
-                Locale.getDefault(),
-                "%s %s ",
-                String.format(
-                        res.getString(R.string.sending_failed_custom_error),
-                        error
-                ),
-                String.format(
-                        res.getString(R.string.sending_failed_http_code),
-                        statusCode
-                )
-        );
-
+        this.serverError = String
+                .format("%s %s ", res.getString(R.string.sending_failed_custom_error, error),
+                        res.getString(R.string.sending_failed_http_code, statusCode));
         Util.logActivities(context, serverError);
     }
 

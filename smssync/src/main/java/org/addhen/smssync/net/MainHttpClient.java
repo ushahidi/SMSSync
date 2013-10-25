@@ -281,10 +281,10 @@ public class MainHttpClient {
 
     public static String convertStreamToString(InputStream is) {
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is), 1024);
         StringBuilder sb = new StringBuilder();
 
-        String line = null;
+        String line;
         try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");
@@ -304,8 +304,7 @@ public class MainHttpClient {
     public void execute() throws Exception {
 
         try {
-            prepareRequest();
-            httpResponse = httpClient.execute(request);
+            httpResponse = httpClient.execute(getRequest());
             responseCode = httpResponse.getStatusLine().getStatusCode();
             responseErrorMessage = httpResponse.getStatusLine().getReasonPhrase();
             HttpEntity entity = httpResponse.getEntity();

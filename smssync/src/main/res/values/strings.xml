@@ -90,9 +90,8 @@
     <string name="sms_status_failed">SMS failed to be delivered</string>
     <string name="notification_summary">SMSSync Gateway is Running</string>
     <string name="sending_failed">SMSSync failed to send message to server.</string>
-    <string name="sending_failed_http_code">Server returned HTTP
-        status code is %1$d.</string>
-    <string name="sending_failed_custom_error">Sending message to the server failed. Server error: %1$s.</string>
+    <string name="sending_failed_http_code">Server returned HTTP status code is %1$d.</string>
+    <string name="sending_failed_custom_error">Sending message to the server failed. Server error: %1$s</string>
     <string name="sending_succeeded">SMSSync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to send.</string>
     <string name="no_messages_to_delete">There are no messages to delete.</string>
