@@ -77,8 +77,7 @@ public class BootReceiver extends BroadcastReceiver {
                         long interval = (Prefs.autoTime * 60000);
                         new ScheduleServices(
                                 context,
-                                intent,
-                                AutoSyncScheduledReceiver.class,
+                                new Intent(context, AutoSyncScheduledReceiver.class),
                                 ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE,
                                 PendingIntent.FLAG_UPDATE_CURRENT)
                                 .updateScheduler(interval);
@@ -93,8 +92,7 @@ public class BootReceiver extends BroadcastReceiver {
                         long interval = (Prefs.taskCheckTime * 60000);
                         new ScheduleServices(
                                 context,
-                                intent,
-                                CheckTaskScheduledReceiver.class,
+                                new Intent(context, CheckTaskScheduledReceiver.class),
                                 ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
                                 PendingIntent.FLAG_UPDATE_CURRENT)
                                 .updateScheduler(interval);

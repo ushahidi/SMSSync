@@ -17,6 +17,9 @@
 
 package org.addhen.smssync.services;
 
+import com.squareup.otto.Produce;
+
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.LogUtil;
@@ -100,7 +103,9 @@ public abstract class SmsSyncServices extends IntentService {
         super.onCreate();
         // load setting. Just in case someone changes a setting
         Prefs.loadPreferences(this);
+        MainApplication.bus.register(this);
     }
+
 
     /**
      * {@inheritDoc} Perform a task as implemented by the executeTask()
@@ -156,6 +161,7 @@ public abstract class SmsSyncServices extends IntentService {
                 && getPhoneWakeLock(this.getApplicationContext()) != null) {
             getPhoneWakeLock(this.getApplicationContext()).release();
         }
+        MainApplication.bus.unregister(this);
     }
 
     protected void log(String message) {
@@ -170,13 +176,4 @@ public abstract class SmsSyncServices extends IntentService {
         Logger.log(getClass().getName(), message, ex);
     }
 
-    //TODO Deprecate this method
-    public void logActivities(String message) {
-
-        Logger.log(TAG, message);
-        if (Prefs.enableLog) {
-            new LogUtil(DateFormat.getDateFormatOrder(this)).appendAndClose(message);
-        }
-
-    }
 }

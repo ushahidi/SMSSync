@@ -1,5 +1,6 @@
 package org.addhen.smssync.util;
 
+import org.addhen.smssync.listeners.LogListener;
 import org.addhen.smssync.models.Log;
 
 import android.os.Environment;
@@ -35,6 +36,8 @@ public class LogUtil {
 
     public static final String LOG_NAME = "smssync_log";
 
+    private LogListener mLogListener;
+
     public LogUtil(char[] format) {
         this(LOG_NAME, format);
     }
@@ -64,6 +67,7 @@ public class LogUtil {
                 Logger.log(TAG, "error opening app log", e);
             }
         }
+
     }
 
     public CharSequence format(Date d) {
@@ -221,9 +225,20 @@ public class LogUtil {
      *
      * @param line The line to append to the file.
      */
-    public void appendAndClose(String line) {
+    public void appendAndClose(String line, LogListener listener) {
         append(line);
         close();
+        mLogListener = listener;
+        mLogListener.reloadLog(true);
+    }
+
+    public void appendAndClose(String line) {
+        appendAndClose(line, new LogListener() {
+            @Override
+            public void reloadLog(boolean status) {
+
+            }
+        });
     }
 
     /**

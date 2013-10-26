@@ -17,6 +17,9 @@
 
 package org.addhen.smssync.services;
 
+import com.squareup.otto.Produce;
+
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessMessage;
@@ -97,6 +100,7 @@ public class SmsReceiverService extends Service {
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
+        MainApplication.bus.post(this);
 
     }
 
@@ -106,11 +110,14 @@ public class SmsReceiverService extends Service {
         msg.arg1 = startId;
         msg.obj = intent;
         mServiceHandler.sendMessage(msg);
+
     }
 
     @Override
     public void onDestroy() {
         mServiceLooper.quit();
+        MainApplication.bus.unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -200,7 +207,7 @@ public class SmsReceiverService extends Service {
         } else {
             Util.showFailNotification(this, messagesBody,
                     getString(R.string.sending_succeeded));
-            logActivities(getString(R.string.sending_succeeded));
+            Util.logActivities(this,getString(R.string.sending_succeeded));
             statusIntent.putExtra("sentstatus", 0);
             sendBroadcast(statusIntent);
         }
@@ -304,12 +311,8 @@ public class SmsReceiverService extends Service {
         Logger.log(getClass().getName(), message, ex);
     }
 
-    public void logActivities(String message) {
-
-        Logger.log(CLASS_TAG, message);
-        if (Prefs.enableLog) {
-            new LogUtil(DateFormat.getDateFormatOrder(mContext)).appendAndClose(message);
-        }
-
+    @Produce
+    public boolean readLogs() {
+        return true;
     }
 }

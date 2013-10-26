@@ -16,6 +16,9 @@
  ******************************************************************************/
 package org.addhen.smssync.net;
 
+import com.squareup.otto.Produce;
+
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
@@ -49,6 +52,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
         super(syncUrl.getUrl(), context);
         this.syncUrl = syncUrl;
         initRequest(message, toNumber);
+
     }
 
     private void initRequest(Message message, String toNumber) {
@@ -198,6 +202,11 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
     public void setServerSuccessResp(String serverSuccessResp) {
         this.serverSuccessResp = serverSuccessResp;
+    }
+
+    @Produce
+    public boolean reloadLog() {
+        return true;
     }
 
 }

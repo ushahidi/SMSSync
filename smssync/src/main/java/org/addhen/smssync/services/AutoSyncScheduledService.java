@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.services;
 
+import com.squareup.otto.Produce;
+
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.ServicesConstants;
@@ -53,11 +55,15 @@ public class AutoSyncScheduledService extends SmsSyncServices {
         log(CLASS_TAG, "executeTask() executing this scheduled task");
         if (mMessage.totalMessages() > 0) {
             log(CLASS_TAG, "Sending pending messages");
-
             ProcessMessage processMessage = new ProcessMessage(AutoSyncScheduledService.this);
             processMessage.syncPendingMessages("");
             statusIntent.putExtra("status", processMessage.getErrorMessage());
             sendBroadcast(statusIntent);
         }
+    }
+
+    @Produce
+    public boolean readLogs() {
+        return true;
     }
 }

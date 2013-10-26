@@ -18,7 +18,9 @@
 package org.addhen.smssync;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.squareup.otto.Produce;
 
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.Util;
 
@@ -191,6 +193,7 @@ public class Settings extends SherlockPreferenceActivity implements
         this.savePreferences();
     }
 
+
     /**
      * Get the time frequency selected by the user for auto synchronization.
      *
@@ -356,24 +359,25 @@ public class Settings extends SherlockPreferenceActivity implements
         }
 
         editor.putBoolean("AutoSync", autoSync.isChecked());
-        if (Prefs.enableReply != enableReply.isChecked()) {
-            boolean checked = enableReply.isChecked() ? true : false;
+        if (Prefs.enableAutoSync != autoSync.isChecked()) {
+            boolean checked = autoSync.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
 
-            String status = getCheckedStatus(Prefs.enableReply);
+            String status = getCheckedStatus(Prefs.enableAutoSync);
 
             Util.logActivities(Settings.this, getString(R.string.settings_changed,
-                    enableAutoDelete.getTitle().toString(), status,
+                    autoSync.getTitle().toString(), status,
                     check));
         }
 
+        editor.putInt("AutoTime", autoTime);
         if (Prefs.autoTime != autoTime) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     autoSyncTimes.getTitle().toString(),
                     autoSyncTimes.getEntries()[Prefs.autoTime - 1],
                     autoSyncTimes.getEntries()[autoTime - 1]));
         }
-        editor.putInt("AutoTime", autoTime);
+
         editor.putInt("taskCheck", taskCheckTime);
 
         if (Prefs.taskCheckTime != taskCheckTime) {
@@ -449,14 +453,12 @@ public class Settings extends SherlockPreferenceActivity implements
         if (key.equals(AUTO_SYNC)) {
 
             if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
-
                 autoSyncEnable();
 
             } else {
+                autoSync.setEnabled(false);
                 // stop scheduler
                 RunServicesUtil.stopAutoSyncService(Settings.this);
-
-                autoSyncTimes.setEnabled(false);
             }
         }
 
@@ -468,7 +470,7 @@ public class Settings extends SherlockPreferenceActivity implements
                 // Initialize the selected time to frequently sync pending
                 // messages
                 Prefs.autoTime = initializeAutoSyncTime();
-
+                Logger.log(Settings.class.getSimpleName(),"hello there");
                 RunServicesUtil.runAutoSyncService(Settings.this);
 
             }
@@ -633,4 +635,5 @@ public class Settings extends SherlockPreferenceActivity implements
         }
         return getString(R.string.disabled);
     }
+
 }

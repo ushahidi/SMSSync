@@ -17,7 +17,10 @@
 
 package org.addhen.smssync.util;
 
+import com.squareup.otto.Produce;
+
 import org.addhen.smssync.BuildConfig;
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
@@ -89,6 +92,8 @@ public class Util {
     private static Pattern pattern;
 
     private static Matcher matcher;
+
+    private static boolean status = false;
 
     /**
      * Joins two strings together.
@@ -515,6 +520,8 @@ public class Util {
         Logger.log(CLASS_TAG, message);
         if (Prefs.enableLog) {
             new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
+            status = true;
+            MainApplication.bus.post(true);
         }
     }
 }

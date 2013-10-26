@@ -291,7 +291,7 @@
     <string name="not_syncing">Not syncing %1$s</string>
     <string name="perform_task">Performing task checking</string>
     <string name="finish_task_check">Successfully finished performing task checking</string>
-    <string name="auto_sending_pending_messages">\"%1$s\" syncing message</string>
+    <string name="auto_sending_pending_messages">[ %1$s ] syncing message</string>
     <string name="task_scheduler_running">Task scheduler is running</string>
     <string name="run_scheduled_services">Scheduler sending pending messages to server</string>
     <string name="scheduler_updated_to">Updated scheduler interval</string>
@@ -304,10 +304,10 @@
     <string name="log_saved_at">Log is saved on the SD card at %1$s</string>
     <string name="auto_response_sent">Sending configured auto response message as SMS</string>
     <string name="auto_message_deleted"> %1$s auto deleted</string>
-    <string name="sms_sent_to_webserivce">SMS [ %1$s ] successfully sent to %1$s</string>
-    <string name="processed_task">Processed task to send message - [%1$s] as SMS</string>
-    <string name="received_msg">Received SMS - %1$s - from %2$s</string>
-    <string name="sent_msg">Sending - %1$s - as SMS to %2$s</string>
+    <string name="sms_sent_to_webserivce">SMS [ %1$s ] successfully sent to [ %2$s ]</string>
+    <string name="processed_task">Processed task to send message - [ %1$s ] as SMS</string>
+    <string name="received_msg">Received SMS - [ %1$s ] from [ %2$s ]</string>
+    <string name="sent_msg">Sending - [ %1$s ] as SMS to [ %2$s ]</string>
     <string name="no_json_response">Did not receive expected JSON response from the server</string>
     <string name="no_data_connection">There is no active data connection</string>
     <string name="active_data_connection">There is active data connection</string>
@@ -315,9 +315,9 @@
     <string name="device_shutdown">The device has shutdown</string>
     <string name="battery_low">The device battery level is low</string>
     <string name="battery_okay">The device battery level is okay</string>
-    <string name="settings_changed">SMSSync settings - \"%1$s\" has changed from \"%2$s\" to \"%3$s\"</string>
+    <string name="settings_changed">SMSSync settings - [ %1$s ] has changed from [ %2$s ] to [ %3$s ]</string>
     <string name="enabled">enabled</string>
     <string name="disabled">disabled</string>
     <string name="invalid_data_format">Invalid data format</string>
-    <string name="http_entity_format">HTTP Entity format is %1$s</string>
+    <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
 </resources>

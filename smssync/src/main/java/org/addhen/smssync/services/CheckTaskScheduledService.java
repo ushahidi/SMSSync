@@ -17,10 +17,13 @@
 
 package org.addhen.smssync.services;
 
+import com.squareup.otto.Produce;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
 
@@ -39,12 +42,17 @@ public class CheckTaskScheduledService extends SmsSyncServices {
     @Override
     public void executeTask(Intent intent) {
         log("checking scheduled task services");
-        logActivities(getString(R.string.task_scheduler_running));
+        Util.logActivities(this,getString(R.string.task_scheduler_running));
         // Perform a task
         for (SyncUrl syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
             new ProcessMessage(CheckTaskScheduledService.this).performTask(syncUrl);
 
         }
+    }
+
+    @Produce
+    public boolean readLogs() {
+        return true;
     }
 }

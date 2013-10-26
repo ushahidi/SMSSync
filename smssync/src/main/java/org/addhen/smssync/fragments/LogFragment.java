@@ -21,11 +21,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
+import com.squareup.otto.Produce;
+import com.squareup.otto.Subscribe;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.LogAdapter;
 import org.addhen.smssync.controllers.LogController;
+import org.addhen.smssync.listeners.LogListener;
 import org.addhen.smssync.models.Log;
 import org.addhen.smssync.models.PhoneStatusInfo;
 import org.addhen.smssync.util.LogUtil;
@@ -47,20 +51,15 @@ import android.view.View;
 import android.widget.AdapterView;
 
 public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> implements
-        View.OnClickListener, AdapterView.OnItemClickListener, ILogView {
-
-    private Log model;
+        View.OnClickListener, AdapterView.OnItemClickListener, ILogView, LogListener {
 
     private LogController mLogController;
 
     private static PhoneStatusInfo info;
 
-    private static int batteryLevel;
-
     public LogFragment() {
         super(LogView.class, LogAdapter.class, R.layout.list_logs,
                 R.menu.log_menu, android.R.id.list);
-        model = new Log();
         mLogController = new LogController();
         info = new PhoneStatusInfo();
     }
@@ -75,6 +74,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         view.enableLogs.setChecked(Prefs.enableLog);
         view.enableLogs.setOnClickListener(this);
         mLogController.setView(this);
+        MainApplication.bus.register(this);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     public void onDestroy() {
         log("onDestroy()");
         super.onDestroy();
-        //getActivity().unregisterReceiver(batteryLevelReceiver);
+        MainApplication.bus.unregister(this);
     }
 
     @Override
@@ -135,6 +135,20 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
             performDelete();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Subscribe
+    public void reloadLog(boolean status) {
+        //if (status) {
+            adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
+
+            // Set the location of the log file
+            if (adapter.getCount() > 0) {
+                view.logLcation.setText(getString(R.string.log_saved_at,
+                        LogUtil.getFile(LogUtil.LOG_NAME).getAbsolutePath()));
+                view.logLcation.setVisibility(View.VISIBLE);
+            }
+        //}
     }
 
     private Intent createShareIntent() {

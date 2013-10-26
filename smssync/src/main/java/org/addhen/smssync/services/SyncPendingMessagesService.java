@@ -131,6 +131,11 @@ public class SyncPendingMessagesService extends BaseService {
         return mState;
     }
 
+    @Produce
+    public boolean readLogs() {
+        return true;
+    }
+
     private void updateSyncStatusNotification(SyncPendingMessagesState state) {
         createNotification(R.string.sync_in_progress,
                 state.getNotification(getResources()), getPendingIntent());

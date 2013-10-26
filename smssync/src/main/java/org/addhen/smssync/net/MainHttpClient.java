@@ -20,6 +20,7 @@
 
 package org.addhen.smssync.net;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
