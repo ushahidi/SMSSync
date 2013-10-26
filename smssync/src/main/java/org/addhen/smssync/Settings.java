@@ -425,7 +425,7 @@ public class Settings extends SherlockPreferenceActivity implements
     /**
      * Perform sanity checks on settings changes.
      *
-     * @param sharedPreferences The shared preferences
+     * @param sharedPreferences -
      * @return void
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
@@ -435,9 +435,8 @@ public class Settings extends SherlockPreferenceActivity implements
         if (key.equals(KEY_UNIQUE_ID)) {
             final String savedId = sharedPreferences.getString(KEY_UNIQUE_ID,
                     "");
-            if (!TextUtils.isEmpty(savedId)) {
+            if (!TextUtils.isEmpty(savedId))
                 uniqueIdValidate(savedId);
-            }
         }
 
         if (key.equals(KEY_ENABLE_REPLY)) {
@@ -453,12 +452,14 @@ public class Settings extends SherlockPreferenceActivity implements
         if (key.equals(AUTO_SYNC)) {
 
             if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
+
                 autoSyncEnable();
 
             } else {
-                autoSync.setEnabled(false);
                 // stop scheduler
                 RunServicesUtil.stopAutoSyncService(Settings.this);
+
+                autoSyncTimes.setEnabled(false);
             }
         }
 
@@ -470,7 +471,7 @@ public class Settings extends SherlockPreferenceActivity implements
                 // Initialize the selected time to frequently sync pending
                 // messages
                 Prefs.autoTime = initializeAutoSyncTime();
-                Logger.log(Settings.class.getSimpleName(),"hello there");
+
                 RunServicesUtil.runAutoSyncService(Settings.this);
 
             }
@@ -500,14 +501,15 @@ public class Settings extends SherlockPreferenceActivity implements
     }
 
     /**
-     * Create runnable for validating callback URL. Putting the validation process in it own thread
-     * provides efficiency.
+     * Create runnable for validating callback URL. Putting the validation
+     * process in it own thread provides efficiency.
      */
     final Runnable mTaskCheckEnabled = new Runnable() {
 
         public void run() {
 
             if (!Prefs.enabled) {
+
                 Util.showToast(Settings.this, R.string.no_configured_url);
                 taskCheck.setChecked(false);
 
@@ -550,8 +552,8 @@ public class Settings extends SherlockPreferenceActivity implements
     };
 
     /**
-     * Create a child thread and validate the callback URL in it when enabling auto task check
-     * preference.
+     * Create a child thread and validate the callback URL in it when enabling
+     * auto task check preference.
      *
      * @return void
      */

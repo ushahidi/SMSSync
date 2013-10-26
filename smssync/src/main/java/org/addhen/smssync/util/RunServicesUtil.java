@@ -18,6 +18,7 @@
 package org.addhen.smssync.util;
 
 import org.addhen.smssync.Prefs;
+import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
 import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
 import org.addhen.smssync.services.AutoSyncScheduledService;
 import org.addhen.smssync.services.CheckTaskScheduledService;
@@ -34,10 +35,10 @@ import android.content.Intent;
  */
 public class RunServicesUtil {
 
-    public static final int FLAGS = PendingIntent.FLAG_UPDATE_CURRENT;
-
     public static final String CLASS_TAG = RunServicesUtil.class
             .getSimpleName();
+
+    private ScheduleServices mScheduleServices;
 
     /**
      * Runs any enabled services. Making sure the device has internet connection before it attempts
@@ -65,7 +66,7 @@ public class RunServicesUtil {
 
             // do we have data network?
             if (isConnected) {
-                new ScheduleServices(context, intent, requestCode, FLAGS).updateScheduler(interval);
+                Scheduler.INSTANCE.getScheduler(context, intent, requestCode).updateScheduler(interval);
             }
         }
 
@@ -81,9 +82,7 @@ public class RunServicesUtil {
      */
     public static void stopServices(Context context, Intent intent, int requestCode) {
         Logger.log(CLASS_TAG, "Stopping services");
-
-        ScheduleServices schedule = new ScheduleServices(context, intent, requestCode, FLAGS);
-        schedule.stopScheduler();
+        Scheduler.INSTANCE.getScheduler(context, intent, requestCode).stopScheduler();
     }
 
     /**
@@ -101,13 +100,11 @@ public class RunServicesUtil {
         Prefs.loadPreferences(context);
         if (Prefs.enableTaskCheck && Prefs.enabled) {
 
-            SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
-
             // start the scheduler for 'task check' service
             final long interval = (Prefs.taskCheckTime * 60000);
 
             final Intent intent = new Intent(context,
-                    CheckTaskScheduledService.class);
+                    CheckTaskScheduledReceiver.class);
 
             Logger.log(CLASS_TAG, "Check task service started");
             // run the service
@@ -136,7 +133,7 @@ public class RunServicesUtil {
         if (Prefs.enableAutoSync && Prefs.enabled) {
             // start the scheduler for auto sync service
             final long interval = (Prefs.autoTime * 60000);
-            final Intent intent = new Intent(context, AutoSyncScheduledService.class);
+            final Intent intent = new Intent(context, AutoSyncScheduledReceiver.class);
             Logger.log(CLASS_TAG, "Auto sync service started");
             // run the service
             RunServicesUtil.runServices(context, intent,
@@ -175,11 +172,19 @@ public class RunServicesUtil {
     public static void stopAutoSyncService(Context context) {
         Prefs.loadPreferences(context);
         final Intent intent = new Intent(context,
-                AutoSyncScheduledService.class);
+                AutoSyncScheduledReceiver.class);
 
         // stop the scheduled service
         RunServicesUtil.stopServices(context, intent,
                 ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE);
 
+    }
+
+    public enum Scheduler {
+        INSTANCE;
+
+        private ScheduleServices getScheduler(Context context, Intent intent, int requestCode) {
+            return new ScheduleServices(context, intent, requestCode,PendingIntent.FLAG_UPDATE_CURRENT);
+        }
     }
 }

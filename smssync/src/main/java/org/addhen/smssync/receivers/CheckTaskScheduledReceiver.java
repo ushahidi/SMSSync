@@ -18,6 +18,7 @@
 package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.services.CheckTaskScheduledService;
+import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SmsSyncServices;
 
 import android.content.BroadcastReceiver;
@@ -32,7 +33,7 @@ public class CheckTaskScheduledReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SmsSyncServices.sendWakefulTask(context, CheckTaskScheduledService.class);
+        SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
     }
 
 }
