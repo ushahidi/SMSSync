@@ -100,7 +100,7 @@ public class SmsReceiverService extends Service {
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
-        MainApplication.bus.post(this);
+        MainApplication.bus.register(this);
 
     }
 
