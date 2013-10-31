@@ -13,7 +13,7 @@
     ],
     "bugs" : [
       "Fixed issue with \"Get Response From Server\" feature.",
-      "Fixed issue with smssync service not turning off.",
+      "Fixed issue with smssync service not turning off."
     ]
   },
   {
