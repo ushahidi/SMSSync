@@ -1,0 +1,92 @@
+{
+    "title" : "List of contributors to the SMSSync project",
+    "note" : "Sorted by last name",
+    "total" : 12,
+    "contributors" :
+    [
+        {
+            "name" : "Milan Andric",
+            "email" : "milan@medicmobile.org",
+            "website" : "http://m.andric.us/",
+            "description" : "Bug fixes",
+            "country" : "United States"
+        },
+        {
+            "name" : "Salama A. Balekage",
+            "email" : "aksalj@aksalj.me",
+            "website" : "http://www.aksalj.me",
+            "description" : "Add ability to customize sync HTTP method, data format and payload keys",
+            "country" : "Kenya"
+        },
+        {
+            "name" : "Sándor Balikó",
+            "email" : null,
+            "website" : "https://www.transifex.net/accounts/profile/vo101sanyo/",
+            "description" : "Helped translate the app into Hungarian",
+            "country" : "Hungary"
+        },
+        {
+            "name" : "Ollie Bennett",
+            "email" : "olliebennett@gmail.com",
+            "website" : "http://olliebennett.co.uk",
+            "description" : "Bug fixes and RegExp support",
+            "country" : "United Kingdom"
+        },
+        {
+            "name" : "Juergen Eichholz",
+            "email" : null,
+            "website" : "http://about.me/jke",
+            "description" : "Helped translate the app into German.",
+            "country" : "Germany"
+        },
+        {
+            "name" : "Alessandro Fanna",
+            "email" : null,
+            "website" : "https://www.transifex.net/accounts/profile/rospus/",
+            "description" : "Translated the app into Italian.",
+            "country" : "Italy"
+        },
+        {
+            "name" : "Ebony Mathis",
+            "email" : "mse.mathis@gmail.com",
+            "website" : null,
+            "description" : "Proofread the project's documentation and fixed typos.",
+            "country" : "Japan"
+        },
+        {
+            "name" : "Cliff Moffitt",
+            "email" : "cliff.moffitt@gmail.com",
+            "website" : "https://www.transifex.net/accounts/profile/anami/",
+            "description" : "Helped translate the app into Swhaili",
+            "country" : "Kenya"
+        },
+        {
+            "name" : "Rasoah Mwilitsa",
+            "email" : "rasoah@weareasilia.com",
+            "website" : "https://www.transifex.net/accounts/profile/RazzL/",
+            "description" : "Translated the app into Swahili.",
+            "country" : "Kenya"
+        },
+        {
+            "name" : "Charl van Niekerk",
+            "email" : "charl@ushahidi.com",
+            "website" : "https://www.transifex.net/accounts/profile/charl/",
+            "description" : "Translated the app into Dutch.",
+            "country" : "South Africa"
+        },
+        {
+            "name" : "Artem Noskov",
+            "email" : "a@saratovout.ru",
+            "website" : "http://ashowtimes.ru",
+            "description" : "Translated the app into Russian/Ukrainian and reports bugs for fixing.",
+            "country" : "Russia"
+        },
+        {
+            "name" : "Tobias Quinn",
+            "email" : "tobias@tobiasquinn.com",
+            "website" : "https://github.com/tobiasquinn",
+            "description" : "Removed the ability for the app to send blank messages which crashes the app. See http://goo.gl/T67VP",
+            "country" : "England"
+        }
+    ]
+}
