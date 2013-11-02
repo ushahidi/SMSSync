@@ -9,84 +9,132 @@
             "email" : "milan@medicmobile.org",
             "website" : "http://m.andric.us/",
             "description" : "Bug fixes",
-            "country" : "United States"
+            "country" : {
+                "name" : "United States",
+                "latitude" : 37.09024,
+                "longitude" : -95.712891
+            }
         },
         {
             "name" : "Salama A. Balekage",
             "email" : "aksalj@aksalj.me",
             "website" : "http://www.aksalj.me",
             "description" : "Add ability to customize sync HTTP method, data format and payload keys",
-            "country" : "Kenya"
+            "country" : {
+                "name" : "Kenya",
+                "latitude" : -0.023559,
+                "longitude" : 37.906193
+            }
         },
         {
             "name" : "Sándor Balikó",
             "email" : null,
             "website" : "https://www.transifex.net/accounts/profile/vo101sanyo/",
             "description" : "Helped translate the app into Hungarian",
-            "country" : "Hungary"
+            "country" : {
+                "name" : "Hungary",
+                "latitude" : 47.162494,
+                "longitude" : 19.503304
+            }
         },
         {
             "name" : "Ollie Bennett",
             "email" : "olliebennett@gmail.com",
             "website" : "http://olliebennett.co.uk",
             "description" : "Bug fixes and RegExp support",
-            "country" : "United Kingdom"
+            "country" : {
+                "name" : "United kingdom",
+                "latitude" : 55.378051,
+                "longitude" : -3.435973
+            }
         },
         {
             "name" : "Juergen Eichholz",
             "email" : null,
             "website" : "http://about.me/jke",
             "description" : "Helped translate the app into German.",
-            "country" : "Germany"
+            "country" : {
+                "name" : "Germany",
+                "latitude" : 51.165691,
+                "longitude" : 10.451526
+            }
         },
         {
             "name" : "Alessandro Fanna",
             "email" : null,
             "website" : "https://www.transifex.net/accounts/profile/rospus/",
             "description" : "Translated the app into Italian.",
-            "country" : "Italy"
+            "country" : {
+                "name" : "Italy",
+                "latitude" : 41.87194,
+                "longitude" : 12.56738
+            }
         },
         {
             "name" : "Ebony Mathis",
             "email" : "mse.mathis@gmail.com",
             "website" : null,
             "description" : "Proofread the project's documentation and fixed typos.",
-            "country" : "Japan"
+            "country" : {
+                "name" : "Japan",
+                "latitude" : 36.204824,
+                "longitude" : 138.252924
+            }
         },
         {
             "name" : "Cliff Moffitt",
             "email" : "cliff.moffitt@gmail.com",
             "website" : "https://www.transifex.net/accounts/profile/anami/",
             "description" : "Helped translate the app into Swhaili",
-            "country" : "Kenya"
+            "country" : {
+                "name" : "Kenya",
+                "latitude" : -0.023559,
+                "longitude" : 37.906193
+            }
         },
         {
             "name" : "Rasoah Mwilitsa",
             "email" : "rasoah@weareasilia.com",
             "website" : "https://www.transifex.net/accounts/profile/RazzL/",
             "description" : "Translated the app into Swahili.",
-            "country" : "Kenya"
+            "country" : {
+                "name" : "Kenya",
+                "latitude" : -0.023559,
+                "longitude" : 37.906193
+            }
         },
         {
             "name" : "Charl van Niekerk",
             "email" : "charl@ushahidi.com",
             "website" : "https://www.transifex.net/accounts/profile/charl/",
             "description" : "Translated the app into Dutch.",
-            "country" : "South Africa"
+            "country" : {
+                "name" : "South Africa",
+                "latitude" : -30.559482,
+                "longitude" : 22.937506
+            }
         },
         {
             "name" : "Artem Noskov",
             "email" : "a@saratovout.ru",
             "website" : "http://ashowtimes.ru",
             "description" : "Translated the app into Russian/Ukrainian and reports bugs for fixing.",
-            "country" : "Russia"
+            "country" : {
+                "name" : "Russia",
+                "latitude" : 61.52401,
+                "longitude" : 105.318756
+            }
         },
         {
             "name" : "Tobias Quinn",
             "email" : "tobias@tobiasquinn.com",
             "website" : "https://github.com/tobiasquinn",
             "description" : "Removed the ability for the app to send blank messages which crashes the app. See http://goo.gl/T67VP",
-            "country" : "England"
+            "country" : {
+                "name" : "United kingdom",
+                "latitude" : 55.378051,
+                "longitude" : -3.435973
+            }
         }
     ]
 }
