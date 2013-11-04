@@ -1,7 +1,7 @@
 [
   {
-    "version" : "v2.4 beta",
-    "date" : "August 12<sup>th</sup>, 2013",
+    "version" : "v2.4",
+    "date" : "August 12th, 2013",
     "features" : [
       "Added secret key as GET variable when invoking the GET Task feature.",
       "Added navigation drawer.",
@@ -17,7 +17,7 @@
     ]
   },
   {
-    "version":"v2.3 beta",
+    "version":"v2.3",
     "date":"June 27th, 2013",
     "feature": ["Manually synchronizing pending messages now shows a progress bar.",
     "Added ability to cancel a progressive synchronization.",
@@ -25,6 +25,6 @@
     "bugs":[
       "Fix crashes when synchronizing huge pending messages",
       "Fix incorrect date display in sent inbox",
-      "Fix duplicate reply responses."]	
+      "Fix duplicate reply responses."]
   }
 ]
