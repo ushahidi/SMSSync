@@ -18,3 +18,4 @@ build
 .gradle
 gradle-app.setting
 gradle.properties
+Gemfile.lock
