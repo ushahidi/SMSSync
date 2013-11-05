@@ -1,0 +1,5 @@
+"theme-smssync" :
+  use : "theme"
+
+"date_format": "%b %d, %Y"
+base_path: "SMSSync"

@@ -1,0 +1,16 @@
+title : SMSSync
+tagline : The free and open source SMS gateway for Android
+description : SMSMSync The free and open source SMS gateway for Android devices
+author :
+  name : Ushahidi
+
+navigation :
+  - index.html
+  - releases.html
+  - download.html
+  - contributors.html
+  - configure.md
+  - developers.html
+  - features.md
+  - features.html
+  - screenshot.html

@@ -1,0 +1,29 @@
+---
+title : Contributors
+layout : default
+description : SMSSync contributors
+date : Nov 1, 2013
+header : <h3>Map of Contributors<small> These are people who have freely contributored their time towards making SMSSync better</small></h3>
+---
+{{# stylesheets.load }}
+	https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.css
+
+  	http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css
+
+	http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css
+	http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css
+
+{{/ stylesheets.load }}
+<!--[if lte IE 8]>
+    	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.ie.css' rel='stylesheet'>
+  	<![endif]-->
+  	<!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.ie.css" /><![endif]-->
+  	<!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css" /><![endif]-->
+<div id="map" class="thumbnail leaflet-container leaflet-fade-anim" tabindex="0" style="height:390px;"></div>
+{{# javascripts.load }}
+	  https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.js
+
+	  http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster.js
+	  	  contributors.js
+{{/ javascripts.load }}
+<div class="table-responsive" id="contrib"></div>

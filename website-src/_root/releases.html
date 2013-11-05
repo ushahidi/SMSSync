@@ -1,0 +1,50 @@
+---
+title : Releases
+layout : default
+description : SMSSync releases
+date : Oct 30, 2013
+header : <h1>Releases History <small>This page is about release information for SMSSync. It provides changelogs and version numbers of old releases, and details of current stable and development branches.</small></h1>
+---
+{{# javascripts.load }}
+    mustache.js
+  history.js
+{{/ javascripts.load }}
+
+<div id="latest-header">
+
+<h1>Current Release</h1>
+[[#latest]]
+<ul>
+<li>Released [[date]]</li>
+<li>Version <a href="https://github.com/ushahidi/SMSSync/tree/[[version]]">[[version]] beta</a></li>
+</ul>
+[[/latest]]
+</div>
+<h2>History</h2>
+<div id="versions">
+[[#versions]]
+<h3>Version: [[version]] - [[date]]</h3>
+<div class="version">
+  <h4>Changes</h4>
+    <ul>
+      [[#changes]]
+        <li>[[.]]</li>
+      [[/changes]]
+    </ul>
+
+    <h4>Bugs</h4>
+    <ul>
+      [[#bugs]]
+        <li>[[.]]</li>
+      [[/bugs]]
+    </ul>
+
+    <h4>Features</h4>
+    <ul>
+      [[#features]]
+        <li>[[.]]</li>
+      [[/features]]
+    </ul>
+</div>
+[[/versions]]
+</div>
