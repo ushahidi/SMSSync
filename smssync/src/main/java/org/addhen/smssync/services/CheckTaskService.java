@@ -58,9 +58,4 @@ public class CheckTaskService extends SmsSyncServices {
             new ProcessMessage(CheckTaskService.this).performTask(syncUrl);
         }
     }
-
-    @Produce
-    public boolean readLogs() {
-        return true;
-    }
 }

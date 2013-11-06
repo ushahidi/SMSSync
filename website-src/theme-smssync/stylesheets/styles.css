@@ -83,6 +83,15 @@ label.error {
     padding-top: 10px;
 }
 
+.carousel-indicators li {
+    border: 1px solid #070;
+    background-color: #070 \9
+    background-color: rgb(0,114,0);
+}
+
+.carousel-indicators .active {
+    background-color: #009900;
+}
 /*
  * Side navigation
  *
@@ -168,4 +177,4 @@ label.error {
   .bs-sidebar.affix {
     width: 263px;
   }
-}hh
+}
