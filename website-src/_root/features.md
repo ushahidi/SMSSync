@@ -6,16 +6,17 @@ date : Nov 1, 2013
 header : <h1>Features <small>Highlights the important features of SMSSync.</small></h1>
 ---
 
-* Scheduler to auto sync pending messages
-* Pending and sent message views
-* Configurable auto-reply messages
-* Instant auto-reply messages from server
-* Import existing messages from inbox
-* Keyword based SMS filtering
-* Multiple languages
-* Task scheduling
-* Multiple Sync URLs
+* Scheduler to auto sync pending messages.
+* Pending and sent message views.
+* Configurable auto-reply messages.
+* Instant auto-reply messages from server.
+* Import existing messages from inbox.
+* Keyword based SMS filtering.
+* Multiple languages.
+* Task scheduling.
+* Multiple Sync URLs.
 * Filter by phone number. Either Whitelist or Blacklist a phone number.
+* HTTP basic authentication support in Sync URLs.
 * Logviewer to see the activities on the application.
 
 # Limitations
