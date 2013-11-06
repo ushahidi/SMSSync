@@ -3,7 +3,7 @@ $( "#latest-header" ).load( "https://raw.github.com/ushahidi/SMSSync/develop/CRE
 $.get('../CREDITS', function(data) {
       $("#latest-header").html(data);
     }, 'text');
-var url = "http://query.yahooapis.com/v1/public/yql?q=select * from json where url='https://raw.github.com/ushahidi/SMSSync/develop/history.json'&format=json";
+var url = "http://query.yahooapis.com/v1/public/yql?q=select * from json where url='https://raw.github.com/ushahidi/SMSSync/develop/changelog.json'&format=json";
 $.ajax({
     url: url,
     cache : false,
