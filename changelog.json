@@ -1,8 +1,8 @@
 [
     {
-        "version" : "v2.4",
-        "date" : "August 12, 2013",
-        "features" : [
+        "version": "v2.4",
+        "date": "August 12, 2013",
+        "features": [
             "Added secret key as GET variable when invoking the GET Task feature.",
             "Added navigation drawer.",
             "How number of items in the list view.",
@@ -11,28 +11,28 @@
             "Refactored most of the code to make them testable.",
             "Dropped API level 7 support."
         ],
-        "bugs" : [
+        "bugs": [
             "Fixed issue with \"Get Response From Server\" feature.",
             "Fixed issue with smssync service not turning off."
         ]
     },
     {
-        "version":"v2.3",
-        "date":"June 27, 2013",
+        "version": "v2.3",
+        "date": "June 27, 2013",
         "feature": [
             "Manually synchronizing pending messages now shows a progress bar.",
             "Added ability to cancel a progressive synchronization.",
             "Added user agent header to all HTTP requests."
         ],
-        "bugs":[
-              "Fix crashes when synchronizing huge pending messages",
-              "Fix incorrect date display in sent inbox",
-              "Fix duplicate reply responses."
-          ]
+        "bugs": [
+            "Fix crashes when synchronizing huge pending messages",
+            "Fix incorrect date display in sent inbox",
+            "Fix duplicate reply responses."
+        ]
     },
     {
-        "version":"v2.0.2",
-        "date":"March 30, 2013",
+        "version": "v2.0.2",
+        "date": "March 30, 2013",
         "feature": [
             "Show confirmation prompt when attempting to import SMS",
             "Added RegExp support to keyword filtering.",
@@ -41,165 +41,156 @@
             "Updated notification code to make use of the notification.compact library",
             "Added Russian, Ukrainian, Belarusian languages"
         ],
-        "bugs":[
-              "Fixed wifi lock issue. See #56",
-              "Improved wording and typos in the strings file",
-              "Disable excessive 'no task enabled' notifications",
-              "Fixed ID issue. Now uses UUID instead. See #60",
-              "Fixed issue with auto sync failing."
-          ]
+        "bugs": [
+            "Fixed wifi lock issue. See #56",
+            "Improved wording and typos in the strings file",
+            "Disable excessive 'no task enabled' notifications",
+            "Fixed ID issue. Now uses UUID instead. See #60",
+            "Fixed issue with auto sync failing."
+        ]
     },
     {
-        "version":"v2.0.1",
-        "date":"October 22, 2012",
+        "version": "v2.0.1",
+        "date": "October 22, 2012",
         "feature": [
             "Resizable widgets to fit on most screens.",
             "Upgraded ABS library to 4.2.0.",
             "Added Korean translation"
         ],
-        "bugs":[
-              "Fixed an issue with pending messages. See issue #44",
-              "Removed screen restriction support from manifest file. This is to allow
-  it to show up on the Google play store for most devices."
-          ]
+        "bugs": [
+            "Fixed an issue with pending messages. See issue #44",
+            "Removed screen restriction support from manifest file. This is to allow it to show up on the Google play store for most devices."
+        ]
     },
     {
-        "version":"v2.0.0",
-        "date":"October 15, 2012",
+        "version": "v2.0.0",
+        "date": "October 15, 2012",
         "feature": [
             "Improved the UI. Optimized it to scale well on tablet devices.",
             "Added the ability to manage multiple Sync URLs and the ability to sync messages to them.",
             "Added icons to actionbar menu instead of just text.",
             "Cleaned up code based making it more modular and easier to maintain.",
             "Increased the frequency times for the various schedulers. Added 1 minute, 2 minutes, 3 minutes and 4 minutes.",
-            "Dropped support for devices running 1.6. This is to allow us to take advantage of the new Android APIs",
+            "Dropped support for devices running 1.6. This is to allow us to take advantage of the new Android APIs"
         ],
-        "bugs":[
-              "Fixed task checking issue. It now frequently pings client for tasks.",
-              "sent_timestamp variable  now sends the raw timestamp instead of the preformatted one. This is to allow the client to have control of the formatting",
-              "Removed the characters contrains to Unique ID field."
-          ]
+        "bugs": [
+            "Fixed task checking issue. It now frequently pings client for tasks.",
+            "sent_timestamp variable  now sends the raw timestamp instead of the preformatted one. This is to allow the client to have control of the formatting",
+            "Removed the characters contrains to Unique ID field."
+        ]
     },
     {
-        "version":"v1.1.9",
-        "date":"December 12, 2012",
+        "version": "v1.1.9",
+        "date": "December 12, 2012",
+        "feature": [],
+        "bugs": [
+            "Fixed HTTPS not working on some devices.",
+            "Fixed sent_to variable not sending the device's number.",
+            "Fixed formatting issue with sent_timestamp."
+        ]
+    },
+    {
+        "version": "v1.0.9",
+        "date": "November 10, 2011",
+        "feature": [],
+        "bugs": [
+            "Fixed HTTPS not working on some devices.",
+            "Fixed sent_to variable not sending the device's number.",
+            "Fixed formatting issue with sent_timestamp."
+        ]
+    },
+    {
+        "version": "v1.0.8",
+        "date": "October 27, 2011",
+        "feature": [],
+        "bugs": [
+            "Fixed HTTPS not working on some devices.",
+            "Fixed sent_to variable not sending the device's number.",
+            "Fixed formatting issue with sent_timestamp."
+        ]
+    },
+    {
+        "version": "v1.0.8",
+        "date": "October 27, 2011",
         "feature": [
+            "Added filtering when importing SMS.",
+            "Added sent_to variable so the server can receive the phone number the SMS was sent to.",
+            "Added message_id variable so the server can receive the unique id of the SMS.",
+            "Added full HTTPS support."
         ],
-        "bugs":[
-              "Fixed HTTPS not working on some devices.",
-              "Fixed sent_to variable not sending the device's number.",
-              "Fixed formatting issue with sent_timestamp."
-          ]
+        "bugs": [
+            "Fixed issue with app widget not updating  view when pending messages are in the view.",
+            "Improved performance with syncing pending messages."
+        ]
     },
     {
-        "version":"v1.0.9",
-        "date":"November 10, 2011",
+        "version": "v1.0.7",
+        "date": "September 25, 2011",
         "feature": [
+            "Added 5 new languages. Swahili, Dutch, Hungarian, German and Italian.",
+            "Added UTF-8 support when submitting messages."
         ],
-        "bugs":[
-              "Fixed HTTPS not working on some devices.",
-              "Fixed sent_to variable not sending the device's number.",
-              "Fixed formatting issue with sent_timestamp."
-          ]
+        "bugs": []
     },
     {
-        "version":"v1.0.8",
-        "date":"October 27, 2011",
+        "version": "v1.0.6",
+        "date": "March 03, 2011",
         "feature": [
+            "Added improvement that makes th battery consumption by the app.",
+            "Added the ability for enabled services to automatically start after the phone boots up.",
+            "Added the ability for the App to lock WiFi connection when the phone is connected to a WiFi.",
+            "Added the ability for 'response messages' to be received from the server and not wait on a scheduler.",
+            "Added confirmation dialog when performing delete actions.",
+            "Added a tab that habours 'pending messages' view and 'sent messages' view.",
+            "Added the ability for the app to log recent sent messages. Twenty is the Max.",
+            "Added 'sent_timestamp' post variable in order to send the timestamp of an SMS.",
+            "Added App widget support."
         ],
-        "bugs":[
-              "Fixed HTTPS not working on some devices.",
-              "Fixed sent_to variable not sending the device's number.",
-              "Fixed formatting issue with sent_timestamp."
-          ]
+        "bugs": [
+            "Fixed a bug that when all messages are deleted, the app shows a failed message yet the messages are deleted.",
+            "Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service."
+        ]
     },
     {
-        "version":"v1.0.8",
-        "date":"October 27, 2011",
-        "feature": [
-              "Added filtering when importing SMS.",
-              "Added sent_to variable so the server can receive the phone number the SMS was sent to.",
-              "Added message_id variable so the server can receive the unique id of the SMS.",
-              "Added full HTTPS support."
-        ],
-        "bugs":[
-              "Fixed issue with app widget not updating  view when pending messages are in the view.",
-              "Improved performance with syncing pending messages."
-          ]
-    },
-    {
-        "version":"v1.0.7",
-        "date":"September 25, 2011",
-        "feature": [
-              "Added 5 new languages. Swahili, Dutch, Hungarian, German and Italian.",
-              "Added UTF-8 support when submitting messages."
-
-        ],
-        "bugs":[
-          ]
-    },
-    {
-        "version":"v1.0.6",
-        "date":"March 03, 2011",
-        "feature": [
-              "Added improvement that makes th battery consumption by the app.",
-              "Added the ability for enabled services to automatically start after the phone boots up.",
-              "Added the ability for the App to lock WiFi connection when the phone is connected to a WiFi.",
-              "Added the ability for 'response messages' to be received from the server and not wait on a scheduler.",
-              "Added confirmation dialog when performing delete actions.",
-              "Added a tab that habours 'pending messages' view and 'sent messages' view.",
-              "Added the ability for the app to log recent sent messages. Twenty is the Max.",
-              "Added 'sent_timestamp' post variable in order to send the timestamp of an SMS.",
-              "Added App widget support."
-        ],
-        "bugs":[
-              "Fixed a bug that when all messages are deleted, the app shows a failed message yet the messages are deleted.",
-              "Fixed the issue of pending messages' view not updating when pending messages are deleted from a background service."
-          ]
-    },
-    {
-        "version":"v1.0.5",
-        "date":"February 25, 2011",
+        "version": "v1.0.5",
+        "date": "February 25, 2011",
         "feature": [
             "Scheduler automatically Syncs pending messages to the configured Callback URL.",
             "Now sends out messages from the configured callback URL as text message.",
             "Imports messages from Android messages app inbox for synchronizing to the configured callback URL.",
             "Added context menu for deleting or synchronizing pending messages."
         ],
-        "bugs":[
+        "bugs": [
             "Improved callback URL validation process; Added more checks. Empty, malformed and connection checks.",
             "More sanity checks before SMSSync can be enabled.",
             "Known issue: Scheduler doesn't refresh pending messages' list after it runs. The pending messages screen needs to be restarted."
         ]
     },
     {
-        "version":"v1.0.4",
-        "date":"January 29, 2011",
+        "version": "v1.0.4",
+        "date": "January 29, 2011",
         "feature": [
-              "Notification cannot be cleared untill SMSSync is stopped.",
-              "Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost."
+            "Notification cannot be cleared untill SMSSync is stopped.",
+            "Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost."
         ],
-        "bugs":[
-        ]
+        "bugs": []
     },
     {
-        "version":"v1.0.3",
-        "date":"January 12, 2011",
+        "version": "v1.0.3",
+        "date": "January 12, 2011",
         "feature": [
-              "Downgraded to Android 1.6 so smssync works from 1.6 and above.",
-              "Now sms can be deleted from the sms inbox. This is a configurable option.",
-              "Fixed issue with the secret variable.",
-              "Better support for localization - All hardcoded strings have been moved to the string.xml file.",
-              "Supports outbox -- for pending messages that manually needs to be synced.",
-              "Improved SMS background service -- Now it starts and stops perfectly.",
-              "Added version number to the powered by text on the Settings screen.",
-              "Changed notification Icon to SMSSync's slick launch icon.",
-              "Shows status of Pending messages. Whether there are pending messages or not.",
-              "Prepopulates URL field with 'http://' when setting up the sync URL.",
-              "Sends an auto response once the SMS is recieved. This is a configurable option.",
-              "Validates the callback URL"
+            "Downgraded to Android 1.6 so smssync works from 1.6 and above.",
+            "Now sms can be deleted from the sms inbox. This is a configurable option.",
+            "Fixed issue with the secret variable.",
+            "Better support for localization - All hardcoded strings have been moved to the string.xml file.",
+            "Supports outbox -- for pending messages that manually needs to be synced.",
+            "Improved SMS background service -- Now it starts and stops perfectly.",
+            "Added version number to the powered by text on the Settings screen.",
+            "Changed notification Icon to SMSSync's slick launch icon.",
+            "Shows status of Pending messages. Whether there are pending messages or not.",
+            "Prepopulates URL field with 'http://' when setting up the sync URL.",
+            "Sends an auto response once the SMS is recieved. This is a configurable option.",
+            "Validates the callback URL"
         ],
-        "bugs":[
-        ]
+        "bugs": []
     }
-]
