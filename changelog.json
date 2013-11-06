@@ -19,7 +19,7 @@
     {
         "version": "v2.3",
         "date": "June 27, 2013",
-        "feature": [
+        "features": [
             "Manually synchronizing pending messages now shows a progress bar.",
             "Added ability to cancel a progressive synchronization.",
             "Added user agent header to all HTTP requests."
@@ -33,7 +33,7 @@
     {
         "version": "v2.0.2",
         "date": "March 30, 2013",
-        "feature": [
+        "features": [
             "Show confirmation prompt when attempting to import SMS",
             "Added RegExp support to keyword filtering.",
             "Added more useful HTTP and server error messages",
@@ -52,7 +52,7 @@
     {
         "version": "v2.0.1",
         "date": "October 22, 2012",
-        "feature": [
+        "features": [
             "Resizable widgets to fit on most screens.",
             "Upgraded ABS library to 4.2.0.",
             "Added Korean translation"
@@ -65,7 +65,7 @@
     {
         "version": "v2.0.0",
         "date": "October 15, 2012",
-        "feature": [
+        "features": [
             "Improved the UI. Optimized it to scale well on tablet devices.",
             "Added the ability to manage multiple Sync URLs and the ability to sync messages to them.",
             "Added icons to actionbar menu instead of just text.",
@@ -82,7 +82,7 @@
     {
         "version": "v1.1.9",
         "date": "December 12, 2012",
-        "feature": [],
+        "features": [],
         "bugs": [
             "Fixed HTTPS not working on some devices.",
             "Fixed sent_to variable not sending the device's number.",
@@ -92,7 +92,7 @@
     {
         "version": "v1.0.9",
         "date": "November 10, 2011",
-        "feature": [],
+        "features": [],
         "bugs": [
             "Fixed HTTPS not working on some devices.",
             "Fixed sent_to variable not sending the device's number.",
@@ -102,7 +102,7 @@
     {
         "version": "v1.0.8",
         "date": "October 27, 2011",
-        "feature": [],
+        "features": [],
         "bugs": [
             "Fixed HTTPS not working on some devices.",
             "Fixed sent_to variable not sending the device's number.",
@@ -112,7 +112,7 @@
     {
         "version": "v1.0.8",
         "date": "October 27, 2011",
-        "feature": [
+        "features": [
             "Added filtering when importing SMS.",
             "Added sent_to variable so the server can receive the phone number the SMS was sent to.",
             "Added message_id variable so the server can receive the unique id of the SMS.",
@@ -126,7 +126,7 @@
     {
         "version": "v1.0.7",
         "date": "September 25, 2011",
-        "feature": [
+        "features": [
             "Added 5 new languages. Swahili, Dutch, Hungarian, German and Italian.",
             "Added UTF-8 support when submitting messages."
         ],
@@ -135,7 +135,7 @@
     {
         "version": "v1.0.6",
         "date": "March 03, 2011",
-        "feature": [
+        "features": [
             "Added improvement that makes th battery consumption by the app.",
             "Added the ability for enabled services to automatically start after the phone boots up.",
             "Added the ability for the App to lock WiFi connection when the phone is connected to a WiFi.",
@@ -154,7 +154,7 @@
     {
         "version": "v1.0.5",
         "date": "February 25, 2011",
-        "feature": [
+        "features": [
             "Scheduler automatically Syncs pending messages to the configured Callback URL.",
             "Now sends out messages from the configured callback URL as text message.",
             "Imports messages from Android messages app inbox for synchronizing to the configured callback URL.",
@@ -169,7 +169,7 @@
     {
         "version": "v1.0.4",
         "date": "January 29, 2011",
-        "feature": [
+        "features": [
             "Notification cannot be cleared untill SMSSync is stopped.",
             "Failed Messages now get sent to the outbox folder for later manual syncing when data connection is lost."
         ],
@@ -178,7 +178,7 @@
     {
         "version": "v1.0.3",
         "date": "January 12, 2011",
-        "feature": [
+        "features": [
             "Downgraded to Android 1.6 so smssync works from 1.6 and above.",
             "Now sms can be deleted from the sms inbox. This is a configurable option.",
             "Fixed issue with the secret variable.",
