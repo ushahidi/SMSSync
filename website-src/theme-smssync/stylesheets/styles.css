@@ -1,5 +1,6 @@
 * {margin: 0; padding: 0;}
 body {
+    position: relative; /* For scrollyspy */
     color: #222
     line-height:22px;
     letter-spacing:.1;
@@ -12,6 +13,7 @@ body {
     padding-top: 60px;
     padding-bottom: 20px;
 }
+
 body > .navbar-brand:hover {
   text-decoration: none;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
@@ -24,6 +26,10 @@ body > .navbar-brand:hover {
     display:block;
     color:#fff;
     outline:none;
+}
+
+.bs-docs-section + .bs-docs-section {
+    padding-top: 0px;
 }
 
 .smssync {
@@ -48,6 +54,17 @@ strong, em {
     font-weight: bold;
     text-transform: uppercase;
     margin: 0 20px 0 0;
+}
+
+.bs-highlight {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #eee;
+}
+
+.bs-highlight-info {
+  background-color: #f4f8fa;
+  border-color: #bce8f1;
 }
 
 label.error {
@@ -85,7 +102,7 @@ label.error {
   padding-top:    10px;
   padding-bottom: 10px;
   text-shadow: 0 1px 0 #fff;
-  background-color: #f7f5fa;
+  background-color: #eeeeee;
   border-radius: 5px;
 }
 
@@ -105,9 +122,9 @@ label.error {
 .bs-sidebar .nav > .active:hover > a,
 .bs-sidebar .nav > .active:focus > a {
   font-weight: bold;
-  color: #563d7c;
+  color: #009900;
   background-color: transparent;
-  border-right: 1px solid #563d7c;
+  border-right: 1px solid #009900;
 }
 
 /* Nav: second level (shown on .active) */
@@ -151,4 +168,4 @@ label.error {
   .bs-sidebar.affix {
     width: 263px;
   }
-}
+}hh
