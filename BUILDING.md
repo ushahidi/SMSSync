@@ -28,7 +28,7 @@ Build with Android Studio.
 ### Preview website
 
 The SMSSync website hosted on github pages is generated using [ruhoh](http://ruhoh.com).
-Refer to the [ruhoh installation](http://ruhoh.com/docs/2/installation/) guide on how to get ruhoh running.
+Please refer to the [ruhoh installation](http://ruhoh.com/docs/2/installation/) guide on how to get it running.
 
 ```
 $ cd website-src
@@ -41,7 +41,7 @@ You then preview the site at [http://localhost:9292]( http://localhost:9292)
 
 ### Compile HTML files
 
-Compile the ruhoh site to HTML so it can be published to hosting server. We use github pages to host SMSSync website.
+Compile the ruhoh site to HTML so it can be published to a hosting server. We use github pages to host SMSSync's website.
 
 ```
 $ cd website-src
@@ -49,6 +49,8 @@ $ cd website-src
 $ ruhoh  compile '<path_to_a_folder_to_compile_the_html_into>'
 
 ```
+
+**Note:** The folder to compile the html files into has to be empty as the `ruhoh compile` command will delete any files in it.
 
 ### Publish compiled HTML files
 
