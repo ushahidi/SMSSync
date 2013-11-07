@@ -70,6 +70,9 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                                 <a href="#edit-sync-url">Edit a Sync URL</a>
                             </li>
                             <li>
+                                <a href="#change-sync-scheme">Change Sync Scheme</a>
+                            </li>
+                            <li>
                                 <a href="#delete-all-existing-sync-url">Delete All Existing Sync URLs</a>
                             </li>
                             <li>
@@ -150,7 +153,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
 
                 <ol>
                     <li>Tap on the <strong><em>Sync URL</em></strong> from the navigation drawer.</li>
-                    <li>Tap on the <img src="{{urls.media}}/icons/new.png" alt="Add icon"> icon on the actionbar. An input dialog should open.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/new.png" alt="Add icon"/> icon on the actionbar. An input dialog should open.</li>
                     <li>Enter a title for the Sync URL.</li>
                     <li>Enter a secret key if required by the webservices. Make sure you enter the exact key here.</li>
                     <li>Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding. As of v2.0.2. You can now add Regular Expresssion code for filtering. This means, it can either be CSV or RegExp. It cannot be both.</li>
@@ -164,17 +167,26 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                 <p>To edit an existing Sync URL:</p>
                 <ol>
                     <li>Long press on the Sync URL you want to edit by tapping and holding it until the actionbar menu changes.</li>
-                    <li>Tap on the <img src="{{urls.media}}/icons/edit.png" alt="Edit icon"> icon on the actionbar. An input dialog should open repopulated with the details of the Sync URL.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/edit.png" alt="Edit icon"/> icon on the actionbar. An input dialog should open repopulated with the details of the Sync URL.</li>
                     <li>Edit the necessary field(s) accordinlgy.</li>
                     <li>Tap <strong><em>OK</em></strong> to save the edited entry.</li>
                 </ol>
-
+                <h3 id="change-sync-scheme">Change Sync Scheme</h3>
+                <p>The default sync scheme uses URLEncoded. However, with <strong>version2.5 and above</strong> you can now customize which sync scheme should be used for synchronization. The supported formats are URLEncoded, JSON, XML</p>
+                <p>To change the sync scheme:</p>
+                <ol>
+                    <li>Long press on the Sync URL you want to edit by tapping and holding it until the actionbar menu changes.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/settings.png" alt="Change sync scheme" /> icon on the actionbar. A dialog will pop up.</li>
+                    <li>Select the HTTP Method to use. POST and PUT are supported</li>
+                    <li>Select the Data Format. URLEncoded, JSON and XML are supported for now.</li>
+                    <li>Set the Payload Keys to use. You can only set 5 keys. Make sure the keys matches what is expected on the server. In most cases it is safe to stick to the default keys.</li>
+                </ol>
                 <h3 id="delete-all-existing-sync-url">Delete All Existing Sync URLs</h3>
                 <p>Delete all Sync URL by:</p>
                 <ol>
                     <li>If there are any Sync URLs enabled(checked), disable(uncheck) them.</li>
                     <li>Stop the SMSSync service if it&#39;s running(checked).</li>
-                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"> icon on the actionbar. A confirmation dialog should open.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"/> icon on the actionbar. A confirmation dialog should open.</li>
                     <li>Tap <strong><em>Yes</em></strong> to delete all Sync URL or <strong><em>No</em></strong> to cancel the deletion.</li>
                 </ol>
                 <h3 id="delete-an-existing-sync-url">Delete An Existing Sync URL</h3>
@@ -183,7 +195,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                 <ol>
                     <li>If the Sync URL to be deleted is enabled&nbsp;(checked), disable it. Otherwise, move to the next item.</li>
                     <li>Long press on the Sync URL you want to delete by tapping and holding it until the actionbar menu changes.</li>
-                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"> icon on the actionbar. A confirmation dialog should open.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"/> icon on the actionbar. A confirmation dialog should open.</li>
                     <li>Tap <strong><em>Yes</em></strong> to delete it or <strong><em>No</em></strong> to cancel the deletion.</li>
                 </ol>
 
@@ -210,7 +222,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                 <p>Using the options available in the app settings, you can configure the behaviour however you like.</p>
                 <h3 id="general-settings">General Settings</h3>
                 <ol>
-                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"> icon on the actionbar or option menu.</li>
+                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"/> icon on the actionbar or option menu.</li>
                     <li>Tap on <strong><em>Enter Unique ID</em></strong> to enter a Unique ID to identify the device SMSSync is installed on.</li>
                 </ol>
 
@@ -219,7 +231,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
             To set a reply message:</p>
 
                 <ol>
-                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"> icon on the actionbar or option menu.</li>
+                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"/> icon on the actionbar or option menu.</li>
                     <li>Tap on <strong><em>Get Reply From Server</em></strong> if you want to send an instant reply message from the Sync URL. Otherwise, tap on <strong><em>Reply Messages</em></strong> to set the instant reply message on the phone.</li>
                 </ol>
 
@@ -228,7 +240,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
             To enable auto sync:</p>
 
                 <ol>
-                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"> icon on the actionbar or option menu.</li>
+                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"/> icon on the actionbar or option menu.</li>
                     <li>Tap on <strong><em>Enable Auto Sync</em></strong> to enable the auto sync service.</li>
                     <li>Tap on <strong><em>Auto sync frequency</em></strong> to set the frequency at which the auto sync should run.</li>
                 </ol>
@@ -237,7 +249,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                 <p>The Task feature allows you to send SMS to users as defined by the server. It works by regularly checking the server for new messages to be sent.
             To enable Task Checking feature:</p>
                 <ol>
-                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"> icon on the actionbar or option menu.</li>
+                    <li>Go to Settings screen by tapping the <img src="{{urls.media}}/icons/settings.png" alt="Settings icon"/> icon on the actionbar or option menu.</li>
                     <li>Tap on <strong><em>Enable Task Checking</em></strong> to enable the task service.</li>
                     <li>Tap on <strong><em>Frequency</em></strong> to set the frequency at which the task checking service should run.</li>
                 </ol>
@@ -251,13 +263,13 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
             SMSSync allows you to manage these pending messages. You can either configure the app to automatically or manually sync these failed messages or delete them.</p>
                 <h3 id="manually-sync-all-pending-messages">Manually sync all pending messages</h3>
                 <ol>
-                    <li>Tap on the <img src="{{urls.media}}/icons/refresh.png" alt="Sync icon"> icon on the actionbar. The sync icon should spin for a while.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/refresh.png" alt="Sync icon"/> icon on the actionbar. The sync icon should spin for a while.</li>
                     <li>After the sync icon spins for a while, a Toast should show up with a status message.</li>
                 </ol>
                 <h3 id="manually-sync-a-single-pending-message">Manaully sync a single pending message</h3>
                 <ol>
                     <li>Long press on the pending message you want to sync by tapping and holding it until the actionbar menu changes.</li>
-                    <li>Tap on the <img src="{{urls.media}}/icons/refresh.png" alt="Sync icon"> icon on the actionbar. The sync icon should spin for a while.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/refresh.png" alt="Sync icon"/> icon on the actionbar. The sync icon should spin for a while.</li>
                     <li>After the sync icon stops spinning, a popup should appear with a status message.</li>
                 </ol>
 
@@ -265,7 +277,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                 <p>Delete all pending messages saved on the device.</p>
 
                 <ol>
-                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"> icon on the actionbar. A confirmation dialog should open.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"/> icon on the actionbar. A confirmation dialog should open.</li>
                     <li>Tap <strong><em>Yes</em></strong> to delete all pending messages or <strong><em>No</em></strong> to cancel the deletion.</li>
                 </ol>
 
@@ -273,7 +285,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                 <p>Import SMS from the device&#39;s messages inbox.</p>
 
                 <ol>
-                    <li>Tap on the <img src="{{urls.media}}/icons/import.png" alt="Import icon"> icon on the actionbar. A progress dialog should open. Leave it to run until it finishes. Depending on the number of messages in your inbox, this could take a while.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/import.png" alt="Import icon"/> icon on the actionbar. A progress dialog should open. Leave it to run until it finishes. Depending on the number of messages in your inbox, this could take a while.</li>
                 </ol>
             </div>
             <div class="bs-docs-section">
@@ -284,13 +296,13 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                 <h3 id="delete-an-individual-sent-message">Delete An Individual Sent Message</h3>
                 <ol>
                     <li>Long press on the sent message you want to delete by tapping and holding it until the actionbar menu changes.</li>
-                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"> icon on the actionbar. A confirmation dialog should open.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"/> icon on the actionbar. A confirmation dialog should open.</li>
                     <li>Tap <strong><em>Yes</em></strong> to delete it or <strong><em>No</em></strong> to cancel the deletion.</li>
                 </ol>
 
                 <h3 id="delete-all-sent-messages">Delete All Sent Messages</h3>
                 <ol>
-                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"> icon on the actionbar. A confirmation dialog should open.</li>
+                    <li>Tap on the <img src="{{urls.media}}/icons/delete.png" alt="Delete icon"/> icon on the actionbar. A confirmation dialog should open.</li>
                     <li>Tap <strong><em>Yes</em></strong> to delete all sent messages or <strong><em>No</em></strong> to cancel the deletion.</li>
                 </ol>
             </div>
