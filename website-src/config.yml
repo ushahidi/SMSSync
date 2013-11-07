@@ -3,3 +3,10 @@
 
 "date_format": "%b %d, %Y"
 base_path: "SMSSync"
+
+widgets :
+
+  analytics :
+    use : google
+    # -- tracking code for google analytics --
+    tracking_id : 'UA-12063676-22'
