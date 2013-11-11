@@ -1,7 +1,7 @@
 ## How To Build SMSSync app
 
 The build setup here supports Android Studio and the new Gradle build system.
-To build this project make sure you've either set ANDROID_HOME to point to where
+To build this project make sure you've either set `ANDROID_HOME` to point to where
 you have your Android SDK installed or you have defined the location of the Android
 SDK in the local.property file. In local.property file, make sure `sdk.dir` points to the location of the Android SDK.
 

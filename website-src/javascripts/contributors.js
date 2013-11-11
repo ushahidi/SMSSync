@@ -36,7 +36,7 @@ function fetchContributors(data) {
 function normalizeNames(contributor) {
     var name = contributor.name != null ? "<strong>Name:</strong> "+contributor.name +"<br />" : "";
     var description = contributor.description ? "<strong>Description:</strong> "+contributor.description+"<br />" : "";
-    var website = (contributor.website != null) ? "<strong>Website:</strong> <a href=\"+contributor.website\">"+contributor.website+"</a><br />" : "";
+    var website = (contributor.website !== null) ? "<strong>Website:</strong> <a href=\"+contributor.website\">"+contributor.website+"</a><br />" : "";
     var country = contributor.country.name ? "<strong>Country:</strong> "+contributor.country.name+"<br />" : "";
     return name + description + website + country;
 }
