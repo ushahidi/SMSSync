@@ -132,8 +132,8 @@ public class ProcessSms {
         String[] keywords = filterText.split(",");
 
         for (String keyword : keywords) {
-            if (message.toLowerCase(Locale.ENGLISH)
-                    .contains(keyword.toLowerCase(Locale.ENGLISH).trim())) {
+            if (message.toLowerCase()
+                    .contains(keyword.toLowerCase().trim())) {
                 return true;
             }
         }
