@@ -129,7 +129,6 @@ public class ProcessSms {
      * @return boolean
      */
     public boolean filterByKeywords(String message, String filterText) {
-        
         String[] keywords = filterText.split(",");
 
         for (String keyword : keywords) {
