@@ -1,183 +1,271 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
-    <!--preferences-->
-    <!--sync URL-->
-    <string name="edittxt_website_pref">Веб-адреса синхронізації</string>
-    <string name="edittxt_website_pref_summary">Сайт, на який будуть зберігатися текстові
-        повідомлення.
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--preferences-->
+  <!--sync URL-->
+  <string name="edittxt_website_pref">Веб-адреса синхронізації</string>
+  <string name="edittxt_website_pref_summary">Це веб-сайт, який буде отримувати текстові\n повідомлення.</string>
+  <!--secret-->
+  <string name="edittxt_api_key_pref">Секретний код</string>
+  <string name="edittxt_api_key_pref_summary">Необхідний, якщо секретний код використовується\nна сайті.</string>
+  <!--filter by keywords-->
+  <string name="edittxt_keyword_pref">Ключові слова (одне або декілька)</string>
+  <string name="editxt_keyword_pref_summary">Вкажіть ключові слова, щоб фільтрувати вхідні\nповідомлення.</string>
+  <string name="edittxt_keyword_hint">важливо, допомога, запит, інше</string>
+  <!--filter by phone numbers-->
+  <string name="edittxt_filter_by_from_pref">Введіть номер телефону (не обов\'язково)</string>
+  <string name="edittxt_filter_by_from_pref_summary">Вкажіть телефонний номер з білого списку для фільтрації\nвхідних повідомлень.</string>
+  <string name="edittxt_filter_by_from_hint">+79990000000,+79873387778</string>
+  <!--unique id-->
+  <string name="edittxt_unique_id_pref">Унікальний номер</string>
+  <string name="edittxt_unique_id_pref_summary">Вкажіть унікальний ID для цього пристрою. Використовується\nсервером для ідентифікації, який пристрій надсилає йому повідомлення.\n    </string>
+  <string name="edittxt_unique_id_hint">01234</string>
+  <!--response message-->
+  <string name="edittxt_reply">Відповідь повідомлення</string>
+  <string name="edittxt_reply_title">Відповідь повідомлення</string>
+  <string name="edittxt_reply_summary">Повідомлення, яке буде відправлено користувачам.</string>
+  <string name="edittxt_reply_default">Ваше повідомлення отримане. Спасибі.</string>
+  <!--enable/disable smssync-->
+  <string name="sms_sync_enabled">SmsSync включений</string>
+  <string name="sms_sync_disabled">SmsSync відключений</string>
+  <!--general settings-->
+  <string name="general_settings">Основні налаштування</string>
+  <string name="chk_enable_sms_sync">Запустити SmsSync</string>
+  <string name="chk_sms_sync_hint">Запуск або зупинка служби.</string>
+  <!--reply from server-->
+  <string name="reply_settings">Налаштування відповідей</string>
+  <string name="chk_enable_reply">Відповідати</string>
+  <string name="chk_reply_hint">Автоматична відповідь на кожне повідомлення, отримане на SMSSync.</string>
+  <!--auto delete messages-->
+  <string name="chk_enable_auto_delete">Автовидалення повідомлень</string>
+  <string name="chk_auto_delete_hint">Автоматично видаляє повідомлення з вхідних \nдля звільнення пам\'яті телефону.</string>
+  <!--enable auto sync-->
+  <string name="chk_enable_auto_sync">Автосинхронізація</string>
+  <string name="chk_enable_auto_sync_hint">Дозволяє SMSSync періодично синхронізувати очікувані повідомлення.\n    </string>
+  <!--auto sync delay-->
+  <string name="txt_auto_sync_delay">Частота синхронізації</string>
+  <string name="auto_sync_delay_hint">Задає частоту синхронізації SMSSync з налаштованою\nзворотньою URL.\n    </string>
+  <!--enable task check-->
+  <string name="chk_enable_task_check">Перевірка завдань</string>
+  <string name="chk_enable_task_check_hint">Дозволяє SMSSync періодично перевіряти завдання увімкнені\n        для зворотньої URL. SMSSync тоді виконує завдання. Напр. SMSSync надсилає SMS\n    </string>
+  <!--task check delay-->
+  <string name="txt_task_check_delay">Частота перевірок</string>
+  <string name="txt_task_check_delay_hint">Наскільки часто SMSSync перевіряє завдання, яке має бути\n        виконаним.\n    </string>
+  <string name="app_name">SmsSync</string>
+  <string name="outbox">Чекаючі повідомлення</string>
+  <string name="version_status">Бета</string>
+  <string name="sms_status_success">Відправлені СМС</string>
+  <string name="sms_status_failed">Sms не вдалося доставити</string>
+  <string name="notification_summary">Шлюз запущений</string>
+  <string name="sending_failed">SMSSync не вдалося надіслати повідомлення на сервер.</string>
+  <string name="sending_failed_http_code">Сервер повернув HTTP код стану -  %1$d.</string>
+  <string name="sending_failed_custom_error">Не вдалося відправити повідомлення через крах cервера. Помилка сервера: %1$s.</string>
+  <string name="sending_succeeded">Повідомлення від SmsSync\'а надіслано.</string>
+  <string name="no_messages_to_sync">Немає повідомлень для відправки.</string>
+  <string name="no_messages_to_delete">Немає повідомлень для видалення.</string>
+  <string name="sync_failed">Невдале надсилання повідомлення SMSSync. Будь ласка, перевірте ваше з\'єднання з інтернетом\n        та синхронізуйте налаштування URL.\n    </string>
+  <string name="powered">Вкл.</string>
+  <string name="powered_by">Створено Ushahidi</string>
+  <string name="menu_delete_all">Видалити всі</string>
+  <string name="menu_sync_all">Синхронізувати всі</string>
+  <string name="menu_delete">Видалити</string>
+  <string name="menu_sync">Синхронізувати</string>
+  <string name="menu_import">Імпорт Sms</string>
+  <string name="menu_settings">Налаштування</string>
+  <string name="messages_deleted">Повідомлення видалені.</string>
+  <string name="messages_deleted_failed">Неможливо видалити повідомлення.</string>
+  <string name="status">Стан</string>
+  <string name="empty_list">Ні очікують повідомлень.</string>
+  <string name="http_text">http://</string>
+  <string name="sms_failed">Помилка Sms</string>
+  <!--URL validation-->
+  <string name="invalid_url">Будь ласка, вкажіть дійсний веб-адресу.</string>
+  <string name="no_configured_url">Веб-адреса не вказана в настройках.</string>
+  <string name="no_connection">Неможливо підключитися за вказаною веб-адресою.</string>
+  <string name="no_task">Немає завдань з веб-адреси зворотного виклику.</string>
+  <string name="auto_sync_settings">Налаштування автосинхронізації</string>
+  <string name="task_check_settings">Налаштування завдань</string>
+  <string name="about_smssync">Про програму</string>
+  <string name="please_wait">Чекайте..</string>
+  <string name="smssync_not_enabled">SMSSync не увімкнено. Будь ласка, увімкніть це з екрану\n        налаштувань.\n    </string>
+  <string name="import_messages">Імпорт повідомлень..</string>
+  <string name="nothing_to_import">Немає повідомлень для імпорту. Переконайтеся, що ви маєте SMS повідомлення у вашій\n        теці вхідних SMS.\n    </string>
+  <string name="chk_enable_reply_frm_server">Відповіді з сервера</string>
+  <string name="chk_reply_frm_server_hint">Миттєво надсилає повідомлення як отримані із сервера,\nтак і СМС без очікування планування.</string>
+  <string name="filter_messages">Фільтрація повідомлень</string>
+  <!--SMS delivery status-->
+  <string name="sms_delivery_status_failed">Не вдалося надіслати SMS - може недостатньо грошей\n        на рахунку.\n    </string>
+  <string name="sms_delivery_status_no_service">Не вдалося надіслати СМС, бо сервіс на дану мить недоступний.</string>
+  <string name="sms_delivery_status_radio_off">Не вдалося надіслати СМС, бо безпровідні мережі явно вимкнені</string>
+  <string name="sms_delivery_status_null_pdu">Не вдалося надіслати СМС, бо не надано pdu</string>
+  <string name="sms_delivered">Sms доставлено</string>
+  <string name="sms_not_delivered">Sms не може бути доставлене</string>
+  <!--Pending and failed messages Tab-->
+  <string name="pending_messages">Очікують</string>
+  <string name="sent_messages">Відправлені</string>
+  <string name="title_bar_text">Повідомлення</string>
+  <string name="no_sent_messages">Ні відправлених повідомлень.</string>
+  <!--confirmation dialog-->
+  <string name="confirm_yes">Так</string>
+  <string name="confirm_no">Немає</string>
+  <string name="confirm_message">Впевнені?</string>
+  <!--validate unique id-->
+  <string name="unique_id_length_error">Унікальний номер має складатися рівно з 5 цифр</string>
+  <string name="unique_id_numeric_error">Унікальний номер має складатися лише з цифр</string>
+  <string name="loading">Завантаження..</string>
+  <string name="sync_url">Веб-адреса</string>
+  <string name="no_sync_url">Немає веб-адреси.</string>
+  <string name="edit">Редагувати</string>
+  <string name="enter_sync_title">Назва для веб-адреси</string>
+  <string name="edittxt_keyword">Введіть ключове слово, напр., важливо, довідка</string>
+  <string name="add_sync_url">Додати веб-адресу</string>
+  <string name="ok">Окей</string>
+  <string name="cancel">Скасування</string>
+  <string name="failed_to_add_sync_url">Не вдалося додати веб-адресу</string>
+  <string name="failed_to_update_sync_url">Не вдалося оновити веб-адресу</string>
+  <string name="sync_url_deleted">Веб-адреса видалений.</string>
+  <string name="sync_url_deleted_failed">Веб-адреса не може бути видалений.</string>
+  <string name="disable_to_delete_syncurl">Ви не можете вилучити цю адресу синхронізації, бо вона увімкнена.\n        Вимкніть її перед вилученням.\n    </string>
+  <string name="disable_to_delete_all_syncurl">Це увімкнені адреси для синхронізації, тому ви не можете вилучити\n        їх. Вимкніть усі увімкнені адреси для синхронізації, а тоді спробуйте цю дію знову.\n    </string>
+  <string name="no_enabled_sync_url">Включіть принаймні один веб-адресу, щоб запустити службу.</string>
+  <string name="disable_smssync_service">Послуга SMSSync працює. Ви не можете виконувати вилучення,\n        доки сервіс не зупинено. Зупиніть сервіс, тоді спробуйте цю дію знову.\n    </string>
+  <string name="disable_last_sync_url">Ви не можете вимкнути останню адресу для синхронізації, тому що сервіс \n        SMSSync працює.\n    </string>
+  <string name="no_sync_url_added">Додайте як мінімум одну веб-адресу, щоб запустити службу SmsSync.</string>
+  <string name="no_sync_url_to_delete">Видалення веб-адреси не вдалося.</string>
+  <string name="empty_sync_url_title">Будь ласка, вкажіть заголовок веб-адреси</string>
+  <string name="valid_sync_url">Будь ласка, вкажіть дійсний веб-адресу.</string>
+  <string name="task">Завдання</string>
+  <string name="confirm_sms_import">Це буде імпортувати усі SMS із теки „Вхідні“. Це займе деякий час,\n        поки завершиться.\n    </string>
+  <string name="incoming">вхідний</string>
+  <string name="schedule">розклад</string>
+  <string name="manual">підручник</string>
+  <string name="unknown">невідомий</string>
+  <string name="sync">Синхронізація</string>
+  <string name="idle">незайнятий</string>
+  <string name="error">Помилка</string>
+  <string name="done">Готово</string>
+  <string name="never">Ніколи</string>
+  <string name="idle_details">Остання синхронізація: &lt;xliff:g id="last_sync_date"&gt;%1$s&lt;/xliff:g&gt;
     </string>
-    <!--secret-->
-    <string name="edittxt_api_key_pref">Секретний код</string>
-    <string name="edittxt_api_key_pref_summary">Необхідний, якщо секретний код використовується на
-        сайті.
+  <string name="working">Працює</string>
+  <string name="canceled">Скасовано</string>
+  <string name="sync_canceled_details">%1$d/%2$d елементів успішно сихнронізовано.</string>
+  <string name="sync_error_details">Помилка протягом синхронізації:
+        &lt;xliff:g id="error_description"&gt;%1$s&lt;/xliff:g&gt;
     </string>
-    <!--filter by keywords-->
-    <string name="edittxt_keyword_pref">Ключові слова (одне або декілька)</string>
-    <string name="editxt_keyword_pref_summary">Вкажіть ключові слова, використовувані для фільтрації
-        повідомлень, що відправляються.
+  <plurals name="sync_done_details">
+    <item quantity="one">Успішно опрацьовано &lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt; елемент.</item>
+    <item quantity="few">Успішно опрацьовано &lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt; елементи.</item>
+    <item quantity="other">Успішно опрацьовано &lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt; елементів.\n        </item>
+  </plurals>
+  <string name="sync_status_done">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; синхронізовано, &lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt; зазнали невдачі
     </string>
-    <string name="edittxt_keyword_hint">важливо, допомога, запит, інше</string>
-    <!--filter by phone numbers-->
-    <string name="edittxt_filter_by_from_pref">Введіть номер телефону (не обов\'язково)</string>
-    <string name="edittxt_filter_by_from_pref_summary">Вкажіть телефонні номери, використовувані для
-        фільтрації повідомлень, що відправляються.
+  <string name="stopping">Зупиняється</string>
+  <string name="status_sync_details">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; синхронізовано, &lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt; зазнали невдачі / &lt;xliff:g id="total_items"&gt;%3$d&lt;/xliff:g&gt; елементів\u2026
     </string>
-    <string name="edittxt_filter_by_from_hint">+79990000000,+79873387778</string>
-    <!--unique id-->
-    <string name="edittxt_unique_id_pref">Унікальний номер</string>
-    <string name="edittxt_unique_id_pref_summary">Вкажіть унікальний номер, який використовується
-        для ідентифікації пристрою, що відправляється. Вкажіть 5 цифр
-    </string>
-    <string name="edittxt_unique_id_hint">01234</string>
-    <!--response message-->
-    <string name="edittxt_reply">Відповідь повідомлення</string>
-    <string name="edittxt_reply_title">Відповідь повідомлення</string>
-    <string name="edittxt_reply_summary">Повідомлення, яке буде відправлено користувачам.</string>
-    <string name="edittxt_reply_default">Ваше повідомлення отримане. Спасибі.</string>
-    <!--enable/disable smssync-->
-    <string name="sms_sync_enabled">SmsSync включений</string>
-    <string name="sms_sync_disabled">SmsSync відключений</string>
-    <!--general settings-->
-    <string name="general_settings">Основні налаштування</string>
-    <string name="chk_enable_sms_sync">Запустити SmsSync</string>
-    <string name="chk_sms_sync_hint">Запуск або зупинка служби.</string>
-    <!--reply from server-->
-    <string name="reply_settings">Налаштування відповідей</string>
-    <string name="chk_enable_reply">Відповідати</string>
-    <string name="chk_reply_hint">Автоматична відповідь для кожного прийшов повідомлення.</string>
-    <!--auto delete messages-->
-    <string name="chk_enable_auto_delete">Автовидалення повідомлень</string>
-    <string name="chk_auto_delete_hint">Автоматично видаляє повідомлення з вхідних для звільнення
-        пам\'яті телефону.
-    </string>
-    <!--enable auto sync-->
-    <string name="chk_enable_auto_sync">Автосинхронізація</string>
-    <string name="chk_enable_auto_sync_hint">Дозволяє SmsSync\'у періодично синхронізувати очікують
-        повідомлення.
-    </string>
-    <!--auto sync delay-->
-    <string name="txt_auto_sync_delay">Частота синхронізації</string>
-    <string name="auto_sync_delay_hint">Частота синхронізації SmsSync з веб-адресою зворотного
-        виклику.
-    </string>
-    <!--enable task check-->
-    <string name="chk_enable_task_check">Перевірка завдань</string>
-    <string name="chk_enable_task_check_hint">Дозволяє періодично перевіряти завдання по
-        веб-адресою. SmsSync виконає завдання, відправить Sms.
-    </string>
-    <!--task check delay-->
-    <string name="txt_task_check_delay">Частота перевірок</string>
-    <string name="txt_task_check_delay_hint">Частота, з якою SmsSync буде перевіряти завдання.
-    </string>
-    <string name="app_name">SmsSync</string>
-    <string name="outbox">Чекаючі повідомлення</string>
-    <string name="version_status">Бета</string>
-    <string name="sms_status_success">Повідомлення надіслано</string>
-    <string name="sms_status_failed">Помилка відправлення повідомлення</string>
-    <string name="notification_summary">Шлюз запущений</string>
-    <string name="sending_failed">Помилка відправлення повідомлення від SmsSync\'а.</string>
-    <string name="sending_failed_http_code">SMSSync\'у не вдалося відправити повідомлення через
-        помилку HTTP - %1$d.
-    </string>
-    <string name="sending_failed_custom_error">SMSSync\'у не вдалося відправити повідомлення через
-        помилку cервера - %1$s.
-    </string>
-    <string name="sending_succeeded">Повідомлення від SmsSync\'а надіслано.</string>
-    <string name="no_messages_to_sync">Немає повідомлень для відправки.</string>
-    <string name="no_messages_to_delete">Немає повідомлень для видалення.</string>
-    <string name="sync_failed">Помилка відправки. Ймовірно, неправильні налаштування або відсутній
-        підключення до мережі Інтернет. Будь ласка, перевірте доступність мережі і налаштування.
-    </string>
-    <string name="powered">Вкл.</string>
-    <string name="powered_by">Створено Ushahidi</string>
-    <string name="menu_delete_all">Видалити всі</string>
-    <string name="menu_sync_all">Синхронізувати всі</string>
-    <string name="menu_delete">Видалити</string>
-    <string name="menu_sync">Синхронізувати</string>
-    <string name="menu_import">Імпорт Sms</string>
-    <string name="menu_settings">Налаштування</string>
-    <string name="messages_deleted">Повідомлення видалені.</string>
-    <string name="messages_deleted_failed">Неможливо видалити повідомлення.</string>
-    <string name="status">Стан</string>
-    <string name="empty_list">Ні очікують повідомлень.</string>
-    <string name="http_text">http://</string>
-    <string name="sms_failed">Помилка Sms</string>
-    <!--URL validation-->
-    <string name="invalid_url">Будь ласка, вкажіть дійсний веб-адресу.</string>
-    <string name="no_configured_url">Веб-адреса не вказана в настройках.</string>
-    <string name="no_connection">Неможливо підключитися за вказаною веб-адресою.</string>
-    <string name="no_task">Немає завдань з веб-адреси зворотного виклику.</string>
-    <string name="auto_sync_settings">Налаштування автосинхронізації</string>
-    <string name="task_check_settings">Налаштування завдань</string>
-    <string name="about_smssync">Про програму</string>
-    <string name="please_wait">Чекайте..</string>
-    <string name="smssync_not_enabled">SmsSync відключений. Будь ласка, включите його в
-        настройках.
-    </string>
-    <string name="import_messages">Імпорт повідомлень..</string>
-    <string name="nothing_to_import">Немає повідомлень для імпорту. Переконайтеся, що в телефоні є
-        входять Sms.
-    </string>
-    <string name="chk_enable_reply_frm_server">Відповіді з сервера</string>
-    <string name="chk_reply_frm_server_hint">Дозволяє відразу передавати повідомлення, отримані від
-        сервера, не чекаючи виконання завдань.
-    </string>
-    <string name="filter_messages">Фільтрація повідомлень</string>
-    <!--SMS delivery status-->
-    <string name="sms_delivery_status_failed">Помилка відправки Sms. Ймовірно, поганий сигнал?!
-    </string>
-    <string name="sms_delivery_status_no_service">Сервіс недоступний</string>
-    <string name="sms_delivery_status_radio_off">Радіомодуль відключений</string>
-    <string name="sms_delivery_status_null_pdu">Ні Pdu</string>
-    <string name="sms_delivered">Sms доставлено</string>
-    <string name="sms_not_delivered">Sms не може бути доставлене</string>
-    <!--Pending and failed messages Tab-->
-    <string name="pending_messages">Очікують</string>
-    <string name="sent_messages">Відправлені</string>
-    <string name="title_bar_text">Повідомлення</string>
-    <string name="no_sent_messages">Ні відправлених повідомлень.</string>
-    <!--confirmation dialog-->
-    <string name="confirm_yes">Так</string>
-    <string name="confirm_no">Немає</string>
-    <string name="confirm_message">Впевнені?</string>
-    <!--validate unique id-->
-    <string name="unique_id_length_error">Унікальний номер має складатися рівно з 5 цифр</string>
-    <string name="unique_id_numeric_error">Унікальний номер має складатися лише з цифр</string>
-    <string name="loading">Завантаження..</string>
-    <string name="sync_url">Веб-адреса</string>
-    <string name="no_sync_url">Немає веб-адреси.</string>
-    <string name="edit">Редагувати</string>
-    <string name="enter_sync_title">Назва для веб-адреси</string>
-    <string name="edittxt_keyword">Введіть ключове слово, напр., важливо, довідка</string>
-    <string name="add_sync_url">Додати веб-адресу</string>
-    <string name="ok">Окей</string>
-    <string name="cancel">Скасування</string>
-    <string name="failed_to_add_sync_url">Не вдалося додати веб-адресу</string>
-    <string name="failed_to_update_sync_url">Не вдалося оновити веб-адресу</string>
-    <string name="sync_url_deleted">Веб-адреса видалений.</string>
-    <string name="sync_url_deleted_failed">Веб-адреса не може бути видалений.</string>
-    <string name="disable_to_delete_syncurl">Неможливо видалити цей веб-адресу, тому він включений.
-        Відключіть, щоб мати можливість видалити його.
-    </string>
-    <string name="disable_to_delete_all_syncurl">Неможливо видаляти веб-адреси, поки вони включені.
-        Відключите їх і спробуйте знову.
-    </string>
-    <string name="no_enabled_sync_url">Включіть принаймні один веб-адресу, щоб запустити службу.
-    </string>
-    <string name="disable_smssync_service">Служба SmsSync включена. Неможливо виконати видалення до
-        зупинки служби. Зупиніть службу і спробуйте знову.
-    </string>
-    <string name="disable_last_sync_url">Неможливо відключити останній веб-адресу, тому служба
-        SmsSync включена.
-    </string>
-    <string name="no_sync_url_added">Додайте як мінімум один веб-адресу, щоб запустити службу
-        SmsSync.
-    </string>
-    <string name="no_sync_url_to_delete">Видалення веб-адреси не вдалося.</string>
-    <string name="empty_sync_url_title">Будь ласка, вкажіть заголовок веб-адреси</string>
-    <string name="valid_sync_url">Будь ласка, вкажіть дійсний веб-адресу.</string>
-    <string name="task">Завдання</string>
-    <string name="confirm_sms_import">Імпортування всіх повідомлень у вхідні. Це може зайняти деякий
-        час.
-    </string>
+  <string name="open">Відкрити</string>
+  <string name="close">Закрити</string>
+  <string name="unknown_issue">Невідома проблема</string>
+  <string name="sync_in_completed">Синхронізацію завершено</string>
+  <string name="sync_in_progress">Синхронізація триває</string>
+  <!--donation related-->
+  <string name="donate">Пожертва</string>
+  <string name="donate_summary">Використовується безпечна програмна оплати на Google Play Store.</string>
+  <string name="ui_dialog_donate_message">Вкажіть обліковий запис:</string>
+  <string name="ui_donation_success_message">Успішна пожертва, дякуємо вам!</string>
+  <string name="ui_donation_failure_message">Невдала пожертва: %1$s</string>
+  <!--purchase errors-->
+  <string name="donation_error_iab_unavailable">Оплата у програмі недоступна</string>
+  <string name="donation_error_unavailable">не доступно</string>
+  <string name="donation_error_canceled">скасовано</string>
+  <string name="donation_error_already_owned">Ви вже пожертвували</string>
+  <!--filter-->
+  <string name="blacklist">Чорний список</string>
+  <string name="whitelist">Білий список</string>
+  <string name="filter">Фільтр</string>
+  <string name="enable_whitelist">Увімкнути білий список</string>
+  <string name="enable_blacklist">Увімкнути чорний список</string>
+  <string name="no_whitelist">Нема телефонних номерів у білому списку. \nВикористовуйте вище кнопку \"+\", щоб додати\nїх.\n    </string>
+  <string name="no_blacklist">Нема телефонних номерів у чорному списку. \nВикористовуйте вище кнопку \"+\", щоб додати\n їх.\n    </string>
+  <string name="enter_phone_number">Ввести номер телефону</string>
+  <string name="add_phone_number">Додати номер телефону</string>
+  <string name="add_phone_number_list">Додати номер телефону до списку</string>
+  <string name="no_phone_number_to_enable_whitelist">Додайте принаймні один номер телефону для увімкнення білого списку.</string>
+  <string name="no_phone_number_to_enable_blacklist">Додайте принаймні один номер телефону для увімкнення чорного списку.</string>
+  <string name="no_phone_number_to_delete">Відсутні телефонні номери для вилучення.</string>
+  <string name="phone_number_deleted">Номер телефону успішно вилучено.</string>
+  <string name="deleting_phone_number_failed">Номер телефону неможливо вилучити.</string>
+  <string name="disable_whitelist">Увімкнено білий список. Ви не можете здійснювати вилучення, поки не вимкнете функцію білого списку. Вимкніть білий список, а тоді спробуйте цю дію знову.</string>
+  <string name="disable_blacklist">Увімкнено чорний список. Ви не можете здійснювати вилучення, поки не вимкнете функцію чорного списку. Вимкніть чорний список, а тоді спробуйте цю дію знову.</string>
+  <string name="failed_to_add_phone_number">Неможливо додати номер телефону</string>
+  <string name="failed_to_update_phone_number">Неможливо оновити номер телефону</string>
+  <!--sync scheme-->
+  <string name="sync_sheme">Схема синхронізації</string>
+  <string name="sync_scheme_keys">Ключі корисного навантаження</string>
+  <string name="sync_scheme_method">HTTP метод</string>
+  <string name="sync_scheme_data_format">Формат дати</string>
+  <string-array name="sync_methods">
+    <item>POST</item>
+    <item>PUT</item>
+  </string-array>
+  <string-array name="sync_formats">
+    <item>URLEncoded</item>
+    <item>JSON</item>
+    <item>XML</item>
+  </string-array>
+  <string name="all_fields_are_required">Усі поля потрібні</string>
+  <string name="enter_key_for_secret">Введіть ключ для \'секрету\'</string>
+  <string name="enter_key_for_from">Введіть ключ для \'від\'</string>
+  <string name="enter_key_for_message_id">Введіть ключ для \'message_id\'</string>
+  <string name="enter_key_for_message">Введіть ключ для \'повідомлення\'</string>
+  <string name="enter_key_for_sent_timestamp">Введіть ключ для \'sent_timestamp\'</string>
+  <string name="enter_key_for_sent_to">Введіть ключ для \'sent_to\'</string>
+  <!--Logs-->
+  <string name="logs">Журнали</string>
+  <string name="action_settings">Налаштування</string>
+  <string name="enable_logs">Увімкнути журнали</string>
+  <string name="share">Поділитися</string>
+  <string name="data_connection">З\'єднання з інтернетом</string>
+  <string name="battery_level">Рівень батареї</string>
+  <string name="data_connection_status">[ %1$s ]</string>
+  <string name="battery_level_status">[ %1$s ]</string>
+  <string name="can_ping_server_yes">Можна пінгувати сервер %1$s  -- Так</string>
+  <string name="can_ping_server_no">Можна пінгувати сервер %1$s</string>
+  <string name="server_properly_configured_yes">Сервер %1$s власно налаштований -- Так</string>
+  <string name="server_properly_configured_no">Сервер %1s$s не властиво налаштований. Не отримано очікуваної відповіді JSON</string>
+  <string name="auto_sync_message_no">Автоматична синхронізація повідомлення $1$s на %2$s провалилася</string>
+  <string name="no_logs">Немає журналів.</string>
+  <string name="smssync_service_running">SMSSync служба працює...</string>
+  <string name="sync_started">Синхронізацію розпочато</string>
+  <string name="not_syncing">Не синхронізовано %1$s</string>
+  <string name="perform_task">Виконання завдань перевірки</string>
+  <string name="finish_task_check">Успішно завершено виконання завдань перевірки</string>
+  <string name="auto_sending_pending_messages">[ %1$s ] синхронізує повідомлення</string>
+  <string name="task_scheduler_running">Планувальник завдань працює</string>
+  <string name="run_scheduled_services">Планувальник відправляє очікувані повідомлення на сервер</string>
+  <string name="scheduler_updated_to">Оновлений інтервал планувальника</string>
+  <string name="stopped_scheduler">Планувальник зупинений</string>
+  <string name="stopping_scheduler">Призупинення планувальника</string>
+  <string name="log_entries_below">Входи журналу нижче</string>
+  <string name="phone_status">Стан телефона</string>
+  <string name="log_message_from">Повідомлення журналу з телефонного номера %1$s</string>
+  <string name="log_entries">Входи журналу SMSSync</string>
+  <string name="log_saved_at">Log збережено збережено на карті SD у %1$s</string>
+  <string name="auto_response_sent">Відправка налаштованого автоматичного повідомлення як відповіді через SMS</string>
+  <string name="auto_message_deleted"> %1$s автовилучено</string>
+  <string name="sms_sent_to_webserivce">SMS [ %1$s ] успішно надіслано на  [ %2$s ]</string>
+  <string name="processed_task">Оброблені завдання відправляти повідомлення -  [ %1$s ] як SMS</string>
+  <string name="received_msg">Отримані СМС - [ %1$s ] - від [ %2$s ]</string>
+  <string name="sent_msg">Надсилання - [ %1$s ] - як СМС на [ %2$s ]</string>
+  <string name="no_json_response">Не отримано очікуваної відповіді JSON від сервера</string>
+  <string name="no_data_connection">Немає активного з\'єднання з інтернетом</string>
+  <string name="active_data_connection">Наявне активне з\'єднання з інтернетом</string>
+  <string name="device_reboot">Пристрій вже перевантажено</string>
+  <string name="device_shutdown">Пристрій вже вимкнено</string>
+  <string name="battery_low">Рівень батареї пристрою - низький</string>
+  <string name="battery_okay">Рівень батареї пристрою - добрий</string>
+  <string name="settings_changed">Налаштування SMSSync - [ %1$s ] вже змінено від [ %2$s ] на [ %3$s ]</string>
+  <string name="enabled">увімкнено</string>
+  <string name="disabled">вимкнено</string>
+  <string name="invalid_data_format">Невірний формат даних</string>
+  <string name="http_entity_format">Формат сутності HTTP - [ %1$s ]</string>
 </resources>
