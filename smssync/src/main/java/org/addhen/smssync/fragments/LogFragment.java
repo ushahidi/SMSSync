@@ -43,6 +43,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -290,6 +291,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
             build.append(newLine);
             build.append(getString(R.string.log_entries_below));
             build.append(newLine);
+            build.append(logs);
         }
 
         return build.toString();
