@@ -17,3 +17,7 @@ Documentation for developers can be found [here][2].
 
 [1]: http://smssync.ushahidi.com/howto
 [2]: http://smssync.ushahidi.com/doc
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ushahidi/smssync/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
