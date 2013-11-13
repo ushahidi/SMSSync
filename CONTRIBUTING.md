@@ -20,9 +20,11 @@ If you're exepriencing an issue and want to file it for the contributors to work
 
 1. Search the [Github issue tracker][3] to make sure your issue has not been filed already. If it has, please add comment to the existing issue to add more details to it.
 
-2. Give a step by step guide on how to reproduce the issue. You can read our [guide][4] on how to file an issue on the [wiki][4]. 
+2. Give a step by step guide on how to reproduce the issue. You can read our [guide][4] on how to file an issue on the [wiki][4].
 
 **Note:** The more we know about the issue, the easier it's for us to fix it.
+
+**Note:** For your contribution to be accepted into the project, you must sign the [Individual Contributor License Agreement (CLA)][5] You can read more about it there [here][6]
 
 Thanks for supporting the SMSSync development team.
 
@@ -30,3 +32,5 @@ Thanks for supporting the SMSSync development team.
 [2]: http://list.ushahidi.com
 [3]: https://github.com/ushahidi/SMSSync/issues
 [4]: https://wiki.ushahidi.com/display/WIKI/Report+a+bug
+[5]: https://docs.google.com/forms/d/15LyeKTOP36T5u3290o4hsmqv79v-m_s2QSmgMJXpYp8/viewform
+[6]: https://wiki.ushahidi.com/display/WIKI/Licenses
