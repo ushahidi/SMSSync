@@ -1,4 +1,4 @@
-var url = "http://query.yahooapis.com/v1/public/yql?q=select * from json where url='https://raw.github.com/ushahidi/SMSSync/develop/changelog.json'&format=json";
+var url = "http://query.yahooapis.com/v1/public/yql?q=select * from json where url='https://raw.github.com/ushahidi/SMSSync/master/changelog.json'&format=json";
 $.ajax({
     url: url,
     cache : false,
