@@ -21,7 +21,6 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
-import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
@@ -43,7 +42,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -141,14 +139,14 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     @Subscribe
     public void reloadLog(boolean status) {
         //if (status) {
-            adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
+        adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
 
-            // Set the location of the log file
-            if (adapter.getCount() > 0) {
-                view.logLcation.setText(getString(R.string.log_saved_at,
-                        LogUtil.getFile(LogUtil.LOG_NAME).getAbsolutePath()));
-                view.logLcation.setVisibility(View.VISIBLE);
-            }
+        // Set the location of the log file
+        if (adapter.getCount() > 0) {
+            view.logLcation.setText(getString(R.string.log_saved_at,
+                    LogUtil.getFile(LogUtil.LOG_NAME).getAbsolutePath()));
+            view.logLcation.setVisibility(View.VISIBLE);
+        }
         //}
     }
 

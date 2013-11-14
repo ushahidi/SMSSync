@@ -278,9 +278,10 @@ public class PendingMessages
      * The last time the sync item was done.
      */
     private String getLastSyncText(final long lastSync) {
+        log("Last sync: " + lastSync);
         return getString(R.string.idle_details,
-                lastSync < 0 ? getString(R.string.never) :
-                        DateFormat.getDateTimeInstance().format(new Date(lastSync)));
+                lastSync > 0 ? DateFormat.getDateTimeInstance().format(new Date(lastSync))
+                        : getString(R.string.never));
 
     }
 
