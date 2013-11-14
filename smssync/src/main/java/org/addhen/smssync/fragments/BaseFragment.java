@@ -17,13 +17,12 @@
 
 package org.addhen.smssync.fragments;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
@@ -55,7 +54,6 @@ public class BaseFragment extends SherlockFragment {
         log("onCreate");
 
         setHasOptionsMenu(true);
-        EasyTracker.getInstance().setContext(getActivity());
     }
 
     @Override
@@ -70,14 +68,14 @@ public class BaseFragment extends SherlockFragment {
     public void onStart() {
         super.onStart();
         log("onStart");
-        EasyTracker.getInstance().activityStart(getActivity());
+        MainApplication.getInstance().activityStart(getActivity());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         log("onDestroy");
-        EasyTracker.getInstance().activityStop(getActivity());
+        MainApplication.getInstance().activityStop(getActivity());
     }
 
     @Override
