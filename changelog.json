@@ -1,5 +1,15 @@
 [
     {
+        "version": "v2.5.1",
+        "date": "November 14, 2013",
+        "features": [
+        ],
+        "bugs": [
+            "Fixed issue with app crashing when up attempts to read certain device's phone number",
+            "Fixed a wrong timestamp showing when a sync hasn't been run before"
+        ]
+     },
+    {
             "version": "v2.5",
             "date": "November 14, 2013",
             "features": [
