@@ -103,6 +103,18 @@ android {
                     file("$project.buildDir/apk/" + newName.replace("-unaligned", ""));
         }
     }
+
+    flavorGroups "analytics"
+    productFlavors {
+
+        withAnalytics {
+            flavorGroup "analytics"
+        }
+
+        noAnalytics {
+            flavorGroup "analytics"
+        }
+    }
 }
 
 if (project.hasProperty('releaseKeyStore') &&

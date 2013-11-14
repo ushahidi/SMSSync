@@ -44,7 +44,7 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        getInstance().setContext(this);
         // Open database connection when the application starts.
         app = this;
         mDb = new Database(this);
@@ -60,4 +60,12 @@ public class MainApplication extends Application {
         super.onTerminate();
     }
 
+    /**
+     * Return the application tracker
+     *
+     * @return
+     */
+    public static AppTracker getInstance() {
+        return TrackerResolver.getInstance();
+    }
 }

@@ -17,8 +17,7 @@
 
 package org.addhen.smssync.activities;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.BaseListAdapter;
 import org.addhen.smssync.models.Model;
@@ -95,7 +94,6 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
             listView.setAdapter(adapter);
             listView.setFocusable(true);
         }
-        EasyTracker.getInstance().setContext(this);
     }
 
     /**
@@ -109,7 +107,7 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
     protected void onStart() {
         super.onStart();
         log("onStart");
-        EasyTracker.getInstance().activityStart(this);
+        MainApplication.getInstance().activityStart(this);
     }
 
     @Override
@@ -122,7 +120,7 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
     protected void onDestroy() {
         super.onDestroy();
         log("onDestroy");
-        EasyTracker.getInstance().activityStop(this);
+        MainApplication.getInstance().activityStop(this);
     }
 
     @SuppressWarnings("unchecked")
