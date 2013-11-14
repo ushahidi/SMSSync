@@ -1,5 +1,20 @@
 [
     {
+            "version": "v2.5",
+            "date": "November 14, 2013",
+            "features": [
+                "Added log viewer feature. This logs verbosely the activities that are happening when the app is running.",
+                "Added ability to configure different format for the sync scheme. Now JSON, XML and URLEncoded are supported.",
+                "Added Basic Auth to Sync URL. Now you can authenticate request from SMSSync",
+                "Updated Ukrainian strings. SMSSync is now fully translated into Ukrainian"
+            ],
+            "bugs": [
+                "Refactored existing HTTP client code. Made it easier to read maintain",
+                "Fixed issue with task check not working when there is no secret key set.",
+                "Fixed a lot of internal bugs"
+            ]
+    },
+    {
         "version": "v2.4",
         "date": "August 12, 2013",
         "features": [

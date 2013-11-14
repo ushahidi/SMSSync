@@ -1,3 +1,4 @@
+//TODO: remove this as it's now maintained in the file contributors.json file
 v2.4
 Feature:
   * Added secret key as GET variable when invoking the GET Task feature.
