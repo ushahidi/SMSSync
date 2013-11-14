@@ -459,7 +459,7 @@ public class Util {
                 context.getSystemService(Context.TELEPHONY_SERVICE);
         String number = mTelephonyMgr.getLine1Number();
         if (number != null) {
-            return number.substring(2);
+            return number;
         }
         return "";
 
