@@ -2,7 +2,8 @@
   use : "theme"
 
 "date_format": "%b %d, %Y"
-base_path: "SMSSync"
+
+production_url: 'http://smssync.ushahidi.com'
 
 widgets :
 
