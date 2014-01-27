@@ -76,6 +76,11 @@ android {
         targetSdkVersion 19
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     android.applicationVariants.all { variant ->
         // add google analytics code here. This is defined in the gradle.properties file
         variant.mergeResources.doLast {
