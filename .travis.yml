@@ -2,16 +2,15 @@ language: java
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_SDKS=android-19,sysimg-19  ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
+    - ANDROID_SDKS=android-19,sysimg-19  ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a COMPONENTS=build-tools-19.0.1,android-19,extra-android-m2repository
 before_install:
   - export TERM=dumb
   - sudo apt-get install -qq libstdc++6:i386 lib32z1
 
   # install android build tools
-  - export COMPONENTS=build-tools-19.0.1,android-19,extra-android-m2repository
   - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-1/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS
   - source ~/.android-sdk-installer/env
-  
+
   # Create and start emulator
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
