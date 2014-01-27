@@ -13,8 +13,8 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
 
     sourceSets {
 
@@ -73,7 +73,7 @@ android {
         versionCode 20
         versionName "2.5.1"
         minSdkVersion 8
-        targetSdkVersion 18
+        targetSdkVersion 19
     }
 
     android.applicationVariants.all { variant ->
