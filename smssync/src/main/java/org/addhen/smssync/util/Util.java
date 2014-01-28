@@ -17,8 +17,6 @@
 
 package org.addhen.smssync.util;
 
-import com.squareup.otto.Produce;
-
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
@@ -40,6 +38,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -502,6 +501,33 @@ public class Util {
         // of the OS since they are inlined at compile time. This is guaranteed
         // behavior.
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
+    }
+
+    public static void makeDefaultSmsApp(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            String defaultSmsPackage = Telephony.Sms.getDefaultSmsPackage(context);
+            if (!defaultSmsPackage.equals(context.getPackageName())) {
+                final Intent changeDefaultIntent = new Intent(
+                        Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+                changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
+                        context.getPackageName());
+                context.startActivity(changeDefaultIntent);
+
+            }
+        }
+    }
+
+    public static boolean isDefaultSmsApp(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            String defaultSmsPackage = Telephony.Sms.getDefaultSmsPackage(context);
+
+            if (defaultSmsPackage.equals(context.getPackageName())) {
+                return true;
+            }
+            logActivities(context, "packages: "+ defaultSmsPackage);
+            return false;
+        }
+        return true;
     }
 
     public void log(String message) {
