@@ -21,5 +21,5 @@ Post on our [forums][3]
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ushahidi/smssync/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 [1]: http://smssync.ushahidi.com/howto
-[2]: http://smssync.ushahidi.com/doc
+[2]: http://smssync.ushahidi.com/developers/
 [3]: https://wiki.ushahidi.com/pages/viewpage.action?pageId=8357140
