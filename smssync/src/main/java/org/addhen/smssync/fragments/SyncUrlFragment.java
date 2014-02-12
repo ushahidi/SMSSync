@@ -427,6 +427,8 @@ public class SyncUrlFragment extends
                         // show notification
                         Util.showNotification(getActivity());
                     } else {
+                        view.enableSmsSync.setChecked(false);
+                        Prefs.enabled = false;
                         Util.makeDefaultSmsApp(this.getActivity());
                     }
 

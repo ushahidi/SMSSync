@@ -507,6 +507,7 @@ public class Util {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             String defaultSmsPackage = Telephony.Sms.getDefaultSmsPackage(context);
             if (!defaultSmsPackage.equals(context.getPackageName())) {
+                Util.logActivities(context,"makeDefault "+" defaultSmsPackage "+defaultSmsPackage+" smssyncPackage "+context.getPackageName());
                 final Intent changeDefaultIntent = new Intent(
                         Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
                 changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
@@ -522,9 +523,10 @@ public class Util {
             String defaultSmsPackage = Telephony.Sms.getDefaultSmsPackage(context);
 
             if (defaultSmsPackage.equals(context.getPackageName())) {
+                logActivities(context, "defaultsms "+ defaultSmsPackage);
                 return true;
             }
-            logActivities(context, "packages: "+ defaultSmsPackage);
+            logActivities(context, "vote "+ defaultSmsPackage);
             return false;
         }
         return true;
