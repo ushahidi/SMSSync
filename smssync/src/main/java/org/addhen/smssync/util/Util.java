@@ -503,11 +503,16 @@ public class Util {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     }
 
+    /**
+     * Check if the device runs Android 4.4 (KitKat) or higher.
+     */
+    public static boolean isKitKat() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
     public static void makeDefaultSmsApp(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            String defaultSmsPackage = Telephony.Sms.getDefaultSmsPackage(context);
-            if (!defaultSmsPackage.equals(context.getPackageName())) {
-                Util.logActivities(context,"makeDefault "+" defaultSmsPackage "+defaultSmsPackage+" smssyncPackage "+context.getPackageName());
+        if (isKitKat()) {
+            if (!isDefaultSmsApp(context)) {
                 final Intent changeDefaultIntent = new Intent(
                         Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
                 changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
@@ -519,15 +524,8 @@ public class Util {
     }
 
     public static boolean isDefaultSmsApp(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            String defaultSmsPackage = Telephony.Sms.getDefaultSmsPackage(context);
-
-            if (defaultSmsPackage.equals(context.getPackageName())) {
-                logActivities(context, "defaultsms "+ defaultSmsPackage);
-                return true;
-            }
-            logActivities(context, "vote "+ defaultSmsPackage);
-            return false;
+        if (isKitKat()) {
+            return context.getPackageName().equals(Telephony.Sms.getDefaultSmsPackage(context));
         }
         return true;
     }
