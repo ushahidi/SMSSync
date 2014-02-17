@@ -99,30 +99,6 @@ public class ProcessSmsTest extends BaseTest {
         assertTrue("Could not delete the message",message.deleteAllMessages());
     }
 
-    @SmallTest
-    public void testShouldImportMessagesFromSmsInbox() throws Exception {
-        Message message = new Message();
-        // Remove any message in the message inbox
-        message.deleteAllMessages();
-
-        // initialize some content in the sms inbox
-        final String body = "foo bar";
-        final String address = "123443";
-        ContentValues values = new ContentValues();
-        values.put("address", address);
-        values.put("body", body);
-        assertNotNull("Could not add sms to sms inbox", getContext().getContentResolver()
-                .insert(Uri.parse(ProcessSms.SMS_CONTENT_INBOX), values));
-        assertNotNull("Could not add sms to sms inbox", getContext().getContentResolver()
-                .insert(Uri.parse(ProcessSms.SMS_CONTENT_INBOX), values));
-        assertNotNull("Could not add sms to sms inbox", getContext().getContentResolver()
-                .insert(Uri.parse(ProcessSms.SMS_CONTENT_INBOX), values));
-        // import messages
-        final int imported = mProcessSms.importMessages();
-        assertNotNullOrZero("Could not import messages", imported );
-
-    }
-
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
