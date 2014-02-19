@@ -32,12 +32,14 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.provider.Telephony;
+import android.provider.Telephony.Sms.Conversations;
+import android.provider.Telephony.Sms.Inbox;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,6 +98,9 @@ public class ProcessSms {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
                         + threadId + " timestamp: " + timestamp);
+        if (Util.isKitKat()) {
+            return findMessageIdKitKat(threadId, timestamp);
+        }
         long id = 0;
         if (threadId > 0) {
 
@@ -106,6 +111,33 @@ public class ProcessSms {
                             "_id", "date", "thread_id"
                     },
                     "date=" + timestamp, null, "date desc");
+
+            if (cursor != null) {
+                try {
+                    if (cursor.moveToFirst()) {
+                        id = cursor.getLong(0);
+
+                    }
+                } finally {
+                    cursor.close();
+                }
+            }
+        }
+        return id;
+    }
+
+    public long findMessageIdKitKat(long threadId, long timestamp) {
+        Logger.log(CLASS_TAG,
+                "findMessageId(): get the message id using thread id and timestamp: threadId: "
+                        + threadId + " timestamp: " + timestamp);
+        long id = 0;
+        if (threadId > 0) {
+
+            Cursor cursor = context.getContentResolver().query(
+                    ContentUris.withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
+                            threadId),
+                    SmsQuery.PROJECTION,
+                    Conversations.DATE + "=" + timestamp, null, "date desc");
 
             if (cursor != null) {
                 try {
@@ -172,6 +204,9 @@ public class ProcessSms {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
         Prefs.loadPreferences(context);
+        if (Util.isKitKat()) {
+            return importMessageKitKat();
+        }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
         uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
         String[] projection = {
@@ -208,6 +243,43 @@ public class ProcessSms {
 
     }
 
+    public int importMessageKitKat() {
+        Logger.log(CLASS_TAG,
+                "importMessages(): import messages from messages app");
+        Prefs.loadPreferences(context);
+        Uri uriSms = SmsQuery.INBOX_CONTENT_URI;
+        uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
+
+        String messageDate;
+
+        Cursor c = context.getContentResolver().query(uriSms, SmsQuery.PROJECTION, null,
+                null, Inbox.DATE + " DESC");
+
+        if (c != null && c.getCount() > 0) {
+            if (c.moveToFirst()) {
+
+                do {
+                    Message message = new Message();
+
+                    messageDate = String.valueOf(c.getLong(c
+                            .getColumnIndex(Inbox.DATE)));
+                    message.setTimestamp(messageDate);
+
+                    message.setFrom(c.getString(c
+                            .getColumnIndex(Inbox.ADDRESS)));
+                    message.setBody(c.getString(c.getColumnIndex(Inbox.BODY)));
+                    message.setUuid(getUuid());
+                    message.save();
+                } while (c.moveToNext());
+            }
+            c.close();
+            return 0;
+
+        } else {
+            return 1;
+        }
+    }
+
     /**
      * Tries to locate the thread id given the address (phone number or email) of the message
      * sender.
@@ -216,19 +288,45 @@ public class ProcessSms {
      */
     public long getThreadId(String body, String address) {
         Logger.log(CLASS_TAG, "getId(): thread id");
+
+        if (Util.isKitKat()) {
+            return getThreadIdKitKat(body, address);
+        }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
 
         StringBuilder sb = new StringBuilder();
         sb.append("address=" + DatabaseUtils.sqlEscapeString(address) + " AND ");
         sb.append("body=" + DatabaseUtils.sqlEscapeString(body));
 
-        Cursor c = context.getContentResolver().query(uriSms, null, null, null,
+        Cursor c = context.getContentResolver().query(uriSms, null, sb.toString(), null,
                 "date DESC ");
 
         if (c != null) {
             if (c.getCount() > 0) {
                 c.moveToFirst();
                 long threadId = c.getLong(c.getColumnIndex("thread_id"));
+                c.close();
+                return threadId;
+            }
+        }
+
+        return 0;
+    }
+
+    public long getThreadIdKitKat(String body, String address) {
+        Logger.log(CLASS_TAG, "getId(): thread id the kitkat way");
+        StringBuilder sb = new StringBuilder();
+        sb.append(Inbox.ADDRESS + "=" + DatabaseUtils.sqlEscapeString(address) + " AND ");
+        sb.append(Inbox.BODY + "=" + DatabaseUtils.sqlEscapeString(body));
+
+        Cursor c = context.getContentResolver()
+                .query(SmsQuery.INBOX_CONTENT_URI, SmsQuery.PROJECTION, sb.toString(), null,
+                        SmsQuery.SORT_ORDER);
+
+        if (c != null) {
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                long threadId = c.getLong(c.getColumnIndex(Inbox.THREAD_ID));
                 c.close();
                 return threadId;
             }
@@ -300,11 +398,12 @@ public class ProcessSms {
     public boolean delSmsFromInbox(String body, String address) {
         Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
         final long threadId = getThreadId(body, address);
-
+        Uri smsUri = Util.isKitKat() ? ContentUris.withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
+                threadId) : ContentUris.withAppendedId(Uri.parse(SMS_CONTENT_URI), threadId);
         if (threadId >= 0) {
 
             int rowsDeleted = context.getContentResolver().delete(
-                    Uri.parse(SMS_CONTENT_URI + threadId), null, null);
+                    smsUri, null, null);
             if (rowsDeleted > 0) {
                 return true;
             }
@@ -331,6 +430,31 @@ public class ProcessSms {
 
         return SentMessagesUtil.processSentMessages(context);
 
+    }
+
+    /**
+     * A basic SmsQuery on android.provider.Telephony.Sms.Inbox
+     */
+    private interface SmsQuery {
+
+        int TOKEN = 1;
+
+        static final Uri INBOX_CONTENT_URI = Inbox.CONTENT_URI;
+
+        static final Uri SMS_CONVERSATION_URI = Conversations.CONTENT_URI;
+
+        static final String[] PROJECTION = {
+                Inbox._ID,
+                Inbox.ADDRESS,
+                Inbox.BODY,
+                Inbox.DATE,
+        };
+
+        static final String SORT_ORDER = Telephony.Sms.Inbox.DEFAULT_SORT_ORDER;
+
+        int ID = 0;
+        int ADDRESS = 1;
+        int BODY = 2;
     }
 
 }

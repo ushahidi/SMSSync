@@ -406,27 +406,33 @@ public class SyncUrlFragment extends
             loadByStatus();
             if (syncUrl != null && syncUrl.size() > 0) {
                 if (view.enableSmsSync.isChecked()) {
-                    // start sms receiver
-                    pm.setComponentEnabledSetting(smsReceiverComponent,
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                            PackageManager.DONT_KILL_APP);
 
-                    Prefs.enabled = true;
-                    view.enableSmsSync.setChecked(true);
-                    // because the services to be run depends on state of the service, save the
-                    // changes first
-                    Prefs.savePreferences(getActivity());
-                    // run auto sync service
-                    RunServicesUtil.runAutoSyncService(getActivity());
+                    if (Util.isDefaultSmsApp(this.getActivity())) {
+                        // start sms receiver
+                        pm.setComponentEnabledSetting(smsReceiverComponent,
+                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                                PackageManager.DONT_KILL_APP);
 
-                    // run check task service
-                    RunServicesUtil.runCheckTaskService(getActivity());
+                        Prefs.enabled = true;
+                        view.enableSmsSync.setChecked(true);
+                        // because the services to be run depends on the state of the service so save the
+                        // changes first
+                        Prefs.savePreferences(getActivity());
+                        // run auto sync service
+                        RunServicesUtil.runAutoSyncService(getActivity());
 
-                    // show notification
-                    Util.showNotification(getActivity());
+                        // run check task service
+                        RunServicesUtil.runCheckTaskService(getActivity());
+
+                        // show notification
+                        Util.showNotification(getActivity());
+                    } else {
+                        view.enableSmsSync.setChecked(false);
+                        Prefs.enabled = false;
+                        Util.makeDefaultSmsApp(this.getActivity());
+                    }
 
                 } else {
-
                     // stop sms receiver
                     pm.setComponentEnabledSetting(smsReceiverComponent,
                             PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
