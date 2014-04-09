@@ -75,7 +75,7 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
 
         // Pending messages
         if (getItem(position).getMessageType() == 0) {
-            widget.messageType.setText(R.string.pending_messages);
+            widget.messageType.setText(R.string.sms);
             widget.messageType.setTextColor(context.getResources().getColor(
                     R.color.pending_color));
 
