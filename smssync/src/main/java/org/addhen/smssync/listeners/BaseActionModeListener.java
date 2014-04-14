@@ -17,11 +17,13 @@
 
 package org.addhen.smssync.listeners;
 
+import org.addhen.smssync.R;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -96,8 +98,9 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
                 mSelectedItemPositions.remove(position);
                 modeView.setItemChecked(position, false);
             }
+
             setSelectedItemPositions(mSelectedItemPositions);
-            setTitle(String.valueOf(mSelectedItemPositions.size()));
+            setTitle(host.getApplicationContext().getResources().getString(R.string.selected,mSelectedItemPositions.size()));
         }
 
     }
