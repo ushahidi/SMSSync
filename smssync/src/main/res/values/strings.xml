@@ -141,6 +141,7 @@
     <string name="sms_not_delivered">SMS not delivered</string>
 
     <!-- Pending and failed messages Tab -->
+    <string name="sms">SMS</string>
     <string name="pending_messages">Pending</string>
     <string name="sent_messages">Sent</string>
     <string name="title_bar_text">Messages</string>
