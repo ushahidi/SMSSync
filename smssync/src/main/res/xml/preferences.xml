@@ -39,6 +39,7 @@
                 android:title="@string/chk_enable_reply"/>
 
         <EditTextPreference
+
                 android:defaultValue="@string/edittxt_reply_default"
                 android:dialogTitle="@string/edittxt_reply"
                 android:key="reply_preference"
@@ -50,11 +51,11 @@
                 android:key="auto_sync_preference"
                 android:summary="@string/chk_enable_auto_sync_hint"
                 android:title="@string/chk_enable_auto_sync"/>
-
-        <ListPreference
+        <org.addhen.smssync.util.ValidableEditTextPreference
                 android:defaultValue="5"
                 android:dialogTitle="@string/txt_auto_sync_delay"
                 android:key="auto_sync_times"
+                android:numeric="integer"
                 android:summary="@string/auto_sync_delay_hint"
                 android:title="@string/txt_auto_sync_delay"/>
     </PreferenceCategory>
@@ -64,10 +65,11 @@
                 android:summary="@string/chk_enable_task_check_hint"
                 android:title="@string/chk_enable_task_check"/>
 
-        <ListPreference
+        <org.addhen.smssync.util.ValidableEditTextPreference
                 android:defaultValue="5"
                 android:dialogTitle="@string/txt_task_check_delay"
                 android:key="task_check_times"
+                android:numeric="integer"
                 android:summary="@string/txt_task_check_delay_hint"
                 android:title="@string/txt_task_check_delay"/>
     </PreferenceCategory>
@@ -76,3 +78,4 @@
     </PreferenceCategory>
 
 </PreferenceScreen>
+
