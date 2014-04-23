@@ -19,6 +19,7 @@ package org.addhen.smssync.messages;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.Settings;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
@@ -32,11 +33,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.provider.Telephony;
 import android.provider.Telephony.Sms.Conversations;
 import android.provider.Telephony.Sms.Inbox;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -347,44 +352,61 @@ public class ProcessSms {
      */
     public void sendSms(String sendTo, String msg) {
 
-        ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
-        ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
-        Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
+
+        Messenger connectionToUse = getCurrentMessenger();
+
+        if (connectionToUse == null) {
+            ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
+            ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
+            Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
                 + sendTo + " message: " + msg);
 
-        Util.logActivities(context, context.getString(R.string.sent_msg, msg, sendTo));
+            Util.logActivities(context, context.getString(R.string.sent_msg, msg, sendTo));
 
-        SmsManager sms = SmsManager.getDefault();
-        ArrayList<String> parts = sms.divideMessage(msg);
+            SmsManager sms = SmsManager.getDefault();
+            ArrayList<String> parts = sms.divideMessage(msg);
 
-        for (int i = 0; i < parts.size(); i++) {
-            PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,
-                    new Intent(ServicesConstants.SENT), 0);
+            for (int i = 0; i < parts.size(); i++) {
+                PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,
+                        new Intent(ServicesConstants.SENT), 0);
 
-            PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
-                    0, new Intent(ServicesConstants.DELIVERED), 0);
-            sentIntents.add(sentIntent);
+                PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
+                        0, new Intent(ServicesConstants.DELIVERED), 0);
+                sentIntents.add(sentIntent);
 
-            deliveryIntents.add(deliveryIntent);
-        }
+                deliveryIntents.add(deliveryIntent);
+            }
 
-        if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo)) {
-            /*
-             * sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-             * deliveryIntents);
-             */
+            if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo)) {
+                /*
+                * sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                * deliveryIntents);
+                */
 
-            sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-                    deliveryIntents);
+                sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                        deliveryIntents);
 
-            // Get current Time Millis
-            final Long timeMills = System.currentTimeMillis();
-            // Log to sent table
-            Message message = new Message();
-            message.setBody(msg);
-            message.setTimestamp(timeMills.toString());
-            message.setFrom(sendTo);
-            postToSentBox(message, TASK);
+                // Get current Time Millis
+                final Long timeMills = System.currentTimeMillis();
+                // Log to sent table
+                Message message = new Message();
+                message.setBody(msg);
+                message.setTimestamp(timeMills.toString());
+                message.setFrom(sendTo);
+                postToSentBox(message, TASK);
+            }
+        } else {
+            android.os.Message message = android.os.Message.obtain(null, 1, 0, 0);
+            try {
+                Bundle data = new Bundle();
+                data.putString("sendTo", sendTo);
+                data.putString("msg", msg);
+                message.setData(data);
+                connectionToUse.send(message);
+            } catch (RemoteException e) {
+                Logger.log(CLASS_TAG,e.getMessage());
+            }
+
         }
     }
 
@@ -457,4 +479,17 @@ public class ProcessSms {
         int BODY = 2;
     }
 
+    /*
+    *   Determine whether to use SMSSync or to use SMSPortals
+    */
+    private Messenger getCurrentMessenger(){
+
+        ArrayList<Messenger> availableConnections = Settings.availableConnections;
+        int size = availableConnections.size();
+        if (size == 0) return null;
+        int count = Settings.currentConnectionIndex;
+        Settings.currentConnectionIndex++;
+       	int nextIndex = (count + 1) % size;
+        return availableConnections.get(nextIndex);
+    }
 }
