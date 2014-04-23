@@ -58,6 +58,12 @@
                 android:summary="@string/auto_sync_delay_hint"
                 android:title="@string/txt_auto_sync_delay"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/use_sms_portals_settings" >
+        <CheckBoxPreference
+                android:key="use_sms_portals"
+                android:summary="@string/use_sms_portals_delay"
+                android:title="@string/use_sms_portals_hint" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/task_check_settings">
         <CheckBoxPreference
                 android:key="task_check_preference"

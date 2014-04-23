@@ -20,6 +20,7 @@ package org.addhen.smssync;
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.squareup.otto.Produce;
 
+import org.addhen.smssync.services.SmsPortal;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.Util;
@@ -31,12 +32,15 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Messenger;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.text.TextUtils;
+
+import java.util.ArrayList;
 
 /**
  * This class handles all related task for settings on SMSSync. TODO // move the UI code into it's
@@ -65,11 +69,17 @@ public class Settings extends SherlockPreferenceActivity implements
 
     public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 
+    public static final String USE_SMS_PORTALS = "use_sms_portals";
+
     public static final String TASK_CHECK = "task_check_preference";
 
     public static final String TASK_CHECK_TIMES = "task_check_times";
 
     public static final String ABOUT = "powered_preference";
+
+    public static ArrayList<Messenger> availableConnections = new ArrayList<Messenger>();
+
+    public static int currentConnectionIndex = -1;
 
     private EditTextPreference replyPref;
 
@@ -80,6 +90,8 @@ public class Settings extends SherlockPreferenceActivity implements
     private CheckBoxPreference enableReply;
 
     private CheckBoxPreference autoSync;
+
+    private CheckBoxPreference useSmsPortals;
 
     private CheckBoxPreference taskCheck;
 
@@ -165,6 +177,8 @@ public class Settings extends SherlockPreferenceActivity implements
                 AUTO_SYNC_TIMES);
         autoSyncTimes.setEntries(autoSyncEntries);
         autoSyncTimes.setEntryValues(autoSyncValues);
+
+        useSmsPortals = (CheckBoxPreference) getPreferenceScreen().findPreference(USE_SMS_PORTALS);
 
         taskCheckTimes = (ListPreference) getPreferenceScreen().findPreference(
                 TASK_CHECK_TIMES);
@@ -370,6 +384,18 @@ public class Settings extends SherlockPreferenceActivity implements
                     check));
         }
 
+        editor.putBoolean("UseSmsPortals", useSmsPortals.isChecked());
+        if (Prefs.useSmsPortals!=  useSmsPortals.isChecked()) {
+            boolean checked = useSmsPortals.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.useSmsPortals);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    useSmsPortals.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putInt("AutoTime", autoTime);
         if (Prefs.autoTime != autoTime) {
             Util.logActivities(this, getString(R.string.settings_changed,
@@ -477,6 +503,17 @@ public class Settings extends SherlockPreferenceActivity implements
             }
         }
 
+        if(key.equals(USE_SMS_PORTALS)) {
+            SmsPortal smsPortal = new SmsPortal(getApplicationContext());
+            if(sharedPreferences.getBoolean(USE_SMS_PORTALS, false)) {
+                smsPortal.setNumber();
+                smsPortal.bindToSmsPortals();
+                availableConnections = smsPortal.getMessengers();
+            } else {
+                smsPortal.unbindFromSmsPortals();
+                availableConnections.clear();
+            }
+        }
         // Enable task checking
         if (key.equals(TASK_CHECK)) {
 
