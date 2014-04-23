@@ -347,6 +347,10 @@
     <string name="disabled">disabled</string>
     <string name="invalid_data_format">Invalid data format</string>
     <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
+    <!-- Message Delivery API-->
+    <string name="message_processed_success">SMSSync has completed processing this message.</string>
+    <string name="message_processed_failed">SMSSync has failed processing this message.</string>
+    <string name="message_processed_json_failed">SMSSync has failed creating JSON response.</string>
 
     <!-- Survey Dialog -->
     <string name="in_valid_email_address">Invalid email address</string>
