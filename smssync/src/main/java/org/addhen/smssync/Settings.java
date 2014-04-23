@@ -18,6 +18,7 @@
 package org.addhen.smssync;
 
 
+import org.addhen.smssync.services.SmsPortal;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.TimePreference;
@@ -30,12 +31,15 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Messenger;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.text.TextUtils;
+
+import java.util.ArrayList;
 
 /**
  * This class handles all related task for settings on SMSSync. TODO // move the UI code into it's
@@ -64,11 +68,17 @@ public class Settings extends PreferenceActivity implements
 
     public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 
+    public static final String USE_SMS_PORTALS = "use_sms_portals";
+
     public static final String TASK_CHECK = "task_check_preference";
 
     public static final String TASK_CHECK_TIMES = "task_check_times";
 
     public static final String ABOUT = "powered_preference";
+
+    public static ArrayList<Messenger> availableConnections = new ArrayList<Messenger>();
+
+    public static int currentConnectionIndex = -1;
 
     private EditTextPreference replyPref;
 
@@ -79,6 +89,8 @@ public class Settings extends PreferenceActivity implements
     private CheckBoxPreference enableReply;
 
     private CheckBoxPreference autoSync;
+
+    private CheckBoxPreference useSmsPortals;
 
     private CheckBoxPreference taskCheck;
 
@@ -146,9 +158,8 @@ public class Settings extends PreferenceActivity implements
         autoSyncTimes = (TimePreference) getPreferenceScreen().findPreference(
                 AUTO_SYNC_TIMES);
 
-
-        taskCheckTimes = (TimePreference) getPreferenceScreen().findPreference(
-                TASK_CHECK_TIMES);
+        taskCheckTimes = (TimePreference) getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
+        useSmsPortals = (CheckBoxPreference) getPreferenceScreen().findPreference(USE_SMS_PORTALS);
 
         about = (Preference) getPreferenceScreen().findPreference(ABOUT);
 
@@ -292,6 +303,18 @@ public class Settings extends PreferenceActivity implements
                     Prefs.autoTime, autoSyncTimes.getTimeValueAsString()));
         }
 
+        editor.putBoolean("UseSmsPortals", useSmsPortals.isChecked());
+        if (Prefs.useSmsPortals!=  useSmsPortals.isChecked()) {
+            boolean checked = useSmsPortals.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.useSmsPortals);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    useSmsPortals.getTitle().toString(), status,
+                    check));
+        }
+
         editor.putString("taskCheck", taskCheckTimes.getTimeValueAsString());
         if (!Prefs.taskCheckTime.equals(taskCheckTimes.getSummary().toString())) {
             Util.logActivities(this, getString(R.string.settings_changed,
@@ -381,6 +404,17 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
+        if(key.equals(USE_SMS_PORTALS)) {
+            SmsPortal smsPortal = new SmsPortal(getApplicationContext());
+            if(sharedPreferences.getBoolean(USE_SMS_PORTALS, false)) {
+                smsPortal.setNumber();
+                smsPortal.bindToSmsPortals();
+                availableConnections = smsPortal.getMessengers();
+            } else {
+                smsPortal.unbindFromSmsPortals();
+                availableConnections.clear();
+            }
+        }
         // Enable task checking
         if (key.equals(TASK_CHECK)) {
 

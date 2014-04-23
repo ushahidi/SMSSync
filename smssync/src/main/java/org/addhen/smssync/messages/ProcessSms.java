@@ -390,7 +390,7 @@ public class ProcessSms {
                     (int) System.currentTimeMillis(), sentMessageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             Intent delivered = new Intent(ServicesConstants.DELIVERED);
-                delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);
+            delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);
 
             PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
                     (int) System.currentTimeMillis(), delivered, PendingIntent.FLAG_UPDATE_CURRENT);
