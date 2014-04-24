@@ -1,28 +1,39 @@
 package org.addhen.smssync.models;
 
-/**
- * Created by kkalfas@soldevelo.com on 16.04.14.
- */
-public class MessageResult {
+import com.google.gson.annotations.SerializedName;
 
-    private String id;
+import java.io.Serializable;
+
+/**
+ * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 16.04.14.
+ */
+public class MessageResult implements Serializable {
+
+    @SerializedName("id")
+    private String messageUUID;
+
+    @SerializedName("type")
     private String type;
+
+    @SerializedName("code")
     private int resultCode;
+
+    @SerializedName("message")
     private String message;
 
-    public MessageResult(String id, String type, int resultCode, String message) {
-        this.id = id;
+    public MessageResult(String messageUUID, String type, int resultCode, String message) {
+        this.messageUUID = messageUUID;
         this.type = type;
         this.resultCode = resultCode;
         this.message = message;
     }
 
-    public String getId() {
-        return id;
+    public String getMessageUUID() {
+        return messageUUID;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMessageUUID(String messageUUID) {
+        this.messageUUID = messageUUID;
     }
 
     public String getType() {
