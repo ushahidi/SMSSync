@@ -77,6 +77,12 @@
                 android:title="@string/txt_task_check_delay"
                 android:dependency="task_check_preference"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/message_delivery_api_setting">
+        <CheckBoxPreference
+                android:key="message_delivery_api_preference"
+                android:summary="@string/chk_enable_message_delivery_api_hint"
+                android:title="@string/chk_enable_message_delivery_api"/>
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/sms_portals_settings" >
         <CheckBoxPreference
                 android:key="enable_sms_portals"

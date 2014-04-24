@@ -75,6 +75,8 @@ public class Settings extends PreferenceActivity implements
 
     public static final String TASK_CHECK_TIMES = "task_check_times";
 
+    public static final String MESSAGE_DELIVERY_API = "message_delivery_api_preference";
+
     public static final String ABOUT = "powered_preference";
 
     public static ArrayList<Messenger> availableConnections = new ArrayList<Messenger>();
@@ -96,6 +98,8 @@ public class Settings extends PreferenceActivity implements
     private CheckBoxPreference taskCheck;
 
     private TimePreference autoSyncTimes;
+
+    private CheckBoxPreference enableMessageDeliveryAPI;
 
     private TimePreference taskCheckTimes;
 
@@ -168,6 +172,9 @@ public class Settings extends PreferenceActivity implements
 
         useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(KEY_ENABLE_SMS_PORTALS);
+
+        enableMessageDeliveryAPI = (CheckBoxPreference) getPreferenceScreen().findPreference(
+                MESSAGE_DELIVERY_API);
 
         about = (Preference) getPreferenceScreen().findPreference(ABOUT);
 
@@ -367,6 +374,17 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
+        editor.putBoolean("MessageDeliveryAPIEnable", enableMessageDeliveryAPI.isChecked());
+        if (Prefs.messageDeliveryAPIEnable != enableMessageDeliveryAPI.isChecked()) {
+            boolean checked = enableMessageDeliveryAPI.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.messageDeliveryAPIEnable);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableMessageDeliveryAPI.getTitle().toString(), status,
+                    check));
+        }
         editor.commit();
     }
 

@@ -347,10 +347,15 @@
     <string name="disabled">disabled</string>
     <string name="invalid_data_format">Invalid data format</string>
     <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
+
     <!-- Message Delivery API-->
     <string name="message_processed_success">SMSSync has completed processing this message.</string>
     <string name="message_processed_failed">SMSSync has failed processing this message.</string>
     <string name="message_processed_json_failed">SMSSync has failed creating JSON response.</string>
+    <!-- enable message delivery api -->
+    <string name="chk_enable_message_delivery_api">Enable Message Delivery API</string>
+    <string name="chk_enable_message_delivery_api_hint">Allow SMSSync to send information about sent messages to server.</string>
+    <string name="message_delivery_api_setting">Message Delivery API Settings</string>
 
     <!-- Survey Dialog -->
     <string name="in_valid_email_address">Invalid email address</string>
