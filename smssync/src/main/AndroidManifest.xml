@@ -83,6 +83,20 @@
             android:label="@string/filter" />
 
         <!-- sms -->
+        <!-- Receiver for sms sent code -->
+        <receiver android:name=".receivers.SmsSentReceiver" >
+            <intent-filter>
+                <action android:name="SMS_SENT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Receiver for sms delivered code -->
+        <receiver android:name="org.addhen.smssync.receivers.SmsDeliveredReceiver" >
+            <intent-filter>
+                <action android:name="SMS_DELIVERED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Receiver for pre kitkat. This is disabled when it's kitkat and above -->
         <receiver android:name="org.addhen.smssync.receivers.SmsReceiver" android:enabled="@bool/is_pre_kitkat" >
             <intent-filter>

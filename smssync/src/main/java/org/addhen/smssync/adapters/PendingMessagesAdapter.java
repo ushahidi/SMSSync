@@ -36,6 +36,8 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
 
         TextView message;
 
+        TextView messageType;
+
         public Widgets(View convertView) {
             super(convertView);
             messageFrom = (TextView) convertView
@@ -43,6 +45,8 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
             messageDate = (TextView) convertView
                     .findViewById(R.id.message_date);
             message = (TextView) convertView.findViewById(R.id.message);
+            messageType = (TextView) convertView
+                    .findViewById(R.id.sent_message_type);
         }
 
         @Override
@@ -74,6 +78,24 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
         widgets.messageDate.setText(formatDate(getItem(position)
                 .getTimestamp()));
         widgets.message.setText(getItem(position).getBody());
+
+        // Pending messages
+        if (getItem(position).getMessageType() == 0) {
+            widgets.messageType.setText(R.string.sms);
+            widgets.messageType.setTextColor(context.getResources().getColor(
+                    R.color.pending_color));
+
+        } else if (getItem(position).getMessageType() == 1) {
+            // Task messages
+            widgets.messageType.setText(R.string.task);
+            widgets.messageType.setTextColor(context.getResources().getColor(
+                    R.color.task_color));
+        } else {
+            // Failed task messages
+            widgets.messageType.setText(R.string.failed);
+            widgets.messageType.setTextColor(context.getResources().getColor(
+                    R.color.task_color));
+        }
 
         return view;
     }

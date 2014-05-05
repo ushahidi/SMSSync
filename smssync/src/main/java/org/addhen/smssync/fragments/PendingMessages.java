@@ -47,7 +47,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.ListView;
 
@@ -88,56 +87,6 @@ public class PendingMessages
         }
     };
 
-    // when sms has been sent
-    private BroadcastReceiver smsSentReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int result = getResultCode();
-            log("smsSentReceiver onReceive result: " + result);
-            switch (result) {
-                case Activity.RESULT_OK:
-                    toastLong(R.string.sms_status_success);
-                    logActivities(getString(R.string.sms_status_success));
-                    break;
-                case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                    toastLong(R.string.sms_delivery_status_failed);
-                    logActivities(getString(R.string.sms_delivery_status_failed));
-                    break;
-                case SmsManager.RESULT_ERROR_NO_SERVICE:
-                    toastLong(R.string.sms_delivery_status_no_service);
-                    logActivities(getString(R.string.sms_delivery_status_no_service));
-                    break;
-                case SmsManager.RESULT_ERROR_NULL_PDU:
-                    toastLong(R.string.sms_delivery_status_null_pdu);
-                    logActivities(getString(R.string.sms_delivery_status_null_pdu));
-                    break;
-                case SmsManager.RESULT_ERROR_RADIO_OFF:
-                    toastLong(R.string.sms_delivery_status_radio_off);
-                    logActivities(getString(R.string.sms_delivery_status_radio_off));
-                    break;
-            }
-        }
-    };
-
-    // when sms has been delivered
-    private BroadcastReceiver smsDeliveredReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            int result = getResultCode();
-            log("smsDeliveredReceiver onReceive result: "
-                    + result);
-            switch (result) {
-                case Activity.RESULT_OK:
-                    toastLong(R.string.sms_delivered);
-                    logActivities(getString(R.string.sms_delivered));
-                    break;
-                case Activity.RESULT_CANCELED:
-                    toastLong(R.string.sms_not_delivered);
-                    logActivities(getString(R.string.sms_not_delivered));
-                    break;
-            }
-        }
-    };
-
     public PendingMessages() {
         super(PendingMessagesView.class, PendingMessagesAdapter.class,
                 R.layout.list_messages, R.menu.pending_messages_menu,
@@ -174,6 +123,9 @@ public class PendingMessages
         view.sync.setOnClickListener(this);
 
         MainApplication.bus.register(this);
+
+        getActivity().registerReceiver(failedReceiver,
+                new IntentFilter(ServicesConstants.FAILED_ACTION));
     }
 
     @Override
@@ -187,12 +139,6 @@ public class PendingMessages
     public void onResume() {
         log("onResume()");
         super.onResume();
-        getActivity().registerReceiver(failedReceiver,
-                new IntentFilter(ServicesConstants.FAILED_ACTION));
-        getActivity().registerReceiver(smsSentReceiver,
-                new IntentFilter(ServicesConstants.SENT));
-        getActivity().registerReceiver(smsDeliveredReceiver,
-                new IntentFilter(ServicesConstants.DELIVERED));
         idle();
         new LoadingTask(getActivity()).execute((String) null);
     }
@@ -215,8 +161,6 @@ public class PendingMessages
         log("onDestroy()");
         super.onDestroy();
         getActivity().unregisterReceiver(failedReceiver);
-        getActivity().unregisterReceiver(smsSentReceiver);
-        getActivity().unregisterReceiver(smsDeliveredReceiver);
         MainApplication.bus.unregister(this);
     }
 

@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.messages;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
@@ -72,9 +73,13 @@ public class ProcessSms {
 
     public static final int PENDING = 0;
 
-    private static final String CLASS_TAG = ProcessSms.class.getSimpleName();
-
     public static final int TASK = 1;
+
+    public static final int UNCONFIRMED = 2;
+
+    public static final int FAILED = 3;
+
+    private static final String CLASS_TAG = ProcessSms.class.getSimpleName();
 
     public static HashMap<String, String> smsMap;
 
@@ -94,7 +99,7 @@ public class ProcessSms {
      * @return the message id
      */
     public long findMessageId(long threadId,
-            long timestamp) {
+                              long timestamp) {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
                         + threadId + " timestamp: " + timestamp);
@@ -194,7 +199,7 @@ public class ProcessSms {
 
     /**
      * TODO:// refactor so this method return boolean
-     *
+     * <p/>
      * Import messages from the messages app's table and puts them in SMSSync's outbox table. This
      * will allow messages the imported messages to be sync'd to the configured Sync URL.
      *
@@ -339,13 +344,18 @@ public class ProcessSms {
         return UUID.randomUUID().toString();
     }
 
+    public void sendSms(String sendTo, String msg) {
+        sendSms(sendTo, msg, null);
+    }
+
     /**
      * Sends SMS to a number.
      *
      * @param sendTo - Number to send SMS to.
      * @param msg    - The message to be sent.
+     * @param uuid   - UUID from web server
      */
-    public void sendSms(String sendTo, String msg) {
+    public void sendSms(String sendTo, String msg, String uuid) {
 
         ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
@@ -356,13 +366,29 @@ public class ProcessSms {
 
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(msg);
+        String validUUID;
+        if (null == uuid || "".equals(uuid)) {
+            validUUID = getUuid();
+        } else {
+            validUUID = uuid;
+        }
+        final Long timeMills = System.currentTimeMillis();
+        Message message = new Message();
+        message.setBody(msg);
+        message.setTimestamp(timeMills.toString());
+        message.setFrom(sendTo);
+        message.setUuid(validUUID);
 
         for (int i = 0; i < parts.size(); i++) {
-            PendingIntent sentIntent = PendingIntent.getBroadcast(context, 0,
-                    new Intent(ServicesConstants.SENT), 0);
+            Intent sentMessageIntent = new Intent(ServicesConstants.SENT);
+            sentMessageIntent.putExtra(ServicesConstants.SENT_SMS_BUNDLE, message);
+            PendingIntent sentIntent = PendingIntent.getBroadcast(context,
+                    (int) System.currentTimeMillis(), sentMessageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            Intent delivered = new Intent(ServicesConstants.DELIVERED);
+            delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);
             PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
-                    0, new Intent(ServicesConstants.DELIVERED), 0);
+                    (int) System.currentTimeMillis(), delivered, PendingIntent.FLAG_UPDATE_CURRENT);
             sentIntents.add(sentIntent);
 
             deliveryIntents.add(deliveryIntent);
@@ -377,14 +403,7 @@ public class ProcessSms {
             sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
                     deliveryIntents);
 
-            // Get current Time Millis
-            final Long timeMills = System.currentTimeMillis();
-            // Log to sent table
-            Message message = new Message();
-            message.setBody(msg);
-            message.setTimestamp(timeMills.toString());
-            message.setFrom(sendTo);
-            postToSentBox(message, TASK);
+            postToSentBox(message, UNCONFIRMED);
         }
     }
 
