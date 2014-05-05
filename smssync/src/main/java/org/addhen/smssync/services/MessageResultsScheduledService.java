@@ -3,8 +3,7 @@ package org.addhen.smssync.services;
 import android.content.Intent;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.controllers.MessageDeliveryController;
-import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.SyncUrl;
@@ -17,18 +16,18 @@ import java.util.List;
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 29.04.14.
  */
-public class MessageDeliveryScheduledService extends SmsSyncServices {
+public class MessageResultsScheduledService extends SmsSyncServices {
 
-    private static final String CLASS_TAG = MessageDeliveryScheduledService.class.getSimpleName();
+    private static final String CLASS_TAG = MessageResultsScheduledService.class.getSimpleName();
 
-    private MessageDeliveryController mMessageDeliveryController;
+    private MessageResultsController mMessageResultsController;
 
     private SyncUrl model;
 
-    public MessageDeliveryScheduledService() {
+    public MessageResultsScheduledService() {
         super(CLASS_TAG);
         model = new SyncUrl();
-        mMessageDeliveryController = new MessageDeliveryController(this);
+        mMessageResultsController = new MessageResultsController(this);
     }
 
     @Override
@@ -36,11 +35,11 @@ public class MessageDeliveryScheduledService extends SmsSyncServices {
         log("checking scheduled task services");
         Util.logActivities(this, getString(R.string.task_scheduler_running));
         for (SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            MessagesUUIDSResponse response = mMessageDeliveryController.sendMessageResultGETRequest(syncUrl);
+            MessagesUUIDSResponse response = mMessageResultsController.sendMessageResultGETRequest(syncUrl);
             if (response.isSuccess()) {
                 List<MessageResult> messageResults = new ArrayList<MessageResult>();
                 //TODO: add data fetching DB_TBD.getResultForUIIDs(response.getUuids());
-                mMessageDeliveryController.sendMessageResultPOSTRequest(syncUrl, messageResults);
+                mMessageResultsController.sendMessageResultPOSTRequest(syncUrl, messageResults);
             }
         }
     }

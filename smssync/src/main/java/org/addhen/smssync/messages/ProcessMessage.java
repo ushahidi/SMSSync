@@ -2,7 +2,7 @@ package org.addhen.smssync.messages;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.controllers.MessageDeliveryController;
+import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
@@ -48,12 +48,12 @@ public class ProcessMessage {
 
     private String errorMessage;
 
-    private MessageDeliveryController mMessageDeliveryController;
+    private MessageResultsController mMessageResultsController;
 
     public ProcessMessage(Context context) {
         this.context = context;
         processSms = new ProcessSms(context);
-        mMessageDeliveryController = new MessageDeliveryController(context);
+        mMessageResultsController = new MessageResultsController(context);
     }
 
     /**
@@ -233,11 +233,11 @@ public class ProcessMessage {
                         boolean secretOk = TextUtils.isEmpty(urlSecret) ||
                                 urlSecret.equals(payloadObject.getString("secret"));
                         if (secretOk && task.equals("send")) {
-                            if (Prefs.isMessageDeliveryApiEnabled(context)) {
-                                sendSMSWithMessageDeliveryAPIEnabled(syncUrl, payloadObject);
+                            if (Prefs.isMessageResultsApiEnabled(context)) {
+                                sendSMSWithMessageResultsAPIEnabled(syncUrl, payloadObject);
                             } else {
                                 //backwards compatibility
-                                sendSMSWithMessageDeliveryAPIDisabled(payloadObject);
+                                sendSMSWithMessageResultsAPIDisabled(payloadObject);
                             }
 
                         } else {
@@ -262,7 +262,7 @@ public class ProcessMessage {
         Util.logActivities(context, context.getString(R.string.finish_task_check));
     }
 
-    private void sendSMSWithMessageDeliveryAPIEnabled(SyncUrl syncUrl, JSONObject payloadObject) throws JSONException {
+    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl, JSONObject payloadObject) throws JSONException {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         List<TaskMessage> receivedTasks = JsonUtils.getObj(payloadObject.getJSONArray("messages").toString(),
                 new TypeToken<List<TaskMessage>>() {
@@ -272,8 +272,8 @@ public class ProcessMessage {
             messagesUUIDs.getQueuedMessages().add(task.getUuid());
         }
 
-        MessagesUUIDSResponse response = mMessageDeliveryController.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
-        if(response.isSuccess()) {
+        MessagesUUIDSResponse response = mMessageResultsController.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
+        if(response.isSuccess() && response.hasUUIDs()) {
             for (TaskMessage msg : receivedTasks) {
                 if (response.getUuids().contains(msg.getUuid())) {
                     processSms.sendSms(msg.getSentTo(), msg.getMessage(), msg.getUuid());
@@ -285,7 +285,7 @@ public class ProcessMessage {
         }
     }
 
-    private void sendSMSWithMessageDeliveryAPIDisabled(JSONObject payloadObject) throws JSONException {
+    private void sendSMSWithMessageResultsAPIDisabled(JSONObject payloadObject) throws JSONException {
         jsonArray = payloadObject.getJSONArray("messages");
 
         for (int index = 0; index < jsonArray.length(); ++index) {

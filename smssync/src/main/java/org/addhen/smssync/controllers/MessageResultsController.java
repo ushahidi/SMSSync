@@ -21,17 +21,17 @@ import java.util.List;
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 23.04.14.
  *
- * This class handling Message Delivery API
+ * This class handling Message Results API
  *
  * POST ?task=sent queued_messages {@link #sendQueuedMessagesPOSTRequest(org.addhen.smssync.models.SyncUrl, org.addhen.smssync.models.QueuedMessages)}
  * POST ?task=results message_results {@link #sendMessageResultPOSTRequest(org.addhen.smssync.models.SyncUrl, java.util.List)}
  * GET  ?task=results {@link #sendMessageResultGETRequest(org.addhen.smssync.models.SyncUrl)}
  */
-public class MessageDeliveryController {
+public class MessageResultsController {
 
     private static final String MESSAGE_RESULT_JSON_KEY = "message_result";
-    private static final String TASK_SENT_URL_PARAM = "?task=sent";
-    private static final String TASK_RESULT_URL_PARAM = "?task=result";
+    private static final String TASK_SENT_URL_PARAM = "/add?task=sent";
+    private static final String TASK_RESULT_URL_PARAM = "/add?task=result";
     private static final String POST_METHOD = "POST";
     private static final String GET_METHOD = "GET";
 
@@ -39,7 +39,7 @@ public class MessageDeliveryController {
 
     private Util mUtil;
 
-    public MessageDeliveryController(Context mContext) {
+    public MessageResultsController(Context mContext) {
         this.mContext = mContext;
         mUtil = new Util();
     }
@@ -52,7 +52,7 @@ public class MessageDeliveryController {
      */
     public void sendMessageResultPOSTRequest(SyncUrl syncUrl, List<MessageResult> results) {
         SyncUrl newEndPointURL = syncUrl;
-        newEndPointURL.setUrl(newEndPointURL.getUrl().concat(TASK_SENT_URL_PARAM));
+        newEndPointURL.setUrl(syncUrl.getUrl().substring(0, syncUrl.getUrl().lastIndexOf("/")).concat(TASK_SENT_URL_PARAM));
         MainHttpClient client = new MainHttpClient(newEndPointURL.getUrl(), mContext);
         try {
             client.setMethod(POST_METHOD);
@@ -80,7 +80,7 @@ public class MessageDeliveryController {
         MessagesUUIDSResponse response = null;
         if (null != messages && !messages.getQueuedMessages().isEmpty()) {
             SyncUrl newEndPointURL = syncUrl;
-            newEndPointURL.setUrl(newEndPointURL.getUrl().concat(TASK_SENT_URL_PARAM));
+            newEndPointURL.setUrl(syncUrl.getUrl().substring(0, syncUrl.getUrl().lastIndexOf("/")).concat(TASK_SENT_URL_PARAM));
             MainHttpClient client = new MainHttpClient(newEndPointURL.getUrl(), mContext);
             try {
                 client.setMethod(POST_METHOD);
@@ -93,9 +93,11 @@ public class MessageDeliveryController {
             } finally {
                 if (HttpStatus.SC_OK == client.getResponseCode()) {
                     mUtil.log(mContext.getString(R.string.message_processed_success));
-                    response = new MessagesUUIDSResponse(true, parseMessagesUUIDSResponse(client.getResponse()));
+                    response = parseMessagesUUIDSResponse(client);
+                    response.setSuccess(true);
                 } else {
-                    response = new MessagesUUIDSResponse();
+                    response = new MessagesUUIDSResponse(client.getResponseCode());
+                    Util.logActivities(mContext, mContext.getString(R.string.queued_messages_request_status, client.getResponseCode(), client.getResponse()));
                 }
             }
         }
@@ -111,7 +113,7 @@ public class MessageDeliveryController {
     public MessagesUUIDSResponse sendMessageResultGETRequest(SyncUrl syncUrl) {
         MessagesUUIDSResponse response = null;
         SyncUrl newEndPointURL = syncUrl;
-        newEndPointURL.setUrl(newEndPointURL.getUrl().concat(TASK_RESULT_URL_PARAM));
+        newEndPointURL.setUrl(syncUrl.getUrl().substring(0, syncUrl.getUrl().lastIndexOf("/")).concat(TASK_RESULT_URL_PARAM));
         MainHttpClient client = new MainHttpClient(newEndPointURL.getUrl(), mContext);
         try {
             client.setMethod(GET_METHOD);
@@ -122,9 +124,11 @@ public class MessageDeliveryController {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
         } finally {
             if (HttpStatus.SC_OK == client.getResponseCode()) {
-                response = new MessagesUUIDSResponse(true, parseMessagesUUIDSResponse(client.getResponse()));
+                response = parseMessagesUUIDSResponse(client);
+                response.setSuccess(true);
             } else {
-                response = new MessagesUUIDSResponse();
+                response = new MessagesUUIDSResponse(client.getResponseCode());
+                Util.logActivities(mContext, mContext.getString(R.string.messages_result_request_status, client.getResponseCode(), client.getResponse()));
             }
         }
         return response;
@@ -140,9 +144,16 @@ public class MessageDeliveryController {
         return JsonUtils.objToJson(queuedMessages);
     }
 
-    private List<String> parseMessagesUUIDSResponse(String response) {
-        return JsonUtils.getObj(response, new TypeToken<List<String>>() {
-        }.getType());
+    private MessagesUUIDSResponse parseMessagesUUIDSResponse(MainHttpClient client) {
+        MessagesUUIDSResponse response;
+        try {
+            response = JsonUtils.getObj(client.getResponse(), MessagesUUIDSResponse.class);
+            response.setStatusCode(client.getResponseCode());
+        } catch (Exception e) {
+            response = new MessagesUUIDSResponse(client.getResponseCode());
+            mUtil.log(mContext.getString(R.string.message_processed_json_failed));
+        }
+        return response;
     }
 
 }
