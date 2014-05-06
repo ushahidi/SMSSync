@@ -185,14 +185,14 @@ public class RunServicesUtil {
      * @param context the calling context
      */
     public static void runMessageResultsService(Context context) {
-        Logger.log(CLASS_TAG, "Running CheckTaskService " + 1);
+        Logger.log(CLASS_TAG, "Running CheckTaskService " + Prefs.taskCheckTime);
 
         // load preferences
         Prefs.loadPreferences(context);
         if (Prefs.messageResultsAPIEnable && Prefs.enabled) {
 
             // start the scheduler for 'message results' service
-            final long interval = (1 * 60000);
+            final long interval = (Prefs.taskCheckTime * 60000);
 
             final Intent intent = new Intent(context,
                     MessageResultsScheduledReceiver.class);

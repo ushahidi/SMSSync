@@ -235,8 +235,10 @@ public class Settings extends PreferenceActivity implements
 
         if (taskCheck.isChecked()) {
             taskCheckTimes.setEnabled(true);
+            enableMessageResultsAPI.setEnabled(true);
         } else {
             taskCheckTimes.setEnabled(false);
+            enableMessageResultsAPI.setEnabled(false);
         }
 
         editor = settings.edit();
@@ -477,6 +479,11 @@ public class Settings extends PreferenceActivity implements
 
                 RunServicesUtil.stopCheckTaskService(Settings.this);
                 taskCheckTimes.setEnabled(false);
+                if (enableMessageResultsAPI.isChecked()){
+                    RunServicesUtil.stopMessageResultsService(Settings.this);
+                    enableMessageResultsAPI.setChecked(false);
+                    enableMessageResultsAPI.setEnabled(false);
+                }
             }
         }
 
@@ -523,7 +530,9 @@ public class Settings extends PreferenceActivity implements
 
                 Util.showToast(Settings.this, R.string.no_configured_url);
                 taskCheck.setChecked(false);
-
+                if (enableMessageResultsAPI.isChecked()) {
+                    enableMessageResultsAPI.setChecked(false);
+                }
             } else {
 
                 taskCheck.setChecked(true);
