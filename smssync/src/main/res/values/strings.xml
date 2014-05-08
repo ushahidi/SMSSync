@@ -77,11 +77,9 @@
         callback URL.</string>
 
     <!-- enable SMS Portals -->
-    <string name="use_sms_portals_settings">Increase sms sending through-put</string>
-    <string name="use_sms_portals_hint">Use Sms-Portals</string>
-
-    <!-- SMS Portals delay -->
-    <string name="use_sms_portals_delay">Android maintains a limit on the number of sms that an applcation can send(100 sms per app per hour). But SmsSync allows you to by pass this limit. All you have to do is download some extra power packs.</string>
+    <string name="sms_portals_settings">SMS Portals Settings</string>
+    <string name="chk_enable_sms_portals">Enable SMS Portals</string>
+    <string name="chk_enable_sms_portals_hint">Use SMS Portals when sending SMS messages, effectively increasing the default Android limit (100 SMS/hour).</string>
 
     <!-- enable task check -->
     <string name="chk_enable_task_check">Enable Task Checking</string>
