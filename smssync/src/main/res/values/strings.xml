@@ -146,6 +146,9 @@
     <string name="sent_messages">Sent</string>
     <string name="title_bar_text">Messages</string>
     <string name="no_sent_messages">No sent messages.</string>
+    <string name="selected">%1$d selected</string>
+    <string name="unconfirmed">Unconfirmed</string>
+    <string name="failed">Failed</string>
 
     <!-- confirmation dialog -->
     <string name="confirm_yes">Yes</string>
@@ -321,5 +324,4 @@
     <string name="disabled">disabled</string>
     <string name="invalid_data_format">Invalid data format</string>
     <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
-    <string name="selected">%1$d selected</string>
 </resources>

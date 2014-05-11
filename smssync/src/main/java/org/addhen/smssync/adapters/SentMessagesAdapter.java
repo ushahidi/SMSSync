@@ -79,9 +79,14 @@ public class SentMessagesAdapter extends BaseListAdapter<SentMessagesModel> {
             widget.messageType.setTextColor(context.getResources().getColor(
                     R.color.pending_color));
 
-        } else {
+        } else if (getItem(position).getMessageType() == 1) {
             // Task messages
             widget.messageType.setText(R.string.task);
+            widget.messageType.setTextColor(context.getResources().getColor(
+                    R.color.task_color));
+        } else {
+            // Unconfirmed task messages
+            widget.messageType.setText(R.string.unconfirmed);
             widget.messageType.setTextColor(context.getResources().getColor(
                     R.color.task_color));
         }

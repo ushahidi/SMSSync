@@ -22,6 +22,8 @@ package org.addhen.smssync.database;
  */
 public interface IMessagesSchema {
 
+    public static final String TYPE = "message_type";
+
     public static final String FROM = "messages_from";
 
     public static final String BODY = "messages_body";
@@ -30,10 +32,19 @@ public interface IMessagesSchema {
 
     public static final String MESSAGE_UUID = "message_uuid";
 
+    public static final String SENT_RESULT_CODE = "sent_result_code";
+
+    public static final String SENT_RESULT_MESSAGE = "sent_result_message";
+
+    public static final String DELIVERY_RESULT_CODE = "delivery_result_code";
+
+    public static final String DELIVERY_RESULT_MESSAGE = "delivery_result_message";
+
     public static final String TABLE = "messages";
 
     public static final String[] COLUMNS = new String[]{MESSAGE_UUID,
-            FROM, BODY, DATE};
+            FROM, BODY, DATE, TYPE, SENT_RESULT_CODE, SENT_RESULT_MESSAGE,
+            DELIVERY_RESULT_CODE, DELIVERY_RESULT_MESSAGE};
 
     // NOTE: the message ID is used as the row ID.
     // Furthermore, if a row already exists, an insert will replace
@@ -43,5 +54,6 @@ public interface IMessagesSchema {
             + TABLE + " (" + MESSAGE_UUID + " TEXT, " + FROM
             + " TEXT NOT NULL, " + BODY + " TEXT, " + DATE + " DATE NOT NULL "
             + ")";
+
 
 }

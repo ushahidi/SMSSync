@@ -34,12 +34,26 @@ public class Messages {
 
     private int messageType;
 
+    private int mSentResultCode;
+
+    private String mSentResultMessage;
+
+    private int mDeliveryResultCode;
+
+    private String mDeliveryResultMessage;
+
+
     public Messages() {
         this.messageBody = "";
         this.messageFrom = "";
         this.messageDate = "";
         this.messageUuid = "";
         this.messageType = 0;
+
+        mSentResultCode = -2;
+        mSentResultMessage = "";
+        mDeliveryResultCode = -2;
+        mDeliveryResultMessage = "";
     }
 
     /**
@@ -132,4 +146,35 @@ public class Messages {
         return this.messageUuid;
     }
 
+    public int getSentResultCode() {
+        return mSentResultCode;
+    }
+
+    public void setSentResultCode(int mSentResultCode) {
+        this.mSentResultCode = mSentResultCode;
+    }
+
+    public String getSentResultMessage() {
+        return mSentResultMessage;
+    }
+
+    public void setSentResultMessage(String mSentResultMessage) {
+        this.mSentResultMessage = mSentResultMessage;
+    }
+
+    public int getDeliveryResultCode() {
+        return mDeliveryResultCode;
+    }
+
+    public void setDeliveryResultCode(int mDeliveryResultCode) {
+        this.mDeliveryResultCode = mDeliveryResultCode;
+    }
+
+    public String getDeliveryResultMessage() {
+        return mDeliveryResultMessage;
+    }
+
+    public void setDeliveryResultMessage(String mDeliveryResultMessage) {
+        this.mDeliveryResultMessage = mDeliveryResultMessage;
+    }
 }
