@@ -192,7 +192,7 @@ public class RunServicesUtil {
         if (Prefs.messageResultsAPIEnable && Prefs.enabled) {
 
             // start the scheduler for 'message results' service
-            final long interval = (Prefs.taskCheckTime * 60000);
+            final long interval = TimeFrequencyUtil.calculateInterval(Prefs.taskCheckTime) * 60000;
 
             final Intent intent = new Intent(context,
                     MessageResultsScheduledReceiver.class);

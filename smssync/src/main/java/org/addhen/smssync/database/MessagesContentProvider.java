@@ -18,6 +18,7 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
@@ -138,6 +139,40 @@ public class MessagesContentProvider extends DbContentProvider implements
         return super.delete(TABLE, "1", null) > 0;
     }
 
+    @Override
+    public List<MessageResult> fetchMessageResultsByUuid(List<String> messageUuid) {
+        List<MessageResult> messageResults = new ArrayList<MessageResult>();
+        String selection = MESSAGE_UUID + "= ?";
+        if (null != messageUuid) {
+            for (String uuid : messageUuid) {
+                String selectionArgs[] = { uuid };
+                cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, DATE
+                        + " DESC");
+
+                if (cursor != null) {
+                    try {
+                        while (cursor.moveToNext()) {
+                            int sentResultCodeIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_CODE);
+                            int sentResultMessageIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_MESSAGE);
+                            int deliveryResultCodeIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_CODE);
+                            int deliveryResultMessageIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_MESSAGE);
+
+                            int sentResultCode = cursor.getInt(sentResultCodeIndex);
+                            String sentResultMessage = cursor.getString(sentResultMessageIndex);
+                            int deliveryResultCode = cursor.getInt(deliveryResultCodeIndex);
+                            String deliveryResultMessage = cursor.getString(deliveryResultMessageIndex);
+                            messageResults.add(new MessageResult(uuid, sentResultCode, sentResultMessage, deliveryResultCode, deliveryResultMessage));
+                        }
+                    } finally {
+                        cursor.close();
+                    }
+                }
+            }
+        }
+
+        return messageResults;
+    }
+
     /*
      * (non-Javadoc)
      * @see
@@ -254,7 +289,11 @@ public class MessagesContentProvider extends DbContentProvider implements
         int fromIndex;
         int messageIndex;
         int dateIndex;
-        int messageType;
+        int messageTypeIndex;
+        int sentResultCodeIndex;
+        int sentResultMessageIndex;
+        int deliveryResultCodeIndex;
+        int deliveryResultMessageIndex;
 
         if (cursor != null) {
             if (cursor.getColumnIndex(MESSAGE_UUID) != -1) {
@@ -278,8 +317,28 @@ public class MessagesContentProvider extends DbContentProvider implements
             }
 
             if (cursor.getColumnIndex(TYPE) != -1) {
-                messageType = cursor.getColumnIndexOrThrow(TYPE);
-                message.setMessageType(cursor.getInt(messageType));
+                messageTypeIndex = cursor.getColumnIndexOrThrow(TYPE);
+                message.setMessageType(cursor.getInt(messageTypeIndex));
+            }
+
+            if (cursor.getColumnIndex(SENT_RESULT_CODE) != -1) {
+                sentResultCodeIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_CODE);
+                message.setSentResultCode(cursor.getInt(sentResultCodeIndex));
+            }
+
+            if (cursor.getColumnIndex(SENT_RESULT_MESSAGE) != -1) {
+                sentResultMessageIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_MESSAGE);
+                message.setSentResultMessage(cursor.getString(sentResultMessageIndex));
+            }
+
+            if (cursor.getColumnIndex(DELIVERY_RESULT_CODE) != -1) {
+                deliveryResultCodeIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_CODE);
+                message.setDeliveryResultCode(cursor.getInt(deliveryResultCodeIndex));
+            }
+
+            if (cursor.getColumnIndex(DELIVERY_RESULT_MESSAGE) != -1) {
+                deliveryResultMessageIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_MESSAGE);
+                message.setDeliveryResultMessage(cursor.getString(deliveryResultMessageIndex));
             }
         }
         return message;

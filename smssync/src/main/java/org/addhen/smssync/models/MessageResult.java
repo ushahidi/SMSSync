@@ -9,23 +9,27 @@ import java.io.Serializable;
  */
 public class MessageResult implements Serializable {
 
-    @SerializedName("id")
+    @SerializedName("uuid")
     private String messageUUID;
 
-    @SerializedName("type")
-    private String type;
+    @SerializedName("sent_result_code")
+    private int sentResultCode;
 
-    @SerializedName("code")
-    private int resultCode;
+    @SerializedName("sent_result_message")
+    private String sentResultMessage;
 
-    @SerializedName("message")
-    private String message;
+    @SerializedName("delivered_result_code")
+    private int deliveryResultCode;
 
-    public MessageResult(String messageUUID, String type, int resultCode, String message) {
+    @SerializedName("delivered_result_message")
+    private String deliveryResultMessage;
+
+    public MessageResult(String messageUUID, int sentResultCode, String sentResultMessage, int deliveryResultCode, String deliveryResultMessage) {
         this.messageUUID = messageUUID;
-        this.type = type;
-        this.resultCode = resultCode;
-        this.message = message;
+        this.sentResultCode = sentResultCode;
+        this.sentResultMessage = sentResultMessage;
+        this.deliveryResultCode = deliveryResultCode;
+        this.deliveryResultMessage = deliveryResultMessage;
     }
 
     public String getMessageUUID() {
@@ -36,27 +40,35 @@ public class MessageResult implements Serializable {
         this.messageUUID = messageUUID;
     }
 
-    public String getType() {
-        return type;
+    public int getSentResultCode() {
+        return sentResultCode;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setSentResultCode(int sentResultCode) {
+        this.sentResultCode = sentResultCode;
     }
 
-    public int getResultCode() {
-        return resultCode;
+    public String getSentResultMessage() {
+        return sentResultMessage;
     }
 
-    public void setResultCode(int resultCode) {
-        this.resultCode = resultCode;
+    public void setSentResultMessage(String sentResultMessage) {
+        this.sentResultMessage = sentResultMessage;
     }
 
-    public String getMessage() {
-        return message;
+    public int getDeliveryResultCode() {
+        return deliveryResultCode;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setDeliveryResultCode(int deliveryResultCode) {
+        this.deliveryResultCode = deliveryResultCode;
+    }
+
+    public String getDeliveryResultMessage() {
+        return deliveryResultMessage;
+    }
+
+    public void setDeliveryResultMessage(String deliveryResultMessage) {
+        this.deliveryResultMessage = deliveryResultMessage;
     }
 }
