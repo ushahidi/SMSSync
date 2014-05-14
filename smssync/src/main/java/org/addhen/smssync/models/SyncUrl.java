@@ -19,6 +19,7 @@ package org.addhen.smssync.models;
 
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.net.SyncScheme;
+import org.addhen.smssync.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -167,7 +168,7 @@ public class SyncUrl extends Model {
     }
 
     public void setSecret(String secret) {
-        this.secret = secret;
+        this.secret = Util.removeWhitespaces(secret);
     }
 
     public int getStatus() {
