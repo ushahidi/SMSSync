@@ -23,7 +23,10 @@ import com.squareup.otto.Produce;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.Util;
+import org.addhen.smssync.util.ValidableEditTextPreference;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -36,7 +39,12 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 /**
  * This class handles all related task for settings on SMSSync. TODO // move the UI code into it's
@@ -83,9 +91,9 @@ public class Settings extends SherlockPreferenceActivity implements
 
     private CheckBoxPreference taskCheck;
 
-    private ListPreference autoSyncTimes;
+    private ValidableEditTextPreference autoSyncTimes;
 
-    private ListPreference taskCheckTimes;
+    private ValidableEditTextPreference taskCheckTimes;
 
     private EditTextPreference uniqueId;
 
@@ -96,17 +104,6 @@ public class Settings extends SherlockPreferenceActivity implements
     private SharedPreferences.Editor editor;
 
     private static final String URL = "http://smssync.ushahidi.com";
-
-    private CharSequence[] autoSyncEntries = {
-            "1 Minute", "2 Minutes",
-            "3 Minutes", "4 Minutes", "5 Minutes", "10 Minutes", "15 Minutes",
-            "30 Minutes", "60 Minutes"
-    };
-
-    private CharSequence[] autoSyncValues = {
-            "1", "2", "3", "4", "5", "10",
-            "15", "30", "60"
-    };
 
     private int autoTime = 5;
 
@@ -125,6 +122,7 @@ public class Settings extends SherlockPreferenceActivity implements
         super.onCreate(savedInstanceState);
 
         // Load the preferences from an XML resource
+
         addPreferencesFromResource(R.xml.preferences);
         try {
             versionName = getPackageManager().getPackageInfo(
@@ -161,15 +159,12 @@ public class Settings extends SherlockPreferenceActivity implements
         uniqueId = (EditTextPreference) getPreferenceScreen().findPreference(
                 KEY_UNIQUE_ID);
 
-        autoSyncTimes = (ListPreference) getPreferenceScreen().findPreference(
+        autoSyncTimes = (ValidableEditTextPreference) getPreferenceScreen().findPreference(
                 AUTO_SYNC_TIMES);
-        autoSyncTimes.setEntries(autoSyncEntries);
-        autoSyncTimes.setEntryValues(autoSyncValues);
 
-        taskCheckTimes = (ListPreference) getPreferenceScreen().findPreference(
+
+        taskCheckTimes = (ValidableEditTextPreference) getPreferenceScreen().findPreference(
                 TASK_CHECK_TIMES);
-        taskCheckTimes.setEntries(autoSyncEntries);
-        taskCheckTimes.setEntryValues(autoSyncValues);
 
         about = (Preference) getPreferenceScreen().findPreference(ABOUT);
 
@@ -194,64 +189,6 @@ public class Settings extends SherlockPreferenceActivity implements
     }
 
 
-    /**
-     * Get the time frequency selected by the user for auto synchronization.
-     *
-     * @return int
-     */
-    private int initializeAutoSyncTime() {
-
-        // Initialize the selected time to frequently sync pending messages
-        if (autoSyncTimes.getValue().matches("1")) {
-            return 1;
-        } else if (autoSyncTimes.getValue().matches("2")) {
-            return 2;
-        } else if (autoSyncTimes.getValue().matches("3")) {
-            return 3;
-        } else if (autoSyncTimes.getValue().matches("4")) {
-            return 4;
-        } else if (autoSyncTimes.getValue().matches("10")) {
-            return 10;
-        } else if (autoSyncTimes.getValue().matches("15")) {
-            return 15;
-        } else if (autoSyncTimes.getValue().matches("30")) {
-            return 30;
-        } else if (autoSyncTimes.getValue().matches("60")) {
-            return 60;
-        } else {
-            return 5;
-        }
-    }
-
-    /**
-     * Get the time frequency selected by the user for auto task checking.
-     *
-     * @return int
-     */
-    private int initializeAutoTaskTime() {
-
-        // "1 Minutes", 2 Minutes", "3 Minutes", "4 Minutes", "5 Minutes", "10
-        // Minutes", "15 Minutes", "30", "60 Minutes"
-        if (taskCheckTimes.getValue().matches("1")) {
-            return 1;
-        } else if (taskCheckTimes.getValue().matches("2")) {
-            return 2;
-        } else if (taskCheckTimes.getValue().matches("3")) {
-            return 3;
-        } else if (taskCheckTimes.getValue().matches("4")) {
-            return 4;
-        } else if (taskCheckTimes.getValue().matches("10")) {
-            return 10;
-        } else if (taskCheckTimes.getValue().matches("15")) {
-            return 15;
-        } else if (taskCheckTimes.getValue().matches("30")) {
-            return 30;
-        } else if (taskCheckTimes.getValue().matches("60")) {
-            return 60;
-        } else {
-            return 5;
-        }
-    }
 
     /**
      * Save settings changes.
@@ -289,7 +226,9 @@ public class Settings extends SherlockPreferenceActivity implements
         }
 
         // Initialize the selected time to frequently sync pending messages
-        autoTime = initializeAutoSyncTime();
+       // autoTime = initializeAutoSyncTime();
+        autoTime = 5;
+
 
         if (taskCheck.isChecked()) {
             taskCheckTimes.setEnabled(true);
@@ -298,7 +237,7 @@ public class Settings extends SherlockPreferenceActivity implements
         }
 
         // Initialize the selected frequency to automatically check for tasks
-        taskCheckTime = initializeAutoTaskTime();
+        taskCheckTime = 5;
 
         editor = settings.edit();
         editor.putString("ReplyPref", replyPref.getText());
@@ -374,8 +313,10 @@ public class Settings extends SherlockPreferenceActivity implements
         if (Prefs.autoTime != autoTime) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     autoSyncTimes.getTitle().toString(),
-                    autoSyncTimes.getEntries()[Prefs.autoTime - 1],
-                    autoSyncTimes.getEntries()[autoTime - 1]));
+                    autoSyncTimes.getText(),
+                    autoSyncTimes.getText()));
+
+
         }
 
         editor.putInt("taskCheck", taskCheckTime);
@@ -383,8 +324,9 @@ public class Settings extends SherlockPreferenceActivity implements
         if (Prefs.taskCheckTime != taskCheckTime) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     taskCheckTimes.getTitle().toString(),
-                    taskCheckTimes.getEntries()[Prefs.taskCheckTime - 1],
-                    taskCheckTimes.getEntries()[taskCheckTime - 1]));
+                    Prefs.taskCheckTime,
+                    taskCheckTime));
+
         }
 
         if (!TextUtils.isEmpty(uniqueId.getText())) {
@@ -454,12 +396,14 @@ public class Settings extends SherlockPreferenceActivity implements
             if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
 
                 autoSyncEnable();
+                autoSyncTimes.setEnabled(false);
 
             } else {
                 // stop scheduler
                 RunServicesUtil.stopAutoSyncService(Settings.this);
 
                 autoSyncTimes.setEnabled(false);
+
             }
         }
 
@@ -470,7 +414,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
                 // Initialize the selected time to frequently sync pending
                 // messages
-                Prefs.autoTime = initializeAutoSyncTime();
+                Prefs.autoTime = 5;
 
                 RunServicesUtil.runAutoSyncService(Settings.this);
 
@@ -493,7 +437,7 @@ public class Settings extends SherlockPreferenceActivity implements
         // task frequency
         if (key.equals(TASK_CHECK_TIMES)) {
 
-            Prefs.taskCheckTime = initializeAutoTaskTime();
+            Prefs.taskCheckTime = 5;
             RunServicesUtil.runCheckTaskService(Settings.this);
         }
 
@@ -517,7 +461,7 @@ public class Settings extends SherlockPreferenceActivity implements
 
                 taskCheck.setChecked(true);
 
-                Prefs.taskCheckTime = initializeAutoTaskTime();
+                Prefs.taskCheckTime = 5;
 
                 // start the scheduler for task checking service
                 RunServicesUtil.runCheckTaskService(Settings.this);
@@ -536,14 +480,14 @@ public class Settings extends SherlockPreferenceActivity implements
 
                 Util.showToast(Settings.this, R.string.no_configured_url);
                 autoSync.setChecked(false);
+               // autoSyncTimes.setEnabled(false);
 
             } else {
 
                 autoSync.setChecked(true);
-
                 // Initialize the selected time to frequently sync pending
                 // messages
-                Prefs.autoTime = initializeAutoSyncTime();
+                Prefs.autoTime = 5;
                 autoSyncTimes.setEnabled(true);
 
                 RunServicesUtil.runAutoSyncService(Settings.this);
@@ -639,3 +583,4 @@ public class Settings extends SherlockPreferenceActivity implements
     }
 
 }
+
