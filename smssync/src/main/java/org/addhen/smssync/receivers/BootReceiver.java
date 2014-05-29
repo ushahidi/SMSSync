@@ -19,6 +19,7 @@ package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.util.TimeFrequencyUtil;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
 import org.addhen.smssync.services.SmsSyncServices;
@@ -72,7 +73,7 @@ public class BootReceiver extends BroadcastReceiver {
                     context.startService(syncPendingMessagesServiceIntent);
 
                     // start the scheduler for auto sync service
-                    long interval = (Prefs.autoTime * 60000);
+                    long interval = TimeFrequencyUtil.calculateInterval(Prefs.autoTime);
                     new ScheduleServices(
                             context,
                             new Intent(context, AutoSyncScheduledReceiver.class),
@@ -87,7 +88,7 @@ public class BootReceiver extends BroadcastReceiver {
                             CheckTaskService.class);
 
                     // start the scheduler for 'task check' service
-                    long interval = (Prefs.taskCheckTime * 60000);
+                    long interval = TimeFrequencyUtil.calculateInterval(Prefs.taskCheckTime);
                     new ScheduleServices(
                             context,
                             new Intent(context, CheckTaskScheduledReceiver.class),

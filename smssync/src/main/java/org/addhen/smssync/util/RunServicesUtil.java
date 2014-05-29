@@ -20,11 +20,7 @@ package org.addhen.smssync.util;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
 import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
-import org.addhen.smssync.services.AutoSyncScheduledService;
-import org.addhen.smssync.services.CheckTaskScheduledService;
-import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
-import org.addhen.smssync.services.SmsSyncServices;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -101,7 +97,7 @@ public class RunServicesUtil {
         if (Prefs.enableTaskCheck && Prefs.enabled) {
 
             // start the scheduler for 'task check' service
-            final long interval = (Prefs.taskCheckTime * 60000);
+            final long interval = TimeFrequencyUtil.calculateInterval(Prefs.taskCheckTime);
 
             final Intent intent = new Intent(context,
                     CheckTaskScheduledReceiver.class);
@@ -132,7 +128,7 @@ public class RunServicesUtil {
         Prefs.loadPreferences(context);
         if (Prefs.enableAutoSync && Prefs.enabled) {
             // start the scheduler for auto sync service
-            final long interval = (Prefs.autoTime * 60000);
+            final long interval = TimeFrequencyUtil.calculateInterval(Prefs.autoTime);
             final Intent intent = new Intent(context, AutoSyncScheduledReceiver.class);
             Logger.log(CLASS_TAG, "Auto sync service started");
             // run the service
