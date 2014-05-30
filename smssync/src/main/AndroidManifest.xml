@@ -28,10 +28,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
-    <uses-sdk
-        android:minSdkVersion="8"
+    <uses-sdk android:minSdkVersion="8"
         android:targetSdkVersion="19" />
-
     <application
         android:name="org.addhen.smssync.MainApplication"
         android:icon="@drawable/icon"
