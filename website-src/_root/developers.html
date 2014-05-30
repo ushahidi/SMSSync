@@ -272,6 +272,15 @@ else
  }*/
 </pre>
 <p>
+ Assuming you've the above code saved in a file called demo.php and is located at your web servers document root. You can gets with curl as so
+</p>
+<pre class="prettyprint linenums">
+    $ curl -X POST http://localhost/demo.php -F "from=09048370465" -F "message=sample text message"
+</pre>
+<p>
+    The server should return a JSON response indicating a success:true or success:false
+</p>
+<p>
 For a complete web service application, look at Ushahidi's <a href="https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync">SMSSync plugin</a> which utilizes most of SMSSync's features.
 </p>
 <p>
