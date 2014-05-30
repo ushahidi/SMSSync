@@ -212,9 +212,7 @@ if (isset($_POST['message_id']))
  * received into a text file.
  *
  */
-if ((strlen($from) > 0) AND (strlen($message) > 0) AND
-    (strlen($sent_timestamp) > 0 )
-    AND (strlen($message_id) > 0))
+if ((strlen($from) > 0) AND (strlen($message))
 {
     /* The screte key set here is 123456. Make sure you enter
      * that on SMSSync.
@@ -246,6 +244,11 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
     echo json_encode(array("payload"=>array(
         "success"=>$success, "error" => $error)));
 
+}
+else
+{
+    echo json_encode(array("payload"=>array(
+        "success"=>$success, "error" => $error)));
 }
 
 /**
