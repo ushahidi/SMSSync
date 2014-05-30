@@ -20,6 +20,8 @@ package org.addhen.smssync;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.addhen.smssync.util.TimeFrequencyUtil;
+
 /**
  * This class instantiate static variables to hold values of the settings / preference fields.
  *
@@ -29,9 +31,9 @@ public class Prefs {
 
     public static final String PREF_NAME = "SMS_SYNC_PREF";
 
-    public static int autoTime = 5;
+    public static String autoTime;
 
-    public static int taskCheckTime = 5;
+    public static String taskCheckTime;
 
     public static String website = "";
 
@@ -75,6 +77,9 @@ public class Prefs {
 
         final SharedPreferences settings = context.getSharedPreferences(
                 PREF_NAME, 0);
+
+        timeKeyValueUpdate(settings);
+
         website = settings.getString("WebsitePref", "");
         apiKey = settings.getString("ApiKey", "");
         reply = settings.getString("ReplyPref",
@@ -86,9 +91,9 @@ public class Prefs {
                 false);
         enableAutoSync = settings.getBoolean("AutoSync", false);
         enableTaskCheck = settings.getBoolean("EnableTaskCheck", false);
-        autoTime = settings.getInt("AutoTime", autoTime);
+        autoTime = settings.getString("AutoTime", TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY);
         uniqueId = settings.getString("UniqueId", "");
-        taskCheckTime = settings.getInt("taskCheck", taskCheckTime);
+        taskCheckTime = settings.getString("taskCheck", TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY);
         lastSyncDate = settings.getLong("LastSyncDate", 0);
         enableBlacklist = settings.getBoolean("EnableBlacklist", false);
         enableWhitelist = settings.getBoolean("EnableWhitelist", false);
@@ -111,8 +116,8 @@ public class Prefs {
         editor.putBoolean("EnableReply", enableReply);
         editor.putBoolean("EnableReplyFrmServer", enableReplyFrmServer);
         editor.putBoolean("AutoSync", enableAutoSync);
-        editor.putInt("AutoTime", autoTime);
-        editor.putInt("taskCheck", taskCheckTime);
+        editor.putString("AutoTime", autoTime);
+        editor.putString("taskCheck", taskCheckTime);
         editor.putString("UniqueId", uniqueId);
         editor.putLong("LastSyncDate", lastSyncDate);
         editor.putBoolean("EnableBlacklist", enableBlacklist);
@@ -120,5 +125,21 @@ public class Prefs {
         editor.putBoolean("EnableLog", enableLog);
         editor.putInt("BatteryLevel", batteryLevel);
         editor.commit();
+    }
+
+    /**
+     * This methods removes old preferences to omit problem caused by
+     * AutoTime and taskCheck values changed (was int changed into String)
+     * @param settings
+     */
+    private static void timeKeyValueUpdate(final SharedPreferences settings) {
+        Boolean autoTimeUpdate = settings.getBoolean("AutoTimeUpdate", false);
+        if (null == autoTimeUpdate || autoTimeUpdate.equals(false)) {
+            editor = settings.edit();
+            editor.remove("AutoTime");
+            editor.remove("taskCheck");
+            editor.putBoolean("AutoTimeUpdate", true);
+            editor.commit();
+        }
     }
 }

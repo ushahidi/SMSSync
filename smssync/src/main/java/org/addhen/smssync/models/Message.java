@@ -19,13 +19,14 @@ package org.addhen.smssync.models;
 
 import org.addhen.smssync.database.Database;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Holds the messages to be sent via HTTP request
  */
-public class Message extends Model {
+public class Message extends Model implements Serializable {
 
     private String body;
 
@@ -35,9 +36,24 @@ public class Message extends Model {
 
     private String uuid;
 
+    private int mMessageType;
+
+    private int mSentResultCode;
+
+    private String mSentResultMessage;
+
+    private int mDeliveryResultCode;
+
+    private String mDeliveryResultMessage;
+
     private List<Message> mMessageList;
 
     public Message() {
+        mMessageType = 0;
+        mSentResultCode = -2;
+        mSentResultMessage = "";
+        mDeliveryResultCode = -2;
+        mDeliveryResultMessage = "";
         mMessageList = new ArrayList<Message>();
     }
 
@@ -134,4 +150,45 @@ public class Message extends Model {
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
+
+    public int getMessageType() {
+        return mMessageType;
+    }
+
+    public void setMessageType(int mMessageType) {
+        this.mMessageType = mMessageType;
+    }
+
+    public int getSentResultCode() {
+        return mSentResultCode;
+    }
+
+    public void setSentResultCode(int mSentResultCode) {
+        this.mSentResultCode = mSentResultCode;
+    }
+
+    public String getSentResultMessage() {
+        return mSentResultMessage;
+    }
+
+    public void setSentResultMessage(String mSentResultMessage) {
+        this.mSentResultMessage = mSentResultMessage;
+    }
+
+    public int getDeliveryResultCode() {
+        return mDeliveryResultCode;
+    }
+
+    public void setDeliveryResultCode(int mDeliveryResultCode) {
+        this.mDeliveryResultCode = mDeliveryResultCode;
+    }
+
+    public String getDeliveryResultMessage() {
+        return mDeliveryResultMessage;
+    }
+
+    public void setDeliveryResultMessage(String mDeliveryResultMessage) {
+        this.mDeliveryResultMessage = mDeliveryResultMessage;
+    }
+
 }

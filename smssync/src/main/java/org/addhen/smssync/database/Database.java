@@ -19,6 +19,7 @@ package org.addhen.smssync.database;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 
@@ -55,9 +56,18 @@ public class Database {
 
     public static final String SENT_MESSAGE_TYPE = "message_type";
 
+    public static final String SENT_RESULT_CODE = "sent_result_code";
+
+    public static final String SENT_RESULT_MESSAGE = "sent_result_message";
+
+    public static final String DELIVERY_RESULT_CODE = "delivery_result_code";
+
+    public static final String DELIVERY_RESULT_MESSAGE = "delivery_result_message";
+
     public static final String[] SENT_MESSAGES_COLUMNS = new String[]{
             SENT_MESSAGES_UUID, SENT_MESSAGES_FROM, SENT_MESSAGES_BODY,
-            SENT_MESSAGES_DATE, SENT_MESSAGE_TYPE};
+            SENT_MESSAGES_DATE, SENT_MESSAGE_TYPE, SENT_RESULT_CODE,
+            SENT_RESULT_MESSAGE, DELIVERY_RESULT_CODE, DELIVERY_RESULT_MESSAGE};
 
     private DatabaseHelper mDbHelper;
 
@@ -67,7 +77,7 @@ public class Database {
 
     private static final String SENT_MESSAGES_TABLE = "sent_messages";
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     private static final String SENT_MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + SENT_MESSAGES_TABLE
@@ -106,6 +116,7 @@ public class Database {
             db.execSQL(SENT_MESSAGES_TABLE_CREATE);
             db.execSQL(ISyncUrlSchema.CREATE_TABLE);
             db.execSQL(IFilterSchema.CREATE_TABLE);
+            DatabaseUpgrade.upgradeToVersion7(db); //updating database to version 7
         }
 
         @Override
@@ -122,17 +133,19 @@ public class Database {
             dropColumn(db, SENT_MESSAGES_TABLE_CREATE, SENT_MESSAGES_TABLE,
                     new String[]{"_id"});
 
-            // TODO:: write code to populate UUID field
-
-            // upgrade syncurl table
-            if (newVersion > oldVersion) {
-                //TODO: Add sych scheme table; should check if table available?
-                db.execSQL(ISyncUrlSchema.ALTER_TABLE_ADD_SYNCSCHEME);
-
-            } else {
-                db.execSQL(ISyncUrlSchema.CREATE_TABLE);
+            //Upgrade database
+            switch (oldVersion) {
+                case 6:
+                    DatabaseUpgrade.upgradeToVersion7(db);
+                case 7:
+                    break;
+                default:
+                    Log.w(TAG, "Unknown database version");
+                    break;
             }
 
+
+            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
             db.execSQL(IFilterSchema.CREATE_TABLE);
             // add old sync url configuration to the database,
             syncLegacySyncUrl(mContext, db);
@@ -142,7 +155,7 @@ public class Database {
     }
 
     private static void dropColumn(SQLiteDatabase db, String createTableCmd,
-            String tableName, String[] colsToRemove) {
+                                   String tableName, String[] colsToRemove) {
 
         List<String> updatedTableColumns = getColumns(db, tableName);
         // Remove the columns we don't want anymore from the table's list of
@@ -222,22 +235,53 @@ public class Database {
         mDbHelper.close();
     }
 
+
     /**
-     * Insert new message into the messages table. TODO://Change the name of this function to
-     * insertMessages -- copy and paste is *evil*
+     * Insert new message into the messages table.
      *
      * @param messages - The messages items.
-     * @return long
+     * @return boolean
      */
-    public long createSentMessages(Messages messages) {
-        ContentValues initialValues = new ContentValues();
+    public boolean insertMessage(Messages messages) {
 
-        initialValues.put(SENT_MESSAGES_UUID, messages.getMessageUuid());
+        ContentValues initialValues = new ContentValues();
         initialValues.put(SENT_MESSAGES_FROM, messages.getMessageFrom());
         initialValues.put(SENT_MESSAGES_BODY, messages.getMessageBody());
         initialValues.put(SENT_MESSAGES_DATE, messages.getMessageDate());
         initialValues.put(SENT_MESSAGE_TYPE, messages.getMessageType());
-        return mDb.insert(SENT_MESSAGES_TABLE, null, initialValues);
+        initialValues.put(SENT_RESULT_CODE, messages.getMessageFrom());
+        initialValues.put(SENT_RESULT_MESSAGE, messages.getMessageBody());
+        initialValues.put(DELIVERY_RESULT_CODE, messages.getMessageDate());
+        initialValues.put(DELIVERY_RESULT_MESSAGE, messages.getMessageType());
+
+        String selectionClause = SENT_MESSAGES_UUID + "=" + '"' + messages.getMessageUuid() + '"';
+
+        if (mDb.update(SENT_MESSAGES_TABLE, initialValues, selectionClause, null) > 0) {
+            return true;
+        } else {
+            initialValues.put(SENT_MESSAGES_UUID, messages.getMessageUuid());
+            return mDb.insert(SENT_MESSAGES_TABLE, null, initialValues) > 0;
+        }
+    }
+
+    public boolean updateSentResult(Message msg) {
+        ContentValues value = new ContentValues();
+        value.put(SENT_RESULT_CODE, msg.getSentResultCode());
+        value.put(SENT_RESULT_MESSAGE, msg.getSentResultMessage());
+        value.put(SENT_MESSAGE_TYPE, msg.getMessageType());
+        String selectionClause = SENT_MESSAGES_UUID + "=" + '"' + msg.getUuid() + '"';
+
+        return mDb.update(SENT_MESSAGES_TABLE, value, selectionClause, null) > 0;
+    }
+
+    public boolean updateDeliveryResult(Message msg) {
+        ContentValues value = new ContentValues();
+        value.put(DELIVERY_RESULT_CODE, msg.getDeliveryResultCode());
+        value.put(DELIVERY_RESULT_MESSAGE, msg.getDeliveryResultMessage());
+        value.put(SENT_MESSAGE_TYPE, msg.getMessageType());
+        String selectionClause = SENT_MESSAGES_UUID + "=" + '"' + msg.getUuid() + '"';
+
+        return mDb.update(SENT_MESSAGES_TABLE, value, selectionClause, null) > 0;
     }
 
     /**
@@ -280,7 +324,7 @@ public class Database {
             mDb.beginTransaction();
 
             for (Messages message : messages) {
-                createSentMessages(message);
+                insertMessage(message);
             }
             limitRows(SENT_MESSAGES_TABLE, 20, SENT_MESSAGES_UUID);
             mDb.setTransactionSuccessful();
@@ -302,7 +346,7 @@ public class Database {
     }
 
     public static boolean addSyncUrl(List<SyncUrl> syncUrls,
-            SQLiteDatabase db) {
+                                     SQLiteDatabase db) {
 
         try {
             db.beginTransaction();

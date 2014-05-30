@@ -63,7 +63,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     }
 
     @Produce
-    public boolean readLogs() {
+    public boolean readLog() {
         return true;
     }
 }

@@ -17,8 +17,6 @@
 
 package org.addhen.smssync.util;
 
-import com.squareup.otto.Produce;
-
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
@@ -40,6 +38,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -504,6 +503,33 @@ public class Util {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
     }
 
+    /**
+     * Check if the device runs Android 4.4 (KitKat) or higher.
+     */
+    public static boolean isKitKat() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    public static void makeDefaultSmsApp(Context context) {
+        if (isKitKat()) {
+            if (!isDefaultSmsApp(context)) {
+                final Intent changeDefaultIntent = new Intent(
+                        Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+                changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
+                        context.getPackageName());
+                context.startActivity(changeDefaultIntent);
+
+            }
+        }
+    }
+
+    public static boolean isDefaultSmsApp(Context context) {
+        if (isKitKat()) {
+            return context.getPackageName().equals(Telephony.Sms.getDefaultSmsPackage(context));
+        }
+        return true;
+    }
+
     public void log(String message) {
         Logger.log(getClass().getName(), message);
     }
@@ -523,5 +549,16 @@ public class Util {
             status = true;
             MainApplication.bus.post(true);
         }
+    }
+
+    /**
+     * This method removes all whitespaces from passed string
+     *
+     * @param s String to be trimmed
+     * @return String without whitespaces
+     */
+    public static String removeWhitespaces(String s) {
+        String withoutWhiteChars = s.replaceAll("\\s+", "");
+        return withoutWhiteChars;
     }
 }

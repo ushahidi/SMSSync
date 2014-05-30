@@ -141,10 +141,14 @@
     <string name="sms_not_delivered">SMS not delivered</string>
 
     <!-- Pending and failed messages Tab -->
+    <string name="sms">SMS</string>
     <string name="pending_messages">Pending</string>
     <string name="sent_messages">Sent</string>
     <string name="title_bar_text">Messages</string>
     <string name="no_sent_messages">No sent messages.</string>
+    <string name="selected">%1$d selected</string>
+    <string name="unconfirmed">Unconfirmed</string>
+    <string name="failed">Failed</string>
 
     <!-- confirmation dialog -->
     <string name="confirm_yes">Yes</string>
