@@ -17,9 +17,22 @@
 
 package org.addhen.smssync.activities;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
@@ -39,27 +52,13 @@ import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.View;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.text.format.DateFormat;
-import android.view.KeyEvent;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * BaseActivity Add shared functionality that exists between all Activities
  */
-public abstract class BaseActivity<V extends View> extends SherlockFragmentActivity {
+public abstract class BaseActivity<V extends View> extends ActionBarActivity {
 
     /**
      * Layout resource id
@@ -212,10 +211,6 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
         MainApplication.getInstance().activityStop(this);
     }
 
-    protected void setActionBarTitle(String title) {
-        getSupportActionBar().setTitle(title);
-    }
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -233,7 +228,7 @@ public abstract class BaseActivity<V extends View> extends SherlockFragmentActiv
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (this.menu != 0) {
-            getSupportMenuInflater().inflate(this.menu, menu);
+            getMenuInflater().inflate(this.menu, menu);
             return true;
         }
         return false;

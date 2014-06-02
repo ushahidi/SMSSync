@@ -17,14 +17,14 @@
 
 package org.addhen.smssync.listeners;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.view.MenuItem;
+import android.widget.ListView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.util.Logger;
-
-import android.widget.ListView;
 
 /**
  * Pending messages action mode listener
@@ -35,7 +35,7 @@ public class PendingMessagesActionModeListener extends BaseActionModeListener {
 
     public PendingMessagesActionModeListener(final PendingMessages host,
             ListView modeView) {
-        super(host.getSherlockActivity(), modeView, R.menu.pending_messages_context_menu);
+        super((ActionBarActivity) host.getActivity(), modeView, R.menu.pending_messages_context_menu);
         this.mHost = host;
     }
 

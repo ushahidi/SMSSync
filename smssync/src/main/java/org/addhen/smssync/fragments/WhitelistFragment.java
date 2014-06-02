@@ -17,7 +17,18 @@
 
 package org.addhen.smssync.fragments;
 
-import com.actionbarsherlock.view.MenuItem;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
@@ -28,18 +39,6 @@ import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.views.AddPhoneNumber;
 import org.addhen.smssync.views.WhitelistView;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import java.util.LinkedHashSet;
 import java.util.List;

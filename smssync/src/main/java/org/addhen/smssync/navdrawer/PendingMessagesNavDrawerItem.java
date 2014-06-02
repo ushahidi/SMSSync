@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.navdrawer;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.Message;
@@ -36,7 +36,7 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
      * @param activity
      */
     public PendingMessagesNavDrawerItem(String title, int iconRes,
-            SherlockFragmentActivity activity) {
+            ActionBarActivity activity) {
         super(title, iconRes, activity);
     }
 

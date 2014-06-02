@@ -17,7 +17,6 @@
 
 package org.addhen.smssync;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
 
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.TimePreference;
@@ -34,6 +33,7 @@ import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceActivity;
 import android.text.TextUtils;
 
 /**
@@ -42,7 +42,7 @@ import android.text.TextUtils;
  *
  * @author eyedol
  */
-public class Settings extends SherlockPreferenceActivity implements
+public class Settings extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 
     public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
