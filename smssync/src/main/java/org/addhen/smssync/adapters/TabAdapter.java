@@ -17,17 +17,15 @@
 
 package org.addhen.smssync.adapters;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-import org.addhen.smssync.listeners.OnFragmentListViewRefreshListener;
-
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+
+import org.addhen.smssync.listeners.OnFragmentListViewRefreshListener;
 
 import java.util.ArrayList;
 
@@ -44,7 +42,7 @@ public class TabAdapter extends FragmentPagerAdapter implements
 
     private OnFragmentListViewRefreshListener mListViewRefreshListener;
 
-    public TabAdapter(SherlockFragmentActivity activity, ActionBar actionBar,
+    public TabAdapter(ActionBarActivity activity, ActionBar actionBar,
             ViewPager pager) {
         super(activity.getSupportFragmentManager());
         mContext = activity;
@@ -88,7 +86,7 @@ public class TabAdapter extends FragmentPagerAdapter implements
     }
 
     @Override
-    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 
         mViewPager.setCurrentItem(tab.getPosition());
         if (mListViewRefreshListener != null) {
@@ -98,11 +96,11 @@ public class TabAdapter extends FragmentPagerAdapter implements
     }
 
     @Override
-    public void onTabReselected(Tab tab, FragmentTransaction ft) {
+    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
     }
 
     @Override
-    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
     }
 

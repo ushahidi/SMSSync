@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.navdrawer;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import org.addhen.smssync.fragments.BlacklistFragment;
 import org.addhen.smssync.models.Filter;
@@ -33,7 +33,7 @@ public class BlacklistNavDrawerItem extends BaseNavDrawerItem {
      * Filter Nav Drawer
      */
     public BlacklistNavDrawerItem(String title, int iconRes,
-            SherlockFragmentActivity activity) {
+            ActionBarActivity activity) {
         super(title, iconRes, activity);
     }
 

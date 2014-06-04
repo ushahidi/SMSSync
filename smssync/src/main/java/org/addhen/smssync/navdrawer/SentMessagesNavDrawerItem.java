@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.navdrawer;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import org.addhen.smssync.fragments.SentMessageFragment;
 import org.addhen.smssync.models.SentMessagesModel;
@@ -35,7 +35,7 @@ public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
      * @param counterBgColor
      */
     public SentMessagesNavDrawerItem(String title, int iconRes,
-            SherlockFragmentActivity activity) {
+            ActionBarActivity activity) {
         super(title, iconRes, activity);
     }
 

@@ -17,13 +17,13 @@
 
 package org.addhen.smssync.listeners;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.view.MenuItem;
+import android.widget.ListView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.fragments.SentMessageFragment;
-
-import android.widget.ListView;
 
 /**
  * Sent messages action mode listener
@@ -34,7 +34,7 @@ public class SentMessagesActionModeListener extends BaseActionModeListener {
 
     public SentMessagesActionModeListener(final SentMessageFragment host,
             ListView modeView) {
-        super(host.getSherlockActivity(), modeView, R.menu.sent_messages_context_menu);
+        super((ActionBarActivity) host.getActivity(), modeView, R.menu.sent_messages_context_menu);
         mHost = host;
     }
 

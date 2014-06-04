@@ -17,17 +17,17 @@
 
 package org.addhen.smssync.activities;
 
-import com.actionbarsherlock.view.MenuItem;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.Settings;
-import org.addhen.smssync.views.MainView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.MenuItem;
 import android.view.View;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.Settings;
+import org.addhen.smssync.views.MainView;
 
 /**
  * @author eyedol

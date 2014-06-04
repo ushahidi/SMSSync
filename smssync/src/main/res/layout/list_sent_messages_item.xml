@@ -15,7 +15,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dip"
-                android:background="?attr/activatedBackgroundIndicator"
                 android:padding="5dip">
 
     <TextView

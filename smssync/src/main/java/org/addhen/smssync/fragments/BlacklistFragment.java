@@ -17,7 +17,17 @@
 
 package org.addhen.smssync.fragments;
 
-import com.actionbarsherlock.view.MenuItem;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
@@ -28,17 +38,6 @@ import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.views.AddPhoneNumber;
 import org.addhen.smssync.views.BlacklistView;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -72,7 +71,7 @@ public class BlacklistFragment extends
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
 
-        Prefs.loadPreferences(getActivity());
+        Prefs.loadPreferences(this.getActivity());
         multichoiceActionModeListener = new BlacklistActionModeListener(this,
                 listView);
         listView.setItemsCanFocus(false);
@@ -145,7 +144,7 @@ public class BlacklistFragment extends
      * Delete all messages
      */
     private void performDeleteAll() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
         builder.setMessage(getString(R.string.confirm_message))
                 .setCancelable(false)
                 .setNegativeButton(getString(R.string.confirm_no),
@@ -158,7 +157,7 @@ public class BlacklistFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // delete all messages
-                                new DeleteTask(getActivity()).execute((String) null);
+                                new DeleteTask(BlacklistFragment.this.getActivity()).execute((String) null);
                             }
                         });
         AlertDialog alert = builder.create();
@@ -169,7 +168,7 @@ public class BlacklistFragment extends
      * Delete message by it's id
      */
     public void performDeleteById() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(BlacklistFragment.this.getActivity());
         builder.setMessage(getString(R.string.confirm_message))
                 .setCancelable(false)
                 .setNegativeButton(getString(R.string.confirm_no),
@@ -182,7 +181,7 @@ public class BlacklistFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Delete by ID
-                                DeleteTask deleteById = new DeleteTask(getActivity());
+                                DeleteTask deleteById = new DeleteTask(BlacklistFragment.this.getActivity());
                                 deleteById.deletebyUuid = true;
                                 deleteById.execute((String) null);
                             }
@@ -198,7 +197,7 @@ public class BlacklistFragment extends
      * @return void
      */
     public void showMessage(int message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
         builder.setMessage(getString(message))
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.ok),
@@ -213,7 +212,7 @@ public class BlacklistFragment extends
     }
 
     public void addPhoneNumber() {
-        LayoutInflater factory = LayoutInflater.from(getActivity());
+        LayoutInflater factory = LayoutInflater.from(this.getActivity());
         final View textEntryView = factory.inflate(R.layout.add_phone_number, null);
         final AddPhoneNumber addPhoneNumber = new AddPhoneNumber(textEntryView);
         // if edit was selected at the context menu, populate fields
@@ -233,7 +232,7 @@ public class BlacklistFragment extends
         }
 
         final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
-                getActivity());
+                this.getActivity());
         addBuilder
                 .setTitle(R.string.add_phone_number_list)
                 .setView(textEntryView)
@@ -263,14 +262,14 @@ public class BlacklistFragment extends
 
                         // edit was selected
                         if (edit) {
-                            AddPhoneNumberTask updateTask = new AddPhoneNumberTask(getActivity(),
+                            AddPhoneNumberTask updateTask = new AddPhoneNumberTask(BlacklistFragment.this.getActivity(),
                                     addPhoneNumber);
                             updateTask.editPhoneNumber = true;
                             updateTask.execute((String) null);
 
                         } else {
                             // add a new entry
-                            AddPhoneNumberTask addTask = new AddPhoneNumberTask(getActivity(),
+                            AddPhoneNumberTask addTask = new AddPhoneNumberTask(BlacklistFragment.this.getActivity(),
                                     addPhoneNumber);
                             addTask.execute((String) null);
                         }
@@ -284,7 +283,7 @@ public class BlacklistFragment extends
 
     // Display pending messages.
     public void loadInBackground() {
-        new LoadingTask(getActivity()).execute((String) null);
+        new LoadingTask(BlacklistFragment.this.getActivity()).execute((String) null);
     }
 
     /*
@@ -322,7 +321,7 @@ public class BlacklistFragment extends
             Prefs.enabled = false;
             view.enableBlacklist.setChecked(false);
         }
-        Prefs.savePreferences(getActivity());
+        Prefs.savePreferences(this.getActivity());
     }
 
     private boolean load() {
