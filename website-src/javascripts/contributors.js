@@ -36,11 +36,15 @@ function fetchContributors(data) {
 }
 
 function normalizeNames(contributor) {
-    var name = contributor.name != null ? "<strong>Name:</strong> "+contributor.name +"<br />" : "";
-    var description = contributor.description ? "<strong>Description:</strong> "+contributor.description+"<br />" : "";
-    var website = (contributor.website !== null) ? "<strong>Website:</strong> <a href=\"+contributor.website\">"+contributor.website+"</a><br />" : "";
-    var country = contributor.country.name ? "<strong>Country:</strong> "+contributor.country.name+"<br />" : "";
+    var name = contributor.name != null ? '<strong>Name:</strong> '+contributor.name +'<br /><br />' : '';
+    var description = contributor.description ? '<strong>Description:</strong> '+contributor.description+'<br /><br />' : '';
+    var website = '<strong>Webste:</strong> '+normalizeWebsite(contributor.website)+ '<br /><br />';
+    var country = contributor.country.name ? '<strong>Country:</strong> '+contributor.country.name+'<br /><br />' : '';
     return name + description + website + country;
+}
+
+function normalizeWebsite(website) {
+    return (website !== 'null') ? '<a href="'+website+'">'+website+'</a>' : 'No website address provided';
 }
 
 function displayContributors(data) {
@@ -66,7 +70,8 @@ function displayContributors(data) {
         var numData = $('<td></td>').text(index + 1);
         var nameData = $('<td></td>').text(contributor.name);
         var descData = $('<td></td>').text(contributor.description);
-        var websiteData = $('<td></td>').text(contributor.website);
+        var website = normalizeWebsite(contributor.website);
+        var websiteData = $('<td></td>').html(website);
         var countryData = $('<td></td>').text(contributor.country.name);
         table.append(tbody);
         tbody.append(row);
