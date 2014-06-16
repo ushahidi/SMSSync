@@ -38,18 +38,21 @@ In order for SMSSync to ensure perfect transmission, the Sync URL must return a 
 <strong>Succeeded</strong>
 <pre class="prettyprint linenums">
 {
-    payload: {
-        success: "true"
-        error: null
+    "payload":
+    {
+        "success": true,
+        "error": null
     }
 }</pre>
 <br /><br />
 <strong>Failed</strong>
 <br />
-<pre class="prettyprint linenums">{
-    payload: {
-        success: "false"
-        error: "error message from the server"
+<pre class="prettyprint linenums">
+{
+    "payload":
+    {
+        "success": false,
+        "error": "error message from the server"
     }
 }</pre>
 </p>
@@ -139,7 +142,7 @@ The web-service should check the value of the secret passed with each task http 
 /**
  *  Get the phone number that sent the SMS.
  */
-$error = NULL;
+$error = null;
 if (isset($_POST['from']))
 {
     $from = $_POST['from'];
@@ -163,7 +166,7 @@ else
 }
 
 // Set success to false as the default success status
-$success = "false";
+$success = false;
 
 /**
  * Get the secret key set on SMSSync side
@@ -219,7 +222,7 @@ if ((strlen($from) > 0) AND (strlen($message))
      */
     if (($secret == '123456'))
     {
-        $success = "true";
+        $success = true;
     }
     else
     {
@@ -261,7 +264,7 @@ else
  {
     $m = "Your message has been received";
     $f = "0267123407";
-    $s = "true";
+    $s = true;
     $reply[0] = array("to" => $f, "message" => $m);
     $myFile = "task.txt";
     $fh = fopen($myFile, 'a') or die("can't open file");
@@ -272,10 +275,10 @@ else
  }*/
 </pre>
 <p>
- Assuming you've the above code saved in a file called demo.php and is located at your web servers document root, you can test with curl as so
+ Assuming you've the above code saved in a file called demo.php and is located at your web servers document root, you can issue the command below to test.
 </p>
 <pre class="prettyprint linenums">
-    $ curl  -D - -X POST http://localhost/demo.php -F "from=09048370465" -F "message=sample text message"
+    $ curl -D - -X POST http://localhost/demo.php -F "from=09048370465" -F "message=sample text message" -F "secret=123456"
 </pre>
 <p>
     The server should return a JSON response indicating a success:true or success:false
