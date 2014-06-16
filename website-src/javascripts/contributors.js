@@ -15,7 +15,9 @@ $.ajax({
 });
 // Get history details
 function fetchContributors(data) {
-    var map = L.mapbox.map('map', 'examples.map-9ijuk24y');
+    var titleLayer = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Imagery &copy; <a href="http://info.mapquest.com/terms-of-use/">MapQuest</a>', subdomains: '1234'});
+    var map = L.map('map');
+    titleLayer.addTo(map);
     var markers = new L.MarkerClusterGroup();
     var latLng  = new Array();
     var contributors = data.query.results.json.contributors;
