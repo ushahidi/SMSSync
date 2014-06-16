@@ -275,10 +275,13 @@ else
  }*/
 </pre>
 <p>
- Assuming you've the above code saved in a file called demo.php and is located at your web servers document root, you can issue the command below to test.
+ Assuming you've the above code saved in a file called demo.php and is located at your web server's document root, you can issue the command below to test.
 </p>
 <pre class="prettyprint linenums">
-    $ curl -D - -X POST http://localhost/demo.php -F "from=09048370465" -F "message=sample text message" -F "secret=123456"
+    $ curl -D - -X POST http://localhost/demo.php \
+        -F "from=09048370465" \
+        -F "message=sample text message" \
+        -F "secret=123456"
 </pre>
 <p>
     The server should return a JSON response indicating a success:true or success:false
