@@ -16,16 +16,17 @@
  ******************************************************************************/
 package org.addhen.smssync.listeners;
 
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.SyncUrlFragment;
-
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.fragments.SyncUrlFragment;
 
 /**
  * @author eyedol
@@ -55,48 +56,27 @@ public class SyncUrlActionModeListener implements ActionMode.Callback,
 
         if (activeMode == null) {
             if (host != null) {
-                activeMode = host.getSherlockActivity().startActionMode(this);
+                activeMode = ((ActionBarActivity) host.getActivity()).startSupportActionMode(this);
             }
         }
 
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.actionbarsherlock.view.ActionMode.Callback#onCreateActionMode(com
-     * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
-     */
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         if (host != null) {
-            new com.actionbarsherlock.view.MenuInflater(host.getActivity())
+            new MenuInflater(host.getActivity())
                     .inflate(R.menu.sync_url_context_menu, menu);
         }
         return true;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.actionbarsherlock.view.ActionMode.Callback#onPrepareActionMode(com
-     * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.Menu)
-     */
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
         return false;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.actionbarsherlock.view.ActionMode.Callback#onActionItemClicked(com
-     * .actionbarsherlock.view.ActionMode, com.actionbarsherlock.view.MenuItem)
-     */
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         boolean result = false;
@@ -109,13 +89,6 @@ public class SyncUrlActionModeListener implements ActionMode.Callback,
         return result;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.actionbarsherlock.view.ActionMode.Callback#onDestroyActionMode(com
-     * .actionbarsherlock.view.ActionMode)
-     */
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         activeMode = null;

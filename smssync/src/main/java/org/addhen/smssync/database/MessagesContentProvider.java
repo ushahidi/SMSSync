@@ -103,9 +103,17 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     @Override
     public boolean addMessages(Message messages) {
-        // set values
+
         setContentValue(messages);
-        return super.insert(TABLE, getContentValue()) > 0;
+        String selectionClause = MESSAGE_UUID + " =?";
+        String[] selectionArgs = {messages.getUuid()};
+
+        if (super.update(TABLE, getContentValue(), selectionClause, selectionArgs) > 0) {
+            return true;
+        } else {
+            initialValues.put(MESSAGE_UUID, messages.getUuid());
+            return super.insert(TABLE, getContentValue()) > 0;
+        }
     }
 
     /**
@@ -222,10 +230,10 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     private void setContentValue(Message messages) {
         initialValues = new ContentValues();
-        initialValues.put(MESSAGE_UUID, messages.getUuid());
         initialValues.put(FROM, messages.getFrom());
         initialValues.put(BODY, messages.getBody());
         initialValues.put(DATE, messages.getTimestamp());
+        initialValues.put(TYPE, messages.getMessageType());
     }
 
     private ContentValues getContentValue() {
@@ -246,6 +254,7 @@ public class MessagesContentProvider extends DbContentProvider implements
         int fromIndex;
         int messageIndex;
         int dateIndex;
+        int messageType;
 
         if (cursor != null) {
             if (cursor.getColumnIndex(MESSAGE_UUID) != -1) {
@@ -266,6 +275,11 @@ public class MessagesContentProvider extends DbContentProvider implements
             if (cursor.getColumnIndex(DATE) != -1) {
                 dateIndex = cursor.getColumnIndexOrThrow(DATE);
                 message.setTimestamp(cursor.getString(dateIndex));
+            }
+
+            if (cursor.getColumnIndex(TYPE) != -1) {
+                messageType = cursor.getColumnIndexOrThrow(TYPE);
+                message.setMessageType(cursor.getInt(messageType));
             }
         }
         return message;

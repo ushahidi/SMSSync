@@ -17,11 +17,10 @@
 
 package org.addhen.smssync.navdrawer;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.content.Intent;
+import android.support.v7.app.ActionBarActivity;
 
 import org.addhen.smssync.activities.DonationActivity;
-
-import android.content.Intent;
 
 /**
  * Donation nav drawer item
@@ -35,7 +34,7 @@ public class DonationNavDrawerItem extends BaseNavDrawerItem {
      * @param activity
      */
     public DonationNavDrawerItem(String title, int iconRes,
-            SherlockFragmentActivity activity) {
+            ActionBarActivity activity) {
         super(title, iconRes, activity);
     }
 

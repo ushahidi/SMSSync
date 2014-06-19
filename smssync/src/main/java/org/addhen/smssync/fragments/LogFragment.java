@@ -17,10 +17,24 @@
 
 package org.addhen.smssync.fragments;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.ShareActionProvider;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
@@ -35,19 +49,6 @@ import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.ILogView;
 import org.addhen.smssync.views.LogView;
-
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.BatteryManager;
-import android.os.Bundle;
-import android.os.Handler;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
 
 public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> implements
         View.OnClickListener, AdapterView.OnItemClickListener, ILogView, LogListener {
@@ -118,10 +119,8 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem actionItem = menu.findItem(R.id.share_menu);
-        ShareActionProvider actionProvider = (ShareActionProvider) actionItem
-                .getActionProvider();
-        actionProvider
-                .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+        ShareActionProvider actionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(actionItem);
+        actionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
         actionProvider.setShareIntent(createShareIntent());
 
     }

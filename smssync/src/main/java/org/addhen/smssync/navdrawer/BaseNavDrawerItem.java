@@ -17,22 +17,21 @@
 
 package org.addhen.smssync.navdrawer;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.models.NavDrawerItem;
-
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.NavDrawerItem;
 
 /**
  * @author eyedol
  */
 public abstract class BaseNavDrawerItem extends NavDrawerItem {
 
-    protected SherlockFragmentActivity mActivity;
+    protected ActionBarActivity mActivity;
 
     protected Fragment fragment;
 
@@ -46,7 +45,7 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
      * @param iconRes
      * @param activity
      */
-    public BaseNavDrawerItem(String title, int iconRes, SherlockFragmentActivity activity) {
+    public BaseNavDrawerItem(String title, int iconRes, ActionBarActivity activity) {
         super(title, iconRes);
         mActivity = activity;
     }

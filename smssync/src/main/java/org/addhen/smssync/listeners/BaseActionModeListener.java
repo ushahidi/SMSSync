@@ -17,14 +17,16 @@
 
 package org.addhen.smssync.listeners;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import org.addhen.smssync.R;
 
 import java.util.LinkedHashSet;
 
@@ -34,7 +36,7 @@ import java.util.LinkedHashSet;
 public abstract class BaseActionModeListener implements ActionMode.Callback,
         AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
-    protected SherlockFragmentActivity host;
+    protected ActionBarActivity host;
 
     public ActionMode activeMode;
 
@@ -61,7 +63,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
      */
     public abstract void setTitle(int resId);
 
-    public BaseActionModeListener(final SherlockFragmentActivity host,
+    public BaseActionModeListener(final ActionBarActivity host,
             ListView modeView, int contextMenuResId) {
         this.host = host;
         this.modeView = modeView;
@@ -75,7 +77,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
 
         if (activeMode == null) {
             if (host != null) {
-                activeMode = host.startActionMode(this);
+                host.startSupportActionMode(this);
             }
         }
         onItemCheckedStateChanged(position);
@@ -96,8 +98,9 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
                 mSelectedItemPositions.remove(position);
                 modeView.setItemChecked(position, false);
             }
+
             setSelectedItemPositions(mSelectedItemPositions);
-            setTitle(String.valueOf(mSelectedItemPositions.size()));
+            setTitle(host.getApplicationContext().getResources().getString(R.string.selected,mSelectedItemPositions.size()));
         }
 
     }
@@ -114,8 +117,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
         if (host != null) {
             if (contextMenuResId != 0) {
-                new com.actionbarsherlock.view.MenuInflater(host)
-                        .inflate(contextMenuResId, menu);
+                new MenuInflater(host).inflate(contextMenuResId, menu);
             }
         }
         return true;

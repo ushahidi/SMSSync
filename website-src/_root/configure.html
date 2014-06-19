@@ -22,10 +22,6 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
 
     $('.bs-docs-container [href=#]').click(function (e) {
       e.preventDefault();
-    })
-
-    $window.on('activate.bs.scrollspy', function () {
-        $body.toggle.effect('highlight');
     });
 
     // back to top
@@ -40,8 +36,8 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
             var navOuterHeight = $('.bs-docs-nav').height()
 
             return (this.top = offsetTop - navOuterHeight - sideBarMargin)
-          }
-        , bottom: function () {
+          },
+          bottom: function () {
             return (this.bottom = $('.bs-footer').outerHeight(true))
           }
         }
@@ -155,7 +151,7 @@ header : <h1>How To Configure SMSSync<small> This page documents how to configur
                     <li>Tap on the <strong><em>Sync URL</em></strong> from the navigation drawer.</li>
                     <li>Tap on the <img src="{{urls.media}}/icons/new.png" alt="Add icon"/> icon on the actionbar. An input dialog should open.</li>
                     <li>Enter a title for the Sync URL.</li>
-                    <li>Enter a secret key if required by the webservices. Make sure you enter the exact key here.</li>
+                    <li>Enter a secret key if required by the webservices. Make sure you enter the exact key here. The secret key should be presented as string of any characters without spaces.</li>
                     <li>Enter a comma separated value for the keyword(s). These keywords will be used by SMSSync to filter incoming SMS and pending messages to the Sync URL you are adding. As of v2.0.2. You can now add Regular Expresssion code for filtering. This means, it can either be CSV or RegExp. It cannot be both.</li>
                     <li>Enter the URL for your webservice. Don&#39;t forget to start with the <strong><em>HTTP</em></strong> or <strong><em>HTTPS</em></strong> protocol. e.g. <code>https://example.com/api-v1/add-record/</code></li>
                     <li>Tap <strong><em>OK</em></strong> to save the new entry.</li>

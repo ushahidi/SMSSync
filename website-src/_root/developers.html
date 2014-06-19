@@ -38,18 +38,21 @@ In order for SMSSync to ensure perfect transmission, the Sync URL must return a 
 <strong>Succeeded</strong>
 <pre class="prettyprint linenums">
 {
-    payload: {
-        success: "true"
-        error: null
+    "payload":
+    {
+        "success": true,
+        "error": null
     }
 }</pre>
 <br /><br />
 <strong>Failed</strong>
 <br />
-<pre class="prettyprint linenums">{
-    payload: {
-        success: "false"
-        error: "error message from the server"
+<pre class="prettyprint linenums">
+{
+    "payload":
+    {
+        "success": false,
+        "error": "error message from the server"
     }
 }</pre>
 </p>
@@ -127,7 +130,7 @@ The secret key provided by the server must match the secret key configured withi
 To ensure the message is sent to the correct recipient, add the country code to the phone number. Eg. <strong>+254</strong>700709142. Without this, the message is sent to the number in the country where the phone is.
 </li>
 <li>
-The web-service should check the value of the secret passed with each task http request that SMSSync makes to the web-service for messages to send and respond appropriately so that not just any running smssync instance can communicate with your web-service.
+The web service should check the value of the secret key passed with each task request that SMSSync makes to it for messages to send and respond appropriately to ensure that not any instance of SMSSync can communicate with it.
 </li>
 </ul>
 
@@ -139,7 +142,7 @@ The web-service should check the value of the secret passed with each task http 
 /**
  *  Get the phone number that sent the SMS.
  */
-$error = NULL;
+$error = null;
 if (isset($_POST['from']))
 {
     $from = $_POST['from'];
@@ -163,7 +166,7 @@ else
 }
 
 // Set success to false as the default success status
-$success = "false";
+$success = false;
 
 /**
  * Get the secret key set on SMSSync side
@@ -212,16 +215,14 @@ if (isset($_POST['message_id']))
  * received into a text file.
  *
  */
-if ((strlen($from) > 0) AND (strlen($message) > 0) AND
-    (strlen($sent_timestamp) > 0 )
-    AND (strlen($message_id) > 0))
+if ((strlen($from) > 0) AND (strlen($message))
 {
     /* The screte key set here is 123456. Make sure you enter
      * that on SMSSync.
      */
     if (($secret == '123456'))
     {
-        $success = "true";
+        $success = true;
     }
     else
     {
@@ -247,6 +248,11 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
         "success"=>$success, "error" => $error)));
 
 }
+else
+{
+    echo json_encode(array("payload"=>array(
+        "success"=>$success, "error" => $error)));
+}
 
 /**
  * UnComment the code below to send an instant
@@ -258,7 +264,7 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
  {
     $m = "Your message has been received";
     $f = "0267123407";
-    $s = "true";
+    $s = true;
     $reply[0] = array("to" => $f, "message" => $m);
     $myFile = "task.txt";
     $fh = fopen($myFile, 'a') or die("can't open file");
@@ -269,10 +275,22 @@ if ((strlen($from) > 0) AND (strlen($message) > 0) AND
  }*/
 </pre>
 <p>
+ Assuming you've the above code saved in a file called demo.php and is located at your web server's document root, you can issue the command below to test.
+</p>
+<pre class="prettyprint linenums">
+    $ curl -D - -X POST http://localhost/demo.php \
+        -F "from=09048370465" \
+        -F "message=sample text message" \
+        -F "secret=123456"
+</pre>
+<p>
+    The server should return a JSON response indicating a success:true or success:false
+</p>
+<p>
 For a complete web service application, look at Ushahidi's <a href="https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync">SMSSync plugin</a> which utilizes most of SMSSync's features.
 </p>
 <p>
-There is also a SMSSync webservice for Django that implements most features. You can download it from <a href="https://github.com/cwanjau/SMSsync-Python-Django-webservice">GitHub.com</a>. Thanks to <a href="https://github.com/cwanjau">Caine Wanjau</a>
+There is also SMSSync webservice for Django that implements most of the features. You can download it from <a href="https://github.com/cwanjau/SMSsync-Python-Django-webservice">GitHub.com</a>. Thanks to <a href="https://github.com/cwanjau">Caine Wanjau</a>
 </p>
 </div>
 </div>

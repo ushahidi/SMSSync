@@ -52,7 +52,7 @@ public class CheckTaskScheduledService extends SmsSyncServices {
     }
 
     @Produce
-    public boolean readLogs() {
+    public boolean readLog() {
         return true;
     }
 }

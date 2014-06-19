@@ -17,9 +17,19 @@
 
 package org.addhen.smssync.fragments;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.text.format.DateFormat;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
@@ -30,21 +40,11 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.views.View;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-
 /**
  * @author eyedol
  */
 public abstract class BaseListFragment<V extends View, M extends Model, L extends BaseListAdapter<M>>
-        extends SherlockListFragment {
+        extends ListFragment {
 
     /**
      * Menu resource id
@@ -113,9 +113,9 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
             listView = getListView();
 
             view = Objects.createInstance(viewClass, Activity.class,
-                    getSherlockActivity());
+                    this.getActivity());
             adapter = Objects.createInstance(adapterClass, Context.class,
-                    getSherlockActivity());
+                    this.getActivity());
 
             listView.setFocusable(true);
             listView.setFocusableInTouchMode(true);
@@ -146,14 +146,14 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
     public void onStart() {
         super.onStart();
         log("onStart");
-        MainApplication.getInstance().activityStart(getActivity());
+        MainApplication.getInstance().activityStart(this.getActivity());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         log("onDestroy");
-        MainApplication.getInstance().activityStop(getActivity());
+        MainApplication.getInstance().activityStop(this.getActivity());
     }
 
     @Override
@@ -188,27 +188,27 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
     }
 
     protected void toastLong(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     protected void toastLong(int message) {
-        Toast.makeText(getActivity(), getText(message), Toast.LENGTH_LONG)
+        Toast.makeText(this.getActivity(), getText(message), Toast.LENGTH_LONG)
                 .show();
     }
 
     protected void toastShort(int message) {
-        Toast.makeText(getActivity(), getText(message), Toast.LENGTH_SHORT)
+        Toast.makeText(this.getActivity(), getText(message), Toast.LENGTH_SHORT)
                 .show();
     }
 
     protected void toastShort(CharSequence message) {
-        Toast.makeText(getActivity(), message.toString(), Toast.LENGTH_SHORT)
+        Toast.makeText(this.getActivity(), message.toString(), Toast.LENGTH_SHORT)
                 .show();
     }
 
     protected void logActivities(String message) {
         if (Prefs.enableLog) {
-            new LogUtil(DateFormat.getDateFormatOrder(getActivity())).appendAndClose(message);
+            new LogUtil(DateFormat.getDateFormatOrder(this.getActivity())).appendAndClose(message);
         }
     }
 

@@ -17,21 +17,21 @@
 
 package org.addhen.smssync.fragments;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 
-import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.widget.Toast;
-
-public class BaseFragment extends SherlockFragment {
+public class BaseFragment extends Fragment {
 
     /**
      * Menu resource id
@@ -44,7 +44,6 @@ public class BaseFragment extends SherlockFragment {
      * @param menu menu resource id
      */
     protected BaseFragment(int menu) {
-
         this.menu = menu;
     }
 

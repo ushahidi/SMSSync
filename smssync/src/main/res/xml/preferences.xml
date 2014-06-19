@@ -50,29 +50,28 @@
                 android:key="auto_sync_preference"
                 android:summary="@string/chk_enable_auto_sync_hint"
                 android:title="@string/chk_enable_auto_sync"/>
-
-        <ListPreference
-                android:defaultValue="5"
+        <org.addhen.smssync.util.TimePreference
                 android:dialogTitle="@string/txt_auto_sync_delay"
                 android:key="auto_sync_times"
                 android:summary="@string/auto_sync_delay_hint"
-                android:title="@string/txt_auto_sync_delay"/>
+                android:title="@string/txt_auto_sync_delay"
+                android:dependency="auto_sync_preference"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/task_check_settings">
         <CheckBoxPreference
                 android:key="task_check_preference"
                 android:summary="@string/chk_enable_task_check_hint"
                 android:title="@string/chk_enable_task_check"/>
-
-        <ListPreference
-                android:defaultValue="5"
+        <org.addhen.smssync.util.TimePreference
                 android:dialogTitle="@string/txt_task_check_delay"
                 android:key="task_check_times"
                 android:summary="@string/txt_task_check_delay_hint"
-                android:title="@string/txt_task_check_delay"/>
+                android:title="@string/txt_task_check_delay"
+                android:dependency="task_check_preference"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/about_smssync">
         <Preference android:key="powered_preference"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
+

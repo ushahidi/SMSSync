@@ -92,6 +92,10 @@ label.error {
 .carousel-indicators .active {
     background-color: #009900;
 }
+
+li {
+    padding : 5px;
+}
 /*
  * Side navigation
  *

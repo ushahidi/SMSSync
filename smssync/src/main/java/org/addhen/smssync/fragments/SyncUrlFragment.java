@@ -17,7 +17,19 @@
 
 package org.addhen.smssync.fragments;
 
-import com.actionbarsherlock.view.MenuItem;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
@@ -35,19 +47,6 @@ import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.EditSyncScheme;
 import org.addhen.smssync.views.SyncUrlView;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.ListView;
 
 import java.util.List;
 
@@ -406,27 +405,33 @@ public class SyncUrlFragment extends
             loadByStatus();
             if (syncUrl != null && syncUrl.size() > 0) {
                 if (view.enableSmsSync.isChecked()) {
-                    // start sms receiver
-                    pm.setComponentEnabledSetting(smsReceiverComponent,
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                            PackageManager.DONT_KILL_APP);
 
-                    Prefs.enabled = true;
-                    view.enableSmsSync.setChecked(true);
-                    // because the services to be run depends on state of the service, save the
-                    // changes first
-                    Prefs.savePreferences(getActivity());
-                    // run auto sync service
-                    RunServicesUtil.runAutoSyncService(getActivity());
+                    if (Util.isDefaultSmsApp(this.getActivity())) {
+                        // start sms receiver
+                        pm.setComponentEnabledSetting(smsReceiverComponent,
+                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                                PackageManager.DONT_KILL_APP);
 
-                    // run check task service
-                    RunServicesUtil.runCheckTaskService(getActivity());
+                        Prefs.enabled = true;
+                        view.enableSmsSync.setChecked(true);
+                        // because the services to be run depends on the state of the service so save the
+                        // changes first
+                        Prefs.savePreferences(getActivity());
+                        // run auto sync service
+                        RunServicesUtil.runAutoSyncService(getActivity());
 
-                    // show notification
-                    Util.showNotification(getActivity());
+                        // run check task service
+                        RunServicesUtil.runCheckTaskService(getActivity());
+
+                        // show notification
+                        Util.showNotification(getActivity());
+                    } else {
+                        view.enableSmsSync.setChecked(false);
+                        Prefs.enabled = false;
+                        Util.makeDefaultSmsApp(this.getActivity());
+                    }
 
                 } else {
-
                     // stop sms receiver
                     pm.setComponentEnabledSetting(smsReceiverComponent,
                             PackageManager.COMPONENT_ENABLED_STATE_DISABLED,

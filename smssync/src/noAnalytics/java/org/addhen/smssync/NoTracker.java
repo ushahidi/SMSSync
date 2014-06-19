@@ -9,11 +9,6 @@ import android.content.Context;
 public class NoTracker implements AppTracker {
 
     @Override
-    public void setContext(Context context) {
-
-    }
-
-    @Override
     public void activityStart(Activity activity) {
 
     }

@@ -1,28 +1,44 @@
 [
     {
+        "version": "v2.6",
+        "date": "June 19, 2014",
+        "features": [
+            "Replaced Action Bar Sherlock library with ActionBarCompat support library.",
+            "Upgraded Google Analytics library to V3.",
+            "Replaced the dropdown widget which is used for setting the frequencies for the schedulers with a time picker widget. Now you can set any time for the schedulers and not restricted to the predefined ones.",
+            "Now Task messages appear in the pending tray before they are attempted to be sent as SMS. This makes it possible to automatically or manually processed them when they fail to be sent as SMS.",
+            "Action Bar Contextual Menu now has 'selected' appended to the selection count label. Makes reading the count more meaningful.",
+            "Added KitKat, Android 4.4.x support. Now you can set SMSSync as your default messaging app."
+        ],
+        "bugs": [
+            "Fixed duplicate call to ‘readLogs @Produce’ function which causes the application to crash unexpectedly.",
+            "Fixed issues with configured secret key not able to match with the one set on the server when it has spaces.",
+            "Fixed issue with app crashing on some devices when checking for a connection before attempting a sync process after the device has finished booting."
+        ]
+    },
+    {
         "version": "v2.5.1",
         "date": "November 14, 2013",
-        "features": [
-        ],
+        "features": [],
         "bugs": [
             "Fixed issue with app crashing when up attempts to read certain device's phone number",
             "Fixed a wrong timestamp showing when a sync hasn't been run before"
         ]
-     },
+    },
     {
-            "version": "v2.5",
-            "date": "November 14, 2013",
-            "features": [
-                "Added log viewer feature. This logs verbosely the activities that are happening when the app is running.",
-                "Added ability to configure different format for the sync scheme. Now JSON, XML and URLEncoded are supported.",
-                "Added Basic Auth to Sync URL. Now you can authenticate request from SMSSync",
-                "Updated Ukrainian strings. SMSSync is now fully translated into Ukrainian"
-            ],
-            "bugs": [
-                "Refactored existing HTTP client code. Made it easier to read maintain",
-                "Fixed issue with task check not working when there is no secret key set.",
-                "Fixed a lot of internal bugs"
-            ]
+        "version": "v2.5",
+        "date": "November 14, 2013",
+        "features": [
+            "Added log viewer feature. This logs verbosely the activities that are happening when the app is running.",
+            "Added ability to configure different format for the sync scheme. Now JSON, XML and URLEncoded are supported.",
+            "Added Basic Auth to Sync URL. Now you can authenticate request from SMSSync",
+            "Updated Ukrainian strings. SMSSync is now fully translated into Ukrainian"
+        ],
+        "bugs": [
+            "Refactored existing HTTP client code. Made it easier to read maintain",
+            "Fixed issue with task check not working when there is no secret key set.",
+            "Fixed a lot of internal bugs"
+        ]
     },
     {
         "version": "v2.4",

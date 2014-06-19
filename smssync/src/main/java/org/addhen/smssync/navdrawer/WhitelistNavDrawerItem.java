@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.navdrawer;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import org.addhen.smssync.activities.FilterTabActivity;
 import org.addhen.smssync.fragments.WhitelistFragment;
@@ -34,7 +34,7 @@ public class WhitelistNavDrawerItem extends BaseNavDrawerItem {
      * Filter Nav Drawer
      */
     public WhitelistNavDrawerItem(String title, int iconRes,
-            SherlockFragmentActivity activity) {
+            ActionBarActivity activity) {
         super(title, iconRes, activity);
     }
 

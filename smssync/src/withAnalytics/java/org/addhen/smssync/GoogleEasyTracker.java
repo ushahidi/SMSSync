@@ -11,17 +11,12 @@ import android.content.Context;
 public class GoogleEasyTracker implements AppTracker {
 
     @Override
-    public void setContext(Context context) {
-        EasyTracker.getInstance().setContext(context);
-    }
-
-    @Override
     public void activityStart(Activity activity) {
-        EasyTracker.getInstance().activityStart(activity);
+        EasyTracker.getInstance(activity).activityStart(activity);
     }
 
     @Override
     public void activityStop(Activity activity) {
-        EasyTracker.getInstance().activityStop(activity);
+        EasyTracker.getInstance(activity).activityStop(activity);
     }
 }

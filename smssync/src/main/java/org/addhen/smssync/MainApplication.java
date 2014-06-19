@@ -44,7 +44,6 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        getInstance().setContext(this);
         // Open database connection when the application starts.
         app = this;
         mDb = new Database(this);

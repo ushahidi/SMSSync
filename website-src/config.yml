@@ -10,4 +10,4 @@ widgets :
   analytics :
     use : google
     # -- tracking code for google analytics --
-    tracking_id : 'UA-12063676-22'
+    tracking_id : 'UA-1300221-1'

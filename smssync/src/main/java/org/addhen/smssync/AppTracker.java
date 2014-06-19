@@ -8,8 +8,6 @@ import android.content.Context;
  */
 public interface AppTracker {
 
-    public void setContext(Context context);
-
     public void activityStart(Activity activity);
 
     public void activityStop(Activity stop);
