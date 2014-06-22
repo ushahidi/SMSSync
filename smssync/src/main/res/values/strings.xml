@@ -196,7 +196,7 @@
     <string name="error">Error</string>
     <string name="done">Done</string>
     <string name="never">Never</string>
-    <string name="idle_details">Last sync at:<xliff:g id="last_sync_date">%1$s</xliff:g></string>
+    <string name="idle_details">Last sync at: <xliff:g id="last_sync_date"> %1$s</xliff:g></string>
     <string name="working">Working</string>
     <string name="canceled">Canceled</string>
     <string name="sync_canceled_details">%1$d/%2$d items successfully syncd.</string>
