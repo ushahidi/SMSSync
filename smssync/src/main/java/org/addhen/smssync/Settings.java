@@ -117,8 +117,6 @@ public class Settings extends PreferenceActivity implements
             versionLabel.append(" ");
             versionLabel.append("v");
             versionLabel.append(versionName);
-            versionLabel.append(" ");
-            versionLabel.append(getString(R.string.version_status));
         } catch (NameNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
