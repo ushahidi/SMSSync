@@ -72,7 +72,7 @@ public class ProcessMessage {
         Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
         Prefs.loadPreferences(context);
-        Logger.log(TAG, "UniqueID "+Prefs.uniqueId);
+        
         MessageSyncHttpClient client = new MessageSyncHttpClient(
                 context, syncUrl, message, Util.getPhoneNumber(context), Prefs.uniqueId
         );
