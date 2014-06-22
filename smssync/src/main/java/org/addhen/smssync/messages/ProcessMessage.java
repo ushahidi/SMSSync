@@ -224,6 +224,7 @@ public class ProcessMessage {
 
                     if (payloadObject != null) {
                         String task = payloadObject.getString("task");
+                        Logger.log(TAG, "Task "+task);
                         boolean secretOk = TextUtils.isEmpty(urlSecret) ||
                                 urlSecret.equals(payloadObject.getString("secret"));
                         if (secretOk && task.equals("send")) {
@@ -232,8 +233,12 @@ public class ProcessMessage {
 
                             for (int index = 0; index < jsonArray.length(); ++index) {
                                 jsonObject = jsonArray.getJSONObject(index);
+
+                                // Make sure message UUID has been set before attempting to get.
+                                // This should work with pre 2.5 releases
+                                String uuid = jsonObject.has("uuid") ? jsonObject.getString("uuid") : "";
                                 processSms.sendSms(jsonObject.getString("to"),
-                                        jsonObject.getString("message"), jsonObject.getString("uuid"));
+                                        jsonObject.getString("message"), uuid);
 
                                 Util.logActivities(context,
                                         context.getString(R.string.processed_task,
