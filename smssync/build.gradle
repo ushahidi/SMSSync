@@ -26,8 +26,8 @@ android {
         }
 
         defaultConfig {
-            testPackageName "org.addhen.smssync.tests"
-            packageName "org.addhen.smssync"
+            testApplicationId "org.addhen.smssync.tests"
+            applicationId "org.addhen.smssync"
         }
 
         // Move the build types to build-types/<type>
@@ -68,7 +68,7 @@ android {
             } else{
                 resValue "string", "ga_trackingId", ""
             }
-            packageNameSuffix ".debug"
+            applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
         }
 
