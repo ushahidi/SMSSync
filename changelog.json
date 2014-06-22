@@ -1,5 +1,17 @@
 [
     {
+        "version": "v2.6.1",
+        "date": "June 23, 2014",
+        "features": [
+            "Added device id ",
+            "Removed beta tag from version number"
+        ],
+        "bugs": [
+            "Fixed task checking not executing",
+            "Changed scheduler frequency time to support hour and minutes not minutes and seconds"
+        ]
+    },
+    {
         "version": "v2.6",
         "date": "June 19, 2014",
         "features": [
