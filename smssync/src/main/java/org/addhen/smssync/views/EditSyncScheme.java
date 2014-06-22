@@ -44,6 +44,8 @@ public class EditSyncScheme {
 
     public EditText keyMessageID;
 
+    public EditText keyDeviceID;
+
     /**
      * Handles views for the add dialog box
      */
@@ -58,6 +60,7 @@ public class EditSyncScheme {
         keySentTimeStamp = (EditText) dialogViews.findViewById(R.id.sync_kSentTimestamp);
         keySentTo = (EditText) dialogViews.findViewById(R.id.sync_kSentTo);
         keyMessageID = (EditText) dialogViews.findViewById(R.id.sync_kMessageID);
+        keyDeviceID = (EditText) dialogViews.findViewById(R.id.sync_kDeviceID);
 
     }
 
@@ -78,7 +81,8 @@ public class EditSyncScheme {
         scheme.init(method, format,
                 keySecret.getText().toString(), keyFrom.getText().toString(),
                 keyMessage.getText().toString(), keyMessageID.getText().toString(),
-                keySentTimeStamp.getText().toString(), keySentTo.getText().toString());
+                keySentTimeStamp.getText().toString(), keySentTo.getText().toString(),
+                keyDeviceID.getText().toString());
 
         syncUrl.setSyncScheme(scheme);
 
@@ -99,6 +103,7 @@ public class EditSyncScheme {
                 !TextUtils.isEmpty(keyMessageID.getText().toString()) &&
                 !TextUtils.isEmpty(keySecret.getText().toString()) &&
                 !TextUtils.isEmpty(keySentTo.getText().toString()) &&
-                !TextUtils.isEmpty(keySentTimeStamp.getText().toString());
+                !TextUtils.isEmpty(keySentTimeStamp.getText().toString()) &&
+                !TextUtils.isEmpty(keyDeviceID.getText().toString());
     }
 }

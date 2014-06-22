@@ -300,12 +300,11 @@ public class Settings extends PreferenceActivity implements
                     Prefs.taskCheckTime, taskCheckTimes.getTimeValueAsString()));
         }
 
-        if (!TextUtils.isEmpty(uniqueId.getText())) {
-            uniqueIdValidate(uniqueId.getText());
-            editor.putString("UniqueId", "");
-            if (uniqueIdValidityStatus == 0) {
-                editor.putString("UniqueId", uniqueId.getText());
-            }
+        String id = uniqueId.getText().toString().trim();
+        editor.putString("UniqueId", id);
+        if(!Prefs.uniqueId.equals(uniqueId.getText().toString())) {
+            Util.logActivities(this, getString(R.string.settings_changed, uniqueId.getTitle().toString(),
+                    Prefs.uniqueId, id));
         }
         editor.commit();
     }
@@ -343,14 +342,6 @@ public class Settings extends PreferenceActivity implements
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {
-
-        // Unique ID
-        if (key.equals(KEY_UNIQUE_ID)) {
-            final String savedId = sharedPreferences.getString(KEY_UNIQUE_ID,
-                    "");
-            if (!TextUtils.isEmpty(savedId))
-                uniqueIdValidate(savedId);
-        }
 
         if (key.equals(KEY_ENABLE_REPLY)) {
 
@@ -499,37 +490,6 @@ public class Settings extends PreferenceActivity implements
             }
         }
     };
-
-    /**
-     * Thread to validate unique id
-     *
-     * @param uniqueId The Callback Url to be validated.
-     * @return void
-     */
-    public void uniqueIdValidate(final String uniqueId) {
-
-        Thread t = new Thread() {
-            public void run() {
-
-                // validate number of digits
-                if ((uniqueId.length() == 0) || TextUtils.isEmpty(uniqueId)) {
-                    uniqueIdValidityStatus = 1;
-                    mHandler.post(mUniqueId);
-                } else {
-                    // validate if it's a numeric value
-                    try {
-                        Integer.parseInt(uniqueId);
-                        uniqueIdValidityStatus = 0;
-                    } catch (NumberFormatException ex) {
-                        uniqueIdValidityStatus = 2;
-                        mHandler.post(mUniqueId);
-                    }
-                    mHandler.post(mUniqueId);
-                }
-            }
-        };
-        t.start();
-    }
 
     /**
      * A convenient method to return boolean values to a more meaningful format

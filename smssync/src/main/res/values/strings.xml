@@ -274,6 +274,7 @@
     <string name="enter_key_for_message">Enter key for \'message\'</string>
     <string name="enter_key_for_sent_timestamp">Enter key for \'sent_timestamp\'</string>
     <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
+    <string name="enter_key_for_device_id">Enter key for \'device_id\'</string>
 
     <!-- Logs -->
     <string name="logs">Logs</string>

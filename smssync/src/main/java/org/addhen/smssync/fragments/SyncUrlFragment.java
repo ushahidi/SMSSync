@@ -336,6 +336,7 @@ public class SyncUrlFragment extends
             editScheme.keySentTimeStamp
                     .setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TIMESTAMP));
             editScheme.keySentTo.setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TO));
+            editScheme.keyDeviceID.setText(scheme.getKey(SyncScheme.SyncDataKey.DEVICE_ID));
 
             editScheme.methods.setSelection(scheme.getMethod().ordinal());
             editScheme.dataFormats.setSelection(scheme.getDataFormat().ordinal());
