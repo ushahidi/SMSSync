@@ -191,4 +191,19 @@ public class Message extends Model implements Serializable {
         this.mDeliveryResultMessage = mDeliveryResultMessage;
     }
 
+    @Override
+    public String toString() {
+        return "Message{" +
+                "body='" + body + '\'' +
+                ", from='" + from + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", mMessageType=" + mMessageType +
+                ", mSentResultCode=" + mSentResultCode +
+                ", mSentResultMessage='" + mSentResultMessage + '\'' +
+                ", mDeliveryResultCode=" + mDeliveryResultCode +
+                ", mDeliveryResultMessage='" + mDeliveryResultMessage + '\'' +
+                ", mMessageList=" + mMessageList +
+                '}';
+    }
 }
