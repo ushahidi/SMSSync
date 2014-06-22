@@ -13,7 +13,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
     <!-- The tracking code is read from gradle.properties file -->
-    <string name="ga_trackingId"/>
 
     <!-- Enable automatic activity tracking -->
     <bool name="ga_autoActivityTracking">true</bool>
