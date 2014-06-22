@@ -367,11 +367,13 @@ public class ProcessSms {
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(msg);
         String validUUID;
+
         if (null == uuid || "".equals(uuid)) {
             validUUID = getUuid();
         } else {
             validUUID = uuid;
         }
+
         final Long timeMills = System.currentTimeMillis();
         Message message = new Message();
         message.setBody(msg);
@@ -380,15 +382,19 @@ public class ProcessSms {
         message.setUuid(validUUID);
 
         for (int i = 0; i < parts.size(); i++) {
+
             Intent sentMessageIntent = new Intent(ServicesConstants.SENT);
             sentMessageIntent.putExtra(ServicesConstants.SENT_SMS_BUNDLE, message);
+
             PendingIntent sentIntent = PendingIntent.getBroadcast(context,
                     (int) System.currentTimeMillis(), sentMessageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             Intent delivered = new Intent(ServicesConstants.DELIVERED);
-            delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);
+                delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);
+
             PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
                     (int) System.currentTimeMillis(), delivered, PendingIntent.FLAG_UPDATE_CURRENT);
+
             sentIntents.add(sentIntent);
 
             deliveryIntents.add(deliveryIntent);
@@ -399,7 +405,6 @@ public class ProcessSms {
              * sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
              * deliveryIntents);
              */
-
             sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
                     deliveryIntents);
 

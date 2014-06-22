@@ -1,6 +1,7 @@
 package org.addhen.smssync.util;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
@@ -23,7 +24,7 @@ public class TimePreference extends DialogPreference {
     private TimePicker picker = null;
 
     public TimePreference(Context context, AttributeSet attrs) {
-        super(context, attrs, 0);
+        super(context, attrs);
 
         setPositiveButtonText("Set");
         setNegativeButtonText("Cancel");
@@ -45,12 +46,18 @@ public class TimePreference extends DialogPreference {
     }
 
     @Override
+    protected Object onGetDefaultValue(TypedArray a, int index) {
+        return a.getString(index);
+    }
+
+    @Override
     protected void onDialogClosed(boolean positiveResult) {
         super.onDialogClosed(positiveResult);
         if (positiveResult) {
             lastHour = picker.getCurrentHour();
             lastMinute = picker.getCurrentMinute();
             if (callChangeListener( getTimeValueAsString())) {
+                persistString(getTimeValueAsString());
                 saveTimeFrequency(this.getContext());
             }
         }
@@ -58,12 +65,27 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
-        String time = loadTimeFrequency(this.getContext());
+        String time;
+
+        if (restoreValue) {
+            if (defaultValue==null) {
+                time=getPersistedString(loadTimeFrequency(this.getContext()));
+            }
+            else {
+                time=getPersistedString(defaultValue.toString());
+            }
+        }
+        else {
+            time=defaultValue.toString();
+        }
+
         lastHour = getHour(time);
         lastMinute = getMinute(time);
+
     }
 
     public String getTimeValueAsString() {
+
         String h = String.valueOf(lastHour);
         String m = String.valueOf(lastMinute);
 
@@ -92,11 +114,10 @@ public class TimePreference extends DialogPreference {
     private void saveTimeFrequency(Context context) {
         if (Settings.TASK_CHECK_TIMES.equals(this.getKey())) {
             Prefs.taskCheckTime = getTimeValueAsString();
-            Prefs.savePreferences(context);
         } else if (Settings.AUTO_SYNC_TIMES.equals(this.getKey())) {
             Prefs.autoTime = getTimeValueAsString();
-            Prefs.savePreferences(context);
         }
+        Prefs.savePreferences(context);
     }
 
     private String loadTimeFrequency(Context context) {
@@ -110,6 +131,8 @@ public class TimePreference extends DialogPreference {
         } else {
             time = TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY;
         }
+
+        Logger.log("TimePreferences", "Save time "+ time );
         return time;
     }
 

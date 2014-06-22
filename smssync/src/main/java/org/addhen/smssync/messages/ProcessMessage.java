@@ -263,7 +263,7 @@ public class ProcessMessage {
     }
 
     /**
-     * Processes the incoming SMS to figure out how to exactly to route the message. If it fails to
+     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to
      * be synced online, cache it and queue it up for the scheduler to process it.
      *
      * @param message The sms to be routed
