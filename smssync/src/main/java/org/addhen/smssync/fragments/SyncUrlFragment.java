@@ -387,9 +387,7 @@ public class SyncUrlFragment extends
     }
 
     public void loadByStatus() {
-        LoadingTask loadingStatusTask = new LoadingTask(getActivity());
-        loadingStatusTask.loadSyncUrlByStatus = true;
-        loadingStatusTask.execute((String) null);
+        syncUrl = model.loadByStatus(1);
     }
 
     /*
