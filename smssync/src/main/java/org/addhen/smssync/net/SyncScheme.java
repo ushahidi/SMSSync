@@ -40,7 +40,7 @@ public class SyncScheme {
 
     ;
 
-    public static enum SyncDataKey {SECRET, FROM, MESSAGE, SENT_TIMESTAMP, MESSAGE_ID, SENT_TO}
+    public static enum SyncDataKey {SECRET, FROM, MESSAGE, SENT_TIMESTAMP, MESSAGE_ID, SENT_TO, DEVICE_ID}
 
     ;
 
@@ -61,13 +61,15 @@ public class SyncScheme {
 
     private String keyMessageID;
 
+    private String keyDeviceID;
+
 
     public SyncScheme() {
         init(
                 SyncMethod.POST,
                 SyncDataFormat.URLEncoded,
                 "secret", "from", "message",
-                "message_id", "sent_timestamp", "sent_to");
+                "message_id", "sent_timestamp", "sent_to", "device_id");
     }
 
     public SyncScheme(String json) {
@@ -83,7 +85,7 @@ public class SyncScheme {
                     SyncMethod.POST,
                     SyncDataFormat.URLEncoded,
                     "secret", "from", "message",
-                    "message_id", "sent_timestamp", "sent_to");
+                    "message_id", "sent_timestamp", "sent_to", "device_id");
         }
     }
 
@@ -93,7 +95,7 @@ public class SyncScheme {
                 dataFormat,
                 "secret", "from",
                 "message", "message_id",
-                "sent_timestamp", "sent_to");
+                "sent_timestamp", "sent_to", "device_id");
     }
 
     /**
@@ -102,7 +104,7 @@ public class SyncScheme {
     public void init(SyncMethod method, SyncDataFormat dataFormat,
             String kSecret, String kFrom, String kMessage,
             String kMessageID, String kSentTimestamp,
-            String kSentTo) {
+            String kSentTo, String kDeviceID) {
         this.method = method;
         this.format = dataFormat;
 
@@ -112,6 +114,7 @@ public class SyncScheme {
         this.keyMessage = kMessage;
         this.keySentTo = kSentTo;
         this.keyMessageID = kMessageID;
+        this.keyDeviceID = kDeviceID;
     }
 
     /**
@@ -129,6 +132,7 @@ public class SyncScheme {
         this.keyMessage = obj.getString("kMessage");
         this.keySentTo = obj.getString("kSentTo");
         this.keyMessageID = obj.getString("kMessageID");
+        this.keyDeviceID = obj.getString("KDeviceID");
 
     }
 
@@ -183,6 +187,8 @@ public class SyncScheme {
                 return keyMessageID;
             case SENT_TO:
                 return keySentTo;
+            case DEVICE_ID:
+                return keyDeviceID;
             default:
                 return "value";
         }
@@ -202,6 +208,7 @@ public class SyncScheme {
         nameValuePairs.add(new BasicNameValuePair("kMessage", keyMessage));
         nameValuePairs.add(new BasicNameValuePair("kSentTo", keySentTo));
         nameValuePairs.add(new BasicNameValuePair("kMessageID", keyMessageID));
+        nameValuePairs.add(new BasicNameValuePair("kDeviceID", keyDeviceID));
 
         try {
             return DataFormatUtil.makeJSONString(nameValuePairs);
@@ -216,7 +223,7 @@ public class SyncScheme {
                 "method:" + method.toString() +
                 ", dataFormat:" + format.toString() +
                 ", keys: [" + keyFrom + "," + keySecret + "," + keyMessage + "," + keySentTo + "," +
-                keySentTimeStamp + "," + keyMessageID + "] " +
+                keySentTimeStamp + "," + keyMessageID + "," + keyDeviceID + "] " +
                 "}";
     }
 

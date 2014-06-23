@@ -26,8 +26,8 @@ android {
         }
 
         defaultConfig {
-            testPackageName "org.addhen.smssync.tests"
-            packageName "org.addhen.smssync"
+            testApplicationId "org.addhen.smssync.tests"
+            applicationId "org.addhen.smssync"
         }
 
         // Move the build types to build-types/<type>
@@ -54,11 +54,21 @@ android {
         }
 
         release {
+            if (project.hasProperty('googleAnalyticsCode')) {
+                resValue "string", "ga_trackingId", "${googleAnalyticsCode}"
+            } else{
+                resValue "string", "ga_trackingId", ""
+            }
             signingConfig signingConfigs.releaseSign
         }
 
         debug {
-            packageNameSuffix ".debug"
+            if (project.hasProperty('googleAnalyticsCode')) {
+                resValue "string", "ga_trackingId", "${googleAnalyticsCode}"
+            } else{
+                resValue "string", "ga_trackingId", ""
+            }
+            applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
         }
 
@@ -71,8 +81,8 @@ android {
     }
 
     defaultConfig {
-        versionCode 21
-        versionName "2.6"
+        versionCode 22
+        versionName "2.6.1"
         minSdkVersion 8
         targetSdkVersion 19
     }
@@ -87,19 +97,6 @@ android {
     }
 
     android.applicationVariants.all { variant ->
-        // add google analytics code here. This is defined in the gradle.properties file
-        variant.mergeResources.doLast {
-            if (project.hasProperty('googleAnalyticsCode')) {
-                File valuesFile =
-                        file("${buildDir}/res/all/${variant.dirName}/values/values.xml")
-                def analyticsCode = "<string name=\"ga_trackingId\">${googleAnalyticsCode}</string>"
-
-                String content = valuesFile.getText('UTF-8')
-                content = content.replaceAll("<string name=\"ga_trackingId\"></string>",
-                        analyticsCode)
-                valuesFile.write(content, 'UTF-8')
-            }
-        }
 
         def apk = variant.outputFile;
 

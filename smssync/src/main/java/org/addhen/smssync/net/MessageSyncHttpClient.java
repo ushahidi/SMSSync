@@ -18,7 +18,6 @@ package org.addhen.smssync.net;
 
 import com.squareup.otto.Produce;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
@@ -47,15 +46,15 @@ public class MessageSyncHttpClient extends MainHttpClient {
     private String serverSuccessResp;
 
     public MessageSyncHttpClient(
-            Context context, SyncUrl syncUrl, Message message, String toNumber
+            Context context, SyncUrl syncUrl, Message message, String toNumber, String deviceId
     ) {
         super(syncUrl.getUrl(), context);
         this.syncUrl = syncUrl;
-        initRequest(message, toNumber);
+        initRequest(message, toNumber, deviceId);
 
     }
 
-    private void initRequest(Message message, String toNumber) {
+    private void initRequest(Message message, String toNumber, String deviceId) {
 
         SyncScheme syncScheme = syncUrl.getSyncScheme();
         SyncMethod method = syncScheme.getMethod();
@@ -70,7 +69,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
         );
         addParam(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber);
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid());
-
+        addParam(syncScheme.getKey(SyncDataKey.DEVICE_ID), deviceId);
         try {
             setHttpEntity(format);
         } catch (Exception e) {

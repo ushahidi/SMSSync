@@ -18,6 +18,7 @@
 package org.addhen.smssync;
 
 
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.TimePreference;
 import org.addhen.smssync.util.Util;
@@ -117,8 +118,6 @@ public class Settings extends PreferenceActivity implements
             versionLabel.append(" ");
             versionLabel.append("v");
             versionLabel.append(versionName);
-            versionLabel.append(" ");
-            versionLabel.append(getString(R.string.version_status));
         } catch (NameNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -301,12 +300,15 @@ public class Settings extends PreferenceActivity implements
         }
 
         if (!TextUtils.isEmpty(uniqueId.getText())) {
-            uniqueIdValidate(uniqueId.getText());
-            editor.putString("UniqueId", "");
-            if (uniqueIdValidityStatus == 0) {
-                editor.putString("UniqueId", uniqueId.getText());
+            String id = Util.removeWhitespaces(uniqueId.getText().toString());
+            editor.putString("UniqueId", id);
+            if(!Prefs.uniqueId.equals(uniqueId.getText().toString())) {
+                Util.logActivities(this,
+                        getString(R.string.settings_changed, uniqueId.getTitle().toString(),
+                                Prefs.uniqueId, id));
             }
         }
+
         editor.commit();
     }
 
@@ -343,14 +345,6 @@ public class Settings extends PreferenceActivity implements
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
             String key) {
-
-        // Unique ID
-        if (key.equals(KEY_UNIQUE_ID)) {
-            final String savedId = sharedPreferences.getString(KEY_UNIQUE_ID,
-                    "");
-            if (!TextUtils.isEmpty(savedId))
-                uniqueIdValidate(savedId);
-        }
 
         if (key.equals(KEY_ENABLE_REPLY)) {
 
@@ -499,37 +493,6 @@ public class Settings extends PreferenceActivity implements
             }
         }
     };
-
-    /**
-     * Thread to validate unique id
-     *
-     * @param uniqueId The Callback Url to be validated.
-     * @return void
-     */
-    public void uniqueIdValidate(final String uniqueId) {
-
-        Thread t = new Thread() {
-            public void run() {
-
-                // validate number of digits
-                if ((uniqueId.length() == 0) || TextUtils.isEmpty(uniqueId)) {
-                    uniqueIdValidityStatus = 1;
-                    mHandler.post(mUniqueId);
-                } else {
-                    // validate if it's a numeric value
-                    try {
-                        Integer.parseInt(uniqueId);
-                        uniqueIdValidityStatus = 0;
-                    } catch (NumberFormatException ex) {
-                        uniqueIdValidityStatus = 2;
-                        mHandler.post(mUniqueId);
-                    }
-                    mHandler.post(mUniqueId);
-                }
-            }
-        };
-        t.start();
-    }
 
     /**
      * A convenient method to return boolean values to a more meaningful format

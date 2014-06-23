@@ -196,7 +196,7 @@
     <string name="error">Error</string>
     <string name="done">Done</string>
     <string name="never">Never</string>
-    <string name="idle_details">Last sync at:<xliff:g id="last_sync_date">%1$s</xliff:g></string>
+    <string name="idle_details">Last sync at: <xliff:g id="last_sync_date"> %1$s</xliff:g></string>
     <string name="working">Working</string>
     <string name="canceled">Canceled</string>
     <string name="sync_canceled_details">%1$d/%2$d items successfully syncd.</string>
@@ -274,6 +274,7 @@
     <string name="enter_key_for_message">Enter key for \'message\'</string>
     <string name="enter_key_for_sent_timestamp">Enter key for \'sent_timestamp\'</string>
     <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
+    <string name="enter_key_for_device_id">Enter key for \'device_id\'</string>
 
     <!-- Logs -->
     <string name="logs">Logs</string>

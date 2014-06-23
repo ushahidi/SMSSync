@@ -11,3 +11,6 @@ widgets :
     use : google
     # -- tracking code for google analytics --
     tracking_id : 'UA-1300221-1'
+
+"CNAME" :
+    use : "ignore"
