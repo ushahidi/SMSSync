@@ -18,6 +18,7 @@
 package org.addhen.smssync;
 
 
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.TimePreference;
 import org.addhen.smssync.util.Util;
@@ -298,12 +299,16 @@ public class Settings extends PreferenceActivity implements
                     Prefs.taskCheckTime, taskCheckTimes.getTimeValueAsString()));
         }
 
-        String id = uniqueId.getText().toString().trim();
-        editor.putString("UniqueId", id);
-        if(!Prefs.uniqueId.equals(uniqueId.getText().toString())) {
-            Util.logActivities(this, getString(R.string.settings_changed, uniqueId.getTitle().toString(),
-                    Prefs.uniqueId, id));
+        if (!TextUtils.isEmpty(uniqueId.getText())) {
+            String id = Util.removeWhitespaces(uniqueId.getText().toString());
+            editor.putString("UniqueId", id);
+            if(!Prefs.uniqueId.equals(uniqueId.getText().toString())) {
+                Util.logActivities(this,
+                        getString(R.string.settings_changed, uniqueId.getTitle().toString(),
+                                Prefs.uniqueId, id));
+            }
         }
+
         editor.commit();
     }
 
