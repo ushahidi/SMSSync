@@ -61,6 +61,7 @@ public class Prefs {
 
     public static Boolean enableBlacklist = false;
 
+    
     public static Boolean enableLog = false;
 
     private static SharedPreferences.Editor editor;
