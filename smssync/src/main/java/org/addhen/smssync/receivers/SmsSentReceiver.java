@@ -1,7 +1,6 @@
 package org.addhen.smssync.receivers;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +8,8 @@ import android.telephony.SmsManager;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
+import org.addhen.smssync.controllers.DebugAndAlertsController;
+import org.addhen.smssync.controllers.DebugControllerRunnable;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -20,7 +21,7 @@ import static org.addhen.smssync.messages.ProcessSms.TASK;
  */
 public class SmsSentReceiver extends BaseBroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         Bundle extras = intent.getExtras();
         Message message = (Message) extras.getSerializable(ServicesConstants.SENT_SMS_BUNDLE);
         int result = getResultCode();
@@ -57,7 +58,6 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 break;
         }
 
-
         if (message != null) {
             message.setSentResultMessage(resultMessage);
             message.setSentResultCode(result);
@@ -65,6 +65,12 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 message.setMessageType(TASK);
                 MainApplication.mDb.updateSentResult(message); //update type, sent result msg and code
             } else {
+                new Thread(new DebugControllerRunnable(context) {
+                    @Override
+                    public void run() {
+                        new DebugAndAlertsController().smsSendFailedRequest(context);
+                    }
+                }).start();
                 message.setMessageType(FAILED);
                 message.save();// save message into pending tray
                 MainApplication.mDb.deleteSentMessagesByUuid(message.getUuid());
