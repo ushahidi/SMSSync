@@ -1,0 +1,41 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 8
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        applicationId "com.smssync.portal.million"
+        minSdkVersion 8
+        targetSdkVersion 15
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_5
+            targetCompatibility JavaVersion.VERSION_1_5
+        }
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    productFlavors {
+        portalOne {
+            packageName "com.smssync.portal.one"
+        }
+        portalTwo {
+            packageName "com.smssync.portal.two"
+        }
+        portalThree {
+            packageName "com.smssync.portal.three"
+        }
+        portalFour {
+            packageName "com.smssync.portal.four"
+        }
+        portalFive {
+            packageName "com.smssync.portal.five"
+        }
+    }
+}
