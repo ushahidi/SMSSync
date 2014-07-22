@@ -9,7 +9,9 @@
 	the specific language governing permissions and limitations under the License.
 -->
 <!-- This handles all the strings in the app. -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
 
     <!-- preferences -->
     <!-- sync URL -->

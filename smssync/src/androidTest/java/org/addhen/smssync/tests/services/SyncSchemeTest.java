@@ -27,6 +27,8 @@ public class SyncSchemeTest extends BaseTest {
 
     SyncUrl syncUrl;
     org.addhen.smssync.models.Message msg;
+    final String toNumber = "777777777";
+    final String deviceId = "21";
 
     @Override
     public void setUp() throws Exception{
@@ -57,12 +59,12 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setSyncScheme(new SyncScheme());
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            getContext(), syncUrl, msg, "777777777"
+                getContext(), syncUrl, msg, toNumber, deviceId
         );
         HttpUriRequest req = null;
         try {
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
@@ -80,12 +82,12 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON));
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            getContext(), syncUrl, msg, "777777777"
+                getContext(), syncUrl, msg, toNumber, deviceId
         );
         HttpUriRequest req = null;
         try {
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
@@ -103,12 +105,12 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.XML));
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            getContext(), syncUrl, msg, "777777777"
+                getContext(), syncUrl, msg, toNumber, deviceId
         );
         HttpUriRequest req = null;
         try {
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
@@ -126,12 +128,12 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.JSON));
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            getContext(), syncUrl, msg, "777777777"
+                getContext(), syncUrl, msg, toNumber, deviceId
         );
         HttpUriRequest req = null;
         try {
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
@@ -149,12 +151,12 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.XML));
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            getContext(), syncUrl, msg, "777777777"
+                getContext(), syncUrl, msg, toNumber, deviceId
         );
         HttpUriRequest req = null;
         try {
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
@@ -172,12 +174,12 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.URLEncoded));
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            getContext(), syncUrl, msg, "777777777"
+                getContext(), syncUrl, msg, toNumber, deviceId
         );
         HttpUriRequest req = null;
         try {
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
@@ -196,13 +198,13 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.PUT, SyncScheme.SyncDataFormat.URLEncoded));
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-            getContext(), syncUrl, msg, "777777777"
+                getContext(), syncUrl, msg, toNumber, deviceId
         );
 
         HttpUriRequest req = null;
         try {
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         Header header = req.getFirstHeader("Authorization");
 
@@ -210,9 +212,9 @@ public class SyncSchemeTest extends BaseTest {
         assertNotNull(header);
         assertNotNull(req.getFirstHeader("Authorization"));
 
-        assertEquals( 
-            req.getFirstHeader("Authorization").getValue(),
-            "Basic YWRtaW46MTIzcXdlISQ="
+        assertEquals(
+                req.getFirstHeader("Authorization").getValue(),
+                "Basic YWRtaW46MTIzcXdlISQ="
         );
     }
 }
