@@ -50,7 +50,7 @@ android {
         proguard.initWith(buildTypes.debug)
         proguard {
             runProguard true
-            proguardFile getDefaultProguardFile('proguard-android.txt')
+            proguardFile 'proguard-android.txt'
         }
 
         release {
@@ -75,7 +75,7 @@ android {
         proguard.initWith(buildTypes.release)
         proguard {
             runProguard true
-            proguardFile getDefaultProguardFile('proguard-android.txt')
+            proguardFile 'proguard-android.txt'
         }
 
     }

@@ -460,7 +460,7 @@ public class Util {
         if (number != null) {
             return number;
         }
-        return "";
+        return Prefs.uniqueId;
 
     }
 
