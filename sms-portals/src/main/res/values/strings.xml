@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SMS Portal 1</string>
+    <string name="description">Hi, This is one of the SMSPortals used by SMSSync to send messages via SMS. This app gives SMSSync the capability to send 100 more messages per hour. Have some SMS fun. :}</string>
+    <string name="portal_1_sending_to">Portal 1 sending to </string>
+    <string name="binding_to_portal_1">Binding to Portal 1</string>
+</resources>
