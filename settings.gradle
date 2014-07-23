@@ -1,2 +1,2 @@
-include ':libraries:pay-me'
+include ':libraries:pay-me', ':sms-portals'
 include ':smssync'
