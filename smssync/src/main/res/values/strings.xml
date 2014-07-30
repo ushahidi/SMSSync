@@ -42,6 +42,10 @@
         server to identify which device is sending it messages.</string>
     <string name="edittxt_unique_id_hint">01234</string>
 
+    <!-- alert phone -->
+    <string name="edittxt_alert_phone_pref">Enter alert phone number</string>
+    <string name="edittxt_alert_phone_pref_summary">Specify a phone number to which will be send alerts.</string>
+
     <!-- response message -->
     <string name="edittxt_reply">Enter A Response Message</string>
     <string name="edittxt_reply_title">Response Message</string>
@@ -277,6 +281,11 @@
     <string name="enter_key_for_sent_timestamp">Enter key for \'sent_timestamp\'</string>
     <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
     <string name="enter_key_for_device_id">Enter key for \'device_id\'</string>
+
+    <!-- Debug and alert messages -->
+    <string name="battery_level_message">Battery level is at %1$d</string>
+    <string name="successful_alert_to_server">Sending alert to server has been successful</string>
+    <string name="lost_connection_message">No data connection on the device</string>
 
     <!-- Logs -->
     <string name="logs">Logs</string>
