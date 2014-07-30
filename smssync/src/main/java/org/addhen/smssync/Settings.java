@@ -60,6 +60,8 @@ public class Settings extends PreferenceActivity implements
 
     public static final String KEY_UNIQUE_ID = "unique_id_preference";
 
+    public static final String KEY_ALERT_PHONE_NUMBER = "alert_phone_number_preference";
+
     public static final String AUTO_SYNC = "auto_sync_preference";
 
     public static final String AUTO_SYNC_TIMES = "auto_sync_times";
@@ -87,6 +89,8 @@ public class Settings extends PreferenceActivity implements
     private TimePreference taskCheckTimes;
 
     private EditTextPreference uniqueId;
+
+    private EditTextPreference alertPhoneNumber;
 
     private Preference about;
 
@@ -142,6 +146,9 @@ public class Settings extends PreferenceActivity implements
 
         uniqueId = (EditTextPreference) getPreferenceScreen().findPreference(
                 KEY_UNIQUE_ID);
+
+        alertPhoneNumber = (EditTextPreference) getPreferenceScreen().findPreference(
+                KEY_ALERT_PHONE_NUMBER);
 
         autoSyncTimes = (TimePreference) getPreferenceScreen().findPreference(
                 AUTO_SYNC_TIMES);
@@ -299,13 +306,42 @@ public class Settings extends PreferenceActivity implements
                     Prefs.taskCheckTime, taskCheckTimes.getTimeValueAsString()));
         }
 
-        if (!TextUtils.isEmpty(uniqueId.getText())) {
-            String id = Util.removeWhitespaces(uniqueId.getText().toString());
+
+        if(!TextUtils.isEmpty(uniqueId.getText())) {
+            String id = Util.removeWhitespaces(uniqueId.getText());
             editor.putString("UniqueId", id);
-            if(!Prefs.uniqueId.equals(uniqueId.getText().toString())) {
+            if (!Prefs.uniqueId.equals(uniqueId.getText())) {
                 Util.logActivities(this,
-                        getString(R.string.settings_changed, uniqueId.getTitle().toString(),
-                                Prefs.uniqueId, id));
+                        getString(R.string.settings_changed, uniqueId.getTitle(),
+                                Prefs.uniqueId, id)
+                );
+            }
+        } else {
+            editor.putString("UniqueId", "");
+            if (!Prefs.uniqueId.equals("")) {
+                Util.logActivities(this,
+                        getString(R.string.settings_changed, uniqueId.getTitle(),
+                                Prefs.uniqueId, "")
+                );
+            }
+        }
+
+        if(!TextUtils.isEmpty(alertPhoneNumber.getText())) {
+            String number = Util.removeWhitespaces(alertPhoneNumber.getText());
+            editor.putString("AlertPhoneNumber", number);
+            if (!Prefs.alertPhoneNumber.equals(alertPhoneNumber.getText())) {
+                Util.logActivities(this,
+                        getString(R.string.settings_changed, alertPhoneNumber.getTitle().toString(),
+                                Prefs.alertPhoneNumber, number)
+                );
+            }
+        } else {
+            editor.putString("AlertPhoneNumber", "");
+            if (!Prefs.alertPhoneNumber.equals("")) {
+                Util.logActivities(this,
+                        getString(R.string.settings_changed, alertPhoneNumber.getTitle().toString(),
+                                Prefs.alertPhoneNumber, "")
+                );
             }
         }
 

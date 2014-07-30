@@ -27,6 +27,14 @@
                 android:key="auto_delete_preference"
                 android:summary="@string/chk_auto_delete_hint"
                 android:title="@string/chk_enable_auto_delete"/>
+
+        <EditTextPreference
+            android:dialogTitle="@string/edittxt_alert_phone_pref"
+            android:key="alert_phone_number_preference"
+            android:summary="@string/edittxt_alert_phone_pref_summary"
+            android:title="@string/edittxt_alert_phone_pref"
+            android:inputType="number"
+            android:digits="0123456789"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/reply_settings">
         <CheckBoxPreference
