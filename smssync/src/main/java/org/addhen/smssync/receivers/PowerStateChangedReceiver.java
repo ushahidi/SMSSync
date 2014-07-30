@@ -19,6 +19,7 @@ package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.util.Util;
@@ -26,6 +27,7 @@ import org.addhen.smssync.util.Util;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.BatteryManager;
 
 /**
  * The manifest Receiver is used to detect changes in battery state. When the system broadcasts a
@@ -43,11 +45,10 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
     private Intent smsSyncTaskCheckServiceIntent;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         batteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
         boolean batteryOkay = intent.getAction().equals(Intent.ACTION_BATTERY_OKAY);
-        // load current settings
-        Prefs.loadPreferences(context);
+
         if (batteryLow) {
             // is smssync enabled
             Util.logActivities(context, context.getString(R.string.battery_low));
@@ -70,6 +71,13 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
                     context.stopService(smsSyncTaskCheckServiceIntent);
                 }
             }
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    AlertCallbacks.lowBatteryLevelRequest(context);
+                }
+            }).start();
         }
 
         if (batteryOkay) {

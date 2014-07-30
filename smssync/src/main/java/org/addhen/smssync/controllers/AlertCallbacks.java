@@ -2,27 +2,86 @@ package org.addhen.smssync.controllers;
 
 import android.content.Context;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.MainHttpClient;
+import org.addhen.smssync.util.Util;
+import org.apache.http.HttpStatus;
+
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 17.06.14.
  */
-public interface AlertCallbacks {
+public class AlertCallbacks {
+    public static Thread lostConnectionThread;
+    public final static int MAX_DISCONNECT_TIME = 15000;
+
     /**
      * If battery level drops to low
      * post alert to server
      * send alert text to stored phone number
      */
-    public void lowBatteryLevelRequest();
+    public static void lowBatteryLevelRequest(Context context){
+        int batteryLevel = Util.getBatteryLevel(context);
+        SyncUrl model = new SyncUrl();
+        for(SyncUrl syncUrl : model.loadByStatus(1)) {
+            if (syncUrl.getUrl() != null && syncUrl.getUrl() != "") {
+                MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
+                try {
+                    client.setMethod("GET");
+                    client.addParam("Task", "alert");
+                    client.addParam("message", context.getResources().getString(R.string.battery_level_message, batteryLevel));
+                    client.execute();
+                } catch (Exception e) {
+                    Util.logActivities(context, "");
+                } finally {
+                    if (HttpStatus.SC_OK == client.getResponseCode()) {
+                        Util.logActivities(context, context.getResources().getString(R.string.successful_alert_to_server));
+                    }
+                }
+            }
+        }
+
+        if(!Prefs.alertPhoneNumber.matches("")){
+            new ProcessSms(context).sendSms(Prefs.alertPhoneNumber,context.getResources().getString(R.string.battery_level_message, batteryLevel));
+        }
+    }
 
     /**
      * If an SMS fails to send (due to credit, cell coverage, or bad number)
      * post alert to server
-     * @param context
      */
-    public void smsSendFailedRequest(Context context);
+    public static void smsSendFailedRequest(Context context, String resultMessage, String errorCode){
+        SyncUrl model = new SyncUrl();
+        for(SyncUrl syncUrl : model.getSyncUrlList()) {
+            if (syncUrl.getUrl() != null && syncUrl.getUrl() != "") {
+                MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
+                try {
+                    client.setMethod("GET");
+                    client.addParam("Task", "alert");
+                    client.addParam("message", resultMessage);
+                    if (!errorCode.matches(""))
+                        client.addParam("errorCode", errorCode);
+                    client.execute();
+                } catch (Exception e) {
+                    Util.logActivities(context, e.getMessage());
+                } finally {
+                    if (HttpStatus.SC_OK == client.getResponseCode()) {
+                        Util.logActivities(context, context.getResources().getString(R.string.successful_alert_to_server));
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * If data connection is lost for extended time (either WiFi, or GSM)
      * send alert SMS to stored phone number
      */
-    public void dataConnectionLost();
+    public static void dataConnectionLost(Context context)  {
+        if(!Prefs.alertPhoneNumber.matches("")){
+            new ProcessSms(context).sendSms(Prefs.alertPhoneNumber,context.getResources().getString(R.string.lost_connection_message));
+        }
+    }
 }
