@@ -32,9 +32,11 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -551,6 +553,8 @@ public class Util {
         }
     }
 
+
+
     /**
      * This method removes all whitespaces from passed string
      *
@@ -560,5 +564,17 @@ public class Util {
     public static String removeWhitespaces(String s) {
         String withoutWhiteChars = s.replaceAll("\\s+", "");
         return withoutWhiteChars;
+    }
+
+    public static int getBatteryLevel(Context context) {
+        Intent batteryIntent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+        if (level >= 0 && scale > 0) {
+            return (level * 100) / scale;
+        }
+
+        return  -1;
     }
 }

@@ -22,7 +22,7 @@ import com.squareup.otto.Produce;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.controllers.DebugAndAlertsController;
+import org.addhen.smssync.controllers.DebugCallbacks;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.util.LogUtil;
@@ -72,8 +72,6 @@ public class SmsReceiverService extends Service {
     private SmsMessage sms;
 
     private Intent statusIntent;
-
-    private DebugAndAlertsController mDebugAndAlertsController = new DebugAndAlertsController();
 
     private static final String CLASS_TAG = SmsReceiverService.class
             .getSimpleName();
@@ -175,7 +173,7 @@ public class SmsReceiverService extends Service {
             sms = messages[0];
             if (messages != null) {
                 //received sms is status message in this case there is no need to pass it further
-                if (mDebugAndAlertsController.isStatusMessage(sms)) {
+                if (DebugCallbacks.isStatusMessage(sms)) {
                     return;
                 }
                 // extract message details. phone number and the message body
