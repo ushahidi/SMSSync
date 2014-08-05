@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 language: android
 jdk: oraclejdk7
 env:
@@ -21,5 +20,3 @@ notifications:
     hipchat:
       rooms:
         secure: Pz5CQX/NtKLkk8c6kjhxipMS6kdQTj5jaeN9LC2k1IzERsqCYnx/nD2EV0cG4YJO0W3sMK3vaVgL5lLE3xHpe7wsLB/LWmxLY8QV0NJaSGOqqXAC4S5Yo7MRFd2S5fPWN7MC05SPpqiDveEle1fK6Gz7oHXSZxAFMyYnLRcaX3M=
-=======
->>>>>>> 84e44893869d62c71d500cc53c5b0ca5bcd3e151
