@@ -1,22 +1,15 @@
-language: android
-jdk: oraclejdk7
-env:
-  matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
-before_install:
-  - export TERM=dumb
-  - sudo apt-get install -qq libstdc++6:i386 lib32z1
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - adb wait-for-device
-  - adb shell input keyevent 82 &
-  - 'sudo mv /usr/local/android-sdk/tools/android-* /usr/local/bin'
-  - "android-update-sdk --components='platform-tools,tools' --accept-licenses='.+'"
-  - "android-update-sdk --components='build-tools-19.1.0' --accept-licenses='.+'"
-  - "android-update-sdk --components='android-19' --accept-licenses='.+'"
-  - "android-update-sdk --components='extra-android-m2repository,extra-google-m2repository' --accept-licenses='.+'"
-
-notifications:
-    hipchat:
-      rooms:
-        secure: Pz5CQX/NtKLkk8c6kjhxipMS6kdQTj5jaeN9LC2k1IzERsqCYnx/nD2EV0cG4YJO0W3sMK3vaVgL5lLE3xHpe7wsLB/LWmxLY8QV0NJaSGOqqXAC4S5Yo7MRFd2S5fPWN7MC05SPpqiDveEle1fK6Gz7oHXSZxAFMyYnLRcaX3M=
+language: python
+python:
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  - "3.3"
+  # does not have headers provided, please ask https://launchpad.net/~pypy/+archive/ppa
+  # maintainers to fix their pypy-dev package.
+  - "pypy"
+# command to install dependencies
+install:
+  - pip install .
+  - pip install -r requirements.txt
+# command to run tests
+script: nosetests
