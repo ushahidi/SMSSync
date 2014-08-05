@@ -20,7 +20,7 @@ Build with Android Studio.
 
 * Go to File
 * Select Import Project...
-* Select `build.gradle` located in the project`s root document.
+* Select `build.gradle` located in the project's root document.
 * After it finishes the import, hit Shift + F10 to build the project.
 
 ## How To Build SMSSync website
