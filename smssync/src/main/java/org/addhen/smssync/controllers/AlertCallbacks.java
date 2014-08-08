@@ -7,6 +7,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
+import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
 
@@ -25,7 +26,7 @@ public class AlertCallbacks {
     public static void lowBatteryLevelRequest(Context context){
         int batteryLevel = Util.getBatteryLevel(context);
         SyncUrl model = new SyncUrl();
-        for(SyncUrl syncUrl : model.loadByStatus(1)) {
+        for(SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
             if (syncUrl.getUrl() != null && syncUrl.getUrl() != "") {
                 MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
                 try {
@@ -79,7 +80,7 @@ public class AlertCallbacks {
      * If data connection is lost for extended time (either WiFi, or GSM)
      * send alert SMS to stored phone number
      */
-    public static void dataConnectionLost(Context context)  {
+    public static void dataConnectionLost(Context context) {
         if(!Prefs.alertPhoneNumber.matches("")){
             new ProcessSms(context).sendSms(Prefs.alertPhoneNumber,context.getResources().getString(R.string.lost_connection_message));
         }

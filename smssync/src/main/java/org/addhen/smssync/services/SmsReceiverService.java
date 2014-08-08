@@ -25,7 +25,6 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.DebugCallbacks;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -43,7 +42,6 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
-import android.text.format.DateFormat;
 
 import java.lang.ref.WeakReference;
 
@@ -172,10 +170,13 @@ public class SmsReceiverService extends Service {
             SmsMessage[] messages = getMessagesFromIntent(intent);
             sms = messages[0];
             if (messages != null) {
-                //received sms is status message in this case there is no need to pass it further
-                if (DebugCallbacks.isStatusMessage(sms)) {
+
+                //if received sms is status message do appropriate action
+                // and there is no need to pass it further
+                if (DebugCallbacks.handleStatusMessage(sms, mContext)) {
                     return;
                 }
+
                 // extract message details. phone number and the message body
                 msg.setFrom(sms.getOriginatingAddress());
                 msg.setTimestamp(String.valueOf(sms.getTimestampMillis()));
