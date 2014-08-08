@@ -52,6 +52,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,6 +71,8 @@ public class Util {
     public static final int NOTIFICATION_ALERT = 1337;
 
     public static final int READ_THREAD = 1;
+
+    public static final int SERVER_TIMEOUT = 10000;
 
     private static final String TIME_FORMAT_12_HOUR = "h:mm a";
 
@@ -551,6 +555,22 @@ public class Util {
             status = true;
             MainApplication.bus.post(true);
         }
+    }
+
+    static public int getServerResponse(Context context, URL url) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            try {
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(SERVER_TIMEOUT);
+                urlConnection.connect();
+                return urlConnection.getResponseCode();
+            } catch (IOException e) {
+                return 0;
+            }
+        }
+        return 0;
     }
 
 

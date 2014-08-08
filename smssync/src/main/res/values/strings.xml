@@ -286,8 +286,12 @@
     <string name="battery_level_message">Battery level is at %1$d</string>
     <string name="successful_alert_to_server">Sending alert to server has been successful</string>
     <string name="lost_connection_message">No data connection on the device</string>
+    <string name="reception_ok_message">Cell reception ok</string>
+    <string name="server_respond_message">Server %1$s responded \n with %2$d status code \n</string>
+    <string name="unsuccessful_server_connection_message">Cannot reach server %1$s \n</string>
 
     <!-- Logs -->
+    <string name="malformed_url">"Malformed URL: %1$s"</string>
     <string name="logs">Logs</string>
     <string name="action_settings">Settings</string>
     <string name="enable_logs">Enable logs</string>
