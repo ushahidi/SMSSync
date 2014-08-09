@@ -14,7 +14,7 @@ before_install:
   - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
   - emulator -avd test -no-skin -no-audio -no-window &
 
-  install:
+install:
   # Without TERM=dumb, we get mangled output in the Travis console
   - TERM=dumb ./gradlew assemble
 
