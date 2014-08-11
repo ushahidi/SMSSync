@@ -79,6 +79,13 @@ public class TimePreference extends DialogPreference {
             time=defaultValue.toString();
         }
 
+        //This is needed for backward compatible with versions pre 2.6
+        //It adjusts format of input string from "mm" to "hh:mm"
+        if (!time.contains(":")) {
+            int minutes = Integer.parseInt(time);
+            time = Integer.toString((minutes / 60)) + ":" + Integer.toString((minutes % 60));
+        }
+
         lastHour = getHour(time);
         lastMinute = getMinute(time);
 
