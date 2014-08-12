@@ -43,6 +43,8 @@ public class Prefs {
 
     public static String uniqueId = "";
 
+    public static String alertPhoneNumber = "";
+
     public static Boolean enabled = false;
 
     public static Boolean autoDelete = false;
@@ -61,6 +63,7 @@ public class Prefs {
 
     public static Boolean enableBlacklist = false;
 
+    
     public static Boolean enableLog = false;
 
     private static SharedPreferences.Editor editor;
@@ -99,6 +102,7 @@ public class Prefs {
         enableWhitelist = settings.getBoolean("EnableWhitelist", false);
         enableLog = settings.getBoolean("EnableLog", false);
         batteryLevel = settings.getInt("BatteryLevel", 0);
+        alertPhoneNumber = settings.getString("AlertPhoneNumber","");
     }
 
     /**
@@ -124,6 +128,7 @@ public class Prefs {
         editor.putBoolean("EnableWhitelist", enableWhitelist);
         editor.putBoolean("EnableLog", enableLog);
         editor.putInt("BatteryLevel", batteryLevel);
+        editor.putString("AlertPhoneNumber", alertPhoneNumber);
         editor.commit();
     }
 

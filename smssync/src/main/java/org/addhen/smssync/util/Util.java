@@ -32,9 +32,11 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -50,6 +52,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,6 +71,8 @@ public class Util {
     public static final int NOTIFICATION_ALERT = 1337;
 
     public static final int READ_THREAD = 1;
+
+    public static final int SERVER_TIMEOUT = 10000;
 
     private static final String TIME_FORMAT_12_HOUR = "h:mm a";
 
@@ -551,6 +557,24 @@ public class Util {
         }
     }
 
+    static public int getServerResponse(Context context, URL url) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnected()) {
+            try {
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setConnectTimeout(SERVER_TIMEOUT);
+                urlConnection.connect();
+                return urlConnection.getResponseCode();
+            } catch (IOException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+
+
     /**
      * This method removes all whitespaces from passed string
      *
@@ -560,5 +584,17 @@ public class Util {
     public static String removeWhitespaces(String s) {
         String withoutWhiteChars = s.replaceAll("\\s+", "");
         return withoutWhiteChars;
+    }
+
+    public static int getBatteryLevel(Context context) {
+        Intent batteryIntent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+        if (level >= 0 && scale > 0) {
+            return (level * 100) / scale;
+        }
+
+        return  -1;
     }
 }
