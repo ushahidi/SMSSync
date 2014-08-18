@@ -56,10 +56,14 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 logActivities(context.getResources().getString(R.string.sms_delivery_status_radio_off), context);
                 break;
             case 133404:
-                logActivities("HTC device is trying to retry sending sms.", context);
+                /**
+                 * HTC devices issue
+                 * http://stackoverflow.com/questions/7526179/smsmanager-keeps-retrying-to-send-sms-on-htc-desire/7685238#7685238
+                 */
+                logActivities(context.getResources().getString(R.string.sms_not_delivered_htc_device_retry), context);
                 return;
             default:
-                resultMessage = "Unknown error while sending sms.";
+                resultMessage = context.getResources().getString(R.string.sms_not_delivered_unknown_error);
                 break;
         }
 
@@ -71,11 +75,11 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 MainApplication.mDb.updateSentResult(message); //update type, sent result msg and code
             } else {
                 final String errorCode;
-                if(intent.hasExtra("errorCode"))
+                if (intent.hasExtra("errorCode")) {
                     errorCode = intent.getStringExtra("errorCode");
-                else
+                } else {
                     errorCode = "";
-
+                }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

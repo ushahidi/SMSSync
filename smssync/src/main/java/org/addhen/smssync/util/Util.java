@@ -52,8 +52,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -556,24 +554,6 @@ public class Util {
             MainApplication.bus.post(true);
         }
     }
-
-    static public int getServerResponse(Context context, URL url) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnected()) {
-            try {
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setConnectTimeout(SERVER_TIMEOUT);
-                urlConnection.connect();
-                return urlConnection.getResponseCode();
-            } catch (IOException e) {
-                return 0;
-            }
-        }
-        return 0;
-    }
-
-
 
     /**
      * This method removes all whitespaces from passed string

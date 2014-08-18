@@ -15,6 +15,9 @@ import org.apache.http.HttpStatus;
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 17.06.14.
  */
 public class AlertCallbacks {
+    public static final String METHOD_POST = "POST";
+    public static final String TASK_PARAM = "Task";
+    public static final String MESSAGE_PARAM = "message";
     public static Thread lostConnectionThread;
     public final static int MAX_DISCONNECT_TIME = 15000;
 
@@ -27,15 +30,15 @@ public class AlertCallbacks {
         int batteryLevel = Util.getBatteryLevel(context);
         SyncUrl model = new SyncUrl();
         for(SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            if (syncUrl.getUrl() != null && syncUrl.getUrl() != "") {
+            if (syncUrl.getUrl() != null && !syncUrl.getUrl().equals("")) {
                 MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
                 try {
-                    client.setMethod("GET");
-                    client.addParam("Task", "alert");
-                    client.addParam("message", context.getResources().getString(R.string.battery_level_message, batteryLevel));
+                    client.setMethod(METHOD_POST);
+                    client.addParam(TASK_PARAM, "alert");
+                    client.addParam(MESSAGE_PARAM, context.getResources().getString(R.string.battery_level_message, batteryLevel));
                     client.execute();
                 } catch (Exception e) {
-                    Util.logActivities(context, "");
+                    Util.logActivities(context, e.getMessage());
                 } finally {
                     if (HttpStatus.SC_OK == client.getResponseCode()) {
                         Util.logActivities(context, context.getResources().getString(R.string.successful_alert_to_server));
@@ -44,7 +47,7 @@ public class AlertCallbacks {
             }
         }
 
-        if(!Prefs.alertPhoneNumber.matches("")){
+        if (!Prefs.alertPhoneNumber.matches("")) {
             new ProcessSms(context).sendSms(Prefs.alertPhoneNumber,context.getResources().getString(R.string.battery_level_message, batteryLevel));
         }
     }
@@ -56,14 +59,15 @@ public class AlertCallbacks {
     public static void smsSendFailedRequest(Context context, String resultMessage, String errorCode){
         SyncUrl model = new SyncUrl();
         for(SyncUrl syncUrl : model.getSyncUrlList()) {
-            if (syncUrl.getUrl() != null && syncUrl.getUrl() != "") {
+            if (syncUrl.getUrl() != null && !syncUrl.getUrl().equals("")) {
                 MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
                 try {
-                    client.setMethod("GET");
-                    client.addParam("Task", "alert");
-                    client.addParam("message", resultMessage);
-                    if (!errorCode.matches(""))
+                    client.setMethod(METHOD_POST);
+                    client.addParam(TASK_PARAM, "alert");
+                    client.addParam(MESSAGE_PARAM, resultMessage);
+                    if (!errorCode.matches("")) {
                         client.addParam("errorCode", errorCode);
+                    }
                     client.execute();
                 } catch (Exception e) {
                     Util.logActivities(context, e.getMessage());
@@ -81,7 +85,7 @@ public class AlertCallbacks {
      * send alert SMS to stored phone number
      */
     public static void dataConnectionLost(Context context) {
-        if(!Prefs.alertPhoneNumber.matches("")){
+        if (!Prefs.alertPhoneNumber.matches("")) {
             new ProcessSms(context).sendSms(Prefs.alertPhoneNumber,context.getResources().getString(R.string.lost_connection_message));
         }
     }

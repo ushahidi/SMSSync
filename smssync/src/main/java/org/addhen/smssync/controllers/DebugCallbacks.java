@@ -6,11 +6,9 @@ import android.telephony.SmsMessage;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 17.06.14.
@@ -19,20 +17,22 @@ public class DebugCallbacks {
 
     public static String isServerOKRequest(Context context, String requestRecipient){
         SyncUrl model = new SyncUrl();
-        int responseCode;
+        int responseCode = 0;
         String message = "";
         for(SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+            MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
             try {
-                responseCode = Util.getServerResponse(context,new URL(syncUrl.getUrl()));
-            } catch (MalformedURLException e) {
-                Util.logActivities(context, context.getResources().getString(R.string.malformed_url, syncUrl.getUrl()));
-                responseCode = 0;
+                client.execute();
+                responseCode = client.getResponseCode();
+            } catch (Exception e) {
+                Util.logActivities(context, e.getMessage());
             }
-            if(responseCode != 0) {
+            if (responseCode != 0) {
                 message = message + context.getResources().getString(R.string.server_respond_message, syncUrl.getTitle() , responseCode);
             } else {
                 message = message + context.getResources().getString(R.string.unsuccessful_server_connection_message, syncUrl.getTitle());
             }
+
         }
         return message;
     }
