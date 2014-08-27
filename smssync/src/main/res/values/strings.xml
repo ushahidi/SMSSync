@@ -80,6 +80,11 @@
     <string name="auto_sync_delay_hint">Set how often SMSSync syncronizes with the configured
         callback URL.</string>
 
+    <!-- enable SMS Portals -->
+    <string name="sms_portals_settings">SMS Portals Settings</string>
+    <string name="chk_enable_sms_portals">Enable SMS Portals</string>
+    <string name="chk_enable_sms_portals_hint">Use SMS Portals when sending SMS messages, effectively increasing the default Android limit (100 SMS/hour).</string>
+
     <!-- enable task check -->
     <string name="chk_enable_task_check">Enable Task Checking</string>
     <string name="chk_enable_task_check_hint">Allow SMSSync to periodically check for tasks enabled

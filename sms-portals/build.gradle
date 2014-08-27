@@ -1,0 +1,41 @@
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        applicationId "com.smssync.portal.one"
+        minSdkVersion 8
+        targetSdkVersion 19
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+        }
+    }
+
+    buildTypes {
+        release {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    productFlavors {
+        portalOne {
+            applicationId "com.smssync.portal.two"
+        }
+        portalTwo {
+            applicationId "com.smssync.portal.three"
+        }
+        portalThree {
+            applicationId "com.smssync.portal.four"
+        }
+        portalFour {
+            applicationId "com.smssync.portal.five"
+        }
+        portalFive {
+            applicationId "com.smssync.portal.six"
+        }
+    }
+}

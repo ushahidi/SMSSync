@@ -55,6 +55,8 @@ public class Prefs {
 
     public static Boolean enableAutoSync = false;
 
+    public static Boolean useSmsPortals = false;
+
     public static Boolean enableTaskCheck = false;
 
     public static long lastSyncDate = 0;
@@ -93,6 +95,7 @@ public class Prefs {
         enableReplyFrmServer = settings.getBoolean("EnableReplyFrmServer",
                 false);
         enableAutoSync = settings.getBoolean("AutoSync", false);
+        useSmsPortals =  settings.getBoolean("UseSmsPortals", false);
         enableTaskCheck = settings.getBoolean("EnableTaskCheck", false);
         autoTime = settings.getString("AutoTime", TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY);
         uniqueId = settings.getString("UniqueId", "");
@@ -122,6 +125,7 @@ public class Prefs {
         editor.putBoolean("AutoSync", enableAutoSync);
         editor.putString("AutoTime", autoTime);
         editor.putString("taskCheck", taskCheckTime);
+        editor.putBoolean("UseSmsPortals", useSmsPortals);
         editor.putString("UniqueId", uniqueId);
         editor.putLong("LastSyncDate", lastSyncDate);
         editor.putBoolean("EnableBlacklist", enableBlacklist);
