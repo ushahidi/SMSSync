@@ -161,8 +161,8 @@
         <!-- power changed -->
         <receiver android:name="org.addhen.smssync.receivers.PowerStateChangedReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
-                <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
             </intent-filter>
         </receiver>
 

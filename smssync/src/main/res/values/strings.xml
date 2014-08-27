@@ -42,6 +42,10 @@
         server to identify which device is sending it messages.</string>
     <string name="edittxt_unique_id_hint">01234</string>
 
+    <!-- alert phone -->
+    <string name="edittxt_alert_phone_pref">Enter alert phone number</string>
+    <string name="edittxt_alert_phone_pref_summary">Specify a phone number to send alerts to.</string>
+
     <!-- response message -->
     <string name="edittxt_reply">Enter A Response Message</string>
     <string name="edittxt_reply_title">Response Message</string>
@@ -141,6 +145,8 @@
     <string name="sms_delivery_status_null_pdu">Failed to send SMS because no pdu provided</string>
     <string name="sms_delivered">SMS delivered</string>
     <string name="sms_not_delivered">SMS not delivered</string>
+    <string name="sms_not_delivered_htc_device_retry">Device is retrying to send sms.</string>
+    <string name="sms_not_delivered_unknown_error">"Unknown error while sending sms."</string>
 
     <!-- Pending and failed messages Tab -->
     <string name="sms">SMS</string>
@@ -278,7 +284,16 @@
     <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
     <string name="enter_key_for_device_id">Enter key for \'device_id\'</string>
 
+    <!-- Debug and alert messages -->
+    <string name="battery_level_message">Battery level is at %1$d</string>
+    <string name="successful_alert_to_server">Sending alert to server has been successful</string>
+    <string name="lost_connection_message">No data connection on the device</string>
+    <string name="reception_ok_message">Cell reception ok</string>
+    <string name="server_respond_message">Server %1$s responded with %2$d status code \n</string>
+    <string name="unsuccessful_server_connection_message">Cannot reach server %1$s \n</string>
+
     <!-- Logs -->
+    <string name="malformed_url">"Malformed URL: %1$s"</string>
     <string name="logs">Logs</string>
     <string name="action_settings">Settings</string>
     <string name="enable_logs">Enable logs</string>
