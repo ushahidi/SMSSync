@@ -6,17 +6,17 @@ If you would like to contribute code to SMSSync you can do so by forking the [re
 
 The repository is made up of three main branches: **master (stable)**, **develop (ustable)** and **release (quite stable and a temporary branch)**.
 
-* **master** has the latest stable code, it's tags are released as [SMSSync][1] on the Google playstore.
-* **develop** has the latest unstable code. It's codes are merge into master.
+* **master** has the latest stable code, it`s tags are released as [SMSSync][1] on the Google playstore.
+* **develop** has the latest unstable code. It`s codes are merged into master.
 * **release** is a branch of develop after feature freeze. mainly for fine tuning and testing to get the code stable for a release. The changes made here are finally merged into develop then develop is merged into master branch. After which a version tag is created for a release.
 
 Always, work with the `develop` branch.
 
-Join the [developer mailing list][2] and let us hear what you're working on.
+Join the [developer mailing list][2] and let us hear what you are working on.
 
 ### File Issues
 
-If you're exepriencing an issue and want to file it for the contributors to work on, you can do so by
+If you are experiencing any issue and want to file it for the contributors to work on, you can do so by
 
 1. Search the [Github issue tracker][3] to make sure your issue has not been filed already. If it has, please add comment to the existing issue to add more details to it.
 
