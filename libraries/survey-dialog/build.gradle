@@ -7,4 +7,9 @@ android {
         minSdkVersion 7
         targetSdkVersion 19
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
 }
