@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
+            android:text="@string/email_label"
             android:id="@+id/textView"/>
 
     <EditText
@@ -28,5 +28,6 @@
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/editText"
+            android:hint="sample@example.com"
             android:layout_gravity="center_horizontal"/>
 </LinearLayout>
