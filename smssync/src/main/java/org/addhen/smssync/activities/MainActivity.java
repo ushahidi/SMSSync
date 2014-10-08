@@ -27,9 +27,12 @@ import android.view.View;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
+import org.addhen.smssync.survey.dialog.AppRate;
+import org.addhen.smssync.survey.dialog.OnClickButtonListener;
 import org.addhen.smssync.views.MainView;
 
 /**
+ *
  * @author eyedol
  */
 public class MainActivity extends BaseActivity<MainView> {
@@ -42,6 +45,22 @@ public class MainActivity extends BaseActivity<MainView> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppRate.with(this)
+                .setInstallDays(0) // default 10, 0 means install day.
+                .setLaunchTimes(3) // default 10 times.
+                .setRemindInterval(2) // default 1 day.
+                .setShowNeutralButton(true) // default true.
+                .setDebug(false) // default false.
+                .setOnClickButtonListener(new OnClickButtonListener() { // callback listener.
+                    @Override
+                    public void onClickButton(int which) {
+                       // Log.d(MainActivity.class.getName(), Integer.toString(which));
+                    }
+                })
+                .monitor();
+
+        // Show a dialog if meets conditions.
+        AppRate.showRateDialogIfMeetsConditions(this);
     }
 
     // Context Menu Stuff

@@ -44,8 +44,8 @@ final class PreferenceHelper {
     }
 
     /**
-     * Set agree flag about show dialog.<br/>
-     * If it is false, rate dialog will never shown unless data is cleared.
+     * Set agree flag about show dialog.<br/> If it is false, rate dialog will never shown unless
+     * data is cleared.
      *
      * @param context context
      * @param isAgree agree with showing rate dialog
