@@ -1,0 +1,7 @@
+<resources>
+    <string name="rate_dialog_title">앱의 평가</string>
+    <string name="rate_dialog_message">이 응용 프로그램을 사용하셔야 대단히 감사합니다. 만약 괜찮 으시면 1 분 정도로 끝나기 때문에이 응용 프로그램의 평가를 부탁드립니다. 도와 주셔서 감사합니다!</string>
+    <string name="rate_dialog_ok">지금 평가</string>
+    <string name="rate_dialog_cancel">나중에하는</string>
+    <string name="rate_dialog_no">아니, 괜찮아요</string>
+</resources>

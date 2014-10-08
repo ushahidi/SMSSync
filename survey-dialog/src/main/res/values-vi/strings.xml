@@ -1,0 +1,7 @@
+<resources>
+    <string name="rate_dialog_title">Đánh giá ứng dụng</string>
+    <string name="rate_dialog_message">Nếu bạn thích ứng dụng này, bạn có thể vui lòng bỏ ra chút ít thời gian để đánh giá nó? Bạn sẽ chỉ mất khoảng 1 phút để thực hiện. Cảm ơn vì đã ủng hộ!</string>
+    <string name="rate_dialog_ok">Đánh giá ngay</string>
+    <string name="rate_dialog_cancel">Nhắc lại sau</string>
+    <string name="rate_dialog_no">Không, cảm ơn</string>
+</resources>
