@@ -22,7 +22,7 @@ public class GoogleDocsHttpClient extends MainHttpClient {
     public boolean postToGoogleDocs(String email) {
         addParam("entry.0.single", email);
         try {
-            setMethod("POST");
+            setMethod(HttpMethod.POST.value());
             execute();
         } catch (Exception e) {
             log("Request failed", e);
