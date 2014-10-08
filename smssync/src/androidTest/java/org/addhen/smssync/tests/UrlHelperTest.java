@@ -1,9 +1,13 @@
-package net.smssync.survey.dialog;
+package org.addhen.smssync.tests;
+
+import net.smssync.survey.dialog.UrlHelper;
+
+import org.addhen.smssync.UrlHelperImpl;
 
 import android.test.AndroidTestCase;
 
 /**
- * Unit test for {@link UrlHelper}
+ * Unit test for {@link net.smssync.survey.dialog.UrlHelper}
  */
 public class UrlHelperTest extends AndroidTestCase {
 

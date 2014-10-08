@@ -21,7 +21,7 @@ package org.addhen.smssync.activities;
 import net.smssync.survey.dialog.AppRate;
 import net.smssync.survey.dialog.OnClickButtonListener;
 import net.smssync.survey.dialog.UrlHelper;
-import net.smssync.survey.dialog.UrlHelperImpl;
+import org.addhen.smssync.UrlHelperImpl;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;

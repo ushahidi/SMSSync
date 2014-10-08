@@ -29,6 +29,7 @@ android {
         defaultConfig {
             testApplicationId "org.addhen.smssync.tests"
             applicationId "org.addhen.smssync"
+            buildConfigField "String", "GOOGLE_FORM_URL", project.hasProperty('googleDocsForm') ? googleDocsForm : "\"\""
         }
 
         // Move the build types to build-types/<type>
