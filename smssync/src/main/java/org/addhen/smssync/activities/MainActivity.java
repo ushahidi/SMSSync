@@ -18,28 +18,31 @@
 package org.addhen.smssync.activities;
 
 
+import net.smssync.survey.dialog.AppRate;
+import net.smssync.survey.dialog.OnClickButtonListener;
+import net.smssync.survey.dialog.UriHelper;
+import net.smssync.survey.dialog.UriHelperImpl;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.Settings;
+import org.addhen.smssync.net.GoogleDocsHttpClient;
+import org.addhen.smssync.views.MainView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.Settings;
-import net.smssync.survey.dialog.AppRate;
-import net.smssync.survey.dialog.OnClickButtonListener;
-import net.smssync.survey.dialog.UriHelper;
-import net.smssync.survey.dialog.UriHelperImpl;
-
-import org.addhen.smssync.net.GoogleDocsHttpClient;
-import org.addhen.smssync.views.MainView;
+import android.widget.TextView;
 
 /**
  *
  * @author eyedol
  */
 public class MainActivity extends BaseActivity<MainView> implements OnClickButtonListener{
+
+    private TextView mEmailAddress;
 
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
@@ -49,12 +52,19 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initSurveyDialog();
+    }
+
+    private void initSurveyDialog() {
+        android.view.View root = getLayoutInflater().inflate(R.layout.survey_dialog_form, null);
+        mEmailAddress = (TextView) root.findViewById(R.id.editText);
+        // Custom view
         AppRate.with(this)
                 .setInstallDays(0) // default 10, 0 means install day.
                 .setLaunchTimes(3) // default 10 times.
                 .setRemindInterval(2) // default 1 day.
                 .setShowNeutralButton(true) // default true.
-
+                .setView(root)
                 .setDebug(true) // default false.
                 .setOnClickButtonListener(this)
                 .monitor();
@@ -67,7 +77,6 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
-
     }
 
     @Override
@@ -84,6 +93,8 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     @Override
     public void onClickButton(int which) {
         final UriHelper uriHelper = new UriHelperImpl(this);
-        new GoogleDocsHttpClient(uriHelper.getUrl(),this).postToGoogleDocs("henry@ushahidi.com");
+        new GoogleDocsHttpClient(uriHelper.getUrl(), this)
+                .postToGoogleDocs(mEmailAddress.getText().toString());
     }
+
 }

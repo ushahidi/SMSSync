@@ -17,6 +17,21 @@
 
 package org.addhen.smssync.fragments;
 
+import com.squareup.otto.Subscribe;
+
+import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.adapters.LogAdapter;
+import org.addhen.smssync.controllers.LogController;
+import org.addhen.smssync.listeners.LogListener;
+import org.addhen.smssync.models.Log;
+import org.addhen.smssync.models.PhoneStatusInfo;
+import org.addhen.smssync.util.LogUtil;
+import org.addhen.smssync.util.Util;
+import org.addhen.smssync.views.ILogView;
+import org.addhen.smssync.views.LogView;
+
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,21 +49,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-
-import com.squareup.otto.Subscribe;
-
-import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.adapters.LogAdapter;
-import org.addhen.smssync.controllers.LogController;
-import org.addhen.smssync.listeners.LogListener;
-import org.addhen.smssync.models.Log;
-import org.addhen.smssync.models.PhoneStatusInfo;
-import org.addhen.smssync.util.LogUtil;
-import org.addhen.smssync.util.Util;
-import org.addhen.smssync.views.ILogView;
-import org.addhen.smssync.views.LogView;
 
 public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> implements
         View.OnClickListener, AdapterView.OnItemClickListener, ILogView, LogListener {
@@ -119,7 +119,8 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         super.onCreateOptionsMenu(menu, inflater);
 
         MenuItem actionItem = menu.findItem(R.id.share_menu);
-        ShareActionProvider actionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(actionItem);
+        ShareActionProvider actionProvider = (ShareActionProvider) MenuItemCompat
+                .getActionProvider(actionItem);
         actionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
         actionProvider.setShareIntent(createShareIntent());
 

@@ -1,9 +1,7 @@
 <resources>
-    <string name="rate_dialog_title">Rate this app</string>
-    <string name="rate_dialog_message">If you enjoy playing this app, would you mind taking a moment to rate it? It won\'t take more than a minute. Thanks for your support!</string>
-    <string name="rate_dialog_ok">Rate It Now</string>
-    <string name="rate_dialog_cancel">Remind Me Later</string>
-    <string name="rate_dialog_no">No, Thanks</string>
-    <string name="email_subject">Survey From SMSsync User</string>
-    <string name="email_label">What is your email address?</string>
+    <string name="rate_dialog_title">Feedback Survey</string>
+    <string name="rate_dialog_message">We are interested in improving the use of SMSsync, would you mind providing us with your email address for a link to our Feedback Survey? Thank you for your support!</string>
+    <string name="rate_dialog_ok">Send</string>
+    <string name="rate_dialog_cancel">Remind me later</string>
+    <string name="rate_dialog_no">Not, interested</string>
 </resources>

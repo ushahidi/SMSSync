@@ -17,18 +17,18 @@
 
 package org.addhen.smssync.activities;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.adapters.TabAdapter;
+import org.addhen.smssync.fragments.BlacklistFragment;
+import org.addhen.smssync.fragments.WhitelistFragment;
+import org.addhen.smssync.views.FilterTabView;
+
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.adapters.TabAdapter;
-import org.addhen.smssync.fragments.BlacklistFragment;
-import org.addhen.smssync.fragments.WhitelistFragment;
-import org.addhen.smssync.views.FilterTabView;
 
 public class FilterTabActivity extends BaseActivity<FilterTabView> {
 

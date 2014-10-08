@@ -18,6 +18,15 @@
 package org.addhen.smssync.fragments;
 
 
+import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.adapters.BaseListAdapter;
+import org.addhen.smssync.models.Model;
+import org.addhen.smssync.util.LogUtil;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.Objects;
+import org.addhen.smssync.views.View;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -30,15 +39,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.adapters.BaseListAdapter;
-import org.addhen.smssync.models.Model;
-import org.addhen.smssync.util.LogUtil;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.Objects;
-import org.addhen.smssync.views.View;
 
 /**
  * @author eyedol
