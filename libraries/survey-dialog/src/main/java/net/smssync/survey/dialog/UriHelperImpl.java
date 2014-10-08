@@ -3,22 +3,26 @@ package net.smssync.survey.dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 public class UriHelperImpl implements UriHelper {
 
-    private static final String GOOGLE_SPREAD_SHEET_URL
-            = "https://play.google.com/store/apps/details?id=";
+    private static final String GOOGLE_FORM_URL
+            = "https://docs.google.com/forms/d/1lL4IEksja3r-ClEtCgBma4mB9iT1tcaxSJnriJgW2sM/formResponse";
 
-    public UriHelperImpl() {
+    private Context mContext;
+
+    public UriHelperImpl(Context context) {
+        mContext = context;
     }
 
-    public void goToUri(Context context) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, getUri());
-        context.startActivity(intent);
+    public void goToUrl() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getUrl()));
+        mContext.startActivity(intent);
     }
 
     @Override
-    public Uri getUri() {
-        return Uri.parse(GOOGLE_SPREAD_SHEET_URL);
+    public String getUrl() {
+        return GOOGLE_FORM_URL;
     }
 }

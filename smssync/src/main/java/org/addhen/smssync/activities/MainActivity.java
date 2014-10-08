@@ -29,6 +29,10 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import net.smssync.survey.dialog.AppRate;
 import net.smssync.survey.dialog.OnClickButtonListener;
+import net.smssync.survey.dialog.UriHelper;
+import net.smssync.survey.dialog.UriHelperImpl;
+
+import org.addhen.smssync.net.GoogleDocsHttpClient;
 import org.addhen.smssync.views.MainView;
 
 /**
@@ -79,6 +83,7 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
     @Override
     public void onClickButton(int which) {
-        //
+        final UriHelper uriHelper = new UriHelperImpl(this);
+        new GoogleDocsHttpClient(uriHelper.getUrl(),this).postToGoogleDocs("henry@ushahidi.com");
     }
 }
