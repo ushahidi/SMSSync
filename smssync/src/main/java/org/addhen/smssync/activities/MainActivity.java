@@ -27,15 +27,15 @@ import android.view.View;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
-import org.addhen.smssync.survey.dialog.AppRate;
-import org.addhen.smssync.survey.dialog.OnClickButtonListener;
+import net.smssync.survey.dialog.AppRate;
+import net.smssync.survey.dialog.OnClickButtonListener;
 import org.addhen.smssync.views.MainView;
 
 /**
  *
  * @author eyedol
  */
-public class MainActivity extends BaseActivity<MainView> {
+public class MainActivity extends BaseActivity<MainView> implements OnClickButtonListener{
 
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
@@ -50,13 +50,9 @@ public class MainActivity extends BaseActivity<MainView> {
                 .setLaunchTimes(3) // default 10 times.
                 .setRemindInterval(2) // default 1 day.
                 .setShowNeutralButton(true) // default true.
-                .setDebug(false) // default false.
-                .setOnClickButtonListener(new OnClickButtonListener() { // callback listener.
-                    @Override
-                    public void onClickButton(int which) {
-                       // Log.d(MainActivity.class.getName(), Integer.toString(which));
-                    }
-                })
+
+                .setDebug(true) // default false.
+                .setOnClickButtonListener(this)
                 .monitor();
 
         // Show a dialog if meets conditions.
@@ -81,4 +77,8 @@ public class MainActivity extends BaseActivity<MainView> {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onClickButton(int which) {
+        //
+    }
 }

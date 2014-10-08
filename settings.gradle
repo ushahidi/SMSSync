@@ -1,2 +1,2 @@
-include ':libraries:pay-me', ':sms-portals', ':survey-dialog'
+include ':libraries:pay-me', ':libraries:survey-dialog', ':sms-portals'
 include ':smssync'

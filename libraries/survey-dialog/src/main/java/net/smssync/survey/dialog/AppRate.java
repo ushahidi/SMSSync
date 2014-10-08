@@ -1,4 +1,4 @@
-package org.addhen.smssync.survey.dialog;
+package net.smssync.survey.dialog;
 
 import android.app.Activity;
 import android.content.Context;
