@@ -12,7 +12,7 @@ import java.util.Locale;
 
 /**
  * Post email address to a google spreadsheet
- * 
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class GoogleDocsHttpClient extends MainHttpClient {
