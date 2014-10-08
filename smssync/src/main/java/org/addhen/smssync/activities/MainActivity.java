@@ -20,8 +20,8 @@ package org.addhen.smssync.activities;
 
 import net.smssync.survey.dialog.AppRate;
 import net.smssync.survey.dialog.OnClickButtonListener;
-import net.smssync.survey.dialog.UriHelper;
-import net.smssync.survey.dialog.UriHelperImpl;
+import net.smssync.survey.dialog.UrlHelper;
+import net.smssync.survey.dialog.UrlHelperImpl;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     public void onClickButton(int which) {
         final String email = mEmailAddress.getText().toString();
         if (Util.validateEmail(email)) {
-            final UriHelper uriHelper = new UriHelperImpl(this);
+            final UrlHelper uriHelper = new UrlHelperImpl();
             new GoogleDocsHttpClient(uriHelper.getUrl(), this)
                     .postToGoogleDocs(email);
         } else {

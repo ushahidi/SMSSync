@@ -1,11 +1,13 @@
 package net.smssync.survey.dialog;
 
+import android.content.Context;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface UriHelper {
+public interface UrlHelper {
 
     String getUrl();
 
-    void goToUrl();
+    void goToUrl(Context context);
 }
