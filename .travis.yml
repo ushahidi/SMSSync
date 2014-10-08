@@ -2,30 +2,24 @@ language: android
 jdk: oraclejdk7
 env:
   matrix:
-    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+  - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
 before_install:
-  - export TERM=dumb
-  - sudo apt-get install -qq libstdc++6:i386 lib32z1
-  - export COMPONENTS=build-tools-19.1.0,android-19,sys-img-armeabi-v7a-android-19,extra-android-m2repository,extra-google-m2repository,platform-tools, tools
-  - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS
-  - source ~/.android-sdk-installer/env
-
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-
+- export TERM=dumb
+- sudo apt-get install -qq libstdc++6:i386 lib32z1
+- export COMPONENTS=build-tools-19.1.0,android-19,sys-img-armeabi-v7a-android-19,extra-android-m2repository,extra-google-m2repository,platform-tools,
+  tools
+- curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer
+  | bash /dev/stdin --install=$COMPONENTS
+- source ~/.android-sdk-installer/env
+- echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+- emulator -avd test -no-skin -no-audio -no-window &
 install:
-  # Without TERM=dumb, we get mangled output in the Travis console
-  - TERM=dumb ./gradlew assemble
-
+- TERM=dumb ./gradlew assemble
 before_script:
-  # Make sure the emulator has started before running tests
-  - wait_for_emulator
-
+- wait_for_emulator
 script:
-  - TERM=dumb ./gradlew connectedAndroidTest
-
+- TERM=dumb ./gradlew connectedAndroidTest
 notifications:
-    hipchat:
-      rooms:
-        secure: Pz5CQX/NtKLkk8c6kjhxipMS6kdQTj5jaeN9LC2k1IzERsqCYnx/nD2EV0cG4YJO0W3sMK3vaVgL5lLE3xHpe7wsLB/LWmxLY8QV0NJaSGOqqXAC4S5Yo7MRFd2S5fPWN7MC05SPpqiDveEle1fK6Gz7oHXSZxAFMyYnLRcaX3M=
+  hipchat:
+    rooms:
+      secure: pofqFB1dvZq/Ue0okcuy3cWDKMxkq/5acPGoK2VlB8Sj1OEPm3Uau2y4Kx0DKtV9vQCLmAwc9Wvy26eIbihFIjzM6O8BDS5kdWlApJIlnJtT5hJ/YT5JB0jDHW6P1aU4muu9PXtBMMZhUWmBU3jIUPTgiLbCAygCYPGOkVRku+g=
