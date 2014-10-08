@@ -349,6 +349,6 @@
     <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
 
     <!-- Survey Dialog -->
-    <string name="email_subject">Survey From SMSsync User</string>
+    <string name="in_valid_email_address">Invalid email address</string>
     <string name="email_label">What is your email address?</string>
 </resources>

@@ -26,15 +26,25 @@ import net.smssync.survey.dialog.UriHelperImpl;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.net.GoogleDocsHttpClient;
+import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.MainView;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -42,7 +52,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends BaseActivity<MainView> implements OnClickButtonListener{
 
-    private TextView mEmailAddress;
+    private AutoCompleteTextView mEmailAddress;
 
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
@@ -57,7 +67,23 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
     private void initSurveyDialog() {
         android.view.View root = getLayoutInflater().inflate(R.layout.survey_dialog_form, null);
-        mEmailAddress = (TextView) root.findViewById(R.id.editText);
+
+        mEmailAddress = (AutoCompleteTextView) root.findViewById(R.id.editText);
+
+        // Suggest email address as user types.
+        final Account[] accounts = AccountManager.get(this).getAccounts();
+        final Set<String> emailSet = new HashSet<>();
+        for (Account account : accounts) {
+            if (Patterns.EMAIL_ADDRESS.matcher(account.name).matches()) {
+                emailSet.add(account.name);
+            }
+        }
+        List<String> emails = new ArrayList<>(emailSet);
+        mEmailAddress.setAdapter(
+                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,
+                        emails)
+        );
+
         // Custom view
         AppRate.with(this)
                 .setInstallDays(0) // default 10, 0 means install day.
@@ -92,9 +118,15 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
     @Override
     public void onClickButton(int which) {
-        final UriHelper uriHelper = new UriHelperImpl(this);
-        new GoogleDocsHttpClient(uriHelper.getUrl(), this)
-                .postToGoogleDocs(mEmailAddress.getText().toString());
+        final String email = mEmailAddress.getText().toString();
+        if (Util.validateEmail(email)) {
+            final UriHelper uriHelper = new UriHelperImpl(this);
+            new GoogleDocsHttpClient(uriHelper.getUrl(), this)
+                    .postToGoogleDocs(email);
+        } else {
+            toastLong(R.string.in_valid_email_address);
+        }
+
     }
 
 }
