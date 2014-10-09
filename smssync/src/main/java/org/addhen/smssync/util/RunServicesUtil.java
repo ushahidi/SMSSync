@@ -62,7 +62,8 @@ public class RunServicesUtil {
 
             // do we have data network?
             if (isConnected) {
-                Scheduler.INSTANCE.getScheduler(context, intent, requestCode).updateScheduler(interval);
+                Scheduler.INSTANCE.getScheduler(context, intent, requestCode)
+                        .updateScheduler(interval);
             }
         }
 
@@ -180,7 +181,8 @@ public class RunServicesUtil {
         INSTANCE;
 
         private ScheduleServices getScheduler(Context context, Intent intent, int requestCode) {
-            return new ScheduleServices(context, intent, requestCode,PendingIntent.FLAG_UPDATE_CURRENT);
+            return new ScheduleServices(context, intent, requestCode,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 }

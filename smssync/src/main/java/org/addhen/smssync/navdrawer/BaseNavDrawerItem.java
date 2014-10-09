@@ -17,14 +17,14 @@
 
 package org.addhen.smssync.navdrawer;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.NavDrawerItem;
+
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.models.NavDrawerItem;
 
 /**
  * @author eyedol

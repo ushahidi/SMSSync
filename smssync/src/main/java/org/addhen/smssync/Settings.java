@@ -19,7 +19,6 @@ package org.addhen.smssync;
 
 
 import org.addhen.smssync.services.SmsPortal;
-import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.TimePreference;
 import org.addhen.smssync.util.Util;
@@ -167,7 +166,8 @@ public class Settings extends PreferenceActivity implements
 
         taskCheckTimes = (TimePreference) getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
 
-        useSmsPortals = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_ENABLE_SMS_PORTALS);
+        useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(KEY_ENABLE_SMS_PORTALS);
 
         about = (Preference) getPreferenceScreen().findPreference(ABOUT);
 
@@ -190,7 +190,6 @@ public class Settings extends PreferenceActivity implements
         // Save settings changes.
         this.savePreferences();
     }
-
 
 
     /**
@@ -330,8 +329,7 @@ public class Settings extends PreferenceActivity implements
                     Prefs.taskCheckTime, taskCheckTimes.getTimeValueAsString()));
         }
 
-
-        if(!TextUtils.isEmpty(uniqueId.getText())) {
+        if (!TextUtils.isEmpty(uniqueId.getText())) {
             String id = Util.removeWhitespaces(uniqueId.getText());
             editor.putString("UniqueId", id);
             if (!Prefs.uniqueId.equals(uniqueId.getText())) {
@@ -350,7 +348,7 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
-        if(!TextUtils.isEmpty(alertPhoneNumber.getText())) {
+        if (!TextUtils.isEmpty(alertPhoneNumber.getText())) {
             String number = Util.removeWhitespaces(alertPhoneNumber.getText());
             editor.putString("AlertPhoneNumber", number);
             if (!Prefs.alertPhoneNumber.equals(alertPhoneNumber.getText())) {
@@ -441,9 +439,9 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
-        if(key.equals(KEY_ENABLE_SMS_PORTALS)) {
+        if (key.equals(KEY_ENABLE_SMS_PORTALS)) {
             SmsPortal smsPortal = new SmsPortal(getApplicationContext());
-            if(sharedPreferences.getBoolean(KEY_ENABLE_SMS_PORTALS, false)) {
+            if (sharedPreferences.getBoolean(KEY_ENABLE_SMS_PORTALS, false)) {
                 smsPortal.setNumber();
                 smsPortal.bindToSmsPortals();
                 availableConnections = smsPortal.getMessengers();
@@ -475,8 +473,8 @@ public class Settings extends PreferenceActivity implements
     }
 
     /**
-     * Create runnable for validating callback URL. Putting the validation
-     * process in it own thread provides efficiency.
+     * Create runnable for validating callback URL. Putting the validation process in it own thread
+     * provides efficiency.
      */
     final Runnable mTaskCheckEnabled = new Runnable() {
 
@@ -523,8 +521,8 @@ public class Settings extends PreferenceActivity implements
     };
 
     /**
-     * Create a child thread and validate the callback URL in it when enabling
-     * auto task check preference.
+     * Create a child thread and validate the callback URL in it when enabling auto task check
+     * preference.
      *
      * @return void
      */

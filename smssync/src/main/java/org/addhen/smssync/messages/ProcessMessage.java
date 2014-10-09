@@ -1,9 +1,7 @@
 package org.addhen.smssync.messages;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.database.Database;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
@@ -16,16 +14,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.provider.Settings;
 import android.text.TextUtils;
 
 import java.net.URLEncoder;
 import java.util.List;
 
 import static org.addhen.smssync.messages.ProcessSms.PENDING;
-import static org.addhen.smssync.messages.ProcessSms.TASK;
-import static org.addhen.smssync.messages.ProcessSms.UNCONFIRMED;
-import static org.addhen.smssync.messages.ProcessSms.FAILED;
 
 /**
  * Process messages
@@ -225,7 +219,7 @@ public class ProcessMessage {
 
                     if (payloadObject != null) {
                         String task = payloadObject.getString("task");
-                        Logger.log(TAG, "Task "+task);
+                        Logger.log(TAG, "Task " + task);
                         boolean secretOk = TextUtils.isEmpty(urlSecret) ||
                                 urlSecret.equals(payloadObject.getString("secret"));
                         if (secretOk && task.equals("send")) {
@@ -237,7 +231,8 @@ public class ProcessMessage {
 
                                 // Make sure message UUID has been set before attempting to get.
                                 // This should work with pre 2.5 releases
-                                String uuid = jsonObject.has("uuid") ? jsonObject.getString("uuid") : "";
+                                String uuid = jsonObject.has("uuid") ? jsonObject.getString("uuid")
+                                        : "";
                                 processSms.sendSms(jsonObject.getString("to"),
                                         jsonObject.getString("message"), uuid);
 
@@ -269,8 +264,8 @@ public class ProcessMessage {
     }
 
     /**
-     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to
-     * be synced online, cache it and queue it up for the scheduler to process it.
+     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to be
+     * synced online, cache it and queue it up for the scheduler to process it.
      *
      * @param message The sms to be routed
      * @return boolean
@@ -330,7 +325,6 @@ public class ProcessMessage {
             if (processSms.filterByKeywords(message.getBody(), filterText)
                     || processSms.filterByRegex(message.getBody(), filterText)) {
                 Logger.log(TAG, syncUrl.getUrl());
-
 
                 if (message.getMessageType() == PENDING) {
                     posted = syncReceivedSms(message, syncUrl);

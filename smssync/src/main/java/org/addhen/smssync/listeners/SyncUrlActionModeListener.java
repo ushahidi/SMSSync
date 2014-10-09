@@ -16,6 +16,9 @@
  ******************************************************************************/
 package org.addhen.smssync.listeners;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.fragments.SyncUrlFragment;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
@@ -24,9 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.SyncUrlFragment;
 
 /**
  * @author eyedol

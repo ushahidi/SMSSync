@@ -1,5 +1,8 @@
 package org.addhen.smssync.util;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.Settings;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
@@ -7,20 +10,20 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
 
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.Settings;
-
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 19.05.14.
  *
- * Fields and methods are inherited from DialogPreference and TimePicker
- * so DO NOT BE MISLED by those names
+ * Fields and methods are inherited from DialogPreference and TimePicker so DO NOT BE MISLED by
+ * those names
  */
 public class TimePreference extends DialogPreference {
+
     //fist picker field
     private int lastHour = 0;
+
     //second picker field
     private int lastMinute = 0;
+
     private TimePicker picker = null;
 
     public TimePreference(Context context, AttributeSet attrs) {
@@ -56,7 +59,7 @@ public class TimePreference extends DialogPreference {
         if (positiveResult) {
             lastHour = picker.getCurrentHour();
             lastMinute = picker.getCurrentMinute();
-            if (callChangeListener( getTimeValueAsString())) {
+            if (callChangeListener(getTimeValueAsString())) {
                 persistString(getTimeValueAsString());
                 saveTimeFrequency(this.getContext());
             }
@@ -68,15 +71,13 @@ public class TimePreference extends DialogPreference {
         String time;
 
         if (restoreValue) {
-            if (defaultValue==null) {
-                time=getPersistedString(loadTimeFrequency(this.getContext()));
+            if (defaultValue == null) {
+                time = getPersistedString(loadTimeFrequency(this.getContext()));
+            } else {
+                time = getPersistedString(defaultValue.toString());
             }
-            else {
-                time=getPersistedString(defaultValue.toString());
-            }
-        }
-        else {
-            time=defaultValue.toString();
+        } else {
+            time = defaultValue.toString();
         }
 
         //This is needed for backward compatible with versions pre 2.6
@@ -139,7 +140,7 @@ public class TimePreference extends DialogPreference {
             time = TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY;
         }
 
-        Logger.log("TimePreferences", "Save time "+ time );
+        Logger.log("TimePreferences", "Save time " + time);
         return time;
     }
 

@@ -19,13 +19,13 @@ package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.util.TimeFrequencyUtil;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
 import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.TimeFrequencyUtil;
 import org.addhen.smssync.util.Util;
 
 import android.app.PendingIntent;

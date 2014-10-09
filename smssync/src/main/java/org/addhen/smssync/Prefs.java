@@ -17,10 +17,10 @@
 
 package org.addhen.smssync;
 
+import org.addhen.smssync.util.TimeFrequencyUtil;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import org.addhen.smssync.util.TimeFrequencyUtil;
 
 /**
  * This class instantiate static variables to hold values of the settings / preference fields.
@@ -65,7 +65,7 @@ public class Prefs {
 
     public static Boolean enableBlacklist = false;
 
-    
+
     public static Boolean enableLog = false;
 
     private static SharedPreferences.Editor editor;
@@ -95,7 +95,7 @@ public class Prefs {
         enableReplyFrmServer = settings.getBoolean("EnableReplyFrmServer",
                 false);
         enableAutoSync = settings.getBoolean("AutoSync", false);
-        useSmsPortals =  settings.getBoolean("UseSmsPortals", false);
+        useSmsPortals = settings.getBoolean("UseSmsPortals", false);
         enableTaskCheck = settings.getBoolean("EnableTaskCheck", false);
         autoTime = settings.getString("AutoTime", TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY);
         uniqueId = settings.getString("UniqueId", "");
@@ -105,7 +105,7 @@ public class Prefs {
         enableWhitelist = settings.getBoolean("EnableWhitelist", false);
         enableLog = settings.getBoolean("EnableLog", false);
         batteryLevel = settings.getInt("BatteryLevel", 0);
-        alertPhoneNumber = settings.getString("AlertPhoneNumber","");
+        alertPhoneNumber = settings.getString("AlertPhoneNumber", "");
     }
 
     /**
@@ -137,9 +137,8 @@ public class Prefs {
     }
 
     /**
-     * This methods removes old preferences to omit problem caused by
-     * AutoTime and taskCheck values changed (was int changed into String)
-     * @param settings
+     * This methods removes old preferences to omit problem caused by AutoTime and taskCheck values
+     * changed (was int changed into String)
      */
     private static void timeKeyValueUpdate(final SharedPreferences settings) {
         Boolean autoTimeUpdate = settings.getBoolean("AutoTimeUpdate", false);

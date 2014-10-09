@@ -21,10 +21,11 @@ package org.addhen.smssync.activities;
 import net.smssync.survey.dialog.AppRate;
 import net.smssync.survey.dialog.OnClickButtonListener;
 import net.smssync.survey.dialog.UrlHelper;
-import org.addhen.smssync.UrlHelperImpl;
 
+import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
+import org.addhen.smssync.UrlHelperImpl;
 import org.addhen.smssync.net.GoogleDocsHttpClient;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.MainView;
@@ -47,12 +48,13 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
  * @author eyedol
  */
-public class MainActivity extends BaseActivity<MainView> implements OnClickButtonListener{
+public class MainActivity extends BaseActivity<MainView> implements OnClickButtonListener {
 
     private AutoCompleteTextView mEmailAddress;
+
+    private static final String GOOGLE_FORM_URL = BuildConfig.GOOGLE_FORM_URL;
 
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
@@ -120,7 +122,7 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     public void onClickButton(int which) {
         final String email = mEmailAddress.getText().toString();
         if (Util.validateEmail(email)) {
-            final UrlHelper uriHelper = new UrlHelperImpl();
+            final UrlHelper uriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
             new GoogleDocsHttpClient(uriHelper.getUrl(), this)
                     .postToGoogleDocs(email);
         } else {

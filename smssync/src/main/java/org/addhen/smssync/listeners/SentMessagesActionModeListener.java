@@ -17,13 +17,13 @@
 
 package org.addhen.smssync.listeners;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.fragments.SentMessageFragment;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.MenuItem;
 import android.widget.ListView;
-
-import org.addhen.smssync.R;
-import org.addhen.smssync.fragments.SentMessageFragment;
 
 /**
  * Sent messages action mode listener

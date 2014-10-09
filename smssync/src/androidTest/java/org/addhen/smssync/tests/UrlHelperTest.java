@@ -11,14 +11,13 @@ import android.test.AndroidTestCase;
  */
 public class UrlHelperTest extends AndroidTestCase {
 
-    private static final String GOOGLE_FORM_URL
-            = "https://docs.google.com/forms/d/1lL4IEksja3r-ClEtCgBma4mB9iT1tcaxSJnriJgW2sM/formResponse";
+    private static final String GOOGLE_FORM_URL = "http://sample-google-form.example.com";
 
     private UrlHelper mUriHelper;
 
     public void setUp() throws Exception {
         super.setUp();
-        mUriHelper = new UrlHelperImpl();
+        mUriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
 
     }
 

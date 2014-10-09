@@ -1,6 +1,6 @@
 package org.addhen.smssync;
 
-import net.smssync.survey.dialog.*;
+import net.smssync.survey.dialog.UrlHelper;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,11 +8,10 @@ import android.net.Uri;
 
 public class UrlHelperImpl implements UrlHelper {
 
-    private static final String GOOGLE_FORM_URL = BuildConfig.GOOGLE_FORM_URL;
+    private String mUrl;
 
-
-    public UrlHelperImpl() {
-
+    public UrlHelperImpl(String url) {
+        mUrl = url;
     }
 
     public void goToUrl(Context context) {
@@ -22,6 +21,6 @@ public class UrlHelperImpl implements UrlHelper {
 
     @Override
     public String getUrl() {
-        return GOOGLE_FORM_URL;
+        return mUrl;
     }
 }

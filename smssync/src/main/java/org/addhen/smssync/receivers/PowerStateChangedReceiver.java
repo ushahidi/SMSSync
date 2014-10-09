@@ -27,7 +27,6 @@ import org.addhen.smssync.util.Util;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.BatteryManager;
 
 /**
  * The manifest Receiver is used to detect changes in battery state. When the system broadcasts a

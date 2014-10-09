@@ -17,10 +17,10 @@
 
 package org.addhen.smssync.navdrawer;
 
-import android.support.v7.app.ActionBarActivity;
-
 import org.addhen.smssync.fragments.BlacklistFragment;
 import org.addhen.smssync.models.Filter;
+
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * Filter Nav Drawer Item

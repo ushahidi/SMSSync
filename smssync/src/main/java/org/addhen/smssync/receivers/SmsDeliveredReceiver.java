@@ -1,21 +1,15 @@
 package org.addhen.smssync.receivers;
 
+import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.util.ServicesConstants;
+
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.text.format.DateFormat;
 
-import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.models.Message;
-import org.addhen.smssync.util.LogUtil;
-import org.addhen.smssync.util.ServicesConstants;
-
-import static org.addhen.smssync.messages.ProcessSms.FAILED;
 import static org.addhen.smssync.messages.ProcessSms.TASK;
 
 /**
@@ -39,7 +33,8 @@ public class SmsDeliveredReceiver extends BaseBroadcastReceiver {
             case Activity.RESULT_CANCELED:
                 resultMessage = context.getResources().getString(R.string.sms_not_delivered);
                 toastLong(context.getResources().getString(R.string.sms_not_delivered), context);
-                logActivities(context.getResources().getString(R.string.sms_not_delivered), context);
+                logActivities(context.getResources().getString(R.string.sms_not_delivered),
+                        context);
                 break;
         }
 
@@ -47,7 +42,8 @@ public class SmsDeliveredReceiver extends BaseBroadcastReceiver {
             message.setDeliveryResultMessage(resultMessage);
             message.setDeliveryResultCode(result);
             message.setMessageType(TASK);
-            MainApplication.mDb.updateDeliveryResult(message);//update type, delivery result msg and code
+            MainApplication.mDb
+                    .updateDeliveryResult(message);//update type, delivery result msg and code
         }
     }
 

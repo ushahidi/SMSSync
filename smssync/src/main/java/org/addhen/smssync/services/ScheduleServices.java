@@ -19,7 +19,6 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
-import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
@@ -28,7 +27,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
-import android.text.format.DateFormat;
 
 /**
  * This class schedules the various tasks that needs to be executed periodically
@@ -75,7 +73,7 @@ public class ScheduleServices {
         Logger.log(CLASS_TAG, "updating scheduler");
         if (mgr != null && pendingIntent != null) {
             Logger.log(CLASS_TAG, "Update scheduler to " + interval);
-            Util.logActivities(mContext,mContext.getString(R.string.scheduler_updated_to));
+            Util.logActivities(mContext, mContext.getString(R.string.scheduler_updated_to));
             mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + 60000, interval, pendingIntent);
 

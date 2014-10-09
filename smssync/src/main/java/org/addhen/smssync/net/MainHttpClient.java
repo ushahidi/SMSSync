@@ -258,7 +258,7 @@ public class MainHttpClient {
 
     public HttpEntity getEntity() throws Exception {
         // check if entity was explictly set otherwise return params as entity
-        if (entity !=null && entity.getContentLength() > 0) {
+        if (entity != null && entity.getContentLength() > 0) {
             return entity;
         } else if (!params.isEmpty()) {
             // construct entity if not already set

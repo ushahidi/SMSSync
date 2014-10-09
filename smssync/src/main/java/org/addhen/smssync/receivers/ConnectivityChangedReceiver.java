@@ -32,7 +32,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Handler;
 
 /**
  * This Receiver class is designed to listen for changes in connectivity. When we lose connectivity
@@ -83,7 +82,8 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                             SyncType.MANUAL.name());
                     context.startService(syncPendingMessagesServiceIntent);
                 }
-                if ( AlertCallbacks.lostConnectionThread != null && AlertCallbacks.lostConnectionThread.isAlive()) {
+                if (AlertCallbacks.lostConnectionThread != null
+                        && AlertCallbacks.lostConnectionThread.isAlive()) {
                     AlertCallbacks.lostConnectionThread.interrupt();
                 }
 
@@ -93,7 +93,8 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                 }
             } else {
 
-                if (AlertCallbacks.lostConnectionThread == null || !AlertCallbacks.lostConnectionThread.isAlive()) {
+                if (AlertCallbacks.lostConnectionThread == null
+                        || !AlertCallbacks.lostConnectionThread.isAlive()) {
                     AlertCallbacks.lostConnectionThread = new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -107,7 +108,6 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                     });
                     AlertCallbacks.lostConnectionThread.start();
                 }
-
 
                 Util.logActivities(context, context.getString(R.string.no_data_connection));
             }

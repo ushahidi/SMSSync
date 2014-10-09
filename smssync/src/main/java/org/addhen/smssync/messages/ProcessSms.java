@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.messages;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
@@ -99,7 +98,7 @@ public class ProcessSms {
      * @return the message id
      */
     public long findMessageId(long threadId,
-                              long timestamp) {
+            long timestamp) {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
                         + threadId + " timestamp: " + timestamp);
@@ -198,10 +197,9 @@ public class ProcessSms {
     }
 
     /**
-     * TODO:// refactor so this method return boolean
-     * <p/>
-     * Import messages from the messages app's table and puts them in SMSSync's outbox table. This
-     * will allow messages the imported messages to be sync'd to the configured Sync URL.
+     * TODO:// refactor so this method return boolean <p/> Import messages from the messages app's
+     * table and puts them in SMSSync's outbox table. This will allow messages the imported messages
+     * to be sync'd to the configured Sync URL.
      *
      * @return int 0 for success, 1 for failure.
      */
@@ -387,7 +385,8 @@ public class ProcessSms {
             sentMessageIntent.putExtra(ServicesConstants.SENT_SMS_BUNDLE, message);
 
             PendingIntent sentIntent = PendingIntent.getBroadcast(context,
-                    (int) System.currentTimeMillis(), sentMessageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    (int) System.currentTimeMillis(), sentMessageIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
             Intent delivered = new Intent(ServicesConstants.DELIVERED);
             delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);

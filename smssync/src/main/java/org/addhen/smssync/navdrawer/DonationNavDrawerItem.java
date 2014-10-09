@@ -17,10 +17,10 @@
 
 package org.addhen.smssync.navdrawer;
 
+import org.addhen.smssync.activities.DonationActivity;
+
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
-
-import org.addhen.smssync.activities.DonationActivity;
 
 /**
  * Donation nav drawer item

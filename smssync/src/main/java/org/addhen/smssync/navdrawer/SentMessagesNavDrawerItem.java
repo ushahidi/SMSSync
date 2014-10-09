@@ -17,10 +17,10 @@
 
 package org.addhen.smssync.navdrawer;
 
-import android.support.v7.app.ActionBarActivity;
-
 import org.addhen.smssync.fragments.SentMessageFragment;
 import org.addhen.smssync.models.SentMessagesModel;
+
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * Menu Item for Sent messages
