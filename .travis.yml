@@ -1,24 +1,29 @@
 language: android
-jdk: oraclejdk7
+android:
+  components:
+    - android-19
+    - build-tools-20.0.0
+
 env:
   matrix:
-  - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+    - ANDROID_TARGET=android-19 ANDROID_ABI=armeabi-v7a
+
 before_install:
-- export TERM=dumb
-- sudo apt-get install -qq libstdc++6:i386 lib32z1
-- export COMPONENTS=build-tools-19.1.0,android-19,sys-img-armeabi-v7a-android-19,extra-android-m2repository,extra-google-m2repository,platform-tools,
-  tools
-- export LICENSES=android-sdk-license-5be876d5
-- curl -3L https://raw.github.com/embarkmobile/android-sdk-installer/version-2/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS --accept=$LICENSES && source ~/.android-sdk-installer/env
-- source ~/.android-sdk-installer/env
-- echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-- emulator -avd test -no-skin -no-audio -no-window &
+  # Create and start emulator
+  - android list targets
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+
 install:
-- TERM=dumb ./gradlew assemble
+  - TERM=dumb ./gradlew assemble
+
 before_script:
-- wait_for_emulator
+  - adb devices
+  - ./wait_for_emulator
+
 script:
-- TERM=dumb ./gradlew connectedAndroidTest
+  - TERM=dumb ./gradlew connectedAndroidTest
+  
 notifications:
   hipchat:
     rooms:
