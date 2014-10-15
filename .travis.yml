@@ -19,11 +19,12 @@ install:
 
 before_script:
   - adb devices
+  - chmod +x ./wait_for_emulator
   - ./wait_for_emulator
 
 script:
   - TERM=dumb ./gradlew connectedAndroidTest
-  
+
 notifications:
   hipchat:
     rooms:
