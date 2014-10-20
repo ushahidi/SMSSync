@@ -10,19 +10,20 @@
     have questions regarding the use of this file, please contact Ushahidi developers 
     at team@ushahidi.com.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
             android:id="@+id/import_sms"
             android:icon="@drawable/import_sms"
             android:orderInCategory="0"
-            android:showAsAction="ifRoom"
+            app:showAsAction="ifRoom"
             android:title="@string/menu_import"/>
     <item
             android:id="@+id/delete"
             android:icon="@drawable/delete"
             android:orderInCategory="1"
-            android:showAsAction="never"
+            app:showAsAction="never"
             android:title="@string/menu_delete_all"/>
 
 </menu>

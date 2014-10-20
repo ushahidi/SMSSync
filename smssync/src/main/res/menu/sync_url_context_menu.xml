@@ -10,23 +10,24 @@
     have questions regarding the use of this file, please contact Ushahidi developers 
     at team@ushahidi.com.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
             android:id="@+id/sync_url_context_sync_scheme"
             android:icon="@drawable/settings"
-            android:showAsAction="ifRoom"
+            app:showAsAction="ifRoom"
             android:title="@string/sync_sheme"/>
 
     <item
             android:id="@+id/sync_url_context_edit_sync_url"
             android:icon="@drawable/edit"
-            android:showAsAction="ifRoom"
+            app:showAsAction="ifRoom"
             android:title="@string/edit"/>
     <item
             android:id="@+id/sync_url_context_delete_sync_url"
             android:icon="@drawable/delete"
-            android:showAsAction="ifRoom"
+            app:showAsAction="ifRoom"
             android:title="@string/menu_delete"/>
 
 </menu>
