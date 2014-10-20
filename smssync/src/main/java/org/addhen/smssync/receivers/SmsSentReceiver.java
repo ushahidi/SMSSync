@@ -30,45 +30,36 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
         final String resultMessage;
 
         switch (result) {
-            case Activity.RESULT_OK:
-                resultMessage = context.getResources().getString(R.string.sms_status_success);
-                toastLong(resultMessage, context);
-                logActivities(resultMessage, context);
-                sentSuccess = true;
-                break;
-            case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                resultMessage = context.getResources().getString(R.string.sms_delivery_status_failed);
-                toastLong(resultMessage, context);
-                logActivities(resultMessage, context);
-                break;
-            case SmsManager.RESULT_ERROR_NO_SERVICE:
-                resultMessage = context.getResources().getString(R.string.sms_delivery_status_no_service);
-                toastLong(resultMessage, context);
-                logActivities(resultMessage, context);
-                break;
-            case SmsManager.RESULT_ERROR_NULL_PDU:
-                resultMessage = context.getResources().getString(R.string.sms_delivery_status_null_pdu);
-                toastLong(resultMessage, context);
-                logActivities(resultMessage, context);
-                break;
-            case SmsManager.RESULT_ERROR_RADIO_OFF:
-                resultMessage = context.getResources().getString(R.string.sms_delivery_status_radio_off);
-                toastLong(resultMessage, context);
-                logActivities(resultMessage, context);
-                break;
             case 133404:
                 /**
                  * HTC devices issue
                  * http://stackoverflow.com/questions/7526179/smsmanager-keeps-retrying-to-send-sms-on-htc-desire/7685238#7685238
                  */
-                logActivities(context.getResources()
-                        .getString(R.string.sms_not_delivered_htc_device_retry), context);
+                logActivities(context.getResources().getString(R.string.sms_not_delivered_htc_device_retry), context);
+                // Q: Does this intentionally return, while the rest below just break; and does more after?
                 return;
+            case Activity.RESULT_OK:
+                resultMessage = context.getResources().getString(R.string.sms_status_success);
+                sentSuccess = true;
+                break;
+            case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_failed);
+                break;
+            case SmsManager.RESULT_ERROR_NO_SERVICE:
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_no_service);
+                break;
+            case SmsManager.RESULT_ERROR_NULL_PDU:
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_null_pdu);
+                break;
+            case SmsManager.RESULT_ERROR_RADIO_OFF:
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_radio_off);
+                break;
             default:
-                resultMessage = context.getResources()
-                        .getString(R.string.sms_not_delivered_unknown_error);
+                resultMessage = context.getResources().getString(R.string.sms_not_delivered_unknown_error);
                 break;
         }
+        toastLong(resultMessage, context);
+        logActivities(resultMessage, context);
 
         if (message != null) {
             message.setSentResultMessage(resultMessage);
