@@ -32,45 +32,29 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
         switch (result) {
             case Activity.RESULT_OK:
                 resultMessage = context.getResources().getString(R.string.sms_status_success);
-                toastLong(context.getResources().getString(R.string.sms_status_success), context);
-                logActivities(context.getResources().getString(R.string.sms_status_success),
-                        context);
+                toastLong(resultMessage, context);
+                logActivities(resultMessage, context);
                 sentSuccess = true;
                 break;
             case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                resultMessage = context.getResources()
-                        .getString(R.string.sms_delivery_status_failed);
-                toastLong(context.getResources().getString(R.string.sms_delivery_status_failed),
-                        context);
-                logActivities(context.getResources().getString(R.string.sms_delivery_status_failed),
-                        context);
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_failed);
+                toastLong(resultMessage, context);
+                logActivities(resultMessage, context);
                 break;
             case SmsManager.RESULT_ERROR_NO_SERVICE:
-                resultMessage = context.getResources()
-                        .getString(R.string.sms_delivery_status_no_service);
-                toastLong(context.getResources().getString(R.string.sms_delivery_status_no_service),
-                        context);
-                logActivities(
-                        context.getResources().getString(R.string.sms_delivery_status_no_service),
-                        context);
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_no_service);
+                toastLong(resultMessage, context);
+                logActivities(resultMessage, context);
                 break;
             case SmsManager.RESULT_ERROR_NULL_PDU:
-                resultMessage = context.getResources()
-                        .getString(R.string.sms_delivery_status_null_pdu);
-                toastLong(context.getResources().getString(R.string.sms_delivery_status_null_pdu),
-                        context);
-                logActivities(
-                        context.getResources().getString(R.string.sms_delivery_status_null_pdu),
-                        context);
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_null_pdu);
+                toastLong(resultMessage, context);
+                logActivities(resultMessage, context);
                 break;
             case SmsManager.RESULT_ERROR_RADIO_OFF:
-                resultMessage = context.getResources()
-                        .getString(R.string.sms_delivery_status_radio_off);
-                toastLong(context.getResources().getString(R.string.sms_delivery_status_radio_off),
-                        context);
-                logActivities(
-                        context.getResources().getString(R.string.sms_delivery_status_radio_off),
-                        context);
+                resultMessage = context.getResources().getString(R.string.sms_delivery_status_radio_off);
+                toastLong(resultMessage, context);
+                logActivities(resultMessage, context);
                 break;
             case 133404:
                 /**
