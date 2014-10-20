@@ -36,7 +36,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                  * http://stackoverflow.com/questions/7526179/smsmanager-keeps-retrying-to-send-sms-on-htc-desire/7685238#7685238
                  */
                 logActivities(context.getResources().getString(R.string.sms_not_delivered_htc_device_retry), context);
-                // Q: Does this intentionally return, while the rest below just break; and does more after?
+                // This intentionally returns, while the rest below does break and more after.
                 return;
             case Activity.RESULT_OK:
                 resultMessage = context.getResources().getString(R.string.sms_status_success);

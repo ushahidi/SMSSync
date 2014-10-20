@@ -24,6 +24,7 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
+import org.addhen.smssync.util.LogUtil;
 
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -37,6 +38,8 @@ import android.provider.Telephony.Sms.Conversations;
 import android.provider.Telephony.Sms.Inbox;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
+import android.text.format.DateFormat;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -407,9 +410,9 @@ public class ProcessSms {
             Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
             // Following copy/pasted from BaseBroadcastReceiver.. should be in shared util instead
             if (Prefs.enableLog) {
-                new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
+                new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(errNotGlobalPhoneNumber);
             }
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+            Toast.makeText(context, errNotGlobalPhoneNumber, Toast.LENGTH_LONG).show();
         }
     }
 
