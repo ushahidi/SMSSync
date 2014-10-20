@@ -350,6 +350,6 @@
 
     <!-- Survey Dialog -->
     <string name="in_valid_email_address">Invalid email address</string>
-    <string name="email_label">What is your email address?</string>
-    <string name="rate_dialog_message">Are you interested in receiving support, hosting, or custom development for your SMSSync integration? We are here to help. Please provide us your email address so we can contact you and learn more about your needs.</string>
+    <string name="email_label">Enter your email address to learn more.</string>
+    <string name="rate_dialog_message">Are you interested in receiving technical support or customization for your SMSSync integration?</string>
 </resources>
