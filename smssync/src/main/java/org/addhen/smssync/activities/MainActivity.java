@@ -88,12 +88,11 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
         // Custom view
         AppRate.with(this)
-                .setInstallDays(0) // default 10, 0 means install day.
-                .setLaunchTimes(3) // default 10 times.
-                .setRemindInterval(2) // default 1 day.
-                .setShowNeutralButton(true) // default true.
+                .setInstallDays(2)
+                .setLaunchTimes(2)
+                .setRemindInterval(2)
+                .setShowNeutralButton(true)
                 .setView(root)
-                .setDebug(true) // default false.
                 .setOnClickButtonListener(this)
                 .monitor();
 
