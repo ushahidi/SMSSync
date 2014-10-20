@@ -18,6 +18,7 @@ package org.addhen.smssync.net;
 
 
 import org.addhen.smssync.util.DataFormatUtil;
+import org.addhen.smssync.util.Logger;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -80,6 +81,7 @@ public class SyncScheme {
                 throw new Exception("Empty scheme spec, loading default");
             }
         } catch (Exception ex) {
+            Logger.log(SyncScheme.class.getSimpleName(), ex.getMessage());
             //Init default
             init(
                     SyncMethod.POST,
@@ -122,17 +124,15 @@ public class SyncScheme {
      */
     public void init(String json) throws JSONException {
         JSONObject obj = new JSONObject(json);
-
         this.method = SyncMethod.valueOf(obj.getString("method"));
         this.format = SyncDataFormat.valueOf(obj.getString("dataFormat"));
-
         this.keySecret = obj.getString("kSecret");
         this.keyFrom = obj.getString("kFrom");
         this.keySentTimeStamp = obj.getString("kSentTimestamp");
         this.keyMessage = obj.getString("kMessage");
         this.keySentTo = obj.getString("kSentTo");
         this.keyMessageID = obj.getString("kMessageID");
-        this.keyDeviceID = obj.getString("KDeviceID");
+        this.keyDeviceID = obj.getString("kDeviceID");
 
     }
 

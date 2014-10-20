@@ -197,6 +197,7 @@ public class SyncUrl extends Model {
                 ", secret:" + secret +
                 ", status:" + status +
                 ", url:" + url +
+                ", sync_scheme:" + syncScheme.toString() +
                 "}";
     }
 }

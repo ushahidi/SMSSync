@@ -328,7 +328,6 @@ public class SyncUrlFragment extends
         final List<SyncUrl> listSyncUrl = model.loadById(id);
         if (listSyncUrl != null && listSyncUrl.size() > 0) {
             SyncScheme scheme = listSyncUrl.get(0).getSyncScheme();
-
             editScheme.keyMessage.setText(scheme.getKey(SyncScheme.SyncDataKey.MESSAGE));
             editScheme.keyMessageID.setText(scheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID));
             editScheme.keyFrom.setText(scheme.getKey(SyncScheme.SyncDataKey.FROM));
@@ -337,7 +336,6 @@ public class SyncUrlFragment extends
                     .setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TIMESTAMP));
             editScheme.keySentTo.setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TO));
             editScheme.keyDeviceID.setText(scheme.getKey(SyncScheme.SyncDataKey.DEVICE_ID));
-
             editScheme.methods.setSelection(scheme.getMethod().ordinal());
             editScheme.dataFormats.setSelection(scheme.getDataFormat().ordinal());
         } else {
