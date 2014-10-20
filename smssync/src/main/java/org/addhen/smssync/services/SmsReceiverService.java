@@ -318,7 +318,7 @@ public class SmsReceiverService extends Service {
     }
 
     @Produce
-    public boolean readLogs() {
+    public boolean reloadLog() {
         return true;
     }
 }
