@@ -77,7 +77,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
 
         if (activeMode == null) {
             if (host != null) {
-                host.startSupportActionMode(this);
+                activeMode = host.startSupportActionMode(this);
             }
         }
         onItemCheckedStateChanged(position);
