@@ -404,8 +404,13 @@ public class ProcessSms {
              * sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
              * deliveryIntents);
              */
-            sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-                    deliveryIntents);
+            if (Prefs.smsReportDelivery) {
+                sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                        deliveryIntents);
+            } else {
+                sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                        null);
+            }
 
             postToSentBox(message, UNCONFIRMED);
         }

@@ -65,6 +65,7 @@ public class Prefs {
 
     public static Boolean enableBlacklist = false;
 
+    public static Boolean smsReportDelivery = false;
 
     public static Boolean enableLog = false;
 
@@ -106,6 +107,7 @@ public class Prefs {
         enableLog = settings.getBoolean("EnableLog", false);
         batteryLevel = settings.getInt("BatteryLevel", 0);
         alertPhoneNumber = settings.getString("AlertPhoneNumber", "");
+        smsReportDelivery = settings.getBoolean("SmsReportDelivery", false);
     }
 
     /**
@@ -133,6 +135,7 @@ public class Prefs {
         editor.putBoolean("EnableLog", enableLog);
         editor.putInt("BatteryLevel", batteryLevel);
         editor.putString("AlertPhoneNumber", alertPhoneNumber);
+        editor.putBoolean("SmsReportDelivery", smsReportDelivery);
         editor.commit();
     }
 

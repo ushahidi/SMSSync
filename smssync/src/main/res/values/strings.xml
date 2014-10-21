@@ -71,6 +71,10 @@
     <string name="chk_auto_delete_hint">Automatically delete messages from the Message app\'s inbox
         to save space on the phone.</string>
 
+    <!-- enable sms delivery report  -->
+    <string name="chk_enable_sms_delivery_report">SMS Delivery Report</string>
+    <string name="chk_sms_delivery_report_hint">Enable if you want SMS delivery status report to be sent to the app. Note: Some network providers charge you for this.</string>
+
     <!-- enable auto sync -->
     <string name="chk_enable_auto_sync">Enable Auto Sync</string>
     <string name="chk_enable_auto_sync_hint">Allow SMSSync to periodically sync pending messages.</string>

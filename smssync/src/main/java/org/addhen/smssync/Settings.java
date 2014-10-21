@@ -49,7 +49,8 @@ import java.util.ArrayList;
 public class Settings extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 
-    public static final String KEY_ENABLE_SMS_SYNC_PREF = "enable_sms_sync_preference";
+    public static final String KEY_ENABLE_SMS_REPORT_DELIVERY
+            = "enable_sms_report_delivery_preference";
 
     public static final String KEY_POWERED_PREFERENCE = "powered_preference";
 
@@ -86,6 +87,8 @@ public class Settings extends PreferenceActivity implements
     private CheckBoxPreference enableReplyFrmServer;
 
     private CheckBoxPreference enableAutoDelete;
+
+    private CheckBoxPreference enableSmsReportDelivery;
 
     private CheckBoxPreference enableReply;
 
@@ -140,6 +143,9 @@ public class Settings extends PreferenceActivity implements
 
         enableAutoDelete = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(KEY_AUTO_DELETE_MESSAGE);
+
+        enableSmsReportDelivery = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(KEY_ENABLE_SMS_REPORT_DELIVERY);
 
         enableReply = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(KEY_ENABLE_REPLY);
@@ -251,6 +257,18 @@ public class Settings extends PreferenceActivity implements
 
             Util.logActivities(Settings.this, getString(R.string.settings_changed,
                     enableAutoDelete.getTitle().toString(), status,
+                    check));
+        }
+
+        editor.putBoolean("SmsReportDelivery", enableSmsReportDelivery.isChecked());
+        if (Prefs.smsReportDelivery != enableSmsReportDelivery.isChecked()) {
+            boolean checked = enableSmsReportDelivery.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.smsReportDelivery);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableSmsReportDelivery.getTitle().toString(), status,
                     check));
         }
 
