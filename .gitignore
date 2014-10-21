@@ -19,3 +19,4 @@ build
 gradle-app.setting
 gradle.properties
 Gemfile.lock
+*~

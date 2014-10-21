@@ -24,6 +24,7 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
+import org.addhen.smssync.util.LogUtil;
 
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -37,6 +38,8 @@ import android.provider.Telephony.Sms.Conversations;
 import android.provider.Telephony.Sms.Inbox;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
+import android.text.format.DateFormat;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -354,7 +357,6 @@ public class ProcessSms {
      * @param uuid   - UUID from web server
      */
     public void sendSms(String sendTo, String msg, String uuid) {
-
         ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
         Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
@@ -380,7 +382,6 @@ public class ProcessSms {
         message.setUuid(validUUID);
 
         for (int i = 0; i < parts.size(); i++) {
-
             Intent sentMessageIntent = new Intent(ServicesConstants.SENT);
             sentMessageIntent.putExtra(ServicesConstants.SENT_SMS_BUNDLE, message);
 
@@ -400,14 +401,18 @@ public class ProcessSms {
         }
 
         if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo)) {
-            /*
-             * sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-             * deliveryIntents);
-             */
             sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
                     deliveryIntents);
 
             postToSentBox(message, UNCONFIRMED);
+        } else {
+            final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + sendTo;
+            Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
+            // Following copy/pasted from BaseBroadcastReceiver.. should be in shared util instead
+            if (Prefs.enableLog) {
+                new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(errNotGlobalPhoneNumber);
+            }
+            Toast.makeText(context, errNotGlobalPhoneNumber, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -452,7 +457,6 @@ public class ProcessSms {
                 .put("messagesType", String.valueOf(messageType));
 
         return SentMessagesUtil.processSentMessages(context);
-
     }
 
     /**
