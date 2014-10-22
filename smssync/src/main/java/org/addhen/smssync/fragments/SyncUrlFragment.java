@@ -84,7 +84,6 @@ public class SyncUrlFragment extends
 
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemLongClickListener(new SyncUrlActionModeListener(this,
                 listView));
         view.enableSmsSync.setChecked(Prefs.enabled);
@@ -98,6 +97,7 @@ public class SyncUrlFragment extends
     public void onResume() {
         super.onResume();
         loadSyncUrlInBackground();
+
     }
 
     @Override

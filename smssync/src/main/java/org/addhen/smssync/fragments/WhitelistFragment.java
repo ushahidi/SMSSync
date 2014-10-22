@@ -78,7 +78,6 @@ public class WhitelistFragment extends
 
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(multichoiceActionModeListener);
         listView.setOnItemClickListener(this);
 

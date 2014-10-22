@@ -52,6 +52,7 @@ public class SyncUrlActionModeListener implements ActionMode.Callback,
             long id) {
         lastPosition = position;
         modeView.clearChoices();
+        modeView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         modeView.setItemChecked(lastPosition, true);
 
         if (activeMode == null) {
@@ -93,6 +94,8 @@ public class SyncUrlActionModeListener implements ActionMode.Callback,
     public void onDestroyActionMode(ActionMode mode) {
         activeMode = null;
         modeView.clearChoices();
+        modeView.requestLayout();
+        //modeView.setChoiceMode(ListView.CHOICE_MODE_NONE);
     }
 
 }

@@ -74,7 +74,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     @Override
     public boolean onItemLongClick(AdapterView<?> view, View row, int position,
             long id) {
-
+        modeView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         if (activeMode == null) {
             if (host != null) {
                 activeMode = host.startSupportActionMode(this);
@@ -141,6 +141,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         modeView.clearChoices();
+        modeView.requestLayout();
         getSelectedItemPositions().clear();
         activeMode = null;
 

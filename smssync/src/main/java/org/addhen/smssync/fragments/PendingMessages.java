@@ -110,7 +110,6 @@ public class PendingMessages
                 this, listView);
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(multichoiceActionModeListener);
 
         if (savedInstanceState != null) {

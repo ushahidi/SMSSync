@@ -75,7 +75,6 @@ public class SentMessageFragment
         }
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
                 this, listView));
         MainApplication.bus.register(this);

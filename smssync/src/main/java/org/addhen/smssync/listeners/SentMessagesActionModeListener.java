@@ -51,12 +51,6 @@ public class SentMessagesActionModeListener extends BaseActionModeListener {
     }
 
     @Override
-    public void onDestroyActionMode(ActionMode mode) {
-        activeMode = null;
-        modeView.clearChoices();
-    }
-
-    @Override
     public void setTitle(CharSequence title) {
         if (activeMode != null) {
             activeMode.setTitle(title);
