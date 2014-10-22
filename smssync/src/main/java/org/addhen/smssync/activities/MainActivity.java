@@ -34,6 +34,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -119,14 +120,20 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
     @Override
     public void onClickButton(int which) {
-        final String email = mEmailAddress.getText().toString();
-        if (Util.validateEmail(email)) {
-            final UrlHelper uriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
-            new GoogleDocsHttpClient(uriHelper.getUrl(), this)
-                    .postToGoogleDocs(email);
-        } else {
-            toastLong(R.string.in_valid_email_address);
-        }
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                final String email = mEmailAddress.getText().toString();
+                if (Util.validateEmail(email)) {
+                    final UrlHelper uriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
+                    new GoogleDocsHttpClient(uriHelper.getUrl(), MainActivity.this)
+                            .postToGoogleDocs(email);
+                } else {
+                    toastLong(R.string.in_valid_email_address);
+                }
+            }
+        });
 
     }
 
