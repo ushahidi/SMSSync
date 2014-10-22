@@ -87,7 +87,6 @@ public class SentMessageFragment
         log("OnResume is called");
         getActivity().registerReceiver(broadcastReceiver,
                 new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
-        //mHandler.post(mDisplayMessages);
         refresh();
         MainApplication.bus.register(this);
 
