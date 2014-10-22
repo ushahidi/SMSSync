@@ -322,7 +322,7 @@ public class Settings extends PreferenceActivity implements
         }
 
         editor.putString("AutoTime", autoSyncTimes.getTimeValueAsString());
-        if (!Prefs.autoTime.equals(autoSyncTimes.getSummary().toString())) {
+        if (!Prefs.autoTime.equals(autoSyncTimes.getTimeValueAsString())) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     autoSyncTimes.getTitle().toString(),
                     Prefs.autoTime, autoSyncTimes.getTimeValueAsString()));
@@ -341,7 +341,7 @@ public class Settings extends PreferenceActivity implements
         }
 
         editor.putString("taskCheck", taskCheckTimes.getTimeValueAsString());
-        if (!Prefs.taskCheckTime.equals(taskCheckTimes.getSummary().toString())) {
+        if (!Prefs.taskCheckTime.equals(taskCheckTimes.getTimeValueAsString())) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     taskCheckTimes.getTitle().toString(),
                     Prefs.taskCheckTime, taskCheckTimes.getTimeValueAsString()));
