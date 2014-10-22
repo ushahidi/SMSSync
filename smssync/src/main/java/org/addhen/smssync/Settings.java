@@ -17,7 +17,6 @@
 
 package org.addhen.smssync;
 
-
 import org.addhen.smssync.services.SmsPortal;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.TimePreference;
@@ -75,6 +74,8 @@ public class Settings extends PreferenceActivity implements
 
     public static final String TASK_CHECK_TIMES = "task_check_times";
 
+    public static final String MESSAGE_RESULTS_API = "message_results_api_preference";
+
     public static final String ABOUT = "powered_preference";
 
     public static ArrayList<Messenger> availableConnections = new ArrayList<Messenger>();
@@ -96,6 +97,8 @@ public class Settings extends PreferenceActivity implements
     private CheckBoxPreference taskCheck;
 
     private TimePreference autoSyncTimes;
+
+    private CheckBoxPreference enableMessageResultsAPI;
 
     private TimePreference taskCheckTimes;
 
@@ -169,6 +172,9 @@ public class Settings extends PreferenceActivity implements
         useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(KEY_ENABLE_SMS_PORTALS);
 
+        enableMessageResultsAPI = (CheckBoxPreference) getPreferenceScreen().findPreference(
+                MESSAGE_RESULTS_API);
+
         about = (Preference) getPreferenceScreen().findPreference(ABOUT);
 
         about.setTitle(versionLabel.toString());
@@ -229,8 +235,10 @@ public class Settings extends PreferenceActivity implements
 
         if (taskCheck.isChecked()) {
             taskCheckTimes.setEnabled(true);
+            enableMessageResultsAPI.setEnabled(true);
         } else {
             taskCheckTimes.setEnabled(false);
+            enableMessageResultsAPI.setEnabled(false);
         }
 
         editor = settings.edit();
@@ -367,6 +375,17 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
+        editor.putBoolean("MessageResultsAPIEnable", enableMessageResultsAPI.isChecked());
+        if (Prefs.messageResultsAPIEnable != enableMessageResultsAPI.isChecked()) {
+            boolean checked = enableMessageResultsAPI.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(Prefs.messageResultsAPIEnable);
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableMessageResultsAPI.getTitle().toString(), status,
+                    check));
+        }
         editor.commit();
     }
 
@@ -460,6 +479,11 @@ public class Settings extends PreferenceActivity implements
 
                 RunServicesUtil.stopCheckTaskService(Settings.this);
                 taskCheckTimes.setEnabled(false);
+                if (enableMessageResultsAPI.isChecked()){
+                    RunServicesUtil.stopMessageResultsService(Settings.this);
+                    enableMessageResultsAPI.setChecked(false);
+                    enableMessageResultsAPI.setEnabled(false);
+                }
             }
         }
 
@@ -469,8 +493,30 @@ public class Settings extends PreferenceActivity implements
             RunServicesUtil.runCheckTaskService(Settings.this);
         }
 
+        // Enable message result checking
+        if (key.equals(MESSAGE_RESULTS_API)) {
+            if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
+                messageResultsAPIEnable();
+            } else {
+                RunServicesUtil.stopMessageResultsService(Settings.this);
+            }
+        }
         this.savePreferences();
     }
+
+    final Runnable mMessageResultsAPIEnabled = new Runnable() {
+
+        public void run() {
+
+            if (!Prefs.enabled) {
+                Util.showToast(Settings.this, R.string.no_configured_url);
+                enableMessageResultsAPI.setChecked(false);
+            } else {
+                enableMessageResultsAPI.setChecked(true);
+                RunServicesUtil.runMessageResultsService(Settings.this);
+            }
+        }
+    };
 
     /**
      * Create runnable for validating callback URL. Putting the validation process in it own thread
@@ -484,7 +530,9 @@ public class Settings extends PreferenceActivity implements
 
                 Util.showToast(Settings.this, R.string.no_configured_url);
                 taskCheck.setChecked(false);
-
+                if (enableMessageResultsAPI.isChecked()) {
+                    enableMessageResultsAPI.setChecked(false);
+                }
             } else {
 
                 taskCheck.setChecked(true);
@@ -541,6 +589,15 @@ public class Settings extends PreferenceActivity implements
         Thread t = new Thread() {
             public void run() {
                 mHandler.post(mAutoSyncEnabled);
+            }
+        };
+        t.start();
+    }
+
+    public void messageResultsAPIEnable() {
+        Thread t = new Thread() {
+            public void run() {
+                mHandler.post(mMessageResultsAPIEnabled);
             }
         };
         t.start();

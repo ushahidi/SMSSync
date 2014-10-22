@@ -348,6 +348,18 @@
     <string name="invalid_data_format">Invalid data format</string>
     <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
 
+    <!-- Message Results API-->
+    <string name="message_processed_success">SMSSync has completed processing this message.</string>
+    <string name="message_processed_failed">SMSSync has failed processing this message.</string>
+    <string name="message_processed_json_failed">SMSSync has failed creating JSON response.</string>
+    <string name="queued_messages_request_status">Queued Messages POST request returned status %1$s\n and body %2$s</string>
+    <string name="messages_result_request_status">Message result GET request returned status %1$s\n and body %2$s</string>
+
+    <!-- enable message results api -->
+    <string name="chk_enable_message_results_api">Enable Message Results API"</string>
+    <string name="chk_enable_message_results_api_hint">Allow SMSSync to send information about sent messages to server.</string>
+    <string name="message_results_api_setting">Message Results API Settings</string>
+
     <!-- Survey Dialog -->
     <string name="in_valid_email_address">Invalid email address</string>
     <string name="email_label">Enter your email address to learn more.</string>

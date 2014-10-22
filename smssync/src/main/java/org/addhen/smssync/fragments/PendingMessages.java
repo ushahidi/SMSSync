@@ -123,7 +123,6 @@ public class PendingMessages
         view.sync.setOnClickListener(this);
 
         MainApplication.bus.register(this);
-
         getActivity().registerReceiver(failedReceiver,
                 new IntentFilter(ServicesConstants.FAILED_ACTION));
     }

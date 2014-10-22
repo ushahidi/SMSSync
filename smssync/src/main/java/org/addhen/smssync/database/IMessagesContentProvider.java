@@ -18,6 +18,7 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.MessageResult;
 
 import java.util.List;
 
@@ -37,6 +38,8 @@ public interface IMessagesContentProvider {
     public boolean deleteAllMessages();
 
     public List<Message> fetchMessagesByUuid(String messageUuid);
+
+    public List<MessageResult> fetchMessageResultsByUuid(List<String> messageUuid);
 
     public List<Message> fetchAllMessages();
 

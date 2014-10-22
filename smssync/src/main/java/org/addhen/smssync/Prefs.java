@@ -72,6 +72,8 @@ public class Prefs {
 
     public static int batteryLevel = 0;
 
+    public static Boolean messageResultsAPIEnable = false;
+
     /**
      * Load the value of the settings / preference variable.
      *
@@ -106,6 +108,7 @@ public class Prefs {
         enableLog = settings.getBoolean("EnableLog", false);
         batteryLevel = settings.getInt("BatteryLevel", 0);
         alertPhoneNumber = settings.getString("AlertPhoneNumber", "");
+        messageResultsAPIEnable = settings.getBoolean("MessageResultsAPIEnable", false);
     }
 
     /**
@@ -133,6 +136,7 @@ public class Prefs {
         editor.putBoolean("EnableLog", enableLog);
         editor.putInt("BatteryLevel", batteryLevel);
         editor.putString("AlertPhoneNumber", alertPhoneNumber);
+        editor.putBoolean("MessageResultsAPIEnable", messageResultsAPIEnable);
         editor.commit();
     }
 
@@ -149,5 +153,11 @@ public class Prefs {
             editor.putBoolean("AutoTimeUpdate", true);
             editor.commit();
         }
+    }
+
+    public static Boolean isMessageResultsApiEnabled(Context context) {
+        final SharedPreferences settings = context.getSharedPreferences(
+                PREF_NAME, 0);
+        return settings.getBoolean("MessageResultsAPIEnable", false);
     }
 }
