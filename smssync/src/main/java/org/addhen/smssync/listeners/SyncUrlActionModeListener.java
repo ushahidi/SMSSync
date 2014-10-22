@@ -95,7 +95,6 @@ public class SyncUrlActionModeListener implements ActionMode.Callback,
         activeMode = null;
         modeView.clearChoices();
         modeView.requestLayout();
-        //modeView.setChoiceMode(ListView.CHOICE_MODE_NONE);
     }
 
 }
