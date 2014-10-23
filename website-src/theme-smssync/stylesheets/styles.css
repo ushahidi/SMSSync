@@ -22,10 +22,12 @@ body > .navbar-brand:hover {
 #logo a {
     font-family: 'Racing Sans One', cursive;
     text-indent:35px;
-    background:transparent url(../media/logo.png) no-repeat 20px 13px;
+    font-size: 25px;
+    background:transparent url(../media/logo.png) no-repeat 20px 10px;
     display:block;
-    color:#fff;
+    color:#4ac08c;
     outline:none;
+
 }
 
 .bs-docs-section + .bs-docs-section {
@@ -52,7 +54,6 @@ strong, em {
     float:right;
     font-size: 70%;
     font-weight: bold;
-    text-transform: uppercase;
     margin: 0 20px 0 0;
 }
 
