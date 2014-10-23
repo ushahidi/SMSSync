@@ -1,19 +1,13 @@
 
-var url = "http://query.yahooapis.com/v1/public/yql?q=select * from json where url='https://raw.github.com/ushahidi/SMSSync/master/contributors.json'&format=json";
+var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D%22https%3A%2F%2Fraw.githubusercontent.com%2Fushahidi%2FSMSSync%2Fdevelop%2Fcontributors.json%3F_out%3Djson%22%20&format=json";
 $.ajax({
     url: url,
     cache : false,
-    dataType : 'jsonp',
+    dataType : 'json',
     success : fetchContributors
 });
 
-$.ajax({
-    url: url,
-    cache : false,
-    dataType : 'jsonp',
-    success : displayContributors
-});
-// Get history details
+// Get contributors details
 function fetchContributors(data) {
     var titleLayer = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors, Imagery &copy; <a href="http://info.mapquest.com/terms-of-use/">MapQuest</a>', subdomains: '1234'});
     var map = L.map('map');
@@ -33,6 +27,9 @@ function fetchContributors(data) {
     });
     map.addLayer(markers);
     map.fitBounds(latLng);
+
+    // Put data in a table.
+    displayContributors(data);
 }
 
 function normalizeNames(contributor) {
