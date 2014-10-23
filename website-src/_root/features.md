@@ -1,9 +1,9 @@
 ---
 title : Features
 layout : default
-description : SMSSync features
+description : SMSsync features
 date : Jun 23, 2014
-header : <h1>Features <small>Highlights the important features of SMSSync.</small></h1>
+header : <h1>Features <small>Highlights the important features of SMSsync.</small></h1>
 ---
 
 * Scheduler to auto sync pending messages.
