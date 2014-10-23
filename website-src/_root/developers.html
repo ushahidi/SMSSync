@@ -134,6 +134,49 @@ The web service should check the value of the secret key passed with each task r
 </li>
 </ul>
 
+<p>&nbsp;</p>
+<a name="alerts"><strong>Alerts</strong></a>
+<p>As of v2.7 and above, you should be able to query for the status of the device running SMSsync with query codes. For example, if you want to know if the device can still reach the web server, just text @20 to the device and you should receive a text message back with the status of the server.</p>
+Below are the query codes supported at the moment.
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Query code @xx</th>
+            <th>Query</th>
+            <th>+ Query response</th>
+            <th>- Query response</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>@10</code></td>
+            <td>Is cell reception ok</td>
+            <td><span class="text-success">cell reception ok</span></td>
+            <td><span class="text-warning">The phone sends no response.</span></td>
+        </tr>
+        <tr>
+            <td><code>@20</code></td>
+            <td>Is server ok</td>
+            <td><span class="text-success">server responded with <HTTP Status Code> status code.Eg. server responded with 200 status code</span></td>
+            <td><span class="text-warning">Cannot reach server.</span></td>
+        </tr>
+        <tr>
+            <td><code>@30</code></td>
+            <td>Battery level</td>
+            <td><span class="text-success">Battery level is <percentage of battery level> Eg. battery level is 10%</span></td>
+            <td><span class="text-warning">The phone sends no response.</span></td>
+        </tr>
+        <tr>
+            <td><code>@40</code></td>
+            <td>Get all statuses</td>
+            <td><span class="text-success">All the query's positive responses</span></td>
+            <td><span class="text-warning">All the query's negative responses</span></td>
+        </tr>
+    </tbody>
+</table>
+<p>&nbsp;</p>
+<a name="message-results"><strong>Message Results API</strong></a>
+<p></p>
 </div>
 <div class="col-lg-6">
 <h2>A sample web service</h2>
