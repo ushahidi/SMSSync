@@ -20,6 +20,7 @@ package org.addhen.smssync.util;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
 import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
+import org.addhen.smssync.receivers.MessageResultsScheduledReceiver;
 import org.addhen.smssync.services.ScheduleServices;
 
 import android.app.PendingIntent;
@@ -62,7 +63,8 @@ public class RunServicesUtil {
 
             // do we have data network?
             if (isConnected) {
-                Scheduler.INSTANCE.getScheduler(context, intent, requestCode).updateScheduler(interval);
+                Scheduler.INSTANCE.getScheduler(context, intent, requestCode)
+                        .updateScheduler(interval);
             }
         }
 
@@ -176,11 +178,59 @@ public class RunServicesUtil {
 
     }
 
+
+    /**
+     * Runs the {@link org.addhen.smssync.services.MessageResultsScheduledService}
+     *
+     * @param context the calling context
+     */
+    public static void runMessageResultsService(Context context) {
+        Logger.log(CLASS_TAG, "Running CheckTaskService " + Prefs.taskCheckTime);
+
+        // load preferences
+        Prefs.loadPreferences(context);
+        if (Prefs.messageResultsAPIEnable && Prefs.enabled) {
+
+            // start the scheduler for 'message results' service
+            final long interval = TimeFrequencyUtil.calculateInterval(Prefs.taskCheckTime) * 60000;
+
+            final Intent intent = new Intent(context,
+                    MessageResultsScheduledReceiver.class);
+
+            Logger.log(CLASS_TAG, "Message Results service started");
+            // run the service
+            RunServicesUtil
+                    .runServices(
+                            context,
+                            intent,
+
+                            ServicesConstants.MESSAGE_RESULTS_SCHEDULED_SERVICE_REQUEST_CODE,
+                            interval);
+
+        }
+    }
+
+    /**
+     * Stops the {@link org.addhen.smssync.services.MessageResultsScheduledService
+     *
+     * @param context the calling context
+     */
+    public static void stopMessageResultsService(Context context) {
+        Prefs.loadPreferences(context);
+        final Intent intent = new Intent(context,
+                MessageResultsScheduledReceiver.class);
+
+        RunServicesUtil.stopServices(context, intent,
+                ServicesConstants.MESSAGE_RESULTS_SCHEDULED_SERVICE_REQUEST_CODE);
+
+    }
+
     public enum Scheduler {
         INSTANCE;
 
         private ScheduleServices getScheduler(Context context, Intent intent, int requestCode) {
-            return new ScheduleServices(context, intent, requestCode,PendingIntent.FLAG_UPDATE_CURRENT);
+            return new ScheduleServices(context, intent, requestCode,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 }

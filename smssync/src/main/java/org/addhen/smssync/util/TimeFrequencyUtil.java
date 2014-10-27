@@ -8,6 +8,7 @@ public final class TimeFrequencyUtil {
     public static final String DEFAULT_TIME_FREQUENCY = "05:00";
 
     private static final int ONE_HOUR = 3600000;
+
     private static final int ONE_MINUTE = 60000;
 
     private TimeFrequencyUtil() {

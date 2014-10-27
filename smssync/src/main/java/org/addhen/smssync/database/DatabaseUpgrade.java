@@ -8,10 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import org.addhen.smssync.MainApplication;
-
-import static org.addhen.smssync.database.Database.messagesContentProvider;
-
 
 public final class DatabaseUpgrade {
 
@@ -43,12 +39,14 @@ public final class DatabaseUpgrade {
 
     }
 
-    private static void addStringColumn(SQLiteDatabase sqLiteDatabase, String tableName, String column) {
+    private static void addStringColumn(SQLiteDatabase sqLiteDatabase, String tableName,
+            String column) {
         sqLiteDatabase.execSQL(ALTER_TABLE + tableName + ADD_COLUMN
                 + column + TEXT + ";");
     }
 
-    private static void addIntColumn(SQLiteDatabase sqLiteDatabase, String tableName, String column) {
+    private static void addIntColumn(SQLiteDatabase sqLiteDatabase, String tableName,
+            String column) {
         sqLiteDatabase.execSQL(ALTER_TABLE + tableName + ADD_COLUMN
                 + column + INT + ";");
     }

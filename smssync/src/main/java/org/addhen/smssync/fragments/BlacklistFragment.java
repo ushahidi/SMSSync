@@ -17,6 +17,16 @@
 
 package org.addhen.smssync.fragments;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.adapters.FilterAdapter;
+import org.addhen.smssync.listeners.BlacklistActionModeListener;
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.views.AddPhoneNumber;
+import org.addhen.smssync.views.BlacklistView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,16 +38,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.adapters.FilterAdapter;
-import org.addhen.smssync.listeners.BlacklistActionModeListener;
-import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.tasks.ProgressTask;
-import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.views.AddPhoneNumber;
-import org.addhen.smssync.views.BlacklistView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -157,7 +157,8 @@ public class BlacklistFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // delete all messages
-                                new DeleteTask(BlacklistFragment.this.getActivity()).execute((String) null);
+                                new DeleteTask(BlacklistFragment.this.getActivity())
+                                        .execute((String) null);
                             }
                         });
         AlertDialog alert = builder.create();
@@ -181,7 +182,8 @@ public class BlacklistFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Delete by ID
-                                DeleteTask deleteById = new DeleteTask(BlacklistFragment.this.getActivity());
+                                DeleteTask deleteById = new DeleteTask(
+                                        BlacklistFragment.this.getActivity());
                                 deleteById.deletebyUuid = true;
                                 deleteById.execute((String) null);
                             }
@@ -262,14 +264,16 @@ public class BlacklistFragment extends
 
                         // edit was selected
                         if (edit) {
-                            AddPhoneNumberTask updateTask = new AddPhoneNumberTask(BlacklistFragment.this.getActivity(),
+                            AddPhoneNumberTask updateTask = new AddPhoneNumberTask(
+                                    BlacklistFragment.this.getActivity(),
                                     addPhoneNumber);
                             updateTask.editPhoneNumber = true;
                             updateTask.execute((String) null);
 
                         } else {
                             // add a new entry
-                            AddPhoneNumberTask addTask = new AddPhoneNumberTask(BlacklistFragment.this.getActivity(),
+                            AddPhoneNumberTask addTask = new AddPhoneNumberTask(
+                                    BlacklistFragment.this.getActivity(),
                                     addPhoneNumber);
                             addTask.execute((String) null);
                         }

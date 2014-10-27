@@ -20,7 +20,6 @@
 
 package org.addhen.smssync.net;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -259,7 +258,7 @@ public class MainHttpClient {
 
     public HttpEntity getEntity() throws Exception {
         // check if entity was explictly set otherwise return params as entity
-        if (entity.getContentLength() > 0) {
+        if (entity != null && entity.getContentLength() > 0) {
             return entity;
         } else if (!params.isEmpty()) {
             // construct entity if not already set
@@ -361,4 +360,19 @@ public class MainHttpClient {
         Logger.log(getClass().getName(), message, ex);
     }
 
+    public enum HttpMethod {
+        POST("POST"),
+        GET("GET"),
+        PUT("PUT");
+
+        private final String mMethod;
+
+        HttpMethod(String method) {
+            mMethod = method;
+        }
+
+        public String value() {
+            return mMethod;
+        }
+    }
 }

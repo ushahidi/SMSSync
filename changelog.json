@@ -1,5 +1,26 @@
 [
     {
+        "version": "v2.7",
+        "date": "October 27, 2014",
+        "features": [
+            "Added Alerts & Debug which essentially allows you to get status of the device running SMSsync remotely by sending query codes as SMS to the device.",
+            "Message Results API, allows SMSsync to send SMS delivery reports back to the server and makes it easier to for the server to know if outgoing messages got sent to the recipients.",
+            "Added ability to toggle SMS delivery reports. Now you can turn this feature on or off as some providers charge you for it.",
+            "Change from SMSSync to SMSsync. Feels more natural writing it that way.",
+            "Updated logo. We have updated our logo to make it modern looking and to conform to Android's design guidelines.",
+            "Updated notification status icon to conform to Android's design guidelines.",
+            "Added a feedback dialog as a way to engage more with our users to figure out a better way to support them.",
+            "Updated website with favicon.",
+
+        ],
+        "bugs": [
+            "Fixed bug with changing the sync scheme not being effected.",
+            "Fixed a bug when SMSsync attempt to send an SMS to users it crashes in the background.",
+            "Fixed issue with not being able to delete selected whitelist and blacklist entries.",
+            "Fixed issue with not being able to delete all messages in the sent list."
+        ]
+    },
+    {
         "version": "v2.6.1",
         "date": "June 23, 2014",
         "features": [

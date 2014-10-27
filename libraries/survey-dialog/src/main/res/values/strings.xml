@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+    <string name="rate_dialog_title">We are here to help</string>
+    <string name="rate_dialog_message">We are interested in improving the use of SMSsync, would you mind providing us with your email address for a link to our Feedback Survey? Thank you for your support!</string>
+    <string name="rate_dialog_ok">Send</string>
+    <string name="rate_dialog_cancel">Remind me later</string>
+    <string name="rate_dialog_no">Not, interested</string>
+</resources>

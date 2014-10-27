@@ -1,0 +1,7 @@
+<resources>
+    <string name="rate_dialog_title">Оцените это приложение</string>
+    <string name="rate_dialog_message">Если вам нравится это приложение не забудьте оценить его в Google Play, это потребует не более минуты вашего времени. Спасибо за вашу поддержку!</string>
+    <string name="rate_dialog_ok">Оценить сейчас</string>
+    <string name="rate_dialog_cancel">Напомнить позже</string>
+    <string name="rate_dialog_no">Нет, спасибо</string>
+</resources>

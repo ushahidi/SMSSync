@@ -144,7 +144,6 @@ public class Database {
                     break;
             }
 
-
             db.execSQL(ISyncUrlSchema.CREATE_TABLE);
             db.execSQL(IFilterSchema.CREATE_TABLE);
             // add old sync url configuration to the database,
@@ -155,7 +154,7 @@ public class Database {
     }
 
     private static void dropColumn(SQLiteDatabase db, String createTableCmd,
-                                   String tableName, String[] colsToRemove) {
+            String tableName, String[] colsToRemove) {
 
         List<String> updatedTableColumns = getColumns(db, tableName);
         // Remove the columns we don't want anymore from the table's list of
@@ -346,7 +345,7 @@ public class Database {
     }
 
     public static boolean addSyncUrl(List<SyncUrl> syncUrls,
-                                     SQLiteDatabase db) {
+            SQLiteDatabase db) {
 
         try {
             db.beginTransaction();
@@ -389,7 +388,7 @@ public class Database {
 
     public int limitRows(String tablename, int limit, String KEY_ID) {
         Cursor cursor = mDb.rawQuery("SELECT " + KEY_ID + " FROM " + tablename
-                + " ORDER BY " + KEY_ID + " DESC LIMIT 1 OFFSET ?",
+                        + " ORDER BY " + KEY_ID + " DESC LIMIT 1 OFFSET ?",
                 new String[]{limit - 1 + ""});
 
         int deleted = 0;

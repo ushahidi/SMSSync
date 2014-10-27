@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.listeners;
 
+import org.addhen.smssync.R;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
 import android.view.Menu;
@@ -25,8 +27,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import org.addhen.smssync.R;
 
 import java.util.LinkedHashSet;
 
@@ -74,10 +74,10 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     @Override
     public boolean onItemLongClick(AdapterView<?> view, View row, int position,
             long id) {
-
+        modeView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         if (activeMode == null) {
             if (host != null) {
-                host.startSupportActionMode(this);
+                activeMode = host.startSupportActionMode(this);
             }
         }
         onItemCheckedStateChanged(position);
@@ -100,7 +100,8 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
             }
 
             setSelectedItemPositions(mSelectedItemPositions);
-            setTitle(host.getApplicationContext().getResources().getString(R.string.selected,mSelectedItemPositions.size()));
+            setTitle(host.getApplicationContext().getResources()
+                    .getString(R.string.selected, mSelectedItemPositions.size()));
         }
 
     }
@@ -140,6 +141,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
     @Override
     public void onDestroyActionMode(ActionMode mode) {
         modeView.clearChoices();
+        modeView.requestLayout();
         getSelectedItemPositions().clear();
         activeMode = null;
 

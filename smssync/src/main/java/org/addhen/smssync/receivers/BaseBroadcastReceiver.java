@@ -1,14 +1,14 @@
 package org.addhen.smssync.receivers;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.util.LogUtil;
+import org.addhen.smssync.util.Logger;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
 import android.widget.Toast;
-
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.util.LogUtil;
-import org.addhen.smssync.util.Logger;
 
 /**
  * Created by Tomasz Stalka(tstalka@soldevelo.com) on 5/5/14.

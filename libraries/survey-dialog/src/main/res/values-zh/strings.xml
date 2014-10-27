@@ -1,0 +1,7 @@
+<resources>
+    <string name="rta_dialog_title">評估的應用</string>
+    <string name="rta_dialog_message">非常感謝你我已經使用這個程序。因為只有1分鐘，如果你不介意的話，我想這個應用程序的評估。我們感謝您的合作！</string>
+    <string name="rta_dialog_ok">我評價現在</string>
+    <string name="rta_dialog_cancel">我稍後會</string>
+    <string name="rta_dialog_no">不，謝謝</string>
+</resources>

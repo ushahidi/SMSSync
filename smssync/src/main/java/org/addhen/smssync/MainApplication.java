@@ -61,8 +61,6 @@ public class MainApplication extends Application {
 
     /**
      * Return the application tracker
-     *
-     * @return
      */
     public static AppTracker getInstance() {
         return TrackerResolver.getInstance();

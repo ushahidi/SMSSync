@@ -9,7 +9,9 @@
 	the specific language governing permissions and limitations under the License.
 -->
 <!-- This handles all the strings in the app. -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
 
     <!-- preferences -->
     <!-- sync URL -->
@@ -40,6 +42,10 @@
         server to identify which device is sending it messages.</string>
     <string name="edittxt_unique_id_hint">01234</string>
 
+    <!-- alert phone -->
+    <string name="edittxt_alert_phone_pref">Enter alert phone number</string>
+    <string name="edittxt_alert_phone_pref_summary">Specify a phone number to send alerts to.</string>
+
     <!-- response message -->
     <string name="edittxt_reply">Enter A Response Message</string>
     <string name="edittxt_reply_title">Response Message</string>
@@ -47,55 +53,64 @@
     <string name="edittxt_reply_default">Your message has been received. Thank you.</string>
 
     <!-- enable/disable smssync -->
-    <string name="sms_sync_enabled">SMSSync is Enabled</string>
-    <string name="sms_sync_disabled">SMSSync Disabled</string>
+    <string name="sms_sync_enabled">SMSsync is Enabled</string>
+    <string name="sms_sync_disabled">SMSsync Disabled</string>
 
     <!-- general settings -->
     <string name="general_settings">General Settings</string>
-    <string name="chk_enable_sms_sync">Start SMSSync service</string>
+    <string name="chk_enable_sms_sync">Start SMSsync service</string>
     <string name="chk_sms_sync_hint">Start and Stop SMS gateway.</string>
 
     <!-- reply from server -->
     <string name="reply_settings">Reply Message Settings</string>
     <string name="chk_enable_reply">Reply Messages</string>
-    <string name="chk_reply_hint">Automatically respond to every message that comes to SMSSync.</string>
+    <string name="chk_reply_hint">Automatically respond to every message that comes to SMSsync.</string>
 
     <!-- auto delete messages -->
     <string name="chk_enable_auto_delete">Auto Delete Messages</string>
     <string name="chk_auto_delete_hint">Automatically delete messages from the Message app\'s inbox
         to save space on the phone.</string>
 
+    <!-- enable sms delivery report  -->
+    <string name="chk_enable_sms_delivery_report">SMS Delivery Report</string>
+    <string name="chk_sms_delivery_report_hint">Enable if you want SMS delivery status report to be sent to the app. Note: Some network providers charge you for this.</string>
+
     <!-- enable auto sync -->
     <string name="chk_enable_auto_sync">Enable Auto Sync</string>
-    <string name="chk_enable_auto_sync_hint">Allow SMSSync to periodically sync pending messages.</string>
+    <string name="chk_enable_auto_sync_hint">Allow SMSsync to periodically sync pending messages.</string>
 
     <!-- auto sync delay -->
     <string name="txt_auto_sync_delay">Auto sync frequency</string>
-    <string name="auto_sync_delay_hint">Set how often SMSSync syncronizes with the configured
+    <string name="auto_sync_delay_hint">Set how often SMSsync syncronizes with the configured
         callback URL.</string>
+
+    <!-- enable SMS Portals -->
+    <string name="sms_portals_settings">SMS Portals Settings</string>
+    <string name="chk_enable_sms_portals">Enable SMS Portals</string>
+    <string name="chk_enable_sms_portals_hint">Use SMS Portals when sending SMS messages, effectively increasing the default Android limit (100 SMS/hour).</string>
 
     <!-- enable task check -->
     <string name="chk_enable_task_check">Enable Task Checking</string>
-    <string name="chk_enable_task_check_hint">Allow SMSSync to periodically check for tasks enabled
-        on the callback URL. SMSSync then executes the task. Eg. SMSSync sends SMS</string>
+    <string name="chk_enable_task_check_hint">Allow SMSsync to periodically check for tasks enabled
+        on the callback URL. SMSsync then executes the task. Eg. SMSsync sends SMS</string>
 
     <!-- task check delay -->
     <string name="txt_task_check_delay">Frequency</string>
-    <string name="txt_task_check_delay_hint">Set how often SMSSync checks for a task to be
+    <string name="txt_task_check_delay_hint">Set how often SMSsync checks for a task to be
         executed.</string>
-    <string name="app_name">SMSSync</string>
-    <string name="outbox">SMSSync Pending Messages</string>
+    <string name="app_name">SMSsync</string>
+    <string name="outbox">SMSsync Pending Messages</string>
     <string name="version_status">Beta</string>
     <string name="sms_status_success">SMS sent</string>
     <string name="sms_status_failed">SMS failed to be delivered</string>
-    <string name="notification_summary">SMSSync Gateway is Running</string>
-    <string name="sending_failed">SMSSync failed to send message to server.</string>
+    <string name="notification_summary">SMSsync Gateway is Running</string>
+    <string name="sending_failed">SMSsync failed to send message to server.</string>
     <string name="sending_failed_http_code">Server returned HTTP status code is %1$d.</string>
     <string name="sending_failed_custom_error">Sending message to the server failed. Server error: %1$s</string>
-    <string name="sending_succeeded">SMSSync Message Sent.</string>
+    <string name="sending_succeeded">SMSsync Message Sent.</string>
     <string name="no_messages_to_sync">There are no messages to send.</string>
     <string name="no_messages_to_delete">There are no messages to delete.</string>
-    <string name="sync_failed">SMSSync message sending failed. Please check your internet connection
+    <string name="sync_failed">SMSsync message sending failed. Please check your internet connection
         and sync URL configuration.</string>
     <string name="powered">Powered</string>
     <string name="powered_by">Created by Ushahidi</string>
@@ -114,14 +129,14 @@
 
     <!-- URL validation -->
     <string name="invalid_url">The Sync URL entered was invalid.</string>
-    <string name="no_configured_url">The SMSSync service is not running.</string>
+    <string name="no_configured_url">The SMSsync service is not running.</string>
     <string name="no_connection">Could not make connection to the Sync URL.</string>
     <string name="no_task">No task is enabled on the configured Sync URL.</string>
     <string name="auto_sync_settings">Auto Sync Settings</string>
     <string name="task_check_settings">Task Settings</string>
     <string name="about_smssync">About Sync</string>
     <string name="please_wait">Please wait</string>
-    <string name="smssync_not_enabled">SMSSync is not enabled. Please enable it from the Settings
+    <string name="smssync_not_enabled">SMSsync is not enabled. Please enable it from the Settings
         screen.</string>
     <string name="import_messages">Importing messages...</string>
     <string name="nothing_to_import">No messages to import. Make sure you have SMS messages in your
@@ -139,6 +154,8 @@
     <string name="sms_delivery_status_null_pdu">Failed to send SMS because no pdu provided</string>
     <string name="sms_delivered">SMS delivered</string>
     <string name="sms_not_delivered">SMS not delivered</string>
+    <string name="sms_not_delivered_htc_device_retry">Device is retrying to send sms.</string>
+    <string name="sms_not_delivered_unknown_error">"Unknown error while sending sms."</string>
 
     <!-- Pending and failed messages Tab -->
     <string name="sms">SMS</string>
@@ -176,11 +193,11 @@
     <string name="disable_to_delete_all_syncurl">There are enabled Sync URLs so you cannot delete
         all of them. Disable all enabled Sync URLs then try this action again.</string>
     <string name="no_enabled_sync_url">Enable at least one Sync URL before starting the service.</string>
-    <string name="disable_smssync_service">SMSSync service is running. You cannot perform a deletion
+    <string name="disable_smssync_service">SMSsync service is running. You cannot perform a deletion
         until the service is stopped. Stop the service then try this action again.</string>
-    <string name="disable_last_sync_url">You cannot disable this last Sync URL because the SMSSync
+    <string name="disable_last_sync_url">You cannot disable this last Sync URL because the SMSsync
         service is running.</string>
-    <string name="no_sync_url_added">Add at least one Sync URL to start the SMSSync service.</string>
+    <string name="no_sync_url_added">Add at least one Sync URL to start the SMSsync service.</string>
     <string name="no_sync_url_to_delete">There are no Sync URLs to delete.</string>
     <string name="empty_sync_url_title">Please enter a title for the Sync URL</string>
     <string name="valid_sync_url">Please enter a valid URL</string>
@@ -276,7 +293,16 @@
     <string name="enter_key_for_sent_to">Enter key for \'sent_to\'</string>
     <string name="enter_key_for_device_id">Enter key for \'device_id\'</string>
 
+    <!-- Debug and alert messages -->
+    <string name="battery_level_message">Battery level is at %1$d</string>
+    <string name="successful_alert_to_server">Sending alert to server has been successful</string>
+    <string name="lost_connection_message">No data connection on the device</string>
+    <string name="reception_ok_message">Cell reception ok</string>
+    <string name="server_respond_message">Server %1$s responded with %2$d status code \n</string>
+    <string name="unsuccessful_server_connection_message">Cannot reach server %1$s \n</string>
+
     <!-- Logs -->
+    <string name="malformed_url">"Malformed URL: %1$s"</string>
     <string name="logs">Logs</string>
     <string name="action_settings">Settings</string>
     <string name="enable_logs">Enable logs</string>
@@ -291,7 +317,7 @@
     <string name="server_properly_configured_no">Server %1s$s not properly configured. Did not get expected JSON response</string>
     <string name="auto_sync_message_no">Automatically syncing message $1$s to %2$s failed</string>
     <string name="no_logs">No logs.</string>
-    <string name="smssync_service_running">SMSSync service is running...</string>
+    <string name="smssync_service_running">SMSsync service is running...</string>
     <string name="sync_started">Sync started</string>
     <string name="not_syncing">Not syncing %1$s</string>
     <string name="perform_task">Performing task checking</string>
@@ -305,7 +331,7 @@
     <string name="log_entries_below">Log entries below</string>
     <string name="phone_status">Phone status</string>
     <string name="log_message_from">Log message from phone number %1$s</string>
-    <string name="log_entries">SMSSync log entries</string>
+    <string name="log_entries">SMSsync log entries</string>
     <string name="log_saved_at">Log is saved on the SD card at %1$s</string>
     <string name="auto_response_sent">Sending configured auto response message as SMS</string>
     <string name="auto_message_deleted"> %1$s auto deleted</string>
@@ -320,9 +346,26 @@
     <string name="device_shutdown">The device has shutdown</string>
     <string name="battery_low">The device battery level is low</string>
     <string name="battery_okay">The device battery level is okay</string>
-    <string name="settings_changed">SMSSync settings - [ %1$s ] has changed from [ %2$s ] to [ %3$s ]</string>
+    <string name="settings_changed">SMSsync settings - [ %1$s ] has changed from [ %2$s ] to [ %3$s ]</string>
     <string name="enabled">enabled</string>
     <string name="disabled">disabled</string>
     <string name="invalid_data_format">Invalid data format</string>
     <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
+
+    <!-- Message Results API-->
+    <string name="message_processed_success">SMSsync has completed processing this message.</string>
+    <string name="message_processed_failed">SMSsync has failed processing this message.</string>
+    <string name="message_processed_json_failed">SMSsync has failed creating JSON response.</string>
+    <string name="queued_messages_request_status">Queued Messages POST request returned status %1$s\n and body %2$s</string>
+    <string name="messages_result_request_status">Message result GET request returned status %1$s\n and body %2$s</string>
+
+    <!-- enable message results api -->
+    <string name="chk_enable_message_results_api">Enable Message Results API"</string>
+    <string name="chk_enable_message_results_api_hint">Allow SMSsync to send information about sent messages to server.</string>
+    <string name="message_results_api_setting">Message Results API Settings</string>
+
+    <!-- Survey Dialog -->
+    <string name="in_valid_email_address">Invalid email address</string>
+    <string name="email_label">Enter your email address to learn more.</string>
+    <string name="rate_dialog_message">Are you interested in receiving technical support or customization for your SMSsync integration?</string>
 </resources>

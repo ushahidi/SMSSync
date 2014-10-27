@@ -27,6 +27,8 @@ public class ServicesConstants {
 
     public static int AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE = 3;
 
+    public static int MESSAGE_RESULTS_SCHEDULED_SERVICE_REQUEST_CODE = 4;
+
     public static String AUTO_SYNC_ACTION = "org.addhen.smssync.syncservices.autosync";
 
     public static String CHECT_TASK_ACTION = "org.addhen.smssync.syncservices.checktask";

@@ -28,11 +28,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
+    <!-- Account manager permissions -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-sdk android:minSdkVersion="8"
         android:targetSdkVersion="19" />
     <application
         android:name="org.addhen.smssync.MainApplication"
-        android:icon="@drawable/icon"
+        android:icon="@drawable/ic_launcher"
         android:installLocation="auto"
         android:label="@string/app_name"
         android:theme="@style/Theme.SmsSync" >
@@ -43,7 +45,9 @@
         <service android:name="org.addhen.smssync.services.CheckTaskScheduledService" />
         <service android:name="org.addhen.smssync.services.CheckTaskService" />
         <service android:name="org.addhen.smssync.services.SyncPendingMessagesService" />
+        <service android:name=".services.MessageResultsScheduledService" />
         <service android:name="org.addhen.smssync.widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService" />
+
 
         <!-- activities -->
         <activity
@@ -161,8 +165,8 @@
         <!-- power changed -->
         <receiver android:name="org.addhen.smssync.receivers.PowerStateChangedReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
-                <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
             </intent-filter>
         </receiver>
 
@@ -179,6 +183,9 @@
 
         <!-- auto sync scheduled -->
         <receiver android:name="org.addhen.smssync.receivers.AutoSyncScheduledReceiver" />
+
+        <!-- message delivery scheduled -->
+        <receiver android:name=".receivers.MessageResultsScheduledReceiver" />
 
         <!-- app widget provider -->
         <receiver

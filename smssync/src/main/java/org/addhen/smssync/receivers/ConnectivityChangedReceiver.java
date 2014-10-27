@@ -19,6 +19,7 @@ package org.addhen.smssync.receivers;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.services.SyncPendingMessagesService;
@@ -48,7 +49,7 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
     private ComponentName connectivityReceiver;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
 
         // load current settings
         Prefs.loadPreferences(context);
@@ -81,12 +82,33 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                             SyncType.MANUAL.name());
                     context.startService(syncPendingMessagesServiceIntent);
                 }
+                if (AlertCallbacks.lostConnectionThread != null
+                        && AlertCallbacks.lostConnectionThread.isAlive()) {
+                    AlertCallbacks.lostConnectionThread.interrupt();
+                }
 
                 // Check for tasks now that we have connectivity
                 if (Prefs.enableTaskCheck) {
                     SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
                 }
             } else {
+
+                if (AlertCallbacks.lostConnectionThread == null
+                        || !AlertCallbacks.lostConnectionThread.isAlive()) {
+                    AlertCallbacks.lostConnectionThread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(AlertCallbacks.MAX_DISCONNECT_TIME);
+                            } catch (InterruptedException e) {
+                                return;
+                            }
+                            AlertCallbacks.dataConnectionLost(context);
+                        }
+                    });
+                    AlertCallbacks.lostConnectionThread.start();
+                }
+
                 Util.logActivities(context, context.getString(R.string.no_data_connection));
             }
         }

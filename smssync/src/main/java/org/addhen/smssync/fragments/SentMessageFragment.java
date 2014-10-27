@@ -17,19 +17,6 @@
 
 package org.addhen.smssync.fragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
@@ -43,6 +30,19 @@ import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 public class SentMessageFragment
         extends
@@ -75,7 +75,6 @@ public class SentMessageFragment
         }
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
                 this, listView));
         MainApplication.bus.register(this);
@@ -88,7 +87,6 @@ public class SentMessageFragment
         log("OnResume is called");
         getActivity().registerReceiver(broadcastReceiver,
                 new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
-        //mHandler.post(mDisplayMessages);
         refresh();
         MainApplication.bus.register(this);
 

@@ -1,0 +1,7 @@
+<resources>
+    <string name="rate_dialog_title">Valorar la aplicación</string>
+    <string name="rate_dialog_message">Si te ha gustado la aplicación, ¿te importaría valorar la aplicación? No te llevará más de un minuto. ¡Gracias por tu apoyo!</string>
+    <string name="rate_dialog_ok">Valorar ahora</string>
+    <string name="rate_dialog_cancel">Recuérdamelo más tarde</string>
+    <string name="rate_dialog_no">¡No, gracias!</string>
+</resources>

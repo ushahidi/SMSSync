@@ -17,10 +17,10 @@
 
 package org.addhen.smssync.navdrawer;
 
-import android.support.v7.app.ActionBarActivity;
-
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.Message;
+
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * Menu Item for Pending messages

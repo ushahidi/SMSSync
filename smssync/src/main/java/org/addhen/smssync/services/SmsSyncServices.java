@@ -17,12 +17,9 @@
 
 package org.addhen.smssync.services;
 
-import com.squareup.otto.Produce;
-
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
-import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
@@ -34,7 +31,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
-import android.text.format.DateFormat;
 
 public abstract class SmsSyncServices extends IntentService {
 

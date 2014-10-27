@@ -17,20 +17,6 @@
 
 package org.addhen.smssync.fragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
@@ -47,6 +33,20 @@ import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.EditSyncScheme;
 import org.addhen.smssync.views.SyncUrlView;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -84,7 +84,6 @@ public class SyncUrlFragment extends
 
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setOnItemLongClickListener(new SyncUrlActionModeListener(this,
                 listView));
         view.enableSmsSync.setChecked(Prefs.enabled);
@@ -98,6 +97,7 @@ public class SyncUrlFragment extends
     public void onResume() {
         super.onResume();
         loadSyncUrlInBackground();
+
     }
 
     @Override
@@ -328,7 +328,6 @@ public class SyncUrlFragment extends
         final List<SyncUrl> listSyncUrl = model.loadById(id);
         if (listSyncUrl != null && listSyncUrl.size() > 0) {
             SyncScheme scheme = listSyncUrl.get(0).getSyncScheme();
-
             editScheme.keyMessage.setText(scheme.getKey(SyncScheme.SyncDataKey.MESSAGE));
             editScheme.keyMessageID.setText(scheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID));
             editScheme.keyFrom.setText(scheme.getKey(SyncScheme.SyncDataKey.FROM));
@@ -337,7 +336,6 @@ public class SyncUrlFragment extends
                     .setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TIMESTAMP));
             editScheme.keySentTo.setText(scheme.getKey(SyncScheme.SyncDataKey.SENT_TO));
             editScheme.keyDeviceID.setText(scheme.getKey(SyncScheme.SyncDataKey.DEVICE_ID));
-
             editScheme.methods.setSelection(scheme.getMethod().ordinal());
             editScheme.dataFormats.setSelection(scheme.getDataFormat().ordinal());
         } else {

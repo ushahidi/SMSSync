@@ -17,6 +17,16 @@
 
 package org.addhen.smssync.fragments;
 
+import org.addhen.smssync.Prefs;
+import org.addhen.smssync.R;
+import org.addhen.smssync.adapters.FilterAdapter;
+import org.addhen.smssync.listeners.WhitelistActionModeListener;
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.tasks.ProgressTask;
+import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.views.AddPhoneNumber;
+import org.addhen.smssync.views.WhitelistView;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -29,16 +39,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-
-import org.addhen.smssync.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.adapters.FilterAdapter;
-import org.addhen.smssync.listeners.WhitelistActionModeListener;
-import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.tasks.ProgressTask;
-import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.views.AddPhoneNumber;
-import org.addhen.smssync.views.WhitelistView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -78,7 +78,6 @@ public class WhitelistFragment extends
 
         listView.setItemsCanFocus(false);
         listView.setLongClickable(true);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listView.setOnItemLongClickListener(multichoiceActionModeListener);
         listView.setOnItemClickListener(this);
 

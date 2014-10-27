@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.messages;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
@@ -25,6 +24,7 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
+import org.addhen.smssync.util.LogUtil;
 
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -38,6 +38,8 @@ import android.provider.Telephony.Sms.Conversations;
 import android.provider.Telephony.Sms.Inbox;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
+import android.text.format.DateFormat;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +101,7 @@ public class ProcessSms {
      * @return the message id
      */
     public long findMessageId(long threadId,
-                              long timestamp) {
+            long timestamp) {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
                         + threadId + " timestamp: " + timestamp);
@@ -198,10 +200,9 @@ public class ProcessSms {
     }
 
     /**
-     * TODO:// refactor so this method return boolean
-     * <p/>
-     * Import messages from the messages app's table and puts them in SMSSync's outbox table. This
-     * will allow messages the imported messages to be sync'd to the configured Sync URL.
+     * TODO:// refactor so this method return boolean <p/> Import messages from the messages app's
+     * table and puts them in SMSSync's outbox table. This will allow messages the imported messages
+     * to be sync'd to the configured Sync URL.
      *
      * @return int 0 for success, 1 for failure.
      */
@@ -387,10 +388,11 @@ public class ProcessSms {
             sentMessageIntent.putExtra(ServicesConstants.SENT_SMS_BUNDLE, message);
 
             PendingIntent sentIntent = PendingIntent.getBroadcast(context,
-                    (int) System.currentTimeMillis(), sentMessageIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    (int) System.currentTimeMillis(), sentMessageIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
 
             Intent delivered = new Intent(ServicesConstants.DELIVERED);
-                delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);
+            delivered.putExtra(ServicesConstants.DELIVERED_SMS_BUNDLE, message);
 
             PendingIntent deliveryIntent = PendingIntent.getBroadcast(context,
                     (int) System.currentTimeMillis(), delivered, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -401,14 +403,24 @@ public class ProcessSms {
         }
 
         if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo)) {
-            /*
-             * sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-             * deliveryIntents);
-             */
-            sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
-                    deliveryIntents);
+            
+            if (Prefs.smsReportDelivery) {
+                sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                        deliveryIntents);
+            } else {
+                sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                        null);
+            }
 
             postToSentBox(message, UNCONFIRMED);
+        } else {
+            final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + sendTo;
+            Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
+            // Following copy/pasted from BaseBroadcastReceiver.. should be in shared util instead
+            if (Prefs.enableLog) {
+                new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(errNotGlobalPhoneNumber);
+            }
+            Toast.makeText(context, errNotGlobalPhoneNumber, Toast.LENGTH_LONG).show();
         }
     }
 

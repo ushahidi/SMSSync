@@ -10,18 +10,19 @@
     have questions regarding the use of this file, please contact Ushahidi developers 
     at team@ushahidi.com.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
             android:id="@+id/add_phone_number"
             android:icon="@drawable/add"
             android:orderInCategory="0"
-            android:showAsAction="ifRoom"
+            app:showAsAction="ifRoom"
             android:title="@string/add_phone_number"/>
     <item
             android:id="@+id/delete_all_phone_numbers"
             android:icon="@drawable/delete"
             android:orderInCategory="1"
-            android:showAsAction="never"
+            app:showAsAction="never"
             android:title="@string/menu_delete_all"/>
 </menu>

@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.SmsSyncServices;
 

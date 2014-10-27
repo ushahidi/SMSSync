@@ -27,6 +27,19 @@
                 android:key="auto_delete_preference"
                 android:summary="@string/chk_auto_delete_hint"
                 android:title="@string/chk_enable_auto_delete"/>
+
+        <CheckBoxPreference
+                android:key="enable_sms_report_delivery_preference"
+                android:summary="@string/chk_sms_delivery_report_hint"
+                android:title="@string/chk_enable_sms_delivery_report"/>
+
+        <EditTextPreference
+            android:dialogTitle="@string/edittxt_alert_phone_pref"
+            android:key="alert_phone_number_preference"
+            android:summary="@string/edittxt_alert_phone_pref_summary"
+            android:title="@string/edittxt_alert_phone_pref"
+            android:inputType="number"
+            android:digits="0123456789"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/reply_settings">
         <CheckBoxPreference
@@ -69,6 +82,20 @@
                 android:title="@string/txt_task_check_delay"
                 android:dependency="task_check_preference"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/message_results_api_setting">
+        <CheckBoxPreference
+                android:key="message_results_api_preference"
+                android:summary="@string/chk_enable_message_results_api_hint"
+                android:title="@string/chk_enable_message_results_api"/>
+    </PreferenceCategory>
+    <!--
+    TODO: Test this probably and enable it in future release
+    <PreferenceCategory android:title="@string/sms_portals_settings" >
+        <CheckBoxPreference
+                android:key="enable_sms_portals"
+                android:summary="@string/chk_enable_sms_portals_hint"
+                android:title="@string/chk_enable_sms_portals" />
+    </PreferenceCategory> -->
     <PreferenceCategory android:title="@string/about_smssync">
         <Preference android:key="powered_preference"/>
     </PreferenceCategory>

@@ -42,7 +42,7 @@ public class CheckTaskScheduledService extends SmsSyncServices {
     @Override
     public void executeTask(Intent intent) {
         log("checking scheduled task services");
-        Util.logActivities(this,getString(R.string.task_scheduler_running));
+        Util.logActivities(this, getString(R.string.task_scheduler_running));
         // Perform a task
         for (SyncUrl syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {

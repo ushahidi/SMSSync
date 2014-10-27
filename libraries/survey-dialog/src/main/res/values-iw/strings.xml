@@ -1,0 +1,7 @@
+<resources>
+    <string name="rate_dialog_title">דרגי את האפלקציה</string>
+    <string name="rate_dialog_message">אם את נהנית מהשימוש באפליקציה, מה דעתך לדרג אותה? זה לא ייקח יותר מדקה. תודה על התמיכה!</string>
+    <string name="rate_dialog_ok">דרגי כעת</string>
+    <string name="rate_dialog_cancel">אחר כך</string>
+    <string name="rate_dialog_no">לא תודה</string>
+</resources>

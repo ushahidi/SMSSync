@@ -17,9 +17,9 @@
 
 package org.addhen.smssync.navdrawer;
 
-import android.support.v7.app.ActionBarActivity;
-
 import org.addhen.smssync.fragments.LogFragment;
+
+import android.support.v7.app.ActionBarActivity;
 
 /**
  * Menu Item for LogFragment

@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.adapters;
 
+import org.addhen.smssync.listeners.OnFragmentListViewRefreshListener;
+
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,8 +26,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-
-import org.addhen.smssync.listeners.OnFragmentListViewRefreshListener;
 
 import java.util.ArrayList;
 

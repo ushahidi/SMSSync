@@ -18,21 +18,44 @@
 package org.addhen.smssync.activities;
 
 
+import net.smssync.survey.dialog.AppRate;
+import net.smssync.survey.dialog.OnClickButtonListener;
+import net.smssync.survey.dialog.UrlHelper;
+
+import org.addhen.smssync.BuildConfig;
+import org.addhen.smssync.R;
+import org.addhen.smssync.Settings;
+import org.addhen.smssync.UrlHelperImpl;
+import org.addhen.smssync.net.GoogleDocsHttpClient;
+import org.addhen.smssync.util.Util;
+import org.addhen.smssync.views.MainView;
+
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Patterns;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
-import org.addhen.smssync.R;
-import org.addhen.smssync.Settings;
-import org.addhen.smssync.views.MainView;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author eyedol
  */
-public class MainActivity extends BaseActivity<MainView> {
+public class MainActivity extends BaseActivity<MainView> implements OnClickButtonListener {
+
+    private AutoCompleteTextView mEmailAddress;
+
+    private static final String GOOGLE_FORM_URL = BuildConfig.GOOGLE_FORM_URL;
 
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
@@ -42,13 +65,46 @@ public class MainActivity extends BaseActivity<MainView> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initSurveyDialog();
+    }
+
+    private void initSurveyDialog() {
+        android.view.View root = getLayoutInflater().inflate(R.layout.survey_dialog_form, null);
+
+        mEmailAddress = (AutoCompleteTextView) root.findViewById(R.id.editText);
+
+        // Suggest email address as user types.
+        final Account[] accounts = AccountManager.get(this).getAccounts();
+        final Set<String> emailSet = new HashSet<>();
+        for (Account account : accounts) {
+            if (Patterns.EMAIL_ADDRESS.matcher(account.name).matches()) {
+                emailSet.add(account.name);
+            }
+        }
+        List<String> emails = new ArrayList<>(emailSet);
+        mEmailAddress.setAdapter(
+                new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line,
+                        emails)
+        );
+
+        // Custom view
+        AppRate.with(this)
+                .setInstallDays(2)
+                .setLaunchTimes(2)
+                .setRemindInterval(2)
+                .setShowNeutralButton(true)
+                .setView(root)
+                .setOnClickButtonListener(this)
+                .monitor();
+
+        // Show a dialog if meets conditions.
+        AppRate.showRateDialogIfMeetsConditions(this);
     }
 
     // Context Menu Stuff
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
             ContextMenuInfo menuInfo) {
-
     }
 
     @Override
@@ -60,6 +116,25 @@ public class MainActivity extends BaseActivity<MainView> {
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClickButton(int which) {
+        Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                final String email = mEmailAddress.getText().toString();
+                if (Util.validateEmail(email)) {
+                    final UrlHelper uriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
+                    new GoogleDocsHttpClient(uriHelper.getUrl(), MainActivity.this)
+                            .postToGoogleDocs(email);
+                } else {
+                    toastLong(R.string.in_valid_email_address);
+                }
+            }
+        });
+
     }
 
 }

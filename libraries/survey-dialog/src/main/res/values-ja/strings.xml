@@ -1,0 +1,7 @@
+<resources>
+    <string name="rate_dialog_title">アプリの評価</string>
+    <string name="rate_dialog_message">このアプリをお使い頂き大変ありがとうございます。もしよろしければ1分程で済みますので、このアプリの評価をお願いします。ご協力感謝いたします！</string>
+    <string name="rate_dialog_ok">今すぐ評価する</string>
+    <string name="rate_dialog_cancel">後でする</string>
+    <string name="rate_dialog_no">いえ、結構です</string>
+</resources>

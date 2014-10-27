@@ -22,9 +22,9 @@ import com.squareup.otto.Produce;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.controllers.DebugCallbacks;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -42,7 +42,6 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
-import android.text.format.DateFormat;
 
 import java.lang.ref.WeakReference;
 
@@ -171,6 +170,13 @@ public class SmsReceiverService extends Service {
             SmsMessage[] messages = getMessagesFromIntent(intent);
             sms = messages[0];
             if (messages != null) {
+
+                //if received sms is status message do appropriate action
+                // and there is no need to pass it further
+                if (DebugCallbacks.handleStatusMessage(sms, mContext)) {
+                    return;
+                }
+
                 // extract message details. phone number and the message body
                 msg.setFrom(sms.getOriginatingAddress());
                 msg.setTimestamp(String.valueOf(sms.getTimestampMillis()));
@@ -207,7 +213,7 @@ public class SmsReceiverService extends Service {
         } else {
             Util.showFailNotification(this, messagesBody,
                     getString(R.string.sending_succeeded));
-            Util.logActivities(this,getString(R.string.sending_succeeded));
+            Util.logActivities(this, getString(R.string.sending_succeeded));
             statusIntent.putExtra("sentstatus", 0);
             sendBroadcast(statusIntent);
         }
@@ -312,7 +318,7 @@ public class SmsReceiverService extends Service {
     }
 
     @Produce
-    public boolean readLogs() {
+    public boolean reloadLog() {
         return true;
     }
 }
