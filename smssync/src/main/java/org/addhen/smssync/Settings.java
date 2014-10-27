@@ -69,7 +69,7 @@ public class Settings extends PreferenceActivity implements
 
     public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 
-    public static final String KEY_ENABLE_SMS_PORTALS = "enable_sms_portals";
+   // public static final String KEY_ENABLE_SMS_PORTALS = "enable_sms_portals";
 
     public static final String TASK_CHECK = "task_check_preference";
 
@@ -175,8 +175,8 @@ public class Settings extends PreferenceActivity implements
 
         taskCheckTimes = (TimePreference) getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
 
-        useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
-                .findPreference(KEY_ENABLE_SMS_PORTALS);
+        /*useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
+                .findPreference(KEY_ENABLE_SMS_PORTALS);*/
 
         enableMessageResultsAPI = (CheckBoxPreference) getPreferenceScreen().findPreference(
                 MESSAGE_RESULTS_API);
@@ -336,7 +336,7 @@ public class Settings extends PreferenceActivity implements
                     Prefs.autoTime, autoSyncTimes.getTimeValueAsString()));
         }
 
-        editor.putBoolean("UseSmsPortals", useSmsPortals.isChecked());
+        /*editor.putBoolean("UseSmsPortals", useSmsPortals.isChecked());
         if (Prefs.useSmsPortals != useSmsPortals.isChecked()) {
             boolean checked = useSmsPortals.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -346,7 +346,7 @@ public class Settings extends PreferenceActivity implements
             Util.logActivities(Settings.this, getString(R.string.settings_changed,
                     useSmsPortals.getTitle().toString(), status,
                     check));
-        }
+        }*/
 
         editor.putString("taskCheck", taskCheckTimes.getTimeValueAsString());
         if (!Prefs.taskCheckTime.equals(taskCheckTimes.getTimeValueAsString())) {
@@ -476,7 +476,7 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
-        if (key.equals(KEY_ENABLE_SMS_PORTALS)) {
+       /* if (key.equals(KEY_ENABLE_SMS_PORTALS)) {
             SmsPortal smsPortal = new SmsPortal(getApplicationContext());
             if (sharedPreferences.getBoolean(KEY_ENABLE_SMS_PORTALS, false)) {
                 smsPortal.setNumber();
@@ -486,7 +486,7 @@ public class Settings extends PreferenceActivity implements
                 smsPortal.unbindFromSmsPortals();
                 availableConnections.clear();
             }
-        }
+        }*/
         // Enable task checking
         if (key.equals(TASK_CHECK)) {
 

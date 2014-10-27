@@ -88,12 +88,14 @@
                 android:summary="@string/chk_enable_message_results_api_hint"
                 android:title="@string/chk_enable_message_results_api"/>
     </PreferenceCategory>
+    <!--
+    TODO: Test this probably and enable it in future release
     <PreferenceCategory android:title="@string/sms_portals_settings" >
         <CheckBoxPreference
                 android:key="enable_sms_portals"
                 android:summary="@string/chk_enable_sms_portals_hint"
                 android:title="@string/chk_enable_sms_portals" />
-    </PreferenceCategory>
+    </PreferenceCategory> -->
     <PreferenceCategory android:title="@string/about_smssync">
         <Preference android:key="powered_preference"/>
     </PreferenceCategory>
