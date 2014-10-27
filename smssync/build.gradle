@@ -84,8 +84,8 @@ android {
     }
 
     defaultConfig {
-        versionCode 22
-        versionName "2.6.1"
+        versionCode 23
+        versionName "2.7"
         minSdkVersion 8
         targetSdkVersion 19
     }
