@@ -30,8 +30,8 @@ import java.util.List;
 public class MessageResultsController {
 
     private static final String MESSAGE_RESULT_JSON_KEY = "message_result";
-    private static final String TASK_SENT_URL_PARAM = "/add?task=sent";
-    private static final String TASK_RESULT_URL_PARAM = "/add?task=result";
+    private static final String TASK_SENT_URL_PARAM = "?task=sent";
+    private static final String TASK_RESULT_URL_PARAM = "?task=result";
     private static final String POST_METHOD = "POST";
     private static final String GET_METHOD = "GET";
 
