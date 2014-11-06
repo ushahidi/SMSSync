@@ -118,11 +118,11 @@ android {
     productFlavors {
 
         withAnalytics {
-            flavorDimensions "analytics"
+            flavorDimension "analytics"
         }
 
         noAnalytics {
-            flavorDimensions "analytics"
+            flavorDimension "analytics"
         }
     }
 }
