@@ -18,6 +18,7 @@ public class TaskMessage implements Serializable {
     @SerializedName("sent_by")
     private String sentBy;
 
+    @SerializedName("message_uuid")
     private String uuid;
 
     public String getMessage() {
