@@ -14,7 +14,7 @@ public class MessagesUUIDSResponse {
 
     private int statusCode;
 
-    @SerializedName("uuids")
+    @SerializedName("message_uuids")
     private List<String> uuids;
 
     public MessagesUUIDSResponse(int statusCode) {

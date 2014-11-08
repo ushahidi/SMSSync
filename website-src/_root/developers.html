@@ -75,15 +75,18 @@ In the app itself, ensure <strong>*Get Reply from Server*</strong> is checked to
         "messages": [
             {
                 "to": "+000-000-0000",
-                "message": "the message goes here"
+                "message": "the message goes here",
+                "uuid": "042b3515-ef6b-f424-c4qd"
             },
             {
                 "to": "+000-000-0000",
-                "message": "the message goes here"
+                "message": "the message goes here",
+                "uuid": "026b3515-ef6b-f424-c4qd"
             },
             {
                 "to": "+000-000-0000",
-                "message": "the message goes here"
+                "message": "the message goes here",
+                "uuid": "096b3515-ef6b-f424-c4qd"
             }
         ]
     }
@@ -105,15 +108,18 @@ SMSsync supports execution of tasks defined on the server. Currently it supports
         "messages": [
             {
                 "to": "+000-000-0000",
-                "message": "the message goes here"
+                "message": "the message goes here",
+                "uuid": "042bf515-eq6b-f424-c4pz"
             },
             {
                 "to": "+000-000-0000",
-                "message": "the message goes here"
+                "message": "the message goes here",
+                "uuid": "022b3515-ef6b-f424-c4ws"
             },
             {
                 "to": "+000-000-0000",
-                "message": "the message goes here"
+                "message": "the message goes here",
+                "uuid": "042b3515-ef6b-f424-c4qd"
             }
         ]
     }
@@ -137,7 +143,7 @@ The web service should check the value of the secret key passed with each task r
 <p>Message Results API is a way to get SMS status delivery report back to the server so the server knows that messages have been
     successfully sent to their respective recipients or not.</p>
 <p>This feature is supported on v2.7 and above. To make use of this feature, you have to enable the <code>Message Results API</code> and <code>SMS Delivery Report</code> from the Settings screen.</p>
-<p>SMSsync will periodically send a Task request to the server for messages to send as SMS. <strong>Note:</strong> The server needs to include a unique ID for the messages in the JSON response as <code>"message_uuid":"unique_id"</code> key. See below for a sample JSON response from the server</p>
+<p>SMSsync will periodically send a Task request to the server for messages to send as SMS. <strong>Note:</strong> The server needs to include a unique ID for the messages in the JSON response as <code>"uuid":"unique_id"</code> key. See below for a sample JSON response from the server</p>
 <pre class="prettyprint linenums">
 GET /smssync?task=send HTTP/1.1
 Host: testserver.local
@@ -153,17 +159,17 @@ Content-Type: application/json; charset=utf-8
             {
                 "to": "+000-000-0000",
                 "message": "the message goes here"
-                "message_uuid": "aada21b0-0615-4957-bcb3"
+                "uuid": "aada21b0-0615-4957-bcb3"
             },
             {
                 "to": "+000-000-0000",
                 "message": "the message goes here"
-                "message_uuid": "1ba368bd-c467-4374-bf28"
+                "uuid": "1ba368bd-c467-4374-bf28"
             },
             {
                 "to": "+000-000-0000",
                 "message": "the message goes here"
-                "message_uuid": "95df126b-ee80-4175-a6fb"
+                "uuid": "95df126b-ee80-4175-a6fb"
             }
         ]
     }
