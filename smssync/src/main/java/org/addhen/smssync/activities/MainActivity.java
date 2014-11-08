@@ -32,6 +32,7 @@ import org.addhen.smssync.views.MainView;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -93,6 +94,7 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
                 .setLaunchTimes(2)
                 .setRemindInterval(2)
                 .setShowNeutralButton(true)
+                .setDebug(true)
                 .setView(root)
                 .setOnClickButtonListener(this)
                 .monitor();
@@ -120,20 +122,23 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
     @Override
     public void onClickButton(int which) {
-        Handler handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                final String email = mEmailAddress.getText().toString();
-                if (Util.validateEmail(email)) {
-                    final UrlHelper uriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
-                    new GoogleDocsHttpClient(uriHelper.getUrl(), MainActivity.this)
-                            .postToGoogleDocs(email);
-                } else {
-                    toastLong(R.string.in_valid_email_address);
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            Handler handler = new Handler();
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    final String email = mEmailAddress.getText().toString();
+                    if (Util.validateEmail(email)) {
+                        final UrlHelper uriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
+                        new GoogleDocsHttpClient(uriHelper.getUrl(), MainActivity.this)
+                                .postToGoogleDocs(email);
+                    } else {
+                        toastLong(R.string.in_valid_email_address);
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 
