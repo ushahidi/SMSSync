@@ -1,20 +1,18 @@
 package org.addhen.smssync.controllers;
 
-import android.content.Context;
-
-import com.google.gson.reflect.TypeToken;
-
 import org.addhen.smssync.R;
+import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.QueuedMessages;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
-import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.util.JsonUtils;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.content.Context;
 
 import java.util.List;
 
@@ -51,8 +49,7 @@ public class MessageResultsController {
      * @param results   list of message result data
      */
     public void sendMessageResultPOSTRequest(SyncUrl syncUrl, List<MessageResult> results) {
-        String newEndPointURL = syncUrl.getUrl();
-        newEndPointURL = newEndPointURL.concat(TASK_SENT_URL_PARAM);
+        String newEndPointURL = syncUrl.getUrl().concat(TASK_SENT_URL_PARAM);
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(POST_METHOD);
@@ -79,8 +76,7 @@ public class MessageResultsController {
     public MessagesUUIDSResponse sendQueuedMessagesPOSTRequest(SyncUrl syncUrl, QueuedMessages messages) {
         MessagesUUIDSResponse response = null;
         if (null != messages && !messages.getQueuedMessages().isEmpty()) {
-            String newEndPointURL = syncUrl.getUrl();
-            newEndPointURL = newEndPointURL.concat(TASK_SENT_URL_PARAM);
+            String newEndPointURL = syncUrl.getUrl().concat(TASK_SENT_URL_PARAM);
             MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
             try {
                 client.setMethod(POST_METHOD);
@@ -111,9 +107,8 @@ public class MessageResultsController {
      * @return MessagesUUIDSResponse parsed server response whit information about request success or failure and list of message uuids
      */
     public MessagesUUIDSResponse sendMessageResultGETRequest(SyncUrl syncUrl) {
-        MessagesUUIDSResponse response = null;
-        String newEndPointURL = syncUrl.getUrl();
-        newEndPointURL = newEndPointURL.concat(TASK_RESULT_URL_PARAM);
+        MessagesUUIDSResponse response;
+        String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(GET_METHOD);
