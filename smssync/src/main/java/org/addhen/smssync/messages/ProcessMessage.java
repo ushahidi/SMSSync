@@ -207,9 +207,9 @@ public class ProcessMessage {
                 uriBuilder.append(urlSecretEncoded);
             }
 
-            syncUrl.setUrl(uriBuilder.toString());
+            //syncUrl.setUrl(uriBuilder.toString());
 
-            MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
+            MainHttpClient client = new MainHttpClient(uriBuilder.toString(), context);
             String response = null;
             try {
                 client.execute();

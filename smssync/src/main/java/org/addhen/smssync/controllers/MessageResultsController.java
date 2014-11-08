@@ -51,9 +51,9 @@ public class MessageResultsController {
      * @param results   list of message result data
      */
     public void sendMessageResultPOSTRequest(SyncUrl syncUrl, List<MessageResult> results) {
-        SyncUrl newEndPointURL = syncUrl;
-        newEndPointURL.setUrl(syncUrl.getUrl().substring(0, syncUrl.getUrl().lastIndexOf("/")).concat(TASK_SENT_URL_PARAM));
-        MainHttpClient client = new MainHttpClient(newEndPointURL.getUrl(), mContext);
+        String newEndPointURL = syncUrl.getUrl();
+        newEndPointURL = newEndPointURL.concat(TASK_SENT_URL_PARAM);
+        MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(POST_METHOD);
             client.setEntity(createMessageResultJSON(results));
@@ -79,9 +79,9 @@ public class MessageResultsController {
     public MessagesUUIDSResponse sendQueuedMessagesPOSTRequest(SyncUrl syncUrl, QueuedMessages messages) {
         MessagesUUIDSResponse response = null;
         if (null != messages && !messages.getQueuedMessages().isEmpty()) {
-            SyncUrl newEndPointURL = syncUrl;
-            newEndPointURL.setUrl(syncUrl.getUrl().substring(0, syncUrl.getUrl().lastIndexOf("/")).concat(TASK_SENT_URL_PARAM));
-            MainHttpClient client = new MainHttpClient(newEndPointURL.getUrl(), mContext);
+            String newEndPointURL = syncUrl.getUrl();
+            newEndPointURL = newEndPointURL.concat(TASK_SENT_URL_PARAM);
+            MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
             try {
                 client.setMethod(POST_METHOD);
                 client.setEntity(createQueuedMessagesJSON(messages));
@@ -112,9 +112,9 @@ public class MessageResultsController {
      */
     public MessagesUUIDSResponse sendMessageResultGETRequest(SyncUrl syncUrl) {
         MessagesUUIDSResponse response = null;
-        SyncUrl newEndPointURL = syncUrl;
-        newEndPointURL.setUrl(syncUrl.getUrl().substring(0, syncUrl.getUrl().lastIndexOf("/")).concat(TASK_RESULT_URL_PARAM));
-        MainHttpClient client = new MainHttpClient(newEndPointURL.getUrl(), mContext);
+        String newEndPointURL = syncUrl.getUrl();
+        newEndPointURL = newEndPointURL.concat(TASK_RESULT_URL_PARAM);
+        MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(GET_METHOD);
             client.execute();
