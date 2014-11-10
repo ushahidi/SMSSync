@@ -57,9 +57,6 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
     private AutoCompleteTextView mEmailAddress;
 
-    private static final String GOOGLE_FORM_URL
-            = "https://docs.google.com/forms/d/1lL4IEksja3r-ClEtCgBma4mB9iT1tcaxSJnriJgW2sM/formResponse";
-
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
                 R.id.left_drawer);
@@ -96,7 +93,6 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
                 .setLaunchTimes(2)
                 .setRemindInterval(2)
                 .setShowNeutralButton(true)
-                .setDebug(true)
                 .setView(root)
                 .setOnClickButtonListener(this)
                 .monitor();
