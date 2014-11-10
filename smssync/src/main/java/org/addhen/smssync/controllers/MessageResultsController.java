@@ -54,6 +54,8 @@ public class MessageResultsController {
         try {
             client.setMethod(POST_METHOD);
             client.setStringEntity(createMessageResultJSON(results));
+            client.setHeader("Accept", "application/json");
+            client.setHeader("Content-type", "application/json");
             client.execute();
         } catch (JSONException e) {
             mUtil.log(mContext.getString(R.string.message_processed_json_failed));
@@ -81,6 +83,8 @@ public class MessageResultsController {
             try {
                 client.setMethod(POST_METHOD);
                 client.setStringEntity(createQueuedMessagesJSON(messages));
+                client.setHeader("Accept", "application/json");
+                client.setHeader("Content-type", "application/json");
                 client.execute();
             } catch (JSONException e) {
                 mUtil.log(mContext.getString(R.string.message_processed_json_failed));
