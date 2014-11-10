@@ -89,6 +89,8 @@ public class MainHttpClient {
 
     private HttpEntity entity;
 
+    private StringEntity stringEntity;
+
     private String method;
 
     private int responseCode;
@@ -213,8 +215,8 @@ public class MainHttpClient {
         entity = data;
     }
 
-    public void setEntity(String data) throws Exception {
-        entity = new StringEntity(data, DEFAULT_ENCODING);
+    public void setStringEntity(String data) throws Exception {
+        stringEntity = new StringEntity(data, DEFAULT_ENCODING);
     }
 
     public boolean isMethodSupported(String method) {
@@ -257,9 +259,20 @@ public class MainHttpClient {
     }
 
     public HttpEntity getEntity() throws Exception {
-        // check if entity was explictly set otherwise return params as entity
+        // check if entity was explicitly set otherwise return params as entity
         if (entity != null && entity.getContentLength() > 0) {
             return entity;
+        } else if (!params.isEmpty()) {
+            // construct entity if not already set
+            return new UrlEncodedFormEntity(params, DEFAULT_ENCODING);
+        }
+        return null;
+    }
+
+    public StringEntity getStringEntity() throws Exception {
+        // check if entity was explicitly set otherwise return params as entity
+        if (stringEntity != null && stringEntity.getContentLength() > 0) {
+            return stringEntity;
         } else if (!params.isEmpty()) {
             // construct entity if not already set
             return new UrlEncodedFormEntity(params, DEFAULT_ENCODING);
@@ -331,10 +344,25 @@ public class MainHttpClient {
             request = new HttpGet(url + getQueryString());
         } else if (method.equals("POST")) {
             request = new HttpPost(url);
-            ((HttpPost) request).setEntity(getEntity());
+
+            if(getEntity() != null) {
+                ((HttpPost) request).setEntity(getEntity());
+            }
+
+            else if( getStringEntity() !=null) {
+                ((HttpPost) request).setEntity(getStringEntity());
+            }
+
         } else if (method.equals("PUT")) {
             request = new HttpPut(url);
-            ((HttpPut) request).setEntity(getEntity());
+
+            if( getEntity() !=null) {
+                ((HttpPut) request).setEntity(getEntity());
+            }
+            else if(getStringEntity() !=null){
+                ((HttpPut) request).setEntity(getStringEntity());
+            }
+
         }
         // set headers on request
         for (String key : headers.keySet()) {

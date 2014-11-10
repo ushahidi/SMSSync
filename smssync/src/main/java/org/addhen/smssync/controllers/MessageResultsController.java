@@ -53,7 +53,7 @@ public class MessageResultsController {
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(POST_METHOD);
-            client.setEntity(createMessageResultJSON(results));
+            client.setStringEntity(createMessageResultJSON(results));
             client.execute();
         } catch (JSONException e) {
             mUtil.log(mContext.getString(R.string.message_processed_json_failed));
@@ -80,7 +80,7 @@ public class MessageResultsController {
             MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
             try {
                 client.setMethod(POST_METHOD);
-                client.setEntity(createQueuedMessagesJSON(messages));
+                client.setStringEntity(createQueuedMessagesJSON(messages));
                 client.execute();
             } catch (JSONException e) {
                 mUtil.log(mContext.getString(R.string.message_processed_json_failed));
