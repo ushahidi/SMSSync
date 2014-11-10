@@ -53,7 +53,7 @@ android {
         proguard.initWith(buildTypes.debug)
         proguard {
             minifyEnabled true
-            proguardFile 'proguard-android.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
 
         release {
@@ -78,7 +78,7 @@ android {
         proguard.initWith(buildTypes.release)
         proguard {
             minifyEnabled true
-            proguardFile 'proguard-android.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
 
     }

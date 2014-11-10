@@ -34,6 +34,7 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Patterns;
@@ -56,7 +57,8 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
     private AutoCompleteTextView mEmailAddress;
 
-    private static final String GOOGLE_FORM_URL = BuildConfig.GOOGLE_FORM_URL;
+    private static final String GOOGLE_FORM_URL
+            = "https://docs.google.com/forms/d/1lL4IEksja3r-ClEtCgBma4mB9iT1tcaxSJnriJgW2sM/formResponse";
 
     public MainActivity() {
         super(MainView.class, R.layout.main_activity, R.menu.main_activity, R.id.drawer_layout,
@@ -123,21 +125,25 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     @Override
     public void onClickButton(int which) {
         if (which == DialogInterface.BUTTON_POSITIVE) {
-            Handler handler = new Handler();
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
+            final String email = mEmailAddress.getText().toString();
+            if (Util.validateEmail(email)) {
+                PostToGoogleTask postToGoogleTask = new PostToGoogleTask();
+                postToGoogleTask.execute(email);
+            } else {
+                toastLong(R.string.in_valid_email_address);
+            }
+        }
 
-                    final String email = mEmailAddress.getText().toString();
-                    if (Util.validateEmail(email)) {
-                        final UrlHelper uriHelper = new UrlHelperImpl(GOOGLE_FORM_URL);
-                        new GoogleDocsHttpClient(uriHelper.getUrl(), MainActivity.this)
-                                .postToGoogleDocs(email);
-                    } else {
-                        toastLong(R.string.in_valid_email_address);
-                    }
-                }
-            });
+    }
+
+    public class PostToGoogleTask extends AsyncTask<String, Void, String> {
+
+        protected String doInBackground(String... emails) {
+            final UrlHelper uriHelper = new UrlHelperImpl(BuildConfig.GOOGLE_FORM_URL);
+            final GoogleDocsHttpClient client = new GoogleDocsHttpClient(uriHelper.getUrl(),
+                    MainActivity.this);
+            client.postToGoogleDocs(emails[0]);
+            return null;
         }
 
     }

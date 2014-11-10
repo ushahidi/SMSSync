@@ -98,7 +98,6 @@ public class MainHttpClient {
     private String response;
 
     private HttpResponse httpResponse;
-
     private HttpRequestBase request;
 
     private String responseErrorMessage;
@@ -333,6 +332,7 @@ public class MainHttpClient {
             httpClient.getConnectionManager().shutdown();
             throw e;
         } catch (Exception e) {
+            e.printStackTrace();
             httpClient.getConnectionManager().shutdown();
             throw e;
         }
@@ -344,7 +344,6 @@ public class MainHttpClient {
             request = new HttpGet(url + getQueryString());
         } else if (method.equals("POST")) {
             request = new HttpPost(url);
-
             if(getEntity() != null) {
                 ((HttpPost) request).setEntity(getEntity());
             }
