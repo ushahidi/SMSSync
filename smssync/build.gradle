@@ -17,7 +17,7 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "21.0.2"
 
     sourceSets {
 
@@ -52,8 +52,8 @@ android {
 
         proguard.initWith(buildTypes.debug)
         proguard {
-            runProguard true
-            proguardFile 'proguard-android.txt'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
 
         release {
@@ -77,15 +77,15 @@ android {
 
         proguard.initWith(buildTypes.release)
         proguard {
-            runProguard true
-            proguardFile 'proguard-android.txt'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
 
     }
 
     defaultConfig {
-        versionCode 23
-        versionName "2.7"
+        versionCode 24
+        versionName "2.7.1"
         minSdkVersion 8
         targetSdkVersion 19
     }
@@ -100,17 +100,19 @@ android {
     }
 
     android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def newName = outputFile.name.replace(".apk",
+                        "-v" + defaultConfig.versionName + "-" + variant.buildType.name.toUpperCase() +
+                                ".apk");
 
-        def apk = variant.outputFile;
-
-        def newName = apk.name.replace(".apk",
-                "-v" + defaultConfig.versionName + "-" + variant.buildType.name.toUpperCase() +
-                        ".apk");
-
-        variant.outputFile = file("$project.buildDir/apk/" + newName);
-        if (variant.zipAlign) {
-            variant.zipAlign.outputFile =
-                    file("$project.buildDir/apk/" + newName.replace("-unaligned", ""));
+                output.outputFile = file("$project.buildDir/apk/" + newName);
+                if (output.zipAlign) {
+                    output.zipAlign.outputFile =
+                            file("$project.buildDir/apk/" + newName.replace("-unaligned", ""));
+                }
+            }
         }
     }
 
@@ -118,11 +120,11 @@ android {
     productFlavors {
 
         withAnalytics {
-            flavorDimensions "analytics"
+            flavorDimension "analytics"
         }
 
         noAnalytics {
-            flavorDimensions "analytics"
+            flavorDimension "analytics"
         }
     }
 }

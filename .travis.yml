@@ -17,13 +17,13 @@ before_install:
 install:
   - TERM=dumb ./gradlew assemble
 
-before_script:
-  - adb devices
-  - chmod +x ./wait_for_emulator
-  - ./wait_for_emulator
+#before_script:
+#  - adb devices
+#  - chmod +x ./wait_for_emulator
+#  - ./wait_for_emulator
 
 script:
-  - TERM=dumb ./gradlew connectedAndroidTest
+  - TERM=dumb ./gradlew build
 
 notifications:
   hipchat:
