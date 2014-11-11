@@ -1,5 +1,19 @@
 [
     {
+        "version": "v2.7.1",
+        "date": "November 11, 2014",
+        "features": [
+            "Updated website with demo code showing how to integrate the message result API",
+            "Updated failed notification icon."
+        ],
+        "bugs": [
+            "Fixed a bug with message result API.",
+            "Fixed issue with feedback dialog not sending email addresses.",
+            "Updated website documentation to match required JSON structure.",
+            "Fixed feedback dialog so it only validate for the email address field when user hit the positive button."
+        ]
+    },
+    {
         "version": "v2.7",
         "date": "October 27, 2014",
         "features": [
