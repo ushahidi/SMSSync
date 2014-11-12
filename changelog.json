@@ -4,7 +4,9 @@
         "date": "November 11, 2014",
         "features": [
             "Updated website with demo code showing how to integrate the message result API",
-            "Updated failed notification icon."
+            "Updated failed notification icon.",
+            "Changed Message Results API query string from task=results to task=result",
+            "Changed Message Results API JSON property from message_uuid to uuid"
         ],
         "bugs": [
             "Fixed a bug with message result API.",

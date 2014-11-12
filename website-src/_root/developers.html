@@ -2,7 +2,7 @@
 title : Developers
 layout : default
 description : SMSsync developer documentation
-date : Jun 23, 2014
+date : Nov 11, 2014
 header : <h1>Developers Documentation <small>This shows how to integrate SMSsync into your project.</small></h1>
 ---
 <div class="row">
@@ -205,10 +205,10 @@ Content-Type: application/json; charset=utf-8
         "95df126b-ee80-4175-a6fb"
     ]
 }</pre>
-<p>To send SMS status delivery report back to the server, SMSsync will make a <code>GET ?task=results</code> to the server and should receive a list
+<p>To send SMS status delivery report back to the server, SMSsync will make a <code>GET ?task=result</code> to the server and should receive a list
 of message UUIDs that are waiting to receive delivery reports. The server should send the JSON response below</p>
 <pre class="prettyprint linenums">
-POST /smssync?task=results HTTP/1.1
+POST /smssync?task=result HTTP/1.1
 Host: testserver.local
 
 HTTP/1.1 200 OK
@@ -220,9 +220,9 @@ Content-Type: application/json; charset=utf-8
         "95df126b-ee80-4175-a6fb"
     ]
 }</pre>
-<p>Then SMSsync will send delivery reports for the message uuids above as a POST request<code>POST ?task=results</code> with the JSON response below</p>
+<p>Then SMSsync will send delivery reports for the message uuids above as a POST request<code>POST ?task=result</code> with the JSON response below</p>
 <pre class="prettyprint linenums">
-POST /smssync?task=results HTTP/1.1
+POST /smssync?task=result HTTP/1.1
 Host: testserver.local
 Content-Type: application/json; charset=utf-8
 
@@ -527,7 +527,7 @@ function get_sms_delivery_report()
 
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    if($_SERVER['QUERY_STRING'] === 'task=results')
+    if($_SERVER['QUERY_STRING'] === 'task=result')
     {
         get_sms_delivery_report();
     }
