@@ -157,6 +157,17 @@
                 "latitude" : 54.362417,
                 "longitude" : 18.588555
             }
+        },
+        {
+            "name" : "Dmitry Morozov",
+            "email" : "shtrih0@hitagi.ru",
+            "website" : "",
+            "description" : "Bug fixes",
+            "country" : {
+                "name" : "Russia",
+                "latitude" : 52.29778,
+                "longitude" : 104.29639
+            }
         }
     ]
 }
