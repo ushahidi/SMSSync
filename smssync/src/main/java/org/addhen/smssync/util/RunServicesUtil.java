@@ -104,7 +104,7 @@ public class RunServicesUtil {
             final Intent intent = new Intent(context,
                     CheckTaskScheduledReceiver.class);
 
-            Logger.log(CLASS_TAG, "Check task service started");
+            Logger.log(CLASS_TAG, "Check task service started - interval: " + interval);
             // run the service
             RunServicesUtil
                     .runServices(
@@ -185,19 +185,19 @@ public class RunServicesUtil {
      * @param context the calling context
      */
     public static void runMessageResultsService(Context context) {
-        Logger.log(CLASS_TAG, "Running CheckTaskService " + Prefs.taskCheckTime);
+        Logger.log(CLASS_TAG, "Running CheckResultsService " + Prefs.taskCheckTime);
 
         // load preferences
         Prefs.loadPreferences(context);
         if (Prefs.messageResultsAPIEnable && Prefs.enabled) {
 
             // start the scheduler for 'message results' service
-            final long interval = TimeFrequencyUtil.calculateInterval(Prefs.taskCheckTime) * 60000;
+            final long interval = TimeFrequencyUtil.calculateInterval(Prefs.taskCheckTime) + 30000;
 
             final Intent intent = new Intent(context,
                     MessageResultsScheduledReceiver.class);
 
-            Logger.log(CLASS_TAG, "Message Results service started");
+            Logger.log(CLASS_TAG, "Message Results service started - interval: " + interval);
             // run the service
             RunServicesUtil
                     .runServices(
