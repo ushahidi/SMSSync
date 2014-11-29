@@ -75,7 +75,7 @@ public class Database {
 
     private static final String DATABASE_NAME = "smssync_db";
 
-    private static final String SENT_MESSAGES_TABLE = "sent_messages";
+    public static final String SENT_MESSAGES_TABLE = "sent_messages";
 
     private static final int DATABASE_VERSION = 7;
 
