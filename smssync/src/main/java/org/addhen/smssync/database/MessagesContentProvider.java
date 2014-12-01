@@ -78,7 +78,7 @@ public class MessagesContentProvider extends DbContentProvider implements
     /*
      * (non-Javadoc)
      * @see
-     * org.addhen.smssync.database.IMessagesContentProvider#addMessages(java
+     * org.addhen.smssync.database.IMessagesContentProvider#addMessage(java
      * .util.List)
      */
     @Override
@@ -87,7 +87,7 @@ public class MessagesContentProvider extends DbContentProvider implements
             mDb.beginTransaction();
 
             for (Message message : messages) {
-                addMessages(message);
+                addMessage(message);
             }
             mDb.setTransactionSuccessful();
         } finally {
@@ -99,11 +99,11 @@ public class MessagesContentProvider extends DbContentProvider implements
     /*
      * (non-Javadoc)
      * @see
-     * org.addhen.smssync.database.IMessagesContentProvider#addMessages(org.
+     * org.addhen.smssync.database.IMessagesContentProvider#addMessage(org.
      * addhen.smssync.models.MessageModel)
      */
     @Override
-    public boolean addMessages(Message messages) {
+    public boolean addMessage(Message messages) {
 
         setContentValue(messages);
         String selectionClause = MESSAGE_UUID + " =?";
@@ -143,7 +143,6 @@ public class MessagesContentProvider extends DbContentProvider implements
     public List<MessageResult> fetchMessageResultsByUuid(List<String> messageUuid) {
         List<MessageResult> messageResults = new ArrayList<MessageResult>();
         String selection = Database.SENT_MESSAGES_UUID + "= ?";
-        Util.writeDbToSDCard();
         if (null != messageUuid) {
             for (String uuid : messageUuid) {
                 log("uuids_message " + uuid);

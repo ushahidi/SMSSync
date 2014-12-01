@@ -585,7 +585,7 @@ public class Util {
      * Writes SMSsync's database file on a non rooted device to the SD card
      */
     public static void writeDbToSDCard() {
-        File f = new File("/data/data/org.addhen.smssync.debug/databases/smssync_db.db3");
+        File f = new File("/data/data/org.addhen.smssync.debug/databases/smssync_db");
         FileInputStream fis = null;
         FileOutputStream fos = null;
 
