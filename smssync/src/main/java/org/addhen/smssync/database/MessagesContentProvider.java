@@ -142,20 +142,21 @@ public class MessagesContentProvider extends DbContentProvider implements
     @Override
     public List<MessageResult> fetchMessageResultsByUuid(List<String> messageUuid) {
         List<MessageResult> messageResults = new ArrayList<MessageResult>();
-        String selection = MESSAGE_UUID + "= ?";
+        String selection = Database.SENT_MESSAGES_UUID + "= ?";
         if (null != messageUuid) {
             for (String uuid : messageUuid) {
+
                 String selectionArgs[] = { uuid };
-                cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, DATE
+                cursor = super.query(Database.SENT_MESSAGES_TABLE, Database.SENT_MESSAGES_COLUMNS, selection, selectionArgs, Database.SENT_MESSAGES_DATE
                         + " DESC");
 
                 if (cursor != null) {
                     try {
                         while (cursor.moveToNext()) {
-                            int sentResultCodeIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_CODE);
-                            int sentResultMessageIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_MESSAGE);
-                            int deliveryResultCodeIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_CODE);
-                            int deliveryResultMessageIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_MESSAGE);
+                            int sentResultCodeIndex = cursor.getColumnIndexOrThrow(Database.SENT_RESULT_CODE);
+                            int sentResultMessageIndex = cursor.getColumnIndexOrThrow(Database.SENT_RESULT_MESSAGE);
+                            int deliveryResultCodeIndex = cursor.getColumnIndexOrThrow(Database.DELIVERY_RESULT_CODE);
+                            int deliveryResultMessageIndex = cursor.getColumnIndexOrThrow(Database.DELIVERY_RESULT_MESSAGE);
 
                             int sentResultCode = cursor.getInt(sentResultCodeIndex);
                             String sentResultMessage = cursor.getString(sentResultMessageIndex);

@@ -273,7 +273,7 @@ public class ProcessMessage {
         }
 
         MessagesUUIDSResponse response = mMessageResultsController.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
-        if(response.isSuccess() && response.hasUUIDs()) {
+        if(null != response && response.isSuccess() && response.hasUUIDs()) {
             for (TaskMessage msg : receivedTasks) {
                 if (response.getUuids().contains(msg.getUuid())) {
                     processSms.sendSms(msg.getSentTo(), msg.getMessage(), msg.getUuid());
@@ -381,6 +381,7 @@ public class ProcessMessage {
                         processSms.postToSentBox(message, PENDING);
                     }
                 } else {
+                    // FIXME: `posted` always `true` but `sendSms()` may not work
                     processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
                     posted = true;
                 }
