@@ -143,6 +143,7 @@ public class MessagesContentProvider extends DbContentProvider implements
     public List<MessageResult> fetchMessageResultsByUuid(List<String> messageUuid) {
         List<MessageResult> messageResults = new ArrayList<MessageResult>();
         String selection = Database.SENT_MESSAGES_UUID + "= ?";
+        Util.writeDbToSDCard();
         if (null != messageUuid) {
             for (String uuid : messageUuid) {
                 log("uuids_message " + uuid);

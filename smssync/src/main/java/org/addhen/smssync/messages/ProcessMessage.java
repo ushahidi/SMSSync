@@ -1,5 +1,7 @@
 package org.addhen.smssync.messages;
 
+import com.google.gson.reflect.TypeToken;
+
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
@@ -20,8 +22,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.text.TextUtils;
-
-import com.google.gson.reflect.TypeToken;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -378,7 +378,8 @@ public class ProcessMessage {
                         Util.connectToDataNetwork(context);
 
                     } else {
-                        processSms.postToSentBox(message, PENDING);
+                        message.setMessageType(PENDING);
+                        processSms.postToSentBox(message);
                     }
                 } else {
                     // FIXME: `posted` always `true` but `sendSms()` may not work
@@ -400,7 +401,8 @@ public class ProcessMessage {
                     Util.connectToDataNetwork(context);
 
                 } else {
-                    processSms.postToSentBox(message, PENDING);
+                    message.setMessageType(PENDING);
+                    processSms.postToSentBox(message);
                 }
             } else {
                 processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
@@ -453,7 +455,6 @@ public class ProcessMessage {
                     }
                 }
             } else {
-
                 return processMessage(message, syncUrl);
             }
 

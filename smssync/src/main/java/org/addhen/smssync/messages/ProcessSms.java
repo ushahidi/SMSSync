@@ -19,6 +19,8 @@ package org.addhen.smssync.messages;
 
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
+import org.addhen.smssync.database.Database;
+import org.addhen.smssync.database.Messages;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
@@ -411,8 +413,8 @@ public class ProcessSms {
                 sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
                         null);
             }
-
-            postToSentBox(message, UNCONFIRMED);
+            message.setMessageType(UNCONFIRMED);
+            postToSentBox(message);
         } else {
             final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + sendTo;
             Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
@@ -451,20 +453,11 @@ public class ProcessSms {
     /**
      * Saves successfully sent messages into the db
      *
-     * @param messageType the message type
+     * @param message the message
      */
-    public boolean postToSentBox(Message message, int messageType) {
+    public boolean postToSentBox(Message message) {
         Logger.log(CLASS_TAG, "postToSentBox(): post message to sentbox");
-
-        //TODO:: refactor this to use message obj directly
-        SentMessagesUtil.smsMap.put("messagesFrom", message.getFrom());
-        SentMessagesUtil.smsMap.put("messagesBody", message.getBody());
-        SentMessagesUtil.smsMap.put("messagesDate", message.getTimestamp());
-        SentMessagesUtil.smsMap.put("messagesUuid", message.getUuid());
-        SentMessagesUtil.smsMap
-                .put("messagesType", String.valueOf(messageType));
-
-        return SentMessagesUtil.processSentMessages(context);
+        return SentMessagesUtil.processSentMessages(message);
 
     }
 

@@ -20,6 +20,7 @@ package org.addhen.smssync.util;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.database.Messages;
+import org.addhen.smssync.models.Message;
 
 import android.content.Context;
 
@@ -38,39 +39,24 @@ public class SentMessagesUtil {
 
     public static HashMap<String, String> smsMap = new HashMap<String, String>();
 
-    private static List<Messages> mMessages;
+    private static List<Message> mMessages;
 
     /**
      * Process messages as received from the user; 0 - successful 1 - failed fetching categories
      *
      * @return int - status
      */
-    public static boolean processSentMessages(Context context) {
+    public static boolean processSentMessages(Message message) {
         Logger.log(CLASS_TAG,
                 "processMessages(): Process text messages as received from the user's phone");
 
-        List<Messages> listMessages = new ArrayList<Messages>();
-        String messageUuid = "";
-        Messages messages = new Messages();
-        listMessages.add(messages);
-
-        // check if messageId is actually initialized
-        if (smsMap.get("messagesUuid") != null) {
-            messageUuid = smsMap.get("messagesUuid");
-        }
-
-        messages.setMessageUuid(messageUuid);
-        messages.setMessageFrom(smsMap.get("messagesFrom"));
-        messages.setMessageBody(smsMap.get("messagesBody"));
-        messages.setMessageDate(smsMap.get("messagesDate"));
-        messages.setMessageType(Integer.valueOf(smsMap.get("messagesType")));
-
-        mMessages = listMessages;
-
-        if (mMessages != null) {
+        if(message !=null) {
+            mMessages = new ArrayList<>();
+            mMessages.add(message);
             MainApplication.mDb.addSentMessages(mMessages);
             return true;
         }
+
         return false;
 
     }
