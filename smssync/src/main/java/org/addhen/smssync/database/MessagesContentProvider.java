@@ -145,7 +145,7 @@ public class MessagesContentProvider extends DbContentProvider implements
         String selection = Database.SENT_MESSAGES_UUID + "= ?";
         if (null != messageUuid) {
             for (String uuid : messageUuid) {
-
+                log("uuids_message " + uuid);
                 String selectionArgs[] = { uuid };
                 cursor = super.query(Database.SENT_MESSAGES_TABLE, Database.SENT_MESSAGES_COLUMNS, selection, selectionArgs, Database.SENT_MESSAGES_DATE
                         + " DESC");
@@ -162,10 +162,16 @@ public class MessagesContentProvider extends DbContentProvider implements
                             String sentResultMessage = cursor.getString(sentResultMessageIndex);
                             int deliveryResultCode = cursor.getInt(deliveryResultCodeIndex);
                             String deliveryResultMessage = cursor.getString(deliveryResultMessageIndex);
+                            log("uuids_message messages " + " sentResultCode " + sentResultCode
+                                    + " sentResultMessage " + sentResultMessage
+                                    + " deliveryResultCode: " + deliveryResultCode
+                                    + "deliveryResultCode " + deliveryResultMessage);
                             messageResults.add(new MessageResult(uuid, sentResultCode, sentResultMessage, deliveryResultCode, deliveryResultMessage));
                         }
                     } finally {
-                        cursor.close();
+                        if (cursor != null) {
+                            cursor.close();
+                        }
                     }
                 }
             }
@@ -198,7 +204,9 @@ public class MessagesContentProvider extends DbContentProvider implements
 
                 }
             } finally {
-                cursor.close();
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
 
         }
@@ -224,7 +232,9 @@ public class MessagesContentProvider extends DbContentProvider implements
 
                 }
             } finally {
-                cursor.close();
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
 
         }
@@ -251,7 +261,9 @@ public class MessagesContentProvider extends DbContentProvider implements
 
                 }
             } finally {
-                cursor.close();
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
 
         }
