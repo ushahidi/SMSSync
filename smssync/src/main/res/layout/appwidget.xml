@@ -36,7 +36,7 @@
             android:paddingRight="8dp"
             android:paddingTop="8dp"
             android:scaleType="fitStart"
-            android:src="@drawable/icon"/>
+            android:src="@drawable/ic_launcher"/>
 
     <TextView
             android:id="@+id/text_title"
