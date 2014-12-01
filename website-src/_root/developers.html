@@ -208,7 +208,7 @@ Content-Type: application/json; charset=utf-8
 <p>To send SMS status delivery report back to the server, SMSsync will make a <code>GET ?task=result</code> to the server and should receive a list
 of message UUIDs that are waiting to receive delivery reports. The server should send the JSON response below</p>
 <pre class="prettyprint linenums">
-POST /smssync?task=result HTTP/1.1
+GET /smssync?task=result HTTP/1.1
 Host: testserver.local
 
 HTTP/1.1 200 OK
