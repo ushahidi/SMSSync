@@ -46,7 +46,7 @@ public class MessageResultsController {
     }
 
     /**
-     * This method is handling POST ?task=results message_result
+     * This method is handling POST ?task=result message_result
      *
      * @param syncUrl   url to web server
      * @param results   list of message result data
@@ -106,8 +106,10 @@ public class MessageResultsController {
                 client.execute();
             } catch (JSONException e) {
                 mUtil.log(mContext.getString(R.string.message_processed_json_failed));
+                Util.logActivities(mContext, mContext.getString(R.string.message_processed_json_failed)+" "+e.getMessage());
             } catch (Exception e) {
                 mUtil.log(mContext.getString(R.string.message_processed_failed));
+                Util.logActivities(mContext,mContext.getString(R.string.message_processed_failed)+" "+e.getMessage());
             } finally {
                 if (HttpStatus.SC_OK == client.getResponseCode()) {
                     mUtil.log(mContext.getString(R.string.message_processed_success));
@@ -123,7 +125,7 @@ public class MessageResultsController {
     }
 
     /**
-     * This method is handling GET ?task=results
+     * This method for handling GET ?task=result
      *
      * @param syncUrl url to web server
      * @return MessagesUUIDSResponse parsed server response whit information about request success or failure and list of message uuids
@@ -152,8 +154,10 @@ public class MessageResultsController {
             client.execute();
         } catch (JSONException e) {
             mUtil.log(mContext.getString(R.string.message_processed_json_failed));
+            Util.logActivities(mContext, mContext.getString(R.string.message_processed_json_failed)+" "+e.getMessage());
         } catch (Exception e) {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
+            Util.logActivities(mContext,mContext.getString(R.string.message_processed_failed)+" "+e.getMessage());
         } finally {
             if (HttpStatus.SC_OK == client.getResponseCode()) {
                 response = parseMessagesUUIDSResponse(client);
