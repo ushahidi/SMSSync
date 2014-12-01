@@ -7,13 +7,16 @@ import org.addhen.smssync.models.QueuedMessages;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.util.JsonUtils;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -49,7 +52,22 @@ public class MessageResultsController {
      * @param results   list of message result data
      */
     public void sendMessageResultPOSTRequest(SyncUrl syncUrl, List<MessageResult> results) {
-        String newEndPointURL = syncUrl.getUrl().concat(TASK_SENT_URL_PARAM);
+        String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
+
+        final String urlSecret = syncUrl.getSecret();
+
+        if (!TextUtils.isEmpty(urlSecret)) {
+            String urlSecretEncoded = urlSecret;
+            newEndPointURL = newEndPointURL.concat("&secret=");
+            try {
+                urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
+            } catch (java.io.UnsupportedEncodingException e) {
+                mUtil.log(e.getMessage());
+            }
+            newEndPointURL = newEndPointURL.concat(urlSecretEncoded);
+        }
+
+
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(POST_METHOD);
@@ -113,6 +131,21 @@ public class MessageResultsController {
     public MessagesUUIDSResponse sendMessageResultGETRequest(SyncUrl syncUrl) {
         MessagesUUIDSResponse response;
         String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
+
+        final String urlSecret = syncUrl.getSecret();
+
+        if (!TextUtils.isEmpty(urlSecret)) {
+            String urlSecretEncoded = urlSecret;
+            newEndPointURL = newEndPointURL.concat("&secret=");
+            try {
+                urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
+            } catch (java.io.UnsupportedEncodingException e) {
+                mUtil.log(e.getMessage());
+            }
+            newEndPointURL = newEndPointURL.concat(urlSecretEncoded);
+        }
+
+
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(GET_METHOD);
