@@ -50,6 +50,8 @@ import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
@@ -577,5 +579,40 @@ public class Util {
         }
 
         return -1;
+    }
+
+    /**
+     * Writes SMSsync's database file on a non rooted device to the SD card
+     */
+    public static void writeDbToSDCard() {
+        File f = new File("/data/data/org.addhen.smssync.debug/databases/smssync_db.db3");
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+
+        try {
+            fis = new FileInputStream(f);
+            fos = new FileOutputStream("/mnt/sdcard/db_dump.db");
+            while (true) {
+                int i = fis.read();
+                if (i != -1) {
+                    fos.write(i);
+                } else {
+                    break;
+                }
+            }
+            fos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(fos !=null) {
+                    fos.close();
+                }
+                if(fis !=null) {
+                    fis.close();
+                }
+            } catch (IOException ioe) {
+            }
+        }
     }
 }
