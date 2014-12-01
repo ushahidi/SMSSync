@@ -264,6 +264,10 @@ Content-Type: application/json; charset=utf-8
 <h2>A sample web service</h2>
 <p>This is a sample PHP script to demonstrate how to write a webservice to successfully communicate with SMSsync.</p>
 <pre class="prettyprint linenums">
+/**
+ * Gets the messages(SMSs) sent by SMSsync as a POST request.
+ *
+ */
 function get_message()
 {
     $error = NULL;
@@ -375,12 +379,12 @@ function get_message()
         write_message_to_file($string);
     }
     /**
-     * Uncomment the code below if you want to send an instant
+     * Comment the code below out if you want to send an instant
      * reply as SMS to the user.
      *
      * This feature requires the "Get reply from server" checked on SMSsync.
      */
-     // send_instant_message($from);
+     send_instant_message($from);
 
     /**
       * Now send a JSON formatted string to SMSsync to
@@ -393,11 +397,12 @@ function get_message()
             ]
         ]);
 
-     // Comment this out if you have send_instant_message uncommented. Otherwise you will
-     // get unexpected results
-     send_response($response);
+     //send_response($response);
 }
 
+/**
+ * Writes the received responses to a file. This acts as a database.
+ */
 function write_message_to_file($message)
 {
     $myFile = "test.txt";
@@ -406,6 +411,10 @@ function write_message_to_file($message)
     @fclose($fh);
 }
 
+/**
+ * Implements the task feature. Sends messages to SMSsync to be sent as
+ * SMS to users.
+ */
 function send_task()
 {
     /**
@@ -414,10 +423,10 @@ function send_task()
      *
      * This feature requires the "Get reply from server" checked on SMSsync.
      */
-    if (isset($_GET['task']) && $_GET['task'] === 'send')
+    if (isset($_GET['task']) AND $_GET['task'] === 'send')
     {
         $m = "Sample Task Message";
-        $f = "090394827439";
+        $f = "+819029842384";
         $s = "true";
         $reply[0] = [
             "to" => $f,
@@ -433,15 +442,21 @@ function send_task()
                 "secret" => "123456",
                 "messages"=>array_values($reply)]
             ]);
+
         send_response($response);
     }
 }
 
+/**
+ * This sends an instant response when the server receive messages(SMSs) from
+ * SMSsync. This requires the settings "Get Reply from Server" enabled on
+ * SMSsync.
+ */
 function send_instant_message($to)
 {
 
     $m = "Your message has been received";
-    $f = "09080483483";
+    $f = "09029842384";
     $s = true;
 
     $reply[0] = [
@@ -477,6 +492,8 @@ function get_sent_message_uuids()
 
     $data = file_get_contents('php://input');
 
+    $queued_messages = file_get_contents('php://input');
+
     // Writing this to a file for demo purposes.
     // In production, you will have to process the JSON string
     // and remove the messages from the database or where ever the
@@ -484,70 +501,71 @@ function get_sent_message_uuids()
     // these messages.
     write_message_to_file($queued_messages."\n\n");
 
-    $message_uuids = [
-        "aada21b0-0615-4957-bcb3",
-        "1ba368bd-c467-4374-bf28",
-        "95df126b-ee80-4175-a6fb"
-    ];
-    // Send the received IDs back to SMSSsync
+    send_message_uuids_waiting_for_a_delivery_report($queued_messages);
+
+}
+
+/**
+ * Sends message UUIDS to SMSsync for their sms delivery status report.
+ * When SMSsync send messages from the server as SMS to phone numbers, SMSsync
+ * can send back status delivery report for these messages.
+ */
+function send_message_uuids_waiting_for_a_delivery_report($queued_messages)
+{
+    // Send back the received messages UUIDs back to SMSsync
+    $json_obj = json_decode($queued_messages);
+
     $response = json_encode(
-        ["message_uuids"=>array_values($message_uuids)]);
+    [
+        "message_uuids"=>$json_obj->queued_messages
+    ]);
 
     send_response($response);
 }
 
-function send_message_id_for_delivery_reports()
+function send_messages_uuids_for_sms_delivery_report()
 {
-    if (isset($_GET['task']) && $_GET['task'] === 'results')
-    {
-        // Send message uuids to the server to receive delivery reports
-        $message_uuids = [
-            "aada21b0-0615-4957-bcb3",
-            "1ba368bd-c467-4374-bf28",
-            "95df126b-ee80-4175-a6fb"
-        ];
+    $response = json_encode(
+    [
+        "message_uuids" => ['1ba368bd-c467-4374-bf28']
+    ]);
 
-        // Send the received IDs back to SMSSsync
-        $response = json_encode(
-            [
-                "message_uuids" => array_values($message_uuids)
-            ]
-        );
+    send_response($response);
 
-    }
 }
 
+/**
+ * Get status delivery report on sent messages
+ *
+ */
 function get_sms_delivery_report()
 {
-
-    $message_results = file_get_contents('php://input');
-
-    write_message_to_file($message_results."\n\n");
-
+    if($_GET['task'] === 'result' AND $_GET['secret']=== '123456')
+    {
+        $message_results = file_get_contents('php://input');
+        write_message_to_file("message ".$message_results."\n\n");
+    }
 }
 
-
+// Execute functions above
 if($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    if($_SERVER['QUERY_STRING'] === 'task=result')
-    {
+    if(isset($_GET['task']) AND $_GET['task'] === 'result'){
         get_sms_delivery_report();
     }
-    else if($_SERVER['QUERY_STRING'] === 'task=sent')
+    else if( isset($_GET['task']) && $_GET['task'] === 'sent')
     {
         get_sent_message_uuids();
     }
     else
     {
         get_message();
-
-        // Send message uuids for their sms delivery reports
-        send_message_id_for_delivery_reports();
     }
 }
 else
 {
     send_task();
+    send_messages_uuids_for_sms_delivery_report();
 }
 </pre>
 <p>
