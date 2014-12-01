@@ -319,12 +319,24 @@ public class Database {
      * @param messages - The messages to be added to the database.
      */
     public void addSentMessages(List<Message> messages) {
+
+        for (Message message : messages) {
+            addSentMessage(message);
+        }
+
+    }
+
+    /**
+     * Add a new sent message to the database.
+     *
+     * @param message - The messages to be added to the database.
+     */
+    public void addSentMessage(Message message) {
         try {
             mDb.beginTransaction();
 
-            for (Message message : messages) {
-                insertMessage(message);
-            }
+            insertMessage(message);
+
             limitRows(SENT_MESSAGES_TABLE, 20, SENT_MESSAGES_UUID);
             mDb.setTransactionSuccessful();
         } finally {

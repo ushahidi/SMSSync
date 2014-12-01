@@ -37,10 +37,6 @@ public class SentMessagesUtil {
 
     private static final String CLASS_TAG = Util.class.getCanonicalName();
 
-    public static HashMap<String, String> smsMap = new HashMap<String, String>();
-
-    private static List<Message> mMessages;
-
     /**
      * Process messages as received from the user; 0 - successful 1 - failed fetching categories
      *
@@ -51,10 +47,8 @@ public class SentMessagesUtil {
                 "processMessages(): Process text messages as received from the user's phone");
 
         if(message !=null) {
-            mMessages = new ArrayList<>();
-            mMessages.add(message);
-            MainApplication.mDb.addSentMessages(mMessages);
-            return true;
+            MainApplication.mDb.addSentMessage(message);
+           return true;
         }
 
         return false;
