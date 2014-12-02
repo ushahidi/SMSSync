@@ -13,7 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.text.TextUtils;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -21,16 +23,21 @@ import java.util.List;
  *
  * This class handling Message Results API
  *
- * POST ?task=sent queued_messages {@link #sendQueuedMessagesPOSTRequest(org.addhen.smssync.models.SyncUrl, org.addhen.smssync.models.QueuedMessages)}
- * POST ?task=results message_results {@link #sendMessageResultPOSTRequest(org.addhen.smssync.models.SyncUrl, java.util.List)}
- * GET  ?task=results {@link #sendMessageResultGETRequest(org.addhen.smssync.models.SyncUrl)}
+ * POST ?task=sent queued_messages {@link #sendQueuedMessagesPOSTRequest(org.addhen.smssync.models.SyncUrl,
+ * org.addhen.smssync.models.QueuedMessages)} POST ?task=results message_results {@link
+ * #sendMessageResultPOSTRequest(org.addhen.smssync.models.SyncUrl, java.util.List)} GET
+ * ?task=results {@link #sendMessageResultGETRequest(org.addhen.smssync.models.SyncUrl)}
  */
 public class MessageResultsController {
 
     private static final String MESSAGE_RESULT_JSON_KEY = "message_result";
+
     private static final String TASK_SENT_URL_PARAM = "?task=sent";
+
     private static final String TASK_RESULT_URL_PARAM = "?task=result";
+
     private static final String POST_METHOD = "POST";
+
     private static final String GET_METHOD = "GET";
 
     private Context mContext;
@@ -43,13 +50,27 @@ public class MessageResultsController {
     }
 
     /**
-     * This method is handling POST ?task=results message_result
+     * This method is handling POST ?task=result message_result
      *
-     * @param syncUrl   url to web server
-     * @param results   list of message result data
+     * @param syncUrl url to web server
+     * @param results list of message result data
      */
     public void sendMessageResultPOSTRequest(SyncUrl syncUrl, List<MessageResult> results) {
-        String newEndPointURL = syncUrl.getUrl().concat(TASK_SENT_URL_PARAM);
+        String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
+
+        final String urlSecret = syncUrl.getSecret();
+
+        if (!TextUtils.isEmpty(urlSecret)) {
+            String urlSecretEncoded = urlSecret;
+            newEndPointURL = newEndPointURL.concat("&secret=");
+            try {
+                urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
+            } catch (java.io.UnsupportedEncodingException e) {
+                mUtil.log(e.getMessage());
+            }
+            newEndPointURL = newEndPointURL.concat(urlSecretEncoded);
+        }
+
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(POST_METHOD);
@@ -71,11 +92,12 @@ public class MessageResultsController {
     /**
      * This method is handling POST ?task=sent queued_messages
      *
-     * @param syncUrl   url to web server
-     * @param messages
-     * @return parsed server response whit information about request success or failure and list of message uuids
+     * @param syncUrl url to web server
+     * @return parsed server response whit information about request success or failure and list of
+     * message uuids
      */
-    public MessagesUUIDSResponse sendQueuedMessagesPOSTRequest(SyncUrl syncUrl, QueuedMessages messages) {
+    public MessagesUUIDSResponse sendQueuedMessagesPOSTRequest(SyncUrl syncUrl,
+            QueuedMessages messages) {
         MessagesUUIDSResponse response = null;
         if (null != messages && !messages.getQueuedMessages().isEmpty()) {
             String newEndPointURL = syncUrl.getUrl().concat(TASK_SENT_URL_PARAM);
@@ -88,8 +110,14 @@ public class MessageResultsController {
                 client.execute();
             } catch (JSONException e) {
                 mUtil.log(mContext.getString(R.string.message_processed_json_failed));
+                Util.logActivities(mContext,
+                        mContext.getString(R.string.message_processed_json_failed) + " " + e
+                                .getMessage());
             } catch (Exception e) {
                 mUtil.log(mContext.getString(R.string.message_processed_failed));
+                Util.logActivities(mContext,
+                        mContext.getString(R.string.message_processed_failed) + " " + e
+                                .getMessage());
             } finally {
                 if (HttpStatus.SC_OK == client.getResponseCode()) {
                     mUtil.log(mContext.getString(R.string.message_processed_success));
@@ -97,7 +125,9 @@ public class MessageResultsController {
                     response.setSuccess(true);
                 } else {
                     response = new MessagesUUIDSResponse(client.getResponseCode());
-                    Util.logActivities(mContext, mContext.getString(R.string.queued_messages_request_status, client.getResponseCode(), client.getResponse()));
+                    Util.logActivities(mContext,
+                            mContext.getString(R.string.queued_messages_request_status,
+                                    client.getResponseCode(), client.getResponse()));
                 }
             }
         }
@@ -105,35 +135,58 @@ public class MessageResultsController {
     }
 
     /**
-     * This method is handling GET ?task=results
+     * This method for handling GET ?task=result
      *
      * @param syncUrl url to web server
-     * @return MessagesUUIDSResponse parsed server response whit information about request success or failure and list of message uuids
+     * @return MessagesUUIDSResponse parsed server response whit information about request success
+     * or failure and list of message uuids
      */
     public MessagesUUIDSResponse sendMessageResultGETRequest(SyncUrl syncUrl) {
         MessagesUUIDSResponse response;
         String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
+
+        final String urlSecret = syncUrl.getSecret();
+
+        if (!TextUtils.isEmpty(urlSecret)) {
+            String urlSecretEncoded = urlSecret;
+            newEndPointURL = newEndPointURL.concat("&secret=");
+            try {
+                urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
+            } catch (java.io.UnsupportedEncodingException e) {
+                mUtil.log(e.getMessage());
+            }
+            newEndPointURL = newEndPointURL.concat(urlSecretEncoded);
+        }
+
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
             client.setMethod(GET_METHOD);
             client.execute();
         } catch (JSONException e) {
             mUtil.log(mContext.getString(R.string.message_processed_json_failed));
+            Util.logActivities(mContext,
+                    mContext.getString(R.string.message_processed_json_failed) + " " + e
+                            .getMessage());
         } catch (Exception e) {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
+            Util.logActivities(mContext,
+                    mContext.getString(R.string.message_processed_failed) + " " + e.getMessage());
         } finally {
             if (HttpStatus.SC_OK == client.getResponseCode()) {
                 response = parseMessagesUUIDSResponse(client);
                 response.setSuccess(true);
             } else {
                 response = new MessagesUUIDSResponse(client.getResponseCode());
-                Util.logActivities(mContext, mContext.getString(R.string.messages_result_request_status, client.getResponseCode(), client.getResponse()));
+                Util.logActivities(mContext,
+                        mContext.getString(R.string.messages_result_request_status,
+                                client.getResponseCode(), client.getResponse()));
             }
         }
         return response;
     }
 
-    private String createMessageResultJSON(List<MessageResult> messageResults) throws JSONException {
+    private String createMessageResultJSON(List<MessageResult> messageResults)
+            throws JSONException {
         JSONObject messageResultsObject = new JSONObject();
         messageResultsObject.put(MESSAGE_RESULT_JSON_KEY, JsonUtils.objToJson(messageResults));
         return messageResultsObject.toString();

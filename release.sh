@@ -30,7 +30,7 @@ git merge $DEVELOP
 
 # Create the signed release tag
 echo "Creating release tag $TAG_NAME ..."
-git tag -s $TAG_NAME -m $TAG_MESSAGE
+git tag $TAG_NAME -m $TAG_MESSAGE
 
 # Create a release apk
 echo "Building a release apk"
@@ -38,6 +38,10 @@ echo "Building a release apk"
 
 # Back to where we were before
 popd
+
+# Push tags to remote repo
+echo "Pushing tags to remote repo..."
+git push ushahidi master develop --tags && git push origin master develop --tags
 
 # Checkout develop branch
 echo "Checking out develop branch..."

@@ -265,7 +265,10 @@ public class SyncUrlContentProvider extends DbContentProvider implements
         int secretIndex;
         int syncSchemeIndex;
 
-        if (cursor != null) {
+        if (cursor == null) {
+            return syncUrl;
+        }
+        try {
             if (cursor.getColumnIndex(ID) != -1) {
                 idIndex = cursor.getColumnIndexOrThrow(ID);
                 syncUrl.setId(cursor.getInt(idIndex));
@@ -300,6 +303,8 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 syncUrl.setSyncScheme(new SyncScheme(cursor.getString(syncSchemeIndex)));
             }
 
+        }catch (Exception e) {
+            syncUrl = new SyncUrl();
         }
         return syncUrl;
     }

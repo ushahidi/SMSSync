@@ -156,7 +156,7 @@ public abstract class BaseService extends Service {
     }
 
     protected void createNotification(int resId, String title, PendingIntent intent) {
-        Util.buildNotification(this, R.drawable.icon, title, getString(resId),
+        Util.buildNotification(this, R.drawable.ic_stat_notfiy, title, getString(resId),
                 intent, true);
 
     }

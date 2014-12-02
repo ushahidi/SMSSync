@@ -83,7 +83,7 @@ public class Message extends Model implements Serializable {
 
     @Override
     public boolean save() {
-        return Database.messagesContentProvider.addMessages(this);
+        return Database.messagesContentProvider.addMessage(this);
     }
 
     /**

@@ -31,7 +31,7 @@ public interface IMessagesContentProvider {
 
     public boolean addMessages(List<Message> messages);
 
-    public boolean addMessages(Message messages);
+    public boolean addMessage(Message messages);
 
     public boolean deleteMessagesByUuid(String messageUuid);
 

@@ -2,7 +2,7 @@
 title : Features
 layout : default
 description : SMSsync features
-date : Nov 11, 2014
+date : Dec 02, 2014
 header : <h1>Features <small>Highlights the important features of SMSsync.</small></h1>
 ---
 

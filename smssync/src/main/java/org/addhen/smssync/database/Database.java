@@ -75,7 +75,7 @@ public class Database {
 
     private static final String DATABASE_NAME = "smssync_db";
 
-    private static final String SENT_MESSAGES_TABLE = "sent_messages";
+    public static final String SENT_MESSAGES_TABLE = "sent_messages";
 
     private static final int DATABASE_VERSION = 7;
 
@@ -238,27 +238,27 @@ public class Database {
     /**
      * Insert new message into the messages table.
      *
-     * @param messages - The messages items.
+     * @param message - The messages items.
      * @return boolean
      */
-    public boolean insertMessage(Messages messages) {
+    public boolean insertMessage(Message message) {
 
         ContentValues initialValues = new ContentValues();
-        initialValues.put(SENT_MESSAGES_FROM, messages.getMessageFrom());
-        initialValues.put(SENT_MESSAGES_BODY, messages.getMessageBody());
-        initialValues.put(SENT_MESSAGES_DATE, messages.getMessageDate());
-        initialValues.put(SENT_MESSAGE_TYPE, messages.getMessageType());
-        initialValues.put(SENT_RESULT_CODE, messages.getMessageFrom());
-        initialValues.put(SENT_RESULT_MESSAGE, messages.getMessageBody());
-        initialValues.put(DELIVERY_RESULT_CODE, messages.getMessageDate());
-        initialValues.put(DELIVERY_RESULT_MESSAGE, messages.getMessageType());
+        initialValues.put(SENT_MESSAGES_FROM, message.getFrom());
+        initialValues.put(SENT_MESSAGES_BODY, message.getBody());
+        initialValues.put(SENT_MESSAGES_DATE, message.getTimestamp());
+        initialValues.put(SENT_MESSAGE_TYPE, message.getMessageType());
+        initialValues.put(SENT_RESULT_CODE, message.getSentResultCode());
+        initialValues.put(SENT_RESULT_MESSAGE, message.getSentResultMessage());
+        initialValues.put(DELIVERY_RESULT_CODE, message.getDeliveryResultCode());
+        initialValues.put(DELIVERY_RESULT_MESSAGE, message.getDeliveryResultMessage());
 
-        String selectionClause = SENT_MESSAGES_UUID + "=" + '"' + messages.getMessageUuid() + '"';
+        String selectionClause = SENT_MESSAGES_UUID + "=" + '"' + message.getUuid() + '"';
 
         if (mDb.update(SENT_MESSAGES_TABLE, initialValues, selectionClause, null) > 0) {
             return true;
         } else {
-            initialValues.put(SENT_MESSAGES_UUID, messages.getMessageUuid());
+            initialValues.put(SENT_MESSAGES_UUID, message.getUuid());
             return mDb.insert(SENT_MESSAGES_TABLE, null, initialValues) > 0;
         }
     }
@@ -318,13 +318,25 @@ public class Database {
      *
      * @param messages - The messages to be added to the database.
      */
-    public void addSentMessages(List<Messages> messages) {
+    public void addSentMessages(List<Message> messages) {
+
+        for (Message message : messages) {
+            addSentMessage(message);
+        }
+
+    }
+
+    /**
+     * Add a new sent message to the database.
+     *
+     * @param message - The messages to be added to the database.
+     */
+    public void addSentMessage(Message message) {
         try {
             mDb.beginTransaction();
 
-            for (Messages message : messages) {
-                insertMessage(message);
-            }
+            insertMessage(message);
+
             limitRows(SENT_MESSAGES_TABLE, 20, SENT_MESSAGES_UUID);
             mDb.setTransactionSuccessful();
         } finally {

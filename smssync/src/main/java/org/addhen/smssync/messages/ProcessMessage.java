@@ -1,5 +1,7 @@
 package org.addhen.smssync.messages;
 
+import com.google.gson.reflect.TypeToken;
+
 import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
@@ -20,8 +22,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.text.TextUtils;
-
-import com.google.gson.reflect.TypeToken;
 
 import java.net.URLEncoder;
 import java.util.List;
@@ -273,7 +273,7 @@ public class ProcessMessage {
         }
 
         MessagesUUIDSResponse response = mMessageResultsController.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
-        if(response.isSuccess() && response.hasUUIDs()) {
+        if(null != response && response.isSuccess() && response.hasUUIDs()) {
             for (TaskMessage msg : receivedTasks) {
                 if (response.getUuids().contains(msg.getUuid())) {
                     processSms.sendSms(msg.getSentTo(), msg.getMessage(), msg.getUuid());
@@ -378,9 +378,11 @@ public class ProcessMessage {
                         Util.connectToDataNetwork(context);
 
                     } else {
-                        processSms.postToSentBox(message, PENDING);
+                        message.setMessageType(PENDING);
+                        processSms.postToSentBox(message);
                     }
                 } else {
+                    // FIXME: `posted` always `true` but `sendSms()` may not work
                     processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
                     posted = true;
                 }
@@ -399,7 +401,8 @@ public class ProcessMessage {
                     Util.connectToDataNetwork(context);
 
                 } else {
-                    processSms.postToSentBox(message, PENDING);
+                    message.setMessageType(PENDING);
+                    processSms.postToSentBox(message);
                 }
             } else {
                 processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
@@ -452,7 +455,6 @@ public class ProcessMessage {
                     }
                 }
             } else {
-
                 return processMessage(message, syncUrl);
             }
 

@@ -32,8 +32,8 @@ public class MessageResultsScheduledService extends SmsSyncServices {
 
     @Override
     public void executeTask(Intent intent) {
-        log("checking scheduled task services");
-        Util.logActivities(this, getString(R.string.task_scheduler_running));
+        log("checking scheduled message result services");
+        Util.logActivities(this, "Checking scheduled message result services");
         for (SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
             MessagesUUIDSResponse response = mMessageResultsController.sendMessageResultGETRequest(syncUrl);
             if (response.isSuccess()) {
