@@ -30,7 +30,7 @@ git merge $DEVELOP
 
 # Create the signed release tag
 echo "Creating release tag $TAG_NAME ..."
-git tag -s $TAG_NAME -m $TAG_MESSAGE
+git tag $TAG_NAME -m $TAG_MESSAGE
 
 # Create a release apk
 echo "Building a release apk"
