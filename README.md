@@ -2,6 +2,8 @@
 
 # SMSSync
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ushahidi/SMSSync?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Welcome to **"SMSSync"**, an android application that turns your android powered phone into an SMS gateway.
 
 Read about it at **[smssync.ushahidi.com](http://smssync.ushahidi.com/)**.
