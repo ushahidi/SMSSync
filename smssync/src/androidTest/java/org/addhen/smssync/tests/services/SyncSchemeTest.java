@@ -55,6 +55,22 @@ public class SyncSchemeTest extends BaseTest {
     }
 
     @SmallTest
+    public void testSetPOSTJSONSyncScheme() {
+        SyncScheme syncScheme = new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON);
+        assertNotNull(syncScheme);
+        assertEquals(syncScheme.getMethod(),SyncScheme.SyncMethod.POST);
+        assertEquals(syncScheme.getDataFormat(),SyncScheme.SyncDataFormat.JSON);
+    }
+
+    @SmallTest
+    public void testSetPOSTXMLSyncScheme() {
+        SyncScheme syncScheme = new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.XML);
+        assertNotNull(syncScheme);
+        assertEquals(syncScheme.getMethod(),SyncScheme.SyncMethod.POST);
+        assertEquals(syncScheme.getDataFormat(),SyncScheme.SyncDataFormat.XML);
+    }
+
+    @SmallTest
     public void testSyncWithPOSTAndURLEncoded(){
         syncUrl.setSyncScheme(new SyncScheme());
 
@@ -79,7 +95,8 @@ public class SyncSchemeTest extends BaseTest {
 
     @SmallTest
     public void testSyncWithPOSTAndJSON(){
-        syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON));
+        SyncScheme syncScheme = new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON);
+        syncUrl.setSyncScheme(syncScheme);
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
             getContext(), syncUrl, msg, toNumber, deviceId

@@ -193,7 +193,7 @@ public class MainHttpClient {
     }
 
     public void addParam(String name, String value) {
-        params.add(new BasicNameValuePair(name, value));
+        this.params.add(new BasicNameValuePair(name, value));
     }
 
     public ArrayList getParams() {
@@ -201,8 +201,8 @@ public class MainHttpClient {
     }
 
     public void setHeader(String name, String value) {
-        headers.put(name, value);
-        request.setHeader(name, value);
+        this.headers.put(name, value);
+        this.request.setHeader(name, value);
     }
 
     public HttpRequestBase getRequest() throws Exception {
@@ -211,11 +211,11 @@ public class MainHttpClient {
     }
 
     public void setEntity(HttpEntity data) throws Exception {
-        entity = data;
+        this.entity = data;
     }
 
     public void setStringEntity(String data) throws Exception {
-        stringEntity = new StringEntity(data, DEFAULT_ENCODING);
+        this.entity = new StringEntity(data, DEFAULT_ENCODING);
     }
 
     public boolean isMethodSupported(String method) {
@@ -268,7 +268,7 @@ public class MainHttpClient {
         return null;
     }
 
-    public StringEntity getStringEntity() throws Exception {
+    public HttpEntity getStringEntity() throws Exception {
         // check if entity was explicitly set otherwise return params as entity
         if (stringEntity != null && stringEntity.getContentLength() > 0) {
             return stringEntity;
@@ -347,7 +347,6 @@ public class MainHttpClient {
             if(getEntity() != null) {
                 ((HttpPost) request).setEntity(getEntity());
             }
-
             else if( getStringEntity() !=null) {
                 ((HttpPost) request).setEntity(getStringEntity());
             }

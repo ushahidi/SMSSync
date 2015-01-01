@@ -82,7 +82,7 @@ public class ProcessSmsTest extends BaseTest {
         message.setTimestamp("1370831690572");
         message.setBody("foo bar");
         assertTrue("Could not add a new message ", message.save());
-        assertTrue(mProcessSms.postToSentBox(message, ProcessSms.PENDING));
+        assertTrue(mProcessSms.postToSentBox(message));
         assertTrue("Could not delete the message",message.deleteAllMessages());
 
     }
@@ -95,7 +95,7 @@ public class ProcessSmsTest extends BaseTest {
         message.setBody("foo bar");
         message.setTimestamp("1370831690572");
         assertTrue("Could not add a new message ",message.save());
-        assertTrue(mProcessSms.postToSentBox(message, ProcessSms.TASK));
+        assertTrue(mProcessSms.postToSentBox(message));
         assertTrue("Could not delete the message",message.deleteAllMessages());
     }
 
