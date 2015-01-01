@@ -57,7 +57,7 @@ public class ProcessMessageTest extends BaseTest {
     }
 
     @MediumTest
-    public void shouldPerformTaskEnabledSyncUrl() throws Exception {
+    public void testShouldPerformTaskEnabledSyncUrl() throws Exception {
         SyncUrl syncUrlDemo = new SyncUrl();
         syncUrlDemo.setKeywords("");
         syncUrlDemo.setSecret("demo");
