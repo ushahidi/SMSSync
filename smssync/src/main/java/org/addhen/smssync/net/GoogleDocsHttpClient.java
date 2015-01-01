@@ -24,14 +24,14 @@ public class GoogleDocsHttpClient extends MainHttpClient {
     public boolean postToGoogleDocs(String email) {
         addParam("entry.1221859611", email);
         try {
-            setMethod(HttpMethod.POST.value());
+            setMethod(HttpMethod.POST);
             execute();
         } catch (Exception e) {
             log("Request failed", e);
             setClientError("Request failed. " + e.getMessage());
         }
 
-        final int statusCode = getResponseCode();
+        final int statusCode = getResponse().code();
 
         if (statusCode != 200 && statusCode != 201) {
             setServerError("bad http return code", statusCode);

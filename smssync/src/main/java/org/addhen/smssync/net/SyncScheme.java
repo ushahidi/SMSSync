@@ -33,24 +33,17 @@ import java.util.List;
  */
 public class SyncScheme {
 
-    public static enum SyncMethod {POST, PUT}
-
-    ;
-
-    public static enum SyncDataFormat {URLEncoded, JSON, XML, YAML}
-
-    ;
-
-    public static enum SyncDataKey {SECRET, FROM, MESSAGE, SENT_TIMESTAMP, MESSAGE_ID, SENT_TO, DEVICE_ID}
-
-    ;
-
-
     private SyncMethod method;
+
+    ;
 
     private SyncDataFormat format;
 
+    ;
+
     private String keySecret;
+
+    ;
 
     private String keyFrom;
 
@@ -63,7 +56,6 @@ public class SyncScheme {
     private String keyMessageID;
 
     private String keyDeviceID;
-
 
     public SyncScheme() {
         init(
@@ -226,5 +218,11 @@ public class SyncScheme {
                 keySentTimeStamp + "," + keyMessageID + "," + keyDeviceID + "] " +
                 "}";
     }
+
+    public static enum SyncMethod {POST, PUT}
+
+    public static enum SyncDataFormat {URLEncoded, JSON, XML, YAML}
+
+    public static enum SyncDataKey {SECRET, FROM, MESSAGE, SENT_TIMESTAMP, MESSAGE_ID, SENT_TO, DEVICE_ID}
 
 }

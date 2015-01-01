@@ -213,7 +213,7 @@ public class ProcessMessage {
             String response = null;
             try {
                 client.execute();
-                response = client.getResponse();
+                response = client.getResponse().toString();
             } catch (Exception e) {
                 Logger.log(TAG, e.getMessage());
             }
