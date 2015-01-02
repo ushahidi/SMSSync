@@ -16,6 +16,8 @@
  ******************************************************************************/
 package org.addhen.smssync.net;
 
+import com.google.gson.Gson;
+
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
@@ -23,6 +25,7 @@ import com.squareup.otto.Produce;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.SmssyncResponse;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme.SyncDataFormat;
 import org.addhen.smssync.net.SyncScheme.SyncDataKey;
@@ -47,7 +50,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
     private String clientError;
 
-    private String serverSuccessResp;
+    private SmssyncResponse smssyncResponse;
 
     public MessageSyncHttpClient(
             Context context, SyncUrl syncUrl, Message message, String toNumber, String deviceId
@@ -116,11 +119,12 @@ public class MessageSyncHttpClient extends MainHttpClient {
                 setServerError("bad http return code", statusCode);
                 return false;
             }
-
-            if (Util.getJsonSuccessStatus(response.body().string())) {
+            final Gson gson = new Gson();
+            SmssyncResponse smssyncResponses = gson.fromJson(response.body().charStream(), SmssyncResponse.class);
+            if (smssyncResponses.getPayload().success) {
                 // auto response message is enabled to be received from the
                 // server.
-                setServerSuccessResp(response.toString());
+                setServerSuccessResp(smssyncResponses);
                 return true;
             }
 
@@ -128,7 +132,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
             if (!TextUtils.isEmpty(payloadError)) {
                 setServerError(payloadError, statusCode);
             } else {
-                setServerError(response.toString(), statusCode);
+                setServerError(response.body().string(), statusCode);
             }
         } catch (Exception e) {
             log("Request failed", e);
@@ -207,12 +211,12 @@ public class MessageSyncHttpClient extends MainHttpClient {
         Util.logActivities(context, serverError);
     }
 
-    public String getServerSuccessResp() {
-        return this.serverSuccessResp;
+    public SmssyncResponse getServerSuccessResp() {
+        return this.smssyncResponse;
     }
 
-    public void setServerSuccessResp(String serverSuccessResp) {
-        this.serverSuccessResp = serverSuccessResp;
+    public void setServerSuccessResp(SmssyncResponse smssyncResponse) {
+        this.smssyncResponse = smssyncResponse;
     }
 
     @Produce

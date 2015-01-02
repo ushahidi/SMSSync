@@ -1,7 +1,9 @@
 package org.addhen.smssync.messages;
 
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.addhen.smssync.models.SmssyncResponse;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
@@ -140,37 +142,16 @@ public class ProcessMessage {
      *
      * @param response The JSON string response from the server.
      */
-    public void smsServerResponse(String response) {
+    public void smsServerResponse(SmssyncResponse response) {
         Logger.log(TAG, "performResponseFromServer(): " + " response:"
                 + response);
         if (!prefs.enableReplyFrmServer().get()) {
             return;
         }
 
-        if (!TextUtils.isEmpty(response)) {
-
-            try {
-
-                jsonObject = new JSONObject(response);
-                JSONObject payloadObject = jsonObject.getJSONObject("payload");
-
-                if (payloadObject != null) {
-
-                    jsonArray = payloadObject.getJSONArray("messages");
-
-                    for (int index = 0; index < jsonArray.length(); ++index) {
-                        jsonObject = jsonArray.getJSONObject(index);
-                        new Util().log("Send sms: To: "
-                                + jsonObject.getString("to") + "Message: "
-                                + jsonObject.getString("message"));
-
-                        processSms.sendSms(jsonObject.getString("to"),
-                                jsonObject.getString("message"), jsonObject.getString("uuid"));
-                    }
-
-                }
-            } catch (JSONException e) {
-                new Util().log(TAG, "Error: " + e.getMessage());
+        if (response !=null && response.getPayload().messages.size() > 0) {
+            for (SmssyncResponse.Payload.Message msg : response.getPayload().messages ) {
+                processSms.sendSms(msg.to, msg.message, msg.uuid);
             }
         }
     }
@@ -209,34 +190,33 @@ public class ProcessMessage {
             }
 
             MainHttpClient client = new MainHttpClient(uriBuilder.toString(), context);
-            String response = null;
+            final Gson gson = new Gson();
+            SmssyncResponse smssyncResponses = null;
             try {
                 client.execute();
-                response = client.getResponse().toString();
+                smssyncResponses = gson.fromJson(client.getResponse().body().charStream(), SmssyncResponse.class);
+
             } catch (Exception e) {
                 Logger.log(TAG, e.getMessage());
             }
 
-            Logger.log(TAG, "TaskCheckResponse: " + response);
-            if (response != null && !TextUtils.isEmpty(response)) {
 
-                try {
+            if (smssyncResponses != null) {
+                Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
+                Util.logActivities(context,"TaskCheckResponse: " + smssyncResponses.toString());
 
-                    jsonObject = new JSONObject(response);
-                    JSONObject payloadObject = jsonObject
-                            .getJSONObject("payload");
 
-                    if (payloadObject != null) {
-                        String task = payloadObject.getString("task");
+                    if (smssyncResponses.getPayload() != null) {
+                        String task = smssyncResponses.getPayload().task;
                         Logger.log(TAG, "Task " + task);
                         boolean secretOk = TextUtils.isEmpty(urlSecret) ||
-                                urlSecret.equals(payloadObject.getString("secret"));
+                                urlSecret.equals(smssyncResponses.getPayload().secret);
                         if (secretOk && task.equals("send")) {
                             if (prefs.messageResultsAPIEnable().get()) {
-                                sendSMSWithMessageResultsAPIEnabled(syncUrl, payloadObject);
+                                sendSMSWithMessageResultsAPIEnabled(syncUrl, smssyncResponses.getPayload().messages);
                             } else {
                                 //backwards compatibility
-                                sendSMSWithMessageResultsAPIDisabled(payloadObject);
+                                sendSMSWithMessageResultsAPIDisabled(smssyncResponses.getPayload().messages);
                             }
 
                         } else {
@@ -252,54 +232,34 @@ public class ProcessMessage {
                         setErrorMessage(context.getString(R.string.no_task));
                     }
 
-                } catch (JSONException e) {
-                    Logger.log(TAG, "Error: " + e.getMessage());
-                    setErrorMessage(e.getMessage());
-                }
             }
         }
         Util.logActivities(context, context.getString(R.string.finish_task_check));
     }
 
-    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl, JSONObject payloadObject) throws JSONException {
+    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl, List<SmssyncResponse.Payload.Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
-        List<TaskMessage> receivedTasks = JsonUtils.getObj(payloadObject.getJSONArray("messages").toString(),
-                new TypeToken<List<TaskMessage>>() {
-                }.getType());
 
-        for (TaskMessage task : receivedTasks) {
-            messagesUUIDs.getQueuedMessages().add(task.getUuid());
+        for (SmssyncResponse.Payload.Message msg : msgs) {
+            messagesUUIDs.getQueuedMessages().add(msg.uuid);
         }
 
         MessagesUUIDSResponse response = mMessageResultsController.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
         if(null != response && response.isSuccess() && response.hasUUIDs()) {
-            for (TaskMessage msg : receivedTasks) {
-                if (response.getUuids().contains(msg.getUuid())) {
-                    processSms.sendSms(msg.getSentTo(), msg.getMessage(), msg.getUuid());
+            for (SmssyncResponse.Payload.Message msg : msgs) {
+                if (response.getUuids().contains(msg.uuid)) {
+                    processSms.sendSms(msg.to, msg.message, msg.uuid);
                     Util.logActivities(context,
                             context.getString(R.string.processed_task,
-                                    msg.getMessage()));
+                                    msg.message));
                 }
             }
         }
     }
 
-    private void sendSMSWithMessageResultsAPIDisabled(JSONObject payloadObject) throws JSONException {
-        jsonArray = payloadObject.getJSONArray("messages");
-
-        for (int index = 0; index < jsonArray.length(); ++index) {
-            jsonObject = jsonArray.getJSONObject(index);
-
-            // Make sure message UUID has been set before attempting to get.
-            // This should work with pre 2.5 releases
-            String uuid = jsonObject.has("uuid") ? jsonObject.getString("uuid")
-                    : "";
-            processSms.sendSms(jsonObject.getString("to"),
-                    jsonObject.getString("message"), uuid);
-
-            Util.logActivities(context,
-                    context.getString(R.string.processed_task,
-                            jsonObject.getString("message")));
+    private void sendSMSWithMessageResultsAPIDisabled(List<SmssyncResponse.Payload.Message> msgs) {
+        for (SmssyncResponse.Payload.Message msg : msgs) {
+            processSms.sendSms(msg.to, msg.message, msg.uuid);
         }
     }
 
