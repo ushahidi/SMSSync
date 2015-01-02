@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class BaseHttpClient {
 
-    private static final int TIME_OUT_CONNECTION = 60000;
+    private static final int TIME_OUT_CONNECTION = 30;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -89,7 +89,9 @@ public abstract class BaseHttpClient {
         this.header = new HashMap<>();
 
         httpClient = new OkHttpClient();
-        httpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.MILLISECONDS);
+        httpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
+        httpClient.setWriteTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
+        httpClient.setReadTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
     }
 
     private static void debug(Exception e) {
