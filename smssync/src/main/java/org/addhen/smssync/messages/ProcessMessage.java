@@ -415,7 +415,7 @@ public class ProcessMessage {
     /**
      * Routes both incoming SMS and pending messages.
      *
-     * @param message The message to be rounted
+     * @param message The message to be routed
      */
     private boolean routeMessage(Message message) {
 

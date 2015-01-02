@@ -6,31 +6,50 @@ import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tests.BaseTest;
+import org.addhen.smssync.tests.CustomAndroidTestCase;
+import org.mockito.Mock;
 
 import android.preference.Preference;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
+
 /**
  * Test Process message
  */
-public class ProcessMessageTest extends BaseTest {
+public class ProcessMessageTest extends CustomAndroidTestCase {
 
     private ProcessMessage mProcessMessage;
 
-    private Message mMessage;
+    @Mock
+    Message mMessage;
+
+    @Mock
+    Prefs mPrefs;
 
     private ProcessSms mProcessSms;
+
+    @Mock
+    ProcessSms mMockProcessSms;
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        initMocks(this);
         mProcessMessage = new ProcessMessage(getContext());
         mProcessSms = new ProcessSms(getContext());
-        mMessage = new Message();
-        mMessage.setFrom("0243581806");
-        mMessage.setUuid(mProcessSms.getUuid());
-        mMessage.setTimestamp("1370831690572");
-        mMessage.setBody("foo bar");
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
     }
 
     @SmallTest
@@ -39,9 +58,19 @@ public class ProcessMessageTest extends BaseTest {
         assertTrue("Could not delete the message",mMessage.deleteAllMessages());
     }
 
+    @SmallTest
+    public void testProcessMessageFromServer () {
+        doNothing().when(mMockProcessSms).sendSms(anyString(),anyString(),anyString());
+        when(Prefs.enableReplyFrmServer).thenReturn(true);
+        final String jsonResponse = readJsonAsset("task_response.json");
+
+        mProcessMessage.smsServerResponse(jsonResponse);
+        verify(mMockProcessSms).sendSms(anyString(), anyString(), anyString());
+    }
+
     // Disable these test for now. Replace most of the live URL with mocked ones
     @MediumTest
-    public void shouldSyncReceivedSms() throws Exception {
+    public void testShouldSyncReceivedSms() throws Exception {
         SyncUrl syncUrl = new SyncUrl();
         syncUrl.setKeywords("");
         syncUrl.setSecret("demo");
@@ -57,7 +86,7 @@ public class ProcessMessageTest extends BaseTest {
     }
 
     @MediumTest
-    public void testShouldPerformTaskEnabledSyncUrl() throws Exception {
+    public void ShouldPerformTaskEnabledSyncUrl() throws Exception {
         SyncUrl syncUrlDemo = new SyncUrl();
         syncUrlDemo.setKeywords("");
         syncUrlDemo.setSecret("demo");
@@ -193,8 +222,27 @@ public class ProcessMessageTest extends BaseTest {
 
     }
 
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
+    private String readJsonAsset(String json) {
+        String jsonString;
+        try {
+
+            InputStream is = getContext().getAssets().open("json/"+json);
+
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+
+            is.read(buffer);
+
+            is.close();
+
+            jsonString = new String(buffer, "UTF-8");
+
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return jsonString;
     }
 }
