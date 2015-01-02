@@ -35,15 +35,9 @@ public class SyncScheme {
 
     private SyncMethod method;
 
-    ;
-
     private SyncDataFormat format;
 
-    ;
-
     private String keySecret;
-
-    ;
 
     private String keyFrom;
 

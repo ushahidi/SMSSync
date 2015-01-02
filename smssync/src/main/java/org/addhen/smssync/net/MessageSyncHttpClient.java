@@ -109,32 +109,32 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
         try {
             execute();
+            Response response = getResponse();
+            int statusCode = response.code();
+
+            if (statusCode != 200 && statusCode != 201) {
+                setServerError("bad http return code", statusCode);
+                return false;
+            }
+
+            if (Util.getJsonSuccessStatus(response.body().string())) {
+                // auto response message is enabled to be received from the
+                // server.
+                setServerSuccessResp(response.toString());
+                return true;
+            }
+
+            String payloadError = Util.getJsonError(response.toString());
+            if (!TextUtils.isEmpty(payloadError)) {
+                setServerError(payloadError, statusCode);
+            } else {
+                setServerError(response.toString(), statusCode);
+            }
         } catch (Exception e) {
             log("Request failed", e);
             setClientError("Request failed. " + e.getMessage());
         }
 
-        Response response = getResponse();
-        int statusCode = response.code();
-
-        if (statusCode != 200 && statusCode != 201) {
-            setServerError("bad http return code", statusCode);
-            return false;
-        }
-
-        if (Util.getJsonSuccessStatus(response.toString())) {
-            // auto response message is enabled to be received from the
-            // server.
-            setServerSuccessResp(response.toString());
-            return true;
-        }
-
-        String payloadError = Util.getJsonError(response.toString());
-        if (!TextUtils.isEmpty(payloadError)) {
-            setServerError(payloadError, statusCode);
-        } else {
-            setServerError(response.toString(), statusCode);
-        }
         return false;
 
     }
