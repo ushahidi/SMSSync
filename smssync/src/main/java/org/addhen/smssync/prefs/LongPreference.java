@@ -64,15 +64,6 @@ public class LongPreference extends BasePreference<Long> {
             throw new IllegalArgumentException("Long value cannot be null");
         }
 
-        this.set(value);
-    }
-
-    /**
-     * Convenient method for setting the Long to be saved and to avoid clumsy autoboxing.
-     *
-     * @param value The Long value to be saved
-     */
-    public void set(int value) {
         getSharedPreferences().edit().putLong(getKey(), value).commit();
     }
 }

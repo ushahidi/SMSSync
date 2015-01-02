@@ -24,11 +24,11 @@ public class Prefs {
     }
 
     public StringPreference website() {
-        return new StringPreference(sharedPreferences, "WebsitePref", null);
+        return new StringPreference(sharedPreferences, "WebsitePref", "");
     }
 
     public StringPreference apiKey() {
-        return new StringPreference(sharedPreferences, "ApiKey", null);
+        return new StringPreference(sharedPreferences, "ApiKey", "");
     }
 
     public StringPreference reply() {
@@ -70,7 +70,7 @@ public class Prefs {
     }
 
     public StringPreference uniqueId() {
-        return new StringPreference(sharedPreferences, "UniqueId", null);
+        return new StringPreference(sharedPreferences, "UniqueId", "");
     }
 
     public StringPreference taskCheckTime() {
@@ -99,7 +99,7 @@ public class Prefs {
     }
 
     public StringPreference alertPhoneNumber() {
-        return new StringPreference(sharedPreferences, "AlertPhoneNumber", null);
+        return new StringPreference(sharedPreferences, "AlertPhoneNumber", "");
     }
 
     public BooleanPreference smsReportDelivery() {
@@ -108,5 +108,13 @@ public class Prefs {
 
     public BooleanPreference messageResultsAPIEnable() {
         return new BooleanPreference(sharedPreferences, "MessageResultsAPIEnable", false);
+    }
+
+    public StringPreference keyword() {
+        return  new StringPreference(sharedPreferences, "Keyword", "");
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

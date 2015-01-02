@@ -71,6 +71,5 @@ public class StringPreference extends BasePreference<String> {
         }
 
         getSharedPreferences().edit().putString(getKey(), value).commit();
-
     }
 }

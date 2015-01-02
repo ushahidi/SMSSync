@@ -18,10 +18,10 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.exceptions.ConnectivityException;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.tasks.state.State;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
@@ -44,6 +44,10 @@ import android.text.format.DateFormat;
  */
 public abstract class BaseService extends Service {
 
+    protected final static String CLASS_TAG = BaseService.class.getSimpleName();
+
+    protected Prefs prefs;
+
     /**
      * A wakelock held while this service is working.
      */
@@ -56,8 +60,6 @@ public abstract class BaseService extends Service {
 
     private LogUtil mLogUtil;
 
-    protected final static String CLASS_TAG = BaseService.class.getSimpleName();
-
     private String TAG = LogUtil.class.getSimpleName();
 
     @Override
@@ -68,8 +70,8 @@ public abstract class BaseService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Prefs.loadPreferences(this);
-        if (Prefs.enableLog) {
+        prefs = new Prefs(this);
+        if (prefs.enableLog().get()) {
             mLogUtil = new LogUtil(DateFormat.getDateFormatOrder(this));
         }
         MainApplication.bus.register(this);

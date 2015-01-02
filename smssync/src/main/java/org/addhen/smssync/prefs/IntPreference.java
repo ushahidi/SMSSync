@@ -64,15 +64,6 @@ public class IntPreference extends BasePreference<Integer> {
             throw new IllegalArgumentException("Integer value cannot be null");
         }
 
-        this.set((int) value);
-    }
-
-    /**
-     * Convenient method for setting the Integer to be saved and to avoid clumsy autoboxing.
-     *
-     * @param value The Integer value to be saved
-     */
-    public void set(int value) {
         getSharedPreferences().edit().putInt(getKey(), value).commit();
     }
 }

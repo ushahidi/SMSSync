@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
@@ -35,12 +34,12 @@ import android.os.SystemClock;
  */
 public class ScheduleServices {
 
+    private static final String CLASS_TAG = ScheduleServices.class
+            .getSimpleName();
+
     private AlarmManager mgr;
 
     private PendingIntent pendingIntent;
-
-    private static final String CLASS_TAG = ScheduleServices.class
-            .getSimpleName();
 
     private Context mContext;
 
@@ -49,8 +48,6 @@ public class ScheduleServices {
         mContext = context.getApplicationContext();
         Logger.log(CLASS_TAG,
                 "ScheduleServices() executing scheduled services ");
-        Prefs.loadPreferences(context);
-
         mgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         pendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent,
                 flags);

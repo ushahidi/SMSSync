@@ -17,15 +17,14 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
+import org.addhen.smssync.prefs.Prefs;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -43,8 +42,6 @@ import java.util.List;
  * @author eyedol
  */
 public class Database {
-
-    private static final String TAG = "SmssyncDatabase";
 
     public static final String SENT_MESSAGES_UUID = "_id";
 
@@ -69,15 +66,7 @@ public class Database {
             SENT_MESSAGES_DATE, SENT_MESSAGE_TYPE, SENT_RESULT_CODE,
             SENT_RESULT_MESSAGE, DELIVERY_RESULT_CODE, DELIVERY_RESULT_MESSAGE};
 
-    private DatabaseHelper mDbHelper;
-
-    protected SQLiteDatabase mDb;
-
-    private static final String DATABASE_NAME = "smssync_db";
-
     public static final String SENT_MESSAGES_TABLE = "sent_messages";
-
-    private static final int DATABASE_VERSION = 7;
 
     private static final String SENT_MESSAGES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + SENT_MESSAGES_TABLE
@@ -93,7 +82,11 @@ public class Database {
             + SENT_MESSAGES_DATE
             + " DATE NOT NULL " + ")";
 
-    private final Context mContext;
+    private static final String TAG = "SmssyncDatabase";
+
+    private static final String DATABASE_NAME = "smssync_db";
+
+    private static final int DATABASE_VERSION = 7;
 
     public static SyncUrlContentProvider syncUrlContentProvider; // CP
 
@@ -101,56 +94,14 @@ public class Database {
 
     public static FilterContentProvider filterContentProvider;
 
-    private static class DatabaseHelper extends SQLiteOpenHelper {
+    private final Context mContext;
 
-        private Context mContext;
+    protected SQLiteDatabase mDb;
 
-        DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-            mContext = context;
-        }
+    private DatabaseHelper mDbHelper;
 
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(IMessagesSchema.CREATE_TABLE);
-            db.execSQL(SENT_MESSAGES_TABLE_CREATE);
-            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
-            db.execSQL(IFilterSchema.CREATE_TABLE);
-            DatabaseUpgrade.upgradeToVersion7(db); //updating database to version 7
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-                    + newVersion + " which destroys all old data");
-
-            // upgrade messages table
-            // drop the column to deleted
-            dropColumn(db, IMessagesSchema.CREATE_TABLE, IMessagesSchema.TABLE,
-                    new String[]{"_id"});
-
-            // upgrade sent messages table
-            dropColumn(db, SENT_MESSAGES_TABLE_CREATE, SENT_MESSAGES_TABLE,
-                    new String[]{"_id"});
-
-            //Upgrade database
-            switch (oldVersion) {
-                case 6:
-                    DatabaseUpgrade.upgradeToVersion7(db);
-                case 7:
-                    break;
-                default:
-                    Log.w(TAG, "Unknown database version");
-                    break;
-            }
-
-            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
-            db.execSQL(IFilterSchema.CREATE_TABLE);
-            // add old sync url configuration to the database,
-            syncLegacySyncUrl(mContext, db);
-            onCreate(db);
-        }
-
+    public Database(Context context) {
+        this.mContext = context;
     }
 
     private static void dropColumn(SQLiteDatabase db, String createTableCmd,
@@ -217,8 +168,56 @@ public class Database {
         return buf.toString();
     }
 
-    public Database(Context context) {
-        this.mContext = context;
+    public static boolean addSyncUrl(SyncUrl syncUrl, SQLiteDatabase db) {
+        // set values
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(ISyncUrlSchema.TITLE, syncUrl.getTitle());
+        initialValues.put(ISyncUrlSchema.URL, syncUrl.getUrl());
+        initialValues.put(ISyncUrlSchema.KEYWORDS, syncUrl.getKeywords());
+        initialValues.put(ISyncUrlSchema.SECRET, syncUrl.getSecret());
+        initialValues.put(ISyncUrlSchema.STATUS, syncUrl.getStatus());
+        initialValues.put(ISyncUrlSchema.SYNCSCHEME, syncUrl.getSyncScheme().toJSONString());
+        return db.insert(ISyncUrlSchema.TABLE, null, initialValues) > 0;
+    }
+
+    public static boolean addSyncUrl(List<SyncUrl> syncUrls,
+            SQLiteDatabase db) {
+
+        try {
+            db.beginTransaction();
+
+            for (SyncUrl syncUrl : syncUrls) {
+
+                addSyncUrl(syncUrl, db);
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return true;
+    }
+
+    public static void syncLegacySyncUrl(Context context, SQLiteDatabase db) {
+        // saved preferences
+
+        Prefs prefs = new Prefs(context);
+        final String website = prefs.website().get();
+        final String apiKey = prefs.apiKey().get();
+        final String keyword = prefs.keyword().get();
+        SyncUrl syncUrl = new SyncUrl();
+        List<SyncUrl> listSyncUrl = new ArrayList<>();
+        if (!TextUtils.isEmpty(website)) {
+            syncUrl.setKeywords(keyword);
+            syncUrl.setSecret(apiKey);
+            syncUrl.setTitle(context.getString(R.string.sync_url));
+            syncUrl.setUrl(website);
+            syncUrl.setStatus(1);
+            syncUrl.setSyncScheme(new SyncScheme());
+            listSyncUrl.add(syncUrl);
+            addSyncUrl(listSyncUrl, db);
+        }
+
     }
 
     public Database open() throws SQLException {
@@ -233,7 +232,6 @@ public class Database {
     public void close() {
         mDbHelper.close();
     }
-
 
     /**
      * Insert new message into the messages table.
@@ -344,36 +342,6 @@ public class Database {
         }
     }
 
-    public static boolean addSyncUrl(SyncUrl syncUrl, SQLiteDatabase db) {
-        // set values
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(ISyncUrlSchema.TITLE, syncUrl.getTitle());
-        initialValues.put(ISyncUrlSchema.URL, syncUrl.getUrl());
-        initialValues.put(ISyncUrlSchema.KEYWORDS, syncUrl.getKeywords());
-        initialValues.put(ISyncUrlSchema.SECRET, syncUrl.getSecret());
-        initialValues.put(ISyncUrlSchema.STATUS, syncUrl.getStatus());
-        initialValues.put(ISyncUrlSchema.SYNCSCHEME, syncUrl.getSyncScheme().toJSONString());
-        return db.insert(ISyncUrlSchema.TABLE, null, initialValues) > 0;
-    }
-
-    public static boolean addSyncUrl(List<SyncUrl> syncUrls,
-            SQLiteDatabase db) {
-
-        try {
-            db.beginTransaction();
-
-            for (SyncUrl syncUrl : syncUrls) {
-
-                addSyncUrl(syncUrl, db);
-            }
-
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
-        return true;
-    }
-
     /**
      * Count the number of sent messages in the database.
      *
@@ -422,25 +390,54 @@ public class Database {
         return deleted;
     }
 
-    public static void syncLegacySyncUrl(Context context, SQLiteDatabase db) {
-        // saved preferences
-        final SharedPreferences settings = context.getSharedPreferences(
-                Prefs.PREF_NAME, 0);
+    private static class DatabaseHelper extends SQLiteOpenHelper {
 
-        final String website = settings.getString("WebsitePref", "");
-        final String apiKey = settings.getString("ApiKey", "");
-        final String keyword = settings.getString("Keyword", "");
-        SyncUrl syncUrl = new SyncUrl();
-        List<SyncUrl> listSyncUrl = new ArrayList<SyncUrl>();
-        if (!TextUtils.isEmpty(website)) {
-            syncUrl.setKeywords(keyword);
-            syncUrl.setSecret(apiKey);
-            syncUrl.setTitle(context.getString(R.string.sync_url));
-            syncUrl.setUrl(website);
-            syncUrl.setStatus(1);
-            syncUrl.setSyncScheme(new SyncScheme());
-            listSyncUrl.add(syncUrl);
-            addSyncUrl(listSyncUrl, db);
+        private Context mContext;
+
+        DatabaseHelper(Context context) {
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
+            mContext = context;
+        }
+
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            db.execSQL(IMessagesSchema.CREATE_TABLE);
+            db.execSQL(SENT_MESSAGES_TABLE_CREATE);
+            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
+            db.execSQL(IFilterSchema.CREATE_TABLE);
+            DatabaseUpgrade.upgradeToVersion7(db); //updating database to version 7
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+                    + newVersion + " which destroys all old data");
+
+            // upgrade messages table
+            // drop the column to deleted
+            dropColumn(db, IMessagesSchema.CREATE_TABLE, IMessagesSchema.TABLE,
+                    new String[]{"_id"});
+
+            // upgrade sent messages table
+            dropColumn(db, SENT_MESSAGES_TABLE_CREATE, SENT_MESSAGES_TABLE,
+                    new String[]{"_id"});
+
+            //Upgrade database
+            switch (oldVersion) {
+                case 6:
+                    DatabaseUpgrade.upgradeToVersion7(db);
+                case 7:
+                    break;
+                default:
+                    Log.w(TAG, "Unknown database version");
+                    break;
+            }
+
+            db.execSQL(ISyncUrlSchema.CREATE_TABLE);
+            db.execSQL(IFilterSchema.CREATE_TABLE);
+            // add old sync url configuration to the database,
+            syncLegacySyncUrl(mContext, db);
+            onCreate(db);
         }
 
     }

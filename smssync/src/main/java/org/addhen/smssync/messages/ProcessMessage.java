@@ -2,7 +2,7 @@ package org.addhen.smssync.messages;
 
 import com.google.gson.reflect.TypeToken;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.models.Filter;
@@ -50,10 +50,13 @@ public class ProcessMessage {
 
     private MessageResultsController mMessageResultsController;
 
+    private Prefs prefs;
+
     public ProcessMessage(Context context) {
         this.context = context;
         processSms = new ProcessSms(context);
         mMessageResultsController = new MessageResultsController(context);
+        prefs = new Prefs(context);
     }
 
     /**
@@ -75,10 +78,9 @@ public class ProcessMessage {
     public boolean syncReceivedSms(Message message, SyncUrl syncUrl) {
         Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
                 message.toString() + " SyncUrlFragment: " + syncUrl.toString());
-        Prefs.loadPreferences(context);
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
-                context, syncUrl, message, Util.getPhoneNumber(context), Prefs.uniqueId
+                context, syncUrl, message, Util.getPhoneNumber(context), prefs.uniqueId().get()
         );
         final boolean posted = client.postSmsToWebService();
 
@@ -141,7 +143,7 @@ public class ProcessMessage {
     public void smsServerResponse(String response) {
         Logger.log(TAG, "performResponseFromServer(): " + " response:"
                 + response);
-        if (!Prefs.enableReplyFrmServer) {
+        if (!prefs.enableReplyFrmServer().get()) {
             return;
         }
 
@@ -177,7 +179,6 @@ public class ProcessMessage {
         Logger.log(TAG, "performTask(): perform a task");
         Util.logActivities(context, context.getString(R.string.perform_task));
         // load Prefs
-        Prefs.loadPreferences(context);
 
         // validate configured url
         int status = Util.validateCallbackUrl(syncUrl.getUrl());
@@ -231,7 +232,7 @@ public class ProcessMessage {
                         boolean secretOk = TextUtils.isEmpty(urlSecret) ||
                                 urlSecret.equals(payloadObject.getString("secret"));
                         if (secretOk && task.equals("send")) {
-                            if (Prefs.isMessageResultsApiEnabled(context)) {
+                            if (prefs.messageResultsAPIEnable().get()) {
                                 sendSMSWithMessageResultsAPIEnabled(syncUrl, payloadObject);
                             } else {
                                 //backwards compatibility
@@ -313,19 +314,19 @@ public class ProcessMessage {
         Logger.log(TAG, "routeSms uuid: " + message.toString());
 
         // is SMSSync service running?
-        if (Prefs.enabled) {
+        if (prefs.serviceEnabled().get()) {
             // send auto response from phone not server.
-            if (Prefs.enableReply) {
+            if (prefs.enableReply().get()) {
                 // send auto response as SMS to user's phone
                 Util.logActivities(context, context.getString(R.string.auto_response_sent));
-                processSms.sendSms(message.getFrom(), Prefs.reply);
+                processSms.sendSms(message.getFrom(), prefs.reply().get());
             }
 
             if (routeMessage(message)) {
 
                 // Delete messages from message app's inbox, only
                 // when SMSSync has that feature turned on
-                if (Prefs.autoDelete) {
+                if (prefs.autoDelete().get()) {
 
                     processSms.delSmsFromInbox(message.getBody(), message.getFrom());
                     Util.logActivities(context,
@@ -334,7 +335,7 @@ public class ProcessMessage {
                 return true;
             } else {
                 //only save to pending when the number is not blacklisted
-                if (!Prefs.enableBlacklist) {
+                if (!prefs.enableBlacklist().get()) {
                     saveMessage(message);
                 }
             }
@@ -420,10 +421,9 @@ public class ProcessMessage {
     private boolean routeMessage(Message message) {
 
         // load preferences
-        Prefs.loadPreferences(context);
         boolean posted = false;
         // is SMSSync service running?
-        if (!Prefs.enabled || !Util.isConnected(context)) {
+        if (!prefs.serviceEnabled().get() || !Util.isConnected(context)) {
             return posted;
         }
         SyncUrl model = new SyncUrl();
@@ -431,7 +431,7 @@ public class ProcessMessage {
         // get enabled Sync URLs
         for (SyncUrl syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
             // white listed is enabled
-            if (Prefs.enableWhitelist) {
+            if (prefs.enableWhitelist().get()) {
                 filters.loadByStatus(Filter.Status.WHITELIST);
                 for (Filter filter : filters.getFilterList()) {
                     if (filter.getPhoneNumber().equals(message.getFrom())) {
@@ -441,7 +441,7 @@ public class ProcessMessage {
                 return false;
             }
 
-            if (Prefs.enableBlacklist) {
+            if (prefs.enableBlacklist().get()) {
 
                 filters.loadByStatus(Filter.Status.BLACKLIST);
                 for (Filter filter : filters.getFilterList()) {

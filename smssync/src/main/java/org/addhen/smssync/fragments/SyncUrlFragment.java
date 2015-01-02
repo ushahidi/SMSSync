@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.fragments;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
 import org.addhen.smssync.listeners.SyncUrlActionModeListener;
@@ -46,7 +46,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
 import java.util.List;
 
@@ -77,7 +76,6 @@ public class SyncUrlFragment extends
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
 
-        Prefs.loadPreferences(getActivity());
         pm = getActivity().getPackageManager();
         smsReceiverComponent = new ComponentName(getActivity(),
                 SmsReceiver.class);
@@ -86,7 +84,7 @@ public class SyncUrlFragment extends
         listView.setLongClickable(true);
         listView.setOnItemLongClickListener(new SyncUrlActionModeListener(this,
                 listView));
-        view.enableSmsSync.setChecked(Prefs.enabled);
+        view.enableSmsSync.setChecked(prefs.serviceEnabled().get());
         view.enableSmsSync.setOnClickListener(this);
 
         // registerForContextMenu(listView);
@@ -151,7 +149,7 @@ public class SyncUrlFragment extends
                 showMessage(R.string.disable_to_delete_all_syncurl);
 
                 // check if a service is running
-            } else if (Prefs.enabled) {
+            } else if (prefs.serviceEnabled().get()) {
                 showMessage(R.string.disable_smssync_service);
             } else {
                 performDeleteAll();
@@ -401,6 +399,7 @@ public class SyncUrlFragment extends
             // load all checked syncurl
             loadByStatus();
             if (syncUrl != null && syncUrl.size() > 0) {
+                RunServicesUtil runServicesUtil = new RunServicesUtil(prefs);
                 if (view.enableSmsSync.isChecked()) {
 
                     if (Util.isDefaultSmsApp(this.getActivity())) {
@@ -409,22 +408,21 @@ public class SyncUrlFragment extends
                                 PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                                 PackageManager.DONT_KILL_APP);
 
-                        Prefs.enabled = true;
+                        prefs.serviceEnabled().set(true);
                         view.enableSmsSync.setChecked(true);
                         // because the services to be run depends on the state of the service so save the
                         // changes first
-                        Prefs.savePreferences(getActivity());
                         // run auto sync service
-                        RunServicesUtil.runAutoSyncService(getActivity());
+                        runServicesUtil.runAutoSyncService();
 
                         // run check task service
-                        RunServicesUtil.runCheckTaskService(getActivity());
+                        runServicesUtil.runCheckTaskService();
 
                         // show notification
                         Util.showNotification(getActivity());
                     } else {
                         view.enableSmsSync.setChecked(false);
-                        Prefs.enabled = false;
+                        prefs.serviceEnabled().set(false);
                         Util.makeDefaultSmsApp(this.getActivity());
                     }
 
@@ -434,8 +432,8 @@ public class SyncUrlFragment extends
                             PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                             PackageManager.DONT_KILL_APP);
 
-                    RunServicesUtil.stopCheckTaskService(getActivity());
-                    RunServicesUtil.stopAutoSyncService(getActivity());
+                    runServicesUtil.stopCheckTaskService();
+                    runServicesUtil.stopAutoSyncService();
 
                     // stop check task schedule
                     getActivity().stopService(
@@ -445,21 +443,20 @@ public class SyncUrlFragment extends
                             new Intent(getActivity(), CheckTaskService.class));
 
                     Util.clearNotify(getActivity());
-                    Prefs.enabled = false;
+                    prefs.serviceEnabled().set(false);
                     view.enableSmsSync.setChecked(false);
                 }
             } else {
                 toastLong(R.string.no_enabled_sync_url);
-                Prefs.enabled = false;
+                prefs.serviceEnabled().set(false);
                 view.enableSmsSync.setChecked(false);
             }
 
         } else {
             toastLong(R.string.no_sync_url_added);
-            Prefs.enabled = false;
+            prefs.serviceEnabled().set(false);
             view.enableSmsSync.setChecked(false);
         }
-        Prefs.savePreferences(getActivity());
     }
 
 

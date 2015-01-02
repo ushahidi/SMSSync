@@ -69,10 +69,6 @@ public class BooleanPreference extends BasePreference<Boolean> {
             throw new IllegalArgumentException("Boolean cannot be null");
         }
 
-        this.set((boolean) value);
-    }
-
-    public void set(boolean value) {
         getSharedPreferences().edit().putBoolean(getKey(), value).commit();
     }
 }

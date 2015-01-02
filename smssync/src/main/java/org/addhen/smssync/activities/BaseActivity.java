@@ -18,7 +18,6 @@
 package org.addhen.smssync.activities;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.NavDrawerAdapter;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
@@ -29,6 +28,7 @@ import org.addhen.smssync.navdrawer.PendingMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SentMessagesNavDrawerItem;
 import org.addhen.smssync.navdrawer.SyncUrlNavDrawerItem;
 import org.addhen.smssync.navdrawer.WhitelistNavDrawerItem;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
@@ -59,6 +59,8 @@ import java.util.List;
  * BaseActivity Add shared functionality that exists between all Activities
  */
 public abstract class BaseActivity<V extends View> extends ActionBarActivity {
+
+    private static int mPosition = 0;
 
     /**
      * Layout resource id
@@ -110,8 +112,6 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
     private LogNavDrawerItem logNavDrawerItem;
 
     private List<BaseNavDrawerItem> navDrawerItem;
-
-    private static int mPosition = 0;
 
     /**
      * BaseActivity
@@ -450,6 +450,13 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
         Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
     }
 
+    protected void logActivities(String message) {
+        Prefs prefs = new Prefs(this);
+        if (prefs.enableLog().get()) {
+            new LogUtil(DateFormat.getDateFormatOrder(this)).appendAndClose(message);
+        }
+    }
+
     private class NavDrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -461,12 +468,6 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
             view.setSelected(true);
         }
 
-    }
-
-    protected void logActivities(String message) {
-        if (Prefs.enableLog) {
-            new LogUtil(DateFormat.getDateFormatOrder(this)).appendAndClose(message);
-        }
     }
 
 }

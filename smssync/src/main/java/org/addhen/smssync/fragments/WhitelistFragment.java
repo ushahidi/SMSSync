@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.fragments;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.listeners.WhitelistActionModeListener;
@@ -38,7 +38,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -72,7 +71,6 @@ public class WhitelistFragment extends
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
 
-        Prefs.loadPreferences(getActivity());
         multichoiceActionModeListener = new WhitelistActionModeListener(this,
                 listView);
 
@@ -80,10 +78,8 @@ public class WhitelistFragment extends
         listView.setLongClickable(true);
         listView.setOnItemLongClickListener(multichoiceActionModeListener);
         listView.setOnItemClickListener(this);
-
-        view.enableWhitelist.setChecked(Prefs.enableWhitelist);
+        view.enableWhitelist.setChecked(prefs.enableWhitelist().get());
         view.enableWhitelist.setOnClickListener(this);
-
     }
 
     @Override
@@ -111,7 +107,7 @@ public class WhitelistFragment extends
 
         if (item.getItemId() == R.id.context_delete) {
             mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
-            if (Prefs.enableWhitelist && (adapter.getCount() == 1
+            if (prefs.enableWhitelist().get() && (adapter.getCount() == 1
                     || adapter.getCount() == mSelectedItemsPositions.size())) {
                 showMessage(R.string.disable_whitelist);
             } else {
@@ -131,7 +127,7 @@ public class WhitelistFragment extends
             return (true);
         } else if (item.getItemId() == R.id.delete_all_phone_numbers) {
             // load all blacklisted phone numbers
-            if (Prefs.enableWhitelist) {
+            if (prefs.enableWhitelist().get()) {
                 showMessage(R.string.disable_whitelist);
             } else {
                 performDeleteAll();
@@ -298,26 +294,24 @@ public class WhitelistFragment extends
             load();
             if (model.getFilterList() != null && model.getFilterList().size() > 0) {
                 if (view.enableWhitelist.isChecked()) {
-                    Prefs.enableWhitelist = true;
+                    prefs.enableWhitelist().set(true);
                     view.enableWhitelist.setChecked(true);
                 } else {
 
-                    Prefs.enableWhitelist = false;
+                    prefs.enableWhitelist().set(false);
                     view.enableWhitelist.setChecked(false);
                 }
             } else {
                 toastLong(R.string.no_phone_number_to_enable_whitelist);
-                Prefs.enableWhitelist = false;
+                prefs.enableWhitelist().set(false);
                 view.enableWhitelist.setChecked(false);
             }
 
         } else {
             toastLong(R.string.no_phone_number_to_enable_whitelist);
-            Prefs.enableWhitelist = false;
+            prefs.enableWhitelist().set(false);
             view.enableWhitelist.setChecked(false);
         }
-
-        Prefs.savePreferences(getActivity());
     }
 
     private boolean load() {

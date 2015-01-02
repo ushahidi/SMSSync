@@ -94,7 +94,7 @@ public class Settings extends PreferenceActivity implements
                 enableMessageResultsAPI.setChecked(false);
             } else {
                 enableMessageResultsAPI.setChecked(true);
-                RunServicesUtil.runMessageResultsService(Settings.this);
+                runServicesUtil.runMessageResultsService();
             }
         }
     };
@@ -119,7 +119,7 @@ public class Settings extends PreferenceActivity implements
                 taskCheck.setChecked(true);
 
                 // start the scheduler for task checking service
-                RunServicesUtil.runCheckTaskService(Settings.this);
+                runServicesUtil.runCheckTaskService();
             }
         }
     };
@@ -144,7 +144,7 @@ public class Settings extends PreferenceActivity implements
                 // messages
                 autoSyncTimes.setEnabled(true);
 
-                RunServicesUtil.runAutoSyncService(Settings.this);
+                runServicesUtil.runAutoSyncService();
             }
         }
     };
@@ -184,6 +184,8 @@ public class Settings extends PreferenceActivity implements
     private Prefs prefs;
 
     private int uniqueIdValidityStatus = 1;
+
+    private RunServicesUtil runServicesUtil;
 
     /**
      * Create runnable to validate unique ID.
@@ -282,6 +284,7 @@ public class Settings extends PreferenceActivity implements
 
         prefs = new Prefs(this);
 
+        runServicesUtil = new RunServicesUtil(prefs);
         // Save settings changes.
         this.savePreferences();
     }
@@ -539,7 +542,7 @@ public class Settings extends PreferenceActivity implements
 
             } else {
                 // stop scheduler
-                RunServicesUtil.stopAutoSyncService(Settings.this);
+                runServicesUtil.stopAutoSyncService();
 
                 autoSyncTimes.setEnabled(false);
             }
@@ -550,7 +553,7 @@ public class Settings extends PreferenceActivity implements
             // restart service
             if (prefs.enableAutoSync().get()) {
 
-                RunServicesUtil.runAutoSyncService(Settings.this);
+                runServicesUtil.runAutoSyncService();
 
             }
         }
@@ -574,10 +577,10 @@ public class Settings extends PreferenceActivity implements
 
             } else {
 
-                RunServicesUtil.stopCheckTaskService(Settings.this);
+                runServicesUtil.stopCheckTaskService();
                 taskCheckTimes.setEnabled(false);
                 if (enableMessageResultsAPI.isChecked()) {
-                    RunServicesUtil.stopMessageResultsService(Settings.this);
+                    runServicesUtil.stopMessageResultsService();
                     enableMessageResultsAPI.setChecked(false);
                     enableMessageResultsAPI.setEnabled(false);
                 }
@@ -587,7 +590,7 @@ public class Settings extends PreferenceActivity implements
         // task frequency
         if (key.equals(TASK_CHECK_TIMES)) {
 
-            RunServicesUtil.runCheckTaskService(Settings.this);
+            runServicesUtil.runCheckTaskService();
         }
 
         // Enable message result checking
@@ -595,7 +598,7 @@ public class Settings extends PreferenceActivity implements
             if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
                 messageResultsAPIEnable();
             } else {
-                RunServicesUtil.stopMessageResultsService(Settings.this);
+                runServicesUtil.stopMessageResultsService();
             }
         }
         this.savePreferences();

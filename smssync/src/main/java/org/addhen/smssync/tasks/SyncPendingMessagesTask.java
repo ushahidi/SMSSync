@@ -24,6 +24,7 @@ import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
@@ -142,7 +143,7 @@ public class SyncPendingMessagesTask extends
             return transition(FINISHED_SYNC, null);
         }
 
-        new SyncDate().setLastSyncedDate(mService.getApplicationContext(),
+        new SyncDate(new Prefs(mService.getApplicationContext())).setLastSyncedDate(
                 System.currentTimeMillis());
 
         Logger.log("SyncPendingMessages", "successful: " + syncdStatus.successful + " failed: "
