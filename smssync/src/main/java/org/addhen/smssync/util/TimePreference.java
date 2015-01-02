@@ -27,9 +27,9 @@ public class TimePreference extends DialogPreference {
     private TimePicker picker = null;
 
     private Prefs prefs;
-    public TimePreference(Prefs prefs, Context context, AttributeSet attrs) {
+    public TimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.prefs = prefs;
+        prefs = new Prefs(context);
         setPositiveButtonText("Set");
         setNegativeButtonText("Cancel");
     }
