@@ -240,7 +240,7 @@ public class ProcessMessage {
     private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl,
             List<SmssyncResponse.Payload.Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
-
+        Logger.log(TAG, "process sendSMSWithMessageResultsAPIEnabled");
         for (SmssyncResponse.Payload.Message msg : msgs) {
             messagesUUIDs.getQueuedMessages().add(msg.uuid);
         }
@@ -248,8 +248,11 @@ public class ProcessMessage {
         MessagesUUIDSResponse response = mMessageResultsController
                 .sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
         if (null != response && response.isSuccess() && response.hasUUIDs()) {
+            Logger.log(TAG, "process Response not null");
             for (SmssyncResponse.Payload.Message msg : msgs) {
                 if (response.getUuids().contains(msg.uuid)) {
+                    Logger.log(TAG, "process matches uuid");
+                    Logger.log(TAG, "process matches uuid: "+msg.uuid);
                     processSms.sendSms(msg.to, msg.message, msg.uuid);
                     Util.logActivities(context,
                             context.getString(R.string.processed_task,

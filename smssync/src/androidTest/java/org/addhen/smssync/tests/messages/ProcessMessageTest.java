@@ -1,6 +1,7 @@
 package org.addhen.smssync.tests.messages;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.models.SmssyncResponse;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
@@ -39,6 +40,10 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
 
     @Mock
     ProcessSms mMockProcessSms;
+
+    @Mock
+    SmssyncResponse mMockSmssyncResponse;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -61,10 +66,8 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     @SmallTest
     public void testProcessMessageFromServer () {
         doNothing().when(mMockProcessSms).sendSms(anyString(),anyString(),anyString());
-        when(Prefs.enableReplyFrmServer).thenReturn(true);
-        final String jsonResponse = readJsonAsset("task_response.json");
 
-        mProcessMessage.smsServerResponse(jsonResponse);
+        mProcessMessage.smsServerResponse(mMockSmssyncResponse);
         verify(mMockProcessSms).sendSms(anyString(), anyString(), anyString());
     }
 
@@ -131,8 +134,8 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
         assertTrue(mMessage.save());
 
         // enable smssync
-        Prefs.enabled = true;
-        Prefs.savePreferences(getContext());
+        //Prefs.enabled = true;
+        //Prefs.savePreferences(getContext());
         final boolean posted = mProcessMessage.routePendingMessage(mMessage);
         assertTrue("Could not sync pending messages, ",
                 posted);
@@ -166,8 +169,8 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
         assertTrue(mMessage.save());
 
         // enable smssync
-        Prefs.enabled = true;
-        Prefs.savePreferences(getContext());
+        //Prefs.enabled = true;
+        //Prefs.savePreferences(getContext());
         final boolean posted = mProcessMessage.routePendingMessage(mMessage);
         assertTrue("Could not sync pending messages, ",
                 posted);
@@ -209,8 +212,8 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
         assertTrue(mMessage.save());
 
         // enable smssync
-        Prefs.enabled = true;
-        Prefs.savePreferences(getContext());
+        //Prefs.enabled = true;
+        //Prefs.savePreferences(getContext());
         final boolean posted = mProcessMessage.routePendingMessage(mMessage);
         assertTrue("Could not sync pending messages, ",
                 posted);
@@ -222,27 +225,4 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
 
     }
 
-    private String readJsonAsset(String json) {
-        String jsonString;
-        try {
-
-            InputStream is = getContext().getAssets().open("json/"+json);
-
-            int size = is.available();
-
-            byte[] buffer = new byte[size];
-
-            is.read(buffer);
-
-            is.close();
-
-            jsonString = new String(buffer, "UTF-8");
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return jsonString;
-    }
 }

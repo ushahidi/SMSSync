@@ -19,7 +19,7 @@ public class MessagesUUIDSResponse {
 
     public MessagesUUIDSResponse(int statusCode) {
         this.success = false;
-        this.uuids = new ArrayList<String>();
+        this.uuids = new ArrayList<>();
         this.statusCode = statusCode;
     }
 

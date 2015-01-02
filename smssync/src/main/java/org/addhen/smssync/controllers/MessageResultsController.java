@@ -10,6 +10,7 @@ import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.BaseHttpClient;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.util.JsonUtils;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
@@ -78,8 +79,6 @@ public class MessageResultsController {
             client.setMethod(BaseHttpClient.HttpMethod.POST);
             client.setRequestBody(body);
             client.execute();
-        } catch (JSONException e) {
-            mUtil.log(mContext.getString(R.string.message_processed_json_failed));
         } catch (Exception e) {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
         } finally {
@@ -107,12 +106,7 @@ public class MessageResultsController {
                 client.setMethod(BaseHttpClient.HttpMethod.POST);
                 client.setRequestBody(body);
                 client.execute();
-            } catch (JSONException e) {
-                mUtil.log(mContext.getString(R.string.message_processed_json_failed));
-                Util.logActivities(mContext,
-                        mContext.getString(R.string.message_processed_json_failed) + " " + e
-                                .getMessage());
-            } catch (Exception e) {
+            }catch (Exception e) {
                 mUtil.log(mContext.getString(R.string.message_processed_failed));
                 Util.logActivities(mContext,
                         mContext.getString(R.string.message_processed_failed) + " " + e
@@ -198,8 +192,9 @@ public class MessageResultsController {
     private MessagesUUIDSResponse parseMessagesUUIDSResponse(MainHttpClient client) {
         MessagesUUIDSResponse response;
         try {
+
             response = JsonUtils
-                    .getObj(client.getResponse().toString(), MessagesUUIDSResponse.class);
+                    .getObj(client.getResponse().body().string(), MessagesUUIDSResponse.class);
             response.setStatusCode(client.getResponse().code());
         } catch (Exception e) {
             response = new MessagesUUIDSResponse(client.getResponse().code());
