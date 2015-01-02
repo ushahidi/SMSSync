@@ -57,7 +57,7 @@ public abstract class BaseHttpClient {
             .parse("application/json; charset=" + DEFAULT_ENCODING);
 
     public static final MediaType YAML = MediaType
-            .parse("application/xml; charset=u" + DEFAULT_ENCODING);
+            .parse("application/xml; charset=" + DEFAULT_ENCODING);
 
     private static final String CLASS_TAG = BaseHttpClient.class.getSimpleName();
 
@@ -77,7 +77,7 @@ public abstract class BaseHttpClient {
 
     private Headers headers;
 
-    private HttpMethod method;
+    private HttpMethod method = HttpMethod.GET;
 
     private RequestBody requestBody;
 

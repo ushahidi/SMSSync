@@ -1,25 +1,21 @@
 package org.addhen.smssync.messages;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.addhen.smssync.models.SmssyncResponse;
-import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.QueuedMessages;
+import org.addhen.smssync.models.SmssyncResponse;
 import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.models.TaskMessage;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
-import org.addhen.smssync.util.JsonUtils;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -149,8 +145,8 @@ public class ProcessMessage {
             return;
         }
 
-        if (response !=null && response.getPayload().messages.size() > 0) {
-            for (SmssyncResponse.Payload.Message msg : response.getPayload().messages ) {
+        if (response != null && response.getPayload().messages.size() > 0) {
+            for (SmssyncResponse.Payload.Message msg : response.getPayload().messages) {
                 processSms.sendSms(msg.to, msg.message, msg.uuid);
             }
         }
@@ -190,62 +186,68 @@ public class ProcessMessage {
             }
 
             MainHttpClient client = new MainHttpClient(uriBuilder.toString(), context);
-            final Gson gson = new Gson();
-            SmssyncResponse smssyncResponses = null;
+
+
             try {
                 client.execute();
-                smssyncResponses = gson.fromJson(client.getResponse().body().charStream(), SmssyncResponse.class);
-
             } catch (Exception e) {
-                Logger.log(TAG, e.getMessage());
+                e.printStackTrace();
             }
 
+            final Gson gson = new Gson();
+
+            SmssyncResponse smssyncResponses;
+            smssyncResponses = gson
+                        .fromJson(client.getResponse().body().charStream(), SmssyncResponse.class);
 
             if (smssyncResponses != null) {
                 Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
-                Util.logActivities(context,"TaskCheckResponse: " + smssyncResponses.toString());
+                Util.logActivities(context, "TaskCheckResponse: " + smssyncResponses.toString());
 
-
-                    if (smssyncResponses.getPayload() != null) {
-                        String task = smssyncResponses.getPayload().task;
-                        Logger.log(TAG, "Task " + task);
-                        boolean secretOk = TextUtils.isEmpty(urlSecret) ||
-                                urlSecret.equals(smssyncResponses.getPayload().secret);
-                        if (secretOk && task.equals("send")) {
-                            if (prefs.messageResultsAPIEnable().get()) {
-                                sendSMSWithMessageResultsAPIEnabled(syncUrl, smssyncResponses.getPayload().messages);
-                            } else {
-                                //backwards compatibility
-                                sendSMSWithMessageResultsAPIDisabled(smssyncResponses.getPayload().messages);
-                            }
-
+                if (smssyncResponses.getPayload() != null) {
+                    String task = smssyncResponses.getPayload().task;
+                    Logger.log(TAG, "Task " + task);
+                    boolean secretOk = TextUtils.isEmpty(urlSecret) ||
+                            urlSecret.equals(smssyncResponses.getPayload().secret);
+                    if (secretOk && task.equals("send")) {
+                        if (prefs.messageResultsAPIEnable().get()) {
+                            sendSMSWithMessageResultsAPIEnabled(syncUrl,
+                                    smssyncResponses.getPayload().messages);
                         } else {
-                            Logger.log(TAG, context.getString(R.string.no_task));
-                            Util.logActivities(context, context.getString(R.string.no_task));
-                            setErrorMessage(context.getString(R.string.no_task));
+                            //backwards compatibility
+                            sendSMSWithMessageResultsAPIDisabled(
+                                    smssyncResponses.getPayload().messages);
                         }
 
-                    } else { // 'payload' data may not be present in JSON
-                        // response
+                    } else {
                         Logger.log(TAG, context.getString(R.string.no_task));
                         Util.logActivities(context, context.getString(R.string.no_task));
                         setErrorMessage(context.getString(R.string.no_task));
                     }
+
+                } else { // 'payload' data may not be present in JSON
+                    // response
+                    Logger.log(TAG, context.getString(R.string.no_task));
+                    Util.logActivities(context, context.getString(R.string.no_task));
+                    setErrorMessage(context.getString(R.string.no_task));
+                }
 
             }
         }
         Util.logActivities(context, context.getString(R.string.finish_task_check));
     }
 
-    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl, List<SmssyncResponse.Payload.Message> msgs) {
+    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl,
+            List<SmssyncResponse.Payload.Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
 
         for (SmssyncResponse.Payload.Message msg : msgs) {
             messagesUUIDs.getQueuedMessages().add(msg.uuid);
         }
 
-        MessagesUUIDSResponse response = mMessageResultsController.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
-        if(null != response && response.isSuccess() && response.hasUUIDs()) {
+        MessagesUUIDSResponse response = mMessageResultsController
+                .sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
+        if (null != response && response.isSuccess() && response.hasUUIDs()) {
             for (SmssyncResponse.Payload.Message msg : msgs) {
                 if (response.getUuids().contains(msg.uuid)) {
                     processSms.sendSms(msg.to, msg.message, msg.uuid);
