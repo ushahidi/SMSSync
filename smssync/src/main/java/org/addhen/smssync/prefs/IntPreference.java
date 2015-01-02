@@ -73,6 +73,6 @@ public class IntPreference extends BasePreference<Integer> {
      * @param value The Integer value to be saved
      */
     public void set(int value) {
-        getSharedPreferences().edit().putInt(getKey(), value).apply();
+        getSharedPreferences().edit().putInt(getKey(), value).commit();
     }
 }

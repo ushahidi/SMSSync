@@ -73,6 +73,6 @@ public class BooleanPreference extends BasePreference<Boolean> {
     }
 
     public void set(boolean value) {
-        getSharedPreferences().edit().putBoolean(getKey(), value).apply();
+        getSharedPreferences().edit().putBoolean(getKey(), value).commit();
     }
 }

@@ -17,60 +17,62 @@
 
 package org.addhen.smssync.prefs;
 
-
 import android.content.SharedPreferences;
 
 /**
- * Preference for saving String values
+ * Preference for saving Integer values
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class StringPreference extends BasePreference<String> {
+public class LongPreference extends BasePreference<Long> {
 
     /**
-     * Constructs a new {@link org.addhen.smssync.prefs.StringPreference}
+     * Constructs a new {@link org.addhen.smssync.prefs.LongPreference}
      *
      * @param sharedPreferences SharedPreferences to be used for storing the value.
      * @param key               The key for the preference
      */
-    public StringPreference(SharedPreferences sharedPreferences, String key) {
-        this(sharedPreferences, key, null);
+    public LongPreference(SharedPreferences sharedPreferences, String key) {
+        this(sharedPreferences, key, 0l);
     }
 
     /**
-     * Constructs a new {@link org.addhen.smssync.prefs.StringPreference}
+     * Constructs a new {@link org.addhen.smssync.prefs.LongPreference}
      *
      * @param sharedPreferences SharedPreferences to be used for storing the value.
      * @param key               The key for the preference
      * @param defaultValue      The default value
      */
-    public StringPreference(SharedPreferences sharedPreferences, String key,
-            String defaultValue) {
+    public LongPreference(SharedPreferences sharedPreferences, String key,
+            Long defaultValue) {
         super(sharedPreferences, key, defaultValue);
     }
 
-    /**
-     * Get the saved String
-     *
-     * @return The saved string
-     */
     @Override
-    public String get() {
-        return getSharedPreferences().getString(getKey(), getDefaultValue());
+    public Long get() {
+        return getSharedPreferences().getLong(getKey(), getDefaultValue());
     }
 
     /**
-     * Set the string to be saved
+     * Sets the Long to be saved
      *
-     * @param value The String value to be saved
+     * @param value The Integer value to be saved
      */
     @Override
-    public void set(String value) {
+    public void set(Long value) {
         if(value == null) {
-            throw new IllegalArgumentException("String value cannot be null");
+            throw new IllegalArgumentException("Long value cannot be null");
         }
 
-        getSharedPreferences().edit().putString(getKey(), value).commit();
+        this.set(value);
+    }
 
+    /**
+     * Convenient method for setting the Long to be saved and to avoid clumsy autoboxing.
+     *
+     * @param value The Long value to be saved
+     */
+    public void set(int value) {
+        getSharedPreferences().edit().putLong(getKey(), value).commit();
     }
 }

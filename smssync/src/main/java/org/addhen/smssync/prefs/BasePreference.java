@@ -48,7 +48,7 @@ public abstract class BasePreference<T> implements IPreference<T> {
 
     @Override
     public void delete() {
-        getSharedPreferences().edit().remove(mKey).apply();
+        getSharedPreferences().edit().remove(mKey).commit();
     }
 
     /**
