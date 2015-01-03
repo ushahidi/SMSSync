@@ -1,5 +1,8 @@
 package org.addhen.smssync.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import com.squareup.okhttp.RequestBody;
 
 import org.addhen.smssync.R;
@@ -107,15 +110,21 @@ public class MessageResultsController {
                 client.setRequestBody(body);
                 client.execute();
             }catch (Exception e) {
+                e.printStackTrace();
+                mUtil.log("process crashed");
                 mUtil.log(mContext.getString(R.string.message_processed_failed));
                 Util.logActivities(mContext,
                         mContext.getString(R.string.message_processed_failed) + " " + e
                                 .getMessage());
             } finally {
                 if (HttpStatus.SC_OK == client.getResponse().code()) {
+
                     mUtil.log(mContext.getString(R.string.message_processed_success));
                     response = parseMessagesUUIDSResponse(client);
                     response.setSuccess(true);
+                    Util.logActivities(mContext,
+                            mContext.getString(R.string.message_processed_success));
+
                 } else {
                     response = new MessagesUUIDSResponse(client.getResponse().code());
                     Util.logActivities(mContext,
@@ -193,10 +202,12 @@ public class MessageResultsController {
         MessagesUUIDSResponse response;
         try {
 
-            response = JsonUtils
-                    .getObj(client.getResponse().body().string(), MessagesUUIDSResponse.class);
-            response.setStatusCode(client.getResponse().code());
+            final Gson gson = new Gson();
+            final int code = client.getResponse().code();
+            response = gson.fromJson(client.getResponse().body().charStream(),MessagesUUIDSResponse.class);
+            response.setStatusCode(code);
         } catch (Exception e) {
+            e.printStackTrace();
             response = new MessagesUUIDSResponse(client.getResponse().code());
             mUtil.log(mContext.getString(R.string.message_processed_json_failed));
         }

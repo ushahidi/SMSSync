@@ -56,4 +56,13 @@ public class MessagesUUIDSResponse {
     public boolean hasUUIDs() {
         return null != uuids && !uuids.isEmpty();
     }
+
+    @Override
+    public String toString() {
+        return "MessagesUUIDSResponse{" +
+                "success=" + success +
+                ", statusCode=" + statusCode +
+                ", uuids=" + uuids +
+                '}';
+    }
 }
