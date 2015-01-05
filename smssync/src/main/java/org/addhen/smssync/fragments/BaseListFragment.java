@@ -107,10 +107,11 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
         this.layout = layout;
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
-        prefs = new Prefs(getActivity());
+
         if (listViewId != 0) {
             listView = getListView();
 
@@ -123,6 +124,8 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
             listView.setFocusableInTouchMode(true);
             listView.setAdapter(adapter);
         }
+
+        prefs = new Prefs(getActivity());
     }
 
     @Override
