@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initSurveyDialog();
     }
 
     private void initSurveyDialog() {
@@ -99,6 +98,10 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
 
         // Show a dialog if meets conditions.
         AppRate.showRateDialogIfMeetsConditions(this);
+    }
+
+    public void intFeedbackDialog() {
+
     }
 
     // Context Menu Stuff
