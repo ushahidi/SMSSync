@@ -19,17 +19,6 @@ public class UtilTest extends BaseTest {
     }
 
     /**
-     * Test date and time formatter
-     */
-    @SmallTest
-    public void ShouldFormatDate() throws NumberFormatException {
-        final String formatted = Util.formatDateTime(timestamp, "MMM dd, yyyy 'at' hh:mm a");
-
-        assertNotNullOrEqual("Timestamp cannot be null or empty", expected, formatted);
-
-    }
-
-    /**
      * Test that two strings can be joined together
      */
     @SmallTest
@@ -102,14 +91,6 @@ public class UtilTest extends BaseTest {
         assertFalse(invalid);
     }
 
-    /** Test that an unix timestamp will be formatted to
-     * Jun 10, 2013 at 2:34 AM
-     */
-    @SmallTest
-    public void ShouldFormatTimestampToHumanFriendly() {
-        final String formatted = Util.formatTimestamp(getContext(),timestamp);
-        assertNotNullOrEqual("Timestamp cannot be null or empty", "2:34 AM", formatted);
-    }
     @Override
     public void tearDown() throws Exception {
         super.tearDown();
