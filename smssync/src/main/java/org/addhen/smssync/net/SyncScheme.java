@@ -213,10 +213,10 @@ public class SyncScheme {
                 "}";
     }
 
-    public static enum SyncMethod {POST, PUT}
+    public enum SyncMethod {POST, PUT}
 
-    public static enum SyncDataFormat {URLEncoded, JSON, XML, YAML}
+    public enum SyncDataFormat {URLEncoded, JSON, XML, YAML}
 
-    public static enum SyncDataKey {SECRET, FROM, MESSAGE, SENT_TIMESTAMP, MESSAGE_ID, SENT_TO, DEVICE_ID}
+    public enum SyncDataKey {SECRET, FROM, MESSAGE, SENT_TIMESTAMP, MESSAGE_ID, SENT_TO, DEVICE_ID}
 
 }

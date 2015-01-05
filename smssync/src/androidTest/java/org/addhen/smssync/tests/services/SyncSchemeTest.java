@@ -90,7 +90,7 @@ public class SyncSchemeTest extends BaseTest {
         try {
             client.execute();
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 

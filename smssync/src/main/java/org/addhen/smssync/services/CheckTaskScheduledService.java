@@ -21,6 +21,7 @@ import com.squareup.otto.Produce;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -46,7 +47,7 @@ public class CheckTaskScheduledService extends SmsSyncServices {
         // Perform a task
         for (SyncUrl syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            new ProcessMessage(CheckTaskScheduledService.this).performTask(syncUrl);
+            new ProcessMessage(CheckTaskScheduledService.this,new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
 
         }
     }

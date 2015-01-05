@@ -18,6 +18,7 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
 
@@ -53,7 +54,7 @@ public class CheckTaskService extends SmsSyncServices {
         // get enabled Sync URL
         for (SyncUrl syncUrl : model
                 .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            new ProcessMessage(CheckTaskService.this).performTask(syncUrl);
+            new ProcessMessage(CheckTaskService.this,new ProcessSms(CheckTaskService.this)).performTask(syncUrl);
         }
     }
 }

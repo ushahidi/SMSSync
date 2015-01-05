@@ -178,7 +178,7 @@ public class SmsReceiverService extends Service {
                 Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
-        mProcessMessage = new ProcessMessage(mContext);
+        mProcessMessage = new ProcessMessage(mContext, new ProcessSms(mContext));
 
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();

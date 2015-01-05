@@ -23,6 +23,7 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.services.SyncPendingMessagesService;
@@ -170,9 +171,9 @@ public class SyncPendingMessagesTask extends
         int failedItems = 0;
         int progress = 0;
         SyncStatus syncStatus = new SyncStatus();
-        mProcessMessage = new ProcessMessage(mService.getApplicationContext());
+        mProcessMessage = new ProcessMessage(mService.getApplicationContext(),new ProcessSms(mService.getApplicationContext()));
         Message message = new Message();
-        List<Message> listMessages = new ArrayList<Message>();
+        List<Message> listMessages = new ArrayList<>();
 
         // determine if syncing by message UUID
         if (config.messageUuids != null && config.messageUuids.size() > 0) {

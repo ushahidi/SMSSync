@@ -15,8 +15,6 @@ import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -36,10 +34,6 @@ public class ProcessMessage {
 
     private static final int ACTIVE_SYNC_URL = 1;
 
-    private static JSONObject jsonObject;
-
-    private static JSONArray jsonArray;
-
     private Context context;
 
     private ProcessSms processSms;
@@ -50,9 +44,9 @@ public class ProcessMessage {
 
     private Prefs prefs;
 
-    public ProcessMessage(Context context) {
+    public ProcessMessage(Context context, ProcessSms processSms) {
         this.context = context;
-        processSms = new ProcessSms(context);
+        this.processSms = processSms;
         mMessageResultsController = new MessageResultsController(context);
         prefs = new Prefs(context);
     }
@@ -70,22 +64,18 @@ public class ProcessMessage {
      * Sync received SMS to a configured sync URL.
      *
      * @param message The sms to be sync
-     * @param syncUrl The sync URL to post the message to
+     * @param client The http client
      * @return boolean
      */
-    public boolean syncReceivedSms(Message message, SyncUrl syncUrl) {
+    public boolean syncReceivedSms(Message message, MessageSyncHttpClient client) {
         Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
-                message.toString() + " SyncUrlFragment: " + syncUrl.toString());
+                message.toString() + " SyncUrlFragment: " );
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(
-                context, syncUrl, message, Util.getPhoneNumber(context), prefs.uniqueId().get()
-        );
         final boolean posted = client.postSmsToWebService();
 
         if (posted) {
-            Util.logActivities(context,
-                    context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
-                            syncUrl.getUrl()));
+            logActivites(context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
+                    client.getSyncUrl().getUrl()));
             smsServerResponse(client.getServerSuccessResp());
         } else {
             String clientError = client.getClientError();
@@ -98,6 +88,10 @@ public class ProcessMessage {
         }
 
         return posted;
+    }
+
+    public String getPhoneNumber() {
+        return Util.getPhoneNumber(context);
     }
 
     /**
@@ -145,9 +139,9 @@ public class ProcessMessage {
             return;
         }
 
-        if (response != null && response.getPayload().messages.size() > 0) {
-            for (SmssyncResponse.Payload.Message msg : response.getPayload().messages) {
-                processSms.sendSms(msg.to, msg.message, msg.uuid);
+        if (response != null && response.getPayload().getMessages().size() > 0) {
+            for (SmssyncResponse.Payload.Message msg : response.getPayload().getMessages()) {
+                processSms.sendSms(msg.getMessage(), msg.getMessage(), msg.getUuid());
             }
         }
     }
@@ -186,16 +180,15 @@ public class ProcessMessage {
             }
 
             MainHttpClient client = new MainHttpClient(uriBuilder.toString(), context);
-            SmssyncResponse smssyncResponses;
+            SmssyncResponse smssyncResponses = null;
 
             try {
                 client.execute();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
                 final Gson gson = new Gson();
                 smssyncResponses = gson
                         .fromJson(client.getResponse().body().charStream(), SmssyncResponse.class);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             if (smssyncResponses != null) {
@@ -203,18 +196,18 @@ public class ProcessMessage {
                 Util.logActivities(context, "TaskCheckResponse: " + smssyncResponses.toString());
 
                 if (smssyncResponses.getPayload() != null) {
-                    String task = smssyncResponses.getPayload().task;
+                    String task = smssyncResponses.getPayload().getTask();
                     Logger.log(TAG, "Task " + task);
                     boolean secretOk = TextUtils.isEmpty(urlSecret) ||
-                            urlSecret.equals(smssyncResponses.getPayload().secret);
+                            urlSecret.equals(smssyncResponses.getPayload().getSecret());
                     if (secretOk && task.equals("send")) {
                         if (prefs.messageResultsAPIEnable().get()) {
                             sendSMSWithMessageResultsAPIEnabled(syncUrl,
-                                    smssyncResponses.getPayload().messages);
+                                    smssyncResponses.getPayload().getMessages());
                         } else {
                             //backwards compatibility
                             sendSMSWithMessageResultsAPIDisabled(
-                                    smssyncResponses.getPayload().messages);
+                                    smssyncResponses.getPayload().getMessages());
                         }
 
                     } else {
@@ -239,18 +232,18 @@ public class ProcessMessage {
             List<SmssyncResponse.Payload.Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         for (SmssyncResponse.Payload.Message msg : msgs) {
-            messagesUUIDs.getQueuedMessages().add(msg.uuid);
+            messagesUUIDs.getQueuedMessages().add(msg.getUuid());
         }
 
         MessagesUUIDSResponse response = mMessageResultsController
                 .sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
         if (null != response && response.isSuccess() && response.hasUUIDs()) {
             for (SmssyncResponse.Payload.Message msg : msgs) {
-                if (response.getUuids().contains(msg.uuid)) {
-                    processSms.sendSms(msg.to, msg.message, msg.uuid);
+                if (response.getUuids().contains(msg.getUuid())) {
+                    processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
                     Util.logActivities(context,
                             context.getString(R.string.processed_task,
-                                    msg.message));
+                                    msg.getMessage()));
                 }
             }
         }
@@ -258,7 +251,7 @@ public class ProcessMessage {
 
     private void sendSMSWithMessageResultsAPIDisabled(List<SmssyncResponse.Payload.Message> msgs) {
         for (SmssyncResponse.Payload.Message msg : msgs) {
-            processSms.sendSms(msg.to, msg.message, msg.uuid);
+            processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
         }
     }
 
@@ -317,7 +310,9 @@ public class ProcessMessage {
      */
     private boolean processMessage(Message message, SyncUrl syncUrl) {
         boolean posted = false;
-
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+                context, syncUrl, message, getPhoneNumber(), prefs.uniqueId().get()
+        );
         // process filter text (keyword or RegEx)
         if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
             String filterText = syncUrl.getKeywords();
@@ -326,7 +321,7 @@ public class ProcessMessage {
                 Logger.log(TAG, syncUrl.getUrl());
 
                 if (message.getMessageType() == PENDING) {
-                    posted = syncReceivedSms(message, syncUrl);
+                    posted = syncReceivedSms(message, client);
                     if (!posted) {
                         // Note: HTTP Error code or custom error message
                         // will have been shown already
@@ -350,7 +345,7 @@ public class ProcessMessage {
         } else { // there is no filter text set up on a sync URL
 
             if (message.getMessageType() == PENDING) {
-                posted = syncReceivedSms(message, syncUrl);
+                posted = syncReceivedSms(message, client);
                 setErrorMessage(syncUrl.getUrl());
                 if (!posted) {
 
@@ -426,6 +421,10 @@ public class ProcessMessage {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public void logActivites(String message) {
+        Util.logActivities(context, message);
     }
 
 }

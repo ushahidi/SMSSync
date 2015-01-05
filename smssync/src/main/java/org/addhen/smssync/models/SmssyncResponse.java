@@ -16,25 +16,57 @@ public class SmssyncResponse implements Serializable {
         return payload;
     }
 
-    public static class Payload {
+    public class Payload {
 
-        public List<Message> messages;
+        private List<Message> messages;
 
-        public String task;
+        private String task;
 
-        public String secret;
+        private String secret;
 
-        public String error;
+        private String error;
 
-        public boolean success;
+        private boolean success;
 
-        public static class Message {
+        public List<Message> getMessages() {
+            return messages;
+        }
 
-            public String to;
+        public String getTask() {
+            return task;
+        }
 
-            public String message;
+        public String getSecret() {
+            return secret;
+        }
 
-            public String uuid;
+        public String getError() {
+            return error;
+        }
+
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public class Message {
+
+            private String to;
+
+            private String message;
+
+            private String uuid;
+
+            public String getTo() {
+                return to;
+            }
+
+            public String getMessage() {
+                return message;
+            }
+
+            public String getUuid() {
+                return uuid;
+            }
 
             @Override
             public String toString() {

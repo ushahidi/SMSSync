@@ -460,6 +460,10 @@ public class ProcessSms {
 
     }
 
+    public Context getContext() {
+        return context;
+    }
+
     /**
      * A basic SmsQuery on android.provider.Telephony.Sms.Inbox
      */

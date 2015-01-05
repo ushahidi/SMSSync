@@ -54,7 +54,7 @@ public class Message extends Model implements Serializable {
         mSentResultMessage = "";
         mDeliveryResultCode = -2;
         mDeliveryResultMessage = "";
-        mMessageList = new ArrayList<Message>();
+        mMessageList = new ArrayList<>();
     }
 
     @Override
@@ -73,12 +73,6 @@ public class Message extends Model implements Serializable {
         mMessageList = Database.messagesContentProvider
                 .fetchMessagesByLimit(limit);
         return mMessageList != null;
-    }
-
-    public boolean saveMessages(List<Message> messages) {
-        return messages != null && messages.size() > 0 && Database.messagesContentProvider
-                .addMessages(messages);
-
     }
 
     @Override
