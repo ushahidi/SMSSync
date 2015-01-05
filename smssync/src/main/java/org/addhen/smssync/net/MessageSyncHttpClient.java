@@ -128,7 +128,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
                 return true;
             }
 
-            String payloadError = Util.getJsonError(response.toString());
+            String payloadError = smssyncResponses.getPayload().getError();
             if (!TextUtils.isEmpty(payloadError)) {
                 setServerError(payloadError, statusCode);
             } else {
