@@ -100,10 +100,6 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
         AppRate.showRateDialogIfMeetsConditions(this);
     }
 
-    public void intFeedbackDialog() {
-
-    }
-
     // Context Menu Stuff
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
