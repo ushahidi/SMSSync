@@ -51,8 +51,6 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
 
     private List<SmssyncResponse.Payload.Message> msgs;
 
-    private ProcessSms mProcessSms;
-
     private ProcessMessage mProcessMessage;
 
     @Override
@@ -82,8 +80,8 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
 
     @SmallTest
     public void testshouldSendResponseFromServerAsSms() throws Exception {
-
         stubNeedMethodsForSyncOperation();
+
         // Enable reply from server
         spyPrefs.enableReplyFrmServer().set(true);
 
@@ -107,6 +105,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     public void testShouldSuccessfulllySyncReceivedSmsWithInstantResponseFromServer()
             throws Exception {
         syncSmsToSyncUrl(true);
+
         verifySendSmsIsRun2x();
     }
 
@@ -126,9 +125,9 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
 
         // Enable reply from server
         spyPrefs.enableReplyFrmServer().set(postResponseToServer);
+
         when(client.getServerSuccessResp()).thenReturn(mockSmssyncResponse);
 
-        //when(client.postSmsToWebService()).thenReturn(true);
         final boolean posted = mProcessMessage.syncReceivedSms(mockMessage, client);
         verify(client).postSmsToWebService();
         assertTrue(posted);
