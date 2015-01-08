@@ -78,7 +78,7 @@ public class UtilTest extends BaseTest {
      */
     @SmallTest
     public void testThatEmailIsValid() {
-        final boolean valid = Util.validateEmail("henry@ushahidi.com");
+        final boolean valid = Util.validateEmail("foo@bar.com");
         assertTrue(valid);
     }
 
@@ -87,7 +87,7 @@ public class UtilTest extends BaseTest {
      */
     @SmallTest
     public void testThatEmailIsNotValid() {
-        final boolean invalid = Util.validateEmail("henry@ushahidi");
+        final boolean invalid = Util.validateEmail("foo@bar");
         assertFalse(invalid);
     }
 
