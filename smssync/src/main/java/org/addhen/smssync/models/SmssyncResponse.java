@@ -48,37 +48,6 @@ public class SmssyncResponse implements Serializable {
             return success;
         }
 
-        public class Message {
-
-            private String to;
-
-            private String message;
-
-            private String uuid;
-
-            public String getTo() {
-                return to;
-            }
-
-            public String getMessage() {
-                return message;
-            }
-
-            public String getUuid() {
-                return uuid;
-            }
-
-            @Override
-            public String toString() {
-                return "Message{" +
-                        "to='" + to + '\'' +
-                        ", message='" + message + '\'' +
-                        ", uuid='" + uuid + '\'' +
-                        '}';
-            }
-
-        }
-
         @Override
         public String toString() {
             return "Payload{" +

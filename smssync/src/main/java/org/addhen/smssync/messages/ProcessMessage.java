@@ -140,7 +140,7 @@ public class ProcessMessage {
         }
 
         if (response != null && response.getPayload().getMessages().size() > 0) {
-            for (SmssyncResponse.Payload.Message msg : response.getPayload().getMessages()) {
+            for (Message msg : response.getPayload().getMessages()) {
                 sendSms(msg);
             }
         }
@@ -229,16 +229,16 @@ public class ProcessMessage {
     }
 
     private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl,
-            List<SmssyncResponse.Payload.Message> msgs) {
+            List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
-        for (SmssyncResponse.Payload.Message msg : msgs) {
+        for (Message msg : msgs) {
             messagesUUIDs.getQueuedMessages().add(msg.getUuid());
         }
 
         MessagesUUIDSResponse response = mMessageResultsController
                 .sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
         if (null != response && response.isSuccess() && response.hasUUIDs()) {
-            for (SmssyncResponse.Payload.Message msg : msgs) {
+            for (Message msg : msgs) {
                 if (response.getUuids().contains(msg.getUuid())) {
                     sendSms(msg);
                     Util.logActivities(context,
@@ -249,8 +249,8 @@ public class ProcessMessage {
         }
     }
 
-    private void sendSMSWithMessageResultsAPIDisabled(List<SmssyncResponse.Payload.Message> msgs) {
-        for (SmssyncResponse.Payload.Message msg : msgs) {
+    private void sendSMSWithMessageResultsAPIDisabled(List<Message> msgs) {
+        for (Message msg : msgs) {
             sendSms(msg);
         }
     }
@@ -425,10 +425,6 @@ public class ProcessMessage {
 
     public void logActivites(String message) {
         Util.logActivities(context, message);
-    }
-
-    private void sendSms(SmssyncResponse.Payload.Message msg) {
-        processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
     }
 
     private void sendSms(Message message) {

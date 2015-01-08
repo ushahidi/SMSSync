@@ -141,7 +141,7 @@ public class MessagesContentProvider extends DbContentProvider implements
 
     @Override
     public List<MessageResult> fetchMessageResultsByUuid(List<String> messageUuid) {
-        List<MessageResult> messageResults = new ArrayList<MessageResult>();
+        List<MessageResult> messageResults = new ArrayList<>();
         String selection = Database.SENT_MESSAGES_UUID + "= ?";
         if (null != messageUuid) {
             for (String uuid : messageUuid) {
@@ -188,7 +188,7 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     @Override
     public List<Message> fetchMessagesByUuid(String messageUuid) {
-        listMessages = new ArrayList<Message>();
+        listMessages = new ArrayList<>();
         String selection = MESSAGE_UUID + "= ?";
         String selectionArgs[] = {
                 messageUuid
@@ -250,7 +250,7 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     @Override
     public List<Message> fetchMessagesByLimit(int limit) {
-        listMessages = new ArrayList<Message>();
+        listMessages = new ArrayList<>();
         cursor = super.query(TABLE, COLUMNS, null, null, MESSAGE_UUID + " DESC",
                 String.valueOf(limit));
         if (cursor != null) {

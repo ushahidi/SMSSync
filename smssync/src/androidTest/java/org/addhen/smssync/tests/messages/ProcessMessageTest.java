@@ -45,11 +45,11 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     SmssyncResponse.Payload mockPayload;
 
     @Mock
-    SmssyncResponse.Payload.Message mockMsg;
+    Message mockMsg;
 
     Prefs spyPrefs;
 
-    private List<SmssyncResponse.Payload.Message> msgs;
+    private List<Message> msgs;
 
     private ProcessMessage mProcessMessage;
 
@@ -96,7 +96,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
             throws Exception {
         syncSmsToSyncUrl(false);
 
-        verify(mockProcessSms, never()).sendSms(mockMsg.getTo(), mockMsg.getMessage(),
+        verify(mockProcessSms, never()).sendSms(mockMsg.getPhoneNumber(), mockMsg.getMessage(),
                 mockMsg.getUuid());
 
     }
@@ -110,7 +110,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     }
 
     private void verifySendSmsIsRun2x() {
-        verify(mockProcessSms, times(2)).sendSms(mockMsg.getTo(), mockMsg.getMessage(),
+        verify(mockProcessSms, times(2)).sendSms(mockMsg.getPhoneNumber(), mockMsg.getMessage(),
                 mockMsg.getUuid());
     }
 
