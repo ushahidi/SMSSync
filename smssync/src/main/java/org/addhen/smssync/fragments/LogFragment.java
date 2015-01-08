@@ -100,6 +100,9 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         view.enableLogs.setOnClickListener(this);
         mLogController.setView(this);
         MainApplication.bus.register(this);
+        if(prefs == null) {
+            prefs = new Prefs(getActivity());
+        }
     }
 
     @Override

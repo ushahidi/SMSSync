@@ -98,7 +98,6 @@ public class PendingMessages
         log("onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
 
-        setHasOptionsMenu(true);
         // show notification
         if (prefs.serviceEnabled().get()) {
             Util.showNotification(getActivity());
