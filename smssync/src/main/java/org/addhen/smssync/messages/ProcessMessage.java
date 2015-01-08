@@ -23,6 +23,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import static org.addhen.smssync.messages.ProcessSms.PENDING;
+import static org.addhen.smssync.messages.ProcessSms.TASK;
 
 /**
  * Process messages
@@ -232,6 +233,7 @@ public class ProcessMessage {
             List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         for (Message msg : msgs) {
+            msg.setMessageType(TASK);
             messagesUUIDs.getQueuedMessages().add(msg.getUuid());
         }
 
@@ -239,6 +241,7 @@ public class ProcessMessage {
                 .sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
         if (null != response && response.isSuccess() && response.hasUUIDs()) {
             for (Message msg : msgs) {
+                msg.setMessageType(TASK);
                 if (response.getUuids().contains(msg.getUuid())) {
                     sendSms(msg);
                     Util.logActivities(context,
@@ -251,6 +254,7 @@ public class ProcessMessage {
 
     private void sendSMSWithMessageResultsAPIDisabled(List<Message> msgs) {
         for (Message msg : msgs) {
+            msg.setMessageType(TASK);
             sendSms(msg);
         }
     }

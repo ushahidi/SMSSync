@@ -124,10 +124,8 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     @Override
     public boolean deleteMessagesByUuid(String messageUuid) {
-        String whereClause = MESSAGE_UUID + "= ?";
-        String whereArgs[] = {
-                messageUuid
-        };
+        final String whereClause = MESSAGE_UUID + "= ?";
+        final String whereArgs[] = { messageUuid };
         return super.delete(TABLE, whereClause, whereArgs) > 0;
     }
 
@@ -221,13 +219,13 @@ public class MessagesContentProvider extends DbContentProvider implements
      */
     @Override
     public List<Message> fetchAllMessages() {
-        listMessages = new ArrayList<Message>();
+        listMessages = new ArrayList<>();
         cursor = super.query(TABLE, COLUMNS, null, null, DATE + " DESC");
 
         if (cursor != null) {
             try {
                 while (cursor.moveToNext()) {
-                    Message message = cursorToEntity(cursor);
+                    final Message message = cursorToEntity(cursor);
                     listMessages.add(message);
 
                 }
