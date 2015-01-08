@@ -141,7 +141,7 @@ public class ProcessMessage {
 
         if (response != null && response.getPayload().getMessages().size() > 0) {
             for (SmssyncResponse.Payload.Message msg : response.getPayload().getMessages()) {
-                processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
+                sendSms(msg);
             }
         }
     }
@@ -240,7 +240,7 @@ public class ProcessMessage {
         if (null != response && response.isSuccess() && response.hasUUIDs()) {
             for (SmssyncResponse.Payload.Message msg : msgs) {
                 if (response.getUuids().contains(msg.getUuid())) {
-                    processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
+                    sendSms(msg);
                     Util.logActivities(context,
                             context.getString(R.string.processed_task,
                                     msg.getMessage()));
@@ -251,7 +251,7 @@ public class ProcessMessage {
 
     private void sendSMSWithMessageResultsAPIDisabled(List<SmssyncResponse.Payload.Message> msgs) {
         for (SmssyncResponse.Payload.Message msg : msgs) {
-            processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
+            sendSms(msg);
         }
     }
 
@@ -336,7 +336,7 @@ public class ProcessMessage {
                     }
                 } else {
                     // FIXME: `posted` always `true` but `sendSms()` may not work
-                    processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
+                    sendSms(message);
                     posted = true;
                 }
 
@@ -358,7 +358,7 @@ public class ProcessMessage {
                     processSms.postToSentBox(message);
                 }
             } else {
-                processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
+                sendSms(message);
                 posted = true;
 
             }
@@ -425,6 +425,14 @@ public class ProcessMessage {
 
     public void logActivites(String message) {
         Util.logActivities(context, message);
+    }
+
+    private void sendSms(SmssyncResponse.Payload.Message msg) {
+        processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
+    }
+
+    private void sendSms(Message message) {
+        processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
     }
 
 }
