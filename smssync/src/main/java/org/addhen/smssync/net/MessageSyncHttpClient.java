@@ -70,13 +70,13 @@ public class MessageSyncHttpClient extends MainHttpClient {
         setHeader("Content-Type", syncScheme.getContentType());
         addParam(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncDataKey.FROM), message.getFrom());
-        /*addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
+        addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
         addParam(
                 syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), message.getTimestamp()
         );
         addParam(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber);
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid());
-        addParam(syncScheme.getKey(SyncDataKey.DEVICE_ID), deviceId);*/
+        addParam(syncScheme.getKey(SyncDataKey.DEVICE_ID), deviceId);
         try {
             setHttpEntity(format);
         } catch (Exception e) {
