@@ -74,7 +74,7 @@ public class ProcessMessage {
         final boolean posted = client.postSmsToWebService();
 
         if (posted) {
-            logActivites(context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
+            logActivites(context.getString(R.string.sms_sent_to_webserivce, message.getMessage(),
                     client.getSyncUrl().getUrl()));
             smsServerResponse(client.getServerSuccessResp());
         } else {
@@ -271,7 +271,7 @@ public class ProcessMessage {
             if (prefs.enableReply().get()) {
                 // send auto response as SMS to user's phone
                 Util.logActivities(context, context.getString(R.string.auto_response_sent));
-                processSms.sendSms(message.getFrom(), prefs.reply().get());
+                processSms.sendSms(message.getPhoneNumber(), prefs.reply().get());
             }
 
             if (routeMessage(message)) {
@@ -280,9 +280,9 @@ public class ProcessMessage {
                 // when SMSSync has that feature turned on
                 if (prefs.autoDelete().get()) {
 
-                    processSms.delSmsFromInbox(message.getBody(), message.getFrom());
+                    processSms.delSmsFromInbox(message.getMessage(), message.getPhoneNumber());
                     Util.logActivities(context,
-                            context.getString(R.string.auto_message_deleted, message.getBody()));
+                            context.getString(R.string.auto_message_deleted, message.getMessage()));
                 }
                 return true;
             } else {
@@ -316,8 +316,8 @@ public class ProcessMessage {
         // process filter text (keyword or RegEx)
         if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
             String filterText = syncUrl.getKeywords();
-            if (processSms.filterByKeywords(message.getBody(), filterText)
-                    || processSms.filterByRegex(message.getBody(), filterText)) {
+            if (processSms.filterByKeywords(message.getMessage(), filterText)
+                    || processSms.filterByRegex(message.getMessage(), filterText)) {
                 Logger.log(TAG, syncUrl.getUrl());
 
                 if (message.getMessageType() == PENDING) {
@@ -388,7 +388,7 @@ public class ProcessMessage {
             if (prefs.enableWhitelist().get()) {
                 filters.loadByStatus(Filter.Status.WHITELIST);
                 for (Filter filter : filters.getFilterList()) {
-                    if (filter.getPhoneNumber().equals(message.getFrom())) {
+                    if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
                         return processMessage(message, syncUrl);
                     }
                 }
@@ -400,8 +400,8 @@ public class ProcessMessage {
                 filters.loadByStatus(Filter.Status.BLACKLIST);
                 for (Filter filter : filters.getFilterList()) {
 
-                    if (filter.getPhoneNumber().equals(message.getFrom())) {
-                        Logger.log("message", " from:" + message.getFrom() + " filter:" + filter
+                    if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
+                        Logger.log("message", " from:" + message.getPhoneNumber() + " filter:" + filter
                                 .getPhoneNumber());
                         return false;
                     }
@@ -432,7 +432,7 @@ public class ProcessMessage {
     }
 
     private void sendSms(Message message) {
-        processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
+        processSms.sendSms(message.getPhoneNumber(), message.getMessage(), message.getUuid());
     }
 
 }

@@ -13,14 +13,6 @@ import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.tests.BaseTest;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.StringEntity;
-
 /**
  *
  * Class: SyncSchemeTest
@@ -47,8 +39,8 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setUrl("http://demo.ushahidi.com/smssync4");
 
         msg = new Message();
-        msg.setBody("TEST MESSAGE");
-        msg.setFrom("555555555");
+        msg.setMessage("TEST MESSAGE");
+        msg.setPhoneNumber("555555555");
         msg.setUuid("312312");
         msg.setTimestamp("0");
 

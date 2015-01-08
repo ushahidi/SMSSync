@@ -232,7 +232,7 @@ public class SmsReceiverService extends Service {
                 }
 
                 // extract message details. phone number and the message body
-                msg.setFrom(sms.getOriginatingAddress());
+                msg.setPhoneNumber(sms.getOriginatingAddress());
                 msg.setTimestamp(String.valueOf(sms.getTimestampMillis()));
 
                 if (messages.length == 1 || sms.isReplace()) {
@@ -245,7 +245,7 @@ public class SmsReceiverService extends Service {
                     }
                     body = bodyText.toString();
                 }
-                msg.setBody(body);
+                msg.setMessage(body);
                 msg.setUuid(new ProcessSms(mContext).getUuid());
             }
         }
@@ -253,7 +253,7 @@ public class SmsReceiverService extends Service {
         log("handleSmsReceived() messagesUuid: " + messagesUuid);
         // Log received SMS
 
-        Util.logActivities(this, getString(R.string.received_msg, msg.getBody(), msg.getFrom()));
+        Util.logActivities(this, getString(R.string.received_msg, msg.getMessage(), msg.getPhoneNumber()));
 
         // route the sms
         boolean sent = mProcessMessage.routeSms(msg);

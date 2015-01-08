@@ -242,8 +242,8 @@ public class Database {
     public boolean insertMessage(Message message) {
 
         ContentValues initialValues = new ContentValues();
-        initialValues.put(SENT_MESSAGES_FROM, message.getFrom());
-        initialValues.put(SENT_MESSAGES_BODY, message.getBody());
+        initialValues.put(SENT_MESSAGES_FROM, message.getPhoneNumber());
+        initialValues.put(SENT_MESSAGES_BODY, message.getMessage());
         initialValues.put(SENT_MESSAGES_DATE, message.getTimestamp());
         initialValues.put(SENT_MESSAGE_TYPE, message.getMessageType());
         initialValues.put(SENT_RESULT_CODE, message.getSentResultCode());

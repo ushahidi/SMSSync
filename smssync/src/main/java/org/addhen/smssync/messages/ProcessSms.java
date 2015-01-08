@@ -235,9 +235,9 @@ public class ProcessSms {
                             .getColumnIndex("date")));
                     message.setTimestamp(messageDate);
 
-                    message.setFrom(c.getString(c
+                    message.setPhoneNumber(c.getString(c
                             .getColumnIndex("address")));
-                    message.setBody(c.getString(c.getColumnIndex("body")));
+                    message.setMessage(c.getString(c.getColumnIndex("body")));
                     message.setUuid(getUuid());
                     message.save();
                 } while (c.moveToNext());
@@ -272,9 +272,9 @@ public class ProcessSms {
                             .getColumnIndex(Inbox.DATE)));
                     message.setTimestamp(messageDate);
 
-                    message.setFrom(c.getString(c
+                    message.setPhoneNumber(c.getString(c
                             .getColumnIndex(Inbox.ADDRESS)));
-                    message.setBody(c.getString(c.getColumnIndex(Inbox.BODY)));
+                    message.setMessage(c.getString(c.getColumnIndex(Inbox.BODY)));
                     message.setUuid(getUuid());
                     message.save();
                 } while (c.moveToNext());
@@ -378,9 +378,9 @@ public class ProcessSms {
 
         final Long timeMills = System.currentTimeMillis();
         Message message = new Message();
-        message.setBody(msg);
+        message.setMessage(msg);
         message.setTimestamp(timeMills.toString());
-        message.setFrom(sendTo);
+        message.setPhoneNumber(sendTo);
         message.setUuid(validUUID);
 
         for (int i = 0; i < parts.size(); i++) {
