@@ -141,7 +141,7 @@ public class ProcessMessage {
 
         if (response != null && response.getPayload().getMessages().size() > 0) {
             for (SmssyncResponse.Payload.Message msg : response.getPayload().getMessages()) {
-                processSms.sendSms(msg.getMessage(), msg.getMessage(), msg.getUuid());
+                processSms.sendSms(msg.getTo(), msg.getMessage(), msg.getUuid());
             }
         }
     }
