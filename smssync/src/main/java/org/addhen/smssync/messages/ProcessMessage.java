@@ -186,10 +186,11 @@ public class ProcessMessage {
             try {
                 client.execute();
                 final Gson gson = new Gson();
-                smssyncResponses = gson
-                        .fromJson(client.getResponse().body().charStream(), SmssyncResponse.class);
+                smssyncResponses = gson.fromJson(client.getResponse().body().charStream(),
+                        SmssyncResponse.class);
             } catch (Exception e) {
                 e.printStackTrace();
+                Util.logActivities(context, "Task crashed: "+e.getMessage());
             }
 
             if (smssyncResponses != null) {
@@ -226,6 +227,8 @@ public class ProcessMessage {
 
             }
         }
+
+        Util.logActivities(context, context.getString(R.string.finish_task_check)+" "+getErrorMessage());
         Util.logActivities(context, context.getString(R.string.finish_task_check));
     }
 
@@ -271,8 +274,10 @@ public class ProcessMessage {
 
         // is SMSSync service running?
         if (prefs.serviceEnabled().get()) {
+
             // send auto response from phone not server.
             if (prefs.enableReply().get()) {
+
                 // send auto response as SMS to user's phone
                 Util.logActivities(context, context.getString(R.string.auto_response_sent));
                 processSms.sendSms(message.getPhoneNumber(), prefs.reply().get());
