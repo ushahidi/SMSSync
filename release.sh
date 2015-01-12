@@ -13,7 +13,7 @@ TAG_NAME=$1
 TAG_MESSAGE=$2
 DEVELOP='develop'
 MASTER='master'
-TMP_DIR='/tmp'
+TMP_DIR='/tmp/website-src'
 echo $TAG_MESSAGE
 
 # SMSSync source code
@@ -48,7 +48,7 @@ echo "Compiling website"
 pushd website-src
 
 ruhoh  compile $TMP_DIR
-
+cp CNAME $TMP_DIR
 popd
 
 pushd $TMP_DIR
