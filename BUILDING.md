@@ -46,7 +46,7 @@ Compile the ruhoh site to HTML so it can be published to a hosting server. We us
 ```
 $ cd website-src
 
-$ ruhoh  compile '<path_to_a_folder_to_compile_the_html_into>'
+$ bundle exec ruhoh  compile '<path_to_a_folder_to_compile_the_html_into>'
 
 ```
 

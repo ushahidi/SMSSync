@@ -45,9 +45,11 @@ git push ushahidi master develop --tags && git push origin master develop --tags
 
 # cd into the website folder
 echo "Compiling website"
+
 pushd website-src
 
-ruhoh  compile $TMP_DIR
+bundle exec ruhoh compile $TMP_DIR
+
 cp CNAME $TMP_DIR
 popd
 
