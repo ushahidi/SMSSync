@@ -13,7 +13,7 @@ TAG_NAME=$1
 TAG_MESSAGE=$2
 DEVELOP='develop'
 MASTER='master'
-TMP_DIR='/tmp/website-src'
+TMP_DIR='/tmp/website-src/'
 echo $TAG_MESSAGE
 
 # SMSSync source code
@@ -43,11 +43,15 @@ git push ushahidi master develop --tags && git push origin master develop --tags
 
 # Compile HTML files
 
-# Cd into the website folder
+# cd into the website folder
 echo "Compiling website"
+
 pushd website-src
+
 mkdir $TMP_DIR
+
 bundle exec ruhoh compile $TMP_DIR
+
 cp CNAME $TMP_DIR
 popd
 
