@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.services.CheckTaskService;
@@ -47,34 +47,35 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         batteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
         boolean batteryOkay = intent.getAction().equals(Intent.ACTION_BATTERY_OKAY);
-
+        Prefs prefs = new Prefs(context);
         if (batteryLow) {
             // is smssync enabled
             Util.logActivities(context, context.getString(R.string.battery_low));
-            if (Prefs.enabled) {
+            if (prefs.serviceEnabled().get()) {
 
                 // clear all notifications
                 Util.clearNotify(context);
 
                 // Stop the service that pushes pending messages
-                if (Prefs.enableAutoSync) {
+                if (prefs.enableAutoSync().get()) {
                     smsSyncAutoSyncServiceIntent = new Intent(context,
                             SyncPendingMessagesService.class);
                     context.stopService(smsSyncAutoSyncServiceIntent);
                 }
 
                 // Stop the service that checks for tasks
-                if (Prefs.enableTaskCheck) {
+                if (prefs.enableTaskCheck().get()) {
                     smsSyncTaskCheckServiceIntent = new Intent(context,
                             CheckTaskService.class);
                     context.stopService(smsSyncTaskCheckServiceIntent);
                 }
             }
 
+            final AlertCallbacks alertCallbacks = new AlertCallbacks(prefs);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    AlertCallbacks.lowBatteryLevelRequest(context);
+                    alertCallbacks.lowBatteryLevelRequest();
                 }
             }).start();
         }
@@ -82,20 +83,20 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
         if (batteryOkay) {
             Util.logActivities(context, context.getString(R.string.battery_okay));
             // is smssync enabled
-            if (Prefs.enabled) {
+            if (prefs.serviceEnabled().get()) {
 
                 // clear all notifications
                 Util.clearNotify(context);
 
                 // Stop the service that pushes pending messages
-                if (Prefs.enableAutoSync) {
+                if (prefs.enableAutoSync().get()) {
                     smsSyncAutoSyncServiceIntent = new Intent(context,
                             SyncPendingMessagesService.class);
                     context.startService(smsSyncAutoSyncServiceIntent);
                 }
 
                 // Stop the service that checks for tasks
-                if (Prefs.enableTaskCheck) {
+                if (prefs.enableTaskCheck().get()) {
                     smsSyncTaskCheckServiceIntent = new Intent(context,
                             CheckTaskService.class);
                     context.startService(smsSyncTaskCheckServiceIntent);

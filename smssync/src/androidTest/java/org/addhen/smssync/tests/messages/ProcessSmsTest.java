@@ -4,9 +4,6 @@ import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.tests.BaseTest;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.net.Uri;
 import android.test.suitebuilder.annotation.SmallTest;
 
 /**
@@ -77,12 +74,12 @@ public class ProcessSmsTest extends BaseTest {
     @SmallTest
     public void testShouldPostPendingMessageToSentInbox() throws Exception {
         Message message = new Message();
-        message.setFrom("0243581806");
+        message.setPhoneNumber("0243581806");
         message.setUuid(mProcessSms.getUuid());
         message.setTimestamp("1370831690572");
-        message.setBody("foo bar");
+        message.setMessage("foo bar");
         assertTrue("Could not add a new message ", message.save());
-        assertTrue(mProcessSms.postToSentBox(message, ProcessSms.PENDING));
+        assertTrue(mProcessSms.postToSentBox(message));
         assertTrue("Could not delete the message",message.deleteAllMessages());
 
     }
@@ -90,12 +87,12 @@ public class ProcessSmsTest extends BaseTest {
     @SmallTest
     public void testShouldPostTaskMessageToSentInbox() throws Exception {
         Message message = new Message();
-        message.setFrom("0243581817");
+        message.setPhoneNumber("0243581817");
         message.setUuid(mProcessSms.getUuid());
-        message.setBody("foo bar");
+        message.setMessage("foo bar");
         message.setTimestamp("1370831690572");
         assertTrue("Could not add a new message ",message.save());
-        assertTrue(mProcessSms.postToSentBox(message, ProcessSms.TASK));
+        assertTrue(mProcessSms.postToSentBox(message));
         assertTrue("Could not delete the message",message.deleteAllMessages());
     }
 

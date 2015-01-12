@@ -18,10 +18,6 @@ import java.util.ArrayList;
  */
 public class SmsPortal {
 
-    private enum version {
-        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
-    }
-
     private int number;
 
     private ArrayList<Messenger> messengers;
@@ -85,5 +81,9 @@ public class SmsPortal {
 
     public ArrayList<Messenger> getMessengers() {
         return messengers;
+    }
+
+    private enum version {
+        ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN;
     }
 }

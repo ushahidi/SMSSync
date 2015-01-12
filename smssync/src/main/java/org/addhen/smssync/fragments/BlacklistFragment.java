@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.fragments;
 
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.listeners.BlacklistActionModeListener;
@@ -71,7 +70,6 @@ public class BlacklistFragment extends
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
 
-        Prefs.loadPreferences(this.getActivity());
         multichoiceActionModeListener = new BlacklistActionModeListener(this,
                 listView);
         listView.setItemsCanFocus(false);
@@ -80,7 +78,7 @@ public class BlacklistFragment extends
         listView.setOnItemLongClickListener(multichoiceActionModeListener);
         listView.setOnItemClickListener(this);
 
-        view.enableBlacklist.setChecked(Prefs.enableBlacklist);
+        view.enableBlacklist.setChecked(prefs.enableBlacklist().get());
         view.enableBlacklist.setOnClickListener(this);
 
     }
@@ -111,7 +109,7 @@ public class BlacklistFragment extends
         if (item.getItemId() == R.id.context_delete) {
 
             mSelectedItemsPositions = multichoiceActionModeListener.getSelectedItemPositions();
-            if (Prefs.enableBlacklist && (adapter.getCount() == 1
+            if (prefs.enableBlacklist().get() && (adapter.getCount() == 1
                     || adapter.getCount() == mSelectedItemsPositions.size())) {
                 showMessage(R.string.disable_blacklist);
             } else {
@@ -131,7 +129,7 @@ public class BlacklistFragment extends
             return (true);
         } else if (item.getItemId() == R.id.delete_all_sync_url) {
             // load all blacklisted phone numbers
-            if (Prefs.enableBlacklist) {
+            if (prefs.enableBlacklist().get()) {
                 showMessage(R.string.disable_blacklist);
             } else {
                 performDeleteAll();
@@ -305,27 +303,26 @@ public class BlacklistFragment extends
                 if (view.enableBlacklist.isChecked()) {
                     // start sms receiver
 
-                    Prefs.enableBlacklist = true;
+                    prefs.enableBlacklist().set(true);
                     view.enableBlacklist.setChecked(true);
 
 
                 } else {
 
-                    Prefs.enableBlacklist = false;
+                    prefs.enableBlacklist().set(false);
                     view.enableBlacklist.setChecked(false);
                 }
             } else {
                 toastLong(R.string.no_phone_number_to_enable_blacklist);
-                Prefs.enableBlacklist = false;
+                prefs.enableBlacklist().set(false);
                 view.enableBlacklist.setChecked(false);
             }
 
         } else {
             toastLong(R.string.no_phone_number_to_enable_blacklist);
-            Prefs.enabled = false;
+            prefs.serviceEnabled().set(false);
             view.enableBlacklist.setChecked(false);
         }
-        Prefs.savePreferences(this.getActivity());
     }
 
     private boolean load() {

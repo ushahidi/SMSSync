@@ -18,7 +18,6 @@
 package org.addhen.smssync.services;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
@@ -34,6 +33,8 @@ import android.os.PowerManager;
 
 public abstract class SmsSyncServices extends IntentService {
 
+    protected static final Object mStartingServiceSync = new Object();
+
     protected static String TAG = SmsSyncServices.class.getSimpleName();
 
     protected static PowerManager.WakeLock mStartingService = null;
@@ -41,8 +42,6 @@ public abstract class SmsSyncServices extends IntentService {
     protected static WifiManager.WifiLock wifilock = null;
 
     protected NotificationManager notificationManager;
-
-    protected static final Object mStartingServiceSync = new Object();
 
     public SmsSyncServices(String name) {
         super(name);
@@ -98,7 +97,6 @@ public abstract class SmsSyncServices extends IntentService {
     public void onCreate() {
         super.onCreate();
         // load setting. Just in case someone changes a setting
-        Prefs.loadPreferences(this);
         MainApplication.bus.register(this);
     }
 

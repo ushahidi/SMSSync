@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.services.CheckTaskService;
 import org.addhen.smssync.services.ScheduleServices;
@@ -38,30 +38,26 @@ import android.content.Intent;
  */
 public class BootReceiver extends BroadcastReceiver {
 
-    private boolean isConnected;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         boolean rebooted = intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED);
         boolean shutdown = intent.getAction().equals(Intent.ACTION_SHUTDOWN);
+        Prefs prefs = new Prefs(context);
         // load current settings
-        Prefs.loadPreferences(context);
         if (shutdown) {
             Util.logActivities(context, context.getString(R.string.device_shutdown));
         }
         if (rebooted) {
             Util.logActivities(context, context.getString(R.string.device_reboot));
             // is smssync enabled
-            if (Prefs.enabled) {
+            if (prefs.serviceEnabled().get()) {
 
                 // show notification
                 Util.showNotification(context);
 
-                // start pushing pending messages
-                isConnected = Util.isConnected(context);
-
                 // Push any pending messages now that we have connectivity
-                if (Prefs.enableAutoSync) {
+                if (prefs.enableAutoSync().get()) {
 
                     Intent syncPendingMessagesServiceIntent = new Intent(context,
                             SyncPendingMessagesService.class);
@@ -73,7 +69,7 @@ public class BootReceiver extends BroadcastReceiver {
                     context.startService(syncPendingMessagesServiceIntent);
 
                     // start the scheduler for auto sync service
-                    long interval = TimeFrequencyUtil.calculateInterval(Prefs.autoTime);
+                    long interval = TimeFrequencyUtil.calculateInterval(prefs.autoTime().get());
                     new ScheduleServices(
                             context,
                             new Intent(context, AutoSyncScheduledReceiver.class),
@@ -83,12 +79,12 @@ public class BootReceiver extends BroadcastReceiver {
                 }
 
                 // Check for tasks now that we have connectivity
-                if (Prefs.enableTaskCheck) {
+                if (prefs.enableTaskCheck().get()) {
                     SmsSyncServices.sendWakefulTask(context,
                             CheckTaskService.class);
 
                     // start the scheduler for 'task check' service
-                    long interval = TimeFrequencyUtil.calculateInterval(Prefs.taskCheckTime);
+                    long interval = TimeFrequencyUtil.calculateInterval(prefs.taskCheckTime().get());
                     new ScheduleServices(
                             context,
                             new Intent(context, CheckTaskScheduledReceiver.class),

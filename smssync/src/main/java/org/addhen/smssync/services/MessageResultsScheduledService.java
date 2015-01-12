@@ -1,15 +1,14 @@
 package org.addhen.smssync.services;
 
-import android.content.Intent;
-
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
+
+import android.content.Intent;
 
 import java.util.List;
 
@@ -35,9 +34,11 @@ public class MessageResultsScheduledService extends SmsSyncServices {
         log("checking scheduled message result services");
         Util.logActivities(this, "Checking scheduled message result services");
         for (SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            MessagesUUIDSResponse response = mMessageResultsController.sendMessageResultGETRequest(syncUrl);
+            MessagesUUIDSResponse response = mMessageResultsController
+                    .sendMessageResultGETRequest(syncUrl);
             if (response.isSuccess()) {
-                List<MessageResult> messageResults = MainApplication.mDb.messagesContentProvider.fetchMessageResultsByUuid(response.getUuids());
+                List<MessageResult> messageResults = MainApplication.mDb.messagesContentProvider
+                        .fetchMessageResultsByUuid(response.getUuids());
                 mMessageResultsController.sendMessageResultPOSTRequest(syncUrl, messageResults);
             }
         }

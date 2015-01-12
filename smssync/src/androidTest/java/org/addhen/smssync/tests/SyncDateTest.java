@@ -1,6 +1,7 @@
 package org.addhen.smssync.tests;
 
 import org.addhen.smssync.SyncDate;
+import org.addhen.smssync.prefs.Prefs;
 
 import android.test.suitebuilder.annotation.SmallTest;
 
@@ -11,21 +12,24 @@ public class SyncDateTest extends BaseTest {
 
     SyncDate mSyncDate;
 
+    Prefs mPrefs;
+
     @Override
     public void setUp() throws Exception {
-        mSyncDate = new SyncDate();
+        mPrefs = new Prefs(getContext());
+        mSyncDate = new SyncDate(mPrefs);
     }
 
     @SmallTest
     public void testShouldGetLastSyncDate() throws Exception{
-        mSyncDate.setLastSyncedDate(getContext(), 1370831690572l);
-        long  timestamp = mSyncDate.getLastSyncedDate(getContext());
+        mSyncDate.setLastSyncedDate(1370831690572l);
+        long  timestamp = mSyncDate.getLastSyncedDate();
         assertEquals(1370831690572l, timestamp);
     }
 
     @Override
     public void tearDown() throws Exception {
-        mSyncDate.setLastSyncedDate(getContext(), 0l);
+        mSyncDate.setLastSyncedDate(0l);
         mSyncDate = null;
     }
 }

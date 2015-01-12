@@ -17,22 +17,25 @@
 
 package org.addhen.smssync;
 
-import android.content.Context;
+import org.addhen.smssync.prefs.Prefs;
 
 /**
  * Sets and returns the sync date of an executed task
  */
 public class SyncDate {
 
-    public long getLastSyncedDate(Context context) {
-        Prefs.loadPreferences(context);
-        return Prefs.lastSyncDate;
+    private Prefs prefs;
+
+    public SyncDate(Prefs prefs) {
+        this.prefs = prefs;
     }
 
-    public void setLastSyncedDate(Context context, long lastSyncDate) {
-        Prefs.lastSyncDate = lastSyncDate;
-        Prefs.savePreferences(context);
+    public long getLastSyncedDate() {
+        return prefs.lastSyncDate().get();
+    }
 
+    public void setLastSyncedDate(long lastSyncDate) {
+        prefs.lastSyncDate().set(lastSyncDate);
     }
 
 }

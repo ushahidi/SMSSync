@@ -20,7 +20,7 @@ package org.addhen.smssync.fragments;
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.LogAdapter;
 import org.addhen.smssync.controllers.LogController;
@@ -53,9 +53,35 @@ import android.widget.AdapterView;
 public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> implements
         View.OnClickListener, AdapterView.OnItemClickListener, ILogView, LogListener {
 
-    private LogController mLogController;
-
     private static PhoneStatusInfo info;
+
+    /**
+     * Receiver for getting battery state.
+     */
+    private BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            context.unregisterReceiver(this);
+
+            int extraLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+
+            int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+            int level = -1;
+
+            if (extraLevel >= 0 && scale > 0) {
+                level = (extraLevel * 100) / scale;
+            }
+
+            info.setBatteryLevel(level);
+            info.setDataConnection(Util.isConnected(getActivity()));
+            info.setPhoneNumber(Util.getPhoneNumber(getActivity()));
+            mLogController.setPhoneStatusInfo(info);
+        }
+    };
+
+    private LogController mLogController;
 
     public LogFragment() {
         super(LogView.class, LogAdapter.class, R.layout.list_logs,
@@ -70,8 +96,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         setHasOptionsMenu(true);
         listView.setItemsCanFocus(false);
         listView.setOnItemClickListener(this);
-        Prefs.loadPreferences(getActivity());
-        view.enableLogs.setChecked(Prefs.enableLog);
+        view.enableLogs.setChecked(prefs.enableLog().get());
         view.enableLogs.setOnClickListener(this);
         mLogController.setView(this);
         MainApplication.bus.register(this);
@@ -97,16 +122,14 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     public void onClick(View v) {
 
         if (view.enableLogs.isChecked()) {
-            Prefs.enableLog = true;
+            prefs.enableLog().set(true);
             view.enableLogs.setChecked(true);
             view.logLcation.setVisibility(View.VISIBLE);
         } else {
-
-            Prefs.enableLog = false;
+            prefs.enableLog().set(false);
             view.enableLogs.setChecked(false);
         }
 
-        Prefs.savePreferences(getActivity());
     }
 
     @Override
@@ -158,38 +181,15 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         return shareIntent;
     }
 
-    /**
-     * Receiver for getting battery state.
-     */
-    private BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            context.unregisterReceiver(this);
-
-            int extraLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-
-            int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-            int level = -1;
-
-            if (extraLevel >= 0 && scale > 0) {
-                level = (extraLevel * 100) / scale;
-            }
-
-            info.setBatteryLevel(level);
-            info.setDataConnection(Util.isConnected(getActivity()));
-            info.setPhoneNumber(Util.getPhoneNumber(getActivity()));
-            mLogController.setPhoneStatusInfo(info);
-        }
-    };
+    public PhoneStatusInfo getPhoneStatus() {
+        return info;
+    }
 
     @Override
     public void setPhoneStatus(PhoneStatusInfo info) {
         // Save this in prefs for later retrieval
         // Not elegant but works
-        Prefs.batteryLevel = info.getBatteryLevel();
-        Prefs.savePreferences(getActivity());
+        prefs.batteryLevel().set(info.getBatteryLevel());
         view.batteryLevelStatus
                 .setText(getString(R.string.battery_level_status, info.getBatteryLevel() + "%"));
         final String status = info.isDataConnection() ? getString(R.string.confirm_yes)
@@ -204,10 +204,6 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         if (!info.isDataConnection()) {
             view.dataConnection.setTextColor(getResources().getColor(R.color.status_error));
         }
-    }
-
-    public PhoneStatusInfo getPhoneStatus() {
-        return info;
     }
 
     private void loadLogs() {
@@ -261,6 +257,11 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     private String makeShareableMessage() {
 
+        // On some devices this is never initialized.
+        if(prefs == null) {
+            prefs = new Prefs(getActivity());
+        }
+
         StringBuilder build = new StringBuilder();
 
         final String newLine = "\n";
@@ -274,7 +275,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         build.append(getString(R.string.phone_status));
         build.append(newLine);
         build.append(getString(R.string.battery_level));
-        build.append(getString(R.string.battery_level_status, Prefs.batteryLevel));
+        build.append(getString(R.string.battery_level_status, prefs.batteryLevel().get()));
         build.append(newLine);
         build.append(getString(R.string.data_connection));
         build.append(getString(R.string.data_connection_status,

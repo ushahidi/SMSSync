@@ -20,7 +20,6 @@ package org.addhen.smssync.fragments;
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
@@ -42,84 +41,20 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
 public class SentMessageFragment
         extends
         BaseListFragment<SentMessagesView, SentMessagesModel, SentMessagesAdapter> {
 
-    private String messageUuid = "";
-
     private final Handler mHandler = new Handler();
+
+    private String messageUuid = "";
 
     private SentMessagesModel model;
 
     private MenuItem refresh;
 
     private boolean refreshState = false;
-
-    public SentMessageFragment() {
-        super(SentMessagesView.class, SentMessagesAdapter.class,
-                R.layout.sent_messages, R.menu.sent_messages_menu,
-                android.R.id.list);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Prefs.loadPreferences(getActivity());
-        model = new SentMessagesModel();
-        // show notification
-        if (Prefs.enabled) {
-            Util.showNotification(getActivity());
-        }
-        listView.setItemsCanFocus(false);
-        listView.setLongClickable(true);
-        listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
-                this, listView));
-        MainApplication.bus.register(this);
-
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        log("OnResume is called");
-        getActivity().registerReceiver(broadcastReceiver,
-                new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
-        refresh();
-        MainApplication.bus.register(this);
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().unregisterReceiver(broadcastReceiver);
-        MainApplication.bus.unregister(this);
-    }
-
-    public boolean performAction(MenuItem item, int position) {
-        messageUuid = adapter.getItem(position).getMessageUuid();
-        if (item.getItemId() == R.id.sent_messages_context_delete) {
-            // Delete by ID
-            performDeleteById();
-            return (true);
-        }
-
-        return (false);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        if (item.getItemId() == R.id.delete) {
-            refresh = item;
-            performDeleteAll();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     /**
      * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be deleted.
@@ -197,6 +132,81 @@ public class SentMessageFragment
             }
         }
     };
+
+    /**
+     * This will refresh content of the listview aka the pending messages when smssync syncs pending
+     * messages.
+     */
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                refresh();
+            }
+        }
+    };
+
+    public SentMessageFragment() {
+        super(SentMessagesView.class, SentMessagesAdapter.class,
+                R.layout.sent_messages, R.menu.sent_messages_menu,
+                android.R.id.list);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        model = new SentMessagesModel();
+        // show notification
+        if (prefs.serviceEnabled().get()) {
+            Util.showNotification(getActivity());
+        }
+        listView.setItemsCanFocus(false);
+        listView.setLongClickable(true);
+        listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
+                this, listView));
+        MainApplication.bus.register(this);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        log("OnResume is called");
+        getActivity().registerReceiver(broadcastReceiver,
+                new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
+        refresh();
+        MainApplication.bus.register(this);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
+        MainApplication.bus.unregister(this);
+    }
+
+    public boolean performAction(MenuItem item, int position) {
+        messageUuid = adapter.getItem(position).getMessageUuid();
+        if (item.getItemId() == R.id.sent_messages_context_delete) {
+            // Delete by ID
+            performDeleteById();
+            return (true);
+        }
+
+        return (false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.delete) {
+            refresh = item;
+            performDeleteAll();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /**
      * Delete all messages
@@ -277,21 +287,6 @@ public class SentMessageFragment
         }
 
     }
-
-    /**
-     * This will refresh content of the listview aka the pending messages when smssync syncs pending
-     * messages.
-     */
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                refresh();
-            }
-        }
-    };
-
 
     private class LoadingTask extends ProgressTask {
 

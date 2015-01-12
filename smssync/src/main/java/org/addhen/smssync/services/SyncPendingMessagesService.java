@@ -47,11 +47,15 @@ public class SyncPendingMessagesService extends BaseService {
     private static String CLASS_TAG = SyncPendingMessagesService.class
             .getSimpleName();
 
+    private static SyncPendingMessagesService service;
+
     private ArrayList<String> messageUuids = null;
 
     private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
-    private static SyncPendingMessagesService service;
+    public static boolean isServiceWorking() {
+        return service != null && service.isWorking();
+    }
 
     @Override
     public void onCreate() {
@@ -139,10 +143,6 @@ public class SyncPendingMessagesService extends BaseService {
 
     public boolean isWorking() {
         return getState().isRunning();
-    }
-
-    public static boolean isServiceWorking() {
-        return service != null && service.isWorking();
     }
 
     @Override

@@ -20,7 +20,6 @@ package org.addhen.smssync.fragments;
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
@@ -48,7 +47,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -100,10 +98,8 @@ public class PendingMessages
         log("onActivityCreated()");
         super.onActivityCreated(savedInstanceState);
 
-        setHasOptionsMenu(true);
-        Prefs.loadPreferences(getActivity());
         // show notification
-        if (Prefs.enabled) {
+        if (prefs.serviceEnabled().get()) {
             Util.showNotification(getActivity());
         }
         multichoiceActionModeListener = new PendingMessagesActionModeListener(
@@ -164,7 +160,7 @@ public class PendingMessages
 
     private void idle() {
 
-        view.details.setText(getLastSyncText(new SyncDate().getLastSyncedDate(getActivity())));
+        view.details.setText(getLastSyncText(new SyncDate(prefs).getLastSyncedDate()));
         view.status.setText(R.string.idle);
         view.status
                 .setTextColor(getActivity().getResources().getColor(R.color.status_idle));
@@ -179,7 +175,7 @@ public class PendingMessages
 
     private void startSync() {
         // make sure service is enabled
-        if (Prefs.enabled) {
+        if (prefs.serviceEnabled().get()) {
             if (!SyncPendingMessagesService.isServiceWorking()) {
                 log("Sync in action");
                 initSync();

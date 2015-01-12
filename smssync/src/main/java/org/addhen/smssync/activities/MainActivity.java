@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity<MainView> implements OnClickButto
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initSurveyDialog();
     }
 
     private void initSurveyDialog() {

@@ -19,7 +19,7 @@ public class MessagesUUIDSResponse {
 
     public MessagesUUIDSResponse(int statusCode) {
         this.success = false;
-        this.uuids = new ArrayList<String>();
+        this.uuids = new ArrayList<>();
         this.statusCode = statusCode;
     }
 
@@ -55,5 +55,14 @@ public class MessagesUUIDSResponse {
 
     public boolean hasUUIDs() {
         return null != uuids && !uuids.isEmpty();
+    }
+
+    @Override
+    public String toString() {
+        return "MessagesUUIDSResponse{" +
+                "success=" + success +
+                ", statusCode=" + statusCode +
+                ", uuids=" + uuids +
+                '}';
     }
 }

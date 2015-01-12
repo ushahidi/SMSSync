@@ -180,7 +180,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.appwidget_logo, mainAction);
 
             if (mgs != null) {
-                Log.i(CLASS_TAG, "messages are not null " + mgs.getBody());
+                Log.i(CLASS_TAG, "messages are not null " + mgs.getMessage());
                 // make views visible
                 views.setViewVisibility(R.id.msg_number, View.VISIBLE);
                 views.setViewVisibility(R.id.msg_date, View.VISIBLE);
@@ -188,11 +188,11 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
                 // initialize views
 
-                views.setTextViewText(R.id.msg_number, mgs.getFrom());
+                views.setTextViewText(R.id.msg_number, mgs.getPhoneNumber());
                 views.setTextViewText(R.id.msg_date, Util.formatDateTime(
                         Long.parseLong(mgs.getTimestamp()),
                         "hh:mm a"));
-                views.setTextViewText(R.id.msg_desc, mgs.getBody());
+                views.setTextViewText(R.id.msg_desc, mgs.getMessage());
 
                 // make all the views clickable
                 views.setOnClickPendingIntent(R.id.msg_number, mainAction);

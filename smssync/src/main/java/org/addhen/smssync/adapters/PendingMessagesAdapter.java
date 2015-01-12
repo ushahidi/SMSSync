@@ -74,10 +74,10 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
         }
 
         // initialize view with content
-        widgets.messageFrom.setText(getItem(position).getFrom());
+        widgets.messageFrom.setText(getItem(position).getPhoneNumber());
         widgets.messageDate.setText(formatDate(getItem(position)
                 .getTimestamp()));
-        widgets.message.setText(getItem(position).getBody());
+        widgets.message.setText(getItem(position).getMessage());
 
         // Pending messages
         if (getItem(position).getMessageType() == 0) {

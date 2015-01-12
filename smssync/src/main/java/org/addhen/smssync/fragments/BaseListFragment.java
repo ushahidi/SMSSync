@@ -19,7 +19,7 @@ package org.addhen.smssync.fragments;
 
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.adapters.BaseListAdapter;
 import org.addhen.smssync.models.Model;
 import org.addhen.smssync.util.LogUtil;
@@ -86,6 +86,8 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
      */
     protected V view;
 
+    protected Prefs prefs;
+
 
     /**
      * BaseListActivity
@@ -105,6 +107,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
         this.layout = layout;
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
@@ -121,6 +124,8 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
             listView.setFocusableInTouchMode(true);
             listView.setAdapter(adapter);
         }
+
+        prefs = new Prefs(getActivity());
     }
 
     @Override
@@ -207,7 +212,8 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
     }
 
     protected void logActivities(String message) {
-        if (Prefs.enableLog) {
+        Prefs prefs = new Prefs(getActivity());
+        if (prefs.enableLog().get()) {
             new LogUtil(DateFormat.getDateFormatOrder(this.getActivity())).appendAndClose(message);
         }
     }

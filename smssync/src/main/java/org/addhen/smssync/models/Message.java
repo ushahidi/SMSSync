@@ -28,9 +28,9 @@ import java.util.List;
  */
 public class Message extends Model implements Serializable {
 
-    private String body;
+    private String message;
 
-    private String from;
+    private String to;
 
     private String timestamp;
 
@@ -54,7 +54,7 @@ public class Message extends Model implements Serializable {
         mSentResultMessage = "";
         mDeliveryResultCode = -2;
         mDeliveryResultMessage = "";
-        mMessageList = new ArrayList<Message>();
+        mMessageList = new ArrayList<>();
     }
 
     @Override
@@ -73,12 +73,6 @@ public class Message extends Model implements Serializable {
         mMessageList = Database.messagesContentProvider
                 .fetchMessagesByLimit(limit);
         return mMessageList != null;
-    }
-
-    public boolean saveMessages(List<Message> messages) {
-        return messages != null && messages.size() > 0 && Database.messagesContentProvider
-                .addMessages(messages);
-
     }
 
     @Override
@@ -119,20 +113,20 @@ public class Message extends Model implements Serializable {
         return this.mMessageList;
     }
 
-    public String getBody() {
-        return body;
+    public String getMessage() {
+        return message;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setMessage(String body) {
+        this.message = body;
     }
 
-    public String getFrom() {
-        return from;
+    public String getPhoneNumber() {
+        return to;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setPhoneNumber(String from) {
+        this.to = from;
     }
 
     public String getTimestamp() {
@@ -194,8 +188,8 @@ public class Message extends Model implements Serializable {
     @Override
     public String toString() {
         return "Message{" +
-                "body='" + body + '\'' +
-                ", from='" + from + '\'' +
+                "message='" + message + '\'' +
+                ", to='" + to + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", mMessageType=" + mMessageType +

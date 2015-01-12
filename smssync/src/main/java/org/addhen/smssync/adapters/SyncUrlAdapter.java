@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.adapters;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.SyncUrl;
 
@@ -68,7 +68,7 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrl> {
                 // this is to allow the user to disable the SMSSync service
                 // before the last Sync URL is disabled.
                 final int total = syncUrls.totalActiveSynUrl();
-                if ((total == 1) && (Prefs.enabled)) {
+                if ((total == 1) && (prefs.serviceEnabled().get())) {
 
                     Toast.makeText(context, R.string.disable_last_sync_url, Toast.LENGTH_LONG)
                             .show();
@@ -89,9 +89,11 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrl> {
 
     private SyncUrl syncUrls;
 
+    private Prefs prefs;
     public SyncUrlAdapter(Context context) {
         super(context);
         syncUrls = new SyncUrl();
+        prefs = new Prefs(context);
     }
 
     @Override

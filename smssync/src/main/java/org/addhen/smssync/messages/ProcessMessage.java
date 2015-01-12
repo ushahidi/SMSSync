@@ -1,24 +1,20 @@
 package org.addhen.smssync.messages;
 
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
 
-import org.addhen.smssync.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.QueuedMessages;
+import org.addhen.smssync.models.SmssyncResponse;
 import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.models.TaskMessage;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
-import org.addhen.smssync.util.JsonUtils;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -27,6 +23,7 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import static org.addhen.smssync.messages.ProcessSms.PENDING;
+import static org.addhen.smssync.messages.ProcessSms.TASK;
 
 /**
  * Process messages
@@ -38,10 +35,6 @@ public class ProcessMessage {
 
     private static final int ACTIVE_SYNC_URL = 1;
 
-    private static JSONObject jsonObject;
-
-    private static JSONArray jsonArray;
-
     private Context context;
 
     private ProcessSms processSms;
@@ -50,10 +43,13 @@ public class ProcessMessage {
 
     private MessageResultsController mMessageResultsController;
 
-    public ProcessMessage(Context context) {
+    private Prefs prefs;
+
+    public ProcessMessage(Context context, ProcessSms processSms) {
         this.context = context;
-        processSms = new ProcessSms(context);
+        this.processSms = processSms;
         mMessageResultsController = new MessageResultsController(context);
+        prefs = new Prefs(context);
     }
 
     /**
@@ -69,23 +65,18 @@ public class ProcessMessage {
      * Sync received SMS to a configured sync URL.
      *
      * @param message The sms to be sync
-     * @param syncUrl The sync URL to post the message to
+     * @param client The http client
      * @return boolean
      */
-    public boolean syncReceivedSms(Message message, SyncUrl syncUrl) {
+    public boolean syncReceivedSms(Message message, MessageSyncHttpClient client) {
         Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
-                message.toString() + " SyncUrlFragment: " + syncUrl.toString());
-        Prefs.loadPreferences(context);
+                message.toString() + " SyncUrlFragment: " );
 
-        MessageSyncHttpClient client = new MessageSyncHttpClient(
-                context, syncUrl, message, Util.getPhoneNumber(context), Prefs.uniqueId
-        );
         final boolean posted = client.postSmsToWebService();
 
         if (posted) {
-            Util.logActivities(context,
-                    context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
-                            syncUrl.getUrl()));
+            logActivites(context.getString(R.string.sms_sent_to_webserivce, message.getMessage(),
+                    client.getSyncUrl().getUrl()));
             smsServerResponse(client.getServerSuccessResp());
         } else {
             String clientError = client.getClientError();
@@ -98,6 +89,10 @@ public class ProcessMessage {
         }
 
         return posted;
+    }
+
+    public String getPhoneNumber() {
+        return Util.getPhoneNumber(context);
     }
 
     /**
@@ -138,37 +133,16 @@ public class ProcessMessage {
      *
      * @param response The JSON string response from the server.
      */
-    public void smsServerResponse(String response) {
+    public void smsServerResponse(SmssyncResponse response) {
         Logger.log(TAG, "performResponseFromServer(): " + " response:"
                 + response);
-        if (!Prefs.enableReplyFrmServer) {
+        if (!prefs.enableReplyFrmServer().get()) {
             return;
         }
 
-        if (!TextUtils.isEmpty(response)) {
-
-            try {
-
-                jsonObject = new JSONObject(response);
-                JSONObject payloadObject = jsonObject.getJSONObject("payload");
-
-                if (payloadObject != null) {
-
-                    jsonArray = payloadObject.getJSONArray("messages");
-
-                    for (int index = 0; index < jsonArray.length(); ++index) {
-                        jsonObject = jsonArray.getJSONObject(index);
-                        new Util().log("Send sms: To: "
-                                + jsonObject.getString("to") + "Message: "
-                                + jsonObject.getString("message"));
-
-                        processSms.sendSms(jsonObject.getString("to"),
-                                jsonObject.getString("message"), jsonObject.getString("uuid"));
-                    }
-
-                }
-            } catch (JSONException e) {
-                new Util().log(TAG, "Error: " + e.getMessage());
+        if (response != null && response.getPayload().getMessages().size() > 0) {
+            for (Message msg : response.getPayload().getMessages()) {
+                sendSms(msg);
             }
         }
     }
@@ -177,7 +151,6 @@ public class ProcessMessage {
         Logger.log(TAG, "performTask(): perform a task");
         Util.logActivities(context, context.getString(R.string.perform_task));
         // load Prefs
-        Prefs.loadPreferences(context);
 
         // validate configured url
         int status = Util.validateCallbackUrl(syncUrl.getUrl());
@@ -207,76 +180,72 @@ public class ProcessMessage {
                 uriBuilder.append(urlSecretEncoded);
             }
 
-            //syncUrl.setUrl(uriBuilder.toString());
-
             MainHttpClient client = new MainHttpClient(uriBuilder.toString(), context);
-            String response = null;
+            SmssyncResponse smssyncResponses = null;
+
             try {
                 client.execute();
-                response = client.getResponse();
+                final Gson gson = new Gson();
+                smssyncResponses = gson.fromJson(client.getResponse().body().charStream(),
+                        SmssyncResponse.class);
             } catch (Exception e) {
-                Logger.log(TAG, e.getMessage());
+                e.printStackTrace();
+                Util.logActivities(context, "Task crashed: "+e.getMessage());
             }
 
-            Logger.log(TAG, "TaskCheckResponse: " + response);
-            if (response != null && !TextUtils.isEmpty(response)) {
+            if (smssyncResponses != null) {
+                Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
+                Util.logActivities(context, "TaskCheckResponse: " + smssyncResponses.toString());
 
-                try {
-
-                    jsonObject = new JSONObject(response);
-                    JSONObject payloadObject = jsonObject
-                            .getJSONObject("payload");
-
-                    if (payloadObject != null) {
-                        String task = payloadObject.getString("task");
-                        Logger.log(TAG, "Task " + task);
-                        boolean secretOk = TextUtils.isEmpty(urlSecret) ||
-                                urlSecret.equals(payloadObject.getString("secret"));
-                        if (secretOk && task.equals("send")) {
-                            if (Prefs.isMessageResultsApiEnabled(context)) {
-                                sendSMSWithMessageResultsAPIEnabled(syncUrl, payloadObject);
-                            } else {
-                                //backwards compatibility
-                                sendSMSWithMessageResultsAPIDisabled(payloadObject);
-                            }
-
+                if (smssyncResponses.getPayload() != null) {
+                    String task = smssyncResponses.getPayload().getTask();
+                    Logger.log(TAG, "Task " + task);
+                    boolean secretOk = TextUtils.isEmpty(urlSecret) ||
+                            urlSecret.equals(smssyncResponses.getPayload().getSecret());
+                    if (secretOk && task.equals("send")) {
+                        if (prefs.messageResultsAPIEnable().get()) {
+                            sendSMSWithMessageResultsAPIEnabled(syncUrl,
+                                    smssyncResponses.getPayload().getMessages());
                         } else {
-                            Logger.log(TAG, context.getString(R.string.no_task));
-                            Util.logActivities(context, context.getString(R.string.no_task));
-                            setErrorMessage(context.getString(R.string.no_task));
+                            //backwards compatibility
+                            sendSMSWithMessageResultsAPIDisabled(
+                                    smssyncResponses.getPayload().getMessages());
                         }
 
-                    } else { // 'payload' data may not be present in JSON
-                        // response
+                    } else {
                         Logger.log(TAG, context.getString(R.string.no_task));
                         Util.logActivities(context, context.getString(R.string.no_task));
                         setErrorMessage(context.getString(R.string.no_task));
                     }
 
-                } catch (JSONException e) {
-                    Logger.log(TAG, "Error: " + e.getMessage());
-                    setErrorMessage(e.getMessage());
+                } else { // 'payload' data may not be present in JSON
+                    // response
+                    Logger.log(TAG, context.getString(R.string.no_task));
+                    Util.logActivities(context, context.getString(R.string.no_task));
+                    setErrorMessage(context.getString(R.string.no_task));
                 }
+
             }
         }
-        Util.logActivities(context, context.getString(R.string.finish_task_check));
+
+        Util.logActivities(context, context.getString(R.string.finish_task_check)+" "+getErrorMessage());
     }
 
-    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl, JSONObject payloadObject) throws JSONException {
+    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl,
+            List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
-        List<TaskMessage> receivedTasks = JsonUtils.getObj(payloadObject.getJSONArray("messages").toString(),
-                new TypeToken<List<TaskMessage>>() {
-                }.getType());
-
-        for (TaskMessage task : receivedTasks) {
-            messagesUUIDs.getQueuedMessages().add(task.getUuid());
+        for (Message msg : msgs) {
+            msg.setMessageType(TASK);
+            messagesUUIDs.getQueuedMessages().add(msg.getUuid());
         }
 
-        MessagesUUIDSResponse response = mMessageResultsController.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
-        if(null != response && response.isSuccess() && response.hasUUIDs()) {
-            for (TaskMessage msg : receivedTasks) {
+        MessagesUUIDSResponse response = mMessageResultsController
+                .sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
+        if (null != response && response.isSuccess() && response.hasUUIDs()) {
+            for (Message msg : msgs) {
+                msg.setMessageType(TASK);
                 if (response.getUuids().contains(msg.getUuid())) {
-                    processSms.sendSms(msg.getSentTo(), msg.getMessage(), msg.getUuid());
+                    sendSms(msg);
                     Util.logActivities(context,
                             context.getString(R.string.processed_task,
                                     msg.getMessage()));
@@ -285,22 +254,10 @@ public class ProcessMessage {
         }
     }
 
-    private void sendSMSWithMessageResultsAPIDisabled(JSONObject payloadObject) throws JSONException {
-        jsonArray = payloadObject.getJSONArray("messages");
-
-        for (int index = 0; index < jsonArray.length(); ++index) {
-            jsonObject = jsonArray.getJSONObject(index);
-
-            // Make sure message UUID has been set before attempting to get.
-            // This should work with pre 2.5 releases
-            String uuid = jsonObject.has("uuid") ? jsonObject.getString("uuid")
-                    : "";
-            processSms.sendSms(jsonObject.getString("to"),
-                    jsonObject.getString("message"), uuid);
-
-            Util.logActivities(context,
-                    context.getString(R.string.processed_task,
-                            jsonObject.getString("message")));
+    private void sendSMSWithMessageResultsAPIDisabled(List<Message> msgs) {
+        for (Message msg : msgs) {
+            msg.setMessageType(TASK);
+            sendSms(msg);
         }
     }
 
@@ -315,28 +272,30 @@ public class ProcessMessage {
         Logger.log(TAG, "routeSms uuid: " + message.toString());
 
         // is SMSSync service running?
-        if (Prefs.enabled) {
+        if (prefs.serviceEnabled().get()) {
+
             // send auto response from phone not server.
-            if (Prefs.enableReply) {
+            if (prefs.enableReply().get()) {
+
                 // send auto response as SMS to user's phone
                 Util.logActivities(context, context.getString(R.string.auto_response_sent));
-                processSms.sendSms(message.getFrom(), Prefs.reply);
+                processSms.sendSms(message.getPhoneNumber(), prefs.reply().get());
             }
 
             if (routeMessage(message)) {
 
                 // Delete messages from message app's inbox, only
                 // when SMSSync has that feature turned on
-                if (Prefs.autoDelete) {
+                if (prefs.autoDelete().get()) {
 
-                    processSms.delSmsFromInbox(message.getBody(), message.getFrom());
+                    processSms.delSmsFromInbox(message.getMessage(), message.getPhoneNumber());
                     Util.logActivities(context,
-                            context.getString(R.string.auto_message_deleted, message.getBody()));
+                            context.getString(R.string.auto_message_deleted, message.getMessage()));
                 }
                 return true;
             } else {
                 //only save to pending when the number is not blacklisted
-                if (!Prefs.enableBlacklist) {
+                if (!prefs.enableBlacklist().get()) {
                     saveMessage(message);
                 }
             }
@@ -359,16 +318,18 @@ public class ProcessMessage {
      */
     private boolean processMessage(Message message, SyncUrl syncUrl) {
         boolean posted = false;
-
+        MessageSyncHttpClient client = new MessageSyncHttpClient(
+                context, syncUrl, message, getPhoneNumber(), prefs.uniqueId().get()
+        );
         // process filter text (keyword or RegEx)
         if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
             String filterText = syncUrl.getKeywords();
-            if (processSms.filterByKeywords(message.getBody(), filterText)
-                    || processSms.filterByRegex(message.getBody(), filterText)) {
+            if (processSms.filterByKeywords(message.getMessage(), filterText)
+                    || processSms.filterByRegex(message.getMessage(), filterText)) {
                 Logger.log(TAG, syncUrl.getUrl());
 
                 if (message.getMessageType() == PENDING) {
-                    posted = syncReceivedSms(message, syncUrl);
+                    posted = syncReceivedSms(message, client);
                     if (!posted) {
                         // Note: HTTP Error code or custom error message
                         // will have been shown already
@@ -383,7 +344,7 @@ public class ProcessMessage {
                     }
                 } else {
                     // FIXME: `posted` always `true` but `sendSms()` may not work
-                    processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
+                    sendSms(message);
                     posted = true;
                 }
 
@@ -392,7 +353,7 @@ public class ProcessMessage {
         } else { // there is no filter text set up on a sync URL
 
             if (message.getMessageType() == PENDING) {
-                posted = syncReceivedSms(message, syncUrl);
+                posted = syncReceivedSms(message, client);
                 setErrorMessage(syncUrl.getUrl());
                 if (!posted) {
 
@@ -405,7 +366,7 @@ public class ProcessMessage {
                     processSms.postToSentBox(message);
                 }
             } else {
-                processSms.sendSms(message.getFrom(), message.getBody(), message.getUuid());
+                sendSms(message);
                 posted = true;
 
             }
@@ -417,15 +378,14 @@ public class ProcessMessage {
     /**
      * Routes both incoming SMS and pending messages.
      *
-     * @param message The message to be rounted
+     * @param message The message to be routed
      */
     private boolean routeMessage(Message message) {
 
         // load preferences
-        Prefs.loadPreferences(context);
         boolean posted = false;
         // is SMSSync service running?
-        if (!Prefs.enabled || !Util.isConnected(context)) {
+        if (!prefs.serviceEnabled().get() || !Util.isConnected(context)) {
             return posted;
         }
         SyncUrl model = new SyncUrl();
@@ -433,23 +393,23 @@ public class ProcessMessage {
         // get enabled Sync URLs
         for (SyncUrl syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
             // white listed is enabled
-            if (Prefs.enableWhitelist) {
+            if (prefs.enableWhitelist().get()) {
                 filters.loadByStatus(Filter.Status.WHITELIST);
                 for (Filter filter : filters.getFilterList()) {
-                    if (filter.getPhoneNumber().equals(message.getFrom())) {
+                    if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
                         return processMessage(message, syncUrl);
                     }
                 }
                 return false;
             }
 
-            if (Prefs.enableBlacklist) {
+            if (prefs.enableBlacklist().get()) {
 
                 filters.loadByStatus(Filter.Status.BLACKLIST);
                 for (Filter filter : filters.getFilterList()) {
 
-                    if (filter.getPhoneNumber().equals(message.getFrom())) {
-                        Logger.log("message", " from:" + message.getFrom() + " filter:" + filter
+                    if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
+                        Logger.log("message", " from:" + message.getPhoneNumber() + " filter:" + filter
                                 .getPhoneNumber());
                         return false;
                     }
@@ -469,6 +429,14 @@ public class ProcessMessage {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public void logActivites(String message) {
+        Util.logActivities(context, message);
+    }
+
+    private void sendSms(Message message) {
+        processSms.sendSms(message.getPhoneNumber(), message.getMessage(), message.getUuid());
     }
 
 }

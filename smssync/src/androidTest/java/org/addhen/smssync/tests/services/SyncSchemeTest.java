@@ -1,20 +1,17 @@
 package org.addhen.smssync.tests.services;
 
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+
 import android.test.suitebuilder.annotation.SmallTest;
 
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.BaseHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.tests.BaseTest;
-
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.StringEntity;
 
 /**
  *
@@ -30,6 +27,9 @@ public class SyncSchemeTest extends BaseTest {
     final String toNumber = "777777777";
     final String deviceId = "21";
 
+    private static final MediaType CONTENT_TYPE
+            = MediaType.parse("application/x-www-form-urlencoded");
+
     @Override
     public void setUp() throws Exception{
         syncUrl = new SyncUrl();
@@ -39,8 +39,8 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setUrl("http://demo.ushahidi.com/smssync4");
 
         msg = new Message();
-        msg.setBody("TEST MESSAGE");
-        msg.setFrom("555555555");
+        msg.setMessage("TEST MESSAGE");
+        msg.setPhoneNumber("555555555");
         msg.setUuid("312312");
         msg.setTimestamp("0");
 
@@ -55,49 +55,66 @@ public class SyncSchemeTest extends BaseTest {
     }
 
     @SmallTest
+    public void testSetPOSTJSONSyncScheme() {
+        SyncScheme syncScheme = new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON);
+        assertNotNull(syncScheme);
+        assertEquals(syncScheme.getMethod(),SyncScheme.SyncMethod.POST);
+        assertEquals(syncScheme.getDataFormat(),SyncScheme.SyncDataFormat.JSON);
+    }
+
+    @SmallTest
+    public void testSetPOSTXMLSyncScheme() {
+        SyncScheme syncScheme = new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.XML);
+        assertNotNull(syncScheme);
+        assertEquals(syncScheme.getMethod(),SyncScheme.SyncMethod.POST);
+        assertEquals(syncScheme.getDataFormat(),SyncScheme.SyncDataFormat.XML);
+    }
+
+    @SmallTest
     public void testSyncWithPOSTAndURLEncoded(){
         syncUrl.setSyncScheme(new SyncScheme());
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
             getContext(), syncUrl, msg, toNumber, deviceId
         );
-        HttpUriRequest req = null;
+
+        Request req = null;
         try {
+            client.execute();
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(HttpPost.class.getCanonicalName(),req.getClass().getCanonicalName());
+        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getRequest().method());
+        RequestBody body = client.getRequest().body();
 
-        HttpEntity entity = ((HttpPost) req).getEntity();
-
-        assertNotNull(entity);
-
-        assertEquals(UrlEncodedFormEntity.class.getCanonicalName(),entity.getClass().getCanonicalName());
+        assertNotNull(body);
+        assertEquals(CONTENT_TYPE, body.contentType());
     }
 
     @SmallTest
     public void testSyncWithPOSTAndJSON(){
-        syncUrl.setSyncScheme(new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON));
+        SyncScheme syncScheme = new SyncScheme(SyncScheme.SyncMethod.POST, SyncScheme.SyncDataFormat.JSON);
+        syncUrl.setSyncScheme(syncScheme);
 
         MessageSyncHttpClient client = new MessageSyncHttpClient(
             getContext(), syncUrl, msg, toNumber, deviceId
         );
-        HttpUriRequest req = null;
+
+        Request req = null;
         try {
+            client.execute();
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(HttpPost.class.getCanonicalName(),req.getClass().getCanonicalName());
+        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getRequest().method());
+        RequestBody body = client.getRequest().body();
 
-        HttpEntity entity = ((HttpPost) req).getEntity();
-
-        assertNotNull(entity);
-
-        assertEquals(StringEntity.class.getCanonicalName(),entity.getClass().getCanonicalName());
+        assertNotNull(body);
+        assertEquals(BaseHttpClient.JSON, body.contentType());
     }
 
     @SmallTest
@@ -107,20 +124,19 @@ public class SyncSchemeTest extends BaseTest {
         MessageSyncHttpClient client = new MessageSyncHttpClient(
             getContext(), syncUrl, msg, toNumber, deviceId
         );
-        HttpUriRequest req = null;
+        Request req = null;
         try {
+            client.execute();
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(HttpPost.class.getCanonicalName(),req.getClass().getCanonicalName());
+        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getRequest().method());
+        RequestBody body = client.getRequest().body();
 
-        HttpEntity entity = ((HttpPost) req).getEntity();
-
-        assertNotNull(entity);
-
-        assertEquals(StringEntity.class.getCanonicalName(),entity.getClass().getCanonicalName());
+        assertNotNull(body);
+        assertEquals(BaseHttpClient.XML, body.contentType());
     }
 
     @SmallTest
@@ -130,20 +146,19 @@ public class SyncSchemeTest extends BaseTest {
         MessageSyncHttpClient client = new MessageSyncHttpClient(
             getContext(), syncUrl, msg, toNumber, deviceId
         );
-        HttpUriRequest req = null;
+        Request req = null;
         try {
+            client.execute();
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(HttpPut.class.getCanonicalName(),req.getClass().getCanonicalName());
+        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getRequest().method());
+        RequestBody body = client.getRequest().body();
 
-        HttpEntity entity = ((HttpPut) req).getEntity();
-
-        assertNotNull(entity);
-
-        assertEquals(StringEntity.class.getCanonicalName(),entity.getClass().getCanonicalName());
+        assertNotNull(body);
+        assertEquals(BaseHttpClient.JSON, body.contentType());
     }
 
     @SmallTest
@@ -153,20 +168,19 @@ public class SyncSchemeTest extends BaseTest {
         MessageSyncHttpClient client = new MessageSyncHttpClient(
             getContext(), syncUrl, msg, toNumber, deviceId
         );
-        HttpUriRequest req = null;
+        Request req = null;
         try {
+            client.execute();
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(HttpPut.class.getCanonicalName(),req.getClass().getCanonicalName());
+        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getRequest().method());
+        RequestBody body = client.getRequest().body();
 
-        HttpEntity entity = ((HttpPut) req).getEntity();
-
-        assertNotNull(entity);
-
-        assertEquals(StringEntity.class.getCanonicalName(),entity.getClass().getCanonicalName());
+        assertNotNull(body);
+        assertEquals(BaseHttpClient.XML, body.contentType());
     }
 
     @SmallTest
@@ -176,20 +190,19 @@ public class SyncSchemeTest extends BaseTest {
         MessageSyncHttpClient client = new MessageSyncHttpClient(
             getContext(), syncUrl, msg, toNumber, deviceId
         );
-        HttpUriRequest req = null;
+        Request req = null;
         try {
+            client.execute();
             req = client.getRequest();
-        } catch (Exception e) {} 
+        } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(HttpPut.class.getCanonicalName(),req.getClass().getCanonicalName());
+        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getRequest().method());
+        RequestBody body = client.getRequest().body();
 
-        HttpEntity entity = ((HttpPut) req).getEntity();
-
-        assertNotNull(entity);
-
-        assertEquals(UrlEncodedFormEntity.class.getCanonicalName(),entity.getClass().getCanonicalName());
+        assertNotNull(body);
+        assertEquals(CONTENT_TYPE, body.contentType());
     }
 
     @SmallTest
@@ -201,19 +214,18 @@ public class SyncSchemeTest extends BaseTest {
             getContext(), syncUrl, msg, toNumber, deviceId
         );
 
-        HttpUriRequest req = null;
+        Request req = null;
         try {
+            client.execute();
             req = client.getRequest();
         } catch (Exception e) {} 
 
-        Header header = req.getFirstHeader("Authorization");
+        assertNotNull(req);
+        String header = req.header("Authorization");
 
         assertNotNull(req);
-        assertNotNull(header);
-        assertNotNull(req.getFirstHeader("Authorization"));
-
-        assertEquals( 
-            req.getFirstHeader("Authorization").getValue(),
+        assertNotNull(header);assertEquals(
+            header,
             "Basic YWRtaW46MTIzcXdlISQ="
         );
     }

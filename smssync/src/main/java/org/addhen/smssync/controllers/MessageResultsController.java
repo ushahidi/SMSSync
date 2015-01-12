@@ -1,12 +1,19 @@
 package org.addhen.smssync.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import com.squareup.okhttp.RequestBody;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.QueuedMessages;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.BaseHttpClient;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.util.JsonUtils;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
@@ -17,6 +24,8 @@ import android.text.TextUtils;
 
 import java.net.URLEncoder;
 import java.util.List;
+
+import static org.addhen.smssync.net.BaseHttpClient.JSON;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 23.04.14.
@@ -35,10 +44,6 @@ public class MessageResultsController {
     private static final String TASK_SENT_URL_PARAM = "?task=sent";
 
     private static final String TASK_RESULT_URL_PARAM = "?task=result";
-
-    private static final String POST_METHOD = "POST";
-
-    private static final String GET_METHOD = "GET";
 
     private Context mContext;
 
@@ -73,17 +78,14 @@ public class MessageResultsController {
 
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
-            client.setMethod(POST_METHOD);
-            client.setStringEntity(createMessageResultJSON(results));
-            client.setHeader("Accept", "application/json");
-            client.setHeader("Content-type", "application/json");
+            RequestBody body = RequestBody.create(JSON, createMessageResultJSON(results));
+            client.setMethod(BaseHttpClient.HttpMethod.POST);
+            client.setRequestBody(body);
             client.execute();
-        } catch (JSONException e) {
-            mUtil.log(mContext.getString(R.string.message_processed_json_failed));
         } catch (Exception e) {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
         } finally {
-            if (HttpStatus.SC_OK == client.getResponseCode()) {
+            if (HttpStatus.SC_OK == client.getResponse().code()) {
                 mUtil.log(mContext.getString(R.string.message_processed_success));
             }
         }
@@ -103,31 +105,31 @@ public class MessageResultsController {
             String newEndPointURL = syncUrl.getUrl().concat(TASK_SENT_URL_PARAM);
             MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
             try {
-                client.setMethod(POST_METHOD);
-                client.setStringEntity(createQueuedMessagesJSON(messages));
-                client.setHeader("Accept", "application/json");
-                client.setHeader("Content-type", "application/json");
+                RequestBody body = RequestBody.create(JSON, createQueuedMessagesJSON(messages));
+                client.setMethod(BaseHttpClient.HttpMethod.POST);
+                client.setRequestBody(body);
                 client.execute();
-            } catch (JSONException e) {
-                mUtil.log(mContext.getString(R.string.message_processed_json_failed));
-                Util.logActivities(mContext,
-                        mContext.getString(R.string.message_processed_json_failed) + " " + e
-                                .getMessage());
-            } catch (Exception e) {
+            }catch (Exception e) {
+                e.printStackTrace();
+                mUtil.log("process crashed");
                 mUtil.log(mContext.getString(R.string.message_processed_failed));
                 Util.logActivities(mContext,
                         mContext.getString(R.string.message_processed_failed) + " " + e
                                 .getMessage());
             } finally {
-                if (HttpStatus.SC_OK == client.getResponseCode()) {
+                if (HttpStatus.SC_OK == client.getResponse().code()) {
+
                     mUtil.log(mContext.getString(R.string.message_processed_success));
                     response = parseMessagesUUIDSResponse(client);
                     response.setSuccess(true);
+                    Util.logActivities(mContext,
+                            mContext.getString(R.string.message_processed_success));
+
                 } else {
-                    response = new MessagesUUIDSResponse(client.getResponseCode());
+                    response = new MessagesUUIDSResponse(client.getResponse().code());
                     Util.logActivities(mContext,
                             mContext.getString(R.string.queued_messages_request_status,
-                                    client.getResponseCode(), client.getResponse()));
+                                    client.getResponse().code(), client.getResponse()));
                 }
             }
         }
@@ -160,7 +162,7 @@ public class MessageResultsController {
 
         MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
         try {
-            client.setMethod(GET_METHOD);
+            client.setMethod(BaseHttpClient.HttpMethod.GET);
             client.execute();
         } catch (JSONException e) {
             mUtil.log(mContext.getString(R.string.message_processed_json_failed));
@@ -172,14 +174,14 @@ public class MessageResultsController {
             Util.logActivities(mContext,
                     mContext.getString(R.string.message_processed_failed) + " " + e.getMessage());
         } finally {
-            if (HttpStatus.SC_OK == client.getResponseCode()) {
+            if (HttpStatus.SC_OK == client.getResponse().code()) {
                 response = parseMessagesUUIDSResponse(client);
                 response.setSuccess(true);
             } else {
-                response = new MessagesUUIDSResponse(client.getResponseCode());
+                response = new MessagesUUIDSResponse(client.getResponse().code());
                 Util.logActivities(mContext,
                         mContext.getString(R.string.messages_result_request_status,
-                                client.getResponseCode(), client.getResponse()));
+                                client.getResponse().code(), client.getResponse()));
             }
         }
         return response;
@@ -199,10 +201,14 @@ public class MessageResultsController {
     private MessagesUUIDSResponse parseMessagesUUIDSResponse(MainHttpClient client) {
         MessagesUUIDSResponse response;
         try {
-            response = JsonUtils.getObj(client.getResponse(), MessagesUUIDSResponse.class);
-            response.setStatusCode(client.getResponseCode());
+
+            final Gson gson = new Gson();
+            final int code = client.getResponse().code();
+            response = gson.fromJson(client.getResponse().body().charStream(),MessagesUUIDSResponse.class);
+            response.setStatusCode(code);
         } catch (Exception e) {
-            response = new MessagesUUIDSResponse(client.getResponseCode());
+            e.printStackTrace();
+            response = new MessagesUUIDSResponse(client.getResponse().code());
             mUtil.log(mContext.getString(R.string.message_processed_json_failed));
         }
         return response;

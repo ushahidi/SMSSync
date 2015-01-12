@@ -1,6 +1,6 @@
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.Prefs;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 
@@ -21,7 +21,8 @@ public class BaseBroadcastReceiver extends BroadcastReceiver {
     }
 
     protected void logActivities(String message, Context context) {
-        if (Prefs.enableLog) {
+        Prefs prefs = new Prefs(context);
+        if (prefs.enableLog().get()) {
             new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
         }
     }

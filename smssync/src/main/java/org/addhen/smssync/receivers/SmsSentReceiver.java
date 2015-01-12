@@ -4,6 +4,7 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.app.Activity;
@@ -70,6 +71,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         .updateSentResult(message); //update type, sent result msg and code
             } else {
                 final String errorCode;
+                final AlertCallbacks alertCallbacks = new AlertCallbacks(new Prefs(context));
                 if (intent.hasExtra("errorCode")) {
                     errorCode = intent.getStringExtra("errorCode");
                 } else {
@@ -78,7 +80,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        AlertCallbacks.smsSendFailedRequest(context, resultMessage, errorCode);
+                        alertCallbacks.smsSendFailedRequest(resultMessage, errorCode);
                     }
                 }).start();
 

@@ -13,6 +13,7 @@ TAG_NAME=$1
 TAG_MESSAGE=$2
 DEVELOP='develop'
 MASTER='master'
+TMP_DIR='/tmp'
 echo $TAG_MESSAGE
 
 # SMSSync source code
@@ -36,12 +37,33 @@ git tag $TAG_NAME -m $TAG_MESSAGE
 echo "Building a release apk"
 ./gradlew clean assemble
 
-# Back to where we were before
-popd
-
 # Push tags to remote repo
 echo "Pushing tags to remote repo..."
 git push ushahidi master develop --tags && git push origin master develop --tags
+
+# Compile HTML files
+
+# cd into the website folder
+echo "Compiling website"
+pushd website-src
+
+ruhoh  compile $TMP_DIR
+
+popd
+
+pushd $TMP_DIR
+git init
+
+git add .
+
+git commit -m "Updating webiste..."
+
+git push git@github.com:ushahidi/SMSSync.git master:gh-pages --force
+
+popd
+
+echo "Website update done"
+
 
 # Checkout develop branch
 echo "Checking out develop branch..."
