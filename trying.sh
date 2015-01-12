@@ -9,7 +9,7 @@ TMP_DIR='/tmp/website-src'
 echo "Compiling website"
 pushd website-src
 
-ruhoh  compile $TMP_DIR
+ruhoh  compile "$TMP_DIR"
 cp CNAME $TMP_DIR
 popd
 
