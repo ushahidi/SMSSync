@@ -8,8 +8,8 @@ TMP_DIR='/tmp/website-src'
 # cd into the website folder
 echo "Compiling website"
 pushd website-src
-
-ruhoh  compile "$TMP_DIR"
+mkdir $TMP_DIR
+ruhoh  compile $TMP_DIR
 cp CNAME $TMP_DIR
 popd
 
