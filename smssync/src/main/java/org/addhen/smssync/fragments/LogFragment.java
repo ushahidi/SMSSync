@@ -100,9 +100,6 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         view.enableLogs.setOnClickListener(this);
         mLogController.setView(this);
         MainApplication.bus.register(this);
-        if(prefs == null) {
-            prefs = new Prefs(getActivity());
-        }
     }
 
     @Override
@@ -259,6 +256,11 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     }
 
     private String makeShareableMessage() {
+        
+        // On some devices this is never initialized.
+        if(prefs == null) {
+            prefs = new Prefs(getActivity());
+        }
 
         StringBuilder build = new StringBuilder();
 

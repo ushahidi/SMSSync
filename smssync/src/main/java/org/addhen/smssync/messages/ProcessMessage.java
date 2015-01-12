@@ -227,7 +227,7 @@ public class ProcessMessage {
 
             }
         }
-        
+
         Util.logActivities(context, context.getString(R.string.finish_task_check)+" "+getErrorMessage());
     }
 
