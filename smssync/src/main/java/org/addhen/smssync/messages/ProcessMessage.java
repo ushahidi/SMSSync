@@ -227,9 +227,8 @@ public class ProcessMessage {
 
             }
         }
-
+        
         Util.logActivities(context, context.getString(R.string.finish_task_check)+" "+getErrorMessage());
-        Util.logActivities(context, context.getString(R.string.finish_task_check));
     }
 
     private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl,
