@@ -256,7 +256,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     }
 
     private String makeShareableMessage() {
-        
+
         // On some devices this is never initialized.
         if(prefs == null) {
             prefs = new Prefs(getActivity());
