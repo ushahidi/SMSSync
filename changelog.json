@@ -1,24 +1,5 @@
 [
     {
-        "version": "v2.7.3",
-        "date": "January 12, 2015",
-        "features": [
-            "Refactor how responses from server are processed.",
-            "Switched to using GSON for JSON de/serializations",
-            "Huge improvements to how to access/store preference values",
-            "Remove survey feedback form",
-            "Switch to using OkHttp library as the main http client.",
-            "Start using mockito for testing",
-            "Add more debug info to log messages"
-
-        ],
-        "bugs": [
-            "Fix issue with server not sending message from server as SMS",
-            "Fix broken sync scheme's configurations",
-            "Fix so message result api processes the response"
-        ]
-    },
-    {
         "version": "v2.7.2",
         "date": "December 02, 2014",
         "features": [
