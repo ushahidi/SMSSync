@@ -525,12 +525,14 @@ function send_message_uuids_waiting_for_a_delivery_report($queued_messages)
 
 function send_messages_uuids_for_sms_delivery_report()
 {
-    $response = json_encode(
-    [
-        "message_uuids" => ['1ba368bd-c467-4374-bf28']
-    ]);
+    if(isset($_GET['task']) AND $_GET['task'] == 'result'){
+        $response = json_encode(
+        [
+            "message_uuids" => ['1ba368bd-c467-4374-bf28']
+        ]);
 
-    send_response($response);
+        send_response($response);
+    }
 
 }
 
@@ -575,7 +577,10 @@ else
     $ curl -D - -X POST http://localhost/demo.php \
         -F "from=09048370465" \
         -F "message=sample text message" \
-        -F "secret=123456"
+        -F "secret=123456" \
+        -F "device_id=1" \
+        -F "sent_timestamp=123456789" \
+        -F "message_id=80" \
 </pre>
 <p>
     The server should return a JSON response indicating a success:true or success:false
