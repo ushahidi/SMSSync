@@ -39,7 +39,7 @@ echo "Building a release apk"
 
 # Push tags to remote repo
 echo "Pushing tags to remote repo..."
-git push ushahidi master develop --tags && git push origin master develop --tags
+git push origin master --tags
 
 # Compile HTML files
 

@@ -8,7 +8,7 @@
             "Remove survey feedback form.",
             "Switch to using OkHttp library as the main http client.",
             "Start using mockito for testing.",
-            "Add more debug info to log messages.",
+            "Add more debug info to log messages."
 
         ],
         "bugs": [
