@@ -578,6 +578,9 @@ else
         -F "from=09048370465" \
         -F "message=sample text message" \
         -F "secret=123456" \
+        -F "device_id=1" \
+        -F "sent_timestamp=123456789" \
+        -F "message_id=80" \
 </pre>
 <p>
     The server should return a JSON response indicating a success:true or success:false
