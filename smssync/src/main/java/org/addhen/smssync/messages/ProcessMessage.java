@@ -153,7 +153,7 @@ public class ProcessMessage {
         // load Prefs
 
         // validate configured url
-        int status = validateCallbackUrl(syncUrl.getUrl());
+        int status = Util.validateCallbackUrl(syncUrl.getUrl());
         if (status == 1) {
             setErrorMessage(context.getString(R.string.no_configured_url));
             Util.logActivities(context, context.getString(R.string.no_configured_url));
@@ -433,10 +433,6 @@ public class ProcessMessage {
 
     public void logActivites(String message) {
         Util.logActivities(context, message);
-    }
-
-    public int validateCallbackUrl(String syncUrl) {
-        return Util.validateCallbackUrl(syncUrl);
     }
 
     private void sendSms(Message message) {
