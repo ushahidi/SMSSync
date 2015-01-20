@@ -33,25 +33,25 @@
     <uses-sdk android:minSdkVersion="8"
         android:targetSdkVersion="19" />
     <application
-        android:name="org.addhen.smssync.MainApplication"
+        android:name=".MainApplication"
         android:icon="@drawable/ic_launcher"
         android:installLocation="auto"
         android:label="@string/app_name"
         android:theme="@style/Theme.SmsSync" >
 
         <!-- Services -->
-        <service android:name="org.addhen.smssync.services.SmsReceiverService" />
-        <service android:name="org.addhen.smssync.services.AutoSyncScheduledService" />
-        <service android:name="org.addhen.smssync.services.CheckTaskScheduledService" />
-        <service android:name="org.addhen.smssync.services.CheckTaskService" />
-        <service android:name="org.addhen.smssync.services.SyncPendingMessagesService" />
+        <service android:name=".services.SmsReceiverService" />
+        <service android:name=".services.AutoSyncScheduledService" />
+        <service android:name=".services.CheckTaskScheduledService" />
+        <service android:name=".services.CheckTaskService" />
+        <service android:name=".services.SyncPendingMessagesService" />
         <service android:name=".services.MessageResultsScheduledService" />
-        <service android:name="org.addhen.smssync.widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService" />
+        <service android:name=".widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService" />
 
 
         <!-- activities -->
         <activity
-            android:name="org.addhen.smssync.Settings"
+            android:name=".Settings"
             android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
             android:exported="false"
             android:label="@string/app_name"
@@ -65,7 +65,7 @@
 
         <!-- messages tab -->
         <activity
-            android:name="org.addhen.smssync.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
             android:label="@string/app_name"
             android:launchMode="singleTop" >
@@ -78,10 +78,10 @@
 
         <!-- donation -->
         <activity
-            android:name="org.addhen.smssync.activities.DonationActivity"
+            android:name=".activities.DonationActivity"
             android:label="@string/donate" />
         <activity
-            android:name="org.addhen.smssync.activities.FilterTabActivity"
+            android:name=".activities.FilterTabActivity"
             android:label="@string/filter" />
 
         <!-- sms -->
@@ -93,21 +93,21 @@
         </receiver>
 
         <!-- Receiver for sms delivered code -->
-        <receiver android:name="org.addhen.smssync.receivers.SmsDeliveredReceiver" >
+        <receiver android:name=".receivers.SmsDeliveredReceiver" >
             <intent-filter>
                 <action android:name="SMS_DELIVERED" />
             </intent-filter>
         </receiver>
 
         <!-- Receiver for pre kitkat. This is disabled when it's kitkat and above -->
-        <receiver android:name="org.addhen.smssync.receivers.SmsReceiver" android:enabled="@bool/is_pre_kitkat" >
+        <receiver android:name=".receivers.SmsReceiver" android:enabled="@bool/is_pre_kitkat" >
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <!-- Receiver for kitkat. This is disabled when it's pre-kitkat releases -->
-        <receiver android:name="org.addhen.smssync.receivers.SmsReceiverKitKat"
+        <receiver android:name=".receivers.SmsReceiverKitKat"
                   android:enabled="@bool/is_kitkat"
                   android:permission="android.permission.BROADCAST_SMS" >
             <intent-filter>
@@ -156,14 +156,14 @@
         <!-- End Android 4.4+ support-->
 
         <!-- connectivity changed -->
-        <receiver android:name="org.addhen.smssync.receivers.ConnectivityChangedReceiver" >
+        <receiver android:name=".receivers.ConnectivityChangedReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <!-- power changed -->
-        <receiver android:name="org.addhen.smssync.receivers.PowerStateChangedReceiver" >
+        <receiver android:name=".receivers.PowerStateChangedReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />
@@ -171,7 +171,7 @@
         </receiver>
 
         <!-- boot -->
-        <receiver android:name="org.addhen.smssync.receivers.BootReceiver" >
+        <receiver android:name=".receivers.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
@@ -179,17 +179,17 @@
         </receiver>
 
         <!-- task check scheduled -->
-        <receiver android:name="org.addhen.smssync.receivers.CheckTaskScheduledReceiver" />
+        <receiver android:name=".receivers.CheckTaskScheduledReceiver" />
 
         <!-- auto sync scheduled -->
-        <receiver android:name="org.addhen.smssync.receivers.AutoSyncScheduledReceiver" />
+        <receiver android:name=".receivers.AutoSyncScheduledReceiver" />
 
         <!-- message delivery scheduled -->
         <receiver android:name=".receivers.MessageResultsScheduledReceiver" />
 
         <!-- app widget provider -->
         <receiver
-            android:name="org.addhen.smssync.widget.SmsSyncAppWidgetProvider"
+            android:name=".widget.SmsSyncAppWidgetProvider"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -199,11 +199,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_info" />
         </receiver>
-
-        <activity
-            android:name="org.addhen.smssync.activities.LogActivity"
-            android:label="@string/logs" >
-        </activity>
     </application>
 
 </manifest>
