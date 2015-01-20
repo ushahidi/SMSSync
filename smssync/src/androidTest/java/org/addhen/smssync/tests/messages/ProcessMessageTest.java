@@ -79,7 +79,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     }
 
     @SmallTest
-    public void testshouldSendResponseFromServerAsSms() throws Exception {
+    public void testShouldSendResponseFromServerAsSms() throws Exception {
         stubNeedMethodsForSyncOperation();
 
         // Enable reply from server
@@ -92,7 +92,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
 
     // Disable these test for now. Replace most of the live URL with mocked ones
     @MediumTest
-    public void testShouldSuccessfulllySyncReceivedSmsWithNoInstantResponseFromServer()
+    public void testShouldSuccessfullySyncReceivedSmsWithNoInstantResponseFromServer()
             throws Exception {
         syncSmsToSyncUrl(false);
 
@@ -102,7 +102,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     }
 
     @MediumTest
-    public void testShouldSuccessfulllySyncReceivedSmsWithInstantResponseFromServer()
+    public void testShouldSuccessfullySyncReceivedSmsWithInstantResponseFromServer()
             throws Exception {
         syncSmsToSyncUrl(true);
 
