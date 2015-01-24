@@ -51,7 +51,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
             cursor = super.query(TABLE, COLUMNS, null, null, ID);
             if (cursor != null) {
 
-                mListSyncUrl = new ArrayList<SyncUrl>();
+                mListSyncUrl = new ArrayList<>();
                 while (cursor.moveToNext()) {
                     SyncUrl syncUrl = cursorToEntity(cursor);
                     mListSyncUrl.add(syncUrl);
@@ -78,7 +78,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 String.valueOf(id)
         };
 
-        mListSyncUrl = new ArrayList<SyncUrl>();
+        mListSyncUrl = new ArrayList<>();
 
         try {
 
@@ -109,7 +109,7 @@ public class SyncUrlContentProvider extends DbContentProvider implements
                 String.valueOf(status)
         };
 
-        mListSyncUrl = new ArrayList<SyncUrl>();
+        mListSyncUrl = new ArrayList<>();
 
         try {
             cursor = super.query(TABLE, COLUMNS, selection, selectionArgs, ID);
