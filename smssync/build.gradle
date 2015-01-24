@@ -54,11 +54,11 @@ android {
 
     buildTypes {
 
-        /*proguard.initWith(buildTypes.debug)
+        proguard.initWith(buildTypes.debug)
         proguard {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }*/
+        }
 
         release {
             if (project.hasProperty('googleAnalyticsCode')) {
@@ -75,7 +75,7 @@ android {
             } else{
                 resValue "string", "ga_trackingId", ""
             }
-            //applicationIdSuffix ".debug"
+            applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
         }
 

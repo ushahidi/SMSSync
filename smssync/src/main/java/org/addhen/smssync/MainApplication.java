@@ -20,6 +20,7 @@ package org.addhen.smssync;
 import com.squareup.otto.Bus;
 
 import org.addhen.smssync.database.Database;
+import org.addhen.smssync.net.MainHttpClient;
 
 import android.app.Application;
 
@@ -32,18 +33,13 @@ public class MainApplication extends Application {
 
     public static final String TAG = "SmsSyncApplication";
 
-    public static final SyncBus bus = new SyncBus(new Bus());
-
     public static Database mDb;
+
+    public static MainHttpClient mApi;
 
     public static Application app = null;
 
-    /**
-     * Return the application tracker
-     */
-    public static AppTracker getInstance() {
-        return TrackerResolver.getInstance();
-    }
+    public static final SyncBus bus = new SyncBus(new Bus());
 
     @Override
     public void onCreate() {
@@ -61,5 +57,12 @@ public class MainApplication extends Application {
         // Close the database when the application terminates.
         mDb.close();
         super.onTerminate();
+    }
+
+    /**
+     * Return the application tracker
+     */
+    public static AppTracker getInstance() {
+        return TrackerResolver.getInstance();
     }
 }
