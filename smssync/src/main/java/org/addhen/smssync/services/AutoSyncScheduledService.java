@@ -22,6 +22,7 @@ import com.squareup.otto.Produce;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;
@@ -64,7 +65,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     }
 
     @Produce
-    public boolean readLog() {
-        return true;
+    public LogEvent readLog() {
+        return new LogEvent();
     }
 }

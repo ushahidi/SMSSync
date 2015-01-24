@@ -27,6 +27,7 @@ import org.addhen.smssync.controllers.LogController;
 import org.addhen.smssync.listeners.LogListener;
 import org.addhen.smssync.models.Log;
 import org.addhen.smssync.models.PhoneStatusInfo;
+import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.ILogView;
@@ -112,9 +113,9 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     }
 
     @Override
-    public void onDestroy() {
-        log("onDestroy()");
-        super.onDestroy();
+    public void onPause() {
+        log("onPause()");
+        super.onPause();
         MainApplication.bus.unregister(this);
     }
 
@@ -160,8 +161,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     }
 
     @Subscribe
-    public void reloadLog(boolean status) {
-        //if (status) {
+    public void reloadLog(LogEvent event) {
         adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
 
         // Set the location of the log file
@@ -170,7 +170,6 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
                     LogUtil.getFile(LogUtil.LOG_NAME).getAbsolutePath()));
             view.logLcation.setVisibility(View.VISIBLE);
         }
-        //}
     }
 
     private Intent createShareIntent() {

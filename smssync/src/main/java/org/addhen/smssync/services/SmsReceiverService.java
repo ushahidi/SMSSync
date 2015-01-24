@@ -24,6 +24,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.DebugCallbacks;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -286,8 +287,8 @@ public class SmsReceiverService extends Service {
     }
 
     @Produce
-    public boolean reloadLog() {
-        return true;
+    public LogEvent reloadLog() {
+        return new LogEvent();
     }
 
     private static class ServiceHandler extends Handler {
