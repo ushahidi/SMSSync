@@ -100,13 +100,13 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
         view.enableLogs.setChecked(prefs.enableLog().get());
         view.enableLogs.setOnClickListener(this);
         mLogController.setView(this);
-        MainApplication.bus.register(this);
     }
 
     @Override
     public void onResume() {
         log("onResume()");
         super.onResume();
+        MainApplication.bus.register(this);
         getActivity().registerReceiver(batteryLevelReceiver,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         loadLogs();
@@ -114,7 +114,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     @Override
     public void onPause() {
-        log("onPause()");
+        log("onStop()");
         super.onPause();
         MainApplication.bus.unregister(this);
     }

@@ -28,6 +28,8 @@ import java.util.List;
  */
 public class Message extends Model implements Serializable {
 
+    private static final long serialVersionUID = -7913005651109626889L;
+
     private String message;
 
     private String to;

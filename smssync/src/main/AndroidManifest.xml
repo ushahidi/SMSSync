@@ -45,7 +45,7 @@
         <service android:name="org.addhen.smssync.services.CheckTaskScheduledService" />
         <service android:name="org.addhen.smssync.services.CheckTaskService" />
         <service android:name="org.addhen.smssync.services.SyncPendingMessagesService" />
-        <service android:name=".services.MessageResultsScheduledService" />
+        <service android:name="org.addhen.smssync.services.MessageResultsScheduledService" />
         <service android:name="org.addhen.smssync.widget.SmsSyncAppWidgetProvider$SmsSyncAppWidgetService" />
 
 
@@ -86,7 +86,7 @@
 
         <!-- sms -->
         <!-- Receiver for sms sent code -->
-        <receiver android:name=".receivers.SmsSentReceiver" >
+        <receiver android:name="org.addhen.smssync.receivers.SmsSentReceiver" >
             <intent-filter>
                 <action android:name="SMS_SENT" />
             </intent-filter>
@@ -185,7 +185,7 @@
         <receiver android:name="org.addhen.smssync.receivers.AutoSyncScheduledReceiver" />
 
         <!-- message delivery scheduled -->
-        <receiver android:name=".receivers.MessageResultsScheduledReceiver" />
+        <receiver android:name="org.addhen.smssync.receivers.MessageResultsScheduledReceiver" />
 
         <!-- app widget provider -->
         <receiver
@@ -199,11 +199,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/appwidget_info" />
         </receiver>
-
-        <activity
-            android:name="org.addhen.smssync.activities.LogActivity"
-            android:label="@string/logs" >
-        </activity>
     </application>
 
 </manifest>

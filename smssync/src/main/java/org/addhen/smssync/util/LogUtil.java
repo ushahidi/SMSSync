@@ -2,6 +2,7 @@ package org.addhen.smssync.util;
 
 import org.addhen.smssync.listeners.LogListener;
 import org.addhen.smssync.models.Log;
+import org.addhen.smssync.state.LogEvent;
 
 import android.os.Environment;
 import android.text.format.DateFormat;
@@ -229,13 +230,13 @@ public class LogUtil {
         append(line);
         close();
         mLogListener = listener;
-        mLogListener.reloadLog(true);
+        mLogListener.reloadLog(new LogEvent());
     }
 
     public void appendAndClose(String line) {
         appendAndClose(line, new LogListener() {
             @Override
-            public void reloadLog(boolean status) {
+            public void reloadLog(LogEvent event) {
 
             }
         });

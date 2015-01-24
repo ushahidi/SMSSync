@@ -203,9 +203,8 @@ public class MessageResultsController {
         try {
 
             final Gson gson = new Gson();
-            final int code = client.getResponse().code();
             response = gson.fromJson(client.getResponse().body().charStream(),MessagesUUIDSResponse.class);
-            response.setStatusCode(code);
+            response.setStatusCode(client.getResponse().code());
         } catch (Exception e) {
             e.printStackTrace();
             response = new MessagesUUIDSResponse(client.getResponse().code());

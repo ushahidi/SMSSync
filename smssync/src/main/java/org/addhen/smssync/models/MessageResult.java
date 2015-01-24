@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class MessageResult implements Serializable {
 
+    private static final long serialVersionUID = 1094372288105228610L;
+
     @SerializedName("uuid")
     private String messageUUID;
 

@@ -65,7 +65,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     }
 
     @Produce
-    public LogEvent readLog() {
+    public LogEvent readLogs() {
         return new LogEvent();
     }
 }
