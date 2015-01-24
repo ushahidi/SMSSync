@@ -33,8 +33,8 @@ public class AlertCallbacks {
     /**
      * If battery level drops to low post alert to server send alert text to stored phone number
      */
-    public void lowBatteryLevelRequest() {
-        int batteryLevel = Util.getBatteryLevel(prefs.getContext());
+    public void lowBatteryLevelRequest(int batteryLevel) {
+
         SyncUrl model = new SyncUrl();
         for (SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
             if (syncUrl.getUrl() != null && !syncUrl.getUrl().equals("")) {

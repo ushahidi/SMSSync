@@ -572,16 +572,21 @@ public class Util {
     public static int getBatteryLevel(Context context) {
         Intent batteryIntent = context
                 .registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
         int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
+        return calculateBatteryLevel(level, scale);
+
+    }
+
+    public static int calculateBatteryLevel(int level, int scale) {
         if (level >= 0 && scale > 0) {
             return (level * 100) / scale;
         }
 
         return -1;
     }
-
     /**
      * Writes SMSsync's database file on a non rooted device to the SD card
      */
