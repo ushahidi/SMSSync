@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Http client source
  */
-public interface HttpClientSource {
+public interface HttpClientWrapper {
 
     void setHeader(String name, String value);
 

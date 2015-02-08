@@ -43,7 +43,7 @@ import java.util.Map;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class DefaultHttpClientSource implements HttpClientSource {
+public class LegacyHttpClientWrapper implements HttpClientWrapper {
 
     private static final String CLASS_TAG = MainHttpClient.class.getSimpleName();
 
@@ -75,7 +75,7 @@ public class DefaultHttpClientSource implements HttpClientSource {
 
     private String responseErrorMessage;
 
-    public DefaultHttpClientSource(String url, int timeout, String userAgent) {
+    public LegacyHttpClientWrapper(String url, int timeout, String userAgent) {
         this.url = url;
         this.params = new ArrayList<>();
         this.headers = new HashMap<>();
