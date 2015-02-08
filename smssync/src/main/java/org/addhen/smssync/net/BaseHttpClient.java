@@ -89,7 +89,7 @@ public abstract class BaseHttpClient {
         this.header = new HashMap<>();
 
         httpClient = new OkHttpClient();
-        httpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
+        httpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.MILLISECONDS);
         httpClient.setWriteTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
         httpClient.setReadTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
     }
