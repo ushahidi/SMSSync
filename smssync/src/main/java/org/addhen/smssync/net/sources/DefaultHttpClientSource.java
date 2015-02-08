@@ -1,6 +1,8 @@
 package org.addhen.smssync.net.sources;
 
+import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MainHttpClient;
+import org.addhen.smssync.net.ssl.TrustedSocketFactory;
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,18 +22,17 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
-
-import android.content.Context;
+import org.apache.http.protocol.HTTP;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -39,14 +40,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.addhen.smssync.net.BaseHttpClient.HttpMethod;
-
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class DefaultHttpClientSource implements HttpClientSource {
 
     private static final String CLASS_TAG = MainHttpClient.class.getSimpleName();
+
+    private static final String DEFAULT_ENCODING = "UTF-8";
 
     private DefaultHttpClient httpClient;
 
@@ -67,8 +68,6 @@ public class DefaultHttpClientSource implements HttpClientSource {
     private HttpMethod method = HttpMethod.GET;
 
     private int responseCode;
-
-    private static final String DEFAULT_ENCODING = "UTF-8";
 
     private StringEntity stringEntity;
 
@@ -107,16 +106,14 @@ public class DefaultHttpClientSource implements HttpClientSource {
         schemeRegistry.register(new Scheme("http", PlainSocketFactory
                 .getSocketFactory(), 80));
         // https scheme
-       /* try {
+        try {
             schemeRegistry.register(new Scheme("https",
                     new TrustedSocketFactory(url, false), 443));
         } catch (KeyManagementException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
-        }*/
+        }
 
         ThreadSafeClientConnManager manager = new ThreadSafeClientConnManager(
                 httpParameters, schemeRegistry);
@@ -195,8 +192,23 @@ public class DefaultHttpClientSource implements HttpClientSource {
     }
 
     @Override
-    public void setRequestParameter() {
+    public void setRequestParameter(String name, String value) {
+        params.add(new BasicNameValuePair(name, value));
+    }
 
+    @Override
+    public ArrayList getParams() {
+        return params;
+    }
+
+    @Override
+    public void setRequestBody(ArrayList<NameValuePair> body) throws Exception {
+        setEntity(new UrlEncodedFormEntity(body, HTTP.UTF_8));
+    }
+
+    @Override
+    public void setRequestBody(String body) throws Exception {
+        setStringEntity(body);
     }
 
     private void prepareRequest() throws Exception {
@@ -239,6 +251,10 @@ public class DefaultHttpClientSource implements HttpClientSource {
         return null;
     }
 
+    private void setEntity(HttpEntity data) throws Exception {
+        entity = data;
+    }
+
     public StringEntity getStringEntity() throws Exception {
         // check if entity was explicitly set otherwise return params as entity
         if (stringEntity != null && stringEntity.getContentLength() > 0) {
@@ -250,17 +266,13 @@ public class DefaultHttpClientSource implements HttpClientSource {
         return null;
     }
 
+    public void setStringEntity(String data) throws Exception {
+        stringEntity = new StringEntity(data, DEFAULT_ENCODING);
+    }
+
     private HttpRequestBase getRequest() throws Exception {
         prepareRequest();
         return request;
-    }
-
-    private void setEntity(HttpEntity data) throws Exception {
-        entity = data;
-    }
-
-    public void setStringEntity(String data) throws Exception {
-        stringEntity = new StringEntity(data, DEFAULT_ENCODING);
     }
 
     public void execute() throws Exception {

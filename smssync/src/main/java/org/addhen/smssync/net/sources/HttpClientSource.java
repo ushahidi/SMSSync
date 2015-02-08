@@ -1,6 +1,10 @@
 package org.addhen.smssync.net.sources;
 
+import org.addhen.smssync.net.SyncScheme;
+import org.apache.http.NameValuePair;
+
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,7 +20,13 @@ public interface HttpClientSource {
 
     String getErrorMessage();
 
-    void setRequestParameter();
+    void setRequestParameter(String name, String value);
+
+    ArrayList getParams();
+
+    void setRequestBody(ArrayList<NameValuePair> body) throws Exception;
+
+    void setRequestBody(String body) throws Exception;
 
     void execute() throws Exception;
 
