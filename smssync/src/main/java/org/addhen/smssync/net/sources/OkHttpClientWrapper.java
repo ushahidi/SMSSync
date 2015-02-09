@@ -57,7 +57,7 @@ public class OkHttpClientWrapper implements HttpClientWrapper {
     private Request request;
 
 
-    public OkHttpClientWrapper(String url, int timeout, String userAgent) {
+    public OkHttpClientWrapper(String url, int timeout) {
         this.url = url;
         this.params = new ArrayList<>();
         this.header = new HashMap<>();
@@ -66,7 +66,6 @@ public class OkHttpClientWrapper implements HttpClientWrapper {
         httpClient.setConnectTimeout(timeout, TimeUnit.MILLISECONDS);
         httpClient.setWriteTimeout(timeout, TimeUnit.SECONDS);
         httpClient.setReadTimeout(timeout, TimeUnit.SECONDS);
-        setHeader("User-Agent", userAgent);
     }
 
     public static String base64Encode(String str) {

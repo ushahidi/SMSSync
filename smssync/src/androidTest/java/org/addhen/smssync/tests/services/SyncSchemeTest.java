@@ -81,13 +81,13 @@ public class SyncSchemeTest extends BaseTest {
         Request req = null;
         try {
             client.execute();
-            req = client.getRequest();
+            req = client.getHttpClientWrapper();
         } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getRequest().method());
-        RequestBody body = client.getRequest().body();
+        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getHttpClientWrapper().method());
+        RequestBody body = client.getHttpClientWrapper().body();
 
         assertNotNull(body);
         assertEquals(CONTENT_TYPE, body.contentType());
@@ -105,13 +105,13 @@ public class SyncSchemeTest extends BaseTest {
         Request req = null;
         try {
             client.execute();
-            req = client.getRequest();
+            req = client.getHttpClientWrapper();
         } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getRequest().method());
-        RequestBody body = client.getRequest().body();
+        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getHttpClientWrapper().method());
+        RequestBody body = client.getHttpClientWrapper().body();
 
         assertNotNull(body);
         assertEquals(BaseHttpClient.JSON, body.contentType());
@@ -127,13 +127,13 @@ public class SyncSchemeTest extends BaseTest {
         Request req = null;
         try {
             client.execute();
-            req = client.getRequest();
+            req = client.getHttpClientWrapper();
         } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getRequest().method());
-        RequestBody body = client.getRequest().body();
+        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getHttpClientWrapper().method());
+        RequestBody body = client.getHttpClientWrapper().body();
 
         assertNotNull(body);
         assertEquals(BaseHttpClient.XML, body.contentType());
@@ -149,13 +149,13 @@ public class SyncSchemeTest extends BaseTest {
         Request req = null;
         try {
             client.execute();
-            req = client.getRequest();
+            req = client.getHttpClientWrapper();
         } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getRequest().method());
-        RequestBody body = client.getRequest().body();
+        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getHttpClientWrapper().method());
+        RequestBody body = client.getHttpClientWrapper().body();
 
         assertNotNull(body);
         assertEquals(BaseHttpClient.JSON, body.contentType());
@@ -171,13 +171,13 @@ public class SyncSchemeTest extends BaseTest {
         Request req = null;
         try {
             client.execute();
-            req = client.getRequest();
+            req = client.getHttpClientWrapper();
         } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getRequest().method());
-        RequestBody body = client.getRequest().body();
+        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getHttpClientWrapper().method());
+        RequestBody body = client.getHttpClientWrapper().body();
 
         assertNotNull(body);
         assertEquals(BaseHttpClient.XML, body.contentType());
@@ -193,13 +193,13 @@ public class SyncSchemeTest extends BaseTest {
         Request req = null;
         try {
             client.execute();
-            req = client.getRequest();
+            req = client.getHttpClientWrapper();
         } catch (Exception e) {}
 
         assertNotNull(req);
 
-        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getRequest().method());
-        RequestBody body = client.getRequest().body();
+        assertEquals(BaseHttpClient.HttpMethod.PUT.value(),client.getHttpClientWrapper().method());
+        RequestBody body = client.getHttpClientWrapper().body();
 
         assertNotNull(body);
         assertEquals(CONTENT_TYPE, body.contentType());
@@ -217,7 +217,7 @@ public class SyncSchemeTest extends BaseTest {
         Request req = null;
         try {
             client.execute();
-            req = client.getRequest();
+            req = client.getHttpClientWrapper();
         } catch (Exception e) {} 
 
         assertNotNull(req);

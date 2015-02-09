@@ -30,7 +30,6 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
         }
         final int result = getResultCode();
         Boolean sentSuccess = false;
-        
         log("smsSentReceiver onReceive result: " + result);
 
         final String resultMessage;

@@ -76,7 +76,7 @@ public class LegacyHttpClientWrapper implements HttpClientWrapper {
 
     private String responseErrorMessage;
 
-    public LegacyHttpClientWrapper(String url, int timeout, String userAgent) {
+    public LegacyHttpClientWrapper(String url, int timeout) {
         this.url = url;
         this.params = new ArrayList<>();
         this.headers = new HashMap<>();
@@ -120,8 +120,6 @@ public class LegacyHttpClientWrapper implements HttpClientWrapper {
                 httpParameters, schemeRegistry);
 
         httpClient = new DefaultHttpClient(manager, httpParameters);
-
-        setHeader("User-Agent", userAgent);
 
     }
 
@@ -210,6 +208,11 @@ public class LegacyHttpClientWrapper implements HttpClientWrapper {
     @Override
     public void setRequestBody(HttpMediaType mediaType, String body) throws Exception {
         setStringEntity(body);
+    }
+
+    @Override
+    public void setMethod(HttpMethod method) {
+        this.method = method;
     }
 
     private void prepareRequest() throws Exception {

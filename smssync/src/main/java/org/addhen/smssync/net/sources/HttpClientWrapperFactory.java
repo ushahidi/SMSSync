@@ -5,10 +5,10 @@ import android.os.Build;
 
 public class HttpClientWrapperFactory {
 
-    public HttpClientWrapper create(String url, int timeout, String userAgent) {
+    public HttpClientWrapper create(String url, int timeout) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO) {
-            return new LegacyHttpClientWrapper(url, timeout, userAgent);
+            return new LegacyHttpClientWrapper(url, timeout);
         }
-        return new OkHttpClientWrapper(url, timeout, userAgent);
+        return new OkHttpClientWrapper(url, timeout);
     }
 }

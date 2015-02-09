@@ -20,16 +20,10 @@
 
 package org.addhen.smssync.net;
 
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
+import org.addhen.smssync.net.sources.HttpClientWrapper;
+import org.addhen.smssync.net.sources.HttpClientWrapperFactory;
 import org.addhen.smssync.util.Logger;
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -37,61 +31,28 @@ import android.util.Base64;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 public abstract class BaseHttpClient {
 
     private static final int TIME_OUT_CONNECTION = 30;
 
-    private static final String DEFAULT_ENCODING = "UTF-8";
-
-    public static final MediaType JSON
-            = MediaType.parse("application/json; charset=" + DEFAULT_ENCODING);
-
-    public static final MediaType XML = MediaType
-            .parse("application/json; charset=" + DEFAULT_ENCODING);
-
-    public static final MediaType YAML = MediaType
-            .parse("application/xml; charset=" + DEFAULT_ENCODING);
-
     private static final String CLASS_TAG = BaseHttpClient.class.getSimpleName();
 
-    protected OkHttpClient httpClient;
+    protected HttpClientWrapper httpClient;
 
     protected Context context;
 
     protected String url;
 
-    private Response response;
-
-    private Request request;
-
-    private ArrayList<NameValuePair> params;
-
-    private Map<String, String> header;
-
-    private Headers headers;
-
-    private HttpMethod method = HttpMethod.GET;
-
-    private RequestBody requestBody;
-
     public BaseHttpClient(String url, Context context) {
 
         this.url = url;
         this.context = context;
-        this.params = new ArrayList<>();
-        this.header = new HashMap<>();
 
-        httpClient = new OkHttpClient();
-        httpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.MILLISECONDS);
-        httpClient.setWriteTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
-        httpClient.setReadTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
+        httpClient = new HttpClientWrapperFactory().create(url, TIME_OUT_CONNECTION);
+        addHeader();
     }
 
     private static void debug(Exception e) {
@@ -113,11 +74,7 @@ public abstract class BaseHttpClient {
     }
 
     public void setHeader(String name, String value) {
-        this.header.put(name, value);
-    }
-
-    public void setHeaders(Headers headers) {
-        this.headers = headers;
+        this.httpClient.setHeader(name, value);
     }
 
     private void addHeader() {
@@ -126,7 +83,7 @@ public abstract class BaseHttpClient {
             URI uri = new URI(url);
             String userInfo = uri.getUserInfo();
             if (userInfo != null) {
-                setHeader("Authorization", "Basic " + base64Encode(userInfo));
+                httpClient.setHeader("Authorization", "Basic " + base64Encode(userInfo));
             }
         } catch (URISyntaxException e) {
             debug(e);
@@ -140,33 +97,23 @@ public abstract class BaseHttpClient {
             StringBuilder userAgent = new StringBuilder("SMSSync-Android/");
             userAgent.append("v");
             userAgent.append(versionName);
-            setHeader("User-Agent", userAgent.toString());
+            httpClient.setHeader("User-Agent", userAgent.toString());
         } catch (NameNotFoundException e) {
             debug(e);
         }
 
-        // set headers on request
-        Headers.Builder headerBuilder = new Headers.Builder();
-        for (String key : header.keySet()) {
-            headerBuilder.set(key, header.get(key));
-        }
-        setHeaders(headerBuilder.build());
     }
 
     public void addParam(String name, String value) {
-        this.params.add(new BasicNameValuePair(name, value));
+        httpClient.setRequestParameter(name, value);
     }
 
     public ArrayList getParams() {
-        return params;
+        return httpClient.getParams();
     }
 
     public void execute() throws Exception {
-        prepareRequest();
-        if (request != null) {
-            final Response resp = httpClient.newCall(request).execute();
-            setResponse(resp);
-        }
+        httpClient.execute();
     }
 
     public boolean isMethodSupported(HttpMethod method) {
@@ -175,71 +122,40 @@ public abstract class BaseHttpClient {
     }
 
     public void setMethod(HttpMethod method) throws Exception {
+
         if (!isMethodSupported(method)) {
             throw new Exception(
                     "Invalid method '" + method + "'."
                             + " POST, PUT and GET currently supported."
             );
         }
-        this.method = method;
+        httpClient.setMethod(method);
     }
 
-    public void setRequestBody(RequestBody requestBody) throws Exception {
-        this.requestBody = requestBody;
+    public void setRequestBody(HttpMediaType mediaType, ArrayList<NameValuePair> body)
+            throws Exception {
+        this.httpClient.setRequestBody(mediaType, body);
     }
 
-    public Request getRequest() {
-        return request;
+    public void setRequestBody(HttpMediaType mediaType, String body) throws Exception {
+        httpClient.setRequestBody(mediaType, body);
     }
 
-    private void prepareRequest() throws Exception {
-        addHeader();
-        // setup parameters on request
-        if (method.equals(HttpMethod.GET)) {
-            request = new Request.Builder()
-                    .url(url + getQueryString())
-                    .headers(headers)
-                    .build();
-        } else if (method.equals(HttpMethod.POST)) {
-            request = new Request.Builder()
-                    .url(url)
-                    .headers(headers)
-                    .post(requestBody)
-                    .build();
-
-        } else if (method.equals(HttpMethod.PUT)) {
-            request = new Request.Builder()
-                    .url(url)
-                    .headers(headers)
-                    .put(requestBody)
-                    .build();
-        }
+    public HttpClientWrapper getHttpClientWrapper() {
+        return httpClient;
     }
 
-    private String getQueryString() throws Exception {
-        //add query parameters
-        String combinedParams = "";
-        if (!params.isEmpty()) {
-            combinedParams += "?";
-            for (NameValuePair p : params) {
-                String paramString = p.getName() + "=" + URLEncoder
-                        .encode(p.getValue(), DEFAULT_ENCODING);
-                if (combinedParams.length() > 1) {
-                    combinedParams += "&" + paramString;
-                } else {
-                    combinedParams += paramString;
-                }
-            }
-        }
-        return combinedParams;
+
+    public String getResponse() {
+        return httpClient.getResponseBody();
     }
 
-    public Response getResponse() {
-        return response;
+    public String getErrorMessage() {
+        return httpClient.getErrorMessage();
     }
 
-    public void setResponse(Response response) {
-        this.response = response;
+    public int responseCode() {
+        return httpClient.responseCode();
     }
 
     protected void log(String message) {
