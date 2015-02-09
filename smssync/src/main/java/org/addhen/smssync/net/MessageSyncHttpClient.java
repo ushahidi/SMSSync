@@ -143,7 +143,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
      * Get HTTP Entity populated with data in a format specified by the current sync scheme
      */
     private void setHttpEntity(SyncDataFormat format) throws Exception {
-
+        setEntity(null);
+        setStringEntity(null);
         switch (format) {
             case JSON:
                 setStringEntity(DataFormatUtil.makeJSONString(getParams()));
