@@ -169,5 +169,16 @@
                 "longitude" : 104.29639
             }
         }
+        {
+            "name" : "Arthur Buliva",
+            "email" : "arthurbuliva@gmail.com",
+            "website" : "http://fedoraproject.org/wiki/User:Arthurbuliva",
+            "description" : "Drupal 7 module for SMSSync",
+            "country" : {
+                "name" : "Kenya",
+                "latitude" : -1.2902,
+                "longitude" : 36.8320
+            }
+        }
     ]
 }
