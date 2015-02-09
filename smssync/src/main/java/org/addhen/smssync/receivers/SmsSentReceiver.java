@@ -24,10 +24,15 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         Bundle extras = intent.getExtras();
-        final Message message = (Message) extras.getSerializable(ServicesConstants.SENT_SMS_BUNDLE);
+        Message message = null;
+        if(extras != null) {
+            message = (Message) extras.getSerializable(ServicesConstants.SENT_SMS_BUNDLE);
+        }
         final int result = getResultCode();
         Boolean sentSuccess = false;
+        
         log("smsSentReceiver onReceive result: " + result);
+
         final String resultMessage;
 
         switch (result) {
