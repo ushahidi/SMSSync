@@ -3,13 +3,12 @@ package org.addhen.smssync.controllers;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
-
-import static org.addhen.smssync.net.BaseHttpClient.HttpMethod.POST;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 17.06.14.
@@ -40,7 +39,7 @@ public class AlertCallbacks {
             if (syncUrl.getUrl() != null && !syncUrl.getUrl().equals("")) {
                 MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), prefs.getContext());
                 try {
-                    client.setMethod(POST);
+                    client.setMethod(HttpMethod.POST);
                     client.addParam(TASK_PARAM, "alert");
                     client.addParam(MESSAGE_PARAM, prefs.getContext().getResources()
                             .getString(R.string.battery_level_message, batteryLevel));
@@ -48,7 +47,7 @@ public class AlertCallbacks {
                 } catch (Exception e) {
                     Util.logActivities(prefs.getContext(), e.getMessage());
                 } finally {
-                    if (HttpStatus.SC_OK == client.getResponse().code()) {
+                    if (HttpStatus.SC_OK == client.responseCode()) {
                         Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
                                 .getString(R.string.successful_alert_to_server));
                     }
@@ -73,7 +72,7 @@ public class AlertCallbacks {
             if (syncUrl.getUrl() != null && !syncUrl.getUrl().equals("")) {
                 MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), prefs.getContext());
                 try {
-                    client.setMethod(POST);
+                    client.setMethod(HttpMethod.POST);
                     client.addParam(TASK_PARAM, "alert");
                     client.addParam(MESSAGE_PARAM, resultMessage);
                     if (!errorCode.matches("")) {
@@ -83,7 +82,7 @@ public class AlertCallbacks {
                 } catch (Exception e) {
                     Util.logActivities(prefs.getContext(), e.getMessage());
                 } finally {
-                    if (HttpStatus.SC_OK == client.getResponse().code()) {
+                    if (HttpStatus.SC_OK == client.responseCode()) {
                         Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
                                 .getString(R.string.successful_alert_to_server));
                     }

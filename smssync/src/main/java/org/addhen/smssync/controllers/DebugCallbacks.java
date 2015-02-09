@@ -23,7 +23,7 @@ public class DebugCallbacks {
             MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
             try {
                 client.execute();
-                responseCode = client.getResponse().code();
+                responseCode = client.responseCode();
             } catch (Exception e) {
                 Util.logActivities(context, e.getMessage());
             }

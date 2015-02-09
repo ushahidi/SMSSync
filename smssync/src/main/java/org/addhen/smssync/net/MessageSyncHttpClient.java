@@ -191,9 +191,13 @@ public class MessageSyncHttpClient extends MainHttpClient {
     public void setServerError(String error, int statusCode) {
         log("Server error " + error);
         Resources res = context.getResources();
+
+        final String customError = res.getString(R.string.sending_failed_custom_error, error);
+
+        final String code = res.getString(R.string.sending_failed_http_code, statusCode);
+
         this.serverError = String
-                .format("%s %s ", res.getString(R.string.sending_failed_custom_error, error),
-                        res.getString(R.string.sending_failed_http_code, statusCode));
+                .format("%s %s ", customError,code);
         Util.logActivities(context, serverError);
     }
 
