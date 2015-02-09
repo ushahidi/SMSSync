@@ -3,5 +3,6 @@ package org.addhen.smssync.net;
 public enum  HttpMediaType {
     JSON,
     XML,
-    YAML;
+    YAML,
+    FROM_URL_ENCODED;
 }

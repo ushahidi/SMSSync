@@ -186,7 +186,7 @@ public class ProcessMessage {
             try {
                 client.execute();
                 final Gson gson = new Gson();
-                smssyncResponses = gson.fromJson(client.getResponse().body().charStream(),
+                smssyncResponses = gson.fromJson(client.getResponse(),
                         SmssyncResponse.class);
             } catch (Exception e) {
                 e.printStackTrace();

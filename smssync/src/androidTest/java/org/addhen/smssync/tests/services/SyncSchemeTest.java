@@ -9,6 +9,7 @@ import android.test.suitebuilder.annotation.SmallTest;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.BaseHttpClient;
+import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.tests.BaseTest;
@@ -78,7 +79,7 @@ public class SyncSchemeTest extends BaseTest {
             getContext(), syncUrl, msg, toNumber, deviceId
         );
 
-        Request req = null;
+        String req = null;
         try {
             client.execute();
             req = client.getHttpClientWrapper();
@@ -86,7 +87,7 @@ public class SyncSchemeTest extends BaseTest {
 
         assertNotNull(req);
 
-        assertEquals(BaseHttpClient.HttpMethod.POST.value(),client.getHttpClientWrapper().method());
+        assertEquals(HttpMethod.POST.value(),client.getHttpClientWrapper().method());
         RequestBody body = client.getHttpClientWrapper().body();
 
         assertNotNull(body);

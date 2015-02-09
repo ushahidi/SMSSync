@@ -33,15 +33,11 @@ import android.os.PowerManager;
 
 public abstract class SmsSyncServices extends IntentService {
 
-    protected static final Object mStartingServiceSync = new Object();
-
     protected static String TAG = SmsSyncServices.class.getSimpleName();
 
     protected static PowerManager.WakeLock mStartingService = null;
 
     protected static WifiManager.WifiLock wifilock = null;
-
-    protected NotificationManager notificationManager;
 
     public SmsSyncServices(String name) {
         super(name);
