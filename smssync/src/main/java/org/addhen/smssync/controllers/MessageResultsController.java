@@ -75,7 +75,9 @@ public class MessageResultsController {
         try {
 
             client.setMethod(HttpMethod.POST);
-            client.setRequestBody(HttpMediaType.JSON, createMessageResultJSON(results));
+            client.setStringEntity(createMessageResultJSON(results));
+            client.setHeader("Accept", "application/json");
+            client.setHeader("Content-type", "application/json");
             client.execute();
         } catch (Exception e) {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
@@ -101,7 +103,9 @@ public class MessageResultsController {
             MainHttpClient client = new MainHttpClient(newEndPointURL, mContext);
             try {
                 client.setMethod(HttpMethod.POST);
-                client.setRequestBody(HttpMediaType.JSON, createQueuedMessagesJSON(messages));
+                client.setStringEntity(createQueuedMessagesJSON(messages));
+                client.setHeader("Accept", "application/json");
+                client.setHeader("Content-type", "application/json");
                 client.execute();
             }catch (Exception e) {
                 e.printStackTrace();

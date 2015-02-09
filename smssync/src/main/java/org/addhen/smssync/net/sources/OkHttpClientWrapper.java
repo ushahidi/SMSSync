@@ -76,7 +76,6 @@ public class OkHttpClientWrapper implements HttpClientWrapper {
     @Override
     public void setHeader(String name, String value) {
         this.header.put(name, value);
-        addHeader();
     }
 
     private void setHeaders(Headers headers) {

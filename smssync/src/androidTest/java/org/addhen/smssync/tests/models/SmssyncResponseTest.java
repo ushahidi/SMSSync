@@ -3,7 +3,6 @@ package org.addhen.smssync.tests.models;
 import com.google.gson.Gson;
 
 import org.addhen.smssync.models.SmssyncResponse;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tests.BaseTest;
 
 import android.test.suitebuilder.annotation.SmallTest;
@@ -12,10 +11,6 @@ import android.test.suitebuilder.annotation.SmallTest;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class SmssyncResponseTest extends BaseTest {
-
-    private Gson mGson;
-
-    private SmssyncResponse mSmssyncResponse;
 
     private final String JSON_STRING = "{\n"
             + "    \"payload\": {\n"
@@ -48,6 +43,10 @@ public class SmssyncResponseTest extends BaseTest {
             + "    }\n"
             + "}";
 
+    private Gson mGson;
+
+    private SmssyncResponse mSmssyncResponse;
+
     @Override
     public void setUp() throws Exception {
         super.setUp();
@@ -61,5 +60,24 @@ public class SmssyncResponseTest extends BaseTest {
         assertNotNull(mSmssyncResponse);
         assertNotNull(mSmssyncResponse.getPayload());
         assertTrue(mSmssyncResponse.getPayload().isSuccess());
+        assertEquals("send", mSmssyncResponse.getPayload().getTask());
+        assertNotNull(mSmssyncResponse.getPayload().getMessages());
+        assertEquals("+000-000-0000",
+                mSmssyncResponse.getPayload().getMessages().get(0).getPhoneNumber());
+        assertEquals("the message goes here",
+                mSmssyncResponse.getPayload().getMessages().get(0).getMessage());
+        assertEquals("042b3515-ef6b-f424-c4qd",
+                mSmssyncResponse.getPayload().getMessages().get(0).getUuid());
+    }
+
+    @SmallTest
+    public void testShouldDeserializeSmsResponseWithNoMessage() throws Exception {
+        mSmssyncResponse = mGson.fromJson(JSON_STRING_NO_MSG, SmssyncResponse.class);
+        assertNotNull(mSmssyncResponse);
+        assertNotNull(mSmssyncResponse.getPayload());
+        assertTrue(mSmssyncResponse.getPayload().isSuccess());
+        assertNull(mSmssyncResponse.getPayload().getTask());
+        assertNull(mSmssyncResponse.getPayload().getMessages());
+        System.out.println("messages:" + mSmssyncResponse.toString());
     }
 }

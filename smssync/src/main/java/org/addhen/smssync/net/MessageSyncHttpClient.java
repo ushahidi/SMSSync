@@ -29,6 +29,7 @@ import org.addhen.smssync.net.SyncScheme.SyncDataKey;
 import org.addhen.smssync.net.SyncScheme.SyncMethod;
 import org.addhen.smssync.util.DataFormatUtil;
 import org.addhen.smssync.util.Util;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
@@ -127,7 +128,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
             if (!TextUtils.isEmpty(payloadError)) {
                 setServerError(payloadError, statusCode);
             } else {
-                setServerError(getErrorMessage(), statusCode);
+                setServerError(getResponseErrorMessage(), statusCode);
             }
         } catch (Exception e) {
             log("Request failed", e);
@@ -142,28 +143,29 @@ public class MessageSyncHttpClient extends MainHttpClient {
      * Get HTTP Entity populated with data in a format specified by the current sync scheme
      */
     private void setHttpEntity(SyncDataFormat format) throws Exception {
+
         switch (format) {
             case JSON:
-                setRequestBody(HttpMediaType.JSON, DataFormatUtil.makeJSONString(getParams()));
+                setStringEntity(DataFormatUtil.makeJSONString(getParams()));
                 log("setHttpEntity format JSON");
                 Util.logActivities(context, "setHttpEntity format JSON");
                 break;
             case XML:
                 //TODO: Make parent node URL specific as well
-                setRequestBody(HttpMediaType.XML,
-                        DataFormatUtil.makeXMLString(getParams(), "payload", HTTP.UTF_8));
+                setStringEntity(DataFormatUtil.makeXMLString(getParams(), "payload", HTTP.UTF_8));
                 log("setHttpEntity format XML");
                 Util.logActivities(context, context.getString(R.string.http_entity_format, "XML"));
                 break;
             case YAML:
-                setRequestBody(HttpMediaType.YAML, DataFormatUtil.makeYAMLString(getParams()));
+                setStringEntity(DataFormatUtil.makeYAMLString(getParams()));
                 log("setHttpEntity format YAML");
                 Util.logActivities(context, context.getString(R.string.http_entity_format, "YAML"));
                 break;
             case URLEncoded:
                 log("setHttpEntity format URLEncoded");
-                setRequestBody(getParams());
-
+                Util.logActivities(context,
+                        context.getString(R.string.http_entity_format, "URLEncoded"));
+                setEntity(new UrlEncodedFormEntity(getParams(), HTTP.UTF_8));
                 break;
             default:
                 Util.logActivities(context, context.getString(R.string.invalid_data_format));
