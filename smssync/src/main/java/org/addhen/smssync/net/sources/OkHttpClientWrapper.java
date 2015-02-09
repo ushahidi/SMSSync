@@ -175,9 +175,10 @@ public class OkHttpClientWrapper implements HttpClientWrapper {
     public void execute() throws Exception {
         prepareRequest();
         if (request != null) {
-            final Response response = httpClient.newCall(request).execute();
-            responseCode = response.code();
-            responseErrorMessage = response.message();
+            final Response resp = httpClient.newCall(request).execute();
+            responseCode = resp.code();
+            responseErrorMessage = resp.message();
+            response = resp.body().string();
 
         }
     }
