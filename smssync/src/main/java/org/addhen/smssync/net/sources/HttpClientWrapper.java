@@ -26,7 +26,7 @@ public interface HttpClientWrapper {
 
     ArrayList getParams();
 
-    void setRequestBody(HttpMediaType mediaType, ArrayList<NameValuePair> body) throws Exception;
+    void setRequestBody(ArrayList<NameValuePair> body) throws Exception;
 
     void setRequestBody(HttpMediaType mediaType, String body) throws Exception;
 

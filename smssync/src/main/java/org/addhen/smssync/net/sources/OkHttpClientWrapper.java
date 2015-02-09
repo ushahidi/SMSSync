@@ -128,7 +128,7 @@ public class OkHttpClientWrapper implements HttpClientWrapper {
     }
 
     @Override
-    public void setRequestBody(HttpMediaType mediaType, ArrayList<NameValuePair> body)
+    public void setRequestBody(ArrayList<NameValuePair> body)
             throws Exception {
         FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder();
         List<NameValuePair> params = getParams();
@@ -143,6 +143,11 @@ public class OkHttpClientWrapper implements HttpClientWrapper {
     public void setRequestBody(HttpMediaType mediaType, String body) throws Exception {
         MediaType type = setMediaType(mediaType);
         requestBody = RequestBody.create(type, body);
+    }
+
+    @Override
+    public void setMethod(HttpMethod method) {
+        this.method = method;
     }
 
     private MediaType setMediaType(HttpMediaType mediaType) {

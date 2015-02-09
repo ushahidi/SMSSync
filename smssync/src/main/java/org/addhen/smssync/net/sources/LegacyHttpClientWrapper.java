@@ -201,7 +201,7 @@ public class LegacyHttpClientWrapper implements HttpClientWrapper {
     }
 
     @Override
-    public void setRequestBody(HttpMediaType mediaType, ArrayList<NameValuePair> body) throws Exception {
+    public void setRequestBody(ArrayList<NameValuePair> body) throws Exception {
         setEntity(new UrlEncodedFormEntity(body, HTTP.UTF_8));
     }
 

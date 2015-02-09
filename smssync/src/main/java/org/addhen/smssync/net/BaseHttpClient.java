@@ -132,9 +132,9 @@ public abstract class BaseHttpClient {
         httpClient.setMethod(method);
     }
 
-    public void setRequestBody(HttpMediaType mediaType, ArrayList<NameValuePair> body)
+    public void setRequestBody(ArrayList<NameValuePair> body)
             throws Exception {
-        this.httpClient.setRequestBody(mediaType, body);
+        this.httpClient.setRequestBody(body);
     }
 
     public void setRequestBody(HttpMediaType mediaType, String body) throws Exception {

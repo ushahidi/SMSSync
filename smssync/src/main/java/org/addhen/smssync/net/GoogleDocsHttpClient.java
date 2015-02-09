@@ -31,7 +31,7 @@ public class GoogleDocsHttpClient extends MainHttpClient {
             setClientError("Request failed. " + e.getMessage());
         }
 
-        final int statusCode = getResponse().code();
+        final int statusCode = responseCode();
 
         if (statusCode != 200 && statusCode != 201) {
             setServerError("bad http return code", statusCode);
