@@ -1,5 +1,6 @@
 package org.addhen.smssync.net.sources;
 
+import org.addhen.smssync.net.HttpMediaType;
 import org.addhen.smssync.net.SyncScheme;
 import org.apache.http.NameValuePair;
 
@@ -24,9 +25,9 @@ public interface HttpClientWrapper {
 
     ArrayList getParams();
 
-    void setRequestBody(ArrayList<NameValuePair> body) throws Exception;
+    void setRequestBody(HttpMediaType mediaType, ArrayList<NameValuePair> body) throws Exception;
 
-    void setRequestBody(String body) throws Exception;
+    void setRequestBody(HttpMediaType mediaType, String body) throws Exception;
 
     void execute() throws Exception;
 

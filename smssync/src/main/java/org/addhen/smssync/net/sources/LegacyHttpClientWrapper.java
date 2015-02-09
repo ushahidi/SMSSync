@@ -1,5 +1,6 @@
 package org.addhen.smssync.net.sources;
 
+import org.addhen.smssync.net.HttpMediaType;
 import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.ssl.TrustedSocketFactory;
@@ -202,12 +203,12 @@ public class LegacyHttpClientWrapper implements HttpClientWrapper {
     }
 
     @Override
-    public void setRequestBody(ArrayList<NameValuePair> body) throws Exception {
+    public void setRequestBody(HttpMediaType mediaType, ArrayList<NameValuePair> body) throws Exception {
         setEntity(new UrlEncodedFormEntity(body, HTTP.UTF_8));
     }
 
     @Override
-    public void setRequestBody(String body) throws Exception {
+    public void setRequestBody(HttpMediaType mediaType, String body) throws Exception {
         setStringEntity(body);
     }
 
@@ -240,7 +241,7 @@ public class LegacyHttpClientWrapper implements HttpClientWrapper {
         }
     }
 
-    public HttpEntity getEntity() throws Exception {
+    private HttpEntity getEntity() throws Exception {
         // check if entity was explicitly set otherwise return params as entity
         if (entity != null && entity.getContentLength() > 0) {
             return entity;
