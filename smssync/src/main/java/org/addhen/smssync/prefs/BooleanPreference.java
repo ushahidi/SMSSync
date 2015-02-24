@@ -65,16 +65,11 @@ public class BooleanPreference extends BasePreference<Boolean> {
      */
     @Override
     public void set(final Boolean value) {
-        //Fix for possible thread violation.
-        new Thread() {
-            @Override
-            public void run() {
-                if(value == null) {
-                    throw new IllegalArgumentException("Boolean cannot be null");
-                }
 
-                getSharedPreferences().edit().putBoolean(getKey(), value).commit();
-            }
-        };
+        if(value == null) {
+            throw new IllegalArgumentException("Boolean cannot be null");
+        }
+        getSharedPreferences().edit().putBoolean(getKey(), value).commit();
+
     }
 }

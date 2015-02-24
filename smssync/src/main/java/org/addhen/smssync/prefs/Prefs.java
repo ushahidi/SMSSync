@@ -111,7 +111,7 @@ public class Prefs {
     }
 
     public StringPreference keyword() {
-        return  new StringPreference(sharedPreferences, "Keyword", "");
+        return new StringPreference(sharedPreferences, "Keyword", "");
     }
 
     public Context getContext() {

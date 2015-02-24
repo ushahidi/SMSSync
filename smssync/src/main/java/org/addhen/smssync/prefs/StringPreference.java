@@ -67,15 +67,12 @@ public class StringPreference extends BasePreference<String> {
     @Override
     public void set(final String value) {
         //Fix for possible thread violation.
-        new Thread() {
-            @Override
-            public void run() {
-                if(value == null) {
-                    throw new IllegalArgumentException("String cannot be null");
-                }
 
-                getSharedPreferences().edit().putString(getKey(), value).commit();
-            }
-        };
+        if (value == null) {
+            throw new IllegalArgumentException("String cannot be null");
+        }
+
+        getSharedPreferences().edit().putString(getKey(), value).commit();
+
     }
 }

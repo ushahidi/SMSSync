@@ -144,7 +144,6 @@ public class Settings extends PreferenceActivity implements
                 // Initialize the selected time to frequently sync pending
                 // messages
                 autoSyncTimes.setEnabled(true);
-
                 runServicesUtil.runAutoSyncService();
             }
         }
@@ -644,6 +643,7 @@ public class Settings extends PreferenceActivity implements
 
         Thread t = new Thread() {
             public void run() {
+
                 mHandler.post(mAutoSyncEnabled);
             }
         };

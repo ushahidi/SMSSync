@@ -61,15 +61,12 @@ public class LongPreference extends BasePreference<Long> {
     @Override
     public void set(final Long value) {
         //Fix for possible thread violation.
-        new Thread() {
-            @Override
-            public void run() {
-                if(value == null) {
-                    throw new IllegalArgumentException("Long cannot be null");
-                }
 
-                getSharedPreferences().edit().putLong(getKey(), value).commit();
-            }
-        };
+        if (value == null) {
+            throw new IllegalArgumentException("Long cannot be null");
+        }
+
+        getSharedPreferences().edit().putLong(getKey(), value).commit();
+
     }
 }

@@ -31,7 +31,7 @@ public abstract class BasePreference<T> implements IPreference<T> {
     private final T mDefaultValue;
 
     public BasePreference(SharedPreferences sharedPreferences, String key, T defaultValue) {
-        if(sharedPreferences == null || key == null) {
+        if (sharedPreferences == null || key == null) {
             throw new IllegalArgumentException("Constructor arguments cannot be null");
         }
 
