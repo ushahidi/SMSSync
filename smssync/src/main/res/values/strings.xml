@@ -145,7 +145,8 @@
     <string name="chk_reply_frm_server_hint">Instantly send messages as recieved from the server as
         SMS without waiting on a scheduler.</string>
     <string name="filter_messages">Filter messages</string>
-
+    <string name="validate_sms_delivery_report_status">Message Result API depends on SMS Delivery Report. Please enable it first.</string>
+    <string name="validate_message_result_api">Message Result API depends on it. Please disable it first.</string>
     <!-- SMS delivery status -->
     <string name="sms_delivery_status_failed">Failed to send SMS - Maybe insufficient air time on
         the phone.</string>

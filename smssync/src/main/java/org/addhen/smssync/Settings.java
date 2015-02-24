@@ -594,12 +594,31 @@ public class Settings extends PreferenceActivity implements
             runServicesUtil.runCheckTaskService();
         }
 
+        // Enable SMS delivery report
+        if (key.equals(KEY_ENABLE_SMS_REPORT_DELIVERY)) {
+            if(sharedPreferences.getBoolean(KEY_ENABLE_SMS_REPORT_DELIVERY, false)) {
+                enableSmsReportDelivery.setChecked(true);
+            } else {
+                if (!enableSmsReportDelivery.isChecked() && enableMessageResultsAPI.isChecked()) {
+                    enableSmsReportDelivery.setChecked(true);
+                    Util.showToast(Settings.this, R.string.validate_message_result_api);
+                }else {
+                    enableSmsReportDelivery.setChecked(false);
+                }
+            }
+        }
+
         // Enable message result checking
         if (key.equals(MESSAGE_RESULTS_API)) {
-            if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
-                messageResultsAPIEnable();
+            if(!enableSmsReportDelivery.isChecked()) {
+                enableMessageResultsAPI.setChecked(false);
+                Util.showToast(Settings.this, R.string.validate_sms_delivery_report_status);
             } else {
-                runServicesUtil.stopMessageResultsService();
+                if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
+                    messageResultsAPIEnable();
+                } else {
+                    runServicesUtil.stopMessageResultsService();
+                }
             }
         }
         this.savePreferences();
