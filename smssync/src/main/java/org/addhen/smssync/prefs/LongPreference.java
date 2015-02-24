@@ -59,11 +59,17 @@ public class LongPreference extends BasePreference<Long> {
      * @param value The Integer value to be saved
      */
     @Override
-    public void set(Long value) {
-        if(value == null) {
-            throw new IllegalArgumentException("Long value cannot be null");
-        }
+    public void set(final Long value) {
+        //Fix for possible thread violation.
+        new Thread() {
+            @Override
+            public void run() {
+                if(value == null) {
+                    throw new IllegalArgumentException("Long cannot be null");
+                }
 
-        getSharedPreferences().edit().putLong(getKey(), value).commit();
+                getSharedPreferences().edit().putLong(getKey(), value).commit();
+            }
+        };
     }
 }

@@ -64,11 +64,17 @@ public class BooleanPreference extends BasePreference<Boolean> {
      * @param value The Boolean value to be saved
      */
     @Override
-    public void set(Boolean value) {
-        if(value == null) {
-            throw new IllegalArgumentException("Boolean cannot be null");
-        }
+    public void set(final Boolean value) {
+        //Fix for possible thread violation.
+        new Thread() {
+            @Override
+            public void run() {
+                if(value == null) {
+                    throw new IllegalArgumentException("Boolean cannot be null");
+                }
 
-        getSharedPreferences().edit().putBoolean(getKey(), value).commit();
+                getSharedPreferences().edit().putBoolean(getKey(), value).commit();
+            }
+        };
     }
 }

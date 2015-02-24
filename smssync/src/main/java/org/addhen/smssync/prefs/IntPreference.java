@@ -59,11 +59,17 @@ public class IntPreference extends BasePreference<Integer> {
      * @param value The Integer value to be saved
      */
     @Override
-    public void set(Integer value) {
-        if(value == null) {
-            throw new IllegalArgumentException("Integer value cannot be null");
-        }
+    public void set(final Integer value) {
+        //Fix for possible thread violation.
+        new Thread() {
+            @Override
+            public void run() {
+                if(value == null) {
+                    throw new IllegalArgumentException("Integer cannot be null");
+                }
 
-        getSharedPreferences().edit().putInt(getKey(), value).commit();
+                getSharedPreferences().edit().putInt(getKey(), value).commit();
+            }
+        };
     }
 }
