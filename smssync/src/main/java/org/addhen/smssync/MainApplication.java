@@ -35,8 +35,6 @@ public class MainApplication extends Application {
 
     public static Database mDb;
 
-    public static MainHttpClient mApi;
-
     public static Application app = null;
 
     public static final SyncBus bus = new SyncBus(new Bus());
