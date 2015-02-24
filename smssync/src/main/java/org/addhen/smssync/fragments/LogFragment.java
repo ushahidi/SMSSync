@@ -56,6 +56,8 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
 
     private static PhoneStatusInfo info;
 
+    private String mLogFile = null;
+
     /**
      * Receiver for getting battery state.
      */
@@ -206,20 +208,14 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     }
 
     private void loadLogs() {
-        new Handler().post(new Runnable() {
+        adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
 
-            @Override
-            public void run() {
-                adapter.setItems(LogUtil.readLogFile(LogUtil.LOG_NAME));
-
-                // Set the location of the log file
-                if (adapter.getCount() > 0) {
-                    view.logLcation.setText(getString(R.string.log_saved_at,
-                            LogUtil.getFile(LogUtil.LOG_NAME).getAbsolutePath()));
-                    view.logLcation.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        // Set the location of the log file
+        if (adapter.getCount() > 0) {
+            view.logLcation.setText(getString(R.string.log_saved_at,
+                    LogUtil.getFile(LogUtil.LOG_NAME).getAbsolutePath()));
+            view.logLcation.setVisibility(View.VISIBLE);
+        }
     }
 
     private void deleteLogs() {
