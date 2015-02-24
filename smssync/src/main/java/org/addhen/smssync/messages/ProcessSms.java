@@ -346,8 +346,8 @@ public class ProcessSms {
         return UUID.randomUUID().toString();
     }
 
-    public void sendSms(String sendTo, String msg) {
-        sendSms(sendTo, msg, null);
+    public boolean sendSms(String sendTo, String msg) {
+        return sendSms(sendTo, msg, null);
     }
 
     /**
@@ -357,7 +357,7 @@ public class ProcessSms {
      * @param msg    - The message to be sent.
      * @param uuid   - UUID from web server
      */
-    public void sendSms(String sendTo, String msg, String uuid) {
+    public boolean sendSms(String sendTo, String msg, String uuid) {
 
         ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
@@ -413,7 +413,7 @@ public class ProcessSms {
                         null);
             }
             message.setMessageType(UNCONFIRMED);
-            postToSentBox(message);
+            return postToSentBox(message);
         } else {
             final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + sendTo;
             Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
@@ -423,6 +423,7 @@ public class ProcessSms {
             }
             Toast.makeText(context, errNotGlobalPhoneNumber, Toast.LENGTH_LONG).show();
         }
+        return false;
     }
 
     /**
@@ -455,7 +456,7 @@ public class ProcessSms {
      * @param message the message
      */
     public boolean postToSentBox(Message message) {
-        Logger.log(CLASS_TAG, "postToSentBox(): post message to sentbox");
+        Logger.log(CLASS_TAG, "postToSentBox(): post message to sentbox "+message.toString());
         return SentMessagesUtil.processSentMessages(message);
 
     }

@@ -114,6 +114,10 @@ public class Prefs {
         return new StringPreference(sharedPreferences, "Keyword", "");
     }
 
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
     public Context getContext() {
         return context;
     }

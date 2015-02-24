@@ -280,6 +280,7 @@ public class MessagesContentProvider extends DbContentProvider implements
         initialValues.put(BODY, messages.getMessage());
         initialValues.put(DATE, messages.getTimestamp());
         initialValues.put(TYPE, messages.getMessageType());
+        
     }
 
     private ContentValues getContentValue() {

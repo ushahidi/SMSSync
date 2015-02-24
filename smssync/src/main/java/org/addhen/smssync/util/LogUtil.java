@@ -48,31 +48,36 @@ public class LogUtil {
         this(LOG_NAME, format);
     }
 
-    private LogUtil(String name, char[] format) {
-        for (char c : format) {
-            if (c == DateFormat.MONTH) {
-                dateFormat = "MM-dd kk:mm";
-                break;
-            }
+    private LogUtil(final String name, final char[] format) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (char c : format) {
+                    if (c == DateFormat.MONTH) {
+                        dateFormat = "MM-dd kk:mm";
+                        break;
+                    }
 
-            if (c == DateFormat.DATE) {
-                dateFormat = "dd-MM kk:mm";
-                break;
-            }
-        }
+                    if (c == DateFormat.DATE) {
+                        dateFormat = "dd-MM kk:mm";
+                        break;
+                    }
+                }
 
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            final File logFile = getFile(name);
-            if (logFile.isFile() && logFile.exists()) {
-                rotate(logFile);
-            }
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                    final File logFile = getFile(name);
+                    if (logFile.isFile() && logFile.exists()) {
+                        rotate(logFile);
+                    }
 
-            try {
-                writer = new PrintWriter(new FileWriter(logFile, true));
-            } catch (IOException e) {
-                Logger.log(TAG, "error opening app log", e);
+                    try {
+                        writer = new PrintWriter(new FileWriter(logFile, true));
+                    } catch (IOException e) {
+                        Logger.log(TAG, "error opening app log", e);
+                    }
+                }
             }
-        }
+        }).start();
 
     }
 

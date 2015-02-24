@@ -5,6 +5,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.app.Activity;
@@ -90,6 +91,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
 
                 message.setMessageType(FAILED);
                 message.save();// save message into pending tray
+                Logger.log("Messages", " heh "+message.toString());
                 MainApplication.mDb.deleteSentMessagesByUuid(message.getUuid());
             }
         }

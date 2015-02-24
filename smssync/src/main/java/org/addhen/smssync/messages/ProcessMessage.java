@@ -117,6 +117,7 @@ public class ProcessMessage {
 
             for (Message message : listMessages) {
                 if (routeMessage(message)) {
+                    Logger.log(TAG, " message ID "+message.getUuid());
                     messageModel.deleteMessagesByUuid(message.getUuid());
                 }
 
@@ -344,8 +345,7 @@ public class ProcessMessage {
                     }
                 } else {
                     // FIXME: `posted` always `true` but `sendSms()` may not work
-                    sendSms(message);
-                    posted = true;
+                    posted = sendSms(message);
                 }
 
             }
@@ -366,9 +366,7 @@ public class ProcessMessage {
                     processSms.postToSentBox(message);
                 }
             } else {
-                sendSms(message);
-                posted = true;
-
+                posted = sendSms(message);
             }
         }
 
@@ -435,8 +433,8 @@ public class ProcessMessage {
         Util.logActivities(context, message);
     }
 
-    private void sendSms(Message message) {
-        processSms.sendSms(message.getPhoneNumber(), message.getMessage(), message.getUuid());
+    private boolean sendSms(Message message) {
+        return processSms.sendSms(message.getPhoneNumber(), message.getMessage(), message.getUuid());
     }
 
 }

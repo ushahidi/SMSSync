@@ -47,8 +47,9 @@ public class SentMessagesUtil {
                 "processMessages(): Process text messages as received from the user's phone");
 
         if(message !=null) {
-            MainApplication.mDb.addSentMessage(message);
-           return true;
+            final boolean status = MainApplication.mDb.addSentMessage(message);
+            return status;
+
         }
 
         return false;

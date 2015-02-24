@@ -59,7 +59,6 @@ public class RunServicesUtil {
 
             // start the scheduler for auto sync service
             final long interval = TimeFrequencyUtil.calculateInterval(prefs.autoTime().get());
-            Util.showToast(context, "AutoSync Started ");
             final Intent intent = new Intent(context, AutoSyncScheduledReceiver.class);
             Logger.log(CLASS_TAG, "Auto sync service started");
             // run the service
