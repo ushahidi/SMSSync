@@ -436,27 +436,33 @@ public class Util {
     /**
      * For debugging purposes. Append content of a string to a file
      */
-    public static void appendLog(String text) {
-        File logFile = new File(Environment.getExternalStorageDirectory(),
+    public static void appendLog(final String text) {
+        final File logFile = new File(Environment.getExternalStorageDirectory(),
                 "smssync.txt");
-        if (!logFile.exists()) {
-            try {
-                logFile.createNewFile();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (!logFile.exists()) {
+                    try {
+                        logFile.createNewFile();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    // BufferedWriter for performance, true to set append to file flag
+                    BufferedWriter buf = new BufferedWriter(new FileWriter(logFile,
+                            true));
+                    buf.append(text);
+                    buf.newLine();
+                    buf.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-        try {
-            // BufferedWriter for performance, true to set append to file flag
-            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile,
-                    true));
-            buf.append(text);
-            buf.newLine();
-            buf.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }).start();
+
     }
 
     public static String getPhoneNumber(Context context) {
