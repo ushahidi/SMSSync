@@ -147,7 +147,7 @@ public class RunServicesUtil {
      */
     public void runServices(Intent intent,
             int requestCode, long interval) {
-        // load current settin
+        // load current setting
         // is smssync enabled
         if (prefs.serviceEnabled().get()) {
 

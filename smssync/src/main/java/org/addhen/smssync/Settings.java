@@ -110,6 +110,7 @@ public class Settings extends PreferenceActivity implements
             if (!prefs.serviceEnabled().get()) {
 
                 Util.showToast(Settings.this, R.string.no_configured_url);
+
                 taskCheck.setChecked(false);
                 if (enableMessageResultsAPI.isChecked()) {
                     enableMessageResultsAPI.setChecked(false);
