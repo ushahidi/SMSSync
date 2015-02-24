@@ -291,15 +291,25 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
         logNavDrawerItem = new LogNavDrawerItem(getString(R.string.logs), R.drawable.log,
                 BaseActivity.this);
 
-        navDrawerItem = new ArrayList<BaseNavDrawerItem>();
+        navDrawerItem = new ArrayList<>();
 
         navDrawerAdapter = new NavDrawerAdapter(this);
     }
 
     private void setNavDrawerAdapterItems() {
-        new Handler().post(new Runnable() {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
 
             @Override
+            public void run() {
+
+                navDrawerAdapter.setItems(navDrawerItem);
+                listView.setAdapter(navDrawerAdapter);
+                selectItem(mPosition);
+            }
+        };
+
+        Thread thread = new Thread() {
             public void run() {
                 sentMessagesNavDrawerItem.setCounter();
                 pendingMessagesNavDrawerItem.setCounter();
@@ -314,11 +324,11 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
                 navDrawerItem.add(whitelistNavDrawerItem);
                 navDrawerItem.add(filterNavDrawerItem);
                 navDrawerItem.add(logNavDrawerItem);
-                navDrawerAdapter.setItems(navDrawerItem);
-                listView.setAdapter(navDrawerAdapter);
-                selectItem(mPosition);
+                handler.post(runnable);
             }
-        });
+        };
+
+        thread.start();
     }
 
     protected void createNavDrawer() {
