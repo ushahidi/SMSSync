@@ -140,7 +140,7 @@ public class ProcessMessage {
             return;
         }
 
-        if (response != null && response.getPayload().getMessages().size() > 0) {
+        if (response != null && response.getPayload() !=null &&  response.getPayload().getMessages().size() > 0) {
             for (Message msg : response.getPayload().getMessages()) {
                 sendSms(msg);
             }
