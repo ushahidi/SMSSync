@@ -24,7 +24,7 @@ import nl.qbusict.cupboard.annotation.Column;
  *
  * @author eyedol
  */
-public class Messages {
+public class Message extends Model {
 
     @Column("messages_body")
     private String messageBody;
@@ -42,22 +42,22 @@ public class Messages {
     private Type messageType;
 
     @Column("sent_result_code")
-    private int mSentResultCode;
+    private int sentResultCode;
 
     @Column("sent_result_message")
-    private String mSentResultMessage;
+    private String sentResultMessage;
 
     @Column("delivery_result_code")
-    private int mDeliveryResultCode;
+    private int deliveryResultCode;
 
     @Column("delivery_result_message")
-    private String mDeliveryResultMessage;
+    private String deliveryResultMessage;
 
     @Column("retries")
-    private int mRetries;
+    private int retries;
 
     @Column("status")
-    private Status mStatus;
+    private Status status;
 
     public String getMessageBody() {
         return messageBody;
@@ -100,51 +100,51 @@ public class Messages {
     }
 
     public int getSentResultCode() {
-        return mSentResultCode;
+        return sentResultCode;
     }
 
     public void setSentResultCode(int sentResultCode) {
-        mSentResultCode = sentResultCode;
+        this.sentResultCode = sentResultCode;
     }
 
     public String getSentResultMessage() {
-        return mSentResultMessage;
+        return sentResultMessage;
     }
 
     public void setSentResultMessage(String sentResultMessage) {
-        mSentResultMessage = sentResultMessage;
+        this.sentResultMessage = sentResultMessage;
     }
 
     public int getDeliveryResultCode() {
-        return mDeliveryResultCode;
+        return deliveryResultCode;
     }
 
     public void setDeliveryResultCode(int deliveryResultCode) {
-        mDeliveryResultCode = deliveryResultCode;
+        this.deliveryResultCode = deliveryResultCode;
     }
 
     public String getDeliveryResultMessage() {
-        return mDeliveryResultMessage;
+        return deliveryResultMessage;
     }
 
     public void setDeliveryResultMessage(String deliveryResultMessage) {
-        mDeliveryResultMessage = deliveryResultMessage;
+        this.deliveryResultMessage = deliveryResultMessage;
     }
 
     public int getRetries() {
-        return mRetries;
+        return retries;
     }
 
     public void setRetries(int retries) {
-        mRetries = retries;
+        this.retries = retries;
     }
 
     public Status getStatus() {
-        return mStatus;
+        return status;
     }
 
     public void setStatus(Status status) {
-        mStatus = status;
+        this.status = status;
     }
 
     public enum Status {
@@ -153,5 +153,23 @@ public class Messages {
 
     public enum Type {
         TASK, PENDING;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id=" + _id+
+                "messageBody='" + messageBody + '\'' +
+                ", messageFrom='" + messageFrom + '\'' +
+                ", messageDate='" + messageDate + '\'' +
+                ", messageUuid='" + messageUuid + '\'' +
+                ", messageType=" + messageType +
+                ", sentResultCode=" + sentResultCode +
+                ", sentResultMessage='" + sentResultMessage + '\'' +
+                ", deliveryResultCode=" + deliveryResultCode +
+                ", deliveryResultMessage='" + deliveryResultMessage + '\'' +
+                ", retries=" + retries +
+                ", status=" + status +
+                '}';
     }
 }

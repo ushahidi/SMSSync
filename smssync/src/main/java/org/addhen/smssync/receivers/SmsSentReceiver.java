@@ -91,7 +91,6 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
 
                 message.setMessageType(FAILED);
                 message.save();// save message into pending tray
-                Logger.log("Messages", " heh "+message.toString());
                 MainApplication.mDb.deleteSentMessagesByUuid(message.getUuid());
             }
         }

@@ -17,11 +17,8 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.net.SyncScheme;
-import org.addhen.smssync.prefs.Prefs;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -198,27 +195,6 @@ public class Database {
         return true;
     }
 
-    public static void syncLegacySyncUrl(Context context, SQLiteDatabase db) {
-        // saved preferences
-
-        Prefs prefs = new Prefs(context);
-        final String website = prefs.website().get();
-        final String apiKey = prefs.apiKey().get();
-        final String keyword = prefs.keyword().get();
-        SyncUrl syncUrl = new SyncUrl();
-        List<SyncUrl> listSyncUrl = new ArrayList<>();
-        if (!TextUtils.isEmpty(website)) {
-            syncUrl.setKeywords(keyword);
-            syncUrl.setSecret(apiKey);
-            syncUrl.setTitle(context.getString(R.string.sync_url));
-            syncUrl.setUrl(website);
-            syncUrl.setStatus(1);
-            syncUrl.setSyncScheme(new SyncScheme());
-            listSyncUrl.add(syncUrl);
-            addSyncUrl(listSyncUrl, db);
-        }
-
-    }
 
     public Database open() throws SQLException {
         mDbHelper = new DatabaseHelper(mContext);
@@ -438,7 +414,7 @@ public class Database {
             db.execSQL(ISyncUrlSchema.CREATE_TABLE);
             db.execSQL(IFilterSchema.CREATE_TABLE);
             // add old sync url configuration to the database,
-            syncLegacySyncUrl(mContext, db);
+            //syncLegacySyncUrl(mContext, db);
             onCreate(db);
         }
 

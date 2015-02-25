@@ -46,7 +46,7 @@ public class SyncUrl extends Model {
     private SyncScheme syncScheme;
 
     public SyncUrl() {
-        this.mSyncUrlList = new ArrayList<SyncUrl>();
+        this.mSyncUrlList = new ArrayList<>();
         syncScheme = new SyncScheme();
     }
 
@@ -177,10 +177,6 @@ public class SyncUrl extends Model {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void setId(int id) {
