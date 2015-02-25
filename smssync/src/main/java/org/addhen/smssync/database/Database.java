@@ -329,17 +329,19 @@ public class Database {
      *
      * @param message - The messages to be added to the database.
      */
-    public void addSentMessage(Message message) {
+    public boolean addSentMessage(Message message) {
+        boolean status = false;
         try {
             mDb.beginTransaction();
 
-            insertMessage(message);
+            status = insertMessage(message);
 
             limitRows(SENT_MESSAGES_TABLE, 20, SENT_MESSAGES_UUID);
             mDb.setTransactionSuccessful();
         } finally {
             mDb.endTransaction();
         }
+        return status;
     }
 
     /**

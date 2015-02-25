@@ -26,6 +26,8 @@ import org.addhen.smssync.util.Logger;
  */
 public abstract class Model {
 
+    public Long id;
+
     public abstract boolean load();
 
     public abstract boolean save();
@@ -40,5 +42,13 @@ public abstract class Model {
 
     protected void log(String message, Exception ex) {
         Logger.log(getClass().getName(), message, ex);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
