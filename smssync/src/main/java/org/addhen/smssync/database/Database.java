@@ -19,6 +19,9 @@ package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.tasks.TaskExecutor;
+import org.addhen.smssync.tasks.ThreadExecutor;
+import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,6 +35,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Handles all database activities.
@@ -83,13 +88,15 @@ public class Database {
 
     private static final String DATABASE_NAME = "smssync_db";
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     public static SyncUrlContentProvider syncUrlContentProvider; // CP
 
     public static MessagesContentProvider messagesContentProvider;
 
     public static FilterContentProvider filterContentProvider;
+
+    public static MessageDatabaseHelper mMessageDatabaseHelper;
 
     private final Context mContext;
 
@@ -197,11 +204,14 @@ public class Database {
 
 
     public Database open() throws SQLException {
+        mMessageDatabaseHelper = MessageDatabaseHelper.getInstance(mContext, TaskExecutor.getInstance());
         mDbHelper = new DatabaseHelper(mContext);
         mDb = mDbHelper.getWritableDatabase();
         syncUrlContentProvider = new SyncUrlContentProvider(mDb);
         messagesContentProvider = new MessagesContentProvider(mDb);
         filterContentProvider = new FilterContentProvider(mDb);
+        cupboard().withDatabase(mDb).createTables();
+        Util.writeDbToSDCard();
         return this;
     }
 

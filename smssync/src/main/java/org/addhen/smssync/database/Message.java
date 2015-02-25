@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.database;
 
+import java.util.Date;
+
 import nl.qbusict.cupboard.annotation.Column;
 
 /**
@@ -33,7 +35,7 @@ public class Message extends Model {
     private String messageFrom;
 
     @Column("messages_date")
-    private String messageDate;
+    private Date messageDate;
 
     @Column("message_uuid")
     private String messageUuid;
@@ -75,11 +77,11 @@ public class Message extends Model {
         this.messageFrom = messageFrom;
     }
 
-    public String getMessageDate() {
+    public Date getMessageDate() {
         return messageDate;
     }
 
-    public void setMessageDate(String messageDate) {
+    public void setMessageDate(Date messageDate) {
         this.messageDate = messageDate;
     }
 

@@ -20,6 +20,7 @@ package org.addhen.smssync.database;
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.database.converter.EnumEntityFieldConverter;
 import org.addhen.smssync.database.converter.SyncUrlConverter;
+import org.addhen.smssync.util.Util;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,7 +42,7 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "smssync_db";
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     private static final int LAST_DATABASE_NUKE_VERSION = 6;
 
@@ -94,15 +95,6 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
     @Override
     public final void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //Upgrade database
-        switch (oldVersion) {
-            case 6:
-                DatabaseUpgrade.upgradeToVersion7(db);
-            case 7:
-                break;
-            default:
-                Log.w(TAG, "Unknown database version");
-                break;
-        }
 
         if (oldVersion < LAST_DATABASE_NUKE_VERSION) {
             if (BuildConfig.DEBUG) {

@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.models;
 
+import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.database.Database;
 
 import java.io.Serializable;
@@ -61,7 +62,17 @@ public class Message extends Model implements Serializable {
 
     @Override
     public boolean load() {
-        mMessageList = Database.messagesContentProvider.fetchAllMessages();
+        Database.mMessageDatabaseHelper.fetchAll(new BaseDatabseHelper.DatabaseCallback<List<org.addhen.smssync.database.Message>>() {
+            @Override
+            public void onFinished(List<org.addhen.smssync.database.Message> result) {
+
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+        });
         return mMessageList != null;
     }
 
