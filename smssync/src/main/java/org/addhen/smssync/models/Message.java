@@ -23,8 +23,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.qbusict.cupboard.annotation.Column;
-
 /**
  * Holds the messages to be sent via HTTP request
  */
@@ -32,16 +30,12 @@ public class Message extends Model implements Serializable {
 
     private static final long serialVersionUID = -7913005651109626889L;
 
-    @Column("messages_body")
     private String message;
 
-    @Column("messages_from")
     private String to;
 
-    @Column("messages_date")
     private String timestamp;
 
-    @Column("message_uuid")
     private String uuid;
 
     private int mMessageType;

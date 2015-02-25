@@ -130,4 +130,10 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
         return mIsClosed;
     }
 
+    public interface DatabaseCallback<T> {
+
+        public void onFinished(T result);
+
+        public void onError(Exception exception);
+    }
 }

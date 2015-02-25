@@ -1,60 +1,206 @@
 package org.addhen.smssync.database;
 
+import org.addhen.smssync.tasks.ThreadExecutor;
+
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageDatabase {
 
-    public MessageDatabaseHelper(Context context) {
+    private static MessageDatabaseHelper INSTANCE;
+
+    private final ThreadExecutor mThreadExecutor;
+
+
+    private MessageDatabaseHelper(Context context, ThreadExecutor threadExecutor) {
         super(context);
+
+        if (threadExecutor == null) {
+            throw new IllegalArgumentException("Invalid null parameter");
+        }
+
+        mThreadExecutor = threadExecutor;
+    }
+
+    public static synchronized MessageDatabaseHelper getInstance(Context context,
+            ThreadExecutor threadExecutor) {
+
+        if (INSTANCE == null) {
+            INSTANCE = new MessageDatabaseHelper(context, threadExecutor);
+        }
+        return INSTANCE;
+    }
+
+    /**
+     * Executes a {@link Runnable} in another Thread.
+     *
+     * @param runnable {@link Runnable} to execute
+     */
+    private void asyncRun(Runnable runnable) {
+        mThreadExecutor.execute(runnable);
     }
 
     @Override
-    public int messagesCount() {
-        return 0;
+    public void put(final List<Message> messages, final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        cupboard().withDatabase(getWritableDatabase()).put(messages);
+                        callback.onFinished(null);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
-    public boolean addMessages(List<Message> messages) {
-        return false;
+    public void put(final Message message, final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        cupboard().withDatabase(getWritableDatabase()).put(message);
+                        callback.onFinished(null);
+
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
-    public boolean addMessage(Message message) {
-        return false;
+    public void deleteByUuid(final String uuid, final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "message_uuid= ?";
+                        final String whereArgs[] = {uuid};
+                        cupboard().withDatabase(getWritableDatabase())
+                                .delete(Message.class, whereClause, whereArgs);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
-    public boolean deleteMessagesByUuid(String messageUuid) {
-        return false;
+    public void deleteAll(final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        cupboard().withDatabase(getWritableDatabase()).delete(Message.class, null);
+                        callback.onFinished(null);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
-    public boolean deleteAllMessages() {
-        return false;
+    public void fetchByUuid(final String uuid,
+            final DatabaseCallback<Message> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        Message message = fetchByUuidQuery(uuid);
+                        callback.onFinished(message);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    private Message fetchByUuidQuery(String uuid) {
+
+        final String whereClause = "message_uuid= ?";
+        return cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                .withSelection(whereClause, uuid).orderBy("messages_date DESC").get();
+
     }
 
     @Override
-    public List<Message> fetchMessagesByUuid(String messageUuid) {
-        return null;
+    public void fetchByUuids(final List<String> uuids,
+            final DatabaseCallback<List<Message>> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    List<Message> messages = new ArrayList<>();
+                    try {
+                        for (String uuid : uuids) {
+                            messages.add(fetchByUuidQuery(uuid));
+                        }
+                        callback.onFinished(messages);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
-    public List<Message> fetchMessageByUuids(List<String> messageUuid) {
-        return null;
+    public void fetchAll(final DatabaseCallback<List<Message>> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final List<Message> messages = cupboard()
+                                .withDatabase(getReadableDatabase()).query(Message.class).list();
+                        callback.onFinished(messages);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
     }
 
     @Override
-    public List<Message> fetchAllMessages() {
-        return null;
+    public void fetchByLimit(final int limit,
+            final DatabaseCallback<List<Message>> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final List<Message> messages = cupboard()
+                                .withDatabase(getReadableDatabase()).query(Message.class)
+                                .limit(limit).list();
+                        callback.onFinished(messages);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
     }
 
-    @Override
-    public List<Message> fetchMessagesByLimit(int limit) {
-        return null;
-    }
 }

@@ -2,26 +2,26 @@ package org.addhen.smssync.database;
 
 import java.util.List;
 
+import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public interface MessageDatabase {
 
-    public int messagesCount();
+    public void put(List<Message> messages, DatabaseCallback<Void> callback);
 
-    public boolean addMessages(List<Message> messages);
+    public void put(Message message, DatabaseCallback<Void> callback);
 
-    public boolean addMessage(Message message);
+    public void deleteByUuid(String uuid, DatabaseCallback<Void> callback);
 
-    public boolean deleteMessagesByUuid(String messageUuid);
+    public void deleteAll(DatabaseCallback<Void> callback);
 
-    public boolean deleteAllMessages();
+    public void fetchByUuid(String uuid, DatabaseCallback<Message> callback);
 
-    public List<Message> fetchMessagesByUuid(String messageUuid);
+    public void fetchByUuids(List<String> uuid, DatabaseCallback<List<Message>> callback);
 
-    public List<Message> fetchMessageByUuids(List<String> messageUuid);
+    public void fetchAll(DatabaseCallback<List<Message>> callback);
 
-    public List<Message> fetchAllMessages();
-
-    public List<Message> fetchMessagesByLimit(int limit);
+    public void fetchByLimit(int limit, DatabaseCallback<List<Message>> callback);
 }
