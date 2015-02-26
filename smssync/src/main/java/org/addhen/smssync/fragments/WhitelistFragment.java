@@ -17,11 +17,9 @@
 
 package org.addhen.smssync.fragments;
 
-import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.listeners.WhitelistActionModeListener;
-import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.views.AddPhoneNumber;

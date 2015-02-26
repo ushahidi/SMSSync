@@ -17,7 +17,6 @@
 package org.addhen.smssync.views;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 
 import android.text.TextUtils;

@@ -4,7 +4,6 @@ import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SmssyncResponse;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.tests.CustomAndroidTestCase;

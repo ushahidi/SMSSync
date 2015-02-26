@@ -18,7 +18,6 @@
 package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.fragments.SyncUrlFragment;
-import org.addhen.smssync.models.SyncUrl;
 
 import android.support.v7.app.ActionBarActivity;
 

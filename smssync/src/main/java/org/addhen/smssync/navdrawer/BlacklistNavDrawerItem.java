@@ -18,7 +18,6 @@
 package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.fragments.BlacklistFragment;
-import org.addhen.smssync.models.Filter;
 
 import android.support.v7.app.ActionBarActivity;
 

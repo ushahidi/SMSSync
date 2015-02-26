@@ -20,7 +20,6 @@ package org.addhen.smssync.activities;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.BaseListAdapter;
-import org.addhen.smssync.models.Model;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.views.View;

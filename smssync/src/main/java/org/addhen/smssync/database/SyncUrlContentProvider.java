@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.util.Util;
 

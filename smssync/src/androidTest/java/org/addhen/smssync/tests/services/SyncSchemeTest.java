@@ -1,7 +1,6 @@
 package org.addhen.smssync.tests.services;
 
 import org.addhen.smssync.models.Message;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.tests.BaseTest;

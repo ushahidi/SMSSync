@@ -4,7 +4,6 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 

@@ -17,11 +17,9 @@
 
 package org.addhen.smssync.fragments;
 
-import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
 import org.addhen.smssync.listeners.SyncUrlActionModeListener;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.CheckTaskScheduledService;

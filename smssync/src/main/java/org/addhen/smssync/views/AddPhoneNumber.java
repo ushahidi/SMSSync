@@ -18,7 +18,6 @@
 package org.addhen.smssync.views;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Filter.Status;
 
 import android.view.View;

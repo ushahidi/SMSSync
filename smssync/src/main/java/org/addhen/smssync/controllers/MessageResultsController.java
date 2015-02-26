@@ -6,8 +6,6 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.QueuedMessages;
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.net.HttpMediaType;
 import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.util.JsonUtils;

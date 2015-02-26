@@ -19,7 +19,6 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.content.Intent;

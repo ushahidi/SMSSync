@@ -19,7 +19,6 @@ package org.addhen.smssync.navdrawer;
 
 import org.addhen.smssync.activities.FilterTabActivity;
 import org.addhen.smssync.fragments.WhitelistFragment;
-import org.addhen.smssync.models.Filter;
 
 import android.support.v7.app.ActionBarActivity;
 

@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.addhen.smssync.database.Database;
 import org.addhen.smssync.database.ISyncUrlSchema;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tests.BaseTest;
 
 import android.database.Cursor;

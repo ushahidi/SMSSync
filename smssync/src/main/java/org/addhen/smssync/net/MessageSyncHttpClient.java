@@ -23,7 +23,6 @@ import com.squareup.otto.Produce;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.Message;
 import org.addhen.smssync.models.SmssyncResponse;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme.SyncDataFormat;
 import org.addhen.smssync.net.SyncScheme.SyncDataKey;
 import org.addhen.smssync.net.SyncScheme.SyncMethod;
@@ -68,7 +67,8 @@ public class MessageSyncHttpClient extends MainHttpClient {
         addParam(syncScheme.getKey(SyncDataKey.FROM), message.getPhoneNumber());
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
         addParam(
-                syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), String.valueOf(message.getDate().getTime())
+                syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), String.valueOf(
+                message.getDate().getTime())
         );
         addParam(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber);
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid());

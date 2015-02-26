@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.util.Util;
 
 import android.content.ContentValues;

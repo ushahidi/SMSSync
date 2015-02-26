@@ -22,7 +22,6 @@ import com.squareup.otto.Produce;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;

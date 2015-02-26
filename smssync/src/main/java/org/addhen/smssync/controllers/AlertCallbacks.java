@@ -2,7 +2,6 @@ package org.addhen.smssync.controllers;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.prefs.Prefs;

@@ -17,8 +17,6 @@
 
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.models.Filter;
-
 import java.util.List;
 
 public interface IFilterContentProvider {
