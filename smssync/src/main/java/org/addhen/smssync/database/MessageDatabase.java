@@ -17,6 +17,10 @@ public interface MessageDatabase {
 
     public void deleteAll(DatabaseCallback<Void> callback);
 
+    public void fetchByType(Message.Type type, DatabaseCallback<List<Message>> callback);
+
+    public void fetchByStatus(Message.Status status, DatabaseCallback<List<Message>> callback);
+
     public void fetchByUuid(String uuid, DatabaseCallback<Message> callback);
 
     public void fetchByUuids(List<String> uuid, DatabaseCallback<List<Message>> callback);
@@ -24,4 +28,10 @@ public interface MessageDatabase {
     public void fetchAll(DatabaseCallback<List<Message>> callback);
 
     public void fetchByLimit(int limit, DatabaseCallback<List<Message>> callback);
+
+    public void fetchPending(DatabaseCallback<List<Message>> callback);
+
+    public void fetchSent(DatabaseCallback<List<Message>> callback);
+
+    public void deleteAllSentMessages(final DatabaseCallback<Void> callback);
 }

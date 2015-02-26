@@ -2,10 +2,12 @@ package org.addhen.smssync.messages;
 
 import com.google.gson.Gson;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.database.Message;
 import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.QueuedMessages;
 import org.addhen.smssync.models.SmssyncResponse;
@@ -22,8 +24,8 @@ import android.text.TextUtils;
 import java.net.URLEncoder;
 import java.util.List;
 
-import static org.addhen.smssync.messages.ProcessSms.PENDING;
-import static org.addhen.smssync.messages.ProcessSms.TASK;
+import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
+
 
 /**
  * Process messages
@@ -58,24 +60,36 @@ public class ProcessMessage {
     public boolean saveMessage(Message message) {
         Logger.log(TAG,
                 "saveMessage(): save text messages as received from the user's phone");
-        return message.save();
+        MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+                .put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
+                    @Override
+                    public void onFinished(Void result) {
+                        // Do nothing
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        // Do nothing
+                    }
+                });
+        return true;
     }
 
     /**
      * Sync received SMS to a configured sync URL.
      *
      * @param message The sms to be sync
-     * @param client The http client
+     * @param client  The http client
      * @return boolean
      */
     public boolean syncReceivedSms(Message message, MessageSyncHttpClient client) {
         Logger.log(TAG, "syncReceivedSms(): Post received SMS to configured URL:" +
-                message.toString() + " SyncUrlFragment: " );
+                message.toString() + " SyncUrlFragment: ");
 
         final boolean posted = client.postSmsToWebService();
 
         if (posted) {
-            logActivites(context.getString(R.string.sms_sent_to_webserivce, message.getMessage(),
+            logActivites(context.getString(R.string.sms_sent_to_webserivce, message.getBody(),
                     client.getSyncUrl().getUrl()));
             smsServerResponse(client.getServerSuccessResp());
         } else {
@@ -100,33 +114,72 @@ public class ProcessMessage {
      *
      * @param uuid The message uuid
      */
-    public boolean syncPendingMessages(String uuid) {
+    public boolean syncPendingMessages(final String uuid) {
         Logger.log(TAG, "syncPendingMessages: push pending messages to the Sync URL" + uuid);
-        Message messageModel = new Message();
-        List<Message> listMessages;
+
         // check if it should sync by id
         if (!TextUtils.isEmpty(uuid)) {
-            messageModel.loadByUuid(uuid);
+            MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchByUuid(uuid,
+                    new DatabaseCallback<Message>() {
+                        @Override
+                        public void onFinished(Message result) {
+
+                            if (routeMessage(result)) {
+                                deleteMessagesByUuid(result);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+
+                        }
+                    });
 
         } else {
-            messageModel.load();
+
+            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+                    .fetchPending(new DatabaseCallback<List<Message>>() {
+                        @Override
+                        public void onFinished(List<Message> result) {
+                            if (result != null && result.size() > 0) {
+
+                                for (Message message : result) {
+                                    deleteMessagesByUuid(message);
+
+                                }
+
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+
+                        }
+                    });
         }
-        listMessages = messageModel.getMessageList();
 
-        if (listMessages != null && listMessages.size() > 0) {
+        return true;
 
-            for (Message message : listMessages) {
-                if (routeMessage(message)) {
-                    Logger.log(TAG, " message ID "+message.getUuid());
-                    messageModel.deleteMessagesByUuid(message.getUuid());
-                }
+    }
 
-            }
-            return true;
+    public void deleteMessagesByUuid(Message message) {
+        if (routeMessage(message)) {
+
+            Logger.log(TAG, " message ID " + message.getUuid());
+            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+                    .deleteByUuid(message.getUuid(),
+                            new DatabaseCallback<Void>() {
+                                @Override
+                                public void onFinished(Void result) {
+                                    // Do nothing
+                                }
+
+                                @Override
+                                public void onError(Exception exception) {
+                                    // Do nothing
+                                }
+                            });
         }
-
-        return false;
-
     }
 
     /**
@@ -141,7 +194,8 @@ public class ProcessMessage {
             return;
         }
 
-        if (response != null && response.getPayload() !=null &&  response.getPayload().getMessages().size() > 0) {
+        if (response != null && response.getPayload() != null
+                && response.getPayload().getMessages().size() > 0) {
             for (Message msg : response.getPayload().getMessages()) {
                 sendSms(msg);
             }
@@ -191,7 +245,7 @@ public class ProcessMessage {
                         SmssyncResponse.class);
             } catch (Exception e) {
                 e.printStackTrace();
-                Util.logActivities(context, "Task crashed: "+e.getMessage());
+                Util.logActivities(context, "Task crashed: " + e.getMessage());
             }
 
             if (smssyncResponses != null) {
@@ -229,14 +283,15 @@ public class ProcessMessage {
             }
         }
 
-        Util.logActivities(context, context.getString(R.string.finish_task_check)+" "+getErrorMessage());
+        Util.logActivities(context,
+                context.getString(R.string.finish_task_check) + " " + getErrorMessage());
     }
 
     private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl,
             List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         for (Message msg : msgs) {
-            msg.setMessageType(TASK);
+            msg.setType(Message.Type.TASK);
             messagesUUIDs.getQueuedMessages().add(msg.getUuid());
         }
 
@@ -244,12 +299,12 @@ public class ProcessMessage {
                 .sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
         if (null != response && response.isSuccess() && response.hasUUIDs()) {
             for (Message msg : msgs) {
-                msg.setMessageType(TASK);
+                msg.setType(Message.Type.TASK);
                 if (response.getUuids().contains(msg.getUuid())) {
                     sendSms(msg);
                     Util.logActivities(context,
                             context.getString(R.string.processed_task,
-                                    msg.getMessage()));
+                                    msg.getBody()));
                 }
             }
         }
@@ -257,7 +312,7 @@ public class ProcessMessage {
 
     private void sendSMSWithMessageResultsAPIDisabled(List<Message> msgs) {
         for (Message msg : msgs) {
-            msg.setMessageType(TASK);
+            msg.setType(Message.Type.TASK);
             sendSms(msg);
         }
     }
@@ -289,9 +344,9 @@ public class ProcessMessage {
                 // when SMSSync has that feature turned on
                 if (prefs.autoDelete().get()) {
 
-                    processSms.delSmsFromInbox(message.getMessage(), message.getPhoneNumber());
+                    processSms.delSmsFromInbox(message.getBody(), message.getPhoneNumber());
                     Util.logActivities(context,
-                            context.getString(R.string.auto_message_deleted, message.getMessage()));
+                            context.getString(R.string.auto_message_deleted, message.getBody()));
                 }
                 return true;
             } else {
@@ -306,10 +361,8 @@ public class ProcessMessage {
     }
 
     public boolean routePendingMessage(Message message) {
-        if (routeMessage(message)) {
-            return message.deleteMessagesByUuid(message.getUuid());
-        }
-        return false;
+        deleteMessagesByUuid(message);
+        return true;
     }
 
     /**
@@ -325,11 +378,11 @@ public class ProcessMessage {
         // process filter text (keyword or RegEx)
         if (!TextUtils.isEmpty(syncUrl.getKeywords())) {
             String filterText = syncUrl.getKeywords();
-            if (processSms.filterByKeywords(message.getMessage(), filterText)
-                    || processSms.filterByRegex(message.getMessage(), filterText)) {
+            if (processSms.filterByKeywords(message.getBody(), filterText)
+                    || processSms.filterByRegex(message.getBody(), filterText)) {
                 Logger.log(TAG, syncUrl.getUrl());
 
-                if (message.getMessageType() == PENDING) {
+                if (message.getType() == Message.Type.PENDING) {
                     posted = syncReceivedSms(message, client);
                     if (!posted) {
                         // Note: HTTP Error code or custom error message
@@ -340,7 +393,7 @@ public class ProcessMessage {
                         Util.connectToDataNetwork(context);
 
                     } else {
-                        message.setMessageType(PENDING);
+                        message.setType(Message.Type.PENDING);
                         processSms.postToSentBox(message);
                     }
                 } else {
@@ -352,7 +405,7 @@ public class ProcessMessage {
 
         } else { // there is no filter text set up on a sync URL
 
-            if (message.getMessageType() == PENDING) {
+            if (message.getType() == Message.Type.PENDING) {
                 posted = syncReceivedSms(message, client);
                 setErrorMessage(syncUrl.getUrl());
                 if (!posted) {
@@ -362,7 +415,7 @@ public class ProcessMessage {
                     Util.connectToDataNetwork(context);
 
                 } else {
-                    message.setMessageType(PENDING);
+                    message.setType(Message.Type.PENDING);
                     processSms.postToSentBox(message);
                 }
             } else {
@@ -407,8 +460,9 @@ public class ProcessMessage {
                 for (Filter filter : filters.getFilterList()) {
 
                     if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
-                        Logger.log("message", " from:" + message.getPhoneNumber() + " filter:" + filter
-                                .getPhoneNumber());
+                        Logger.log("message",
+                                " from:" + message.getPhoneNumber() + " filter:" + filter
+                                        .getPhoneNumber());
                         return false;
                     }
                 }
@@ -434,7 +488,8 @@ public class ProcessMessage {
     }
 
     private boolean sendSms(Message message) {
-        return processSms.sendSms(message.getPhoneNumber(), message.getMessage(), message.getUuid());
+        return processSms
+                .sendSms(message.getPhoneNumber(), message.getBody(), message.getUuid());
     }
 
 }

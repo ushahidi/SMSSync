@@ -23,9 +23,10 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.database.Message;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
 import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.models.Message;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.SyncType;
@@ -52,6 +53,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 public class PendingMessages
         extends
@@ -195,7 +197,7 @@ public class PendingMessages
         log("syncMessages messagesUuid: ");
         ArrayList<String> messagesUuids = null;
         if (mSelectedItemsPositions != null && mSelectedItemsPositions.size() > 0) {
-            messagesUuids = new ArrayList<String>();
+            messagesUuids = new ArrayList<>();
             for (Integer position : mSelectedItemsPositions) {
                 messagesUuids.add(adapter.getItem(position).getUuid());
             }
@@ -470,11 +472,8 @@ public class PendingMessages
         @Override
         protected Boolean doInBackground(String... args) {
 
-            status = new ProcessSms(appContext).importMessages();
-            //TODO:: refactor the status code to a boolean value
-            if (status == 0) {
-                model.load();
-            }
+             status = new ProcessSms(appContext).importMessages();
+
             return true;
         }
 
@@ -483,7 +482,7 @@ public class PendingMessages
             super.onPostExecute(success);
             if (success) {
                 if (status == 0) {
-                    adapter.setItems(model.getMessageList());
+                    fetchMessages();
                 } else if (status == 1) {
                     toastLong(R.string.nothing_to_import);
                 }
@@ -511,7 +510,7 @@ public class PendingMessages
 
         @Override
         protected Boolean doInBackground(String... args) {
-            return model.load();
+            return true;
         }
 
         @Override
@@ -520,7 +519,7 @@ public class PendingMessages
             view.listLoadingProgress.setVisibility(android.view.View.GONE);
             view.emptyView.setVisibility(View.VISIBLE);
             if (success) {
-                adapter.setItems(model.getMessageList());
+                fetchMessages();
                 listView.setAdapter(adapter);
             }
         }
@@ -555,14 +554,35 @@ public class PendingMessages
                 if (deletebyUuid) {
                     log("deletedbyId position: " + mSelectedItemsPositions.size());
                     for (Integer position : mSelectedItemsPositions) {
-                        model.deleteMessagesByUuid(adapter.getItem(position).getUuid());
+                        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchByUuid(adapter.getItem(position).getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
+                            @Override
+                            public void onFinished(Message result) {
+                                // Do nothing
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+                                // Do nothing
+                            }
+                        });
+
                     }
                 } else {
-                    model.deleteAllMessages();
+                    MainApplication.getDatabaseInstance().getMessageDatabaseInstance().deleteAll(new BaseDatabseHelper.DatabaseCallback<Void>() {
+                        @Override
+                        public void onFinished(Void result) {
+                            // Do nothing
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+                            //Do nothing
+                        }
+                    });
                 }
                 deleted = 2;
             }
-            return model.load();
+            return true;
         }
 
         @Override
@@ -582,14 +602,29 @@ public class PendingMessages
                         toastLong(R.string.messages_deleted_failed);
                     }
                 }
-                adapter.setItems(model.getMessageList());
+                fetchMessages();
                 if (multichoiceActionModeListener.activeMode != null) {
                     multichoiceActionModeListener.activeMode.finish();
                     multichoiceActionModeListener.getSelectedItemPositions().clear();
                 }
-                listView.setAdapter(adapter);
+
             }
         }
+    }
+
+    private void fetchMessages() {
+        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
+            @Override
+            public void onFinished(List<Message> result) {
+                adapter.setItems(result);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+        });
     }
 
 }

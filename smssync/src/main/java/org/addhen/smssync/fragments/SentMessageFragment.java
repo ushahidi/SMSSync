@@ -22,8 +22,9 @@ import com.squareup.otto.Subscribe;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.database.Message;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
-import org.addhen.smssync.models.SentMessagesModel;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.ServicesConstants;
@@ -42,96 +43,22 @@ import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.List;
+
 public class SentMessageFragment
         extends
-        BaseListFragment<SentMessagesView, SentMessagesModel, SentMessagesAdapter> {
+        BaseListFragment<SentMessagesView, Message, SentMessagesAdapter> {
 
     private final Handler mHandler = new Handler();
 
     private String messageUuid = "";
 
-    private SentMessagesModel model;
+    private Message model;
 
     private MenuItem refresh;
 
     private boolean refreshState = false;
 
-    /**
-     * Delete all messages. 0 - Successfully deleted. 1 - There is nothing to be deleted.
-     */
-    final Runnable mDeleteAllSentMessages = new Runnable() {
-        public void run() {
-
-            boolean result = false;
-
-            int deleted = 0;
-
-            if (adapter.getCount() == 0) {
-                deleted = 1;
-            } else {
-                result = model.deleteAllSentMessages();
-            }
-
-            try {
-
-                if (deleted == 1) {
-                    toastLong(R.string.no_messages_to_delete);
-                } else {
-                    if (result) {
-                        toastLong(R.string.messages_deleted);
-                        refresh();
-                    } else {
-                        toastLong(R.string.messages_deleted_failed);
-                    }
-                }
-                refreshState = false;
-                updateRefreshStatus();
-                refresh();
-            } catch (Exception e) {
-                return;
-            }
-        }
-    };
-
-    /**
-     * Delete individual messages 0 - Successfully deleted. 1 - There is nothing to be deleted.
-     */
-    final Runnable mDeleteMessagesById = new Runnable() {
-        public void run() {
-            getActivity().setProgressBarIndeterminateVisibility(true);
-            boolean result = false;
-
-            int deleted = 0;
-
-            if (adapter.getCount() == 0) {
-                deleted = 1;
-            } else {
-                result = model.deleteSentMessagesByUuid(messageUuid);
-            }
-
-            try {
-                if (deleted == 1) {
-                    toastLong(R.string.no_messages_to_delete);
-
-                } else {
-
-                    if (result) {
-                        toastLong(R.string.messages_deleted);
-                        refreshState = false;
-
-                    } else {
-                        toastLong(R.string.messages_deleted_failed);
-
-                    }
-                }
-                refreshState = true;
-                updateRefreshStatus();
-                refresh();
-            } catch (Exception e) {
-                return;
-            }
-        }
-    };
 
     /**
      * This will refresh content of the listview aka the pending messages when smssync syncs pending
@@ -156,7 +83,6 @@ public class SentMessageFragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        model = new SentMessagesModel();
         // show notification
         if (prefs.serviceEnabled().get()) {
             Util.showNotification(getActivity());
@@ -188,7 +114,7 @@ public class SentMessageFragment
     }
 
     public boolean performAction(MenuItem item, int position) {
-        messageUuid = adapter.getItem(position).getMessageUuid();
+        messageUuid = adapter.getItem(position).getUuid();
         if (item.getItemId() == R.id.sent_messages_context_delete) {
             // Delete by ID
             performDeleteById();
@@ -227,7 +153,7 @@ public class SentMessageFragment
                                 // delete all messages
                                 refreshState = true;
                                 updateRefreshStatus();
-                                mHandler.post(mDeleteAllSentMessages);
+                                deleteAllSentMessages();
                             }
                         });
         AlertDialog alert = builder.create();
@@ -253,7 +179,8 @@ public class SentMessageFragment
                                 // Delete by ID
                                 refreshState = true;
                                 updateRefreshStatus();
-                                mHandler.post(mDeleteMessagesById);
+                                deleteMessage(messageUuid);
+
                             }
                         });
         AlertDialog alert = builder.create();
@@ -288,6 +215,79 @@ public class SentMessageFragment
 
     }
 
+    private void fetchMessages() {
+        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchSent(
+                new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
+                    @Override
+                    public void onFinished(List<Message> result) {
+                        adapter.setItems(result);
+                        listView.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                    }
+                });
+    }
+
+    private void deleteMessage(String uuid) {
+        getActivity().setProgressBarIndeterminateVisibility(true);
+
+        if (adapter.getCount() == 0) {
+            toastLong(R.string.no_messages_to_delete);
+        } else {
+
+            refreshState = true;
+            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+                    .deleteByUuid(uuid,
+                            new BaseDatabseHelper.DatabaseCallback<Void>() {
+                                @Override
+                                public void onFinished(Void result) {
+
+                                    toastLong(R.string.messages_deleted);
+                                    refreshState = false;
+                                    updateRefreshStatus();
+                                    refresh();
+                                }
+
+                                @Override
+                                public void onError(Exception exception) {
+                                    toastLong(R.string.messages_deleted_failed);
+                                }
+                            });
+        }
+
+    }
+
+    private void deleteAllSentMessages() {
+        getActivity().setProgressBarIndeterminateVisibility(true);
+
+        if (adapter.getCount() == 0) {
+            toastLong(R.string.no_messages_to_delete);
+        } else {
+
+            refreshState = true;
+            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+                    .deleteAllSentMessages(
+                            new BaseDatabseHelper.DatabaseCallback<Void>() {
+                                @Override
+                                public void onFinished(Void result) {
+
+                                    toastLong(R.string.messages_deleted);
+                                    refreshState = false;
+                                    updateRefreshStatus();
+                                    refresh();
+                                }
+
+                                @Override
+                                public void onError(Exception exception) {
+                                    toastLong(R.string.messages_deleted_failed);
+                                }
+                            });
+        }
+
+    }
+
     private class LoadingTask extends ProgressTask {
 
         public LoadingTask(Activity activity) {
@@ -304,7 +304,7 @@ public class SentMessageFragment
 
         @Override
         protected Boolean doInBackground(String... args) {
-            return model.load();
+            return true;
         }
 
         @Override
@@ -312,10 +312,9 @@ public class SentMessageFragment
             super.onPostExecute(success);
             view.listLoadingProgress.setVisibility(android.view.View.GONE);
             view.emptyView.setVisibility(View.VISIBLE);
-            if (success) {
 
-                adapter.setItems(model.listMessages);
-                listView.setAdapter(adapter);
+            if (success) {
+                fetchMessages();
             }
         }
     }

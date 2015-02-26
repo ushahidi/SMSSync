@@ -20,7 +20,7 @@ package org.addhen.smssync.models;
 /**
  * Navigation Drawer menu item
  */
-public class NavDrawerItem extends Model {
+public class NavDrawerItem extends org.addhen.smssync.database.Model {
 
     public static int NO_ICON_RES_ID = -1;
 
@@ -68,16 +68,6 @@ public class NavDrawerItem extends Model {
      */
     public int getCounter() {
         return mCounter;
-    }
-
-    @Override
-    public boolean load() {
-        return false;
-    }
-
-    @Override
-    public boolean save() {
-        return false;
     }
 
 }

@@ -24,6 +24,9 @@ public class SyncUrl extends Model {
     @Column("syncscheme")
     private SyncScheme syncScheme;
 
+    @Column("status")
+    private Status staus;
+
     public String getTitle() {
         return title;
     }
@@ -64,15 +67,19 @@ public class SyncUrl extends Model {
         this.syncScheme = syncScheme;
     }
 
+    public enum Status {
+        ENABLED, DISABLED;
+    }
+
     @Override
     public String toString() {
         return "SyncUrl{" +
-                "id='"+_id + '\'' +
                 "title='" + title + '\'' +
                 ", keywords='" + keywords + '\'' +
                 ", url='" + url + '\'' +
                 ", secret='" + secret + '\'' +
-                ", syncScheme='" + syncScheme + '\'' +
+                ", syncScheme=" + syncScheme +
+                ", staus=" + staus +
                 '}';
     }
 }

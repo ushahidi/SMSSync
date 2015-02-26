@@ -1,5 +1,7 @@
 package org.addhen.smssync.models;
 
+import org.addhen.smssync.database.Message;
+
 import java.io.Serializable;
 import java.util.List;
 

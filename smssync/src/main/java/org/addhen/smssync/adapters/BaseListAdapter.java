@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.adapters;
 
-import org.addhen.smssync.models.Model;
+import org.addhen.smssync.database.Model;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
@@ -25,7 +25,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -92,17 +96,14 @@ public abstract class BaseListAdapter<M extends Model> extends BaseAdapter {
     /**
      * Set the date of the message.
      *
-     * @param String messageDate - The timestamp of the message. To be changed into human readable.
+     * @param Date messageDate - The timestamp of the message. To be changed into human readable.
      * @return void
      */
-    protected String formatDate(String messageDate) {
-        try {
-            return Util.formatDateTime(Long.parseLong(messageDate),
-                    "MMM dd, yyyy 'at' hh:mm a");
+    protected String formatDate(Date messageDate) {
 
-        } catch (NumberFormatException e) {
-            return messageDate;
-        }
+        DateFormat formatter = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a");
+        return formatter.format(messageDate);
+
     }
 
     public abstract void refresh();

@@ -38,6 +38,14 @@ public class MainApplication extends Application {
 
     public static Application app = null;
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // Open database connection when the application starts.
+        app = this;
+        mDb = new Database(this);
+    }
+
     /**
      * Return the application tracker
      */
@@ -45,21 +53,17 @@ public class MainApplication extends Application {
         return TrackerResolver.getInstance();
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        // Open database connection when the application starts.
-        app = this;
-        mDb = new Database(this);
-        mDb.open();
+    public static Database getDatabaseInstance() {
 
+        if(mDb == null) {
+            mDb = new Database(app);
+        }
+        
+        return mDb;
     }
 
     @Override
     public void onTerminate() {
-
-        // Close the database when the application terminates.
-        mDb.close();
         super.onTerminate();
     }
 }

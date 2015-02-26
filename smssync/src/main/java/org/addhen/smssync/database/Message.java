@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.database;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 import nl.qbusict.cupboard.annotation.Column;
@@ -28,15 +30,19 @@ import nl.qbusict.cupboard.annotation.Column;
  */
 public class Message extends Model {
 
+    @SerializedName("message")
     @Column("messages_body")
     private String messageBody;
 
+    @SerializedName("to")
     @Column("messages_from")
     private String messageFrom;
 
+    @SerializedName("timestamp")
     @Column("messages_date")
     private Date messageDate;
 
+    @SerializedName("uuid")
     @Column("message_uuid")
     private String messageUuid;
 
@@ -61,43 +67,43 @@ public class Message extends Model {
     @Column("status")
     private Status status;
 
-    public String getMessageBody() {
+    public String getBody() {
         return messageBody;
     }
 
-    public void setMessageBody(String messageBody) {
+    public void setBody(String messageBody) {
         this.messageBody = messageBody;
     }
 
-    public String getMessageFrom() {
+    public String getPhoneNumber() {
         return messageFrom;
     }
 
-    public void setMessageFrom(String messageFrom) {
+    public void setPhoneNumber(String messageFrom) {
         this.messageFrom = messageFrom;
     }
 
-    public Date getMessageDate() {
+    public Date getDate() {
         return messageDate;
     }
 
-    public void setMessageDate(Date messageDate) {
+    public void setDate(Date messageDate) {
         this.messageDate = messageDate;
     }
 
-    public String getMessageUuid() {
+    public String getUuid() {
         return messageUuid;
     }
 
-    public void setMessageUuid(String messageUuid) {
+    public void setUuid(String messageUuid) {
         this.messageUuid = messageUuid;
     }
 
-    public Type getMessageType() {
+    public Type getType() {
         return messageType;
     }
 
-    public void setMessageType(Type messageType) {
+    public void setType(Type messageType) {
         this.messageType = messageType;
     }
 

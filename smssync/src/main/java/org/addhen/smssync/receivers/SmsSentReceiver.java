@@ -3,7 +3,8 @@ package org.addhen.smssync.receivers;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.AlertCallbacks;
-import org.addhen.smssync.models.Message;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.database.Message;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
@@ -71,9 +72,8 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
             message.setSentResultMessage(resultMessage);
             message.setSentResultCode(result);
             if (sentSuccess) {
-                message.setMessageType(TASK);
-                MainApplication.mDb
-                        .updateSentResult(message); //update type, sent result msg and code
+                message.setType(Message.Type.TASK);
+
             } else {
                 final String errorCode;
                 final AlertCallbacks alertCallbacks = new AlertCallbacks(new Prefs(context));
@@ -89,9 +89,19 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                     }
                 }).start();
 
-                message.setMessageType(FAILED);
-                message.save();// save message into pending tray
-                MainApplication.mDb.deleteSentMessagesByUuid(message.getUuid());
+                message.setStatus(Message.Status.FAILED);
+                MainApplication.getDatabaseInstance().getMessageDatabaseInstance().put(message,
+                        new BaseDatabseHelper.DatabaseCallback<Void>() {
+                            @Override
+                            public void onFinished(Void result) {
+
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+
+                            }
+                        });
             }
         }
 

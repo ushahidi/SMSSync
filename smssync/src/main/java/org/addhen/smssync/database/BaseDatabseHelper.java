@@ -20,7 +20,7 @@ package org.addhen.smssync.database;
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.database.converter.EnumEntityFieldConverter;
 import org.addhen.smssync.database.converter.SyncUrlConverter;
-import org.addhen.smssync.util.Util;
+import org.addhen.smssync.tasks.ThreadExecutor;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -81,9 +81,16 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
 
     private Context mContext;
 
-    public BaseDatabseHelper(Context context) {
+    protected final ThreadExecutor mThreadExecutor;
+
+    public BaseDatabseHelper(Context context, ThreadExecutor threadExecutor) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        mContext = context;
+
+        if (threadExecutor == null) {
+            throw new IllegalArgumentException("Invalid null parameter");
+        }
+
+        mThreadExecutor = threadExecutor;
     }
 
     @Override
@@ -118,7 +125,16 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
         mIsClosed = true;
     }
 
-    public boolean isClosed() {
+    /**
+     * Executes a {@link Runnable} in another Thread.
+     *
+     * @param runnable {@link Runnable} to execute
+     */
+    protected void asyncRun(Runnable runnable) {
+        mThreadExecutor.execute(runnable);
+    }
+
+    protected boolean isClosed() {
         return mIsClosed;
     }
 

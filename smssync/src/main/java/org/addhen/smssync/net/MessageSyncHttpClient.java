@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.squareup.otto.Produce;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.Message;
+import org.addhen.smssync.database.Message;
 import org.addhen.smssync.models.SmssyncResponse;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme.SyncDataFormat;
@@ -66,9 +66,9 @@ public class MessageSyncHttpClient extends MainHttpClient {
         setHeader("Content-Type", syncScheme.getContentType());
         addParam(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncDataKey.FROM), message.getPhoneNumber());
-        addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getMessage());
+        addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
         addParam(
-                syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), message.getTimestamp()
+                syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), String.valueOf(message.getDate().getTime())
         );
         addParam(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber);
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid());

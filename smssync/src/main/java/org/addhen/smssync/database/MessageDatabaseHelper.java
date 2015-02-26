@@ -16,17 +16,11 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     private static MessageDatabaseHelper INSTANCE;
 
-    private final ThreadExecutor mThreadExecutor;
-
 
     private MessageDatabaseHelper(Context context, ThreadExecutor threadExecutor) {
-        super(context);
+        super(context, threadExecutor);
 
-        if (threadExecutor == null) {
-            throw new IllegalArgumentException("Invalid null parameter");
-        }
 
-        mThreadExecutor = threadExecutor;
     }
 
     public static synchronized MessageDatabaseHelper getInstance(Context context,
@@ -36,15 +30,6 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             INSTANCE = new MessageDatabaseHelper(context, threadExecutor);
         }
         return INSTANCE;
-    }
-
-    /**
-     * Executes a {@link Runnable} in another Thread.
-     *
-     * @param runnable {@link Runnable} to execute
-     */
-    private void asyncRun(Runnable runnable) {
-        mThreadExecutor.execute(runnable);
     }
 
     @Override
@@ -119,6 +104,67 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
     }
 
     @Override
+    public void deleteAllSentMessages(final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "status= ?";
+                        final String whereArgs[] = {Message.Status.SENT.name()};
+                        cupboard().withDatabase(getWritableDatabase())
+                                .delete(Message.class, whereClause, whereArgs);
+
+                        callback.onFinished(null);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void fetchByType(final Message.Type type,
+            final DatabaseCallback<List<Message>> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if(!isClosed()) {
+                    try {
+                        final String whereClause = "message_type= ?";
+                        List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                                .withSelection(whereClause, type.name()).orderBy("messages_date DESC").list();
+                        callback.onFinished(messages);
+                    }catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void fetchByStatus(final Message.Status status,
+            final DatabaseCallback<List<Message>> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if(!isClosed()) {
+                    try {
+                        final String whereClause = "status= ?";
+                        List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                                .withSelection(whereClause, status.name()).orderBy("messages_date DESC").list();
+                        callback.onFinished(messages);
+                    }catch(Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void fetchByUuid(final String uuid,
             final DatabaseCallback<Message> callback) {
         asyncRun(new Runnable() {
@@ -156,6 +202,46 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         for (String uuid : uuids) {
                             messages.add(fetchByUuidQuery(uuid));
                         }
+                        callback.onFinished(messages);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void fetchPending(
+            final DatabaseCallback<List<Message>> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "status != ?";
+                        List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                                .withSelection(whereClause, Message.Status.SENT.name()).orderBy("messages_date DESC").list();
+                        callback.onFinished(messages);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void fetchSent(
+            final DatabaseCallback<List<Message>> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "status = ?";
+                        List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                                .withSelection(whereClause, Message.Status.SENT.name()).orderBy("messages_date DESC").list();
                         callback.onFinished(messages);
                     } catch (Exception e) {
                         callback.onError(e);

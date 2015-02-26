@@ -21,7 +21,7 @@ package org.addhen.smssync.fragments;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.adapters.BaseListAdapter;
-import org.addhen.smssync.models.Model;
+import org.addhen.smssync.database.Model;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;

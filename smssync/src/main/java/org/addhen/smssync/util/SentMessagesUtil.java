@@ -19,8 +19,8 @@ package org.addhen.smssync.util;
 
 
 import org.addhen.smssync.MainApplication;
-import org.addhen.smssync.database.Messages;
-import org.addhen.smssync.models.Message;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.database.Message;
 
 import android.content.Context;
 
@@ -47,8 +47,20 @@ public class SentMessagesUtil {
                 "processMessages(): Process text messages as received from the user's phone");
 
         if(message !=null) {
-            final boolean status = MainApplication.mDb.addSentMessage(message);
-            return status;
+            message.setStatus(Message.Status.SENT);
+            MainApplication.getDatabaseInstance().getMessageDatabaseInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
+                @Override
+                public void onFinished(Void result) {
+
+                }
+
+                @Override
+                public void onError(Exception exception) {
+
+                }
+            });
+
+            return true;
 
         }
 

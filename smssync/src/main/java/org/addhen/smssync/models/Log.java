@@ -20,7 +20,7 @@ package org.addhen.smssync.models;
 /**
  * Log messages
  */
-public class Log extends Model {
+public class Log extends org.addhen.smssync.database.Model {
 
     public String message;
 
@@ -40,16 +40,6 @@ public class Log extends Model {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = "";
-    }
-
-    @Override
-    public boolean load() {
-        return false;
-    }
-
-    @Override
-    public boolean save() {
-        return false;
     }
 
     @Override

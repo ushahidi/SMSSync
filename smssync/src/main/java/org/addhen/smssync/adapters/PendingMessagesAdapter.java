@@ -17,13 +17,19 @@
 
 package org.addhen.smssync.adapters;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
-import org.addhen.smssync.models.Message;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.database.Message;
+
+import static org.addhen.smssync.database.Message.Type;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class PendingMessagesAdapter extends BaseListAdapter<Message> {
 
@@ -55,11 +61,8 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
         }
     }
 
-    private Message message;
-
     public PendingMessagesAdapter(Context context) {
         super(context);
-        message = new Message();
     }
 
     @Override
@@ -76,22 +79,22 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
         // initialize view with content
         widgets.messageFrom.setText(getItem(position).getPhoneNumber());
         widgets.messageDate.setText(formatDate(getItem(position)
-                .getTimestamp()));
-        widgets.message.setText(getItem(position).getMessage());
+                .getDate()));
+        widgets.message.setText(getItem(position).getBody());
 
         // Pending messages
-        if (getItem(position).getMessageType() == 0) {
+        if (getItem(position).getType() == Type.PENDING) {
             widgets.messageType.setText(R.string.sms);
             widgets.messageType.setTextColor(context.getResources().getColor(
                     R.color.pending_color));
 
-        } else if (getItem(position).getMessageType() == 1) {
+        } else if (getItem(position).getType() == Type.TASK) {
             // Task messages
             widgets.messageType.setText(R.string.task);
             widgets.messageType.setTextColor(context.getResources().getColor(
                     R.color.task_color));
         } else {
-            // Failed task messages
+            //TODO mark this as status
             widgets.messageType.setText(R.string.failed);
             widgets.messageType.setTextColor(context.getResources().getColor(
                     R.color.task_color));
@@ -102,8 +105,19 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
 
     @Override
     public void refresh() {
-        if (message.load()) {
-            setItems(message.getMessageList());
-        }
+
+        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchAll(
+                new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
+            @Override
+            public void onFinished(List<Message> result) {
+                setItems(result);
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+        });
+
     }
 }
