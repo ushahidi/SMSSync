@@ -17,10 +17,11 @@
 
 package org.addhen.smssync.views;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 
 import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
+
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 
@@ -103,7 +104,7 @@ public class AddSyncUrl {
     }
 
     private void save(SyncUrl syncUrl) {
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new DatabaseCallback<Void>() {
+        App.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new DatabaseCallback<Void>() {
             @Override
             public void onFinished(Void result) {
                 // Do nothing

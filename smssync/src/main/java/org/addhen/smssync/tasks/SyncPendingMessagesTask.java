@@ -19,7 +19,7 @@ package org.addhen.smssync.tasks;
 
 import com.squareup.otto.Subscribe;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.messages.ProcessMessage;
@@ -94,7 +94,7 @@ public class SyncPendingMessagesTask extends
     @Override
     protected void onPreExecute() {
         // register bus for passing events around
-        MainApplication.bus.register(this);
+        App.bus.register(this);
     }
 
     @Subscribe
@@ -109,17 +109,17 @@ public class SyncPendingMessagesTask extends
             post(result);
         }
         // un-register bus to stop listening for events
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
     }
 
     @Override
     protected void onCancelled() {
         post(transition(CANCELED_SYNC, null));
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
     }
 
     private void post(SyncPendingMessagesState state) {
-        MainApplication.bus.post(state);
+        App.bus.post(state);
     }
 
     private SyncPendingMessagesState transition(SyncState state, Exception exception) {
@@ -178,7 +178,7 @@ public class SyncPendingMessagesTask extends
         // determine if syncing by message UUID
         if (config.messageUuids != null && config.messageUuids.size() > 0) {
             for (String messageUuid : config.messageUuids) {
-                Message msg = MainApplication.getDatabaseInstance().getMessageInstance().fetchByUuid(messageUuid);
+                Message msg = App.getDatabaseInstance().getMessageInstance().fetchByUuid(messageUuid);
                 listMessages.add(msg);
 
             }
@@ -186,7 +186,7 @@ public class SyncPendingMessagesTask extends
         } else {
 
             // load all messages
-            listMessages = MainApplication.getDatabaseInstance().getMessageInstance().fetchPending();
+            listMessages = App.getDatabaseInstance().getMessageInstance().fetchPending();
         }
 
         if (listMessages.size() > 0) {

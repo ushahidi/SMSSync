@@ -20,7 +20,7 @@ package org.addhen.smssync.services;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncPendingMessagesTask;
@@ -85,11 +85,11 @@ public class SyncPendingMessagesService extends BaseService {
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
                         logActivities(R.string.not_syncing);
-                        MainApplication.bus.post(mState.transition(ERROR, e));
+                        App.bus.post(mState.transition(ERROR, e));
                     }
                 } else {
                     log("Sync is running now.");
-                    MainApplication.bus.post(mState.transition(ERROR, null));
+                    App.bus.post(mState.transition(ERROR, null));
                 }
             } else {
                 log("Sync already running");

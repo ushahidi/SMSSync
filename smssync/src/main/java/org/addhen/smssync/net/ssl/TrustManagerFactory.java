@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.net.ssl;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 
 import android.app.Application;
 import android.content.Context;
@@ -133,7 +133,7 @@ public final class TrustManagerFactory {
         try {
             javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory
                     .getInstance("X509");
-            Application app = MainApplication.app;
+            Application app = App.app;
             keyStoreFile = new File(app.getDir("KeyStore", Context.MODE_PRIVATE) + File.separator
                     + "KeyStore.bks");
             keyStore = KeyStore.getInstance(KeyStore.getDefaultType());

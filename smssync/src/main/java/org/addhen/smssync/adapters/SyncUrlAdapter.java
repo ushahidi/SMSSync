@@ -17,7 +17,8 @@
 
 package org.addhen.smssync.adapters;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
+import org.addhen.smssync.UiThread;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
 import org.addhen.smssync.models.SyncUrl;
@@ -72,18 +73,24 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrl> {
                 // enabled Sync URL
                 // this is to allow the user to disable the SMSSync service
                 // before the last Sync URL is disabled.
-                MainApplication.getDatabaseInstance().getSyncUrlInstance().totalActiveSyncUrl(new DatabaseCallback<Integer>() {
+                App.getDatabaseInstance().getSyncUrlInstance().totalActiveSyncUrl(new DatabaseCallback<Integer>() {
                     @Override
-                    public void onFinished(Integer result) {
-                        if ((result == 1) && (prefs.serviceEnabled().get())) {
+                    public void onFinished(final Integer result) {
+                        UiThread.getInstance().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if ((result == 1) && (prefs.serviceEnabled().get())) {
 
-                            Toast.makeText(context, R.string.disable_last_sync_url, Toast.LENGTH_LONG)
-                                    .show();
-                        } else {
+                                    Toast.makeText(context, R.string.disable_last_sync_url, Toast.LENGTH_LONG)
+                                            .show();
+                                } else {
 
-                            updateStatus(SyncUrl.Status.DISABLED, position);
-                            listCheckBox.setChecked(false);
-                        }
+                                    updateStatus(SyncUrl.Status.DISABLED, position);
+                                    listCheckBox.setChecked(false);
+                                }
+                            }
+                        });
+
                     }
 
                     @Override
@@ -101,12 +108,9 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrl> {
 
     }
 
-    private SyncUrl syncUrls;
-
     private Prefs prefs;
     public SyncUrlAdapter(Context context) {
         super(context);
-        syncUrls = new SyncUrl();
         prefs = new Prefs(context);
     }
 
@@ -139,7 +143,7 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrl> {
 
     @Override
     public void refresh() {
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrl(new BaseDatabseHelper.DatabaseCallback<List<SyncUrl>>() {
+        App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrl(new BaseDatabseHelper.DatabaseCallback<List<SyncUrl>>() {
             @Override
             public void onFinished(List<SyncUrl> result) {
                 setItems(result);
@@ -163,7 +167,7 @@ public class SyncUrlAdapter extends BaseListAdapter<SyncUrl> {
     public void updateStatus(final SyncUrl.Status status, final int position) {
         final SyncUrl syncUrl = getItem(position);
         syncUrl.setStatus(status);
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new BaseDatabseHelper.DatabaseCallback<Void>() {
+        App.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new BaseDatabseHelper.DatabaseCallback<Void>() {
             @Override
             public void onFinished(Void result) {
 

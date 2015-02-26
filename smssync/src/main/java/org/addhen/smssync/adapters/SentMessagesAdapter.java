@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.adapters;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
@@ -76,7 +76,7 @@ public class SentMessagesAdapter extends BaseListAdapter<Message> {
 
     @Override
     public void refresh() {
-        MainApplication.getDatabaseInstance().getMessageInstance().fetchByStatus(
+        App.getDatabaseInstance().getMessageInstance().fetchByStatus(
                 Message.Status.SENT, new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
                     @Override
                     public void onFinished(List<Message> result) {

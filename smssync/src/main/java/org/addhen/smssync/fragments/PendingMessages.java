@@ -19,7 +19,7 @@ package org.addhen.smssync.fragments;
 
 import com.squareup.otto.Subscribe;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
@@ -119,7 +119,7 @@ public class PendingMessages
         }
         view.sync.setOnClickListener(this);
 
-        MainApplication.bus.register(this);
+        App.bus.register(this);
         getActivity().registerReceiver(failedReceiver,
                 new IntentFilter(ServicesConstants.FAILED_ACTION));
     }
@@ -157,7 +157,7 @@ public class PendingMessages
         log("onDestroy()");
         super.onDestroy();
         getActivity().unregisterReceiver(failedReceiver);
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
     }
 
     private void idle() {
@@ -186,7 +186,7 @@ public class PendingMessages
                 // Sync button will be restored on next status update.
                 view.sync.setText(R.string.stopping);
                 view.sync.setEnabled(false);
-                MainApplication.bus.post(new TaskCanceled());
+                App.bus.post(new TaskCanceled());
             }
         } else {
             toastLong(R.string.no_configured_url);
@@ -554,7 +554,7 @@ public class PendingMessages
                 if (deletebyUuid) {
                     log("deletedbyId position: " + mSelectedItemsPositions.size());
                     for (Integer position : mSelectedItemsPositions) {
-                        MainApplication.getDatabaseInstance().getMessageInstance().fetchByUuid(adapter.getItem(position).getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
+                        App.getDatabaseInstance().getMessageInstance().fetchByUuid(adapter.getItem(position).getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
                             @Override
                             public void onFinished(Message result) {
                                 // Do nothing
@@ -568,7 +568,7 @@ public class PendingMessages
 
                     }
                 } else {
-                    MainApplication.getDatabaseInstance().getMessageInstance().deleteAll(new BaseDatabseHelper.DatabaseCallback<Void>() {
+                    App.getDatabaseInstance().getMessageInstance().deleteAll(new BaseDatabseHelper.DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
                             // Do nothing
@@ -613,7 +613,7 @@ public class PendingMessages
     }
 
     private void fetchMessages() {
-        MainApplication.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
+        App.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
             @Override
             public void onFinished(List<Message> result) {
                 adapter.setItems(result);

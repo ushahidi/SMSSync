@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
 import org.addhen.smssync.exceptions.ConnectivityException;
@@ -74,14 +74,14 @@ public abstract class BaseService extends Service {
         if (prefs.enableLog().get()) {
             mLogUtil = new LogUtil(DateFormat.getDateFormatOrder(this));
         }
-        MainApplication.bus.register(this);
+        App.bus.register(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
 
     }
 

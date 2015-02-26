@@ -78,10 +78,9 @@ public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlD
                     try {
 
                         final List<SyncUrl> syncUrls = getSyncUrlsQuery(status);
-
                         callback.onFinished(syncUrls);
-                    } catch(Exception e) {
 
+                    } catch(Exception e) {
                         callback.onError(e);
                     }
                 }
@@ -190,7 +189,7 @@ public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlD
 
     public int getTotal() {
         if(!isClosed()) {
-            cupboard().withDatabase(getReadableDatabase()).query(SyncUrl.class).list().size();
+            return cupboard().withDatabase(getReadableDatabase()).query(SyncUrl.class).list().size();
         }
         return 0;
     }

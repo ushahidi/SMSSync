@@ -18,7 +18,7 @@
 package org.addhen.smssync.fragments;
 
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.adapters.BaseListAdapter;
 import org.addhen.smssync.models.Model;
@@ -151,14 +151,14 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
     public void onStart() {
         super.onStart();
         log("onStart");
-        MainApplication.getInstance().activityStart(this.getActivity());
+        App.getInstance().activityStart(this.getActivity());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         log("onDestroy");
-        MainApplication.getInstance().activityStop(this.getActivity());
+        App.getInstance().activityStop(this.getActivity());
     }
 
     @Override

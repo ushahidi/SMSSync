@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.views;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Filter;
@@ -68,7 +68,7 @@ public class AddPhoneNumber {
     }
 
     private void save(Filter filter) {
-        MainApplication.getDatabaseInstance().getFilterInstance()
+        App.getDatabaseInstance().getFilterInstance()
                 .put(filter, new BaseDatabseHelper.DatabaseCallback<Void>() {
                     @Override
                     public void onFinished(Void result) {

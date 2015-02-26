@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.navdrawer;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.fragments.SentMessageFragment;
 
 import android.support.v7.app.ActionBarActivity;
@@ -46,6 +46,6 @@ public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        mCounter = MainApplication.getDatabaseInstance().getMessageInstance().sentTotal();
+        mCounter = App.getDatabaseInstance().getMessageInstance().sentTotal();
     }
 }

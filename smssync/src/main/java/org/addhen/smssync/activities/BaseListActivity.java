@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.activities;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.BaseListAdapter;
 import org.addhen.smssync.models.Model;
@@ -107,7 +107,7 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
     protected void onStart() {
         super.onStart();
         log("onStart");
-        MainApplication.getInstance().activityStart(this);
+        App.getInstance().activityStart(this);
     }
 
     @Override
@@ -120,7 +120,7 @@ public abstract class BaseListActivity<V extends View, M extends Model, L extend
     protected void onDestroy() {
         super.onDestroy();
         log("onDestroy");
-        MainApplication.getInstance().activityStop(this);
+        App.getInstance().activityStop(this);
     }
 
     @SuppressWarnings("unchecked")

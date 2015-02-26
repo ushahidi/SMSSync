@@ -18,7 +18,7 @@
 package org.addhen.smssync.util;
 
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
 
@@ -42,7 +42,7 @@ public class SentMessagesUtil {
 
         if(message !=null) {
             message.setStatus(Message.Status.SENT);
-            MainApplication.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
+            App.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
                 @Override
                 public void onFinished(Void result) {
 

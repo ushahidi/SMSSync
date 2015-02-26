@@ -1,6 +1,6 @@
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
@@ -41,7 +41,7 @@ public class SmsDeliveredReceiver extends BaseBroadcastReceiver {
             message.setDeliveryResultMessage(resultMessage);
             message.setDeliveryResultCode(result);
             message.setType(Message.Type.TASK);
-            MainApplication.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
+            App.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
                 @Override
                 public void onFinished(Void result) {
 

@@ -1,13 +1,12 @@
 package org.addhen.smssync.controllers;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
 
@@ -37,7 +36,7 @@ public class AlertCallbacks {
      */
     public void lowBatteryLevelRequest(int batteryLevel) {
 
-        List<SyncUrl> syncUrls = MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+        List<SyncUrl> syncUrls = App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
                 SyncUrl.Status.ENABLED);
         for (SyncUrl syncUrl : syncUrls) {
             if (syncUrl.getUrl() != null && !syncUrl.getUrl().equals("")) {
@@ -71,7 +70,7 @@ public class AlertCallbacks {
      */
     public void smsSendFailedRequest(String resultMessage,
             String errorCode) {
-        List<SyncUrl> syncUrls = MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+        List<SyncUrl> syncUrls = App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
                 SyncUrl.Status.ENABLED);
         for (SyncUrl syncUrl : syncUrls) {
             if (syncUrl.getUrl() != null && !syncUrl.getUrl().equals("")) {

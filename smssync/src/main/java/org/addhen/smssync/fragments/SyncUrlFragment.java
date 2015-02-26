@@ -17,8 +17,9 @@
 
 package org.addhen.smssync.fragments;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
+import org.addhen.smssync.UiThread;
 import org.addhen.smssync.adapters.SyncUrlAdapter;
 import org.addhen.smssync.listeners.SyncUrlActionModeListener;
 import org.addhen.smssync.models.SyncUrl;
@@ -26,15 +27,13 @@ import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.receivers.SmsReceiver;
 import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.CheckTaskService;
-import org.addhen.smssync.tasks.ProgressTask;
-import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.AddSyncUrl;
 import org.addhen.smssync.views.EditSyncScheme;
 import org.addhen.smssync.views.SyncUrlView;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -48,7 +47,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
 
@@ -63,6 +61,8 @@ public class SyncUrlFragment extends
     private PackageManager pm;
 
     private ComponentName smsReceiverComponent;
+
+    private SyncUrl mSyncUrl;
 
     public SyncUrlFragment() {
         super(SyncUrlView.class, SyncUrlAdapter.class, R.layout.list_sync_url,
@@ -142,7 +142,7 @@ public class SyncUrlFragment extends
             return (true);
         } else if (item.getItemId() == R.id.delete_all_sync_url) {
             // load all checked syncurl
-            MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+            App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
                     SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
                         @Override
                         public void onFinished(List<SyncUrl> result) {
@@ -265,7 +265,7 @@ public class SyncUrlFragment extends
         // with existing sync URL details
         if (edit) {
 
-            MainApplication.getDatabaseInstance().getSyncUrlInstance()
+            App.getDatabaseInstance().getSyncUrlInstance()
                     .fetchSyncUrlById(id, new DatabaseCallback<SyncUrl>() {
                         @Override
                         public void onFinished(SyncUrl syncUrl) {
@@ -341,7 +341,7 @@ public class SyncUrlFragment extends
         LayoutInflater factory = LayoutInflater.from(getActivity());
         final View textEntryView = factory.inflate(R.layout.edit_sync_url_scheme, null);
         final EditSyncScheme editScheme = new EditSyncScheme(textEntryView);
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlById(id, new DatabaseCallback<SyncUrl>() {
+        App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlById(id, new DatabaseCallback<SyncUrl>() {
             @Override
             public void onFinished(final SyncUrl result) {
                 if(result !=null) {
@@ -356,44 +356,8 @@ public class SyncUrlFragment extends
                     editScheme.keyDeviceID.setText(scheme.getKey(SyncScheme.SyncDataKey.DEVICE_ID));
                     editScheme.methods.setSelection(scheme.getMethod().ordinal());
                     editScheme.dataFormats.setSelection(scheme.getDataFormat().ordinal());
+                    mSyncUrl = result;
                 }
-
-                final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
-                        getActivity());
-                addBuilder
-                        .setTitle(R.string.sync_sheme)
-                        .setView(textEntryView)
-                        .setPositiveButton(R.string.ok,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                    }
-                                })
-                        .setNegativeButton(R.string.cancel,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog,
-                                            int whichButton) {
-                                        dialog.dismiss();
-                                    }
-                                });
-
-                final AlertDialog deploymentDialog = addBuilder.create();
-                deploymentDialog.show();
-
-                deploymentDialog.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener(
-                        new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                //TODO: validate entry
-                                if (editScheme.validEntries()) {
-                                    editScheme.updateSyncScheme(result);
-                                    deploymentDialog.dismiss();
-                                } else {
-                                    toastLong(R.string.all_fields_are_required);
-                                }
-                            }
-                        });
-
             }
 
             @Override
@@ -402,16 +366,48 @@ public class SyncUrlFragment extends
             }
         });
 
+        final AlertDialog.Builder addBuilder = new AlertDialog.Builder(
+                getActivity());
+        addBuilder
+                .setTitle(R.string.sync_sheme)
+                .setView(textEntryView)
+                .setPositiveButton(R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                            }
+                        })
+                .setNegativeButton(R.string.cancel,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                    int whichButton) {
+                                dialog.dismiss();
+                            }
+                        });
+
+        final AlertDialog deploymentDialog = addBuilder.create();
+        deploymentDialog.show();
+
+        deploymentDialog.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener(
+                new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        //TODO: validate entry
+                        if (editScheme.validEntries()) {
+                            editScheme.updateSyncScheme(mSyncUrl);
+                            deploymentDialog.dismiss();
+                        } else {
+                            toastLong(R.string.all_fields_are_required);
+                        }
+                    }
+                });
+
     }
 
     // Display pending messages.
     public void loadSyncUrlInBackground() {
-        new LoadingTask().execute(false);
+        loadTask(false);
     }
-
-   /* public void loadByStatus() {
-        syncUrl = model.loadByStatus(1);
-    }*/
 
     /*
      * (non-Javadoc)
@@ -422,7 +418,7 @@ public class SyncUrlFragment extends
 
         if (adapter.getCount() > 0) {
             // check if there are any enabled sync urls
-                startServiceForEnabledSyncUrl();
+            startServiceForEnabledSyncUrl();
         } else {
             toastLong(R.string.no_sync_url_added);
             prefs.serviceEnabled().set(false);
@@ -432,112 +428,133 @@ public class SyncUrlFragment extends
 
     private void startServiceForEnabledSyncUrl() {
         // load all checked syncurl
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
-                SyncUrl.Status.DISABLED.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
+        App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+                SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
                     @Override
-                    public void onFinished(List<SyncUrl> result) {
-                        if(result !=null && result.size() > 0) {
+                    public void onFinished(final List<SyncUrl> result) {
+                        UiThread.getInstance().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(result !=null && result.size() > 0) {
 
-                            RunServicesUtil runServicesUtil = new RunServicesUtil(prefs);
-                            if (view.enableSmsSync.isChecked()) {
+                                    RunServicesUtil runServicesUtil = new RunServicesUtil(prefs);
+                                    if (view.enableSmsSync.isChecked()) {
 
-                                if (Util.isDefaultSmsApp(getActivity())) {
-                                    // start sms receiver
-                                    pm.setComponentEnabledSetting(smsReceiverComponent,
-                                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                            PackageManager.DONT_KILL_APP);
+                                        if (Util.isDefaultSmsApp(getActivity())) {
+                                            // start sms receiver
+                                            pm.setComponentEnabledSetting(smsReceiverComponent,
+                                                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                                                    PackageManager.DONT_KILL_APP);
 
-                                    prefs.serviceEnabled().set(true);
-                                    view.enableSmsSync.setChecked(true);
-                                    // because the services to be run depends on the state of the service so save the
-                                    // changes first
-                                    // run auto sync service
-                                    runServicesUtil.runAutoSyncService();
+                                            prefs.serviceEnabled().set(true);
+                                            view.enableSmsSync.setChecked(true);
+                                            // because the services to be run depends on the state of the service so save the
+                                            // changes first
+                                            // run auto sync service
+                                            runServicesUtil.runAutoSyncService();
 
-                                    // run check task service
-                                    runServicesUtil.runCheckTaskService();
+                                            // run check task service
+                                            runServicesUtil.runCheckTaskService();
 
-                                    // show notification
-                                    Util.showNotification(getActivity());
+                                            // show notification
+                                            Util.showNotification(getActivity());
+                                        } else {
+                                            view.enableSmsSync.setChecked(false);
+                                            prefs.serviceEnabled().set(false);
+                                            Util.makeDefaultSmsApp(getActivity());
+                                        }
+
+                                    } else {
+                                        // stop sms receiver
+                                        pm.setComponentEnabledSetting(smsReceiverComponent,
+                                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                                                PackageManager.DONT_KILL_APP);
+
+                                        runServicesUtil.stopCheckTaskService();
+                                        runServicesUtil.stopAutoSyncService();
+
+                                        // stop check task schedule
+                                        getActivity().stopService(
+                                                new Intent(getActivity(),
+                                                        CheckTaskScheduledService.class));
+                                        getActivity().stopService(
+                                                new Intent(getActivity(), CheckTaskService.class));
+
+                                        Util.clearNotify(getActivity());
+                                        prefs.serviceEnabled().set(false);
+                                        view.enableSmsSync.setChecked(false);
+                                    }
                                 } else {
-                                    view.enableSmsSync.setChecked(false);
+                                    toastLong(R.string.no_enabled_sync_url);
                                     prefs.serviceEnabled().set(false);
-                                    Util.makeDefaultSmsApp(getActivity());
+                                    view.enableSmsSync.setChecked(false);
                                 }
-
-                            } else {
-                                // stop sms receiver
-                                pm.setComponentEnabledSetting(smsReceiverComponent,
-                                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                        PackageManager.DONT_KILL_APP);
-
-                                runServicesUtil.stopCheckTaskService();
-                                runServicesUtil.stopAutoSyncService();
-
-                                // stop check task schedule
-                                getActivity().stopService(
-                                        new Intent(getActivity(),
-                                                CheckTaskScheduledService.class));
-                                getActivity().stopService(
-                                        new Intent(getActivity(), CheckTaskService.class));
-
-                                Util.clearNotify(getActivity());
-                                prefs.serviceEnabled().set(false);
-                                view.enableSmsSync.setChecked(false);
-                            }
-                        } else {
-                            toastLong(R.string.no_enabled_sync_url);
-                            prefs.serviceEnabled().set(false);
-                            view.enableSmsSync.setChecked(false);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-
-                    }
-                });
-
-    }
-    private class LoadingTask{
-
-        public void execute(boolean loadSyncUrlByStatus) {
-            view.emptyView.setVisibility(android.view.View.GONE);
-            if(loadSyncUrlByStatus) {
-                MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
-                        SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
-                            @Override
-                            public void onFinished(List<SyncUrl> result) {
-                                view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                                view.emptyView.setVisibility(View.VISIBLE);
-                                adapter.setItems(result);
-                                listView.setAdapter(adapter);
-                            }
-
-                            @Override
-                            public void onError(Exception exception) {
-
                             }
                         });
-            } else {
-                MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrl(new DatabaseCallback<List<SyncUrl>>() {
-                    @Override
-                    public void onFinished(List<SyncUrl> result) {
-                        view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                        view.emptyView.setVisibility(View.VISIBLE);
-                        adapter.setItems(result);
-                        listView.setAdapter(adapter);
+
                     }
 
                     @Override
                     public void onError(Exception exception) {
+                        UiThread.getInstance().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                view.enableSmsSync.setChecked(false);
+                            }
+                        });
 
                     }
                 });
-            }
-        }
+
     }
 
+    public void loadTask(boolean loadSyncUrlByStatus) {
+        view.emptyView.setVisibility(android.view.View.GONE);
+        if(loadSyncUrlByStatus) {
+            App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+                    SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
+                        @Override
+                        public void onFinished(final List<SyncUrl> result) {
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                                    view.emptyView.setVisibility(View.VISIBLE);
+                                    adapter.setItems(result);
+                                    listView.setAdapter(adapter);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+
+                        }
+                    });
+        } else {
+            App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrl(new DatabaseCallback<List<SyncUrl>>() {
+                @Override
+                public void onFinished(final List<SyncUrl> result) {
+                    UiThread.getInstance().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                            view.emptyView.setVisibility(View.VISIBLE);
+                            adapter.setItems(result);
+                            listView.setAdapter(adapter);
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onError(Exception exception) {
+
+                }
+            });
+        }
+    }
 
     protected class DeleteTask {
 
@@ -547,33 +564,56 @@ public class SyncUrlFragment extends
                 toastLong(R.string.no_sync_url_to_delete);
             } else {
                 if(deletebyUuid) {
-                    MainApplication.getDatabaseInstance().getSyncUrlInstance().deleteSyncUrlById(id, new DatabaseCallback<Void>() {
+                    App.getDatabaseInstance().getSyncUrlInstance().deleteSyncUrlById(id,
+                            new DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
-                            view.emptyView.setVisibility(View.VISIBLE);
-                            toastLong(R.string.sync_url_deleted);
-                            loadSyncUrls();
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.emptyView.setVisibility(View.VISIBLE);
+                                    toastLong(R.string.sync_url_deleted);
+                                    loadSyncUrls();
+                                }
+                            });
+
                         }
 
                         @Override
                         public void onError(Exception exception) {
-                            view.emptyView.setVisibility(View.VISIBLE);
-                            toastLong(R.string.sync_url_deleted_failed);
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.emptyView.setVisibility(View.VISIBLE);
+                                    toastLong(R.string.sync_url_deleted_failed);
+                                }
+                            });
+
                         }
                     });
                 } else {
-                    MainApplication.getDatabaseInstance().getSyncUrlInstance().deleteAllSyncUrl(new DatabaseCallback<Void>() {
+                    App.getDatabaseInstance().getSyncUrlInstance().deleteAllSyncUrl(new DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
-                            view.emptyView.setVisibility(View.VISIBLE);
-                            toastLong(R.string.sync_url_deleted);
-                            loadSyncUrls();
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.emptyView.setVisibility(View.VISIBLE);
+                                    toastLong(R.string.sync_url_deleted);
+                                    loadSyncUrls();
+                                }
+                            });
                         }
 
                         @Override
                         public void onError(Exception exception) {
-                            view.emptyView.setVisibility(View.VISIBLE);
-                            toastLong(R.string.sync_url_deleted_failed);
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.emptyView.setVisibility(View.VISIBLE);
+                                    toastLong(R.string.sync_url_deleted_failed);
+                                }
+                            });
                         }
                     });
                 }
@@ -595,21 +635,33 @@ public class SyncUrlFragment extends
 
         public void execute() {
             if(editSyncUrl) {
-                MainApplication.getDatabaseInstance().getSyncUrlInstance()
+                App.getDatabaseInstance().getSyncUrlInstance()
                         .fetchSyncUrlById(id, new DatabaseCallback<SyncUrl>() {
                             @Override
-                            public void onFinished(SyncUrl result) {
-                                final boolean status = addSyncUrl.updateSyncUrl(id, result.getSyncScheme());
-                                if(!status) {
-                                    toastLong(R.string.failed_to_update_sync_url);
-                                } else {
-                                    loadSyncUrls();
-                                }
+                            public void onFinished(final SyncUrl result) {
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        final boolean status = addSyncUrl.updateSyncUrl(id, result.getSyncScheme());
+                                        if(!status) {
+                                            toastLong(R.string.failed_to_update_sync_url);
+                                        } else {
+                                            loadSyncUrls();
+                                        }
+                                    }
+                                });
+
                             }
 
                             @Override
                             public void onError(Exception exception) {
-                                toastLong(R.string.failed_to_update_sync_url);
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        toastLong(R.string.failed_to_update_sync_url);
+                                    }
+                                });
+
                             }
                         });
             } else {
@@ -624,11 +676,17 @@ public class SyncUrlFragment extends
     }
 
     private void loadSyncUrls() {
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrl(new DatabaseCallback<List<SyncUrl>>() {
+        App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrl(new DatabaseCallback<List<SyncUrl>>() {
             @Override
-            public void onFinished(List<SyncUrl> result) {
-                adapter.setItems(result);
-                listView.setAdapter(adapter);
+            public void onFinished(final List<SyncUrl> result) {
+                UiThread.getInstance().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setItems(result);
+                        listView.setAdapter(adapter);
+                    }
+                });
+
             }
 
             @Override

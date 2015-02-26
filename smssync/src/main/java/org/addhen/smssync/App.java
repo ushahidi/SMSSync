@@ -28,7 +28,7 @@ import android.app.Application;
  *
  * @author eyedol
  */
-public class MainApplication extends Application {
+public class App extends Application {
 
     public static final String TAG = "SmsSyncApplication";
 

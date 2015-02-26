@@ -17,13 +17,12 @@
 
 package org.addhen.smssync.services;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
-import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -93,7 +92,7 @@ public abstract class SmsSyncServices extends IntentService {
     public void onCreate() {
         super.onCreate();
         // load setting. Just in case someone changes a setting
-        MainApplication.bus.register(this);
+        App.bus.register(this);
     }
 
 
@@ -151,7 +150,7 @@ public abstract class SmsSyncServices extends IntentService {
                 && getPhoneWakeLock(this.getApplicationContext()) != null) {
             getPhoneWakeLock(this.getApplicationContext()).release();
         }
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
     }
 
     protected void log(String message) {

@@ -17,8 +17,8 @@
 
 package org.addhen.smssync.util;
 
+import org.addhen.smssync.App;
 import org.addhen.smssync.BuildConfig;
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
@@ -564,7 +564,7 @@ public class Util {
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    MainApplication.bus.post(new LogEvent());
+                    App.bus.post(new LogEvent());
                 }
             };
 

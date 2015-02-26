@@ -19,7 +19,7 @@ package org.addhen.smssync.services;
 
 import com.squareup.otto.Produce;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.DebugCallbacks;
 import org.addhen.smssync.messages.ProcessMessage;
@@ -185,7 +185,7 @@ public class SmsReceiverService extends Service {
         statusIntent = new Intent(ServicesConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
-        MainApplication.bus.register(this);
+        App.bus.register(this);
 
     }
 
@@ -201,7 +201,7 @@ public class SmsReceiverService extends Service {
     @Override
     public void onDestroy() {
         mServiceLooper.quit();
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
         super.onDestroy();
     }
 

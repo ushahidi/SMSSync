@@ -19,7 +19,7 @@ package org.addhen.smssync.fragments;
 
 import com.squareup.otto.Subscribe;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.LogAdapter;
@@ -108,7 +108,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     public void onResume() {
         log("onResume()");
         super.onResume();
-        MainApplication.bus.register(this);
+        App.bus.register(this);
         getActivity().registerReceiver(batteryLevelReceiver,
                 new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         loadLogs();
@@ -118,7 +118,7 @@ public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> impl
     public void onPause() {
         log("onStop()");
         super.onPause();
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
     }
 
     @Override

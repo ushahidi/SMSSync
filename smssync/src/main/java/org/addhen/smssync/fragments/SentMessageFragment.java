@@ -19,7 +19,7 @@ package org.addhen.smssync.fragments;
 
 import com.squareup.otto.Subscribe;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
@@ -91,7 +91,7 @@ public class SentMessageFragment
         listView.setLongClickable(true);
         listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
                 this, listView));
-        MainApplication.bus.register(this);
+        App.bus.register(this);
 
     }
 
@@ -102,7 +102,7 @@ public class SentMessageFragment
         getActivity().registerReceiver(broadcastReceiver,
                 new IntentFilter(ServicesConstants.AUTO_SYNC_ACTION));
         refresh();
-        MainApplication.bus.register(this);
+        App.bus.register(this);
 
     }
 
@@ -110,7 +110,7 @@ public class SentMessageFragment
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(broadcastReceiver);
-        MainApplication.bus.unregister(this);
+        App.bus.unregister(this);
     }
 
     public boolean performAction(MenuItem item, int position) {
@@ -216,7 +216,7 @@ public class SentMessageFragment
     }
 
     private void fetchMessages() {
-        MainApplication.getDatabaseInstance().getMessageInstance().fetchSent(
+        App.getDatabaseInstance().getMessageInstance().fetchSent(
                 new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
                     @Override
                     public void onFinished(List<Message> result) {
@@ -238,7 +238,7 @@ public class SentMessageFragment
         } else {
 
             refreshState = true;
-            MainApplication.getDatabaseInstance().getMessageInstance()
+            App.getDatabaseInstance().getMessageInstance()
                     .deleteByUuid(uuid,
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override
@@ -267,7 +267,7 @@ public class SentMessageFragment
         } else {
 
             refreshState = true;
-            MainApplication.getDatabaseInstance().getMessageInstance()
+            App.getDatabaseInstance().getMessageInstance()
                     .deleteAllSentMessages(
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override

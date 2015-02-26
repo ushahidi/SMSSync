@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.widget;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.activities.FilterTabActivity;
@@ -285,7 +285,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
     public static List<Message> showMessages() {
 
-        final List<Message> messages = MainApplication.getDatabaseInstance().getMessageInstance().fetchByLimit(LIMIT);
+        final List<Message> messages = App.getDatabaseInstance().getMessageInstance().fetchByLimit(LIMIT);
         if (messages != null) {
             if (messages.size() == 0) {
                 pendingMsgs.clear();

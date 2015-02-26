@@ -17,13 +17,12 @@
 
 package org.addhen.smssync.fragments;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.listeners.WhitelistActionModeListener;
 import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.views.AddPhoneNumber;
 import org.addhen.smssync.views.WhitelistView;
@@ -33,7 +32,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -208,7 +206,7 @@ public class WhitelistFragment extends
         // if edit was selected at the context menu, populate fields
         // with existing sync URL details
         if (edit) {
-            MainApplication.getDatabaseInstance().getFilterInstance().fetchById(id, new BaseDatabseHelper.DatabaseCallback<Filter>() {
+            App.getDatabaseInstance().getFilterInstance().fetchById(id, new BaseDatabseHelper.DatabaseCallback<Filter>() {
                 @Override
                 public void onFinished(Filter result) {
                     if(result != null) {
@@ -287,7 +285,7 @@ public class WhitelistFragment extends
 
         if (adapter.getCount() > 0) {
 
-            MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.WHITELIST,
+            App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.WHITELIST,
                     new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
                 @Override
                 public void onFinished(List<Filter> result) {
@@ -334,7 +332,7 @@ public class WhitelistFragment extends
 
     private void loadFilters() {
         view.emptyView.setVisibility(View.GONE);
-        MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.WHITELIST, new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
+        App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.WHITELIST, new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
             @Override
             public void onFinished(List<Filter> result) {
                 view.listLoadingProgress.setVisibility(View.GONE);
@@ -356,7 +354,7 @@ public class WhitelistFragment extends
         } else {
             if(deleteByUuid) {
                 for(final Integer position: mSelectedItemsPositions) {
-                    MainApplication.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(),new BaseDatabseHelper.DatabaseCallback<Void>() {
+                    App.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(),new BaseDatabseHelper.DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
 
@@ -376,22 +374,24 @@ public class WhitelistFragment extends
                 }
 
             } else {
-                MainApplication.getDatabaseInstance().getFilterInstance().deleteAllWhiteList(new BaseDatabseHelper.DatabaseCallback<Void>() {
-                    @Override
-                    public void onFinished(Void result) {
-                        toastLong(R.string.phone_number_deleted);
-                        loadFilters();
-                        if (multichoiceActionModeListener.activeMode != null) {
-                            multichoiceActionModeListener.activeMode.finish();
-                            multichoiceActionModeListener.getSelectedItemPositions().clear();
-                        }
-                    }
+                App.getDatabaseInstance().getFilterInstance().deleteAllWhiteList(
+                        new BaseDatabseHelper.DatabaseCallback<Void>() {
+                            @Override
+                            public void onFinished(Void result) {
+                                toastLong(R.string.phone_number_deleted);
+                                loadFilters();
+                                if (multichoiceActionModeListener.activeMode != null) {
+                                    multichoiceActionModeListener.activeMode.finish();
+                                    multichoiceActionModeListener.getSelectedItemPositions()
+                                            .clear();
+                                }
+                            }
 
-                    @Override
-                    public void onError(Exception exception) {
-                        toastLong(R.string.deleting_phone_number_failed);
-                    }
-                });
+                            @Override
+                            public void onError(Exception exception) {
+                                toastLong(R.string.deleting_phone_number_failed);
+                            }
+                        });
             }
         }
     }

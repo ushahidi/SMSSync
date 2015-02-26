@@ -22,7 +22,7 @@ public class SyncUrl extends Model {
     private String secret;
 
     @Column("syncscheme")
-    private SyncScheme syncScheme;
+    private String syncScheme;
 
     @Column("status")
     private Status status;
@@ -60,11 +60,11 @@ public class SyncUrl extends Model {
     }
 
     public SyncScheme getSyncScheme() {
-        return syncScheme;
+        return new SyncScheme(syncScheme);
     }
 
     public void setSyncScheme(SyncScheme syncScheme) {
-        this.syncScheme = syncScheme;
+        this.syncScheme = syncScheme.toJSONString();
     }
 
     public Status getStatus() {

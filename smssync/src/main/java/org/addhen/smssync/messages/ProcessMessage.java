@@ -2,7 +2,7 @@ package org.addhen.smssync.messages;
 
 import com.google.gson.Gson;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.database.BaseDatabseHelper;
@@ -60,7 +60,7 @@ public class ProcessMessage {
     public boolean saveMessage(Message message) {
         Logger.log(TAG,
                 "saveMessage(): save text messages as received from the user's phone");
-        MainApplication.getDatabaseInstance().getMessageInstance()
+        App.getDatabaseInstance().getMessageInstance()
                 .put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
                     @Override
                     public void onFinished(Void result) {
@@ -119,7 +119,7 @@ public class ProcessMessage {
 
         // check if it should sync by id
         if (!TextUtils.isEmpty(uuid)) {
-            MainApplication.getDatabaseInstance().getMessageInstance().fetchByUuid(uuid,
+            App.getDatabaseInstance().getMessageInstance().fetchByUuid(uuid,
                     new DatabaseCallback<Message>() {
                         @Override
                         public void onFinished(Message result) {
@@ -137,7 +137,7 @@ public class ProcessMessage {
 
         } else {
 
-            MainApplication.getDatabaseInstance().getMessageInstance()
+            App.getDatabaseInstance().getMessageInstance()
                     .fetchPending(new DatabaseCallback<List<Message>>() {
                         @Override
                         public void onFinished(List<Message> result) {
@@ -166,7 +166,7 @@ public class ProcessMessage {
         if (routeMessage(message)) {
 
             Logger.log(TAG, " message ID " + message.getUuid());
-            MainApplication.getDatabaseInstance().getMessageInstance()
+            App.getDatabaseInstance().getMessageInstance()
                     .deleteByUuid(message.getUuid(),
                             new DatabaseCallback<Void>() {
                                 @Override
@@ -446,7 +446,7 @@ public class ProcessMessage {
 
     private boolean loadActiveSyncUrls(final Message message) {
         final boolean status;
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+        App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
                 SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
                     @Override
                     public void onFinished(List<SyncUrl> result) {
@@ -454,7 +454,7 @@ public class ProcessMessage {
                         for (final SyncUrl syncUrl : result) {
                             // white listed is enabled
                             if (prefs.enableWhitelist().get()) {
-                                MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(
+                                App.getDatabaseInstance().getFilterInstance().fetchByStatus(
                                         Filter.Status.WHITELIST,
                                         new DatabaseCallback<List<Filter>>() {
                                             @Override
@@ -477,7 +477,7 @@ public class ProcessMessage {
                             }
 
                             if (prefs.enableBlacklist().get()) {
-                                MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new DatabaseCallback<List<Filter>>() {
+                                App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new DatabaseCallback<List<Filter>>() {
                                     @Override
                                     public void onFinished(List<Filter> result) {
                                         for(Filter filter : result) {

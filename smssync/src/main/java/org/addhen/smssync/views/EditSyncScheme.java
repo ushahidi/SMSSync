@@ -16,7 +16,7 @@
  ******************************************************************************/
 package org.addhen.smssync.views;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.SyncUrl;
@@ -87,7 +87,7 @@ public class EditSyncScheme {
                 keyDeviceID.getText().toString());
 
         syncUrl.setSyncScheme(scheme);
-        MainApplication.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new BaseDatabseHelper.DatabaseCallback<Void>() {
+        App.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new BaseDatabseHelper.DatabaseCallback<Void>() {
             @Override
             public void onFinished(Void result) {
                 //Do nothing

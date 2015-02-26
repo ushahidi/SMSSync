@@ -1,6 +1,6 @@
 package org.addhen.smssync.receivers;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.database.BaseDatabseHelper;
@@ -86,7 +86,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 }).start();
 
                 message.setStatus(Message.Status.FAILED);
-                MainApplication.getDatabaseInstance().getMessageInstance().put(message,
+                App.getDatabaseInstance().getMessageInstance().put(message,
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {

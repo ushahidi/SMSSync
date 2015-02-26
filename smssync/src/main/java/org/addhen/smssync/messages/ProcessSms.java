@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.messages;
 
-import org.addhen.smssync.MainApplication;
+import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
@@ -261,7 +261,7 @@ public class ProcessSms {
     }
 
     private void saveMessage(List<Message> messages) {
-        MainApplication
+        App
                 .getDatabaseInstance().getMessageInstance().put(messages,
                 new BaseDatabseHelper.DatabaseCallback<Void>() {
                     @Override
