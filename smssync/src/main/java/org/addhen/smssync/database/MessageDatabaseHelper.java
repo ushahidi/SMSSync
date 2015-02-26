@@ -75,7 +75,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             public void run() {
                 if (!isClosed()) {
                     try {
-                        final String whereClause = "message_uuid= ?";
+                        final String whereClause = "message_uuid = ?";
                         final String whereArgs[] = {uuid};
                         cupboard().withDatabase(getWritableDatabase())
                                 .delete(Message.class, whereClause, whereArgs);
@@ -111,7 +111,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             public void run() {
                 if (!isClosed()) {
                     try {
-                        final String whereClause = "status= ?";
+                        final String whereClause = "status = ?";
                         final String whereArgs[] = {Message.Status.SENT.name()};
                         cupboard().withDatabase(getWritableDatabase())
                                 .delete(Message.class, whereClause, whereArgs);
@@ -133,7 +133,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             public void run() {
                 if(!isClosed()) {
                     try {
-                        final String whereClause = "message_type= ?";
+                        final String whereClause = "message_type = ?";
                         List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
                                 .withSelection(whereClause, type.name()).orderBy("messages_date DESC").list();
                         callback.onFinished(messages);
@@ -153,7 +153,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             public void run() {
                 if(!isClosed()) {
                     try {
-                        final String whereClause = "status= ?";
+                        final String whereClause = "status = ?";
                         List<Message> messages = cupboard().withDatabase(
                                 getReadableDatabase()).query(Message.class)
                                 .withSelection(whereClause, status.name()).orderBy(
@@ -191,9 +191,9 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     private Message fetchByUuidQuery(String uuid) {
 
-        final String whereClause = "message_uuid= ?";
+        final String whereClause = "message_uuid = ?";
         return cupboard().withDatabase(getReadableDatabase()).query(Message.class)
-                .withSelection(whereClause, uuid).orderBy("messages_date DESC").get();
+                .withSelection(whereClause, uuid).get();
 
     }
 

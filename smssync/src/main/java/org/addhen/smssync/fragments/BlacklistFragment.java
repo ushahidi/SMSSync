@@ -19,11 +19,13 @@ package org.addhen.smssync.fragments;
 
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
+import org.addhen.smssync.UiThread;
 import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.listeners.BlacklistActionModeListener;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.views.AddPhoneNumber;
 import org.addhen.smssync.views.BlacklistView;
 
@@ -124,7 +126,7 @@ public class BlacklistFragment extends
             edit = false;
             addPhoneNumber();
             return (true);
-        } else if (item.getItemId() == R.id.delete_all_sync_url) {
+        } else if (item.getItemId() == R.id.delete_all_phone_numbers) {
             // load all blacklisted phone numbers
             if (prefs.enableBlacklist().get()) {
                 showMessage(R.string.disable_blacklist);
@@ -214,10 +216,16 @@ public class BlacklistFragment extends
         if (edit) {
             App.getDatabaseInstance().getFilterInstance().fetchById(id, new BaseDatabseHelper.DatabaseCallback<Filter>() {
                 @Override
-                public void onFinished(Filter result) {
-                    if(result !=null) {
-                        addPhoneNumber.phoneNumber.setText(result.getPhoneNumber());
-                    }
+                public void onFinished(final Filter result) {
+                    UiThread.getInstance().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(result !=null) {
+                                addPhoneNumber.phoneNumber.setText(result.getPhoneNumber());
+                            }
+                        }
+                    });
+
                 }
 
                 @Override
@@ -295,27 +303,34 @@ public class BlacklistFragment extends
         if (adapter.getCount() > 0) {
             // check if there are any enabled sync urls
             // load all checked syncurl
-            App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
+            App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST,
+                    new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
                 @Override
-                public void onFinished(List<Filter> result) {
-                    if(result!=null && result.size() > 0 ) {
-                        if (view.enableBlacklist.isChecked()) {
-                            // start sms receiver
+                public void onFinished(final List<Filter> result) {
+                    UiThread.getInstance().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(result!=null && result.size() > 0 ) {
+                                if (view.enableBlacklist.isChecked()) {
+                                    // start sms receiver
 
-                            prefs.enableBlacklist().set(true);
-                            view.enableBlacklist.setChecked(true);
+                                    prefs.enableBlacklist().set(true);
+                                    view.enableBlacklist.setChecked(true);
 
 
-                        } else {
+                                } else {
 
-                            prefs.enableBlacklist().set(false);
-                            view.enableBlacklist.setChecked(false);
+                                    prefs.enableBlacklist().set(false);
+                                    view.enableBlacklist.setChecked(false);
+                                }
+                            } else {
+                                toastLong(R.string.no_phone_number_to_enable_blacklist);
+                                prefs.enableBlacklist().set(false);
+                                view.enableBlacklist.setChecked(false);
+                            }
                         }
-                    } else {
-                        toastLong(R.string.no_phone_number_to_enable_blacklist);
-                        prefs.enableBlacklist().set(false);
-                        view.enableBlacklist.setChecked(false);
-                    }
+                    });
+
                 }
 
                 @Override
@@ -333,12 +348,19 @@ public class BlacklistFragment extends
 
     private void load() {
         view.emptyView.setVisibility(View.GONE);
-        App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
+        App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST,
+                new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
             @Override
-            public void onFinished(List<Filter> result) {
-                view.listLoadingProgress.setVisibility(View.GONE);
-                view.emptyView.setVisibility(View.VISIBLE);
-                adapter.setItems(result);
+            public void onFinished(final List<Filter> result) {
+                UiThread.getInstance().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.listLoadingProgress.setVisibility(View.GONE);
+                        view.emptyView.setVisibility(View.VISIBLE);
+                        adapter.setItems(result);
+                    }
+                });
+
             }
 
             @Override
@@ -365,7 +387,17 @@ public class BlacklistFragment extends
                     App.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(),new BaseDatabseHelper.DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
-
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    toastLong(R.string.phone_number_deleted);
+                                    load();
+                                    if (multichoiceActionModeListener.activeMode != null) {
+                                        multichoiceActionModeListener.activeMode.finish();
+                                        multichoiceActionModeListener.getSelectedItemPositions().clear();
+                                    }
+                                }
+                            });
                         }
 
                         @Override
@@ -374,30 +406,37 @@ public class BlacklistFragment extends
                         }
                     });
                 }
-                toastLong(R.string.phone_number_deleted);
-                load();
-                if (multichoiceActionModeListener.activeMode != null) {
-                    multichoiceActionModeListener.activeMode.finish();
-                    multichoiceActionModeListener.getSelectedItemPositions().clear();
-                }
+
 
             } else {
                 App.getDatabaseInstance().getFilterInstance().deleteAllBlackList(
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {
-                                toastLong(R.string.phone_number_deleted);
-                                load();
-                                if (multichoiceActionModeListener.activeMode != null) {
-                                    multichoiceActionModeListener.activeMode.finish();
-                                    multichoiceActionModeListener.getSelectedItemPositions()
-                                            .clear();
-                                }
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        toastLong(R.string.phone_number_deleted);
+                                        load();
+                                        if (multichoiceActionModeListener.activeMode != null) {
+                                            multichoiceActionModeListener.activeMode.finish();
+                                            multichoiceActionModeListener.getSelectedItemPositions()
+                                                    .clear();
+                                        }
+                                    }
+                                });
+
                             }
 
                             @Override
                             public void onError(Exception exception) {
-                                toastLong(R.string.deleting_phone_number_failed);
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        toastLong(R.string.deleting_phone_number_failed);
+                                    }
+                                });
+
                             }
                         });
             }
@@ -425,7 +464,7 @@ public class BlacklistFragment extends
             } else {
                 status = addPhoneNumber.add(BLACKLIST);
             }
-            load();
+
             return status;
         }
 

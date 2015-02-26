@@ -19,6 +19,7 @@ package org.addhen.smssync.fragments;
 
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
+import org.addhen.smssync.UiThread;
 import org.addhen.smssync.adapters.FilterAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.listeners.WhitelistActionModeListener;
@@ -334,10 +335,16 @@ public class WhitelistFragment extends
         view.emptyView.setVisibility(View.GONE);
         App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.WHITELIST, new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
             @Override
-            public void onFinished(List<Filter> result) {
-                view.listLoadingProgress.setVisibility(View.GONE);
-                view.emptyView.setVisibility(View.VISIBLE);
-                adapter.setItems(result);
+            public void onFinished(final List<Filter> result) {
+                UiThread.getInstance().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.listLoadingProgress.setVisibility(View.GONE);
+                        view.emptyView.setVisibility(View.VISIBLE);
+                        adapter.setItems(result);
+                    }
+                });
+
             }
 
             @Override
@@ -378,18 +385,30 @@ public class WhitelistFragment extends
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {
-                                toastLong(R.string.phone_number_deleted);
-                                loadFilters();
-                                if (multichoiceActionModeListener.activeMode != null) {
-                                    multichoiceActionModeListener.activeMode.finish();
-                                    multichoiceActionModeListener.getSelectedItemPositions()
-                                            .clear();
-                                }
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        toastLong(R.string.phone_number_deleted);
+                                        loadFilters();
+                                        if (multichoiceActionModeListener.activeMode != null) {
+                                            multichoiceActionModeListener.activeMode.finish();
+                                            multichoiceActionModeListener.getSelectedItemPositions()
+                                                    .clear();
+                                        }
+                                    }
+                                });
+
                             }
 
                             @Override
                             public void onError(Exception exception) {
-                                toastLong(R.string.deleting_phone_number_failed);
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        toastLong(R.string.deleting_phone_number_failed);
+                                    }
+                                });
+
                             }
                         });
             }

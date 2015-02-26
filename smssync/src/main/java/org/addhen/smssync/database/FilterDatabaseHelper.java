@@ -228,7 +228,7 @@ public class FilterDatabaseHelper extends BaseDatabseHelper implements FilterDat
         if(!isClosed()) {
             try {
                 final String whereClause = "status= ?";
-                cupboard().withDatabase(getReadableDatabase())
+                return cupboard().withDatabase(getReadableDatabase())
                         .query(Filter.class)
                         .withSelection(whereClause, status.name()).orderBy("_id DESC")
                         .list();

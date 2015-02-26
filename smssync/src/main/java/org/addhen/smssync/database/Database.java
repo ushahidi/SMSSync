@@ -18,6 +18,7 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.tasks.TaskExecutor;
+import org.addhen.smssync.util.Util;
 
 import android.content.Context;
 
@@ -32,7 +33,7 @@ public class Database {
 
     public Database(Context context) {
         mContext = context;
-
+        Util.writeDbToSDCard();
     }
 
     public MessageDatabaseHelper getMessageInstance() {
