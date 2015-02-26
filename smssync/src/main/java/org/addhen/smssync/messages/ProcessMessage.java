@@ -60,7 +60,7 @@ public class ProcessMessage {
     public boolean saveMessage(Message message) {
         Logger.log(TAG,
                 "saveMessage(): save text messages as received from the user's phone");
-        MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+        MainApplication.getDatabaseInstance().getMessageInstance()
                 .put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
                     @Override
                     public void onFinished(Void result) {
@@ -119,7 +119,7 @@ public class ProcessMessage {
 
         // check if it should sync by id
         if (!TextUtils.isEmpty(uuid)) {
-            MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchByUuid(uuid,
+            MainApplication.getDatabaseInstance().getMessageInstance().fetchByUuid(uuid,
                     new DatabaseCallback<Message>() {
                         @Override
                         public void onFinished(Message result) {
@@ -137,7 +137,7 @@ public class ProcessMessage {
 
         } else {
 
-            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+            MainApplication.getDatabaseInstance().getMessageInstance()
                     .fetchPending(new DatabaseCallback<List<Message>>() {
                         @Override
                         public void onFinished(List<Message> result) {
@@ -166,7 +166,7 @@ public class ProcessMessage {
         if (routeMessage(message)) {
 
             Logger.log(TAG, " message ID " + message.getUuid());
-            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+            MainApplication.getDatabaseInstance().getMessageInstance()
                     .deleteByUuid(message.getUuid(),
                             new DatabaseCallback<Void>() {
                                 @Override

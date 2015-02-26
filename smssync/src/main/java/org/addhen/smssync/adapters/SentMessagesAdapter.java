@@ -76,7 +76,7 @@ public class SentMessagesAdapter extends BaseListAdapter<Message> {
 
     @Override
     public void refresh() {
-        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchByStatus(
+        MainApplication.getDatabaseInstance().getMessageInstance().fetchByStatus(
                 Message.Status.SENT, new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
                     @Override
                     public void onFinished(List<Message> result) {

@@ -106,7 +106,7 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
     @Override
     public void refresh() {
 
-        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchAll(
+        MainApplication.getDatabaseInstance().getMessageInstance().fetchAll(
                 new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
             @Override
             public void onFinished(List<Message> result) {

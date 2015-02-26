@@ -41,7 +41,7 @@ public class SmsDeliveredReceiver extends BaseBroadcastReceiver {
             message.setDeliveryResultMessage(resultMessage);
             message.setDeliveryResultCode(result);
             message.setType(Message.Type.TASK);
-            MainApplication.getDatabaseInstance().getMessageDatabaseInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
+            MainApplication.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
                 @Override
                 public void onFinished(Void result) {
 

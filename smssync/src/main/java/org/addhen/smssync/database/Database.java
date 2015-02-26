@@ -35,7 +35,15 @@ public class Database {
 
     }
 
-    public MessageDatabaseHelper getMessageDatabaseInstance() {
+    public MessageDatabaseHelper getMessageInstance() {
         return MessageDatabaseHelper.getInstance(mContext, TaskExecutor.getInstance());
+    }
+
+    public SyncUrlDatabaseHelper getSyncUrlInstance() {
+        return SyncUrlDatabaseHelper.getInstance(mContext, TaskExecutor.getInstance());
+    }
+
+    public FilterDatabaseHelper getFilterInstance() {
+        return FilterDatabaseHelper.getInstance(mContext, TaskExecutor.getInstance());
     }
 }

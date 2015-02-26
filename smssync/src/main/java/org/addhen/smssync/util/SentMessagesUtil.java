@@ -22,12 +22,6 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.database.Message;
 
-import android.content.Context;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * Utility class for sent messages feature
  *
@@ -48,7 +42,7 @@ public class SentMessagesUtil {
 
         if(message !=null) {
             message.setStatus(Message.Status.SENT);
-            MainApplication.getDatabaseInstance().getMessageDatabaseInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
+            MainApplication.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
                 @Override
                 public void onFinished(Void result) {
 

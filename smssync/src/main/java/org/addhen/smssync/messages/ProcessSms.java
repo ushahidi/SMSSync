@@ -262,7 +262,7 @@ public class ProcessSms {
 
     private void saveMessage(List<Message> messages) {
         MainApplication
-                .getDatabaseInstance().getMessageDatabaseInstance().put(messages,
+                .getDatabaseInstance().getMessageInstance().put(messages,
                 new BaseDatabseHelper.DatabaseCallback<Void>() {
                     @Override
                     public void onFinished(Void result) {

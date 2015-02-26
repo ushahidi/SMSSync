@@ -554,7 +554,7 @@ public class PendingMessages
                 if (deletebyUuid) {
                     log("deletedbyId position: " + mSelectedItemsPositions.size());
                     for (Integer position : mSelectedItemsPositions) {
-                        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchByUuid(adapter.getItem(position).getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
+                        MainApplication.getDatabaseInstance().getMessageInstance().fetchByUuid(adapter.getItem(position).getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
                             @Override
                             public void onFinished(Message result) {
                                 // Do nothing
@@ -568,7 +568,7 @@ public class PendingMessages
 
                     }
                 } else {
-                    MainApplication.getDatabaseInstance().getMessageDatabaseInstance().deleteAll(new BaseDatabseHelper.DatabaseCallback<Void>() {
+                    MainApplication.getDatabaseInstance().getMessageInstance().deleteAll(new BaseDatabseHelper.DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
                             // Do nothing
@@ -613,7 +613,7 @@ public class PendingMessages
     }
 
     private void fetchMessages() {
-        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
+        MainApplication.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
             @Override
             public void onFinished(List<Message> result) {
                 adapter.setItems(result);

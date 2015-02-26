@@ -216,7 +216,7 @@ public class SentMessageFragment
     }
 
     private void fetchMessages() {
-        MainApplication.getDatabaseInstance().getMessageDatabaseInstance().fetchSent(
+        MainApplication.getDatabaseInstance().getMessageInstance().fetchSent(
                 new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
                     @Override
                     public void onFinished(List<Message> result) {
@@ -238,7 +238,7 @@ public class SentMessageFragment
         } else {
 
             refreshState = true;
-            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+            MainApplication.getDatabaseInstance().getMessageInstance()
                     .deleteByUuid(uuid,
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override
@@ -267,7 +267,7 @@ public class SentMessageFragment
         } else {
 
             refreshState = true;
-            MainApplication.getDatabaseInstance().getMessageDatabaseInstance()
+            MainApplication.getDatabaseInstance().getMessageInstance()
                     .deleteAllSentMessages(
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override
