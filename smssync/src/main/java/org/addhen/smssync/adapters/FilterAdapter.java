@@ -17,9 +17,8 @@
 
 package org.addhen.smssync.adapters;
 
-import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
-import org.addhen.smssync.database.Filter;
+import org.addhen.smssync.models.Filter;
 
 import android.content.Context;
 import android.view.View;

@@ -1,5 +1,6 @@
 package org.addhen.smssync.database;
 
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.tasks.ThreadExecutor;
 
 import android.content.Context;
@@ -153,8 +154,10 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                 if(!isClosed()) {
                     try {
                         final String whereClause = "status= ?";
-                        List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
-                                .withSelection(whereClause, status.name()).orderBy("messages_date DESC").list();
+                        List<Message> messages = cupboard().withDatabase(
+                                getReadableDatabase()).query(Message.class)
+                                .withSelection(whereClause, status.name()).orderBy(
+                                        "messages_date DESC").list();
                         callback.onFinished(messages);
                     }catch(Exception e) {
                         callback.onError(e);
@@ -180,6 +183,10 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                 }
             }
         });
+    }
+
+    public Message fetchByUuid(String uuid) {
+        return fetchByUuidQuery(uuid);
     }
 
     private Message fetchByUuidQuery(String uuid) {
@@ -217,18 +224,47 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
         asyncRun(new Runnable() {
             @Override
             public void run() {
-                if (!isClosed()) {
-                    try {
-                        final String whereClause = "status != ?";
-                        List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
-                                .withSelection(whereClause, Message.Status.SENT.name()).orderBy("messages_date DESC").list();
+                try {
+                    final List <Message> messages = fetchPendingQuery();
+                    if(messages !=null) {
                         callback.onFinished(messages);
-                    } catch (Exception e) {
-                        callback.onError(e);
+                    } else {
+                        callback.onError(new Exception());
                     }
+                }catch (Exception e) {
+                    callback.onError(e);
                 }
             }
         });
+    }
+
+    public List<Message> fetchPending() {
+        return fetchPendingQuery();
+    }
+
+    private List<Message> fetchPendingQuery() {
+        if (!isClosed()) {
+            final String whereClause = "status != ?";
+            return cupboard().withDatabase(getReadableDatabase()).query(
+                    Message.class)
+                    .withSelection(whereClause, Message.Status.SENT.name()).orderBy(
+                            "messages_date DESC").list();
+        }
+        return null;
+    }
+
+    private int totalPendingQuery() {
+        if(!isClosed()) {
+            final String whereClause = "status != ?";
+            return cupboard().withDatabase(getReadableDatabase()).query(
+                    Message.class)
+                    .withSelection(whereClause, Message.Status.SENT.name()).list().size();
+        }
+        return 0;
+    }
+
+    public int totalPending() {
+        return totalPendingQuery();
     }
 
     @Override
@@ -239,16 +275,45 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             public void run() {
                 if (!isClosed()) {
                     try {
-                        final String whereClause = "status = ?";
-                        List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
-                                .withSelection(whereClause, Message.Status.SENT.name()).orderBy("messages_date DESC").list();
-                        callback.onFinished(messages);
+
+                        List<Message> messages = fetchSentQuery();
+                        if(messages!=null) {
+                            callback.onFinished(messages);
+                        } else {
+                            callback.onError(new Exception());
+                        }
                     } catch (Exception e) {
                         callback.onError(e);
                     }
                 }
             }
         });
+    }
+
+    private List<Message> fetchSentQuery() {
+        if(!isClosed()) {
+            final String whereClause = "status = ?";
+           return cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                    .withSelection(whereClause, Message.Status.SENT.name()).orderBy("messages_date DESC").list();
+        }
+        return null;
+    }
+
+    public int sentTotal() {
+        List<Message> messages = fetchSentQuery();
+        return getSize(messages);
+    }
+
+    private int getSize(List<Message> messages) {
+        if(messages !=null) {
+            return messages.size();
+        } else {
+            return 0;
+        }
+    }
+
+    public int pendingTotal() {
+        return getSize(fetchPending());
     }
 
     @Override
@@ -280,6 +345,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         final List<Message> messages = cupboard()
                                 .withDatabase(getReadableDatabase()).query(Message.class)
                                 .limit(limit).list();
+
                         callback.onFinished(messages);
                     } catch (Exception e) {
                         callback.onError(e);
@@ -289,4 +355,17 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
         });
     }
 
+    public List<Message> fetchByLimit(final int limit) {
+        if (!isClosed()) {
+            try {
+                return cupboard()
+                        .withDatabase(getReadableDatabase()).query(Message.class)
+                        .limit(limit).list();
+
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
 }

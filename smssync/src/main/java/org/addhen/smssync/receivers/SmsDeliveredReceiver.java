@@ -3,7 +3,7 @@ package org.addhen.smssync.receivers;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.app.Activity;

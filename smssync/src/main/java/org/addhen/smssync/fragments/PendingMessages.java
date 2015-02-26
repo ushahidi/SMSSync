@@ -24,7 +24,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.services.SyncPendingMessagesService;

@@ -23,7 +23,7 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;

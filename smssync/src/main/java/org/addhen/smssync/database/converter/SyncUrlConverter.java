@@ -3,7 +3,7 @@ package org.addhen.smssync.database.converter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.addhen.smssync.database.SyncUrl;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 
 import java.lang.reflect.Field;

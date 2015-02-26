@@ -15,10 +15,11 @@
  * Ushahidi developers at team@ushahidi.com.
  ******************************************************************************/
 
-package org.addhen.smssync.database;
+package org.addhen.smssync.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import nl.qbusict.cupboard.annotation.Column;
@@ -28,7 +29,9 @@ import nl.qbusict.cupboard.annotation.Column;
  *
  * @author eyedol
  */
-public class Message extends Model {
+public class Message extends Model implements Serializable {
+
+    private static final long serialVersionUID = -8314239850052623552L;
 
     @SerializedName("message")
     @Column("messages_body")

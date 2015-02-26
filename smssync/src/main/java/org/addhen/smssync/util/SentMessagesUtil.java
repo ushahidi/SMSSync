@@ -20,7 +20,7 @@ package org.addhen.smssync.util;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Message;
 
 /**
  * Utility class for sent messages feature

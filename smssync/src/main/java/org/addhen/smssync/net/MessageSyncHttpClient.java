@@ -21,8 +21,9 @@ import com.google.gson.Gson;
 import com.squareup.otto.Produce;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SmssyncResponse;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme.SyncDataFormat;
 import org.addhen.smssync.net.SyncScheme.SyncDataKey;
 import org.addhen.smssync.net.SyncScheme.SyncMethod;

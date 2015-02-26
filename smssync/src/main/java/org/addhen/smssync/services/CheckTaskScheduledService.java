@@ -19,14 +19,19 @@ package org.addhen.smssync.services;
 
 import com.squareup.otto.Produce;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
+import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
+
+import java.util.List;
 
 public class CheckTaskScheduledService extends SmsSyncServices {
 
@@ -45,11 +50,21 @@ public class CheckTaskScheduledService extends SmsSyncServices {
         log("checking scheduled task services");
         Util.logActivities(this, getString(R.string.task_scheduler_running));
         // Perform a task
-        for (SyncUrl syncUrl : model
-                .loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
-            new ProcessMessage(CheckTaskScheduledService.this,new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
+        MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+                SyncUrl.Status.ENABLED, new BaseDatabseHelper.DatabaseCallback<List<SyncUrl>>() {
+                    @Override
+                    public void onFinished(List<SyncUrl> result) {
+                        for(SyncUrl syncUrl: result) {
+                            new ProcessMessage(CheckTaskScheduledService.this,new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
+                        }
+                    }
 
-        }
+                    @Override
+                    public void onError(Exception exception) {
+
+                    }
+                });
+
     }
 
     @Produce

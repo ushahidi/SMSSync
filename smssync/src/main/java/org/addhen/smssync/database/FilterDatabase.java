@@ -1,5 +1,7 @@
 package org.addhen.smssync.database;
 
+import org.addhen.smssync.models.Filter;
+
 import java.util.List;
 
 public interface FilterDatabase {
@@ -14,8 +16,8 @@ public interface FilterDatabase {
 
     void put(List<Filter> filterLists, BaseDatabseHelper.DatabaseCallback<Void> callback);
 
-    void deleteAll(BaseDatabseHelper.DatabaseCallback<Void> callback);
-
+    void deleteAllBlackList(BaseDatabseHelper.DatabaseCallback<Void> callback);
+    void deleteAllWhiteList(BaseDatabseHelper.DatabaseCallback<Void> callback);
     void deleteById(Long id,BaseDatabseHelper.DatabaseCallback<Void> callback);
 
     void total(BaseDatabseHelper.DatabaseCallback<Integer> callback);

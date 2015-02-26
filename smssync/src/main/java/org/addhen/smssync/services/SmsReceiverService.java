@@ -44,6 +44,7 @@ import android.os.Process;
 import android.telephony.SmsMessage;
 
 import java.lang.ref.WeakReference;
+import java.util.Date;
 
 public class SmsReceiverService extends Service {
 
@@ -234,7 +235,7 @@ public class SmsReceiverService extends Service {
 
                 // extract message details. phone number and the message body
                 msg.setPhoneNumber(sms.getOriginatingAddress());
-                msg.setTimestamp(String.valueOf(sms.getTimestampMillis()));
+                msg.setDate(new Date(sms.getTimestampMillis()));
 
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
@@ -246,7 +247,7 @@ public class SmsReceiverService extends Service {
                     }
                     body = bodyText.toString();
                 }
-                msg.setMessage(body);
+                msg.setBody(body);
                 msg.setUuid(new ProcessSms(mContext).getUuid());
             }
         }
@@ -254,7 +255,7 @@ public class SmsReceiverService extends Service {
         log("handleSmsReceived() messagesUuid: " + messagesUuid);
         // Log received SMS
 
-        Util.logActivities(this, getString(R.string.received_msg, msg.getMessage(), msg.getPhoneNumber()));
+        Util.logActivities(this, getString(R.string.received_msg, msg.getBody(), msg.getPhoneNumber()));
 
         // route the sms
         boolean sent = mProcessMessage.routeSms(msg);

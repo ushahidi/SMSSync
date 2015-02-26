@@ -17,9 +17,12 @@
 
 package org.addhen.smssync.fragments;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.adapters.FilterAdapter;
+import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.listeners.BlacklistActionModeListener;
+import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.Task;
 import org.addhen.smssync.views.AddPhoneNumber;
@@ -46,13 +49,11 @@ public class BlacklistFragment extends
         BaseListFragment<BlacklistView, Filter, FilterAdapter> implements
         View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private Filter model;
 
-    private int id = 0;
+    private Long id;
 
     private boolean edit = false;
 
-    private List<Filter> filters;
 
     private LinkedHashSet<Integer> mSelectedItemsPositions;
 
@@ -61,7 +62,6 @@ public class BlacklistFragment extends
     public BlacklistFragment() {
         super(BlacklistView.class, FilterAdapter.class, R.layout.list_filter,
                 R.menu.filter_menu, android.R.id.list);
-        model = new Filter();
     }
 
     @Override
@@ -154,8 +154,8 @@ public class BlacklistFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // delete all messages
-                                new DeleteTask(BlacklistFragment.this.getActivity())
-                                        .execute((String) null);
+                                deleteTask(false);
+
                             }
                         });
         AlertDialog alert = builder.create();
@@ -179,10 +179,7 @@ public class BlacklistFragment extends
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Delete by ID
-                                DeleteTask deleteById = new DeleteTask(
-                                        BlacklistFragment.this.getActivity());
-                                deleteById.deletebyUuid = true;
-                                deleteById.execute((String) null);
+                                deleteTask(true);
                             }
                         });
         AlertDialog alert = builder.create();
@@ -217,14 +214,17 @@ public class BlacklistFragment extends
         // if edit was selected at the context menu, populate fields
         // with existing sync URL details
         if (edit) {
-            new Handler().post(new Runnable() {
+            MainApplication.getDatabaseInstance().getFilterInstance().fetchById(id, new BaseDatabseHelper.DatabaseCallback<Filter>() {
                 @Override
-                public void run() {
-                    model.loadById(id);
-                    filters = model.getFilterList();
-                    if (filters != null && filters.size() > 0) {
-                        addPhoneNumber.phoneNumber.setText(filters.get(0).getPhoneNumber());
+                public void onFinished(Filter result) {
+                    if(result !=null) {
+                        addPhoneNumber.phoneNumber.setText(result.getPhoneNumber());
                     }
+                }
+
+                @Override
+                public void onError(Exception exception) {
+
                 }
             });
 
@@ -284,7 +284,7 @@ public class BlacklistFragment extends
 
     // Display pending messages.
     public void loadInBackground() {
-        new LoadingTask(BlacklistFragment.this.getActivity()).execute((String) null);
+        load();
     }
 
     /*
@@ -297,25 +297,34 @@ public class BlacklistFragment extends
         if (adapter.getCount() > 0) {
             // check if there are any enabled sync urls
             // load all checked syncurl
-            load();
-            if (model.getFilterList() != null && model.getFilterList().size() > 0) {
-                if (view.enableBlacklist.isChecked()) {
-                    // start sms receiver
+            MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
+                @Override
+                public void onFinished(List<Filter> result) {
+                    if(result!=null && result.size() > 0 ) {
+                        if (view.enableBlacklist.isChecked()) {
+                            // start sms receiver
 
-                    prefs.enableBlacklist().set(true);
-                    view.enableBlacklist.setChecked(true);
+                            prefs.enableBlacklist().set(true);
+                            view.enableBlacklist.setChecked(true);
 
 
-                } else {
+                        } else {
 
-                    prefs.enableBlacklist().set(false);
-                    view.enableBlacklist.setChecked(false);
+                            prefs.enableBlacklist().set(false);
+                            view.enableBlacklist.setChecked(false);
+                        }
+                    } else {
+                        toastLong(R.string.no_phone_number_to_enable_blacklist);
+                        prefs.enableBlacklist().set(false);
+                        view.enableBlacklist.setChecked(false);
+                    }
                 }
-            } else {
-                toastLong(R.string.no_phone_number_to_enable_blacklist);
-                prefs.enableBlacklist().set(false);
-                view.enableBlacklist.setChecked(false);
-            }
+
+                @Override
+                public void onError(Exception exception) {
+
+                }
+            });
 
         } else {
             toastLong(R.string.no_phone_number_to_enable_blacklist);
@@ -324,8 +333,21 @@ public class BlacklistFragment extends
         }
     }
 
-    private boolean load() {
-        return model.loadByStatus(BLACKLIST);
+    private void load() {
+        view.emptyView.setVisibility(View.GONE);
+        MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
+            @Override
+            public void onFinished(List<Filter> result) {
+                view.listLoadingProgress.setVisibility(View.GONE);
+                view.emptyView.setVisibility(View.VISIBLE);
+                adapter.setItems(result);
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+        });
     }
 
     @Override
@@ -335,91 +357,49 @@ public class BlacklistFragment extends
         addPhoneNumber();
     }
 
-    private class LoadingTask extends ProgressTask {
+    private void deleteTask(boolean deleteByUuid) {
+        getActivity().setProgressBarIndeterminate(true);
+        if(adapter.getCount() == 0) {
+            toastLong(R.string.no_phone_number_to_delete);
+        } else {
+            if(deleteByUuid) {
+                for(final Integer position: mSelectedItemsPositions) {
+                    MainApplication.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(),new BaseDatabseHelper.DatabaseCallback<Void>() {
+                        @Override
+                        public void onFinished(Void result) {
 
-        public LoadingTask(Activity activity) {
-            super(activity);
-        }
+                        }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.cancel();
-            view.emptyView.setVisibility(View.GONE);
-        }
+                        @Override
+                        public void onError(Exception exception) {
 
-        @Override
-        protected Boolean doInBackground(String... args) {
-            return load();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
-            view.listLoadingProgress.setVisibility(View.GONE);
-            view.emptyView.setVisibility(View.VISIBLE);
-            if (success) {
-
-                adapter.setItems(model.getFilterList());
-            }
-        }
-    }
-
-    protected class DeleteTask extends ProgressTask {
-
-        protected boolean deletebyUuid = false;
-
-        protected int deleted = 0;
-
-        public DeleteTask(Activity activity) {
-            super(activity);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.cancel();
-            activity.setProgressBarIndeterminateVisibility(true);
-        }
-
-        @Override
-        protected Boolean doInBackground(String... args) {
-            if (adapter.getCount() == 0) {
-                deleted = 1;
-            } else {
-                if (deletebyUuid) {
-                    for (Integer position : mSelectedItemsPositions) {
-                        model.deleteById(adapter.getItem(position).getId());
-                    }
-                } else {
-                    model.deleteAll();
+                        }
+                    });
                 }
-                deleted = 2;
-            }
-            return load();
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
-            view.emptyView.setVisibility(View.VISIBLE);
-            if (success) {
-                if (deleted == 1) {
-                    toastLong(R.string.no_phone_number_to_delete);
-                } else {
-                    if (deleted == 2) {
-                        toastLong(R.string.phone_number_deleted);
-
-                    } else {
-                        toastLong(R.string.deleting_phone_number_failed);
-                    }
-
-                }
-                adapter.setItems(model.getFilterList());
+                toastLong(R.string.phone_number_deleted);
+                load();
                 if (multichoiceActionModeListener.activeMode != null) {
                     multichoiceActionModeListener.activeMode.finish();
                     multichoiceActionModeListener.getSelectedItemPositions().clear();
                 }
+
+            } else {
+                MainApplication.getDatabaseInstance().getFilterInstance().deleteAllBlackList(new BaseDatabseHelper.DatabaseCallback<Void>() {
+                    @Override
+                    public void onFinished(Void result) {
+                        toastLong(R.string.phone_number_deleted);
+                        load();
+                        if (multichoiceActionModeListener.activeMode != null) {
+                            multichoiceActionModeListener.activeMode.finish();
+                            multichoiceActionModeListener.getSelectedItemPositions().clear();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        toastLong(R.string.deleting_phone_number_failed);
+                    }
+                });
             }
         }
     }
@@ -453,8 +433,7 @@ public class BlacklistFragment extends
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             if (success) {
-                adapter.setItems(model.getFilterList());
-                listView.setAdapter(adapter);
+                load();
             } else {
                 if (editPhoneNumber) {
                     toastLong(R.string.failed_to_update_phone_number);

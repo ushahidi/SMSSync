@@ -20,9 +20,9 @@ package org.addhen.smssync.adapters;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Message;
 
-import static org.addhen.smssync.database.Message.Type;
+import static org.addhen.smssync.models.Message.Type;
 
 import android.content.Context;
 import android.view.View;

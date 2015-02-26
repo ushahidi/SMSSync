@@ -20,7 +20,7 @@ package org.addhen.smssync.messages;
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;

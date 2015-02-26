@@ -17,7 +17,11 @@
 
 package org.addhen.smssync.views;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
+
+import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 
 import android.text.TextUtils;
@@ -36,7 +40,7 @@ public class AddSyncUrl {
 
     public EditText secret;
 
-    public int status = 0;
+    public SyncUrl.Status status = SyncUrl.Status.DISABLED;
 
     /**
      * Handles views for the add dialog box
@@ -73,9 +77,10 @@ public class AddSyncUrl {
         syncUrl.setSecret(secret.getText().toString());
         syncUrl.setTitle(title.getText().toString());
         syncUrl.setUrl(url.getText().toString());
-        syncUrl.setStatus(0);
+        syncUrl.setStatus(SyncUrl.Status.DISABLED);
         syncUrl.setSyncScheme(new SyncScheme());
-        return syncUrl.save();
+        save(syncUrl);
+        return true;
 
     }
 
@@ -84,7 +89,7 @@ public class AddSyncUrl {
      *
      * @return boolean
      */
-    public boolean updateSyncUrl(int id, SyncScheme scheme) {
+    public boolean updateSyncUrl(Long id, SyncScheme scheme) {
         SyncUrl syncUrl = new SyncUrl();
         syncUrl.setId(id);
         syncUrl.setKeywords(keywords.getText().toString());
@@ -93,6 +98,21 @@ public class AddSyncUrl {
         syncUrl.setUrl(url.getText().toString());
         syncUrl.setStatus(status);
         syncUrl.setSyncScheme(scheme);
-        return syncUrl.update();
+        save(syncUrl);
+        return true;
+    }
+
+    private void save(SyncUrl syncUrl) {
+        MainApplication.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new DatabaseCallback<Void>() {
+            @Override
+            public void onFinished(Void result) {
+                // Do nothing
+            }
+
+            @Override
+            public void onError(Exception exception) {
+                // Do nothing
+            }
+        });
     }
 }

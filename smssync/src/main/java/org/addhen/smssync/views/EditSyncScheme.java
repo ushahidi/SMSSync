@@ -16,7 +16,10 @@
  ******************************************************************************/
 package org.addhen.smssync.views;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 
 import android.text.TextUtils;
@@ -84,8 +87,19 @@ public class EditSyncScheme {
                 keyDeviceID.getText().toString());
 
         syncUrl.setSyncScheme(scheme);
+        MainApplication.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new BaseDatabseHelper.DatabaseCallback<Void>() {
+            @Override
+            public void onFinished(Void result) {
+                //Do nothing
+            }
 
-        return syncUrl.update();
+            @Override
+            public void onError(Exception exception) {
+                //Do nothing
+            }
+        });
+
+        return true;
     }
 
     /**

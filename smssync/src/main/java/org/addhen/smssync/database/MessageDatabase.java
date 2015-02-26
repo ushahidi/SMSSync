@@ -1,5 +1,7 @@
 package org.addhen.smssync.database;
 
+import org.addhen.smssync.models.Message;
+
 import java.util.List;
 
 import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;

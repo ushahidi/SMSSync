@@ -6,10 +6,12 @@ import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.database.Message;
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.QueuedMessages;
 import org.addhen.smssync.models.SmssyncResponse;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.prefs.Prefs;
@@ -437,40 +439,76 @@ public class ProcessMessage {
         if (!prefs.serviceEnabled().get() || !Util.isConnected(context)) {
             return posted;
         }
-        SyncUrl model = new SyncUrl();
-        Filter filters = new Filter();
-        // get enabled Sync URLs
-        for (SyncUrl syncUrl : model.loadByStatus(ACTIVE_SYNC_URL)) {
-            // white listed is enabled
-            if (prefs.enableWhitelist().get()) {
-                filters.loadByStatus(Filter.Status.WHITELIST);
-                for (Filter filter : filters.getFilterList()) {
-                    if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
-                        return processMessage(message, syncUrl);
-                    }
-                }
-                return false;
-            }
-
-            if (prefs.enableBlacklist().get()) {
-
-                filters.loadByStatus(Filter.Status.BLACKLIST);
-                for (Filter filter : filters.getFilterList()) {
-
-                    if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
-                        Logger.log("message",
-                                " from:" + message.getPhoneNumber() + " filter:" + filter
-                                        .getPhoneNumber());
-                        return false;
-                    }
-                }
-            } else {
-                return processMessage(message, syncUrl);
-            }
-
-        }
+        posted = loadActiveSyncUrls(message);
 
         return posted;
+    }
+
+    private boolean loadActiveSyncUrls(final Message message) {
+        final boolean status;
+        MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+                SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
+                    @Override
+                    public void onFinished(List<SyncUrl> result) {
+                        Filter filters = new Filter();
+                        for (final SyncUrl syncUrl : result) {
+                            // white listed is enabled
+                            if (prefs.enableWhitelist().get()) {
+                                MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(
+                                        Filter.Status.WHITELIST,
+                                        new DatabaseCallback<List<Filter>>() {
+                                            @Override
+                                            public void onFinished(List<Filter> result) {
+                                                for (Filter filter : result) {
+                                                    if (filter.getPhoneNumber()
+                                                            .equals(message.getPhoneNumber())) {
+                                                        processMessage(message, syncUrl);
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onError(Exception exception) {
+
+                                            }
+                                        });
+
+
+                            }
+
+                            if (prefs.enableBlacklist().get()) {
+                                MainApplication.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new DatabaseCallback<List<Filter>>() {
+                                    @Override
+                                    public void onFinished(List<Filter> result) {
+                                        for(Filter filter : result) {
+                                            if (!filter.getPhoneNumber().equals(message.getPhoneNumber())) {
+                                                Logger.log("message",
+                                                        " from:" + message.getPhoneNumber() + " filter:" + filter
+                                                                .getPhoneNumber());
+                                                processMessage(message, syncUrl);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Exception exception) {
+
+                                    }
+                                });
+
+                            } else {
+                                processMessage(message, syncUrl);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+
+                    }
+                });
+       return true;
     }
 
     public String getErrorMessage() {

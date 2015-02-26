@@ -17,16 +17,14 @@
 
 package org.addhen.smssync.adapters;
 
-import org.addhen.smssync.database.Model;
+import org.addhen.smssync.models.Model;
 import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.Util;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

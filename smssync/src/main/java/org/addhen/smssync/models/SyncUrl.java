@@ -1,4 +1,4 @@
-package org.addhen.smssync.database;
+package org.addhen.smssync.models;
 
 import org.addhen.smssync.net.SyncScheme;
 
@@ -25,7 +25,7 @@ public class SyncUrl extends Model {
     private SyncScheme syncScheme;
 
     @Column("status")
-    private Status staus;
+    private Status status;
 
     public String getTitle() {
         return title;
@@ -67,6 +67,14 @@ public class SyncUrl extends Model {
         this.syncScheme = syncScheme;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     public enum Status {
         ENABLED, DISABLED;
     }
@@ -79,7 +87,7 @@ public class SyncUrl extends Model {
                 ", url='" + url + '\'' +
                 ", secret='" + secret + '\'' +
                 ", syncScheme=" + syncScheme +
-                ", staus=" + staus +
+                ", status=" + status +
                 '}';
     }
 }

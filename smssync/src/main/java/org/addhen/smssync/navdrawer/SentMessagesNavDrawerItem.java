@@ -17,8 +17,8 @@
 
 package org.addhen.smssync.navdrawer;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.fragments.SentMessageFragment;
-import org.addhen.smssync.models.SentMessagesModel;
 
 import android.support.v7.app.ActionBarActivity;
 
@@ -32,7 +32,6 @@ public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
     /**
      * @param title
      * @param iconRes
-     * @param counterBgColor
      */
     public SentMessagesNavDrawerItem(String title, int iconRes,
             ActionBarActivity activity) {
@@ -47,9 +46,6 @@ public class SentMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        SentMessagesModel sentMessages = new SentMessagesModel();
-        sentMessages.load();
-        mCounter = sentMessages.listMessages.size();
+        mCounter = MainApplication.getDatabaseInstance().getMessageInstance().sentTotal();
     }
-
 }

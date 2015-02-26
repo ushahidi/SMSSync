@@ -17,7 +17,10 @@
 
 package org.addhen.smssync.views;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Filter.Status;
 
 import android.view.View;
@@ -46,7 +49,8 @@ public class AddPhoneNumber {
         filter = new Filter();
         filter.setPhoneNumber(phoneNumber.getText().toString());
         filter.setStatus(status);
-        return filter.save();
+        save(filter);
+        return true;
     }
 
     /**
@@ -54,11 +58,27 @@ public class AddPhoneNumber {
      *
      * @return boolean
      */
-    public boolean update(int id, Status status) {
+    public boolean update(Long id, Status status) {
         filter = new Filter();
         filter.setId(id);
         filter.setPhoneNumber(phoneNumber.getText().toString());
         filter.setStatus(status);
-        return filter.update();
+        save(filter);
+        return true;
+    }
+
+    private void save(Filter filter) {
+        MainApplication.getDatabaseInstance().getFilterInstance()
+                .put(filter, new BaseDatabseHelper.DatabaseCallback<Void>() {
+                    @Override
+                    public void onFinished(Void result) {
+                        // Do nothig
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+                        // Do nothing
+                    }
+                });
     }
 }

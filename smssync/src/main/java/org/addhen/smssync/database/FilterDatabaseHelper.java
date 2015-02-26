@@ -1,5 +1,8 @@
 package org.addhen.smssync.database;
 
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tasks.ThreadExecutor;
 
 import android.content.Context;
@@ -127,13 +130,36 @@ public class FilterDatabaseHelper extends BaseDatabseHelper implements FilterDat
     }
 
     @Override
-    public void deleteAll(final DatabaseCallback<Void> callback) {
+    public void deleteAllBlackList(final DatabaseCallback<Void> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
                 if (!isClosed()) {
                     try {
-                        cupboard().withDatabase(getWritableDatabase()).delete(Filter.class, null);
+                        final String whereClause = "status= ?";
+                        final String whereArgs[] = {Filter.Status.BLACKLIST.name()};
+
+                        cupboard().withDatabase(getWritableDatabase()).delete(Filter.class, whereClause, whereArgs);
+                        callback.onFinished(null);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteAllWhiteList(final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "status= ?";
+                        final String whereArgs[] = {Filter.Status.WHITELIST.name()};
+
+                        cupboard().withDatabase(getWritableDatabase()).delete(Filter.class, whereClause, whereArgs);
                         callback.onFinished(null);
                     } catch (Exception e) {
                         callback.onError(e);
@@ -176,5 +202,40 @@ public class FilterDatabaseHelper extends BaseDatabseHelper implements FilterDat
                 }
             }
         });
+    }
+
+    public int getWhiteListTotal() {
+        final List<Filter> filters = fetchByStatus(Filter.Status.WHITELIST);
+
+        return getSize(filters);
+    }
+
+    public int getBlackListTotal() {
+        final List<Filter> filters = fetchByStatus(Filter.Status.BLACKLIST);
+
+        return getSize(filters);
+    }
+
+    private int getSize(List<Filter> filters) {
+        if(filters !=null) {
+            return filters.size();
+        }
+
+        return 0;
+    }
+
+    public List<Filter> fetchByStatus(Filter.Status status) {
+        if(!isClosed()) {
+            try {
+                final String whereClause = "status= ?";
+                cupboard().withDatabase(getReadableDatabase())
+                        .query(Filter.class)
+                        .withSelection(whereClause, status.name()).orderBy("_id DESC")
+                        .list();
+            }catch (Exception e) {
+                return  null;
+            }
+        }
+        return null;
     }
 }

@@ -1,8 +1,9 @@
 package org.addhen.smssync.database;
 
 import org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
+import org.addhen.smssync.models.SyncUrl;
 
-import static org.addhen.smssync.database.SyncUrl.Status;
+import static org.addhen.smssync.models.SyncUrl.Status;
 
 import java.util.List;
 

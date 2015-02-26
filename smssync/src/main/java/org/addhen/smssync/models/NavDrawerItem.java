@@ -20,7 +20,7 @@ package org.addhen.smssync.models;
 /**
  * Navigation Drawer menu item
  */
-public class NavDrawerItem extends org.addhen.smssync.database.Model {
+public class NavDrawerItem extends Model {
 
     public static int NO_ICON_RES_ID = -1;
 

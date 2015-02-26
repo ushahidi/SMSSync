@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.navdrawer;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.activities.FilterTabActivity;
 import org.addhen.smssync.fragments.WhitelistFragment;
 
@@ -51,8 +52,6 @@ public class WhitelistNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        Filter filter = new Filter();
-        filter.loadByStatus(Filter.Status.WHITELIST);
-        mCounter = filter.getFilterList().size();
+        mCounter = MainApplication.getDatabaseInstance().getFilterInstance().getWhiteListTotal();
     }
 }

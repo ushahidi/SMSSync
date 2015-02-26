@@ -2,13 +2,17 @@ package org.addhen.smssync.services;
 
 import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.controllers.MessageResultsController;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,15 +36,18 @@ public class MessageResultsScheduledService extends SmsSyncServices {
     public void executeTask(Intent intent) {
         log("checking scheduled message result services");
         Util.logActivities(this, "Checking scheduled message result services");
-        for (SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+        List<SyncUrl> syncUrls = MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(SyncUrl.Status.ENABLED);
+        for(SyncUrl syncUrl: syncUrls) {
             MessagesUUIDSResponse response = mMessageResultsController
                     .sendMessageResultGETRequest(syncUrl);
-            if (response.isSuccess()) {
-                List<MessageResult> messageResults = MainApplication.mDb.messagesContentProvider
-                        .fetchMessageResultsByUuid(response.getUuids());
-                mMessageResultsController.sendMessageResultPOSTRequest(syncUrl, messageResults);
+            if(response.isSuccess()) {
+                final List<MessageResult> messageResults = new ArrayList<>();
+                for(String uuids: response.getUuids()) {
+                    Message msg = MainApplication.getDatabaseInstance().getMessageInstance().fetchByUuid(uuids);
+                    MessageResult messageResult = new MessageResult(msg.getUuid(), msg.getSentResultCode(), msg.getSentResultMessage(),msg.getDeliveryResultCode(), msg.getDeliveryResultMessage());
+                    messageResults.add(messageResult);
+                }
             }
         }
     }
-
 }

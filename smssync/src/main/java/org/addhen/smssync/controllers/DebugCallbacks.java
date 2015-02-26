@@ -1,13 +1,17 @@
 package org.addhen.smssync.controllers;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 
 import android.content.Context;
 import android.telephony.SmsMessage;
+
+import java.util.List;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 17.06.14.
@@ -18,7 +22,9 @@ public class DebugCallbacks {
         SyncUrl model = new SyncUrl();
         int responseCode = 0;
         String message = "";
-        for (SyncUrl syncUrl : model.loadByStatus(ServicesConstants.ACTIVE_SYNC_URL)) {
+        List<SyncUrl> syncUrls = MainApplication.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+                SyncUrl.Status.ENABLED);
+        for (SyncUrl syncUrl : syncUrls) {
             MainHttpClient client = new MainHttpClient(syncUrl.getUrl(), context);
             try {
                 client.execute();

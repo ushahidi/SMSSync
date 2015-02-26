@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.navdrawer;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.models.Message;
 
@@ -48,7 +49,7 @@ public class PendingMessagesNavDrawerItem extends BaseNavDrawerItem {
 
     @Override
     public void setCounter() {
-        mCounter = new Message().totalMessages();
+        mCounter = MainApplication.getDatabaseInstance().getMessageInstance().pendingTotal();
     }
 
 }

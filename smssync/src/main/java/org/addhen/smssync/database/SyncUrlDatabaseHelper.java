@@ -1,15 +1,18 @@
 package org.addhen.smssync.database;
 
 
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tasks.ThreadExecutor;
 
 import android.content.Context;
 
 import java.util.List;
 
+import nl.qbusict.cupboard.CupboardFactory;
+
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
-import static org.addhen.smssync.database.SyncUrl.Status;
+import static org.addhen.smssync.models.SyncUrl.Status;
 
 public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlDatabase {
 
@@ -74,10 +77,7 @@ public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlD
                 if(!isClosed()) {
                     try {
 
-                        final String whereClause = "status= ?";
-
-                        final List<SyncUrl> syncUrls = cupboard().withDatabase(getReadableDatabase()).query(SyncUrl.class)
-                                .withSelection(whereClause, status.name()).orderBy("_id DESC").list();
+                        final List<SyncUrl> syncUrls = getSyncUrlsQuery(status);
 
                         callback.onFinished(syncUrls);
                     } catch(Exception e) {
@@ -89,6 +89,16 @@ public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlD
         });
     }
 
+    private List<SyncUrl> getSyncUrlsQuery(Status status) {
+        final String whereClause = "status= ?";
+
+        return CupboardFactory.cupboard().withDatabase(getReadableDatabase()).query(SyncUrl.class)
+                .withSelection(whereClause, status.name()).orderBy("_id DESC").list();
+    }
+
+    public List<SyncUrl> fetchSyncUrlByStatus(Status status){
+        return getSyncUrlsQuery(status);
+    }
     @Override
     public void put(final SyncUrl syncUrl, final BaseDatabseHelper.DatabaseCallback<Void> callback) {
         asyncRun(new Runnable() {
@@ -176,5 +186,12 @@ public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlD
                 }
             }
         });
+    }
+
+    public int getTotal() {
+        if(!isClosed()) {
+            cupboard().withDatabase(getReadableDatabase()).query(SyncUrl.class).list().size();
+        }
+        return 0;
     }
 }

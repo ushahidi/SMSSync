@@ -89,10 +89,10 @@ public final class DatabaseUpgrade {
             addIntColumn(sqLiteDatabase, MESSAGES_TABLE, DELIVERY_RESULT_CODE);
             addStringColumn(sqLiteDatabase, MESSAGES_TABLE, DELIVERY_RESULT_MESSAGE);
 
-            addIntColumn(sqLiteDatabase, Database.SENT_MESSAGES_TABLE, SENT_RESULT_CODE);
+           /* addIntColumn(sqLiteDatabase, Database.SENT_MESSAGES_TABLE, SENT_RESULT_CODE);
             addStringColumn(sqLiteDatabase, Database.SENT_MESSAGES_TABLE, SENT_RESULT_MESSAGE);
             addIntColumn(sqLiteDatabase, Database.SENT_MESSAGES_TABLE, DELIVERY_RESULT_CODE);
-            addStringColumn(sqLiteDatabase, Database.SENT_MESSAGES_TABLE, DELIVERY_RESULT_MESSAGE);
+            addStringColumn(sqLiteDatabase, Database.SENT_MESSAGES_TABLE, DELIVERY_RESULT_MESSAGE);*/
 
             success = true;
 
@@ -108,7 +108,7 @@ public final class DatabaseUpgrade {
 
         boolean success = false;
         try {
-            final String CLONE_MESSAGE_TABLE = "clone_"+MESSAGES_TABLE;
+           /* final String CLONE_MESSAGE_TABLE = "clone_"+MESSAGES_TABLE;
             final String CLONE_SENT_TABEL = "clone_"+Database.SENT_MESSAGES_TABLE;
 
             cloneTable(sqLiteDatabase, "*", CLONE_MESSAGE_TABLE , MESSAGES_TABLE);
@@ -130,7 +130,7 @@ public final class DatabaseUpgrade {
                     Database.SENT_MESSAGES_TABLE, CLONE_SENT_TABEL);
 
             dropTable(sqLiteDatabase, CLONE_MESSAGE_TABLE);
-            dropTable(sqLiteDatabase, CLONE_SENT_TABEL);
+            dropTable(sqLiteDatabase, CLONE_SENT_TABEL);*/
             success = true;
         } catch (SQLiteException ex) {
             Log.e(TAG, "Error executing SQL : ", ex);

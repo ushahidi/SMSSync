@@ -178,16 +178,15 @@ public class SyncPendingMessagesTask extends
         // determine if syncing by message UUID
         if (config.messageUuids != null && config.messageUuids.size() > 0) {
             for (String messageUuid : config.messageUuids) {
-                if (message.loadByUuid(messageUuid)) {
-                    listMessages.add(message.getMessageList().get(0));
-                }
+                Message msg = MainApplication.getDatabaseInstance().getMessageInstance().fetchByUuid(messageUuid);
+                listMessages.add(msg);
+
             }
 
         } else {
-            // load all messages
-            message.load();
-            listMessages = message.getMessageList();
 
+            // load all messages
+            listMessages = MainApplication.getDatabaseInstance().getMessageInstance().fetchPending();
         }
 
         if (listMessages.size() > 0) {

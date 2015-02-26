@@ -20,7 +20,7 @@ package org.addhen.smssync.models;
 /**
  * Log messages
  */
-public class Log extends org.addhen.smssync.database.Model {
+public class Log extends Model {
 
     public String message;
 

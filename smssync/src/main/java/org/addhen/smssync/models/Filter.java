@@ -1,4 +1,4 @@
-package org.addhen.smssync.database;
+package org.addhen.smssync.models;
 
 import nl.qbusict.cupboard.annotation.Column;
 

@@ -20,6 +20,9 @@ package org.addhen.smssync.database;
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.database.converter.EnumEntityFieldConverter;
 import org.addhen.smssync.database.converter.SyncUrlConverter;
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tasks.ThreadExecutor;
 
 import android.content.Context;

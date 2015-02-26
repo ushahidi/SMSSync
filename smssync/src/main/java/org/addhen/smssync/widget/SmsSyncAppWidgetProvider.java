@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.widget;
 
+import org.addhen.smssync.MainApplication;
 import org.addhen.smssync.R;
 import org.addhen.smssync.Settings;
 import org.addhen.smssync.activities.FilterTabActivity;
@@ -180,7 +181,7 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.appwidget_logo, mainAction);
 
             if (mgs != null) {
-                Log.i(CLASS_TAG, "messages are not null " + mgs.getMessage());
+                Log.i(CLASS_TAG, "messages are not null " + mgs.getBody());
                 // make views visible
                 views.setViewVisibility(R.id.msg_number, View.VISIBLE);
                 views.setViewVisibility(R.id.msg_date, View.VISIBLE);
@@ -189,10 +190,9 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
                 // initialize views
 
                 views.setTextViewText(R.id.msg_number, mgs.getPhoneNumber());
-                views.setTextViewText(R.id.msg_date, Util.formatDateTime(
-                        Long.parseLong(mgs.getTimestamp()),
+                views.setTextViewText(R.id.msg_date, Util.formatDateTime(mgs.getDate().getTime(),
                         "hh:mm a"));
-                views.setTextViewText(R.id.msg_desc, mgs.getMessage());
+                views.setTextViewText(R.id.msg_desc, mgs.getBody());
 
                 // make all the views clickable
                 views.setOnClickPendingIntent(R.id.msg_number, mainAction);
@@ -285,14 +285,12 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
     public static List<Message> showMessages() {
 
-        Message model = new Message();
-        model.loadByLimit(LIMIT);
-
-        if (model.getMessageList() != null) {
-            if (model.getMessageList().size() == 0) {
+        final List<Message> messages = MainApplication.getDatabaseInstance().getMessageInstance().fetchByLimit(LIMIT);
+        if (messages != null) {
+            if (messages.size() == 0) {
                 pendingMsgs.clear();
             }
-            pendingMsgs = model.getMessageList();
+            pendingMsgs = messages;
 
         }
         return pendingMsgs;
