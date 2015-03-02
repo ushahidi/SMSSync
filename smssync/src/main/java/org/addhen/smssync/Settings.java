@@ -450,24 +450,13 @@ public class Settings extends PreferenceActivity implements
                     enableReply.getTitle().toString(), status,
                     check));
         }
-
-        int selectedIndex = retry.findIndexOfValue(retry.getValue());
-        //Logger.log("Preferences", "Index: " + retry.getEntryValues()[selectedIndex].toString());
-        //Logger.log("Preferences", "Selected Value " + retry.getEntryValues().length);
-        //int selectedRetry = Integer.valueOf(retry.getEntryValues()[selectedIndex].toString());
+        
         for(int i = 0; i < retry.getEntryValues().length; i++) {
             if(retry.getValue().matches(getResources().getStringArray(R.array.retry_entries)[i])) {
                 prefs.retries().set(getResources().getIntArray(R.array.retry_values)[i]);
-
                 break;
             }
         }
-        /*prefs.retries().set(selectedRetry);
-        if(prefs.retries().get() != selectedRetry) {
-            Util.logActivities(this, getString(R.string.settings_changed,
-                    retry.getTitle().toString(),
-                    prefs.retries().get(), selectedRetry));
-        }*/
 
         /*
         prefs.useSmsPortals().set(useSmsPortals.isChecked());
