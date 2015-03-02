@@ -119,7 +119,6 @@ public class PendingMessages
             }
         }
         view.sync.setOnClickListener(this);
-
         App.bus.register(this);
         getActivity().registerReceiver(failedReceiver,
                 new IntentFilter(ServicesConstants.FAILED_ACTION));
@@ -137,7 +136,7 @@ public class PendingMessages
         log("onResume()");
         super.onResume();
         idle();
-        new LoadingTask(getActivity()).execute((String) null);
+        loadingTask();
     }
 
     @Override
@@ -348,11 +347,11 @@ public class PendingMessages
      * @return void
      */
     public void showMessages() {
-        new LoadingTask(getActivity()).execute((String) null);
+        loadingTask();;
     }
 
     public void refreshListView() {
-        new LoadingTask(getActivity()).execute((String) null);
+        loadingTask();
     }
 
     @Subscribe
@@ -491,40 +490,9 @@ public class PendingMessages
         }
     }
 
-    /**
-     * ProgressTask sub-class for showing Loading... dialog while the BaseListAdapter loads the
-     * data
-     */
-    protected class LoadingTask extends ProgressTask {
-
-        public LoadingTask(Activity activity) {
-            super(activity);
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.cancel();
-            view.emptyView.setVisibility(android.view.View.GONE);
-        }
-
-        @Override
-        protected Boolean doInBackground(String... args) {
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
-            view.listLoadingProgress.setVisibility(android.view.View.GONE);
-            view.emptyView.setVisibility(View.VISIBLE);
-            if (success) {
-                fetchMessages();
-                listView.setAdapter(adapter);
-            }
-        }
-
+    public void loadingTask() {
+        view.emptyView.setVisibility(android.view.View.GONE);
+        fetchMessages();
     }
 
     protected class DeleteTask extends ProgressTask {
@@ -553,7 +521,7 @@ public class PendingMessages
             } else {
                 // delete by uuid is set
                 if (deletebyUuid) {
-                    log("deletedbyId position: " + mSelectedItemsPositions.size());
+
                     for (Integer position : mSelectedItemsPositions) {
                         App.getDatabaseInstance().getMessageInstance().fetchByUuid(adapter.getItem(position).getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
                             @Override
@@ -620,6 +588,8 @@ public class PendingMessages
                 UiThread.getInstance().post(new Runnable() {
                     @Override
                     public void run() {
+                        view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                        view.emptyView.setVisibility(View.VISIBLE);
                         adapter.setItems(result);
                         listView.setAdapter(adapter);
                     }

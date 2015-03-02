@@ -102,7 +102,6 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
         widgets.messageStatus.setTextColor(context.getResources().getColor(
                 R.color.pending_color));
 
-
         return view;
     }
 
