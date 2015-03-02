@@ -35,8 +35,6 @@ public class ProcessMessage {
     private static final String TAG = ProcessMessage.class
             .getSimpleName();
 
-    private static final int ACTIVE_SYNC_URL = 1;
-
     private Context context;
 
     private ProcessSms processSms;
@@ -392,12 +390,12 @@ public class ProcessMessage {
                         // the failed messages.
                         Util.connectToDataNetwork(context);
 
+                        // Check if number of tries is sent
                     } else {
                         message.setType(Message.Type.PENDING);
                         processSms.postToSentBox(message);
                     }
                 } else {
-                    // FIXME: `posted` always `true` but `sendSms()` may not work
                     posted = sendSms(message);
                 }
 
@@ -423,6 +421,28 @@ public class ProcessMessage {
             }
         }
 
+        // Update number of tries.
+        if(!posted) {
+            if (message.getRetries() > prefs.retries().get()) {
+                // Delete from db
+                deleteMessagesByUuid(message);
+            } else {
+                // Increase message's number of tries for future comparison to know when to delete it.
+                int retries = message.getRetries();
+                message.setRetries(retries + 1);
+                App.getDatabaseInstance().getMessageInstance().update(message, new DatabaseCallback<Void>() {
+                    @Override
+                    public void onFinished(Void result) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+
+                    }
+                });
+            }
+        }
         return posted;
     }
 

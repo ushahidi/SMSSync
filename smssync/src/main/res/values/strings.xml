@@ -186,6 +186,8 @@
     <string name="selected">%1$d selected</string>
     <string name="unconfirmed">Unconfirmed</string>
     <string name="failed">Failed</string>
+    <string name="message_type">Type %1$s</string>
+    <string name="message_status">Status %1$s</string>
 
     <!-- confirmation dialog -->
     <string name="confirm_yes">Yes</string>

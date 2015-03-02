@@ -86,6 +86,33 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         final String whereClause = "message_uuid = ?";
                         final String whereArgs[] = {message.getUuid()};
                         ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
+                        Logger.log("Upadate", "Updating "+values.toString());
+                        cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
+                                whereClause, whereArgs);
+                        callback.onFinished(null);
+
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    public void updateRetry(final Message message, final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if(!isClosed()) {
+                    try {
+                        final String whereClause = "message_uuid = ?";
+                        final String whereArgs[] = {message.getUuid()};
+                        ContentValues values = new ContentValues();
+                        values.put("retries", message.getType().name());
+                        values.put("delivery_result_message", message.getDeliveryResultMessage());
+                        values.put("delivery_result_code", message.getDeliveryResultCode());
+                        values.put("status", message.getStatus().name());
+                        values.put("retries", message.getRetries());
                         cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                                 whereClause, whereArgs);
                         callback.onFinished(null);

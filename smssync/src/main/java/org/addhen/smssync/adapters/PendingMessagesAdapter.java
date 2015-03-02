@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PendingMessagesAdapter extends BaseListAdapter<Message> {
 
@@ -44,6 +45,8 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
 
         TextView messageType;
 
+        TextView messageStatus;
+
         public Widgets(View convertView) {
             super(convertView);
             messageFrom = (TextView) convertView
@@ -53,6 +56,8 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
             message = (TextView) convertView.findViewById(R.id.message);
             messageType = (TextView) convertView
                     .findViewById(R.id.sent_message_type);
+
+            messageStatus = (TextView) convertView.findViewById(R.id.sent_message_status);
         }
 
         @Override
@@ -84,21 +89,19 @@ public class PendingMessagesAdapter extends BaseListAdapter<Message> {
 
         // Pending messages
         if (getItem(position).getType() == Type.PENDING) {
-            widgets.messageType.setText(R.string.sms);
-            widgets.messageType.setTextColor(context.getResources().getColor(
-                    R.color.pending_color));
-
+            widgets.messageType.setText(context.getString(R.string.sms).toUpperCase(
+                    Locale.getDefault()));
         } else if (getItem(position).getType() == Type.TASK) {
             // Task messages
-            widgets.messageType.setText(R.string.task);
-            widgets.messageType.setTextColor(context.getResources().getColor(
-                    R.color.task_color));
-        } else {
-            //TODO mark this as status
-            widgets.messageType.setText(R.string.failed);
-            widgets.messageType.setTextColor(context.getResources().getColor(
-                    R.color.task_color));
+            widgets.messageType.setText(context.getString(R.string.task).toUpperCase(Locale.getDefault()));
         }
+        widgets.messageType.setTextColor(context.getResources().getColor(
+                R.color.task_color));
+
+        widgets.messageStatus.setText(getItem(position).getStatus().name());
+        widgets.messageStatus.setTextColor(context.getResources().getColor(
+                R.color.pending_color));
+
 
         return view;
     }
