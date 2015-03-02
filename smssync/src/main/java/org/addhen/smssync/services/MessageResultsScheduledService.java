@@ -6,6 +6,7 @@ import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessageResult;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
 import org.addhen.smssync.models.SyncUrl;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
@@ -22,11 +23,8 @@ public class MessageResultsScheduledService extends SmsSyncServices {
 
     private MessageResultsController mMessageResultsController;
 
-    private SyncUrl model;
-
     public MessageResultsScheduledService() {
         super(CLASS_TAG);
-        model = new SyncUrl();
         mMessageResultsController = new MessageResultsController(this);
     }
 
@@ -41,11 +39,15 @@ public class MessageResultsScheduledService extends SmsSyncServices {
             if(response.isSuccess()) {
                 final List<MessageResult> messageResults = new ArrayList<>();
                 for(String uuids: response.getUuids()) {
-
                     Message msg = App.getDatabaseInstance().getMessageInstance().fetchByUuid(uuids);
-                    MessageResult messageResult = new MessageResult(msg.getUuid(), msg.getSentResultCode(), msg.getSentResultMessage(),msg.getDeliveryResultCode(), msg.getDeliveryResultMessage());
-                    messageResults.add(messageResult);
+                    if(msg !=null) {
+                        MessageResult messageResult = new MessageResult(msg.getUuid(),
+                                msg.getSentResultCode(), msg.getSentResultMessage(),
+                                msg.getDeliveryResultCode(), msg.getDeliveryResultMessage());
+                        messageResults.add(messageResult);
+                    }
                 }
+                mMessageResultsController.sendMessageResultPOSTRequest(syncUrl, messageResults);
             }
         }
     }

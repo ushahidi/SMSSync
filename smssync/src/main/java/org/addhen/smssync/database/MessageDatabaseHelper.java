@@ -2,7 +2,10 @@ package org.addhen.smssync.database;
 
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.tasks.ThreadExecutor;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.Util;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -57,7 +60,86 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             public void run() {
                 if (!isClosed()) {
                     try {
-                        cupboard().withDatabase(getWritableDatabase()).put(message);
+                        final String whereClause = "message_uuid = ?";
+                        final String whereArgs[] = {message.getUuid()};
+                        ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
+                        int rows = cupboard().withDatabase(getWritableDatabase()).update(Message.class, values, whereClause, whereArgs);
+                        if(rows == 0) {
+                            cupboard().withDatabase(getWritableDatabase()).put(message);
+                        }
+                        callback.onFinished(null);
+
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    public void update(final Message message, final DatabaseCallback<Void> callback) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "message_uuid = ?";
+                        final String whereArgs[] = {message.getUuid()};
+                        ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
+                        cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
+                                whereClause, whereArgs);
+                        callback.onFinished(null);
+
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    public void updateDeliveryFields(final Message message, final DatabaseCallback<Void> callback ) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "message_uuid = ?";
+                        final String whereArgs[] = {message.getUuid()};
+                        ContentValues values = new ContentValues();
+                        values.put("message_type", message.getType().name());
+                        values.put("delivery_result_message", message.getDeliveryResultMessage());
+                        values.put("delivery_result_code", message.getDeliveryResultCode());
+                        values.put("status", message.getStatus().name());
+                        values.put("retries", message.getRetries());
+                        cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
+                                whereClause, whereArgs);
+                        callback.onFinished(null);
+
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
+            }
+        });
+    }
+
+    public void updateSentFields(final Message message, final DatabaseCallback<Void> callback){
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "message_uuid = ?";
+                        final String whereArgs[] = {message.getUuid()};
+                        ContentValues values = new ContentValues();
+                        values.put("message_type", message.getType().name());
+                        values.put("sent_result_message", message.getSentResultMessage());
+                        values.put("sent_result_code", message.getSentResultCode());
+                        values.put("status", message.getStatus().name());
+                        values.put("retries", message.getRetries());
+                        cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
+                                whereClause, whereArgs);
                         callback.onFinished(null);
 
                     } catch (Exception e) {

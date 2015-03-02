@@ -14,14 +14,10 @@ public class QueuedMessages implements Serializable {
     private List<String> queuedMessages;
 
     public QueuedMessages() {
-        queuedMessages = new ArrayList<String>();
+        queuedMessages = new ArrayList<>();
     }
 
     public List<String> getQueuedMessages() {
         return queuedMessages;
-    }
-
-    public void setQueuedMessages(List<String> queuedMessages) {
-        this.queuedMessages = queuedMessages;
     }
 }

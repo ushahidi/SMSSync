@@ -22,6 +22,7 @@ import com.squareup.otto.Subscribe;
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.SyncDate;
+import org.addhen.smssync.UiThread;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
@@ -615,9 +616,15 @@ public class PendingMessages
     private void fetchMessages() {
         App.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
             @Override
-            public void onFinished(List<Message> result) {
-                adapter.setItems(result);
-                listView.setAdapter(adapter);
+            public void onFinished(final List<Message> result) {
+                UiThread.getInstance().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setItems(result);
+                        listView.setAdapter(adapter);
+                    }
+                });
+
             }
 
             @Override

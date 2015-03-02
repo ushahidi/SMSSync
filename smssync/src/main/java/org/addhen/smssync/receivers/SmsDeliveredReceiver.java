@@ -4,6 +4,7 @@ import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.app.Activity;
@@ -41,17 +42,19 @@ public class SmsDeliveredReceiver extends BaseBroadcastReceiver {
             message.setDeliveryResultMessage(resultMessage);
             message.setDeliveryResultCode(result);
             message.setType(Message.Type.TASK);
-            App.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
-                @Override
-                public void onFinished(Void result) {
+            message.setStatus(Message.Status.SENT);
+            App.getDatabaseInstance().getMessageInstance().updateDeliveryFields(message,
+                    new BaseDatabseHelper.DatabaseCallback<Void>() {
+                        @Override
+                        public void onFinished(Void result) {
 
-                }
+                        }
 
-                @Override
-                public void onError(Exception exception) {
+                        @Override
+                        public void onError(Exception exception) {
 
-                }
-            });
+                        }
+                    });
 
         }
     }

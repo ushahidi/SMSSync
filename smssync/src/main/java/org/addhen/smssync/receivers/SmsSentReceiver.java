@@ -6,6 +6,7 @@ import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 
 import android.app.Activity;
@@ -67,8 +68,22 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
         if (message != null) {
             message.setSentResultMessage(resultMessage);
             message.setSentResultCode(result);
+            Logger.log("Sent", "message sent"+message);
             if (sentSuccess) {
                 message.setType(Message.Type.TASK);
+                message.setStatus(Message.Status.SENT);
+                App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
+                        new BaseDatabseHelper.DatabaseCallback<Void>() {
+                            @Override
+                            public void onFinished(Void result) {
+
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+
+                            }
+                        });
 
             } else {
                 final String errorCode;
@@ -84,9 +99,10 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         alertCallbacks.smsSendFailedRequest(resultMessage, errorCode);
                     }
                 }).start();
-
+                message.setType(Message.Type.TASK);
                 message.setStatus(Message.Status.FAILED);
-                App.getDatabaseInstance().getMessageInstance().put(message,
+                //Todo, increase retries field
+                App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {

@@ -21,6 +21,7 @@ import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
+import org.addhen.smssync.UiThread;
 import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
@@ -49,11 +50,7 @@ public class SentMessageFragment
         extends
         BaseListFragment<SentMessagesView, Message, SentMessagesAdapter> {
 
-    private final Handler mHandler = new Handler();
-
     private String messageUuid = "";
-
-    private Message model;
 
     private MenuItem refresh;
 
@@ -199,7 +196,7 @@ public class SentMessageFragment
     }
 
     public void refresh() {
-        new LoadingTask(getActivity()).execute((String) null);
+        fetchMessages();
     }
 
     @Subscribe
@@ -216,12 +213,21 @@ public class SentMessageFragment
     }
 
     private void fetchMessages() {
+        view.emptyView.setVisibility(android.view.View.GONE);
         App.getDatabaseInstance().getMessageInstance().fetchSent(
                 new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
                     @Override
-                    public void onFinished(List<Message> result) {
-                        adapter.setItems(result);
-                        listView.setAdapter(adapter);
+                    public void onFinished(final List<Message> result) {
+                        UiThread.getInstance().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                                view.emptyView.setVisibility(View.VISIBLE);
+                                adapter.setItems(result);
+                                listView.setAdapter(adapter);
+                            }
+                        });
+
                     }
 
                     @Override
@@ -243,16 +249,27 @@ public class SentMessageFragment
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override
                                 public void onFinished(Void result) {
+                                    UiThread.getInstance().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            toastLong(R.string.messages_deleted);
+                                            refreshState = false;
+                                            updateRefreshStatus();
+                                            refresh();
+                                        }
+                                    });
 
-                                    toastLong(R.string.messages_deleted);
-                                    refreshState = false;
-                                    updateRefreshStatus();
-                                    refresh();
                                 }
 
                                 @Override
                                 public void onError(Exception exception) {
-                                    toastLong(R.string.messages_deleted_failed);
+                                    UiThread.getInstance().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            toastLong(R.string.messages_deleted_failed);
+                                        }
+                                    });
+
                                 }
                             });
         }
@@ -272,50 +289,30 @@ public class SentMessageFragment
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override
                                 public void onFinished(Void result) {
+                                    UiThread.getInstance().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            toastLong(R.string.messages_deleted);
+                                            refreshState = false;
+                                            updateRefreshStatus();
+                                            refresh();
+                                        }
+                                    });
 
-                                    toastLong(R.string.messages_deleted);
-                                    refreshState = false;
-                                    updateRefreshStatus();
-                                    refresh();
                                 }
 
                                 @Override
                                 public void onError(Exception exception) {
-                                    toastLong(R.string.messages_deleted_failed);
+                                    UiThread.getInstance().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            toastLong(R.string.messages_deleted_failed);
+                                        }
+                                    });
+
                                 }
                             });
         }
 
-    }
-
-    private class LoadingTask extends ProgressTask {
-
-        public LoadingTask(Activity activity) {
-            super(activity);
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.cancel();
-            view.emptyView.setVisibility(android.view.View.GONE);
-        }
-
-        @Override
-        protected Boolean doInBackground(String... args) {
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean success) {
-            super.onPostExecute(success);
-            view.listLoadingProgress.setVisibility(android.view.View.GONE);
-            view.emptyView.setVisibility(View.VISIBLE);
-
-            if (success) {
-                fetchMessages();
-            }
-        }
     }
 }

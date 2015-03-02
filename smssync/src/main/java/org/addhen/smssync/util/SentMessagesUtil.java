@@ -21,7 +21,7 @@ package org.addhen.smssync.util;
 import org.addhen.smssync.App;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
-
+import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
 /**
  * Utility class for sent messages feature
  *
@@ -42,17 +42,32 @@ public class SentMessagesUtil {
 
         if(message !=null) {
             message.setStatus(Message.Status.SENT);
-            App.getDatabaseInstance().getMessageInstance().put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
-                @Override
-                public void onFinished(Void result) {
+            if(message.getId() == null || message.getId() == 0) {
+                App.getDatabaseInstance().getMessageInstance().put(message, new DatabaseCallback<Void>() {
+                    @Override
+                    public void onFinished(Void result) {
 
-                }
+                    }
 
-                @Override
-                public void onError(Exception exception) {
+                    @Override
+                    public void onError(Exception exception) {
 
-                }
-            });
+                    }
+                });
+            } else {
+                App.getDatabaseInstance().getMessageInstance().update(message,
+                        new BaseDatabseHelper.DatabaseCallback<Void>() {
+                            @Override
+                            public void onFinished(Void result) {
+
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+
+                            }
+                        });
+            }
 
             return true;
 
