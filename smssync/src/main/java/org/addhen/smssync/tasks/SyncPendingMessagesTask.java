@@ -172,7 +172,6 @@ public class SyncPendingMessagesTask extends
         int progress = 0;
         SyncStatus syncStatus = new SyncStatus();
         mProcessMessage = new ProcessMessage(mService.getApplicationContext(),new ProcessSms(mService.getApplicationContext()));
-        Message message = new Message();
         List<Message> listMessages = new ArrayList<>();
 
         // determine if syncing by message UUID

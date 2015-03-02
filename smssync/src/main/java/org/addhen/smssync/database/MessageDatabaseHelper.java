@@ -99,30 +99,17 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
         });
     }
 
-    public void updateRetry(final Message message, final DatabaseCallback<Void> callback) {
-        asyncRun(new Runnable() {
-            @Override
-            public void run() {
-                if(!isClosed()) {
-                    try {
-                        final String whereClause = "message_uuid = ?";
-                        final String whereArgs[] = {message.getUuid()};
-                        ContentValues values = new ContentValues();
-                        values.put("retries", message.getType().name());
-                        values.put("delivery_result_message", message.getDeliveryResultMessage());
-                        values.put("delivery_result_code", message.getDeliveryResultCode());
-                        values.put("status", message.getStatus().name());
-                        values.put("retries", message.getRetries());
-                        cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
-                                whereClause, whereArgs);
-                        callback.onFinished(null);
+    public void update(final Message message) {
+        if (!isClosed()) {
 
-                    } catch (Exception e) {
-                        callback.onError(e);
-                    }
-                }
-            }
-        });
+            final String whereClause = "message_uuid = ?";
+            final String whereArgs[] = {message.getUuid()};
+            ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
+            Logger.log("Upadate", "Updating "+values.toString());
+            cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
+                    whereClause, whereArgs);
+
+        }
     }
 
     public void updateDeliveryFields(final Message message, final DatabaseCallback<Void> callback ) {
@@ -165,6 +152,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         values.put("sent_result_code", message.getSentResultCode());
                         values.put("status", message.getStatus().name());
                         values.put("retries", message.getRetries());
+                        Logger.log("Updated ", " update "+values);
                         cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                                 whereClause, whereArgs);
                         callback.onFinished(null);
@@ -194,6 +182,19 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                 }
             }
         });
+    }
+
+
+
+    public void deleteByUuid(final String uuid) {
+        if(!isClosed()) {
+
+            final String whereClause = "message_uuid = ?";
+            final String whereArgs[] = {uuid};
+            cupboard().withDatabase(getWritableDatabase()).delete(Message.class, whereClause,
+                    whereArgs);
+
+        }
     }
 
     @Override
@@ -360,20 +361,6 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                             "messages_date DESC").list();
         }
         return null;
-    }
-
-    private int totalPendingQuery() {
-        if(!isClosed()) {
-            final String whereClause = "status != ?";
-            return cupboard().withDatabase(getReadableDatabase()).query(
-                    Message.class)
-                    .withSelection(whereClause, Message.Status.SENT.name()).list().size();
-        }
-        return 0;
-    }
-
-    public int totalPending() {
-        return totalPendingQuery();
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.addhen.smssync.controllers;
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.util.Util;
@@ -10,6 +11,7 @@ import org.addhen.smssync.util.Util;
 import android.content.Context;
 import android.telephony.SmsMessage;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,8 +74,15 @@ public class DebugCallbacks {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        new ProcessSms(context).sendSms(sms.getOriginatingAddress(),
-                                isCellReceptionOKRequest(context, sms.getOriginatingAddress()));
+                        ProcessSms process = new ProcessSms(context);
+                        final Long timeMills = System.currentTimeMillis();
+                        Message message = new Message();
+                        message.setBody( isCellReceptionOKRequest(context, sms.getOriginatingAddress()));
+                        message.setDate(new Date(timeMills));
+                        message.setPhoneNumber(sms.getOriginatingAddress());
+                        message.setUuid(process.getUuid());
+                        message.setType(Message.Type.TASK);
+                        process.sendSms(message);
                     }
                 };
                 break;
@@ -81,8 +90,15 @@ public class DebugCallbacks {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        new ProcessSms(context).sendSms(sms.getOriginatingAddress(),
-                                isServerOKRequest(context, sms.getOriginatingAddress()));
+                        ProcessSms process = new ProcessSms(context);
+                        final Long timeMills = System.currentTimeMillis();
+                        Message message = new Message();
+                        message.setBody(isServerOKRequest(context, sms.getOriginatingAddress()));
+                        message.setDate(new Date(timeMills));
+                        message.setPhoneNumber(sms.getOriginatingAddress());
+                        message.setUuid(process.getUuid());
+                        message.setType(Message.Type.TASK);
+                        process.sendSms(message);
                     }
                 };
                 break;
@@ -90,8 +106,15 @@ public class DebugCallbacks {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        new ProcessSms(context).sendSms(sms.getOriginatingAddress(),
-                                getBatteryLevelRequest(context, sms.getOriginatingAddress()));
+                        ProcessSms process = new ProcessSms(context);
+                        final Long timeMills = System.currentTimeMillis();
+                        Message message = new Message();
+                        message.setBody(isServerOKRequest(context, sms.getOriginatingAddress()));
+                        message.setDate(new Date(timeMills));
+                        message.setPhoneNumber(getBatteryLevelRequest(context, sms.getOriginatingAddress()));
+                        message.setUuid(process.getUuid());
+                        message.setType(Message.Type.TASK);
+                        process.sendSms(message);
                     }
                 };
                 break;
@@ -99,8 +122,15 @@ public class DebugCallbacks {
                 runnable = new Runnable() {
                     @Override
                     public void run() {
-                        new ProcessSms(context).sendSms(sms.getOriginatingAddress(),
-                                getStatusRequest(context, sms.getOriginatingAddress()));
+                        ProcessSms process = new ProcessSms(context);
+                        final Long timeMills = System.currentTimeMillis();
+                        Message message = new Message();
+                        message.setBody(getStatusRequest(context, sms.getOriginatingAddress()));
+                        message.setDate(new Date(timeMills));
+                        message.setPhoneNumber(getBatteryLevelRequest(context, sms.getOriginatingAddress()));
+                        message.setUuid(process.getUuid());
+                        message.setType(Message.Type.TASK);
+                        process.sendSms(message);
                     }
                 };
                 break;

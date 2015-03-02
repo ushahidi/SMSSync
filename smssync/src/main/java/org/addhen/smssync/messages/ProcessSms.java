@@ -376,42 +376,23 @@ public class ProcessSms {
         return UUID.randomUUID().toString();
     }
 
-    public boolean sendSms(String sendTo, String msg) {
-        return sendSms(sendTo, msg, null);
-    }
-
     /**
      * Sends SMS to a number.
      *
-     * @param sendTo - Number to send SMS to.
-     * @param msg    - The message to be sent.
-     * @param uuid   - UUID from web server
+     * @param message - Number to send SMS to.
      */
-    public boolean sendSms(String sendTo, String msg, String uuid) {
+    public boolean sendSms(Message message) {
 
         ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
         Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
-                + sendTo + " message: " + msg);
+                + message.getPhoneNumber() + " message: " + message.getBody() +" message"+message);
 
-        Util.logActivities(context, context.getString(R.string.sent_msg, msg, sendTo));
+        Util.logActivities(context, context.getString(R.string.sent_msg, message.getBody(), message.getPhoneNumber()));
 
         SmsManager sms = SmsManager.getDefault();
-        ArrayList<String> parts = sms.divideMessage(msg);
-        String validUUID;
-
-        if (null == uuid || "".equals(uuid)) {
-            validUUID = getUuid();
-        } else {
-            validUUID = uuid;
-        }
-
-        final Long timeMills = System.currentTimeMillis();
-        Message message = new Message();
-        message.setBody(msg);
-        message.setDate(new Date(timeMills));
-        message.setPhoneNumber(sendTo);
-        message.setUuid(validUUID);
+        ArrayList<String> parts = sms.divideMessage(message.getBody());
+        //String validUUID;
         message.setType(Message.Type.TASK);
         for (int i = 0; i < parts.size(); i++) {
 
@@ -433,19 +414,19 @@ public class ProcessSms {
             deliveryIntents.add(deliveryIntent);
         }
 
-        if (PhoneNumberUtils.isGlobalPhoneNumber(sendTo)) {
+        if (PhoneNumberUtils.isGlobalPhoneNumber(message.getPhoneNumber())) {
 
             if (prefs.smsReportDelivery().get()) {
-                sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
                         deliveryIntents);
             } else {
-                sms.sendMultipartTextMessage(sendTo, null, parts, sentIntents,
+                sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
                         null);
             }
             message.setStatus(Message.Status.UNCONFIRMED);
             return postToSentBox(message);
         } else {
-            final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + sendTo;
+            final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + message.getPhoneNumber();
             Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
             // Following copy/pasted from BaseBroadcastReceiver.. should be in shared util instead
             if (prefs.enableLog().get()) {

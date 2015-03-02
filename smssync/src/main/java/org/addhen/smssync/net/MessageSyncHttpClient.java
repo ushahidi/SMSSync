@@ -67,10 +67,12 @@ public class MessageSyncHttpClient extends MainHttpClient {
         addParam(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncDataKey.FROM), message.getPhoneNumber());
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
-        addParam(
-                syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), String.valueOf(
-                message.getDate().getTime())
-        );
+        if(message.getDate() !=null) {
+            addParam(
+                    syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), String.valueOf(
+                            message.getDate().getTime())
+            );
+        }
         addParam(syncScheme.getKey(SyncDataKey.SENT_TO), toNumber);
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE_ID), message.getUuid());
         addParam(syncScheme.getKey(SyncDataKey.DEVICE_ID), deviceId);

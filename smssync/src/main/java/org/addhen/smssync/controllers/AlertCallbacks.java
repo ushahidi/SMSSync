@@ -3,6 +3,7 @@ package org.addhen.smssync.controllers;
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.HttpMethod;
 import org.addhen.smssync.net.MainHttpClient;
@@ -10,6 +11,7 @@ import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.Util;
 import org.apache.http.HttpStatus;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,9 +61,16 @@ public class AlertCallbacks {
         }
 
         if (!prefs.alertPhoneNumber().get().matches("")) {
-            new ProcessSms(prefs.getContext()).sendSms(prefs.alertPhoneNumber().get(),
-                    prefs.getContext().getResources()
-                            .getString(R.string.battery_level_message, batteryLevel));
+            ProcessSms process = new ProcessSms(prefs.getContext());
+            final Long timeMills = System.currentTimeMillis();
+            Message message = new Message();
+            message.setBody( prefs.getContext().getResources()
+                    .getString(R.string.battery_level_message, batteryLevel));
+            message.setDate(new Date(timeMills));
+            message.setPhoneNumber(prefs.alertPhoneNumber().get());
+            message.setUuid(process.getUuid());
+            message.setType(Message.Type.TASK);
+            process.sendSms(message);
         }
     }
 
@@ -101,8 +110,15 @@ public class AlertCallbacks {
      */
     public void dataConnectionLost() {
         if (!prefs.alertPhoneNumber().get().matches("")) {
-            new ProcessSms(prefs.getContext()).sendSms(prefs.alertPhoneNumber().get(),
-                    prefs.getContext().getResources().getString(R.string.lost_connection_message));
+            ProcessSms process = new ProcessSms(prefs.getContext());
+            final Long timeMills = System.currentTimeMillis();
+            Message message = new Message();
+            message.setBody( prefs.getContext().getResources().getString(R.string.lost_connection_message));
+            message.setDate(new Date(timeMills));
+            message.setPhoneNumber(prefs.alertPhoneNumber().get());
+            message.setUuid(process.getUuid());
+            message.setType(Message.Type.TASK);
+            process.sendSms(message);
         }
     }
 }

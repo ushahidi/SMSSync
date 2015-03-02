@@ -38,6 +38,7 @@ public class SmsDeliveredReceiver extends BaseBroadcastReceiver {
                 break;
         }
 
+
         if (message != null) {
             message.setDeliveryResultMessage(resultMessage);
             message.setDeliveryResultCode(result);

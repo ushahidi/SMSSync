@@ -99,21 +99,33 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         alertCallbacks.smsSendFailedRequest(resultMessage, errorCode);
                     }
                 }).start();
-                message.setType(Message.Type.TASK);
-                message.setStatus(Message.Status.FAILED);
-                //Todo, increase retries field
-                App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
-                        new BaseDatabseHelper.DatabaseCallback<Void>() {
-                            @Override
-                            public void onFinished(Void result) {
 
-                            }
+                final int retry = new Prefs(context).retries().get();
+                if (message.getRetries() > retry) {
+                    Logger.log("SmsSentReceiver", "Deleted "+message.getRetries() + " Delete prefs: "+new Prefs(context).retries().get());
+                    App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid());
 
-                            @Override
-                            public void onError(Exception exception) {
+                } else {
 
-                            }
-                        });
+                    message.setType(Message.Type.TASK);
+                    message.setStatus(Message.Status.FAILED);
+                    int retries = message.getRetries();
+                    message.setRetries(retries + 1);
+                    Logger.log("SmsSentReceiver", "Updated "+message.getRetries() + " Delete prefs: "+new Prefs(context).retries().get());
+                    //Todo, increase retries field
+                    App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
+                            new BaseDatabseHelper.DatabaseCallback<Void>() {
+                                @Override
+                                public void onFinished(Void result) {
+
+                                }
+
+                                @Override
+                                public void onError(Exception exception) {
+
+                                }
+                            });
+                }
             }
         }
 

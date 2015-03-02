@@ -51,8 +51,9 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     @Override
     protected void executeTask(Intent intent) {
 
-        log(CLASS_TAG, "executeTask() executing this scheduled task");
-        final int total = App.getDatabaseInstance().getMessageInstance().totalPending();
+        log(CLASS_TAG, "executeTask() executing "+CLASS_TAG);
+        final int total = App.getDatabaseInstance().getMessageInstance().pendingTotal();
+        log(CLASS_TAG, "Total: "+total);
         if (total > 0) {
             log(CLASS_TAG, "Sending pending messages");
             ProcessMessage processMessage = new ProcessMessage(AutoSyncScheduledService.this,new ProcessSms(AutoSyncScheduledService.this));

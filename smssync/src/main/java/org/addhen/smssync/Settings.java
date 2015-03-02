@@ -452,9 +452,12 @@ public class Settings extends PreferenceActivity implements
         }
 
         for(int i = 0; i < retry.getEntryValues().length; i++) {
-            if(retry.getValue().matches(getResources().getStringArray(R.array.retry_entries)[i])) {
-                prefs.retries().set(getResources().getIntArray(R.array.retry_values)[i]);
-                break;
+            if(retry.getEntry() !=null ) {
+                if (retry.getValue()
+                        .matches(getResources().getStringArray(R.array.retry_entries)[i])) {
+                    prefs.retries().set(getResources().getIntArray(R.array.retry_values)[i]);
+                    break;
+                }
             }
         }
 

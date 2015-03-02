@@ -22,9 +22,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
-
-import static org.addhen.smssync.database.BaseDatabseHelper.DatabaseCallback;
 
 
 /**
@@ -114,70 +113,76 @@ public class ProcessMessage {
      */
     public boolean syncPendingMessages(final String uuid) {
         Logger.log(TAG, "syncPendingMessages: push pending messages to the Sync URL" + uuid);
-
+        boolean status = false;
         // check if it should sync by id
         if (!TextUtils.isEmpty(uuid)) {
-            App.getDatabaseInstance().getMessageInstance().fetchByUuid(uuid,
-                    new DatabaseCallback<Message>() {
-                        @Override
-                        public void onFinished(Message result) {
-
-                            if (routeMessage(result)) {
-                                deleteMessagesByUuid(result);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Exception exception) {
-
-                        }
-                    });
-
+            final Message message = App.getDatabaseInstance().getMessageInstance()
+                    .fetchByUuid(uuid);
+            status = deleteMessagesByUuid(message);
         } else {
-
-            App.getDatabaseInstance().getMessageInstance()
-                    .fetchPending(new DatabaseCallback<List<Message>>() {
-                        @Override
-                        public void onFinished(List<Message> result) {
-                            if (result != null && result.size() > 0) {
-
-                                for (Message message : result) {
-                                    deleteMessagesByUuid(message);
-
-                                }
-
-                            }
-                        }
-
-                        @Override
-                        public void onError(Exception exception) {
-
-                        }
-                    });
+            final List<Message> messages = App.getDatabaseInstance().getMessageInstance()
+                    .fetchPending();
+            if (messages != null && messages.size() > 0) {
+                for (Message message : messages) {
+                    status = deleteMessagesByUuid(message);
+                }
+            }
         }
 
-        return true;
+        return status;
 
     }
 
-    public void deleteMessagesByUuid(Message message) {
-        if (routeMessage(message)) {
-
-            Logger.log(TAG, " message ID " + message.getUuid());
-            App.getDatabaseInstance().getMessageInstance()
-                    .deleteByUuid(message.getUuid(),
-                            new DatabaseCallback<Void>() {
-                                @Override
-                                public void onFinished(Void result) {
-                                    // Do nothing
-                                }
-
-                                @Override
-                                public void onError(Exception exception) {
-                                    // Do nothing
-                                }
-                            });
+    public boolean deleteMessagesByUuid(Message message) {
+        boolean status = false;
+        Logger.log(TAG,"message by uuid ");
+        if (!Util.isConnected(context)) {
+            return status;
         }
+            List<SyncUrl> result = fetchEnabledSyncUrl();
+
+            for (final SyncUrl syncUrl : result) {
+                // white listed is enabled
+                if (prefs.enableWhitelist().get()) {
+                    List<Filter> filters = App.getDatabaseInstance().getFilterInstance().fetchByStatus(
+                            Filter.Status.WHITELIST);
+                    for (Filter filter : filters) {
+                        if (filter.getPhoneNumber()
+                                .equals(message.getPhoneNumber())) {
+                            if(processMessage(message, syncUrl)) {
+                                deleteMessage(message);
+                            }
+                        }
+                    }
+                    return true;
+                }
+
+                if (prefs.enableBlacklist().get()) {
+                    List<Filter> filters = App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST);
+                    for(Filter filter : filters) {
+                        if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
+                            Logger.log("message",
+                                    " from:" + message.getPhoneNumber() + " filter:" + filter
+                                            .getPhoneNumber());
+                            return false;
+                        }
+                    }
+                } else {
+                    if(processMessage(message,syncUrl)) {
+                        deleteMessage(message);
+                    }
+                }
+            }
+
+        status = true;
+
+        return status;
+    }
+
+    private void deleteMessage(Message message) {
+        Logger.log(TAG, " message ID " + message.getUuid());
+        App.getDatabaseInstance().getMessageInstance()
+                .deleteByUuid(message.getUuid());
     }
 
     /**
@@ -195,7 +200,7 @@ public class ProcessMessage {
         if (response != null && response.getPayload() != null
                 && response.getPayload().getMessages().size() > 0) {
             for (Message msg : response.getPayload().getMessages()) {
-                sendSms(msg);
+                sendTaskSms(msg);
             }
         }
     }
@@ -299,7 +304,7 @@ public class ProcessMessage {
             for (Message msg : msgs) {
                 msg.setType(Message.Type.TASK);
                 if (response.getUuids().contains(msg.getUuid())) {
-                    sendSms(msg);
+                    sendTaskSms(msg);
                     Util.logActivities(context,
                             context.getString(R.string.processed_task,
                                     msg.getBody()));
@@ -311,7 +316,7 @@ public class ProcessMessage {
     private void sendSMSWithMessageResultsAPIDisabled(List<Message> msgs) {
         for (Message msg : msgs) {
             msg.setType(Message.Type.TASK);
-            sendSms(msg);
+            sendTaskSms(msg);
         }
     }
 
@@ -333,34 +338,74 @@ public class ProcessMessage {
 
                 // send auto response as SMS to user's phone
                 Util.logActivities(context, context.getString(R.string.auto_response_sent));
-                processSms.sendSms(message.getPhoneNumber(), prefs.reply().get());
+                message.setBody(prefs.reply().get());
+                processSms.sendSms(message);
             }
 
-            if (routeMessage(message)) {
+            if (Util.isConnected(context)) {
+                List<SyncUrl> result = fetchEnabledSyncUrl();
+                for (final SyncUrl syncUrl : result) {
+                    // white listed is enabled
+                    if (prefs.enableWhitelist().get()) {
+                        List<Filter> filters = App.getDatabaseInstance().getFilterInstance().fetchByStatus(
+                                Filter.Status.WHITELIST);
+                        for (Filter filter : filters) {
+                            if (filter.getPhoneNumber()
+                                    .equals(message.getPhoneNumber())) {
+                                if( processMessage(message, syncUrl)) {
+                                    deleteFromSmsInbox(message);
+                                } else {
 
-                // Delete messages from message app's inbox, only
-                // when SMSSync has that feature turned on
-                if (prefs.autoDelete().get()) {
+                                    savePendingMessage(message);
+                                }
+                            }
+                        }
+                    }
 
-                    processSms.delSmsFromInbox(message.getBody(), message.getPhoneNumber());
-                    Util.logActivities(context,
-                            context.getString(R.string.auto_message_deleted, message.getBody()));
+                    if (prefs.enableBlacklist().get()) {
+                        List<Filter> filters = App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST);
+                        for(Filter filter : filters) {
+                            if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
+                                Logger.log("message",
+                                        " from:" + message.getPhoneNumber() + " filter:" + filter
+                                                .getPhoneNumber());
+                                return false;
+                            }
+                        }
+                    } else {
+                        if(processMessage(message,syncUrl)){
+                            deleteFromSmsInbox(message);
+                        } else {
+                            savePendingMessage(message);
+                        }
+                    }
                 }
                 return true;
-            } else {
-                //only save to pending when the number is not blacklisted
-                if (!prefs.enableBlacklist().get()) {
-                    saveMessage(message);
-                }
             }
         }
         return false;
 
     }
 
+    private void savePendingMessage(Message message) {
+        //only save to pending when the number is not blacklisted
+        if (!prefs.enableBlacklist().get()) {
+            saveMessage(message);
+        }
+    }
+
+    private void deleteFromSmsInbox(Message message) {
+        //only save to pending when the number is not blacklisted
+        if (prefs.autoDelete().get()) {
+
+            processSms.delSmsFromInbox(message.getBody(), message.getPhoneNumber());
+            Util.logActivities(context,
+                    context.getString(R.string.auto_message_deleted, message.getBody()));
+        }
+    }
+
     public boolean routePendingMessage(Message message) {
-        deleteMessagesByUuid(message);
-        return true;
+        return deleteMessagesByUuid(message);
     }
 
     /**
@@ -396,7 +441,7 @@ public class ProcessMessage {
                         processSms.postToSentBox(message);
                     }
                 } else {
-                    posted = sendSms(message);
+                    posted = sendTaskSms(message);
                 }
 
             }
@@ -417,12 +462,14 @@ public class ProcessMessage {
                     processSms.postToSentBox(message);
                 }
             } else {
-                posted = sendSms(message);
+                posted = sendTaskSms(message);
             }
         }
 
         // Update number of tries.
+
         if(!posted) {
+            Logger.log(TAG, "Messages Not posted: "+message);
             if (message.getRetries() > prefs.retries().get()) {
                 // Delete from db
                 deleteMessagesByUuid(message);
@@ -430,105 +477,17 @@ public class ProcessMessage {
                 // Increase message's number of tries for future comparison to know when to delete it.
                 int retries = message.getRetries();
                 message.setRetries(retries + 1);
-                App.getDatabaseInstance().getMessageInstance().update(message, new DatabaseCallback<Void>() {
-                    @Override
-                    public void onFinished(Void result) {
+                App.getDatabaseInstance().getMessageInstance().update(message);
 
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-
-                    }
-                });
             }
         }
         return posted;
     }
 
-    /**
-     * Routes both incoming SMS and pending messages.
-     *
-     * @param message The message to be routed
-     */
-    private boolean routeMessage(Message message) {
 
-        // load preferences
-        boolean posted = false;
-        // is SMSSync service running?
-        if (!prefs.serviceEnabled().get() || !Util.isConnected(context)) {
-            return posted;
-        }
-        posted = loadActiveSyncUrls(message);
-
-        return posted;
-    }
-
-    private boolean loadActiveSyncUrls(final Message message) {
-        final boolean status;
-        App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
-                SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
-                    @Override
-                    public void onFinished(List<SyncUrl> result) {
-                        Filter filters = new Filter();
-                        for (final SyncUrl syncUrl : result) {
-                            // white listed is enabled
-                            if (prefs.enableWhitelist().get()) {
-                                App.getDatabaseInstance().getFilterInstance().fetchByStatus(
-                                        Filter.Status.WHITELIST,
-                                        new DatabaseCallback<List<Filter>>() {
-                                            @Override
-                                            public void onFinished(List<Filter> result) {
-                                                for (Filter filter : result) {
-                                                    if (filter.getPhoneNumber()
-                                                            .equals(message.getPhoneNumber())) {
-                                                        processMessage(message, syncUrl);
-                                                    }
-                                                }
-                                            }
-
-                                            @Override
-                                            public void onError(Exception exception) {
-
-                                            }
-                                        });
-
-
-                            }
-
-                            if (prefs.enableBlacklist().get()) {
-                                App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST, new DatabaseCallback<List<Filter>>() {
-                                    @Override
-                                    public void onFinished(List<Filter> result) {
-                                        for(Filter filter : result) {
-                                            if (!filter.getPhoneNumber().equals(message.getPhoneNumber())) {
-                                                Logger.log("message",
-                                                        " from:" + message.getPhoneNumber() + " filter:" + filter
-                                                                .getPhoneNumber());
-                                                processMessage(message, syncUrl);
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Exception exception) {
-
-                                    }
-                                });
-
-                            } else {
-                                processMessage(message, syncUrl);
-                            }
-
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-
-                    }
-                });
-       return true;
+    private List<SyncUrl> fetchEnabledSyncUrl() {
+        return App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
+                SyncUrl.Status.ENABLED);
     }
 
     public String getErrorMessage() {
@@ -543,9 +502,18 @@ public class ProcessMessage {
         Util.logActivities(context, message);
     }
 
-    private boolean sendSms(Message message) {
+    private boolean sendTaskSms(Message message) {
+        final Long timeMills = System.currentTimeMillis();
+        if (message.getDate() == null || !TextUtils.isEmpty(message.getUuid())) {
+            message.setDate(new Date(timeMills));
+        }
+        if(message.getUuid() ==null || TextUtils.isEmpty(message.getUuid())) {
+            message.setUuid(processSms.getUuid());
+        }
+
+        message.setType(Message.Type.TASK);
         return processSms
-                .sendSms(message.getPhoneNumber(), message.getBody(), message.getUuid());
+                .sendSms(message);
     }
 
 }
