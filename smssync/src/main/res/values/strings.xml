@@ -71,6 +71,25 @@
     <string name="chk_auto_delete_hint">Automatically delete messages from the Message app\'s inbox
         to save space on the phone.</string>
 
+    <!-- auto delete pending messages -->
+    <string name="chk_enable_auto_delete_pending_messages">Auto Delete Pending Messages</string>
+    <string name="chk_enable_auto_delete_pending_messages_hint">Automatically delete pending messages
+    that have failed to be sent.</string>
+
+    <string name="select_number_of_retries">No. of retries for pending messages</string>
+    <string name="select_number_of_retries_hint">Set the number of retries before the app automatically deletes pending messages.</string>
+    <string name="one_try">One try</string>
+    <string name="two_tries">Two tries</string>
+    <string name="three_tries">Three tries</string>
+    <string name="four_tries">Four tries</string>
+    <string name="five_tries">Five tries</string>
+
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+
     <!-- enable sms delivery report  -->
     <string name="chk_enable_sms_delivery_report">SMS Delivery Report</string>
     <string name="chk_sms_delivery_report_hint">Enable if you want SMS delivery status report to be sent to the app. Note: Some network providers charge you for this.</string>

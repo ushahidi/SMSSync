@@ -18,6 +18,7 @@
 package org.addhen.smssync;
 
 import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.TimePreference;
 import org.addhen.smssync.util.Util;
@@ -32,12 +33,14 @@ import android.os.Handler;
 import android.os.Messenger;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class handles all related task for settings on SMSSync. TODO // move the UI code into it's
@@ -70,6 +73,10 @@ public class Settings extends PreferenceActivity implements
     public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 
    // public static final String KEY_ENABLE_SMS_PORTALS = "enable_sms_portals";
+
+    public static final String KEY_ENABLE_RETRIES = "auto_delete_pending_messages_preference";
+
+    public static final String KEY_LIST_RETRIES  = "auto_delete_pending_messages_retries_preference";
 
     public static final String TASK_CHECK = "task_check_preference";
 
@@ -171,7 +178,9 @@ public class Settings extends PreferenceActivity implements
 
     private CheckBoxPreference enableMessageResultsAPI;
 
+    private ListPreference retry;
 
+    private CheckBoxPreference enableRetry;
 
     private TimePreference taskCheckTimes;
 
@@ -261,10 +270,14 @@ public class Settings extends PreferenceActivity implements
         /*useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(KEY_ENABLE_SMS_PORTALS);*/
 
+        enableRetry  = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_ENABLE_RETRIES);
+
+        retry = (ListPreference) getPreferenceScreen().findPreference(KEY_LIST_RETRIES);
+
         enableMessageResultsAPI = (CheckBoxPreference) getPreferenceScreen().findPreference(
                 MESSAGE_RESULTS_API);
 
-        about = (Preference) getPreferenceScreen().findPreference(ABOUT);
+        about = getPreferenceScreen().findPreference(ABOUT);
 
         about.setTitle(versionLabel.toString());
         about.setSummary(R.string.powered_by);
@@ -328,6 +341,12 @@ public class Settings extends PreferenceActivity implements
         } else {
             taskCheckTimes.setEnabled(false);
             enableMessageResultsAPI.setEnabled(false);
+        }
+
+        if(enableRetry.isChecked()) {
+            retry.setEnabled(true);
+        } else {
+            retry.setEnabled(false);
         }
 
         prefs.reply().set(replyPref.getText().toString());
@@ -418,6 +437,37 @@ public class Settings extends PreferenceActivity implements
                     autoSyncTimes.getTitle().toString(),
                     prefs.autoTime().get(), autoSyncTimes.getTimeValueAsString()));
         }
+
+        prefs.enableReply().set(enableReply.isChecked());
+        if(prefs.enableReply().get() != enableRetry.isChecked()) {
+            boolean checked = enableReply.isChecked() ? true : false;
+
+            String check = getCheckedStatus(checked);
+
+            String status = getCheckedStatus(prefs.enableRetry().get());
+
+            Util.logActivities(Settings.this, getString(R.string.settings_changed,
+                    enableReply.getTitle().toString(), status,
+                    check));
+        }
+
+        int selectedIndex = retry.findIndexOfValue(retry.getValue());
+        //Logger.log("Preferences", "Index: " + retry.getEntryValues()[selectedIndex].toString());
+        //Logger.log("Preferences", "Selected Value " + retry.getEntryValues().length);
+        //int selectedRetry = Integer.valueOf(retry.getEntryValues()[selectedIndex].toString());
+        for(int i = 0; i < retry.getEntryValues().length; i++) {
+            if(retry.getValue().matches(getResources().getStringArray(R.array.retry_entries)[i])) {
+                prefs.retries().set(getResources().getIntArray(R.array.retry_values)[i]);
+
+                break;
+            }
+        }
+        /*prefs.retries().set(selectedRetry);
+        if(prefs.retries().get() != selectedRetry) {
+            Util.logActivities(this, getString(R.string.settings_changed,
+                    retry.getTitle().toString(),
+                    prefs.retries().get(), selectedRetry));
+        }*/
 
         /*
         prefs.useSmsPortals().set(useSmsPortals.isChecked());
@@ -531,6 +581,7 @@ public class Settings extends PreferenceActivity implements
                 replyPref.setEnabled(false);
             }
         }
+
 
         // Auto sync enable
         if (key.equals(AUTO_SYNC)) {

@@ -29,6 +29,17 @@
                 android:title="@string/chk_enable_auto_delete"/>
 
         <CheckBoxPreference
+                android:key="auto_delete_pending_messages_preference"
+                android:summary="@string/chk_enable_auto_delete_pending_messages_hint"
+                android:title="@string/chk_enable_auto_delete_pending_messages"/>
+        <ListPreference
+                android:key="auto_delete_pending_messages_retries_preference"
+                android:title="@string/select_number_of_retries"
+                android:summary="@string/select_number_of_retries_hint"
+                android:entries="@array/retry_entries"
+                android:entryValues="@array/retry_entries"
+                android:dependency="auto_delete_pending_messages_preference"/>
+        <CheckBoxPreference
                 android:key="enable_sms_report_delivery_preference"
                 android:summary="@string/chk_sms_delivery_report_hint"
                 android:title="@string/chk_enable_sms_delivery_report"/>
@@ -89,7 +100,7 @@
                 android:title="@string/chk_enable_message_results_api"/>
     </PreferenceCategory>
     <!--
-    TODO: Test this probably and enable it in future release
+    TODO: Test this properly and enable it in future release
     <PreferenceCategory android:title="@string/sms_portals_settings" >
         <CheckBoxPreference
                 android:key="enable_sms_portals"
