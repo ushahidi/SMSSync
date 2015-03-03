@@ -65,7 +65,7 @@ public class SmssyncResponseTest extends BaseTest {
         assertEquals("+000-000-0000",
                 mSmssyncResponse.getPayload().getMessages().get(0).getPhoneNumber());
         assertEquals("the message goes here",
-                mSmssyncResponse.getPayload().getMessages().get(0).getMessage());
+                mSmssyncResponse.getPayload().getMessages().get(0).getBody());
         assertEquals("042b3515-ef6b-f424-c4qd",
                 mSmssyncResponse.getPayload().getMessages().get(0).getUuid());
     }
