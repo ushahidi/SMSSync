@@ -81,8 +81,10 @@ public class MessageResultsController {
         } catch (Exception e) {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
         } finally {
-            if (HttpStatus.SC_OK == client.responseCode()) {
-                mUtil.log(mContext.getString(R.string.message_processed_success));
+            if(client !=null) {
+                if (HttpStatus.SC_OK == client.responseCode()) {
+                    mUtil.log(mContext.getString(R.string.message_processed_success));
+                }
             }
         }
     }
@@ -114,19 +116,21 @@ public class MessageResultsController {
                         mContext.getString(R.string.message_processed_failed) + " " + e
                                 .getMessage());
             } finally {
-                if (HttpStatus.SC_OK == client.responseCode()) {
+                if(client !=null) {
+                    if (HttpStatus.SC_OK == client.responseCode()) {
 
-                    mUtil.log(mContext.getString(R.string.message_processed_success));
-                    response = parseMessagesUUIDSResponse(client);
-                    response.setSuccess(true);
-                    Util.logActivities(mContext,
-                            mContext.getString(R.string.message_processed_success));
+                        mUtil.log(mContext.getString(R.string.message_processed_success));
+                        response = parseMessagesUUIDSResponse(client);
+                        response.setSuccess(true);
+                        Util.logActivities(mContext,
+                                mContext.getString(R.string.message_processed_success));
 
-                } else {
-                    response = new MessagesUUIDSResponse(client.responseCode());
-                    Util.logActivities(mContext,
-                            mContext.getString(R.string.queued_messages_request_status,
-                                    client.responseCode(), client.getResponse()));
+                    } else {
+                        response = new MessagesUUIDSResponse(client.responseCode());
+                        Util.logActivities(mContext,
+                                mContext.getString(R.string.queued_messages_request_status,
+                                        client.responseCode(), client.getResponse()));
+                    }
                 }
             }
         }
@@ -141,7 +145,7 @@ public class MessageResultsController {
      * or failure and list of message uuids
      */
     public MessagesUUIDSResponse sendMessageResultGETRequest(SyncUrl syncUrl) {
-        MessagesUUIDSResponse response;
+        MessagesUUIDSResponse response = null;
         String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
 
         final String urlSecret = syncUrl.getSecret();
@@ -171,14 +175,16 @@ public class MessageResultsController {
             Util.logActivities(mContext,
                     mContext.getString(R.string.message_processed_failed) + " " + e.getMessage());
         } finally {
-            if (HttpStatus.SC_OK == client.responseCode()) {
-                response = parseMessagesUUIDSResponse(client);
-                response.setSuccess(true);
-            } else {
-                response = new MessagesUUIDSResponse(client.responseCode());
-                Util.logActivities(mContext,
-                        mContext.getString(R.string.messages_result_request_status,
-                                client.responseCode(), client.getResponse()));
+            if(client !=null) {
+                if (HttpStatus.SC_OK == client.responseCode()) {
+                    response = parseMessagesUUIDSResponse(client);
+                    response.setSuccess(true);
+                } else {
+                    response = new MessagesUUIDSResponse(client.responseCode());
+                    Util.logActivities(mContext,
+                            mContext.getString(R.string.messages_result_request_status,
+                                    client.responseCode(), client.getResponse()));
+                }
             }
         }
         return response;

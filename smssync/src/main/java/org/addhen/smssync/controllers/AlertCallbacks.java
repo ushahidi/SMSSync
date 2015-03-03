@@ -52,9 +52,11 @@ public class AlertCallbacks {
                 } catch (Exception e) {
                     Util.logActivities(prefs.getContext(), e.getMessage());
                 } finally {
-                    if (HttpStatus.SC_OK == client.responseCode()) {
-                        Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
-                                .getString(R.string.successful_alert_to_server));
+                    if(client !=null) {
+                        if (HttpStatus.SC_OK == client.responseCode()) {
+                            Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
+                                    .getString(R.string.successful_alert_to_server));
+                        }
                     }
                 }
             }
@@ -95,9 +97,11 @@ public class AlertCallbacks {
                 } catch (Exception e) {
                     Util.logActivities(prefs.getContext(), e.getMessage());
                 } finally {
-                    if (HttpStatus.SC_OK == client.responseCode()) {
-                        Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
-                                .getString(R.string.successful_alert_to_server));
+                    if(client !=null) {
+                        if (HttpStatus.SC_OK == client.responseCode()) {
+                            Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
+                                    .getString(R.string.successful_alert_to_server));
+                        }
                     }
                 }
             }
