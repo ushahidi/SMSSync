@@ -33,7 +33,6 @@ public class Database {
 
     public Database(Context context) {
         mContext = context;
-        Util.writeDbToSDCard();
     }
 
     public MessageDatabaseHelper getMessageInstance() {

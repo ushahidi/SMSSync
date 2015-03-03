@@ -116,6 +116,7 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
             // This will upgrade tables, adding columns and new tables.
             // Note that existing columns will not be converted
             cupboard().withDatabase(db).upgradeTables();
+            DatabaseUpgrade.upgradeToVersion8(db);
         }
     }
 
