@@ -1,6 +1,9 @@
 package org.addhen.smssync.tests.services;
 
+import org.addhen.smssync.App;
+import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.tests.BaseTest;
@@ -13,6 +16,8 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 
 import android.test.suitebuilder.annotation.SmallTest;
+
+import java.util.Date;
 
 /**
  *
@@ -40,17 +45,27 @@ public class SyncSchemeTest extends BaseTest {
         syncUrl.setUrl("http://demo.ushahidi.com/smssync4");
 
         msg = new Message();
-        msg.setMessage("TEST MESSAGE");
+        msg.setBody("TEST MESSAGE");
         msg.setPhoneNumber("555555555");
         msg.setUuid("312312");
-        msg.setTimestamp("0");
+        msg.setDate(new Date());
 
         super.setUp();
     }
 
     @Override
     public void tearDown() throws Exception{
-        syncUrl.deleteAllSyncUrl();
+        App.getDatabaseInstance().getSyncUrlInstance().deleteAllSyncUrl(new BaseDatabseHelper.DatabaseCallback<Void>() {
+            @Override
+            public void onFinished(Void result) {
+
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+        });
         msg = null;
         super.tearDown();
     }

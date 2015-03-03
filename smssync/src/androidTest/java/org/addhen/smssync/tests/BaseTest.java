@@ -19,17 +19,12 @@ public abstract class BaseTest extends AndroidTestCase {
 
     @Override
     public void setUp() throws Exception {
-
-        mDb = new Database(getContext());
-        mDb.open();
         super.setUp();
 
     }
 
     @Override
     public void tearDown() throws Exception {
-
-        mDb.close();
         mDb = null;
         super.tearDown();
 

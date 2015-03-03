@@ -4,6 +4,7 @@ import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SmssyncResponse;
+import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.tests.CustomAndroidTestCase;
@@ -66,18 +67,6 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     }
 
     @SmallTest
-    public void testShouldSaveMessage() throws Exception {
-
-        // When save is called return true
-        when(mockMessage.save()).thenReturn(true);
-
-        final boolean status = mProcessMessage.saveMessage(mockMessage);
-
-        verify(mockMessage).save();
-        assertEquals(status, true);
-    }
-
-    @SmallTest
     public void testshouldSendResponseFromServerAsSms() throws Exception {
         stubNeedMethodsForSyncOperation();
 
@@ -95,8 +84,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
             throws Exception {
         syncSmsToSyncUrl(false);
 
-        verify(mockProcessSms, never()).sendSms(mockMsg.getPhoneNumber(), mockMsg.getMessage(),
-                mockMsg.getUuid());
+        verify(mockProcessSms, never()).sendSms(mockMsg);
 
     }
 
@@ -109,8 +97,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     }
 
     private void verifySendSmsIsRun2x() {
-        verify(mockProcessSms, times(2)).sendSms(mockMsg.getPhoneNumber(), mockMsg.getMessage(),
-                mockMsg.getUuid());
+        verify(mockProcessSms, times(2)).sendSms(mockMsg);
     }
 
     private void syncSmsToSyncUrl(boolean postResponseToServer) {
