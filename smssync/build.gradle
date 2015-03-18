@@ -87,7 +87,7 @@ android {
         versionName "2.7.3"
         minSdkVersion 8
         targetSdkVersion 21
-        
+
         def publicKey = project.hasProperty('inAppPurchasePubKey') ? inAppPurchasePubKey : '';
 
         buildConfigField "String", "PUBLIC_LICENSE_KEY", '"'+publicKey+'"'

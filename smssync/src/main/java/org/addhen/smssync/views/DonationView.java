@@ -18,13 +18,24 @@
 package org.addhen.smssync.views;
 
 import android.app.Activity;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import org.addhen.smssync.R;
 
 /**
  * Donation view
  */
 public class DonationView extends View {
 
+    @Widget(R.id.loading_list_progress)
+    public ProgressBar listLoadingProgress;
+
+    @Widget(android.R.id.empty)
+    public TextView emptyView;
+
     public DonationView(Activity activity) {
         super(activity);
+        emptyView.setText(R.string.ui_no_donation_amount);
     }
 }
