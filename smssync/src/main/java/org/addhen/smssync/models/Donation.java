@@ -1,5 +1,7 @@
 package org.addhen.smssync.models;
 
+import com.github.jberkel.pay.me.model.SkuDetails;
+
 /**
  * Model for donation amount
  *
@@ -7,31 +9,20 @@ package org.addhen.smssync.models;
  */
 public class Donation extends Model {
 
-    private String title;
+    private SkuDetails skuDetails;
 
-    private String amount;
-
-    public String getTitle() {
-        return title;
+    public SkuDetails getSkuDetails() {
+        return skuDetails;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public Donation(SkuDetails skuDetails) {
+        this.skuDetails = skuDetails;
     }
 
     @Override
     public String toString() {
         return "Donation{" +
-                "title='" + title + '\'' +
-                ", amount='" + amount + '\'' +
+                "skuDetails=" + skuDetails +
                 '}';
     }
 }

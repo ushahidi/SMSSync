@@ -52,8 +52,8 @@ public class DonationAdapter extends BaseListAdapter<Donation> {
         }
 
         // initialize view with content
-        widgets.title.setText(getItem(position).getTitle());
-        widgets.amount.setText(getItem(position).getAmount());
+        widgets.title.setText(getItem(position).getSkuDetails().getTitle());
+        widgets.amount.setText(getItem(position).getSkuDetails().getTitle());
 
         return view;
     }

@@ -21,6 +21,7 @@ import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.UiThread;
 import org.addhen.smssync.adapters.NavDrawerAdapter;
+import org.addhen.smssync.fragments.DonationFragment;
 import org.addhen.smssync.navdrawer.BaseNavDrawerItem;
 import org.addhen.smssync.navdrawer.BlacklistNavDrawerItem;
 import org.addhen.smssync.navdrawer.DonationNavDrawerItem;
@@ -311,18 +312,32 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
                 navDrawerItem.add(pendingMessagesNavDrawerItem);
                 navDrawerItem.add(sentMessagesNavDrawerItem);
                 navDrawerItem.add(syncUrlNavDrawerItem);
-                navDrawerItem.add(donationNavDrawerItem);
                 navDrawerItem.add(whitelistNavDrawerItem);
                 navDrawerItem.add(filterNavDrawerItem);
                 navDrawerItem.add(logNavDrawerItem);
-                UiThread.getInstance().post(new Runnable() {
+                DonationFragment.checkUserHasDonated(getApplication(), new DonationFragment.DonationStatusListener() {
                     @Override
-                    public void run() {
-                        navDrawerAdapter.setItems(navDrawerItem);
-                        listView.setAdapter(navDrawerAdapter);
-                        selectItem(mPosition);
+                    public void userDonationState(State s) {
+                        switch (s) {
+                            case NOT_AVAILABLE:
+                            case DONATED:
+                                navDrawerItem.remove(donationNavDrawerItem);
+                                break;
+                            default:
+                                navDrawerItem.add(donationNavDrawerItem);
+                                break;
+                        }
+                        UiThread.getInstance().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                navDrawerAdapter.setItems(navDrawerItem);
+                                listView.setAdapter(navDrawerAdapter);
+                                selectItem(mPosition);
+                            }
+                        });
                     }
                 });
+
             }
         };
 
