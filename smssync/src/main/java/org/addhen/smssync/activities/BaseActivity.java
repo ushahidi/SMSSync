@@ -311,7 +311,7 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
                 navDrawerItem.add(pendingMessagesNavDrawerItem);
                 navDrawerItem.add(sentMessagesNavDrawerItem);
                 navDrawerItem.add(syncUrlNavDrawerItem);
-                //navDrawerItem.add(donationNavDrawerItem);
+                navDrawerItem.add(donationNavDrawerItem);
                 navDrawerItem.add(whitelistNavDrawerItem);
                 navDrawerItem.add(filterNavDrawerItem);
                 navDrawerItem.add(logNavDrawerItem);

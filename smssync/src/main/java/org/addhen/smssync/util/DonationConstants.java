@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.util;
 
+import org.addhen.smssync.BuildConfig;
+
 /**
  * Handles donation constants
  */
@@ -24,26 +26,20 @@ public class DonationConstants {
 
     public static class Billing {
 
-        public static final String PUBLIC_KEY = "dkdladkaldadksdfas";
+        public static final String PUBLIC_KEY = BuildConfig.PUBLIC_LICENSE_KEY;
 
-        public static final String DONATION_PREFIX = "donation.";
+        public static final String DONATION_PREFIX = "donation_level_";
 
-        public static final String SKU_DONATION_1 = "donation.1";
+        public static final String SKU_DONATION_1 = "donation_level_one";
 
-        public static final String SKU_DONATION_2 = "donation.2";
+        public static final String SKU_DONATION_2 = "donation_level_two";
 
-        public static final String SKU_DONATION_3 = "donation.3";
-
-        public static final String SKU_DONATION_4 = "donation.4";
-
-        public static final String SKU_DONATION_5 = "donation.5";
+        public static final String SKU_DONATION_3 = "donation_level_three";
 
         public static final String[] ALL_SKUS = new String[]{
                 SKU_DONATION_1,
                 SKU_DONATION_2,
-                SKU_DONATION_3,
-                SKU_DONATION_4,
-                SKU_DONATION_5
+                SKU_DONATION_3
         };
     }
 }
