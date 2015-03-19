@@ -39,7 +39,7 @@ import java.security.spec.X509EncodedKeySpec;
  * purchases as verified.
  */
 public class DefaultSignatureValidator implements SignatureValidator {
-    private static final String TAG = "IAB/DefaultSignatureValidator";
+    private static final String TAG = "DefaultSignatureValidat";
 
     private static final String KEY_FACTORY_ALGORITHM = "RSA";
     private static final String SIGNATURE_ALGORITHM = "SHA1withRSA";
@@ -106,7 +106,7 @@ public class DefaultSignatureValidator implements SignatureValidator {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         } catch (InvalidKeySpecException e) {
-            Log.e(TAG, "Invalid key specification.");
+            Log.e(TAG, "Invalid key specification." + encodedPublicKey);
             throw new IllegalArgumentException(e);
         }
     }
