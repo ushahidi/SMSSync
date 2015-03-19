@@ -152,13 +152,18 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        if(!mIabHelper.mAsyncInProgress) {
+            launchPurchase(position);
+        }
+    }
+
+    private void launchPurchase(int position) {
         mIabHelper.launchPurchaseFlow(getActivity(),
                 adapter.getItem(position).getSkuDetails().getSku(),
                 ItemType.INAPP,
                 PURCHASE_REQUEST,
                 DonationFragment.this,
                 null);
-
     }
 
     @Override

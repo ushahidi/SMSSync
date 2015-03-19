@@ -52,20 +52,15 @@ public class DefaultSignatureValidator implements SignatureValidator {
 
     @Override
     public boolean validate(String signedData, String signature) {
-        if (signedData == null) {
-            Log.e(TAG, "data is null");
+        if (TextUtils.isEmpty(signedData) || TextUtils.isEmpty(signature)) {
+            Log.e(TAG, "Purchase verification failed: missing data.");
             return false;
+        } else if (!verify(signedData, signature)) {
+            Log.w(TAG, "signature does not match data.");
+            return false;
+        }  else {
+            return true;
         }
-
-        if (!TextUtils.isEmpty(signature)) {
-            if (!verify(signedData, signature)) {
-                Log.w(TAG, "signature does not match data.");
-                return false;
-            }
-        } else {
-            Log.w(TAG, "signature is empty");
-        }
-        return true;
     }
 
     private boolean verify(String signedData, String signature) {

@@ -99,7 +99,7 @@ public class IabHelper {
 
     private boolean mDebugLog;
     private String mDebugTag = "IabHelper";
-    private boolean mAsyncInProgress;
+    public boolean mAsyncInProgress;
     // if mAsyncInProgress == true, what asynchronous operation is in progress? (for logging/debugging)
     private String mAsyncOperation = "";
 
@@ -569,6 +569,8 @@ public class IabHelper {
                                           Inventory inventory,
                                           boolean queryDetails,
                                           List<String> extraSkus) throws JSONException, RemoteException, IabException {
+        checkNotDisposed();
+
         int result = queryPurchases(inventory, itemType);
         if (result != OK.code) {
             throw new IabException(result, "Error querying purchases for "+itemType);
@@ -581,7 +583,9 @@ public class IabHelper {
         }
     }
 
-    private int queryPurchases(Inventory inv, ItemType itemType) throws JSONException, RemoteException {
+    private int queryPurchases(Inventory inv, ItemType itemType) throws JSONException, RemoteException, IabException {
+        checkNotDisposed();
+
         logDebug("Querying owned items, item type: " + itemType);
         boolean verificationFailed = false;
         String continueToken = null;
@@ -703,11 +707,6 @@ public class IabHelper {
     // for testing
     /* package */ IInAppBillingService getInAppBillingService(IBinder service) {
         return IInAppBillingService.Stub.asInterface(service);
-    }
-
-    /* package */ void setSignatureValidator(SignatureValidator validator) {
-        if (validator == null) throw new IllegalArgumentException("need non-null validator");
-        mSignatureValidator = validator;
     }
 
     private class BillingServiceConnection implements ServiceConnection {
