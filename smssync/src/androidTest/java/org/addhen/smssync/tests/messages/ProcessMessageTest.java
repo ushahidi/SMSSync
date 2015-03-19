@@ -77,8 +77,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
         verifySendSmsIsRun2x();
 
     }
-
-    // Disable these test for now. Replace most of the live URL with mocked ones
+    
     @MediumTest
     public void testShouldSuccessfulllySyncReceivedSmsWithNoInstantResponseFromServer()
             throws Exception {
