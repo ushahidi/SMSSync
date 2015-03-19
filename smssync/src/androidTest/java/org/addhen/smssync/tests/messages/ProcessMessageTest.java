@@ -77,7 +77,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
         verifySendSmsIsRun2x();
 
     }
-    
+
     @MediumTest
     public void testShouldSuccessfulllySyncReceivedSmsWithNoInstantResponseFromServer()
             throws Exception {
