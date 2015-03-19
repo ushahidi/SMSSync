@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -53,12 +54,12 @@ public class LogUtil {
             @Override
             public void run() {
                 for (char c : format) {
-                    if (c == DateFormat.MONTH) {
+                    if (c == Calendar.MONTH) {
                         dateFormat = "MM-dd kk:mm";
                         break;
                     }
 
-                    if (c == DateFormat.DATE) {
+                    if (c == Calendar.DATE) {
                         dateFormat = "dd-MM kk:mm";
                         break;
                     }
