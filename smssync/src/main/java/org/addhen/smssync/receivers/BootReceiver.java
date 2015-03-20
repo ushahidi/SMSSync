@@ -24,6 +24,7 @@ import org.addhen.smssync.services.ScheduleServices;
 import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.tasks.SyncType;
+import org.addhen.smssync.util.RunServicesUtil;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.TimeFrequencyUtil;
 import org.addhen.smssync.util.Util;
@@ -92,6 +93,9 @@ public class BootReceiver extends BroadcastReceiver {
                             PendingIntent.FLAG_UPDATE_CURRENT)
                             .updateScheduler(interval);
                 }
+
+                // Start the service message results api service
+                new RunServicesUtil(prefs).runMessageResultsService();
             }
         }
     }
