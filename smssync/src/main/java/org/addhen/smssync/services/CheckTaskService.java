@@ -39,11 +39,8 @@ public class CheckTaskService extends SmsSyncServices {
     private final static String CLASS_TAG = CheckTaskService.class
             .getSimpleName();
 
-    private SyncUrl model;
-
     public CheckTaskService() {
         super(CLASS_TAG);
-        model = new SyncUrl();
     }
 
     /**
@@ -55,20 +52,9 @@ public class CheckTaskService extends SmsSyncServices {
         log("checkTaskService: check if a task has been enabled.");
         // Perform a task
         // get enabled Sync URL
-        App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(SyncUrl.Status.ENABLED,
-                new BaseDatabseHelper.DatabaseCallback<List<SyncUrl>>() {
-                    @Override
-                    public void onFinished(List<SyncUrl> result) {
-                        for(SyncUrl syncUrl: result) {
-                            new ProcessMessage(CheckTaskService.this,new ProcessSms(CheckTaskService.this)).performTask(syncUrl);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-                        // Do nothing
-                    }
-                });
-
+        final List<SyncUrl> result = App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(SyncUrl.Status.ENABLED);
+        for(SyncUrl syncUrl: result) {
+            new ProcessMessage(CheckTaskService.this,new ProcessSms(CheckTaskService.this)).performTask(syncUrl);
+        }
     }
 }
