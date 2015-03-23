@@ -182,7 +182,7 @@ if (project.hasProperty('releaseKeyStore') &&
     android.signingConfigs.releaseSign.keyPassword ""
 }
 
-tasks.release.dependsOn(['build', 'publishApkWithAnalyticsProguard'])
+tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
 
 dependencies {
     compile project(':libraries:pay-me')
