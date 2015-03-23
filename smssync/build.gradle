@@ -106,8 +106,8 @@ android {
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def newName = outputFile.name.replace(".apk",
-                        "-v" + defaultConfig.versionName + "-" + variant.buildType.name.toUpperCase() +
+                def newName = outputFile.name.replace(outputFile.name,
+                        "smssync-v" + defaultConfig.versionName + "-" + variant.buildType.name.toUpperCase() +
                                 ".apk");
 
                 output.outputFile = file("$project.buildDir/apk/" + newName);
@@ -158,6 +158,8 @@ if (project.hasProperty('releaseKeyStore') &&
     android.signingConfigs.releaseSign.storePassword ""
     android.signingConfigs.releaseSign.keyPassword ""
 }
+
+tasks.release.dependsOn(['build', 'publishRelease'])
 
 dependencies {
     compile project(':libraries:pay-me')
