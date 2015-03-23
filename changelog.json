@@ -1,5 +1,19 @@
 [
     {
+        "version": "v2.8.0-alpha.1",
+        "date": "Mar 23, 2015",
+        "features": [
+            "Add Android 5.1 support.",
+            "Enable auto delete of pending of message after a configured number of retry is exceed.",
+            "Brought back HTTP client support for devices running Android v2.2.",
+            "Re-activate donation button."
+        ],
+        "bugs": [
+            "Fix inconsistency with message result API codes.",
+            "Fix issue with sync to only one Sync URL even though multiple have been enabled."
+        ]
+    },
+    {
         "version": "v2.7.3",
         "date": "January 12, 2015",
         "features": [
