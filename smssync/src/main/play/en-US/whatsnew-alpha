@@ -3,3 +3,6 @@
 - Brought back HTTP client support for devices running Android v2.2.
 - Fix inconsistency with message result API codes.
 - Fix issue with sync to only one Sync URL even though multiple have been enabled.
+- Re-activate donation button.
+- Fix proguard issue with stripping out needed classes during the obsfucation process.
+- Set a default date format for the logs.

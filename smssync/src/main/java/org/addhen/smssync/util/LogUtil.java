@@ -35,7 +35,7 @@ public class LogUtil {
 
     private PrintWriter writer;
 
-    private String dateFormat = "MM-dd kk:mm";
+    private String dateFormat;
 
     static final int MAX_SIZE = 32 * 1024;
 
@@ -54,12 +54,12 @@ public class LogUtil {
             @Override
             public void run() {
                 for (char c : format) {
-                    if (c == Calendar.MONTH) {
+                    if (c == 'M') {
                         dateFormat = "MM-dd kk:mm";
                         break;
                     }
 
-                    if (c == Calendar.DATE) {
+                    if (c == 'd') {
                         dateFormat = "dd-MM kk:mm";
                         break;
                     }
