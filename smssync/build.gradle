@@ -58,18 +58,24 @@ android {
 
     buildTypes {
 
-        proguard.initWith(buildTypes.debug)
-        proguard {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-
         release {
             if (project.hasProperty('googleAnalyticsCode')) {
                 resValue "string", "ga_trackingId", "${googleAnalyticsCode}"
             } else{
                 resValue "string", "ga_trackingId", ""
             }
+
+            minifyEnabled true
+            shrinkResources true
+            // Library specific proguard files
+            proguardFile 'proguard-gson.pro'
+            proguardFile 'proguard-square-okio.pro'
+            proguardFile 'proguard-square-okhttp.pro'
+            proguardFile 'proguard-square-otto.pro'
+
+            // Default proguard files
+            proguardFile 'proguard-project.pro'
+            proguardFile getDefaultProguardFile('proguard-android.txt')
             signingConfig signingConfigs.releaseSign
         }
 
@@ -82,13 +88,6 @@ android {
             applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
         }
-
-        proguard.initWith(buildTypes.release)
-        proguard {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-
     }
 
     defaultConfig {
@@ -198,6 +197,3 @@ dependencies {
     androidTestCompile 'com.google.dexmaker:dexmaker:1.+'
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.+'
 }
-
-
-
