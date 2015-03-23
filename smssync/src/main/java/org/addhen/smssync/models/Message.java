@@ -169,7 +169,7 @@ public class Message extends Model implements Serializable {
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + getId()+
+                "id=" + getId() + '\'' +
                 "messageBody='" + getBody() + '\'' +
                 ", messageFrom='" + getPhoneNumber() + '\'' +
                 ", messageDate='" + getDate() + '\'' +

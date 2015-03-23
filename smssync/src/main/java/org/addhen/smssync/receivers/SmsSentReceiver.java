@@ -75,7 +75,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {
-
+                                // Save details to sent inbox
                             }
 
                             @Override
@@ -106,10 +106,9 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
 
                 } else {
                     message.setStatus(Message.Status.FAILED);
-                    int retries = message.getRetries();
-                    message.setRetries(retries++);
+                    int retries = message.getRetries() + 1;
+                    message.setRetries(retries);
                     Logger.log("SmsSentReceiver", "Updated "+message.getRetries() + " Delete prefs: "+new Prefs(context).retries().get());
-                    //Todo, increase retries field
                     App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override

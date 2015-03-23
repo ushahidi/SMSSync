@@ -475,8 +475,8 @@ public class ProcessMessage {
                 deleteMessagesByUuid(message);
             } else {
                 // Increase message's number of tries for future comparison to know when to delete it.
-                int retries = message.getRetries();
-                message.setRetries(retries++);
+                int retries = message.getRetries() + 1;
+                message.setRetries(retries);
                 App.getDatabaseInstance().getMessageInstance().update(message);
 
             }

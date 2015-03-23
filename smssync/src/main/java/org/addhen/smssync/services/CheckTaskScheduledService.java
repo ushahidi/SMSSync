@@ -37,11 +37,8 @@ public class CheckTaskScheduledService extends SmsSyncServices {
     private static final String CLASS_TAG = CheckTaskScheduledService.class
             .getSimpleName();
 
-    private SyncUrl model;
-
     public CheckTaskScheduledService() {
         super(CLASS_TAG);
-        model = new SyncUrl();
     }
 
     @Override
@@ -54,7 +51,8 @@ public class CheckTaskScheduledService extends SmsSyncServices {
                     @Override
                     public void onFinished(List<SyncUrl> result) {
                         for(SyncUrl syncUrl: result) {
-                            new ProcessMessage(CheckTaskScheduledService.this,new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
+                            new ProcessMessage(CheckTaskScheduledService.this,
+                                    new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
                         }
                     }
 

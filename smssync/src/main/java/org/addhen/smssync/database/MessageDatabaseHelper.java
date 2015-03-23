@@ -23,8 +23,6 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     private MessageDatabaseHelper(Context context, ThreadExecutor threadExecutor) {
         super(context, threadExecutor);
-
-
     }
 
     public static synchronized MessageDatabaseHelper getInstance(Context context,
@@ -86,7 +84,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         final String whereClause = "message_uuid = ?";
                         final String whereArgs[] = {message.getUuid()};
                         ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
-                        Logger.log("Upadate", "Updating "+values.toString());
+                        Logger.log("Update", "Updating "+values.toString());
                         cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                                 whereClause, whereArgs);
                         callback.onFinished(null);
@@ -105,7 +103,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             final String whereClause = "message_uuid = ?";
             final String whereArgs[] = {message.getUuid()};
             ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
-            Logger.log("Upadate", "Updating "+values.toString());
+            Logger.log("Update", "Updating "+values.toString());
             cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                     whereClause, whereArgs);
 

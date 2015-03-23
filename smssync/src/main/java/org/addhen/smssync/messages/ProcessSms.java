@@ -423,7 +423,6 @@ public class ProcessSms {
                         null);
             }
             message.setStatus(Message.Status.UNCONFIRMED);
-            return postToSentBox(message);
         } else {
             final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + message.getPhoneNumber();
             Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
