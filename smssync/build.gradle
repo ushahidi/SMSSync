@@ -1,28 +1,24 @@
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile project(':libraries:pay-me')
-    compile project(':libraries:survey-dialog')
-    compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'nl.qbusict:cupboard:2.1.1'
-    compile 'com.squareup.okhttp:okhttp:2.2.0'
-    compile 'com.squareup:otto:1.3.4'
-    compile 'com.google.code.gson:gson:2.3'
-    androidTestCompile 'org.mockito:mockito-core:1.9.+'
-    androidTestCompile 'com.google.dexmaker:dexmaker:1.+'
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.+'
-}
+apply plugin: 'play'
 
 def isTravis = "true".equals(System.getenv("TRAVIS"))
 
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+
+def getGooglePlaystoreServiceAccountEmail() {
+    return project.hasProperty('gPlaystoreServiceAccountEmailAddress') ? gPlaystoreServiceAccountEmailAddress : ''
+}
+
+def getGooglePlaystoreServicepk12File() {
+    // Set to home directory if property not set because play plugin doesn't allow empty or null
+    // value for the pk file
+    return project.hasProperty('gPlaystorePKFile') ? gPlaystorePKFile : '~/'
+}
+
+def trackProperty() {
+    return project.hasProperty('uploadTrack') ? uploadTrack : 'alpha'
+}
 
 android {
     compileSdkVersion 22
@@ -141,6 +137,13 @@ android {
     }
 }
 
+play {
+    serviceAccountEmail = getGooglePlaystoreServiceAccountEmail()
+    pk12File = file(getGooglePlaystoreServicepk12File())
+    uploadImages = true
+    track = trackProperty()
+}
+
 if (project.hasProperty('releaseKeyStore') &&
         project.hasProperty('releaseKeyPassword') &&
         project.hasProperty('releaseKeyStorePassword') &&
@@ -154,6 +157,21 @@ if (project.hasProperty('releaseKeyStore') &&
     android.signingConfigs.releaseSign.storeFile null
     android.signingConfigs.releaseSign.storePassword ""
     android.signingConfigs.releaseSign.keyPassword ""
+}
+
+dependencies {
+    compile project(':libraries:pay-me')
+    compile project(':libraries:survey-dialog')
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'nl.qbusict:cupboard:2.1.1'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.squareup:otto:1.3.4'
+    compile 'com.google.code.gson:gson:2.3'
+    androidTestCompile 'org.mockito:mockito-core:1.9.+'
+    androidTestCompile 'com.google.dexmaker:dexmaker:1.+'
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.+'
 }
 
 

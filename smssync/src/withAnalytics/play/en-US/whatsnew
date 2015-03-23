@@ -1,0 +1,3 @@
+- Fix issue with server not sending message from server as SMS.
+- Fix broken sync scheme's configurations.
+- Fix so message result api processes the response.
