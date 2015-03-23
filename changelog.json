@@ -1,5 +1,17 @@
 [
     {
+        "version": "v2.8.0-alpha.2",
+        "date": "Mar 23, 2015",
+        "features": [
+            "Add Japanese, German and Indonesian translations"
+        ],
+        "bugs": [
+            "Fix inconsistency with message result API codes.",
+            "Fix issue with sync to only one Sync URL even though multiple have been enabled.",
+            "Disable proguard minification"
+        ]
+    },
+    {
         "version": "v2.8.0-alpha.1",
         "date": "Mar 23, 2015",
         "features": [

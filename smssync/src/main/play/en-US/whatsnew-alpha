@@ -4,5 +4,6 @@
 - Fix inconsistency with message result API codes.
 - Fix issue with sync to only one Sync URL even though multiple have been enabled.
 - Re-activate donation button.
-- Fix proguard issue with stripping out needed classes during the obsfucation process.
+- Disable proguard minification.
 - Fix issue with date format being null.
+- Add Japanese, German and Indonesian translations.
