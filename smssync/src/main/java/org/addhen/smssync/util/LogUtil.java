@@ -35,7 +35,7 @@ public class LogUtil {
 
     private PrintWriter writer;
 
-    private String dateFormat;
+    private String dateFormat = "MM-dd kk:mm";
 
     static final int MAX_SIZE = 32 * 1024;
 
