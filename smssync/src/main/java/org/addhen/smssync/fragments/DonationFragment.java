@@ -171,6 +171,8 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
         logger("onActivityResult(" + requestCode + "," + resultCode + "," + data);
         if (!mIabHelper.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
+            // Refresh list
+            setupDonations();
         } else {
             logger("onActivityResult handled by IABUtil.");
         }

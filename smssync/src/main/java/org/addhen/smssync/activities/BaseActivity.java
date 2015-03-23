@@ -321,6 +321,7 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
                         switch (s) {
                             case NOT_AVAILABLE:
                             case DONATED:
+                            case UNKNOWN:
                                 navDrawerItem.remove(donationNavDrawerItem);
                                 break;
                             default:

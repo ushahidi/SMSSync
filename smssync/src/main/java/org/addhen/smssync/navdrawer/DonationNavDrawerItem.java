@@ -17,11 +17,8 @@
 
 package org.addhen.smssync.navdrawer;
 
-import org.addhen.smssync.activities.DonationActivity;
 import org.addhen.smssync.fragments.DonationFragment;
-import org.addhen.smssync.fragments.LogFragment;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 
 /**

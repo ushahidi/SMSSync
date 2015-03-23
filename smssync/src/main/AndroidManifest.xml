@@ -78,9 +78,6 @@
 
         <!-- donation -->
         <activity
-            android:name=".activities.DonationActivity"
-            android:label="@string/donate" />
-        <activity
             android:name=".activities.FilterTabActivity"
             android:label="@string/filter" />
 
