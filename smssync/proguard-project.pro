@@ -32,4 +32,7 @@
 # or have been blown up by ProGuard in the past
 -keep class org.addhen.smssync.models.** {*;}
 
+-keep class org.addhen.smssync.util.** {*;}
+-dontwarn org.addhen.smssync.util.**
+
 ## ---------------- End Project specifics ---------------- ##

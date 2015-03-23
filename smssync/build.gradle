@@ -65,13 +65,14 @@ android {
                 resValue "string", "ga_trackingId", ""
             }
 
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             // Library specific proguard files
             proguardFile 'proguard-gson.pro'
             proguardFile 'proguard-square-okio.pro'
             proguardFile 'proguard-square-okhttp.pro'
             proguardFile 'proguard-square-otto.pro'
+            proguardFile 'proguard-google-analytics.pro'
 
             // Default proguard files
             proguardFile 'proguard-project.pro'
