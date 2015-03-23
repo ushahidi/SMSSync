@@ -393,7 +393,6 @@ public class ProcessSms {
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(message.getBody());
         //String validUUID;
-        message.setType(Message.Type.TASK);
         for (int i = 0; i < parts.size(); i++) {
 
             Intent sentMessageIntent = new Intent(ServicesConstants.SENT);
@@ -435,20 +434,6 @@ public class ProcessSms {
             Toast.makeText(context, errNotGlobalPhoneNumber, Toast.LENGTH_LONG).show();
         }
         return false;
-    }
-
-    private void updateMessage(Message message) {
-        App.getDatabaseInstance().getMessageInstance().update(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
-            @Override
-            public void onFinished(Void result) {
-                // Do nothing
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                // Do nothing
-            }
-        });
     }
 
     /**

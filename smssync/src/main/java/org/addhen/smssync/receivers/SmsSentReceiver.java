@@ -70,7 +70,6 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
             message.setSentResultCode(result);
             Logger.log("Sent", "message sent"+message);
             if (sentSuccess) {
-                message.setType(Message.Type.TASK);
                 message.setStatus(Message.Status.SENT);
                 App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
@@ -106,11 +105,9 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                     App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid());
 
                 } else {
-
-                    message.setType(Message.Type.TASK);
                     message.setStatus(Message.Status.FAILED);
                     int retries = message.getRetries();
-                    message.setRetries(retries + 1);
+                    message.setRetries(retries++);
                     Logger.log("SmsSentReceiver", "Updated "+message.getRetries() + " Delete prefs: "+new Prefs(context).retries().get());
                     //Todo, increase retries field
                     App.getDatabaseInstance().getMessageInstance().updateSentFields(message,

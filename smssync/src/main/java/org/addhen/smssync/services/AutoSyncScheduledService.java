@@ -56,7 +56,8 @@ public class AutoSyncScheduledService extends SmsSyncServices {
         log(CLASS_TAG, "Total: "+total);
         if (total > 0) {
             log(CLASS_TAG, "Sending pending messages");
-            ProcessMessage processMessage = new ProcessMessage(AutoSyncScheduledService.this,new ProcessSms(AutoSyncScheduledService.this));
+            ProcessMessage processMessage = new ProcessMessage(AutoSyncScheduledService.this,
+                    new ProcessSms(AutoSyncScheduledService.this));
             processMessage.syncPendingMessages("");
             statusIntent.putExtra("status", processMessage.getErrorMessage());
             sendBroadcast(statusIntent);

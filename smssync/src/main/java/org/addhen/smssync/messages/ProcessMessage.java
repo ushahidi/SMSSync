@@ -395,7 +395,6 @@ public class ProcessMessage {
     }
 
     private void deleteFromSmsInbox(Message message) {
-        //only save to pending when the number is not blacklisted
         if (prefs.autoDelete().get()) {
 
             processSms.delSmsFromInbox(message.getBody(), message.getPhoneNumber());
@@ -404,6 +403,7 @@ public class ProcessMessage {
         }
     }
 
+    // Syncs pending messages
     public boolean routePendingMessage(Message message) {
         return deleteMessagesByUuid(message);
     }
@@ -476,7 +476,7 @@ public class ProcessMessage {
             } else {
                 // Increase message's number of tries for future comparison to know when to delete it.
                 int retries = message.getRetries();
-                message.setRetries(retries + 1);
+                message.setRetries(retries++);
                 App.getDatabaseInstance().getMessageInstance().update(message);
 
             }

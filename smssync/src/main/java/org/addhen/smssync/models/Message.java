@@ -143,7 +143,7 @@ public class Message extends Model implements Serializable {
     }
 
     public int getRetries() {
-        return retries;
+        return this.retries;
     }
 
     public void setRetries(int retries) {
@@ -169,18 +169,18 @@ public class Message extends Model implements Serializable {
     @Override
     public String toString() {
         return "Message{" +
-                "id=" + _id+
-                "messageBody='" + messageBody + '\'' +
-                ", messageFrom='" + messageFrom + '\'' +
-                ", messageDate='" + messageDate + '\'' +
-                ", messageUuid='" + messageUuid + '\'' +
-                ", messageType=" + messageType +
-                ", sentResultCode=" + sentResultCode +
-                ", sentResultMessage='" + sentResultMessage + '\'' +
-                ", deliveryResultCode=" + deliveryResultCode +
-                ", deliveryResultMessage='" + deliveryResultMessage + '\'' +
-                ", retries=" + retries +
-                ", status=" + status +
+                "id=" + getId()+
+                "messageBody='" + getBody() + '\'' +
+                ", messageFrom='" + getPhoneNumber() + '\'' +
+                ", messageDate='" + getDate() + '\'' +
+                ", messageUuid='" + getUuid() + '\'' +
+                ", messageType=" + getType() +
+                ", sentResultCode=" + getSentResultCode() +
+                ", sentResultMessage='" + getSentResultMessage() + '\'' +
+                ", deliveryResultCode=" + getDeliveryResultCode() +
+                ", deliveryResultMessage='" + getDeliveryResultMessage() + '\'' +
+                ", retries=" + getRetries() +
+                ", status=" + getStatus() +
                 '}';
     }
 }

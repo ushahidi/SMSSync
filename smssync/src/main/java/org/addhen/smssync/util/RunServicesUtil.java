@@ -1,31 +1,35 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
- *
+/**
+ * ****************************************************************************
+ * Copyright (c) 2010 - 2013 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ * <p/>
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 
 package org.addhen.smssync.util;
+
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.receivers.AutoSyncScheduledReceiver;
 import org.addhen.smssync.receivers.CheckTaskScheduledReceiver;
 import org.addhen.smssync.receivers.MessageResultsScheduledReceiver;
+import org.addhen.smssync.services.AutoSyncScheduledService;
+import org.addhen.smssync.services.CheckTaskScheduledService;
 import org.addhen.smssync.services.ScheduleServices;
-
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 
 /**
  * This will run all enabled and scheduled services.
@@ -34,8 +38,6 @@ public class RunServicesUtil {
 
     public static final String CLASS_TAG = RunServicesUtil.class
             .getSimpleName();
-
-    private ScheduleServices mScheduleServices;
 
     private Prefs prefs;
 
@@ -59,7 +61,7 @@ public class RunServicesUtil {
 
             // start the scheduler for auto sync service
             final long interval = TimeFrequencyUtil.calculateInterval(prefs.autoTime().get());
-            final Intent intent = new Intent(context, AutoSyncScheduledReceiver.class);
+            final Intent intent = new Intent(context, AutoSyncScheduledService.class);
             Logger.log(CLASS_TAG, "Auto sync service started");
             // run the service
             runServices(intent, ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE,
@@ -77,7 +79,7 @@ public class RunServicesUtil {
      */
     public void stopCheckTaskService() {
         // Push any pending messages now that we have connectivity
-        final Intent intent = new Intent(context, CheckTaskScheduledReceiver.class);
+        final Intent intent = new Intent(context, CheckTaskScheduledService.class);
 
         // stop the scheduled service
         stopServices(intent,
@@ -149,7 +151,7 @@ public class RunServicesUtil {
      * @return void
      */
     public void runServices(Intent intent,
-            int requestCode, long interval) {
+                            int requestCode, long interval) {
         // load current setting
         // is smssync enabled
         if (prefs.serviceEnabled().get()) {
