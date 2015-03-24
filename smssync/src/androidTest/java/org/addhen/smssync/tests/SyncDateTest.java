@@ -3,12 +3,13 @@ package org.addhen.smssync.tests;
 import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.prefs.Prefs;
 
+import android.test.AndroidTestCase;
 import android.test.suitebuilder.annotation.SmallTest;
 
 /**
  * Test sync date
  */
-public class SyncDateTest extends BaseTest {
+public class SyncDateTest extends AndroidTestCase {
 
     SyncDate mSyncDate;
 

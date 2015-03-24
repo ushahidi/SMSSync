@@ -118,13 +118,13 @@ public class ProcessMessage {
         if (!TextUtils.isEmpty(uuid)) {
             final Message message = App.getDatabaseInstance().getMessageInstance()
                     .fetchByUuid(uuid);
-            status = deleteMessagesByUuid(message);
+            status = routePendingMessage(message);
         } else {
             final List<Message> messages = App.getDatabaseInstance().getMessageInstance()
                     .fetchPending();
             if (messages != null && messages.size() > 0) {
                 for (Message message : messages) {
-                    status = deleteMessagesByUuid(message);
+                    status = routePendingMessage(message);
                 }
             }
         }
@@ -133,7 +133,14 @@ public class ProcessMessage {
 
     }
 
-    public boolean deleteMessagesByUuid(Message message) {
+    /**
+     * Synchronizes pending messages to configured sync URL. This takes into account
+     * keyword filtering
+     * @param message The message to be sync'd to the Sync URL.
+     *
+     * @return boolean
+     */
+    public boolean routePendingMessage(Message message) {
         boolean status = false;
         Logger.log(TAG,"message by uuid ");
         if (!Util.isConnected(context)) {
@@ -403,11 +410,6 @@ public class ProcessMessage {
         }
     }
 
-    // Syncs pending messages
-    public boolean routePendingMessage(Message message) {
-        return deleteMessagesByUuid(message);
-    }
-
     /**
      * @param message
      * @param syncUrl
@@ -437,7 +439,6 @@ public class ProcessMessage {
 
                         // Check if number of tries is sent
                     } else {
-                        message.setType(Message.Type.PENDING);
                         processSms.postToSentBox(message);
                     }
                 } else {
@@ -458,7 +459,6 @@ public class ProcessMessage {
                     Util.connectToDataNetwork(context);
 
                 } else {
-                    message.setType(Message.Type.PENDING);
                     processSms.postToSentBox(message);
                 }
             } else {
@@ -472,7 +472,7 @@ public class ProcessMessage {
             Logger.log(TAG, "Messages Not posted: "+message);
             if (message.getRetries() > prefs.retries().get()) {
                 // Delete from db
-                deleteMessagesByUuid(message);
+                routePendingMessage(message);
             } else {
                 // Increase message's number of tries for future comparison to know when to delete it.
                 int retries = message.getRetries() + 1;

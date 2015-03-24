@@ -28,6 +28,7 @@ import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
+import static org.addhen.smssync.models.Message.Type.PENDING;
 
 import android.app.Service;
 import android.content.Context;
@@ -249,6 +250,7 @@ public class SmsReceiverService extends Service {
                 }
                 msg.setBody(body);
                 msg.setUuid(new ProcessSms(mContext).getUuid());
+                msg.setType(PENDING);
             }
         }
 
@@ -299,7 +301,7 @@ public class SmsReceiverService extends Service {
         public ServiceHandler(SmsReceiverService mSmsReceiverService,
                 Looper looper) {
             super(looper);
-            this.mSmsReceiverService = new WeakReference<SmsReceiverService>(
+            this.mSmsReceiverService = new WeakReference<>(
                     mSmsReceiverService);
         }
 

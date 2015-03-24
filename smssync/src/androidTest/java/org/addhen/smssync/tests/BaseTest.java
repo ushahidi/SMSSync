@@ -1,40 +1,26 @@
-
 package org.addhen.smssync.tests;
 
-import java.util.Collection;
+import android.test.AndroidTestCase;
 
 import org.addhen.smssync.database.Database;
 
-import android.test.AndroidTestCase;
+import java.util.Collection;
 
 /**
  * Base test class for handling all unit test that doesn't call any of Android's
  * specific API.
- * 
+ *
  * @author eyedol
  */
 public abstract class BaseTest extends AndroidTestCase {
 
     public static Database mDb;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-
-    }
-
-    @Override
-    public void tearDown() throws Exception {
-        mDb = null;
-        super.tearDown();
-
-    }
-
     /**
      * Assert not null or empty.
-     * 
+     *
      * @param message the message
-     * @param value the value
+     * @param value   the value
      */
     protected static void assertNotNullOrEmpty(String message, String value) {
         assertNotNull(message, value);
@@ -43,12 +29,12 @@ public abstract class BaseTest extends AndroidTestCase {
 
     /**
      * Assert not null or empty.
-     * 
+     *
      * @param message the message
-     * @param value the value
+     * @param value   the value
      */
     protected static void assertNotNullOrEmpty(String message,
-            Collection<?> value) {
+                                               Collection<?> value) {
         assertNotNull(message, value);
         assertFalse(message, value.isEmpty());
     }

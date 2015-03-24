@@ -96,7 +96,7 @@ android {
         versionName "2.8.0"
         minSdkVersion 8
         targetSdkVersion 22
-
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         def publicKey = project.hasProperty('inAppPurchasePubKey') ? inAppPurchasePubKey : '';
 
         buildConfigField "String", "PUBLIC_LICENSE_KEY", '"'+publicKey+'"'
@@ -197,4 +197,5 @@ dependencies {
     androidTestCompile 'org.mockito:mockito-core:1.9.+'
     androidTestCompile 'com.google.dexmaker:dexmaker:1.+'
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.+'
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
 }

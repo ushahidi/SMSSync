@@ -67,7 +67,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     }
 
     @SmallTest
-    public void testshouldSendResponseFromServerAsSms() throws Exception {
+    public void testShouldSendResponseFromServerAsSms() throws Exception {
         stubNeedMethodsForSyncOperation();
 
         // Enable reply from server
@@ -78,8 +78,19 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
 
     }
 
+    @SmallTest
+    public void testShouldSendResponseConfiguredOnPhoneAsSms() throws Exception {
+        stubNeedMethodsForSyncOperation();
+
+        // Enable reply from server
+        spyPrefs.enableReply().set(true);
+
+        mProcessMessage.routeSms(mockMessage);
+        verify(mockProcessSms, times(1)).sendSms(mockMsg);
+    }
+
     @MediumTest
-    public void testShouldSuccessfulllySyncReceivedSmsWithNoInstantResponseFromServer()
+    public void testShouldSuccessfullySyncReceivedSmsWithNoInstantResponseFromServer()
             throws Exception {
         syncSmsToSyncUrl(false);
 
@@ -88,7 +99,7 @@ public class ProcessMessageTest extends CustomAndroidTestCase {
     }
 
     @MediumTest
-    public void testShouldSuccessfulllySyncReceivedSmsWithInstantResponseFromServer()
+    public void testShouldSuccessfullySyncReceivedSmsWithInstantResponseFromServer()
             throws Exception {
         syncSmsToSyncUrl(true);
 
