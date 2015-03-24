@@ -19,8 +19,7 @@ import java.util.List;
  */
 public class DebugCallbacks {
 
-    public static String isServerOKRequest(Context context, String requestRecipient) {
-        SyncUrl model = new SyncUrl();
+    public static String isServerOKRequest(Context context) {
         int responseCode = 0;
         String message = "";
         List<SyncUrl> syncUrls = App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
@@ -48,21 +47,21 @@ public class DebugCallbacks {
     }
 
 
-    public static String isCellReceptionOKRequest(Context context, String requestRecipient) {
+    public static String isCellReceptionOKRequest(Context context) {
         return context.getResources().getString(R.string.reception_ok_message);
     }
 
 
-    public static String getBatteryLevelRequest(Context context, String requestRecipient) {
+    public static String getBatteryLevelRequest(Context context) {
         return context.getResources()
                 .getString(R.string.battery_level_message, Util.getBatteryLevel(context));
     }
 
 
-    public static String getStatusRequest(Context context, String requestRecipient) {
-        return isServerOKRequest(context, requestRecipient) + "\n" +
-                getBatteryLevelRequest(context, requestRecipient) + "\n" +
-                isCellReceptionOKRequest(context, requestRecipient);
+    public static String getStatusRequest(Context context) {
+        return isServerOKRequest(context) + "\n" +
+                getBatteryLevelRequest(context) + "\n" +
+                isCellReceptionOKRequest(context);
     }
 
 
@@ -77,11 +76,10 @@ public class DebugCallbacks {
                         ProcessSms process = new ProcessSms(context);
                         final Long timeMills = System.currentTimeMillis();
                         Message message = new Message();
-                        message.setBody( isCellReceptionOKRequest(context, sms.getOriginatingAddress()));
+                        message.setBody( isCellReceptionOKRequest(context));
                         message.setDate(new Date(timeMills));
                         message.setPhoneNumber(sms.getOriginatingAddress());
                         message.setUuid(process.getUuid());
-                        message.setType(Message.Type.TASK);
                         process.sendSms(message);
                     }
                 };
@@ -93,11 +91,10 @@ public class DebugCallbacks {
                         ProcessSms process = new ProcessSms(context);
                         final Long timeMills = System.currentTimeMillis();
                         Message message = new Message();
-                        message.setBody(isServerOKRequest(context, sms.getOriginatingAddress()));
+                        message.setBody(isServerOKRequest(context));
                         message.setDate(new Date(timeMills));
                         message.setPhoneNumber(sms.getOriginatingAddress());
                         message.setUuid(process.getUuid());
-                        message.setType(Message.Type.TASK);
                         process.sendSms(message);
                     }
                 };
@@ -109,11 +106,10 @@ public class DebugCallbacks {
                         ProcessSms process = new ProcessSms(context);
                         final Long timeMills = System.currentTimeMillis();
                         Message message = new Message();
-                        message.setBody(isServerOKRequest(context, sms.getOriginatingAddress()));
+                        message.setBody(isServerOKRequest(context));
                         message.setDate(new Date(timeMills));
-                        message.setPhoneNumber(getBatteryLevelRequest(context, sms.getOriginatingAddress()));
+                        message.setPhoneNumber(sms.getOriginatingAddress());
                         message.setUuid(process.getUuid());
-                        message.setType(Message.Type.TASK);
                         process.sendSms(message);
                     }
                 };
@@ -125,11 +121,10 @@ public class DebugCallbacks {
                         ProcessSms process = new ProcessSms(context);
                         final Long timeMills = System.currentTimeMillis();
                         Message message = new Message();
-                        message.setBody(getStatusRequest(context, sms.getOriginatingAddress()));
+                        message.setBody(getStatusRequest(context));
                         message.setDate(new Date(timeMills));
-                        message.setPhoneNumber(getBatteryLevelRequest(context, sms.getOriginatingAddress()));
+                        message.setPhoneNumber(sms.getOriginatingAddress());
                         message.setUuid(process.getUuid());
-                        message.setType(Message.Type.TASK);
                         process.sendSms(message);
                     }
                 };
@@ -147,10 +142,9 @@ public class DebugCallbacks {
 
 
     protected interface StatusSMS {
-
-        static final String CELL_RECEPTION_CODE = "@10";
-        static final String SERVER_OK_CODE = "@20";
-        static final String BATTERY_LEVEL_CODE = "@30";
-        static final String GET_STATUS_CODE = "@40";
+        String CELL_RECEPTION_CODE = "@10";
+        String SERVER_OK_CODE = "@20";
+        String BATTERY_LEVEL_CODE = "@30";
+        String GET_STATUS_CODE = "@40";
     }
 }
