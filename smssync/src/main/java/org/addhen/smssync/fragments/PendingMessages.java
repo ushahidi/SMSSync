@@ -65,8 +65,6 @@ public class PendingMessages
 
     private Intent syncPendingMessagesServiceIntent;
 
-    private Message model;
-
     private LinkedHashSet<Integer> mSelectedItemsPositions;
 
     private PendingMessagesActionModeListener multichoiceActionModeListener;
@@ -93,7 +91,6 @@ public class PendingMessages
                 R.layout.list_messages, R.menu.pending_messages_menu,
                 android.R.id.list);
         log("PendingMessages()");
-        model = new Message();
     }
 
     @Override
@@ -346,7 +343,7 @@ public class PendingMessages
      * @return void
      */
     public void showMessages() {
-        loadingTask();;
+        loadingTask();
     }
 
     public void refreshListView() {
@@ -584,15 +581,19 @@ public class PendingMessages
         App.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
             @Override
             public void onFinished(final List<Message> result) {
-                UiThread.getInstance().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                        view.emptyView.setVisibility(View.VISIBLE);
-                        adapter.setItems(result);
-                        listView.setAdapter(adapter);
-                    }
-                });
+                if(result !=null) {
+                    UiThread.getInstance().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                            view.emptyView.setVisibility(View.VISIBLE);
+                            adapter.setItems(result);
+                            listView.setAdapter(adapter);
+                        }
+                    });
+                } else {
+                    toastLong("No pending messages");
+                }
 
             }
 

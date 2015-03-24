@@ -99,16 +99,23 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                     }
                 }).start();
 
-                final int retry = new Prefs(context).retries().get();
-                if (message.getRetries() > retry) {
-                    Logger.log("SmsSentReceiver", "Deleted "+message.getRetries() + " Delete prefs: "+new Prefs(context).retries().get());
-                    App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid());
+                Prefs prefs = new Prefs(context);
+                boolean deleted = false;
+                if (prefs.enableRetry().get()) {
+                    final int retry = prefs.retries().get();
+                    if (message.getRetries() > retry) {
+                        App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid());
+                        // Mark message as deleted so it's not updated
+                        deleted = true;
+                    } else {
+                        int retries = message.getRetries() + 1;
+                        message.setRetries(retries);
+                    }
+                }
 
-                } else {
+                // Make sure the message is not deleted before attempting to update it retries status;
+                if (!deleted) {
                     message.setStatus(Message.Status.FAILED);
-                    int retries = message.getRetries() + 1;
-                    message.setRetries(retries);
-                    Logger.log("SmsSentReceiver", "Updated "+message.getRetries() + " Delete prefs: "+new Prefs(context).retries().get());
                     App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override

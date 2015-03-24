@@ -151,8 +151,14 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         values.put("status", message.getStatus().name());
                         values.put("retries", message.getRetries());
                         Logger.log("Updated ", " update " + values);
-                        cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
+
+                        // Update sent fields if message already exist in the db
+                        int rows = cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                                 whereClause, whereArgs);
+                        // Message doesn't exist in the db, add it as a new entry
+                        if(rows == 0) {
+                            cupboard().withDatabase(getWritableDatabase()).put(message);
+                        }
                         callback.onFinished(null);
 
                     } catch (Exception e) {
@@ -353,6 +359,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
     private List<Message> fetchPendingQuery() {
         if (!isClosed()) {
             final String whereClause = "status != ?";
+
             return cupboard().withDatabase(getReadableDatabase()).query(
                     Message.class)
                     .withSelection(whereClause, Message.Status.SENT.name()).orderBy(
