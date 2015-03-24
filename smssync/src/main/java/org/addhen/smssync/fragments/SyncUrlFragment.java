@@ -668,9 +668,8 @@ public class SyncUrlFragment extends
                 final boolean status = addSyncUrl.addSyncUrl();
                 if(!status) {
                     toastLong(R.string.failed_to_add_sync_url);
-                } else {
-                    loadSyncUrls();
                 }
+                loadSyncUrls();
             }
         }
     }

@@ -12,7 +12,7 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.SmsSync" parent="@style/Theme.AppCompat">
+    <style name="Theme.SmsSync" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_smssync</item>
         <item name="actionBarStyle">@style/ActionBar.Transparent.SmsSync</item>
 
@@ -20,6 +20,9 @@
         <item name="android:textColor">@color/text_light</item>
         <!-- setup text color of checkbox text field-->
         <item name="android:checkboxStyle">@style/CheckBox.Text</item>
+        <item name="actionModeBackground">@android:color/background_dark</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="actionModeStyle">@style/LStyled.ActionMode</item>
     </style>
 
     <style name="ActionBar.Solid.SmsSync" parent="@style/Widget.AppCompat.ActionBar.Solid">
@@ -38,6 +41,11 @@
 
     <style name="EmptyStyle">
         <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="titleTextStyle">@android:color/background_dark</item>
+        <item name="subtitleTextStyle">@android:color/background_dark</item>
     </style>
 
     <!-- Title bar Text -->

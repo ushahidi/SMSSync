@@ -34,6 +34,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 /**
  * This Receiver class listens for system boot. If smssync has been enabled run the app.
  */
@@ -63,8 +65,8 @@ public class BootReceiver extends BroadcastReceiver {
                     Intent syncPendingMessagesServiceIntent = new Intent(context,
                             SyncPendingMessagesService.class);
 
-                    syncPendingMessagesServiceIntent.putExtra(
-                            ServicesConstants.MESSAGE_UUID, "");
+                    syncPendingMessagesServiceIntent.putStringArrayListExtra(
+                            ServicesConstants.MESSAGE_UUID, new ArrayList<String>());
                     syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA,
                             SyncType.MANUAL.name());
                     context.startService(syncPendingMessagesServiceIntent);
