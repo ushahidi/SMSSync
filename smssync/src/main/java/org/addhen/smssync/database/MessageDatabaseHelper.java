@@ -150,7 +150,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         values.put("sent_result_code", message.getSentResultCode());
                         values.put("status", message.getStatus().name());
                         values.put("retries", message.getRetries());
-                        Logger.log("Updated ", " update "+values);
+                        Logger.log("Updated ", " update " + values);
                         cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                                 whereClause, whereArgs);
                         callback.onFinished(null);

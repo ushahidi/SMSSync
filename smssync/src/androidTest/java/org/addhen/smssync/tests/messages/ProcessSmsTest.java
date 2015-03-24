@@ -1,10 +1,9 @@
 package org.addhen.smssync.tests.messages;
 
-import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.models.Message;
-import org.addhen.smssync.tests.BaseTest;
-
 import android.test.suitebuilder.annotation.SmallTest;
+
+import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.tests.BaseTest;
 
 /**
  * Test process sms

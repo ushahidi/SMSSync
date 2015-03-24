@@ -459,17 +459,6 @@ public class ProcessSms {
         return false;
     }
 
-    /**
-     * Saves successfully sent messages into the db
-     *
-     * @param message the message
-     */
-    public boolean postToSentBox(Message message) {
-        Logger.log(CLASS_TAG, "postToSentBox(): post message to sentbox "+message.toString());
-        return SentMessagesUtil.processSentMessages(message);
-
-    }
-
     public Context getContext() {
         return context;
     }

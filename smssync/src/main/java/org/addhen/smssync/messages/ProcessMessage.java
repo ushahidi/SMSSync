@@ -16,6 +16,7 @@ import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.Util;
 
 import android.content.Context;
@@ -157,7 +158,7 @@ public class ProcessMessage {
                         if (filter.getPhoneNumber()
                                 .equals(message.getPhoneNumber())) {
                             if(processMessage(message, syncUrl)) {
-                                deleteMessage(message);
+                                postToSentBox(message);
                             }
                         }
                     }
@@ -176,7 +177,7 @@ public class ProcessMessage {
                     }
                 } else {
                     if(processMessage(message,syncUrl)) {
-                        deleteMessage(message);
+                        postToSentBox(message);
                     }
                 }
             }
@@ -345,8 +346,11 @@ public class ProcessMessage {
 
                 // send auto response as SMS to user's phone
                 Util.logActivities(context, context.getString(R.string.auto_response_sent));
-                message.setBody(prefs.reply().get());
-                processSms.sendSms(message);
+                Message msg = new Message();
+                msg.setBody(prefs.reply().get());
+                msg.setPhoneNumber(message.getPhoneNumber());
+                msg.setType(message.getType());
+                processSms.sendSms(msg);
             }
 
             if (Util.isConnected(context)) {
@@ -362,11 +366,11 @@ public class ProcessMessage {
                                 if( processMessage(message, syncUrl)) {
                                     deleteFromSmsInbox(message);
                                 } else {
-
                                     savePendingMessage(message);
                                 }
                             }
                         }
+                        return true;
                     }
 
                     if (prefs.enableBlacklist().get()) {
@@ -388,6 +392,9 @@ public class ProcessMessage {
                     }
                 }
                 return true;
+            } else {
+                // There is no internet so save in the pending list
+                savePendingMessage(message);
             }
         }
         return false;
@@ -397,6 +404,7 @@ public class ProcessMessage {
     private void savePendingMessage(Message message) {
         //only save to pending when the number is not blacklisted
         if (!prefs.enableBlacklist().get()) {
+            message.setStatus(Message.Status.FAILED);
             saveMessage(message);
         }
     }
@@ -429,17 +437,8 @@ public class ProcessMessage {
 
                 if (message.getType() == Message.Type.PENDING) {
                     posted = syncReceivedSms(message, client);
-                    if (!posted) {
-                        // Note: HTTP Error code or custom error message
-                        // will have been shown already
-
-                        // attempt to make a data connection to sync
-                        // the failed messages.
-                        Util.connectToDataNetwork(context);
-
-                        // Check if number of tries is sent
-                    } else {
-                        processSms.postToSentBox(message);
+                    if (posted) {
+                        postToSentBox(message);
                     }
                 } else {
                     posted = sendTaskSms(message);
@@ -452,14 +451,8 @@ public class ProcessMessage {
             if (message.getType() == Message.Type.PENDING) {
                 posted = syncReceivedSms(message, client);
                 setErrorMessage(syncUrl.getUrl());
-                if (!posted) {
-
-                    // attempt to make a data connection to the sync
-                    // url
-                    Util.connectToDataNetwork(context);
-
-                } else {
-                    processSms.postToSentBox(message);
+                if (posted) {
+                    postToSentBox(message);
                 }
             } else {
                 posted = sendTaskSms(message);
@@ -469,10 +462,10 @@ public class ProcessMessage {
         // Update number of tries.
 
         if(!posted) {
-            Logger.log(TAG, "Messages Not posted: "+message);
+            Logger.log(TAG, "Messages Not posted: " + message);
             if (message.getRetries() > prefs.retries().get()) {
                 // Delete from db
-                routePendingMessage(message);
+                deleteMessage(message);
             } else {
                 // Increase message's number of tries for future comparison to know when to delete it.
                 int retries = message.getRetries() + 1;
@@ -488,6 +481,17 @@ public class ProcessMessage {
     private List<SyncUrl> fetchEnabledSyncUrl() {
         return App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
                 SyncUrl.Status.ENABLED);
+    }
+
+    /**
+     * Saves successfully sent messages into the db
+     *
+     * @param message the message
+     */
+    public boolean postToSentBox(Message message) {
+        Logger.log(TAG, "postToSentBox(): post message to sentbox "+message.toString());
+        return SentMessagesUtil.processSentMessages(message);
+
     }
 
     public String getErrorMessage() {
