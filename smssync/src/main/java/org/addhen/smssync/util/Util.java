@@ -41,6 +41,7 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
@@ -560,7 +561,7 @@ public class Util {
         Logger.log(CLASS_TAG, message);
         Prefs prefs = new Prefs(context);
         if (prefs.enableLog().get()) {
-            final Handler handler = new Handler();
+            final Handler handler = new Handler(Looper.getMainLooper());
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {

@@ -195,9 +195,8 @@ public class PendingMessages
 
     private void initSync() {
         log("syncMessages messagesUuid: ");
-        ArrayList<String> messagesUuids = null;
+        ArrayList<String> messagesUuids = new ArrayList<>();
         if (mSelectedItemsPositions != null && mSelectedItemsPositions.size() > 0) {
-            messagesUuids = new ArrayList<>();
             for (Integer position : mSelectedItemsPositions) {
                 messagesUuids.add(adapter.getItem(position).getUuid());
             }
