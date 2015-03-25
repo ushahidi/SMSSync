@@ -104,16 +104,6 @@ public class AddSyncUrl {
     }
 
     private void save(SyncUrl syncUrl) {
-        App.getDatabaseInstance().getSyncUrlInstance().put(syncUrl, new DatabaseCallback<Void>() {
-            @Override
-            public void onFinished(Void result) {
-                // Do nothing
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                // Do nothing
-            }
-        });
+        App.getDatabaseInstance().getSyncUrlInstance().put(syncUrl);
     }
 }

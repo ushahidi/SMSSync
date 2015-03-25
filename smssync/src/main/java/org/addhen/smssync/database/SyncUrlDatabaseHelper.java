@@ -115,6 +115,12 @@ public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlD
         });
     }
 
+    public void put(final SyncUrl syncUrl) {
+        if(!isClosed()) {
+            cupboard().withDatabase(getWritableDatabase()).put(syncUrl);
+        }
+    }
+
     @Override
     public void put(final List<SyncUrl> syncUrls,
             final BaseDatabseHelper.DatabaseCallback<Void> callback) {
@@ -132,6 +138,8 @@ public class SyncUrlDatabaseHelper extends BaseDatabseHelper implements SyncUrlD
             }
         });
     }
+
+
 
     @Override
     public void deleteAllSyncUrl(final BaseDatabseHelper.DatabaseCallback<Void> callback) {
