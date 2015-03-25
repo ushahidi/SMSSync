@@ -12,7 +12,7 @@
 -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.SmsSync" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.SmsSync" parent="@style/Theme.AppCompat">
         <item name="actionBarItemBackground">@drawable/selectable_background_smssync</item>
         <item name="actionBarStyle">@style/ActionBar.Transparent.SmsSync</item>
 
@@ -21,8 +21,8 @@
         <!-- setup text color of checkbox text field-->
         <item name="android:checkboxStyle">@style/CheckBox.Text</item>
         <item name="actionModeBackground">@android:color/background_dark</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="actionModeStyle">@style/LStyled.ActionMode</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:actionModeStyle">@style/Theme.SmsSync.ActionMode</item>
     </style>
 
     <style name="ActionBar.Solid.SmsSync" parent="@style/Widget.AppCompat.ActionBar.Solid">
@@ -43,9 +43,13 @@
         <item name="android:background">#00000000</item>
     </style>
 
-    <style name="LStyled.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
-        <item name="titleTextStyle">@android:color/background_dark</item>
-        <item name="subtitleTextStyle">@android:color/background_dark</item>
+    <style name="Theme.SmsSync.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="android:actionModeBackground">@android:color/background_dark</item>
+        <item name="actionModeBackground">@android:color/background_dark</item>
+        <item name="android:titleTextStyle">@android:color/background_light</item>
+        <item name="android:subtitleTextStyle">@android:color/background_light</item>
+        <item name="titleTextStyle">@android:color/background_light</item>
+        <item name="subtitleTextStyle">@android:color/background_light</item>
     </style>
 
     <!-- Title bar Text -->

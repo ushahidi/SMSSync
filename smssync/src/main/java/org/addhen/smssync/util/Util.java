@@ -561,24 +561,8 @@ public class Util {
         Logger.log(CLASS_TAG, message);
         Prefs prefs = new Prefs(context);
         if (prefs.enableLog().get()) {
-            final Handler handler = new Handler(Looper.getMainLooper());
-            final Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    App.bus.post(new LogEvent());
-                }
-            };
-
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
-                    new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
-                    handler.post(runnable);
-                }
-            };
-            thread.start();
-
-
+            new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(message);
+            App.bus.post(new LogEvent());
         }
     }
 
