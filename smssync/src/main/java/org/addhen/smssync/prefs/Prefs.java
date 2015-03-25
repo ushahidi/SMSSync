@@ -119,14 +119,6 @@ public class Prefs {
         return new BooleanPreference(sharedPreferences, "MessageResultsAPIEnable", false);
     }
 
-    public StringPreference keyword() {
-        return new StringPreference(sharedPreferences, "Keyword", "");
-    }
-
-    public SharedPreferences getSharedPreferences() {
-        return sharedPreferences;
-    }
-
     public Context getContext() {
         return context;
     }

@@ -68,7 +68,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
         if (message != null) {
             message.setSentResultMessage(resultMessage);
             message.setSentResultCode(result);
-            Logger.log("Sent", "message sent"+message);
+            Logger.log("Sent", "message sent "+message);
             if (sentSuccess) {
                 message.setStatus(Message.Status.SENT);
                 App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
@@ -101,6 +101,8 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
 
                 Prefs prefs = new Prefs(context);
                 boolean deleted = false;
+
+                Logger.log(SmsSentReceiver.class.getSimpleName(), "Statuses: ");
                 if (prefs.enableRetry().get()) {
                     final int retry = prefs.retries().get();
                     if (message.getRetries() > retry) {
@@ -116,6 +118,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 // Make sure the message is not deleted before attempting to update it retries status;
                 if (!deleted) {
                     message.setStatus(Message.Status.FAILED);
+                Logger.log(SmsSentReceiver.class.getSimpleName(), "messages "+message);
                     App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
                             new BaseDatabseHelper.DatabaseCallback<Void>() {
                                 @Override
