@@ -7,3 +7,6 @@
 - Disable proguard minification.
 - Fix issue with date format being null.
 - Add Japanese, German and Indonesian translations.
+- Fix logs not propagating.
+- Fix Sync URL list view to reload when a new Sync URL is added.
+- Fix alert debug crashing when the app receives a key code.

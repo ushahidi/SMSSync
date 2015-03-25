@@ -1,5 +1,17 @@
 [
     {
+        "version": "v2.8.0-alpha.3",
+        "date": "Mar 25, 2015",
+        "features": [
+            "Style ActionMode background to accommodate changes in the new theme."
+        ],
+        "bugs": [
+            "Fix logs not propagating.",
+            "Fix Sync URL list view to reload when a new Sync URL is added.",
+            "Fix alert debug crashing when the app receives a key code."
+        ]
+    },
+    {
         "version": "v2.8.0-alpha.2",
         "date": "Mar 23, 2015",
         "features": [
