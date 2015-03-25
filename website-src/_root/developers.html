@@ -191,7 +191,7 @@ Content-Type: application/json; charset=utf-8
 }</pre>
 <p>Next, the server needs to process the JSON response sent by SMSsync. It needs to remove all the message UUIDs sent by SMSsync from
 the subsequent outgoing messages list so SMSsync avoids processing those again. Once the server receives the UUIDs of the queued up messages, it needs to send a response
-back to SMSsync as JSON response with the received messages UUIDs as JSON array. If there are no received messages UUIDs, it needs to send back an empty JSON array to SMSsync</p>
+back to SMSsync as JSON response with the received messages UUIDs as JSON array. If there are no received messages UUIDs, it needs to send back an empty message_uuids JSON array to SMSsync</p>
 <pre class="prettyprint linenums">
 POST /smssync?task=sent HTTP/1.1
 Host: testserver.local
@@ -204,6 +204,16 @@ Content-Type: application/json; charset=utf-8
         "1ba368bd-c467-4374-bf28",
         "95df126b-ee80-4175-a6fb"
     ]
+}</pre>
+<p>Sample empty message uuids JSON response.</p>
+<pre class="prettyprint linenums">
+POST /smssync?task=sent HTTP/1.1
+Host: testserver.local
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+{
+    "message_uuids": []
 }</pre>
 <p>To send SMS status delivery report back to the server, SMSsync will make a <code>GET ?task=result</code> to the server and should receive a list
 of message UUIDs that are waiting to receive delivery reports. The server should send the JSON response below</p>
