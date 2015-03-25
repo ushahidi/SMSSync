@@ -52,11 +52,9 @@ import android.view.View;
 import android.widget.AdapterView;
 
 public class LogFragment extends BaseListFragment<LogView, Log, LogAdapter> implements
-        View.OnClickListener, AdapterView.OnItemClickListener, ILogView, LogListener {
+        View.OnClickListener, AdapterView.OnItemClickListener, ILogView {
 
     private static PhoneStatusInfo info;
-
-    private String mLogFile = null;
 
     /**
      * Receiver for getting battery state.
