@@ -85,6 +85,8 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         });
 
             } else {
+                //TODO: Renable if alert is made configurable.
+                /*
                 final String errorCode;
                 final AlertCallbacks alertCallbacks = new AlertCallbacks(new Prefs(context));
                 if (intent.hasExtra("errorCode")) {
@@ -97,13 +99,13 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                     public void run() {
                         alertCallbacks.smsSendFailedRequest(resultMessage, errorCode);
                     }
-                }).start();
+                }).start();*/
 
                 Prefs prefs = new Prefs(context);
                 boolean deleted = false;
 
-                Logger.log(SmsSentReceiver.class.getSimpleName(), "Statuses: ");
-                if (prefs.enableRetry().get()) {
+                Logger.log(SmsSentReceiver.class.getSimpleName(), "Statuses: "+prefs.enableRetry().get());
+                //if (prefs.enableRetry().get()) {
                     final int retry = prefs.retries().get();
                     if (message.getRetries() > retry) {
                         App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid());
@@ -113,10 +115,10 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         int retries = message.getRetries() + 1;
                         message.setRetries(retries);
                     }
-                }
+                //}
 
                 // Make sure the message is not deleted before attempting to update it retries status;
-                if (!deleted) {
+                //if (!deleted) {
                     message.setStatus(Message.Status.FAILED);
                 Logger.log(SmsSentReceiver.class.getSimpleName(), "messages "+message);
                     App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
@@ -131,7 +133,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
 
                                 }
                             });
-                }
+                //}
             }
         }
 
