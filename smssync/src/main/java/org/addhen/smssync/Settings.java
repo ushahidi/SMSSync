@@ -349,7 +349,7 @@ public class Settings extends PreferenceActivity implements
             retry.setEnabled(false);
         }
 
-        prefs.reply().set(replyPref.getText().toString());
+
         // log reply changes.
         if (!prefs.reply().get().equals(replyPref.getText().toString())) {
             // Log old value and new value.
@@ -357,7 +357,7 @@ public class Settings extends PreferenceActivity implements
                     replyPref.getDialogTitle().toString(), prefs.reply().get(),
                     replyPref.getText().toString()));
         }
-        prefs.autoDelete().set(enableAutoDelete.isChecked());
+        prefs.reply().set(replyPref.getText().toString());
 
         if (prefs.autoDelete().get() != enableAutoDelete.isChecked()) {
             boolean checked = enableAutoDelete.isChecked() ? true : false;
@@ -369,8 +369,7 @@ public class Settings extends PreferenceActivity implements
                     enableAutoDelete.getTitle().toString(), status,
                     check));
         }
-
-        prefs.smsReportDelivery().set(enableSmsReportDelivery.isChecked());
+        prefs.autoDelete().set(enableAutoDelete.isChecked());
 
         if (prefs.smsReportDelivery().get() != enableSmsReportDelivery.isChecked()) {
             boolean checked = enableSmsReportDelivery.isChecked() ? true : false;
@@ -382,8 +381,8 @@ public class Settings extends PreferenceActivity implements
                     enableSmsReportDelivery.getTitle().toString(), status,
                     check));
         }
+        prefs.smsReportDelivery().set(enableSmsReportDelivery.isChecked());
 
-        prefs.enableReply().set(enableReply.isChecked());
         if (prefs.enableReply().get() != enableReply.isChecked()) {
             boolean checked = enableReply.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -394,8 +393,8 @@ public class Settings extends PreferenceActivity implements
                     enableReply.getTitle().toString(), status,
                     check));
         }
+        prefs.enableReply().set(enableReply.isChecked());
 
-        prefs.enableReplyFrmServer().set(enableReplyFrmServer.isChecked());
         if (prefs.enableReplyFrmServer().get() != enableReplyFrmServer.isChecked()) {
             boolean checked = enableReplyFrmServer.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -406,8 +405,8 @@ public class Settings extends PreferenceActivity implements
                     enableReplyFrmServer.getTitle().toString(), status,
                     check));
         }
+        prefs.enableReplyFrmServer().set(enableReplyFrmServer.isChecked());
 
-        prefs.enableTaskCheck().set(taskCheck.isChecked());
         if (prefs.enableTaskCheck().get() != taskCheck.isChecked()) {
             boolean checked = taskCheck.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -418,8 +417,8 @@ public class Settings extends PreferenceActivity implements
                     taskCheck.getTitle().toString(), status,
                     check));
         }
+        prefs.enableTaskCheck().set(taskCheck.isChecked());
 
-        prefs.enableAutoSync().set(autoSync.isChecked());
         if (prefs.enableAutoSync().get() != autoSync.isChecked()) {
             boolean checked = autoSync.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -430,16 +429,16 @@ public class Settings extends PreferenceActivity implements
                     autoSync.getTitle().toString(), status,
                     check));
         }
+        prefs.enableAutoSync().set(autoSync.isChecked());
 
-        prefs.autoTime().set(autoSyncTimes.getTimeValueAsString());
         if (!prefs.autoTime().get().equals(autoSyncTimes.getTimeValueAsString())) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     autoSyncTimes.getTitle().toString(),
                     prefs.autoTime().get(), autoSyncTimes.getTimeValueAsString()));
         }
+        prefs.autoTime().set(autoSyncTimes.getTimeValueAsString());
 
-        prefs.enableReply().set(enableReply.isChecked());
-        if(prefs.enableReply().get() != enableRetry.isChecked()) {
+        if(prefs.enableReply().get() != enableReply.isChecked()) {
             boolean checked = enableReply.isChecked() ? true : false;
 
             String check = getCheckedStatus(checked);
@@ -450,6 +449,7 @@ public class Settings extends PreferenceActivity implements
                     enableReply.getTitle().toString(), status,
                     check));
         }
+        prefs.enableReply().set(enableReply.isChecked());
 
         for(int i = 0; i < retry.getEntryValues().length; i++) {
             if(retry.getEntry() !=null ) {
@@ -474,41 +474,45 @@ public class Settings extends PreferenceActivity implements
                     check));
         }*/
 
-        prefs.taskCheckTime().set(taskCheckTimes.getTimeValueAsString());
+
         if (!prefs.taskCheckTime().get().equals(taskCheckTimes.getTimeValueAsString())) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     taskCheckTimes.getTitle().toString(),
                     prefs.taskCheckTime().get(), taskCheckTimes.getTimeValueAsString()));
         }
+        prefs.taskCheckTime().set(taskCheckTimes.getTimeValueAsString());
 
         if (!TextUtils.isEmpty(uniqueId.getText())) {
             String id = Util.removeWhitespaces(uniqueId.getText());
-            prefs.uniqueId().set(id);
+
             if (!prefs.uniqueId().get().equals(uniqueId.getText())) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, uniqueId.getTitle(),
                                 prefs.uniqueId().get(), id)
                 );
             }
+            prefs.uniqueId().set(id);
         } else {
-            prefs.uniqueId().set("");
+
             if (!prefs.uniqueId().get().equals("")) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, uniqueId.getTitle(),
                                 prefs.uniqueId().get(), "")
                 );
             }
+            prefs.uniqueId().set("");
         }
 
         if (!TextUtils.isEmpty(alertPhoneNumber.getText())) {
             String number = Util.removeWhitespaces(alertPhoneNumber.getText());
-            prefs.alertPhoneNumber().set(number);
+
             if (!prefs.alertPhoneNumber().get().equals(alertPhoneNumber.getText())) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, alertPhoneNumber.getTitle().toString(),
                                 prefs.alertPhoneNumber().get(), number)
                 );
             }
+            prefs.alertPhoneNumber().set(number);
         } else {
             if (prefs.alertPhoneNumber().get() != null) {
                 Util.logActivities(this,
@@ -518,7 +522,7 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
-        prefs.messageResultsAPIEnable().set(enableMessageResultsAPI.isChecked());
+
         if (prefs.messageResultsAPIEnable().get() != enableMessageResultsAPI.isChecked()) {
             boolean checked = enableMessageResultsAPI.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -529,6 +533,7 @@ public class Settings extends PreferenceActivity implements
                     enableMessageResultsAPI.getTitle().toString(), status,
                     check));
         }
+        prefs.messageResultsAPIEnable().set(enableMessageResultsAPI.isChecked());
     }
 
     @Override
