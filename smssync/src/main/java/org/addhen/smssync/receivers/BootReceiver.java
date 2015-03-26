@@ -83,7 +83,7 @@ public class BootReceiver extends BroadcastReceiver {
 
                 // Check for tasks now that we have connectivity
                 if (prefs.enableTaskCheck().get()) {
-                    SmsSyncServices.sendWakefulTask(context,
+                    SmsSyncServices.sendWakefulWork(context,
                             CheckTaskService.class);
 
                     // start the scheduler for 'task check' service

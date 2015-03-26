@@ -32,25 +32,23 @@ import android.os.SystemClock;
  *
  * @author eyedol
  */
-public class ScheduleServices {
+public class ScheduleServices implements SmsSyncServices.AlarmListener {
 
     private static final String CLASS_TAG = ScheduleServices.class
             .getSimpleName();
 
     private AlarmManager mgr;
 
-    private PendingIntent pendingIntent;
+    private Intent intent;
 
     private Context mContext;
+
+    private long interval;
 
     public ScheduleServices(Context context, Intent intent,
             int requestCode, int flags) {
         mContext = context.getApplicationContext();
-        Logger.log(CLASS_TAG,
-                "ScheduleServices() executing scheduled services ");
-        mgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-        pendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent,
-                flags);
+        this.intent = intent;
     }
 
 
@@ -58,23 +56,33 @@ public class ScheduleServices {
      * Stops the schedule service or task
      */
     public void stopScheduler() {
-        if (mgr != null && pendingIntent != null) {
-            Logger.log(CLASS_TAG, "Stop scheduler");
-            Util.logActivities(mContext, mContext.getString(R.string.stopping_scheduler));
-            mgr.cancel(pendingIntent);
-            Util.logActivities(mContext, mContext.getString(R.string.stopped_scheduler));
-        }
+        SmsSyncServices.cancelAlarms(mContext);
     }
 
     public void updateScheduler(long interval) {
         Logger.log(CLASS_TAG, "updating scheduler");
+        this.interval = interval;
+    }
+
+    @Override
+    public void scheduleAlarms(AlarmManager alarmManager, PendingIntent pendingIntent, Context context) {
+        mgr = alarmManager;
         if (mgr != null && pendingIntent != null) {
             Logger.log(CLASS_TAG, "Update scheduler to " + interval);
             Util.logActivities(mContext, mContext.getString(R.string.scheduler_updated_to));
-            mgr.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            mgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + 60000, interval, pendingIntent);
 
         }
     }
 
+    @Override
+    public void sendWakefulWork(Context context) {
+        SmsSyncServices.sendWakefulWork(context, intent);
+    }
+
+    @Override
+    public long getMaxAge() {
+        return(interval * 2);
+    }
 }

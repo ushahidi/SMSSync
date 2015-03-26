@@ -157,17 +157,6 @@ public abstract class BaseService extends Service {
         return getState().isRunning();
     }
 
-    protected void createNotification(int resId, String title, PendingIntent intent) {
-        Util.buildNotification(this, R.drawable.ic_stat_notfiy, title, getString(resId),
-                intent, true);
-
-    }
-
-    protected PendingIntent getPendingIntent() {
-        return PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
     protected void log(String message) {
         Logger.log(getClass().getName(), message);
@@ -181,11 +170,4 @@ public abstract class BaseService extends Service {
         Logger.log(getClass().getName(), message, ex);
     }
 
-    protected void logActivities(int id, Object... args) {
-        final String msg = getString(id, args);
-        if (mLogUtil != null) {
-            mLogUtil.append(msg);
-        }
-        Logger.log(TAG, "Activity " + msg);
-    }
 }

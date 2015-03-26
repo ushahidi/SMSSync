@@ -15,5 +15,8 @@ allprojects {
 
     repositories {
         jcenter()
+        maven {
+            url "http://repo.commonsware.com.s3.amazonaws.com"
+        }
     }
 }

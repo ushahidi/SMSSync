@@ -22,14 +22,20 @@ import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
+import org.addhen.smssync.activities.MainActivity;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncPendingMessagesTask;
 import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
+import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.text.format.DateFormat;
 
 import java.util.ArrayList;
 
@@ -42,7 +48,7 @@ import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
  *
  * @author eyedol
  */
-public class SyncPendingMessagesService extends BaseService {
+public class SyncPendingMessagesService extends SmsSyncServices {
 
     private static String CLASS_TAG = SyncPendingMessagesService.class
             .getSimpleName();
@@ -53,6 +59,14 @@ public class SyncPendingMessagesService extends BaseService {
 
     private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
+    protected Prefs prefs;
+
+    private LogUtil mLogUtil;
+
+    public SyncPendingMessagesService() {
+        super(CLASS_TAG);
+    }
+
     public static boolean isServiceWorking() {
         return service != null && service.isWorking();
     }
@@ -60,18 +74,22 @@ public class SyncPendingMessagesService extends BaseService {
     @Override
     public void onCreate() {
         super.onCreate();
+        prefs = new Prefs(this);
+        if (prefs.enableLog().get()) {
+            mLogUtil = new LogUtil(DateFormat.getDateFormatOrder(this));
+        }
         service = this;
     }
 
     @Override
-    protected void handleIntent(final Intent intent) {
+    protected void executeTask(final Intent intent) {
 
         if (intent != null) {
             final SyncType syncType = SyncType.fromIntent(intent);
             // Get Id
             messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
-            Logger.log(CLASS_TAG, "executeTask() executing this task ");
+            Logger.log(CLASS_TAG, "doWakefulWork() executing this task ");
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
@@ -124,7 +142,6 @@ public class SyncPendingMessagesService extends BaseService {
         }
     }
 
-    @Override
     public SyncPendingMessagesState getState() {
         return mState;
 
@@ -145,11 +162,30 @@ public class SyncPendingMessagesService extends BaseService {
         return getState().isRunning();
     }
 
+    protected void createNotification(int resId, String title, PendingIntent intent) {
+        Util.buildNotification(this, R.drawable.ic_stat_notfiy, title, getString(resId),
+                intent, true);
+
+    }
+
+    protected PendingIntent getPendingIntent() {
+        return PendingIntent.getActivity(this, 0,
+                new Intent(this, MainActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    protected void logActivities(int id, Object... args) {
+        final String msg = getString(id, args);
+        if (mLogUtil != null) {
+            mLogUtil.append(msg);
+        }
+        Logger.log(TAG, "Activity " + msg);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
 
         service = null;
     }
-
 }

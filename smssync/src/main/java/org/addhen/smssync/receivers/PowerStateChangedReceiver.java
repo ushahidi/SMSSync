@@ -21,6 +21,7 @@ import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.AlertCallbacks;
 import org.addhen.smssync.services.CheckTaskService;
+import org.addhen.smssync.services.SmsSyncServices;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.util.Util;
 
@@ -99,14 +100,14 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
                 if (prefs.enableAutoSync().get()) {
                     smsSyncAutoSyncServiceIntent = new Intent(context,
                             SyncPendingMessagesService.class);
-                    context.startService(smsSyncAutoSyncServiceIntent);
+                    SmsSyncServices.sendWakefulWork(context, smsSyncAutoSyncServiceIntent);
                 }
 
                 // Stop the service that checks for tasks
                 if (prefs.enableTaskCheck().get()) {
                     smsSyncTaskCheckServiceIntent = new Intent(context,
                             CheckTaskService.class);
-                    context.startService(smsSyncTaskCheckServiceIntent);
+                    SmsSyncServices.sendWakefulWork(context, smsSyncTaskCheckServiceIntent);
                 }
             }
         }

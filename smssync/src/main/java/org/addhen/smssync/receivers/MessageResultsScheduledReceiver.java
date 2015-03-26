@@ -14,6 +14,6 @@ public class MessageResultsScheduledReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SmsSyncServices.sendWakefulTask(context, MessageResultsScheduledService.class);
+        SmsSyncServices.sendWakefulWork(context, MessageResultsScheduledService.class);
     }
 }

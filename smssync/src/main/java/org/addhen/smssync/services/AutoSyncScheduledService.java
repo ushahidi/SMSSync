@@ -28,7 +28,7 @@ import org.addhen.smssync.util.ServicesConstants;
 import android.content.Intent;
 
 /**
- * A this class handles background services for periodic synchronization of pending messages.
+ * This class handles background services for periodic synchronization of pending messages.
  *
  * @author eyedol
  */
@@ -51,7 +51,7 @@ public class AutoSyncScheduledService extends SmsSyncServices {
     @Override
     protected void executeTask(Intent intent) {
 
-        log(CLASS_TAG, "executeTask() executing "+CLASS_TAG);
+        log(CLASS_TAG, "doWakefulWork() executing "+CLASS_TAG);
         final int total = App.getDatabaseInstance().getMessageInstance().pendingTotal();
         log(CLASS_TAG, "Total: "+total);
         if (total > 0) {

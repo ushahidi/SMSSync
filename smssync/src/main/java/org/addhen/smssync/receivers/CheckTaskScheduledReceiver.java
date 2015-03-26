@@ -32,7 +32,7 @@ public class CheckTaskScheduledReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        SmsSyncServices.sendWakefulTask(context, CheckTaskService.class);
+        SmsSyncServices.sendWakefulWork(context, CheckTaskService.class);
     }
 
 }
