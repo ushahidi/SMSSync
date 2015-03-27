@@ -42,6 +42,7 @@ import org.addhen.smssync.views.PendingMessagesView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -63,6 +64,8 @@ public class PendingMessages
         android.view.View.OnClickListener {
 
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
+
+    public static final int PENDING_MESSAGES_INTENT_FLAG = 4;
 
     private Intent syncPendingMessagesServiceIntent;
 
@@ -194,6 +197,7 @@ public class PendingMessages
     private void initSync() {
         log("syncMessages messagesUuid: ");
         ArrayList<String> messagesUuids = new ArrayList<>();
+
         if (mSelectedItemsPositions != null && mSelectedItemsPositions.size() > 0) {
             for (Integer position : mSelectedItemsPositions) {
                 messagesUuids.add(adapter.getItem(position).getUuid());
@@ -207,6 +211,7 @@ public class PendingMessages
                 ServicesConstants.MESSAGE_UUID, messagesUuids);
         syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA,
                 SyncType.MANUAL.name());
+        syncPendingMessagesServiceIntent.addFlags(PENDING_MESSAGES_INTENT_FLAG);
         getActivity().startService(syncPendingMessagesServiceIntent);
 
     }

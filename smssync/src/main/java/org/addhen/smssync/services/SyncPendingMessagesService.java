@@ -23,6 +23,7 @@ import com.squareup.otto.Subscribe;
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
+import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncPendingMessagesTask;
@@ -87,7 +88,9 @@ public class SyncPendingMessagesService extends SmsSyncServices {
         if (intent != null) {
             final SyncType syncType = SyncType.fromIntent(intent);
             // Get Id
-            messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
+            if(intent.getFlags() == 100) {
+                messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
+            }
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG, "doWakefulWork() executing this task ");
             if (!isWorking()) {
