@@ -136,27 +136,37 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
         });
     }
 
-    public void updateSentFields(final Message message){
-        if (!isClosed()) {
+    public void updateSentFields(final Message message, final DatabaseCallback<Void> callback){
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    try {
+                        final String whereClause = "message_uuid = ?";
+                        final String whereArgs[] = {message.getUuid()};
+                        ContentValues values = new ContentValues();
+                        values.put("message_type", message.getType().name());
+                        values.put("sent_result_message", message.getSentResultMessage());
+                        values.put("sent_result_code", message.getSentResultCode());
+                        values.put("status", message.getStatus().name());
+                        values.put("retries", message.getRetries());
+                        Logger.log("Updated ", " update " + values);
 
-            final String whereClause = "message_uuid = ?";
-            final String whereArgs[] = {message.getUuid()};
-            ContentValues values = new ContentValues();
-            values.put("message_type", message.getType().name());
-            values.put("sent_result_message", message.getSentResultMessage());
-            values.put("sent_result_code", message.getSentResultCode());
-            values.put("status", message.getStatus().name());
-            values.put("retries", message.getRetries());
-            Logger.log("Updated ", " update " + values);
+                        // Update sent fields if message already exist in the db
+                        int rows = cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
+                                whereClause, whereArgs);
+                        // Message doesn't exist in the db, add it as a new entry
+                        if(rows == 0) {
+                            cupboard().withDatabase(getWritableDatabase()).put(message);
+                        }
+                        callback.onFinished(null);
 
-            // Update sent fields if message already exist in the db
-            int rows = cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
-                    whereClause, whereArgs);
-            // Message doesn't exist in the db, add it as a new entry
-            if (rows == 0) {
-                cupboard().withDatabase(getWritableDatabase()).put(message);
+                    } catch (Exception e) {
+                        callback.onError(e);
+                    }
+                }
             }
-        }
+        });
     }
 
     @Override

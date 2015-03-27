@@ -13,9 +13,9 @@
     },
     {
         "version": "v2.8.0-alpha.2",
-        "date": "Mar 23, 2015",
+        "date": "March 23, 2015",
         "features": [
-            "Add Japanese, German and Indonesian translations"
+            "Add Japanese German and Indonesian translations"
         ],
         "bugs": [
             "Fix inconsistency with message result API codes.",
@@ -25,7 +25,7 @@
     },
     {
         "version": "v2.8.0-alpha.1",
-        "date": "Mar 23, 2015",
+        "date": "March 23, 2015",
         "features": [
             "Add Android 5.1 support.",
             "Enable auto delete of pending of message after a configured number of retry is exceed.",

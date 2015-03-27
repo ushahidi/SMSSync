@@ -71,7 +71,18 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
             Logger.log("Sent", "message sent "+message);
             if (sentSuccess) {
                 message.setStatus(Message.Status.SENT);
-                App.getDatabaseInstance().getMessageInstance().updateSentFields(message);
+                App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
+                        new BaseDatabseHelper.DatabaseCallback<Void>() {
+                            @Override
+                            public void onFinished(Void result) {
+                                // Save details to sent inbox
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+
+                            }
+                        });
 
             } else {
                 //TODO: Renable if alert is made configurable.
@@ -110,7 +121,18 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 if (!deleted) {
                     message.setStatus(Message.Status.FAILED);
                 Logger.log(SmsSentReceiver.class.getSimpleName(), "messages "+message);
-                    App.getDatabaseInstance().getMessageInstance().updateSentFields(message);
+                    App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
+                            new BaseDatabseHelper.DatabaseCallback<Void>() {
+                                @Override
+                                public void onFinished(Void result) {
+
+                                }
+
+                                @Override
+                                public void onError(Exception exception) {
+
+                                }
+                            });
                 }
             }
         }
