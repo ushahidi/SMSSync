@@ -77,6 +77,8 @@ public class Util {
 
     public static final int SERVER_TIMEOUT = 10000;
 
+    public static final int KITKAT = 19;
+
     private static final String TIME_FORMAT_12_HOUR = "h:mm a";
 
     private static final String TIME_FORMAT_24_HOUR = "H:mm";
@@ -522,7 +524,7 @@ public class Util {
      * Check if the device runs Android 4.4 (KitKat) or higher.
      */
     public static boolean isKitKat() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        return Build.VERSION.SDK_INT >= KITKAT;
     }
 
     public static void makeDefaultSmsApp(Context context) {
