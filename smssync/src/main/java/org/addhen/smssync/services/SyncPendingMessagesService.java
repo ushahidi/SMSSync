@@ -102,7 +102,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
                         new SyncPendingMessagesTask(this).execute(config);
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
-                        logActivities(R.string.not_syncing);
+                        logActivities(R.string.not_syncing, e.getMessage());
                         App.bus.post(mState.transition(ERROR, e));
                     }
                 } else {

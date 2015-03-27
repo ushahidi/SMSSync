@@ -75,20 +75,8 @@ public class SyncPendingMessagesTask extends
             return new SyncPendingMessagesState(FINISHED_SYNC, 0, 0, 0, 0, SyncType.MANUAL, null);
         }
 
-        try {
-            // lock resources need to keep this sync alive
-            mService.acquireLocks();
+        return sync(config);
 
-            return sync(config);
-
-        } catch (ConnectivityException e) {
-            Logger.log(CLASS_TAG, "No internet connection");
-            return transition(ERROR, e);
-
-        } finally {
-            // release resources
-            mService.releaseLocks();
-        }
     }
 
     @Override

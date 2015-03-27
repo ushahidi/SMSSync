@@ -32,23 +32,25 @@ import android.os.SystemClock;
  *
  * @author eyedol
  */
-public class ScheduleServices implements SmsSyncServices.AlarmListener {
+public class ScheduleServices {
 
     private static final String CLASS_TAG = ScheduleServices.class
             .getSimpleName();
 
     private AlarmManager mgr;
 
-    private Intent intent;
+    private PendingIntent pendingIntent;
 
     private Context mContext;
-
-    private long interval;
 
     public ScheduleServices(Context context, Intent intent,
             int requestCode, int flags) {
         mContext = context.getApplicationContext();
-        this.intent = intent;
+        Logger.log(CLASS_TAG,
+                "ScheduleServices() executing scheduled services ");
+        mgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        pendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent,
+                flags);
     }
 
 
@@ -56,17 +58,16 @@ public class ScheduleServices implements SmsSyncServices.AlarmListener {
      * Stops the schedule service or task
      */
     public void stopScheduler() {
-        SmsSyncServices.cancelAlarms(mContext);
+        if (mgr != null && pendingIntent != null) {
+            Logger.log(CLASS_TAG, "Stop scheduler");
+            Util.logActivities(mContext, mContext.getString(R.string.stopping_scheduler));
+            mgr.cancel(pendingIntent);
+            Util.logActivities(mContext, mContext.getString(R.string.stopped_scheduler));
+        }
     }
 
     public void updateScheduler(long interval) {
         Logger.log(CLASS_TAG, "updating scheduler");
-        this.interval = interval;
-    }
-
-    @Override
-    public void scheduleAlarms(AlarmManager alarmManager, PendingIntent pendingIntent, Context context) {
-        mgr = alarmManager;
         if (mgr != null && pendingIntent != null) {
             Logger.log(CLASS_TAG, "Update scheduler to " + interval);
             Util.logActivities(mContext, mContext.getString(R.string.scheduler_updated_to));
@@ -74,15 +75,7 @@ public class ScheduleServices implements SmsSyncServices.AlarmListener {
                     SystemClock.elapsedRealtime() + 60000, interval, pendingIntent);
 
         }
+
     }
 
-    @Override
-    public void sendWakefulWork(Context context) {
-        SmsSyncServices.sendWakefulWork(context, intent);
-    }
-
-    @Override
-    public long getMaxAge() {
-        return(interval * 2);
-    }
 }
