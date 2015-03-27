@@ -545,18 +545,6 @@ public class Util {
         return true;
     }
 
-    public void log(String message) {
-        Logger.log(getClass().getName(), message);
-    }
-
-    public void log(String format, Object... args) {
-        Logger.log(getClass().getName(), String.format(format, args));
-    }
-
-    public void log(String message, Exception ex) {
-        Logger.log(getClass().getName(), message, ex);
-    }
-
     public static void logActivities(final Context context, final String message) {
         Logger.log(CLASS_TAG, message);
         Prefs prefs = new Prefs(context);
@@ -595,6 +583,7 @@ public class Util {
 
         return -1;
     }
+
     /**
      * Writes SMSsync's database file on a non rooted device to the SD card
      */
@@ -628,5 +617,17 @@ public class Util {
             } catch (IOException ioe) {
             }
         }
+    }
+
+    public void log(String message) {
+        Logger.log(getClass().getName(), message);
+    }
+
+    public void log(String format, Object... args) {
+        Logger.log(getClass().getName(), String.format(format, args));
+    }
+
+    public void log(String message, Exception ex) {
+        Logger.log(getClass().getName(), message, ex);
     }
 }

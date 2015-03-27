@@ -18,6 +18,7 @@
 package org.addhen.smssync;
 
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 
 import org.addhen.smssync.database.Database;
 
@@ -32,7 +33,7 @@ public class App extends Application {
 
     public static final String TAG = "SmsSyncApplication";
 
-    public static final SyncBus bus = new SyncBus(new Bus());
+    public static final SyncBus bus = new SyncBus(new Bus(ThreadEnforcer.ANY));
 
     public static Database mDb;
 

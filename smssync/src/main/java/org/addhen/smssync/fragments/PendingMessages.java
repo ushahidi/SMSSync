@@ -29,6 +29,7 @@ import org.addhen.smssync.models.Message;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.services.SyncPendingMessagesService;
+import org.addhen.smssync.state.ReloadMessagesEvent;
 import org.addhen.smssync.tasks.ProgressTask;
 import org.addhen.smssync.tasks.SyncType;
 import org.addhen.smssync.tasks.TaskCanceled;
@@ -602,6 +603,11 @@ public class PendingMessages
 
             }
         });
+    }
+
+    @Subscribe
+    public void reloadMessages(final ReloadMessagesEvent event) {
+        loadingTask();
     }
 
 }

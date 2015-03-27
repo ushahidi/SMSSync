@@ -35,8 +35,6 @@ public class RunServicesUtil {
     public static final String CLASS_TAG = RunServicesUtil.class
             .getSimpleName();
 
-    private ScheduleServices mScheduleServices;
-
     private Prefs prefs;
 
     private Context context;
