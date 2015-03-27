@@ -89,6 +89,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
             final SyncType syncType = SyncType.fromIntent(intent);
             // Get Id
             if(intent.getFlags() == 100) {
+                log("Get syncMessages messagesUuid: ");
                 messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
             }
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
