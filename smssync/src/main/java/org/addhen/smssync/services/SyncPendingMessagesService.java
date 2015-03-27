@@ -93,7 +93,7 @@ public class SyncPendingMessagesService extends SmsSyncServices {
                 messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
             }
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
-            Logger.log(CLASS_TAG, "doWakefulWork() executing this task ");
+            Logger.log(CLASS_TAG, "doWakefulWork() executing this task with Flag "+intent.getFlags());
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
