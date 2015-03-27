@@ -438,18 +438,19 @@ public class Settings extends PreferenceActivity implements
         }
         prefs.autoTime().set(autoSyncTimes.getTimeValueAsString());
 
-        if(prefs.enableReply().get() != enableReply.isChecked()) {
-            boolean checked = enableReply.isChecked() ? true : false;
+        // Enable or Disable Pending messages delete retries.
+        if(prefs.enableRetry().get() != enableRetry.isChecked()) {
+            boolean checked = enableRetry.isChecked() ? true : false;
 
             String check = getCheckedStatus(checked);
 
             String status = getCheckedStatus(prefs.enableRetry().get());
 
             Util.logActivities(Settings.this, getString(R.string.settings_changed,
-                    enableReply.getTitle().toString(), status,
+                    enableRetry.getTitle().toString(), status,
                     check));
         }
-        prefs.enableReply().set(enableReply.isChecked());
+        prefs.enableRetry().set(enableRetry.isChecked());
 
         for(int i = 0; i < retry.getEntryValues().length; i++) {
             if(retry.getEntry() !=null ) {

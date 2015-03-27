@@ -28,7 +28,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
             message = (Message) extras.getSerializable(ServicesConstants.SENT_SMS_BUNDLE);
         }
         final int result = getResultCode();
-        Boolean sentSuccess = false;
+        boolean sentSuccess = false;
         log("smsSentReceiver onReceive result: " + result);
 
         final String resultMessage;
@@ -71,18 +71,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
             Logger.log("Sent", "message sent "+message);
             if (sentSuccess) {
                 message.setStatus(Message.Status.SENT);
-                App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
-                        new BaseDatabseHelper.DatabaseCallback<Void>() {
-                            @Override
-                            public void onFinished(Void result) {
-                                // Save details to sent inbox
-                            }
-
-                            @Override
-                            public void onError(Exception exception) {
-
-                            }
-                        });
+                App.getDatabaseInstance().getMessageInstance().updateSentFields(message);
 
             } else {
                 //TODO: Renable if alert is made configurable.
@@ -105,7 +94,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 boolean deleted = false;
 
                 Logger.log(SmsSentReceiver.class.getSimpleName(), "Statuses: "+prefs.enableRetry().get());
-                //if (prefs.enableRetry().get()) {
+                if (prefs.enableRetry().get()) {
                     final int retry = prefs.retries().get();
                     if (message.getRetries() > retry) {
                         App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid());
@@ -115,25 +104,14 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         int retries = message.getRetries() + 1;
                         message.setRetries(retries);
                     }
-                //}
+                }
 
                 // Make sure the message is not deleted before attempting to update it retries status;
-                //if (!deleted) {
+                if (!deleted) {
                     message.setStatus(Message.Status.FAILED);
                 Logger.log(SmsSentReceiver.class.getSimpleName(), "messages "+message);
-                    App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
-                            new BaseDatabseHelper.DatabaseCallback<Void>() {
-                                @Override
-                                public void onFinished(Void result) {
-
-                                }
-
-                                @Override
-                                public void onError(Exception exception) {
-
-                                }
-                            });
-                //}
+                    App.getDatabaseInstance().getMessageInstance().updateSentFields(message);
+                }
             }
         }
 

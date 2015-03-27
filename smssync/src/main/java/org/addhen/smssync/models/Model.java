@@ -1,9 +1,11 @@
 package org.addhen.smssync.models;
 
+import java.io.Serializable;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public abstract class Model  {
+public abstract class Model implements Serializable {
 
     public Long _id;
 

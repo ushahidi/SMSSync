@@ -415,6 +415,8 @@ public class ProcessSms {
 
         if (PhoneNumberUtils.isGlobalPhoneNumber(message.getPhoneNumber())) {
 
+            message.setStatus(Message.Status.UNCONFIRMED);
+
             if (prefs.smsReportDelivery().get()) {
                 sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
                         deliveryIntents);
@@ -422,7 +424,7 @@ public class ProcessSms {
                 sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
                         null);
             }
-            message.setStatus(Message.Status.UNCONFIRMED);
+
         } else {
             final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + message.getPhoneNumber();
             Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);

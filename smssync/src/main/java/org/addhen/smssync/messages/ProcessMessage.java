@@ -507,8 +507,9 @@ public class ProcessMessage {
     }
 
     private boolean sendTaskSms(Message message) {
-        final Long timeMills = System.currentTimeMillis();
+
         if (message.getDate() == null || !TextUtils.isEmpty(message.getUuid())) {
+            final Long timeMills = System.currentTimeMillis();
             message.setDate(new Date(timeMills));
         }
         if(message.getUuid() ==null || TextUtils.isEmpty(message.getUuid())) {
