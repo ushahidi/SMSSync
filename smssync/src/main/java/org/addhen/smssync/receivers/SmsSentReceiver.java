@@ -109,7 +109,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 Logger.log(SmsSentReceiver.class.getSimpleName(), "Statuses: "+prefs.enableRetry().get());
                 if (prefs.enableRetry().get()) {
                     final int retry = prefs.retries().get();
-                    if (message.getRetries() >= retry) {
+                    if ((message.getRetries() - 1) >= retry) {
                         App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid(), new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {
