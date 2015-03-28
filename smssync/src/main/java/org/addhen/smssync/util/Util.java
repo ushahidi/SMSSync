@@ -1,31 +1,23 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
- *
+/**
+ * ****************************************************************************
+ * Copyright (c) 2010 - 2013 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ * <p/>
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 
 package org.addhen.smssync.util;
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.BuildConfig;
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.R;
-import org.addhen.smssync.activities.MainActivity;
-import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
-import org.addhen.smssync.state.LogEvent;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.annotation.TargetApi;
 import android.app.NotificationManager;
@@ -40,8 +32,6 @@ import android.net.NetworkInfo;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.Telephony;
 import android.support.v4.app.NotificationCompat;
@@ -50,6 +40,16 @@ import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.addhen.smssync.App;
+import org.addhen.smssync.BuildConfig;
+import org.addhen.smssync.R;
+import org.addhen.smssync.activities.MainActivity;
+import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
+import org.addhen.smssync.state.LogEvent;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -179,7 +179,7 @@ public class Util {
      * @return String
      */
     public static String formatDate(String dateFormat, String date,
-            String toFormat) {
+                                    String toFormat) {
 
         String formatted = "";
 
@@ -288,7 +288,7 @@ public class Util {
      * @param notificationTitle notification title
      */
     public static void showFailNotification(Context context, String message,
-            String notificationTitle) {
+                                            String notificationTitle) {
 
         Intent baseIntent = new Intent(context, MainActivity.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -312,7 +312,7 @@ public class Util {
      * @param ongoing  True if you don't want the user to clear the notification
      */
     public static void buildNotification(Context context, int drawable,
-            String message, String title, PendingIntent intent, boolean ongoing) {
+                                         String message, String title, PendingIntent intent, boolean ongoing) {
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -528,16 +528,16 @@ public class Util {
     }
 
     public static void makeDefaultSmsApp(Context context) {
-        if (isKitKat()) {
-            if (!isDefaultSmsApp(context)) {
-                final Intent changeDefaultIntent = new Intent(
-                        Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-                changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
-                        context.getPackageName());
-                context.startActivity(changeDefaultIntent);
 
-            }
+        if (!isDefaultSmsApp(context)) {
+            final Intent changeDefaultIntent = new Intent(
+                    Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+            changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
+                    context.getPackageName());
+            context.startActivity(changeDefaultIntent);
+
         }
+
     }
 
     public static boolean isDefaultSmsApp(Context context) {
@@ -610,10 +610,10 @@ public class Util {
             e.printStackTrace();
         } finally {
             try {
-                if(fos !=null) {
+                if (fos != null) {
                     fos.close();
                 }
-                if(fis !=null) {
+                if (fis != null) {
                     fis.close();
                 }
             } catch (IOException ioe) {
