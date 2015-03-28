@@ -71,12 +71,6 @@ import java.util.regex.Pattern;
  */
 public class Util {
 
-    public static final int NOTIFICATION_ALERT = 1337;
-
-    public static final int READ_THREAD = 1;
-
-    public static final int SERVER_TIMEOUT = 10000;
-
     public static final int KITKAT = 19;
 
     private static final String TIME_FORMAT_12_HOUR = "h:mm a";
