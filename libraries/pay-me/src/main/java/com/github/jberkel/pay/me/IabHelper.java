@@ -149,6 +149,8 @@ public class IabHelper {
         if (!mContext.getPackageManager().queryIntentServices(BIND_BILLING_SERVICE, 0).isEmpty()) {
             // service available to handle that Intent
             mServiceConn = new BillingServiceConnection(listener);
+            // Needed for Lollipop or higher
+            BIND_BILLING_SERVICE.setPackage("com.android.vending");
             if (!mContext.bindService(BIND_BILLING_SERVICE, mServiceConn, Context.BIND_AUTO_CREATE)) {
                 logWarn("Could not bind to service");
             }
