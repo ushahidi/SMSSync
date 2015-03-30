@@ -41,8 +41,6 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
 
     protected int count;
 
-    protected Handler mHandler = new Handler();
-
     /**
      *
      * @param title
