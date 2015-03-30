@@ -49,7 +49,9 @@ public class BootReceiver extends BroadcastReceiver {
         Prefs prefs = new Prefs(context);
         // load current settings
         if (shutdown) {
-            Util.logActivities(context, context.getString(R.string.device_shutdown));
+            final long currentTime = System.currentTimeMillis();
+            final String time = Util.formatTimestamp(context, currentTime);
+            Util.logActivities(context, context.getString(R.string.device_shutdown, time));
         }
         if (rebooted) {
             Util.logActivities(context, context.getString(R.string.device_reboot));
@@ -81,7 +83,7 @@ public class BootReceiver extends BroadcastReceiver {
                             .updateScheduler(interval);
                 }
 
-                // Check for tasks now that we have connectivity
+                // Enable Task service
                 if (prefs.enableTaskCheck().get()) {
                     SmsSyncServices.sendWakefulWork(context,
                             CheckTaskService.class);
