@@ -1,5 +1,15 @@
 [
     {
+        "version": "v2.8.0-beta.1",
+        "date": "Mar 30, 2015",
+        "features": [],
+        "bugs": [
+            "Fix donation screen crashing on Lollipop devices.",
+            "Fix random stalls of enabled services.",
+            "Fix retries so it only deletes pending message when it's enabled"
+        ]
+    },
+    {
         "version": "v2.8.0-alpha.3",
         "date": "Mar 25, 2015",
         "features": [
