@@ -456,7 +456,7 @@ public class PendingMessages
     // Thread class to handle synchronous execution of message importation task.
     private class ImportMessagesTask extends ProgressTask {
 
-        protected Integer status;
+        protected Boolean status;
 
         protected Context appContext;
 
@@ -477,9 +477,9 @@ public class PendingMessages
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             if (success) {
-                if (status == 0) {
+                if (status == true) {
                     fetchMessages();
-                } else if (status == 1) {
+                } else if (status == false) {
                     toastLong(R.string.nothing_to_import);
                 }
             }
