@@ -207,13 +207,12 @@ public class ProcessSms {
     }
 
     /**
-     * TODO:// refactor so this method return boolean <p/> Import messages from the messages app's
-     * table and puts them in SMSSync's outbox table. This will allow messages the imported messages
-     * to be sync'd to the configured Sync URL.
+     * Import messages from the messages app's table and puts them in SMSSync's outbox table.
+     * This will allow messages the imported messages to be sync'd to the configured Sync URL.
      *
-     * @return int 0 for success, 1 for failure.
+     * @return true for success, false for failure.
      */
-    public int importMessages() {
+    public boolean importMessages() {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
         if (Util.isKitKat()) {
@@ -252,10 +251,10 @@ public class ProcessSms {
                     c.close();
                 }
             }
-            return 0;
+            return true;
 
         } else {
-            return 1;
+            return false;
         }
 
     }
@@ -276,7 +275,7 @@ public class ProcessSms {
                 });
     }
 
-    public int importMessageKitKat() {
+    public boolean importMessageKitKat() {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
         Uri uriSms = SmsQuery.INBOX_CONTENT_URI;
@@ -310,10 +309,10 @@ public class ProcessSms {
                     c.close();
                 }
             }
-            return 0;
+            return true;
 
         } else {
-            return 1;
+            return false;
         }
     }
 
