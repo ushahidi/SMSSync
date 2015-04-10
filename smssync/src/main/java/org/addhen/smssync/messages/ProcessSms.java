@@ -213,7 +213,7 @@ public class ProcessSms {
      *
      * @return int 0 for success, 1 for failure.
      */
-    public int importMessages() {
+    public boolean importMessages() {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
         if (Util.isKitKat()) {
@@ -252,10 +252,10 @@ public class ProcessSms {
                     c.close();
                 }
             }
-            return 0;
+            return false;
 
         } else {
-            return 1;
+            return true;
         }
 
     }
@@ -276,7 +276,7 @@ public class ProcessSms {
                 });
     }
 
-    public int importMessageKitKat() {
+    public boolean importMessageKitKat() {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
         Uri uriSms = SmsQuery.INBOX_CONTENT_URI;
@@ -310,10 +310,10 @@ public class ProcessSms {
                     c.close();
                 }
             }
-            return 0;
+            return false;
 
         } else {
-            return 1;
+            return true;
         }
     }
 
