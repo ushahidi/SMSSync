@@ -470,16 +470,16 @@ public class PendingMessages
 
              status = new ProcessSms(appContext).importMessages();
 
-            return true;
+            return status;
         }
 
         @Override
         protected void onPostExecute(Boolean success) {
             super.onPostExecute(success);
             if (success) {
-                if (status == true) {
+                if (status) {
                     fetchMessages();
-                } else if (status == false) {
+                } else {
                     toastLong(R.string.nothing_to_import);
                 }
             }
