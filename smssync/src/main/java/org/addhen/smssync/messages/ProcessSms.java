@@ -207,11 +207,10 @@ public class ProcessSms {
     }
 
     /**
-     * TODO:// refactor so this method return boolean <p/> Import messages from the messages app's
-     * table and puts them in SMSSync's outbox table. This will allow messages the imported messages
-     * to be sync'd to the configured Sync URL.
+     * Import messages from the messages app's table and puts them in SMSSync's outbox table. 
+     * This will allow messages the imported messages to be sync'd to the configured Sync URL.
      *
-     * @return int 0 for success, 1 for failure.
+     * @return true for success, false for failure.
      */
     public boolean importMessages() {
         Logger.log(CLASS_TAG,
