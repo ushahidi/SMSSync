@@ -49,6 +49,17 @@
             }
         },
         {
+            "name" : "Patricia M. Brent",
+            "email" : "patriciambrent@gmail.com",
+            "website" : null,
+            "description" : "Refactoring, bug fixes",
+            "country" : {
+                "name" : "United States",
+                "latitude" : 40.742118,
+                "longitude" : -73.987985
+            }
+        },
+        {
             "name" : "Juergen Eichholz",
             "email" : null,
             "website" : "http://about.me/jke",
