@@ -72,8 +72,6 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
         return true;
     }
 
-    ;
-
     protected void showFragment(String tag) {
         fragmentManager = mActivity.getSupportFragmentManager();
         fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
