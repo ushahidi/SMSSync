@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
+
 package org.addhen.smssync.util;
 
 import android.os.Environment;
@@ -16,10 +33,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Keep log of activities through out most part of the application
@@ -28,18 +41,12 @@ import java.util.concurrent.Future;
  */
 public class LogUtil {
 
-    private final static String TAG = LogUtil.class.getSimpleName();
-
-    private PrintWriter writer;
-
-    private String dateFormat;
-
-    static final int MAX_SIZE = 32 * 1024;
-
     public static final int ID = 1;
-
     public static final String LOG_NAME = "smssync_log";
-
+    static final int MAX_SIZE = 32 * 1024;
+    private final static String TAG = LogUtil.class.getSimpleName();
+    private PrintWriter writer;
+    private String dateFormat;
     private LogListener mLogListener;
 
     public LogUtil(char[] format) {
@@ -72,65 +79,6 @@ public class LogUtil {
             }
         }
 
-    }
-
-    public CharSequence format(Date d) {
-        return DateFormat.format(dateFormat, d);
-    }
-
-
-    public void append(String s) {
-        if (writer != null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(format(new Date()))
-                    .append(" ").append(s);
-            writer.println(sb);
-            Logger.log(TAG, "Log " + sb);
-        }
-    }
-
-    private void rotate(final File logFile) {
-        if (logFile.length() > MAX_SIZE) {
-            Logger.log(TAG, "rotating logfile " + logFile);
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        LineNumberReader r = new LineNumberReader(new FileReader(logFile));
-
-                        while (r.readLine() != null) {
-                            ;
-                        }
-                        r.close();
-
-                        int keep = Math.round(r.getLineNumber() * 0.3f);
-                        if (keep > 0) {
-                            r = new LineNumberReader(new FileReader(logFile));
-
-                            while (r.readLine() != null && r.getLineNumber() < keep) {
-                                ;
-                            }
-
-                            File newFile = new File(logFile.getAbsolutePath() + ".new");
-                            PrintWriter pw = new PrintWriter(new FileWriter(newFile));
-                            String line;
-                            while ((line = r.readLine()) != null) {
-                                pw.println(line);
-                            }
-
-                            pw.close();
-                            r.close();
-
-                            if (newFile.renameTo(logFile)) {
-                                Logger.log(TAG, "rotated file, new size = " + logFile.length());
-                            }
-                        }
-                    } catch (IOException e) {
-                        Logger.log(TAG, "error rotating file " + logFile, e);
-                    }
-                }
-            }.start();
-        }
     }
 
     /**
@@ -225,26 +173,6 @@ public class LogUtil {
     }
 
     /**
-     * Append a new line to an existing file.
-     *
-     * @param line The line to append to the file.
-     */
-    public void appendAndClose(String line) {
-        append(line);
-        close();
-    }
-
-    /**
-     * Close all opened resources.
-     */
-    public void close() {
-        Logger.log(TAG, "CloseLog");
-        if (writer != null) {
-            writer.close();
-        }
-    }
-
-    /**
      * Delete log with a given file name
      *
      * @param name The log file to delete.
@@ -265,5 +193,83 @@ public class LogUtil {
             return file.delete();
         }
         return false;
+    }
+
+    public CharSequence format(Date d) {
+        return DateFormat.format(dateFormat, d);
+    }
+
+    public void append(String s) {
+        if (writer != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(format(new Date()))
+                    .append(" ").append(s);
+            writer.println(sb);
+            Logger.log(TAG, "Log " + sb);
+        }
+    }
+
+    private void rotate(final File logFile) {
+        if (logFile.length() > MAX_SIZE) {
+            Logger.log(TAG, "rotating logfile " + logFile);
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        LineNumberReader r = new LineNumberReader(new FileReader(logFile));
+
+                        while (r.readLine() != null) {
+                            ;
+                        }
+                        r.close();
+
+                        int keep = Math.round(r.getLineNumber() * 0.3f);
+                        if (keep > 0) {
+                            r = new LineNumberReader(new FileReader(logFile));
+
+                            while (r.readLine() != null && r.getLineNumber() < keep) {
+                                ;
+                            }
+
+                            File newFile = new File(logFile.getAbsolutePath() + ".new");
+                            PrintWriter pw = new PrintWriter(new FileWriter(newFile));
+                            String line;
+                            while ((line = r.readLine()) != null) {
+                                pw.println(line);
+                            }
+
+                            pw.close();
+                            r.close();
+
+                            if (newFile.renameTo(logFile)) {
+                                Logger.log(TAG, "rotated file, new size = " + logFile.length());
+                            }
+                        }
+                    } catch (IOException e) {
+                        Logger.log(TAG, "error rotating file " + logFile, e);
+                    }
+                }
+            }.start();
+        }
+    }
+
+    /**
+     * Append a new line to an existing file.
+     *
+     * @param line The line to append to the file.
+     */
+    public void appendAndClose(String line) {
+        append(line);
+        close();
+    }
+
+    /**
+     * Close all opened resources.
+     */
+    public void close() {
+        Logger.log(TAG, "CloseLog");
+        if (writer != null) {
+            writer.close();
+        }
     }
 }

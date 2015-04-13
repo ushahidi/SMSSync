@@ -1,16 +1,32 @@
-package org.addhen.smssync.receivers;
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
 
-import org.addhen.smssync.App;
-import org.addhen.smssync.R;
-import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.models.Message;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.ServicesConstants;
+package org.addhen.smssync.receivers;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import org.addhen.smssync.App;
+import org.addhen.smssync.R;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.util.ServicesConstants;
 
 /**
  * Created by Tomasz Stalka(tstalka@soldevelo.com) on 5/5/14.

@@ -1,102 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scrollView">
-<LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:padding="8dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4"
+            android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:paddingBottom="4dp">
-        <TextView
+            android:weightSum="4">
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="left|center_vertical"
+                android:layout_weight="2.5"
                 android:text="@string/sync_scheme_method"
-                android:layout_weight="2.5"
-                android:layout_gravity="left|center_vertical"/>
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Spinner
+            <Spinner
+                android:id="@+id/sync_method"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/sync_method"
                 android:layout_weight="1.5"
-                android:entries="@array/sync_methods"/>
-    </LinearLayout>
+                android:entries="@array/sync_methods" />
+        </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="4"
+            android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:paddingBottom="4dp">
-        <TextView
+            android:weightSum="4">
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/sync_scheme_data_format"
+                android:layout_gravity="left|center_vertical"
                 android:layout_weight="2.5"
-                android:layout_gravity="left|center_vertical"/>
+                android:text="@string/sync_scheme_data_format"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <Spinner
+            <Spinner
+                android:id="@+id/sync_data_format"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/sync_data_format"
                 android:layout_weight="1.5"
-                android:entries="@array/sync_formats"/>
-    </LinearLayout>
+                android:entries="@array/sync_formats" />
+        </LinearLayout>
 
-    <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/sync_scheme_keys"
             android:layout_gravity="left|center_vertical"
+            android:paddingBottom="4dp"
             android:paddingTop="4dp"
-            android:paddingBottom="4dp"/>
+            android:text="@string/sync_scheme_keys"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <EditText
+        <EditText
             android:id="@+id/sync_kSecret"
             style="@style/EditText.SyncUrl"
-            android:hint="@string/enter_key_for_secret"/>
+            android:hint="@string/enter_key_for_secret" />
 
-    <EditText
+        <EditText
             android:id="@+id/sync_kFrom"
             style="@style/EditText.SyncUrl"
-            android:hint="@string/enter_key_for_from"/>
+            android:hint="@string/enter_key_for_from" />
 
-    <EditText
+        <EditText
             android:id="@+id/sync_kMessageID"
             style="@style/EditText.SyncUrl"
-            android:hint="@string/enter_key_for_message_id"/>
+            android:hint="@string/enter_key_for_message_id" />
 
-    <EditText
+        <EditText
             android:id="@+id/sync_kMessage"
             style="@style/EditText.SyncUrl"
-            android:hint="@string/enter_key_for_message"/>
+            android:hint="@string/enter_key_for_message" />
 
-    <EditText
+        <EditText
             android:id="@+id/sync_kSentTimestamp"
             style="@style/EditText.SyncUrl"
-            android:hint="@string/enter_key_for_sent_timestamp"/>
+            android:hint="@string/enter_key_for_sent_timestamp" />
 
-    <EditText
+        <EditText
             android:id="@+id/sync_kSentTo"
             style="@style/EditText.SyncUrl"
-            android:hint="@string/enter_key_for_sent_to"/>
+            android:hint="@string/enter_key_for_sent_to" />
 
-    <EditText
+        <EditText
             android:id="@+id/sync_kDeviceID"
             style="@style/EditText.SyncUrl"
-            android:hint="@string/enter_key_for_device_id"/>
-</LinearLayout>
+            android:hint="@string/enter_key_for_device_id" />
+    </LinearLayout>
 </ScrollView>

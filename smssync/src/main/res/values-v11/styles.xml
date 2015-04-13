@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <resources>
+
     <style name="Theme.SmsSync" parent="@style/Theme.AppCompat">
         <item name="actionBarItemBackground">@drawable/selectable_background_smssync</item>
         <item name="actionBarStyle">@style/ActionBar.Transparent.SmsSync</item>
@@ -9,6 +27,7 @@
         <!-- setup text color of checkbox text field-->
         <item name="android:checkboxStyle">@style/CheckBox.Text</item>
     </style>
+
     <style name="NavDrawerList">
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">match_parent</item>

@@ -1,32 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.messages;
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.R;
-import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.models.Message;
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.util.LogUtil;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.SentMessagesUtil;
-import org.addhen.smssync.util.ServicesConstants;
-import org.addhen.smssync.util.Util;
 
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -42,6 +31,16 @@ import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 import android.text.format.DateFormat;
 import android.widget.Toast;
+
+import org.addhen.smssync.App;
+import org.addhen.smssync.R;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.LogUtil;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,7 +107,7 @@ public class ProcessSms {
      * @return the message id
      */
     public long findMessageId(long threadId,
-            long timestamp) {
+                              long timestamp) {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
                         + threadId + " timestamp: " + timestamp);
@@ -385,7 +384,7 @@ public class ProcessSms {
         ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
         Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
-                + message.getPhoneNumber() + " message: " + message.getBody() +" message"+message);
+                + message.getPhoneNumber() + " message: " + message.getBody() + " message" + message);
 
         Util.logActivities(context, context.getString(R.string.sent_msg, message.getBody(), message.getPhoneNumber()));
 

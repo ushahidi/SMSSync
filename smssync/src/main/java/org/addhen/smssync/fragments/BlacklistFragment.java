@@ -1,33 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.fragments;
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.R;
-import org.addhen.smssync.UiThread;
-import org.addhen.smssync.adapters.FilterAdapter;
-import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.listeners.BlacklistActionModeListener;
-import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.views.AddPhoneNumber;
-import org.addhen.smssync.views.BlacklistView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -39,6 +27,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import org.addhen.smssync.App;
+import org.addhen.smssync.R;
+import org.addhen.smssync.UiThread;
+import org.addhen.smssync.adapters.FilterAdapter;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.listeners.BlacklistActionModeListener;
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.views.AddPhoneNumber;
+import org.addhen.smssync.views.BlacklistView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -220,7 +219,7 @@ public class BlacklistFragment extends
                     UiThread.getInstance().post(new Runnable() {
                         @Override
                         public void run() {
-                            if(result !=null) {
+                            if (result != null) {
                                 addPhoneNumber.phoneNumber.setText(result.getPhoneNumber());
                             }
                         }
@@ -244,14 +243,14 @@ public class BlacklistFragment extends
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
-                                    int whichButton) {
+                                                int whichButton) {
 
                             }
                         })
                 .setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
-                                    int whichButton) {
+                                                int whichButton) {
                                 dialog.dismiss();
                             }
                         });
@@ -305,39 +304,39 @@ public class BlacklistFragment extends
             // load all checked syncurl
             App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST,
                     new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
-                @Override
-                public void onFinished(final List<Filter> result) {
-                    UiThread.getInstance().post(new Runnable() {
                         @Override
-                        public void run() {
-                            if(result!=null && result.size() > 0 ) {
-                                if (view.enableBlacklist.isChecked()) {
-                                    // start sms receiver
+                        public void onFinished(final List<Filter> result) {
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (result != null && result.size() > 0) {
+                                        if (view.enableBlacklist.isChecked()) {
+                                            // start sms receiver
 
-                                    prefs.enableBlacklist().set(true);
-                                    view.enableBlacklist.setChecked(true);
+                                            prefs.enableBlacklist().set(true);
+                                            view.enableBlacklist.setChecked(true);
 
 
-                                } else {
+                                        } else {
 
-                                    prefs.enableBlacklist().set(false);
-                                    view.enableBlacklist.setChecked(false);
+                                            prefs.enableBlacklist().set(false);
+                                            view.enableBlacklist.setChecked(false);
+                                        }
+                                    } else {
+                                        toastLong(R.string.no_phone_number_to_enable_blacklist);
+                                        prefs.enableBlacklist().set(false);
+                                        view.enableBlacklist.setChecked(false);
+                                    }
                                 }
-                            } else {
-                                toastLong(R.string.no_phone_number_to_enable_blacklist);
-                                prefs.enableBlacklist().set(false);
-                                view.enableBlacklist.setChecked(false);
-                            }
+                            });
+
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+
                         }
                     });
-
-                }
-
-                @Override
-                public void onError(Exception exception) {
-
-                }
-            });
 
         } else {
             toastLong(R.string.no_phone_number_to_enable_blacklist);
@@ -350,24 +349,24 @@ public class BlacklistFragment extends
         view.emptyView.setVisibility(View.GONE);
         App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST,
                 new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
-            @Override
-            public void onFinished(final List<Filter> result) {
-                UiThread.getInstance().post(new Runnable() {
                     @Override
-                    public void run() {
-                        view.listLoadingProgress.setVisibility(View.GONE);
-                        view.emptyView.setVisibility(View.VISIBLE);
-                        adapter.setItems(result);
+                    public void onFinished(final List<Filter> result) {
+                        UiThread.getInstance().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                view.listLoadingProgress.setVisibility(View.GONE);
+                                view.emptyView.setVisibility(View.VISIBLE);
+                                adapter.setItems(result);
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onError(Exception exception) {
+
                     }
                 });
-
-            }
-
-            @Override
-            public void onError(Exception exception) {
-
-            }
-        });
     }
 
     @Override
@@ -379,12 +378,12 @@ public class BlacklistFragment extends
 
     private void deleteTask(boolean deleteByUuid) {
         getActivity().setProgressBarIndeterminate(true);
-        if(adapter.getCount() == 0) {
+        if (adapter.getCount() == 0) {
             toastLong(R.string.no_phone_number_to_delete);
         } else {
-            if(deleteByUuid) {
-                for(final Integer position: mSelectedItemsPositions) {
-                    App.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(),new BaseDatabseHelper.DatabaseCallback<Void>() {
+            if (deleteByUuid) {
+                for (final Integer position : mSelectedItemsPositions) {
+                    App.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(), new BaseDatabseHelper.DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
                             UiThread.getInstance().post(new Runnable() {

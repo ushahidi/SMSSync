@@ -1,23 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.listeners;
-
-import org.addhen.smssync.R;
 
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
@@ -28,6 +26,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.addhen.smssync.R;
+
 import java.util.LinkedHashSet;
 
 /**
@@ -36,15 +36,19 @@ import java.util.LinkedHashSet;
 public abstract class BaseActionModeListener implements ActionMode.Callback,
         AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
 
-    protected ActionBarActivity host;
-
+    protected final int contextMenuResId;
     public ActionMode activeMode;
-
+    protected ActionBarActivity host;
     protected ListView modeView;
-
     private LinkedHashSet<Integer> mSelectedItemPositions = new LinkedHashSet<Integer>();
 
-    protected final int contextMenuResId;
+    public BaseActionModeListener(final ActionBarActivity host,
+                                  ListView modeView, int contextMenuResId) {
+        this.host = host;
+        this.modeView = modeView;
+        this.modeView.setOnItemClickListener(this);
+        this.contextMenuResId = contextMenuResId;
+    }
 
     /**
      * Set the title of the action mode.
@@ -63,17 +67,9 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
      */
     public abstract void setTitle(int resId);
 
-    public BaseActionModeListener(final ActionBarActivity host,
-            ListView modeView, int contextMenuResId) {
-        this.host = host;
-        this.modeView = modeView;
-        this.modeView.setOnItemClickListener(this);
-        this.contextMenuResId = contextMenuResId;
-    }
-
     @Override
     public boolean onItemLongClick(AdapterView<?> view, View row, int position,
-            long id) {
+                                   long id) {
         modeView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         if (activeMode == null) {
             if (host != null) {
@@ -86,7 +82,7 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
 
     @Override
     public void onItemClick(AdapterView<?> view, View row, int position,
-            long id) {
+                            long id) {
         onItemCheckedStateChanged(position);
     }
 
@@ -106,12 +102,12 @@ public abstract class BaseActionModeListener implements ActionMode.Callback,
 
     }
 
-    public void setSelectedItemPositions(LinkedHashSet<Integer> selectedItemPositions) {
-        mSelectedItemPositions = selectedItemPositions;
-    }
-
     public LinkedHashSet<Integer> getSelectedItemPositions() {
         return mSelectedItemPositions;
+    }
+
+    public void setSelectedItemPositions(LinkedHashSet<Integer> selectedItemPositions) {
+        mSelectedItemPositions = selectedItemPositions;
     }
 
     @Override

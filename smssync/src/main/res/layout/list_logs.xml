@@ -1,21 +1,43 @@
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".LogActivity">
-    <include layout="@layout/phone_status"/>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".LogActivity">
+
+    <include layout="@layout/phone_status" />
+
     <CheckBox
-            android:id="@+id/start_logs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/enable_logs"
-            android:layout_gravity="center"/>
-    <TextView android:id="@+id/log_location"
-              android:layout_gravity="center_horizontal"
-              style="@style/TextView.Title"
-              android:visibility="gone"/>
-    <include layout="@layout/list_items"/>
+        android:id="@+id/start_logs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/enable_logs" />
+
+    <TextView
+        android:id="@+id/log_location"
+        style="@style/TextView.Title"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
+
+    <include layout="@layout/list_items" />
 </LinearLayout>

@@ -1,27 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync;
-
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.RunServicesUtil;
-import org.addhen.smssync.util.TimePreference;
-import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,8 +33,12 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.text.TextUtils;
 
+import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.RunServicesUtil;
+import org.addhen.smssync.util.TimePreference;
+import org.addhen.smssync.util.Util;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class handles all related task for settings on SMSSync. TODO // move the UI code into it's
@@ -72,11 +70,11 @@ public class Settings extends PreferenceActivity implements
 
     public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 
-   // public static final String KEY_ENABLE_SMS_PORTALS = "enable_sms_portals";
+    // public static final String KEY_ENABLE_SMS_PORTALS = "enable_sms_portals";
 
     public static final String KEY_ENABLE_RETRIES = "auto_delete_pending_messages_preference";
 
-    public static final String KEY_LIST_RETRIES  = "auto_delete_pending_messages_retries_preference";
+    public static final String KEY_LIST_RETRIES = "auto_delete_pending_messages_retries_preference";
 
     public static final String TASK_CHECK = "task_check_preference";
 
@@ -91,7 +89,42 @@ public class Settings extends PreferenceActivity implements
     public static ArrayList<Messenger> availableConnections = new ArrayList<Messenger>();
 
     public static int currentConnectionIndex = -1;
+    private final Handler mHandler = new Handler();
+    private EditTextPreference replyPref;
+    private CheckBoxPreference enableReplyFrmServer;
+    private CheckBoxPreference enableAutoDelete;
+    private CheckBoxPreference enableSmsReportDelivery;
+    private CheckBoxPreference enableReply;
+    private CheckBoxPreference autoSync;
+    private CheckBoxPreference useSmsPortals;
+    private CheckBoxPreference taskCheck;
+    private TimePreference autoSyncTimes;
+    private CheckBoxPreference enableMessageResultsAPI;
+    private ListPreference retry;
+    private CheckBoxPreference enableRetry;
+    private TimePreference taskCheckTimes;
+    private EditTextPreference uniqueId;
+    private EditTextPreference alertPhoneNumber;
+    private Preference about;
+    private Prefs prefs;
+    private int uniqueIdValidityStatus = 1;
+    /**
+     * Create runnable to validate unique ID.
+     */
+    Runnable mUniqueId = new Runnable() {
+        public void run() {
 
+            if (uniqueIdValidityStatus == 1) {
+
+                Util.showToast(Settings.this, R.string.unique_id_length_error);
+                uniqueId.setText("");
+            } else if (uniqueIdValidityStatus == 2) {
+                Util.showToast(Settings.this, R.string.unique_id_numeric_error);
+                uniqueId.setText("");
+            }
+        }
+    };
+    private RunServicesUtil runServicesUtil;
     final Runnable mMessageResultsAPIEnabled = new Runnable() {
 
         public void run() {
@@ -105,7 +138,6 @@ public class Settings extends PreferenceActivity implements
             }
         }
     };
-
     /**
      * Create runnable for validating callback URL. Putting the validation process in it own thread
      * provides efficiency.
@@ -131,7 +163,6 @@ public class Settings extends PreferenceActivity implements
             }
         }
     };
-
     /**
      *
      */
@@ -155,64 +186,6 @@ public class Settings extends PreferenceActivity implements
             }
         }
     };
-
-    private final Handler mHandler = new Handler();
-
-    private EditTextPreference replyPref;
-
-    private CheckBoxPreference enableReplyFrmServer;
-
-    private CheckBoxPreference enableAutoDelete;
-
-    private CheckBoxPreference enableSmsReportDelivery;
-
-    private CheckBoxPreference enableReply;
-
-    private CheckBoxPreference autoSync;
-
-    private CheckBoxPreference useSmsPortals;
-
-    private CheckBoxPreference taskCheck;
-
-    private TimePreference autoSyncTimes;
-
-    private CheckBoxPreference enableMessageResultsAPI;
-
-    private ListPreference retry;
-
-    private CheckBoxPreference enableRetry;
-
-    private TimePreference taskCheckTimes;
-
-    private EditTextPreference uniqueId;
-
-    private EditTextPreference alertPhoneNumber;
-
-    private Preference about;
-
-    private Prefs prefs;
-
-    private int uniqueIdValidityStatus = 1;
-
-    private RunServicesUtil runServicesUtil;
-
-    /**
-     * Create runnable to validate unique ID.
-     */
-    Runnable mUniqueId = new Runnable() {
-        public void run() {
-
-            if (uniqueIdValidityStatus == 1) {
-
-                Util.showToast(Settings.this, R.string.unique_id_length_error);
-                uniqueId.setText("");
-            } else if (uniqueIdValidityStatus == 2) {
-                Util.showToast(Settings.this, R.string.unique_id_numeric_error);
-                uniqueId.setText("");
-            }
-        }
-    };
-
     private String versionName;
 
     private StringBuilder versionLabel;
@@ -270,7 +243,7 @@ public class Settings extends PreferenceActivity implements
         /*useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(KEY_ENABLE_SMS_PORTALS);*/
 
-        enableRetry  = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_ENABLE_RETRIES);
+        enableRetry = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_ENABLE_RETRIES);
 
         retry = (ListPreference) getPreferenceScreen().findPreference(KEY_LIST_RETRIES);
 
@@ -343,7 +316,7 @@ public class Settings extends PreferenceActivity implements
             enableMessageResultsAPI.setEnabled(false);
         }
 
-        if(enableRetry.isChecked()) {
+        if (enableRetry.isChecked()) {
             retry.setEnabled(true);
         } else {
             retry.setEnabled(false);
@@ -439,7 +412,7 @@ public class Settings extends PreferenceActivity implements
         prefs.autoTime().set(autoSyncTimes.getTimeValueAsString());
 
         // Enable or Disable Pending messages delete retries.
-        if(prefs.enableRetry().get() != enableRetry.isChecked()) {
+        if (prefs.enableRetry().get() != enableRetry.isChecked()) {
             boolean checked = enableRetry.isChecked() ? true : false;
 
             String check = getCheckedStatus(checked);
@@ -452,8 +425,8 @@ public class Settings extends PreferenceActivity implements
         }
         prefs.enableRetry().set(enableRetry.isChecked());
 
-        for(int i = 0; i < retry.getEntryValues().length; i++) {
-            if(retry.getEntry() !=null ) {
+        for (int i = 0; i < retry.getEntryValues().length; i++) {
+            if (retry.getEntry() != null) {
                 if (retry.getValue()
                         .matches(getResources().getStringArray(R.array.retry_entries)[i])) {
                     prefs.retries().set(getResources().getIntArray(R.array.retry_values)[i]);
@@ -569,7 +542,7 @@ public class Settings extends PreferenceActivity implements
      * @return void
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-            String key) {
+                                          String key) {
 
         if (key.equals(KEY_ENABLE_REPLY)) {
 
@@ -644,13 +617,13 @@ public class Settings extends PreferenceActivity implements
 
         // Enable SMS delivery report
         if (key.equals(KEY_ENABLE_SMS_REPORT_DELIVERY)) {
-            if(sharedPreferences.getBoolean(KEY_ENABLE_SMS_REPORT_DELIVERY, false)) {
+            if (sharedPreferences.getBoolean(KEY_ENABLE_SMS_REPORT_DELIVERY, false)) {
                 enableSmsReportDelivery.setChecked(true);
             } else {
                 if (!enableSmsReportDelivery.isChecked() && enableMessageResultsAPI.isChecked()) {
                     enableSmsReportDelivery.setChecked(true);
                     Util.showToast(Settings.this, R.string.validate_message_result_api);
-                }else {
+                } else {
                     enableSmsReportDelivery.setChecked(false);
                 }
             }
@@ -658,7 +631,7 @@ public class Settings extends PreferenceActivity implements
 
         // Enable message result checking
         if (key.equals(MESSAGE_RESULTS_API)) {
-            if(!enableSmsReportDelivery.isChecked()) {
+            if (!enableSmsReportDelivery.isChecked()) {
                 enableMessageResultsAPI.setChecked(false);
                 Util.showToast(Settings.this, R.string.validate_sms_delivery_report_status);
             } else {

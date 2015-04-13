@@ -1,27 +1,28 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.tasks;
+
+import android.os.AsyncTask;
 
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.App;
 import org.addhen.smssync.SyncDate;
-import org.addhen.smssync.exceptions.ConnectivityException;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.Message;
@@ -31,14 +32,11 @@ import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.tasks.state.SyncState;
 import org.addhen.smssync.util.Logger;
 
-import android.os.AsyncTask;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static org.addhen.smssync.tasks.state.SyncState.CANCELED_SYNC;
-import static org.addhen.smssync.tasks.state.SyncState.ERROR;
 import static org.addhen.smssync.tasks.state.SyncState.FINISHED_SYNC;
 import static org.addhen.smssync.tasks.state.SyncState.INITIAL;
 import static org.addhen.smssync.tasks.state.SyncState.SYNC;
@@ -49,13 +47,10 @@ import static org.addhen.smssync.tasks.state.SyncState.SYNC;
 public class SyncPendingMessagesTask extends
         AsyncTask<SyncConfig, SyncPendingMessagesState, SyncPendingMessagesState> {
 
-    private final SyncPendingMessagesService mService;
-
     private final static String CLASS_TAG = SyncPendingMessagesTask.class.getSimpleName();
-
-    private int itemsToSync;
-
+    private final SyncPendingMessagesService mService;
     ProcessMessage mProcessMessage;
+    private int itemsToSync;
 
     /**
      * Default constructor
@@ -159,7 +154,7 @@ public class SyncPendingMessagesTask extends
         int failedItems = 0;
         int progress = 0;
         SyncStatus syncStatus = new SyncStatus();
-        mProcessMessage = new ProcessMessage(mService.getApplicationContext(),new ProcessSms(mService.getApplicationContext()));
+        mProcessMessage = new ProcessMessage(mService.getApplicationContext(), new ProcessSms(mService.getApplicationContext()));
         List<Message> listMessages = new ArrayList<>();
 
         // determine if syncing by message UUID

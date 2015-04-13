@@ -1,59 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
-    Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
-    This file may be used under the terms of the GNU Lesser General Public License 
-    version 3 as published by the Free Software Foundation and appearing in the 
-    file LICENSE.LGPL included in the packaging of this file. Please review the 
-    following information to ensure the GNU Lesser General Public License version 
-    3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
-    have questions regarding the use of this file, please contact Ushahidi developers 
-    at team@ushahidi.com.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/relativeLayout1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip"
-                android:padding="5dip"
-                android:background="@drawable/list_item_selected">
+    android:id="@+id/relativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dip"
+    android:background="@drawable/list_item_selected"
+    android:padding="5dip">
 
     <TextView
-            android:id="@+id/sent_message_from"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:lines="1"
-            android:paddingLeft="3dp"
-            android:textIsSelectable="true"
-            android:textStyle="bold"/>
+        android:id="@+id/sent_message_from"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:lines="1"
+        android:paddingLeft="3dp"
+        android:textIsSelectable="true"
+        android:textStyle="bold" />
 
     <TextView
-            android:id="@+id/sent_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_below="@+id/sent_message_from"
-            android:padding="3dp"/>
+        android:id="@+id/sent_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sent_message_from"
+        android:padding="3dp"
+        android:textIsSelectable="true" />
 
     <TextView
-            android:id="@+id/sent_message_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_below="@+id/sent_message"
-            android:ellipsize="end"
-            android:layout_alignParentRight="true"
-            android:lines="1"
-            android:padding="3dp"/>
+        android:id="@+id/sent_message_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sent_message"
+        android:ellipsize="end"
+        android:lines="1"
+        android:padding="3dp"
+        android:textIsSelectable="true" />
 
     <TextView
-            android:id="@+id/sent_message_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:layout_alignParentRight="true"
-            android:lines="1"
-            android:paddingLeft="3dp"/>
+        android:id="@+id/sent_message_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:lines="1"
+        android:paddingLeft="3dp"
+        android:textIsSelectable="true" />
 
 </RelativeLayout>

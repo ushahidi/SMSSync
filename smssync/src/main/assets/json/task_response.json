@@ -1,23 +1,23 @@
 {
-    "payload": {
-        "task": "send",
-        "secret": "secret_key",
-        "messages": [
-            {
-                "to": "+000-000-0000",
-                "message": "the message goes here",
-                 "uuid": "aada21b0-0615-4957-bcb3"
-            },
-            {
-                "to": "+000-000-0000",
-                "message": "the message goes here",
-                "uuid": "1ba368bd-c467-4374-bf28"
-            },
-            {
-                "to": "+000-000-0000",
-                "message": "the message goes here",
-                "uuid": "95df126b-ee80-4175-a6fb"
-            }
-        ]
-    }
+  "payload": {
+    "task": "send",
+    "secret": "secret_key",
+    "messages": [
+      {
+        "to": "+000-000-0000",
+        "message": "the message goes here",
+        "uuid": "aada21b0-0615-4957-bcb3"
+      },
+      {
+        "to": "+000-000-0000",
+        "message": "the message goes here",
+        "uuid": "1ba368bd-c467-4374-bf28"
+      },
+      {
+        "to": "+000-000-0000",
+        "message": "the message goes here",
+        "uuid": "95df126b-ee80-4175-a6fb"
+      }
+    ]
+  }
 }

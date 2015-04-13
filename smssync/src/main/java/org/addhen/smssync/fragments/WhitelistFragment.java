@@ -1,32 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.fragments;
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.R;
-import org.addhen.smssync.UiThread;
-import org.addhen.smssync.adapters.FilterAdapter;
-import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.listeners.WhitelistActionModeListener;
-import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.tasks.Task;
-import org.addhen.smssync.views.AddPhoneNumber;
-import org.addhen.smssync.views.WhitelistView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -38,6 +27,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+
+import org.addhen.smssync.App;
+import org.addhen.smssync.R;
+import org.addhen.smssync.UiThread;
+import org.addhen.smssync.adapters.FilterAdapter;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.listeners.WhitelistActionModeListener;
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.tasks.Task;
+import org.addhen.smssync.views.AddPhoneNumber;
+import org.addhen.smssync.views.WhitelistView;
 
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -210,7 +210,7 @@ public class WhitelistFragment extends
             App.getDatabaseInstance().getFilterInstance().fetchById(id, new BaseDatabseHelper.DatabaseCallback<Filter>() {
                 @Override
                 public void onFinished(Filter result) {
-                    if(result != null) {
+                    if (result != null) {
                         addPhoneNumber.phoneNumber.setText(result.getPhoneNumber());
                     }
                 }
@@ -230,14 +230,14 @@ public class WhitelistFragment extends
                 .setPositiveButton(R.string.ok,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
-                                    int whichButton) {
+                                                int whichButton) {
 
                             }
                         })
                 .setNegativeButton(R.string.cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
-                                    int whichButton) {
+                                                int whichButton) {
                                 dialog.dismiss();
                             }
                         });
@@ -288,33 +288,33 @@ public class WhitelistFragment extends
 
             App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.WHITELIST,
                     new BaseDatabseHelper.DatabaseCallback<List<Filter>>() {
-                @Override
-                public void onFinished(List<Filter> result) {
-                    if(result!=null && result.size() > 0) {
+                        @Override
+                        public void onFinished(List<Filter> result) {
+                            if (result != null && result.size() > 0) {
 
-                        if (view.enableWhitelist.isChecked()) {
-                            prefs.enableWhitelist().set(true);
-                            view.enableWhitelist.setChecked(true);
-                        } else {
+                                if (view.enableWhitelist.isChecked()) {
+                                    prefs.enableWhitelist().set(true);
+                                    view.enableWhitelist.setChecked(true);
+                                } else {
 
+                                    prefs.enableWhitelist().set(false);
+                                    view.enableWhitelist.setChecked(false);
+                                }
+
+                            } else {
+                                toastLong(R.string.no_phone_number_to_enable_whitelist);
+                                prefs.enableWhitelist().set(false);
+                                view.enableWhitelist.setChecked(false);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception exception) {
+                            toastLong(R.string.no_phone_number_to_enable_whitelist);
                             prefs.enableWhitelist().set(false);
                             view.enableWhitelist.setChecked(false);
                         }
-
-                    } else {
-                        toastLong(R.string.no_phone_number_to_enable_whitelist);
-                        prefs.enableWhitelist().set(false);
-                        view.enableWhitelist.setChecked(false);
-                    }
-                }
-
-                @Override
-                public void onError(Exception exception) {
-                    toastLong(R.string.no_phone_number_to_enable_whitelist);
-                    prefs.enableWhitelist().set(false);
-                    view.enableWhitelist.setChecked(false);
-                }
-            });
+                    });
 
         } else {
             toastLong(R.string.no_phone_number_to_enable_whitelist);
@@ -356,12 +356,12 @@ public class WhitelistFragment extends
 
     private void deleteTask(boolean deleteByUuid) {
         getActivity().setProgressBarIndeterminate(true);
-        if(adapter.getCount() == 0) {
+        if (adapter.getCount() == 0) {
             toastLong(R.string.no_phone_number_to_delete);
         } else {
-            if(deleteByUuid) {
-                for(final Integer position: mSelectedItemsPositions) {
-                    App.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(),new BaseDatabseHelper.DatabaseCallback<Void>() {
+            if (deleteByUuid) {
+                for (final Integer position : mSelectedItemsPositions) {
+                    App.getDatabaseInstance().getFilterInstance().deleteById(adapter.getItem(position).getId(), new BaseDatabseHelper.DatabaseCallback<Void>() {
                         @Override
                         public void onFinished(Void result) {
 

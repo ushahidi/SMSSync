@@ -1,21 +1,32 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.fragments;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
@@ -25,9 +36,9 @@ import org.addhen.smssync.SyncDate;
 import org.addhen.smssync.UiThread;
 import org.addhen.smssync.adapters.PendingMessagesAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.models.Message;
 import org.addhen.smssync.listeners.PendingMessagesActionModeListener;
 import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.models.Message;
 import org.addhen.smssync.services.SyncPendingMessagesService;
 import org.addhen.smssync.state.ReloadMessagesEvent;
 import org.addhen.smssync.tasks.ProgressTask;
@@ -40,18 +51,6 @@ import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.PendingMessagesView;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,10 +62,8 @@ public class PendingMessages
         BaseListFragment<PendingMessagesView, Message, PendingMessagesAdapter> implements
         android.view.View.OnClickListener {
 
-    private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
-
     public static final int PENDING_MESSAGES_INTENT_FLAG = 4;
-
+    private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
     private Intent syncPendingMessagesServiceIntent;
 
     private LinkedHashSet<Integer> mSelectedItemsPositions;
@@ -459,6 +456,43 @@ public class PendingMessages
         view.sync.setText(R.string.sync);
     }
 
+    public void loadingTask() {
+        view.emptyView.setVisibility(android.view.View.GONE);
+        fetchMessages();
+    }
+
+    private void fetchMessages() {
+        App.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
+            @Override
+            public void onFinished(final List<Message> result) {
+                if (result != null) {
+                    UiThread.getInstance().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                            view.emptyView.setVisibility(View.VISIBLE);
+                            adapter.setItems(result);
+                            listView.setAdapter(adapter);
+                        }
+                    });
+                } else {
+                    toastLong("No pending messages");
+                }
+
+            }
+
+            @Override
+            public void onError(Exception exception) {
+
+            }
+        });
+    }
+
+    @Subscribe
+    public void reloadMessages(final ReloadMessagesEvent event) {
+        loadingTask();
+    }
+
     // Thread class to handle synchronous execution of message importation task.
     private class ImportMessagesTask extends ProgressTask {
 
@@ -474,7 +508,7 @@ public class PendingMessages
         @Override
         protected Boolean doInBackground(String... args) {
 
-             status = new ProcessSms(appContext).importMessages();
+            status = new ProcessSms(appContext).importMessages();
 
             return status;
         }
@@ -490,11 +524,6 @@ public class PendingMessages
                 }
             }
         }
-    }
-
-    public void loadingTask() {
-        view.emptyView.setVisibility(android.view.View.GONE);
-        fetchMessages();
     }
 
     protected class DeleteTask extends ProgressTask {
@@ -581,38 +610,6 @@ public class PendingMessages
 
             }
         }
-    }
-
-    private void fetchMessages() {
-        App.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
-            @Override
-            public void onFinished(final List<Message> result) {
-                if(result !=null) {
-                    UiThread.getInstance().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                            view.emptyView.setVisibility(View.VISIBLE);
-                            adapter.setItems(result);
-                            listView.setAdapter(adapter);
-                        }
-                    });
-                } else {
-                    toastLong("No pending messages");
-                }
-
-            }
-
-            @Override
-            public void onError(Exception exception) {
-
-            }
-        });
-    }
-
-    @Subscribe
-    public void reloadMessages(final ReloadMessagesEvent event) {
-        loadingTask();
     }
 
 }

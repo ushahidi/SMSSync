@@ -1,157 +1,154 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  Copyright (c) 2010 - 2011 Ushahidi Inc
-  All rights reserved
-  Contact: team@ushahidi.com
-  Website: http://www.ushahidi.com
-  
-  GNU Lesser General Public License Usage
-  This file may be used under the terms of the GNU Lesser
-  General Public License version 3 as published by the Free Software
-  Foundation and appearing in the file LICENSE.LGPL included in the
-  packaging of this file. Please review the following information to
-  ensure the GNU Lesser General Public License version 3 requirements
-  will be met: http://www.gnu.org/licenses/lgpl.html.   
-    
- 
-  If you have questions regarding the use of this file, please contact
-  Ushahidi developers at team@ushahidi.com. 
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/appwidget_bg"
-                android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appwidget_bg"
+    android:orientation="horizontal">
 
     <ImageButton
-            android:id="@+id/appwidget_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|left"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/app_name"
-            android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/ic_launcher"/>
+        android:id="@+id/appwidget_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|left"
+        android:background="?android:selectableItemBackground"
+        android:contentDescription="@string/app_name"
+        android:paddingBottom="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/ic_launcher" />
 
     <TextView
-            android:id="@+id/text_title"
-            style="@style/TextView.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@string/app_name"
-            android:paddingTop="15dip"
-            android:text="@string/pending_messages"/>
+        android:id="@+id/text_title"
+        style="@style/TextView.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:paddingTop="15dip"
+        android:text="@string/pending_messages" />
 
     <ImageButton
-            android:id="@+id/appwidget_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="center_vertical|left"
-            android:background="?android:selectableItemBackground"
-            android:contentDescription="@string/app_name"
-            android:paddingBottom="12dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="8dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/settings"/>
+        android:id="@+id/appwidget_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical|left"
+        android:background="?android:selectableItemBackground"
+        android:contentDescription="@string/app_name"
+        android:paddingBottom="12dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:scaleType="fitStart"
+        android:src="@drawable/settings" />
 
     <!-- horizontal rule aka separator -->
 
     <ImageButton
-            android:id="@+id/horizontal_rule"
-            style="@style/title_bar_separator"
-            android:layout_below="@+id/appwidget_settings"
-            android:contentDescription="@string/app_name"/>
+        android:id="@+id/horizontal_rule"
+        style="@style/title_bar_separator"
+        android:layout_below="@+id/appwidget_settings"
+        android:contentDescription="@string/app_name" />
 
     <!-- List pending messages -->
 
     <TextView
-            android:id="@+id/msg_number"
-            style="@style/TextView.Description"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/horizontal_rule"
-            android:layout_marginLeft="14dip"
-            android:layout_marginTop="30dip"
-            android:layout_toLeftOf="@+id/msg_date"
-            android:lines="1"
-            android:textStyle="bold"/>
+        android:id="@+id/msg_number"
+        style="@style/TextView.Description"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/horizontal_rule"
+        android:layout_marginLeft="14dip"
+        android:layout_marginTop="30dip"
+        android:layout_toLeftOf="@+id/msg_date"
+        android:lines="1"
+        android:textStyle="bold" />
 
     <TextView
-            android:id="@+id/msg_date"
-            style="@style/TextView.Description"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/horizontal_rule"
-            android:layout_marginRight="14dip"
-            android:layout_marginTop="30dip"
-            android:lines="1"
-            android:textColor="@color/title_separator"/>
+        android:id="@+id/msg_date"
+        style="@style/TextView.Description"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/horizontal_rule"
+        android:layout_marginRight="14dip"
+        android:layout_marginTop="30dip"
+        android:lines="1"
+        android:textColor="@color/title_separator" />
 
     <TextView
-            android:id="@+id/msg_desc"
-            style="@style/TextView.Description"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/msg_date"
-            android:layout_marginLeft="14dip"
-            android:layout_marginRight="14dip"
-            android:layout_marginTop="10dip"
-            android:gravity="fill_horizontal"/>
+        android:id="@+id/msg_desc"
+        style="@style/TextView.Description"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/msg_date"
+        android:layout_marginLeft="14dip"
+        android:layout_marginRight="14dip"
+        android:layout_marginTop="10dip"
+        android:gravity="fill_horizontal" />
 
     <TextView
-            android:id="@+id/appwidget_empty_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal|center"
-            android:text="@string/empty_list"
-            android:textStyle="bold"/>
+        android:id="@+id/appwidget_empty_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal|center"
+        android:text="@string/empty_list"
+        android:textStyle="bold" />
 
     <!-- buttom controls -->
 
     <ImageButton
-            android:id="@+id/appwidget_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center"
-            android:layout_marginBottom="14dip"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/app_name"
-            android:gravity="center"
-            android:scaleType="center"
-            android:src="@drawable/refresh"/>
+        android:id="@+id/appwidget_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="14dip"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/refresh" />
 
     <ImageButton
-            android:id="@+id/appwidget_prev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="14dip"
-            android:layout_marginLeft="14dip"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/app_name"
-            android:scaleType="center"
-            android:src="@drawable/arrow_left"/>
+        android:id="@+id/appwidget_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="14dip"
+        android:layout_marginLeft="14dip"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/arrow_left" />
 
     <ImageButton
-            android:id="@+id/appwidget_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="14dip"
-            android:layout_marginRight="14dip"
-            android:background="@android:color/transparent"
-            android:contentDescription="@string/app_name"
-            android:scaleType="center"
-            android:src="@drawable/arrow_right"/>
+        android:id="@+id/appwidget_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="14dip"
+        android:layout_marginRight="14dip"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:src="@drawable/arrow_right" />
 
 </RelativeLayout>

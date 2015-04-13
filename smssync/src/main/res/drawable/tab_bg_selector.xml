@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!--  Active tab -->
-    <item android:state_selected="true" android:state_focused="false"
-          android:state_pressed="false" android:drawable="@drawable/tab_bg_selected"/>
+    <item android:drawable="@drawable/tab_bg_selected" android:state_focused="false" android:state_pressed="false" android:state_selected="true" />
     <!--  Inactive tab -->
-    <item android:state_selected="false" android:state_focused="false"
-          android:state_pressed="false" android:drawable="@drawable/tab_bg_unselected"/>
+    <item android:drawable="@drawable/tab_bg_unselected" android:state_focused="false" android:state_pressed="false" android:state_selected="false" />
     <!--  Pressed tab -->
-    <item android:state_pressed="true" android:drawable="@android:color/transparent"/>
+    <item android:drawable="@android:color/transparent" android:state_pressed="true" />
     <!--  Selected tab (using d-pad) -->
-    <item android:state_focused="true" android:state_selected="true"
-          android:state_pressed="false" android:drawable="@android:color/transparent"/>
+    <item android:drawable="@android:color/transparent" android:state_focused="true" android:state_pressed="false" android:state_selected="true" />
 </selector>

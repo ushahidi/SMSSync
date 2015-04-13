@@ -1,333 +1,350 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
-  <!--preferences-->
-  <!--sync URL-->
-  <string name="edittxt_website_pref">Sync URL eingeben</string>
-  <string name="edittxt_website_pref_summary">Auf dieser Website werden die Textnachrichten empfangen.</string>
-  <!--secret-->
-  <string name="edittxt_api_key_pref">Geheimen Schlüssel eingeben</string>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
+<resources>
+    <!--preferences-->
+    <!--sync URL-->
+    <string name="edittxt_website_pref">Sync URL eingeben</string>
+    <string name="edittxt_website_pref_summary">Auf dieser Website werden die Textnachrichten empfangen.</string>
+    <!--secret-->
+    <string name="edittxt_api_key_pref">Geheimen Schlüssel eingeben</string>
   <string name="edittxt_api_key_pref_summary">Falls ein Passwort auf der Website gesetzt wurde,
 wird es benötigt.</string>
-  <!--filter by keywords-->
-  <string name="edittxt_keyword_pref">Stichworte eingeben - optional</string>
+    <!--filter by keywords-->
+    <string name="edittxt_keyword_pref">Stichworte eingeben - optional</string>
   <string name="editxt_keyword_pref_summary">Bestimme Schlagwörter, um eingehende
 Nachrichten zu filtern.</string>
-  <string name="edittxt_keyword_hint">Feuer, Verbrechen, Hilfe oder Statusmeldungen.</string>
-  <!--filter by phone numbers-->
-  <string name="edittxt_filter_by_from_pref">Telefonnummer eingeben - optional</string>
-  <string name="edittxt_filter_by_from_pref_summary">Bestimme eine Positivliste für Telefonnummern, um eingehende Nachrichten zu filtern.</string>
-  <string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
-  <!--unique id-->
-  <string name="edittxt_unique_id_pref">Einmalige Kennung eingeben</string>
-  <string name="edittxt_unique_id_pref_summary">Bestimme eine einmalige ID für dieses Gerät. Der Server erfährt so, von welchem Gerät die Meldung stammt.</string>
-  <string name="edittxt_unique_id_hint">01234</string>
-  <!--alert phone-->
-  <string name="edittxt_alert_phone_pref">Rufnummer für Meldungen eingeben</string>
-  <string name="edittxt_alert_phone_pref_summary">Gib die Telefonnummer ein, an welche die Meldungen geschickt werden sollen.</string>
-  <!--response message-->
-  <string name="edittxt_reply">Fügen Sie eine Antwortnachricht hinzu</string>
-  <string name="edittxt_reply_title">Eine Antwort</string>
-  <string name="edittxt_reply_summary">Die Nachricht, die an die Benutzer verschickt werden soll.</string>
-  <string name="edittxt_reply_default">Ihre Nachricht wurden empfangen. Vielen Dank!</string>
-  <!--enable/disable smssync-->
-  <string name="sms_sync_enabled">SMSsync is eingeschaltet</string>
-  <string name="sms_sync_disabled">SMSsync ist ausgeschaltet</string>
-  <!--general settings-->
-  <string name="general_settings">Allgemeine Einstellungen</string>
-  <string name="chk_enable_sms_sync">SMSsync-Dienst starten</string>
-  <string name="chk_sms_sync_hint">SMS-Gateway starten und beenden.</string>
-  <!--reply from server-->
-  <string name="reply_settings">Einstellungen für die Antwortnachricht</string>
-  <string name="chk_enable_reply">Antwortnachricht</string>
-  <string name="chk_reply_hint">Automatisch jede Nachricht beantworten, die bei SMSsync ankommt.</string>
-  <!--auto delete messages-->
-  <string name="chk_enable_auto_delete">Nachrichten automatisch löschen</string>
+    <string name="edittxt_keyword_hint">Feuer, Verbrechen, Hilfe oder Statusmeldungen.</string>
+    <!--filter by phone numbers-->
+    <string name="edittxt_filter_by_from_pref">Telefonnummer eingeben - optional</string>
+    <string name="edittxt_filter_by_from_pref_summary">Bestimme eine Positivliste für Telefonnummern, um eingehende Nachrichten zu filtern.</string>
+    <string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
+    <!--unique id-->
+    <string name="edittxt_unique_id_pref">Einmalige Kennung eingeben</string>
+    <string name="edittxt_unique_id_pref_summary">Bestimme eine einmalige ID für dieses Gerät. Der Server erfährt so, von welchem Gerät die Meldung stammt.</string>
+    <string name="edittxt_unique_id_hint">01234</string>
+    <!--alert phone-->
+    <string name="edittxt_alert_phone_pref">Rufnummer für Meldungen eingeben</string>
+    <string name="edittxt_alert_phone_pref_summary">Gib die Telefonnummer ein, an welche die Meldungen geschickt werden sollen.</string>
+    <!--response message-->
+    <string name="edittxt_reply">Fügen Sie eine Antwortnachricht hinzu</string>
+    <string name="edittxt_reply_title">Eine Antwort</string>
+    <string name="edittxt_reply_summary">Die Nachricht, die an die Benutzer verschickt werden soll.</string>
+    <string name="edittxt_reply_default">Ihre Nachricht wurden empfangen. Vielen Dank!</string>
+    <!--enable/disable smssync-->
+    <string name="sms_sync_enabled">SMSsync is eingeschaltet</string>
+    <string name="sms_sync_disabled">SMSsync ist ausgeschaltet</string>
+    <!--general settings-->
+    <string name="general_settings">Allgemeine Einstellungen</string>
+    <string name="chk_enable_sms_sync">SMSsync-Dienst starten</string>
+    <string name="chk_sms_sync_hint">SMS-Gateway starten und beenden.</string>
+    <!--reply from server-->
+    <string name="reply_settings">Einstellungen für die Antwortnachricht</string>
+    <string name="chk_enable_reply">Antwortnachricht</string>
+    <string name="chk_reply_hint">Automatisch jede Nachricht beantworten, die bei SMSsync ankommt.</string>
+    <!--auto delete messages-->
+    <string name="chk_enable_auto_delete">Nachrichten automatisch löschen</string>
   <string name="chk_auto_delete_hint">Lösche automatisch Nachrichten aus dem Posteingang,
 um Speicherplatz auf dem Telefon zu gewinnen.</string>
-  <!--auto delete pending messages-->
-  <string name="chk_enable_auto_delete_pending_messages">Unerledigte Nachrichten automatisch löschen</string>
+    <!--auto delete pending messages-->
+    <string name="chk_enable_auto_delete_pending_messages">Unerledigte Nachrichten automatisch löschen</string>
   <string name="chk_enable_auto_delete_pending_messages_hint">Automatisch unerledigte Nachrichten löschen,
 die nicht verschickt werden konnten.</string>
-  <string name="select_number_of_retries">Anzahl der Versuche, um unerledigte Nachrichten zu verschicken</string>
-  <string name="select_number_of_retries_hint">Wie oft soll versucht werden, unerledigte Nachrichten zu verschicken, bevor diese automatisch gelöscht werden?</string>
-  <string name="one_try">Ein Versuch</string>
-  <string name="two_tries">Zwei Versuche</string>
-  <string name="three_tries">Drei Versuche</string>
-  <string name="four_tries">Vier Versuche</string>
-  <string name="five_tries">Fünf Versuche</string>
-  <string name="one">1</string>
-  <string name="two">2</string>
-  <string name="three">3</string>
-  <string name="four">4</string>
-  <string name="five">5</string>
-  <!--enable sms delivery report-->
-  <string name="chk_enable_sms_delivery_report">SMS Sendebestätigung</string>
-  <string name="chk_sms_delivery_report_hint">Aktivieren, wenn SMS Sendebestätigungen an die App geschickt werden sollen. Bitte beachte, dass manche Mobilfunkanbieter für diese Dienstleistung Gebühren verlangen.</string>
-  <!--enable auto sync-->
-  <string name="chk_enable_auto_sync">Automatische Synchronisation aktivieren</string>
-  <string name="chk_enable_auto_sync_hint">SMSsync erlauben, in zeitlichen Abständen unerledigte Nachrichten zu synchronisieren.</string>
-  <!--auto sync delay-->
-  <string name="txt_auto_sync_delay">Frequenz der automatischen Synchronisation</string>
-  <string name="auto_sync_delay_hint">Einstellung, wie oft SMSsync mit der callback-URL synchronisiert werden soll.</string>
-  <!--enable SMS Portals-->
-  <string name="sms_portals_settings">SMS Portaleinstellungen</string>
-  <string name="chk_enable_sms_portals">Aktiviere SMS Portale</string>
-  <string name="chk_enable_sms_portals_hint">Benutze SMS Portale wenn SMS Nachrichten verschickt werden soll, um das Standardlimit bei Android von 100 SMS/Stunde zu umgehen.</string>
-  <!--enable task check-->
-  <string name="chk_enable_task_check">Aufgabenplanung einschalten</string>
-  <string name="chk_enable_task_check_hint">Erlaube SMSsync, regelmäßig nach Aufgaben zu schauen, die  auf der callback URL liegen. SMSsync wird diese Aufgaben dann ausführen. Z.B. der Versand von SMS</string>
-  <!--task check delay-->
-  <string name="txt_task_check_delay">Häufigkeit</string>
-  <string name="txt_task_check_delay_hint">Einstellung, wie oft SMSsync nach ausführbaren Aufgaben schauen soll.</string>
-  <string name="app_name">SMSsync</string>
-  <string name="outbox">SMSsync unbearbeitete Nachrichten</string>
-  <string name="version_status">Beta</string>
-  <string name="sms_status_success">SMS verschickt</string>
-  <string name="sms_status_failed">SMS konnte nicht verschickt werden</string>
-  <string name="notification_summary">SMSsync Gateway läuft</string>
-  <string name="sending_failed">SMSsync konnte keine Nachrichten an den Server schicken.</string>
-  <string name="sending_failed_http_code">Der Server hat den HTTP status code %1$d zurückgemeldet.</string>
-  <string name="sending_failed_custom_error">Verschicken der Nachricht an der Server fehlgeschlagen. Serverfehler: %1$s</string>
-  <string name="sending_succeeded">SMSsync Nachricht verschickt.</string>
-  <string name="no_messages_to_sync">Es gibt keine zu verschickende Nachrichten.</string>
-  <string name="no_messages_to_delete">Es gibt keine zu löschende Nachrichten.</string>
-  <string name="sync_failed">Der Versand von SMSsync Nachrichten ist fehlgeschlagen. Bitte überprüfe Deine Internetverbindung und Sync-URL Einstellungen.</string>
-  <string name="powered">Powered</string>
-  <string name="powered_by">Hergestellt von Ushahidi</string>
-  <string name="menu_delete_all">Alles löschen</string>
-  <string name="menu_sync_all">Alles synchronisieren</string>
-  <string name="menu_delete">löschen</string>
-  <string name="menu_sync">synchronisieren</string>
-  <string name="menu_import">Importiere SMS</string>
-  <string name="menu_settings">Einstellungen</string>
-  <string name="messages_deleted">Nachrichten erfolgreich gelöscht.</string>
-  <string name="messages_deleted_failed">Nachrichten konnten nicht gelöscht werden.</string>
-  <string name="status">Status</string>
-  <string name="empty_list">Keine neuen Nachrichten.</string>
-  <string name="http_text">http://</string>
-  <string name="sms_failed">SMS fehlgeschlagen</string>
-  <!--URL validation-->
-  <string name="invalid_url">Die eingegebene URL ist fehlerhaft.</string>
-  <string name="no_configured_url">Der SMSsync-Dienst läuft nicht.</string>
-  <string name="no_connection">Konnte keine Verbindung zur Sync URL herstellen.</string>
-  <string name="no_task">Es ist keine Aufgabe mit der callback URL verknüpft.</string>
-  <string name="auto_sync_settings">Automatische Synchronisationseinstellungen</string>
-  <string name="task_check_settings">Aufgabeneinstellungen</string>
-  <string name="about_smssync">Über Sync</string>
-  <string name="please_wait">Bitte warten</string>
-  <string name="smssync_not_enabled">SMSsync ist nicht aktiviert. Bitte aktiviere es in den Einstellungen.</string>
-  <string name="import_messages">Importiere Nachrichten</string>
-  <string name="nothing_to_import">Keine Nachricht zum Import vorhanden. Stelle sicher, dass Du SMS in Deinem SMS-Posteingang hast.</string>
+    <string name="select_number_of_retries">Anzahl der Versuche, um unerledigte Nachrichten zu verschicken</string>
+    <string name="select_number_of_retries_hint">Wie oft soll versucht werden, unerledigte Nachrichten zu verschicken, bevor diese automatisch gelöscht werden?</string>
+    <string name="one_try">Ein Versuch</string>
+    <string name="two_tries">Zwei Versuche</string>
+    <string name="three_tries">Drei Versuche</string>
+    <string name="four_tries">Vier Versuche</string>
+    <string name="five_tries">Fünf Versuche</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <!--enable sms delivery report-->
+    <string name="chk_enable_sms_delivery_report">SMS Sendebestätigung</string>
+    <string name="chk_sms_delivery_report_hint">Aktivieren, wenn SMS Sendebestätigungen an die App geschickt werden sollen. Bitte beachte, dass manche Mobilfunkanbieter für diese Dienstleistung Gebühren verlangen.</string>
+    <!--enable auto sync-->
+    <string name="chk_enable_auto_sync">Automatische Synchronisation aktivieren</string>
+    <string name="chk_enable_auto_sync_hint">SMSsync erlauben, in zeitlichen Abständen unerledigte Nachrichten zu synchronisieren.</string>
+    <!--auto sync delay-->
+    <string name="txt_auto_sync_delay">Frequenz der automatischen Synchronisation</string>
+    <string name="auto_sync_delay_hint">Einstellung, wie oft SMSsync mit der callback-URL synchronisiert werden soll.</string>
+    <!--enable SMS Portals-->
+    <string name="sms_portals_settings">SMS Portaleinstellungen</string>
+    <string name="chk_enable_sms_portals">Aktiviere SMS Portale</string>
+    <string name="chk_enable_sms_portals_hint">Benutze SMS Portale wenn SMS Nachrichten verschickt werden soll, um das Standardlimit bei Android von 100 SMS/Stunde zu umgehen.</string>
+    <!--enable task check-->
+    <string name="chk_enable_task_check">Aufgabenplanung einschalten</string>
+    <string name="chk_enable_task_check_hint">Erlaube SMSsync, regelmäßig nach Aufgaben zu schauen, die  auf der callback URL liegen. SMSsync wird diese Aufgaben dann ausführen. Z.B. der Versand von SMS</string>
+    <!--task check delay-->
+    <string name="txt_task_check_delay">Häufigkeit</string>
+    <string name="txt_task_check_delay_hint">Einstellung, wie oft SMSsync nach ausführbaren Aufgaben schauen soll.</string>
+    <string name="app_name">SMSsync</string>
+    <string name="outbox">SMSsync unbearbeitete Nachrichten</string>
+    <string name="version_status">Beta</string>
+    <string name="sms_status_success">SMS verschickt</string>
+    <string name="sms_status_failed">SMS konnte nicht verschickt werden</string>
+    <string name="notification_summary">SMSsync Gateway läuft</string>
+    <string name="sending_failed">SMSsync konnte keine Nachrichten an den Server schicken.</string>
+    <string name="sending_failed_http_code">Der Server hat den HTTP status code %1$d zurückgemeldet.</string>
+    <string name="sending_failed_custom_error">Verschicken der Nachricht an der Server fehlgeschlagen. Serverfehler: %1$s</string>
+    <string name="sending_succeeded">SMSsync Nachricht verschickt.</string>
+    <string name="no_messages_to_sync">Es gibt keine zu verschickende Nachrichten.</string>
+    <string name="no_messages_to_delete">Es gibt keine zu löschende Nachrichten.</string>
+    <string name="sync_failed">Der Versand von SMSsync Nachrichten ist fehlgeschlagen. Bitte überprüfe Deine Internetverbindung und Sync-URL Einstellungen.</string>
+    <string name="powered">Powered</string>
+    <string name="powered_by">Hergestellt von Ushahidi</string>
+    <string name="menu_delete_all">Alles löschen</string>
+    <string name="menu_sync_all">Alles synchronisieren</string>
+    <string name="menu_delete">löschen</string>
+    <string name="menu_sync">synchronisieren</string>
+    <string name="menu_import">Importiere SMS</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="messages_deleted">Nachrichten erfolgreich gelöscht.</string>
+    <string name="messages_deleted_failed">Nachrichten konnten nicht gelöscht werden.</string>
+    <string name="status">Status</string>
+    <string name="empty_list">Keine neuen Nachrichten.</string>
+    <string name="http_text">http://</string>
+    <string name="sms_failed">SMS fehlgeschlagen</string>
+    <!--URL validation-->
+    <string name="invalid_url">Die eingegebene URL ist fehlerhaft.</string>
+    <string name="no_configured_url">Der SMSsync-Dienst läuft nicht.</string>
+    <string name="no_connection">Konnte keine Verbindung zur Sync URL herstellen.</string>
+    <string name="no_task">Es ist keine Aufgabe mit der callback URL verknüpft.</string>
+    <string name="auto_sync_settings">Automatische Synchronisationseinstellungen</string>
+    <string name="task_check_settings">Aufgabeneinstellungen</string>
+    <string name="about_smssync">Über Sync</string>
+    <string name="please_wait">Bitte warten</string>
+    <string name="smssync_not_enabled">SMSsync ist nicht aktiviert. Bitte aktiviere es in den Einstellungen.</string>
+    <string name="import_messages">Importiere Nachrichten</string>
+    <string name="nothing_to_import">Keine Nachricht zum Import vorhanden. Stelle sicher, dass Du SMS in Deinem SMS-Posteingang hast.</string>
   <string name="chk_enable_reply_frm_server">Holen Sie Antwort vom Server
   </string>
   <string name="chk_reply_frm_server_hint">Verschicke Nachrichten als SMS direkt vom Server,
 ohne auf den Zeitplan zu achten.</string>
-  <string name="filter_messages">Nachrichten filtern</string>
-  <string name="validate_sms_delivery_report_status">Die API zu den Nachrichtsergebnissen hängt von den SMS-Sendebestätigungen ab. Bitte aktiviere diese zuerst.</string>
-  <string name="validate_message_result_api">Die API zu den Nachrichtsergebnisse hängt davon ab. Bitte deaktiviere sie zuerst.</string>
-  <!--SMS delivery status-->
+    <string name="filter_messages">Nachrichten filtern</string>
+    <string name="validate_sms_delivery_report_status">Die API zu den Nachrichtsergebnissen hängt von den SMS-Sendebestätigungen ab. Bitte aktiviere diese zuerst.</string>
+    <string name="validate_message_result_api">Die API zu den Nachrichtsergebnisse hängt davon ab. Bitte deaktiviere sie zuerst.</string>
+    <!--SMS delivery status-->
   <string name="sms_delivery_status_failed">SMS konnte nicht verschickt werden. Vielleicht ist das
 Guthaben aufgebraucht?</string>
-  <string name="sms_delivery_status_no_service">SMS konnte nicht verschickt werden, da der Dienst derzeit nicht erreichbar ist.</string>
-  <string name="sms_delivery_status_radio_off">SMS konnte nicht verschickt werden, da das Funkmodul deaktiviert wurde.</string>
-  <string name="sms_delivery_status_null_pdu">SMS konnte nicht verschickt werden, da keine Packet Data Unit (PDU) angegeben wurde.</string>
-  <string name="sms_delivered">SMS verschickt</string>
-  <string name="sms_not_delivered">SMS nicht verschickt</string>
-  <string name="sms_not_delivered_htc_device_retry">Das Gerät versucht, die Nachricht nochmal zu verschicken.</string>
-  <string name="sms_not_delivered_unknown_error">Unbekannter Fehler beim Versand der SMS.</string>
-  <!--Pending and failed messages Tab-->
-  <string name="sms">SMS</string>
-  <string name="pending_messages">Unerledigt</string>
-  <string name="sent_messages">Gesendet</string>
-  <string name="title_bar_text">Nachrichten</string>
-  <string name="no_sent_messages">keine verschickten Nachrichten.</string>
-  <string name="selected">%1$d ausgewählt</string>
-  <string name="unconfirmed">Unbestätigt</string>
-  <string name="failed">Erfolglos</string>
-  <string name="message_type">Type %1$s</string>
-  <string name="message_status">Status %1$s</string>
-  <!--confirmation dialog-->
-  <string name="confirm_yes">Ja</string>
-  <string name="confirm_no">Nein</string>
-  <string name="confirm_message">Willst Du diese Aktion wirklich durchführen?</string>
-  <!--validate unique id-->
-  <string name="unique_id_length_error">Kennung kann nicht länger als 5 Zeichen sein.</string>
-  <string name="unique_id_numeric_error">Kennung darf nur aus Ziffern bestehen</string>
-  <string name="loading">Lädt</string>
-  <string name="sync_url">Sync URL</string>
-  <string name="no_sync_url">Keine Sync URL.\n Drücke auf \"+\", um eine hinzuzufügen.</string>
-  <string name="edit">Bearbeiten</string>
-  <string name="enter_sync_title">Titel für die Sync URL eingeben</string>
-  <string name="edittxt_keyword">Keyword eingeben, z.B. Feuer, Verbrechen, Hilfe</string>
-  <string name="add_sync_url">Sync URL hinzufügen</string>
-  <string name="ok">OK</string>
-  <string name="cancel">Löschen</string>
-  <string name="failed_to_add_sync_url">Sync URL konnte nicht hinzugefügt werden</string>
-  <string name="failed_to_update_sync_url">Sync URL konnte nicht aktualisiert werden</string>
-  <string name="sync_url_deleted">Sync URL erfolgreich gelöscht.</string>
-  <string name="sync_url_deleted_failed">Sync URL konnte nicht gelöscht werden.</string>
+    <string name="sms_delivery_status_no_service">SMS konnte nicht verschickt werden, da der Dienst derzeit nicht erreichbar ist.</string>
+    <string name="sms_delivery_status_radio_off">SMS konnte nicht verschickt werden, da das Funkmodul deaktiviert wurde.</string>
+    <string name="sms_delivery_status_null_pdu">SMS konnte nicht verschickt werden, da keine Packet Data Unit (PDU) angegeben wurde.</string>
+    <string name="sms_delivered">SMS verschickt</string>
+    <string name="sms_not_delivered">SMS nicht verschickt</string>
+    <string name="sms_not_delivered_htc_device_retry">Das Gerät versucht, die Nachricht nochmal zu verschicken.</string>
+    <string name="sms_not_delivered_unknown_error">Unbekannter Fehler beim Versand der SMS.</string>
+    <!--Pending and failed messages Tab-->
+    <string name="sms">SMS</string>
+    <string name="pending_messages">Unerledigt</string>
+    <string name="sent_messages">Gesendet</string>
+    <string name="title_bar_text">Nachrichten</string>
+    <string name="no_sent_messages">keine verschickten Nachrichten.</string>
+    <string name="selected">%1$d ausgewählt</string>
+    <string name="unconfirmed">Unbestätigt</string>
+    <string name="failed">Erfolglos</string>
+    <string name="message_type">Type %1$s</string>
+    <string name="message_status">Status %1$s</string>
+    <!--confirmation dialog-->
+    <string name="confirm_yes">Ja</string>
+    <string name="confirm_no">Nein</string>
+    <string name="confirm_message">Willst Du diese Aktion wirklich durchführen?</string>
+    <!--validate unique id-->
+    <string name="unique_id_length_error">Kennung kann nicht länger als 5 Zeichen sein.</string>
+    <string name="unique_id_numeric_error">Kennung darf nur aus Ziffern bestehen</string>
+    <string name="loading">Lädt</string>
+    <string name="sync_url">Sync URL</string>
+    <string name="no_sync_url">Keine Sync URL.\n Drücke auf \"+\", um eine hinzuzufügen.</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="enter_sync_title">Titel für die Sync URL eingeben</string>
+    <string name="edittxt_keyword">Keyword eingeben, z.B. Feuer, Verbrechen, Hilfe</string>
+    <string name="add_sync_url">Sync URL hinzufügen</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Löschen</string>
+    <string name="failed_to_add_sync_url">Sync URL konnte nicht hinzugefügt werden</string>
+    <string name="failed_to_update_sync_url">Sync URL konnte nicht aktualisiert werden</string>
+    <string name="sync_url_deleted">Sync URL erfolgreich gelöscht.</string>
+    <string name="sync_url_deleted_failed">Sync URL konnte nicht gelöscht werden.</string>
   <string name="disable_to_delete_syncurl">Du kannst diese Sync URL nicht löschen, da sie aktiviert ist.
 Deaktiviere sie vor dem Löschen.</string>
   <string name="disable_to_delete_all_syncurl">Es gibt aktivierte Sync URLs, daher kannst Du nicht alle
 löschen. Deaktiviere diese Sync URLs und versuche es danach nochmal.</string>
-  <string name="no_enabled_sync_url">Aktiviere zumindest eine Sync URL, bevor Du den Dienst startest.</string>
-  <string name="disable_smssync_service">SMSsync-Dienst läuft. Du kannst nichts löschen, bis der Dienst angehalten wird. Beende den Dienst und versuche es noch einmal.</string>
-  <string name="disable_last_sync_url">Du kannst diese letzte Sync URL nicht deaktivieren, weil der SMSsync Dienst noch läuft.</string>
-  <string name="no_sync_url_added">Füge mindestens eine Sync URL hinzu, um den SMSsync Dienst zu starten.</string>
-  <string name="no_sync_url_to_delete">Es gibt keine Sync URLs zu löschen.</string>
-  <string name="empty_sync_url_title">Bitte gib einen Titel für die Sync URL ein.</string>
-  <string name="valid_sync_url">Bitte gib eine funktionierende URL ein.</string>
-  <string name="task">Aufgabe</string>
+    <string name="no_enabled_sync_url">Aktiviere zumindest eine Sync URL, bevor Du den Dienst startest.</string>
+    <string name="disable_smssync_service">SMSsync-Dienst läuft. Du kannst nichts löschen, bis der Dienst angehalten wird. Beende den Dienst und versuche es noch einmal.</string>
+    <string name="disable_last_sync_url">Du kannst diese letzte Sync URL nicht deaktivieren, weil der SMSsync Dienst noch läuft.</string>
+    <string name="no_sync_url_added">Füge mindestens eine Sync URL hinzu, um den SMSsync Dienst zu starten.</string>
+    <string name="no_sync_url_to_delete">Es gibt keine Sync URLs zu löschen.</string>
+    <string name="empty_sync_url_title">Bitte gib einen Titel für die Sync URL ein.</string>
+    <string name="valid_sync_url">Bitte gib eine funktionierende URL ein.</string>
+    <string name="task">Aufgabe</string>
   <string name="confirm_sms_import">Dies wird alle SMS im Posteingang importieren und kann eine
 Weile dauern.</string>
-  <string name="incoming">eingehende</string>
-  <string name="schedule">Planung</string>
-  <string name="manual">Manuell</string>
-  <string name="unknown">unbekannt</string>
-  <string name="sync">Synchronisieren</string>
-  <string name="idle">Leerlauf</string>
-  <string name="error">Fehler</string>
-  <string name="done">Erledigt</string>
-  <string name="never">Niemals</string>
-  <string name="idle_details">Letzte Synchronisation bei: &lt;xliff:g id="last_sync_date"&gt; %1$s&lt;/xliff:g&gt;</string>
-  <string name="working">Arbeitet</string>
-  <string name="canceled">Gelöscht</string>
-  <string name="sync_canceled_details">%1$d/%2$d Einträge erfolgreich synchronisiert.</string>
-  <string name="sync_error_details">Fehler während sync:\n&lt;xliff:g id="error_description"&gt;%1$s&lt;/xliff:g&gt;</string>
-  <plurals name="sync_done_details">
-    <item quantity="one">Erfolgreich bearbeitet&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;            Eintrag.</item>
-    <item quantity="other">Erfolgreich bearbeitet&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;            Einträge.</item>
-  </plurals>
-  <string name="sync_status_done">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; synchronisiert ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt; misslungen</string>
-  <string name="stopping">Stoppt</string>
-  <string name="status_sync_details">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; synchronisiert ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt; misslungen /&lt;xliff:g id="total_items"&gt;%3$d&lt;/xliff:g&gt; Einträge\u2026</string>
-  <string name="open">Öffen</string>
-  <string name="close">Schließen</string>
-  <string name="unknown_issue">Unbekantes Problem</string>
-  <string name="sync_in_completed">Synchronisation vollständig</string>
-  <string name="sync_in_progress">Synchronisation wird durchgeführt</string>
-  <!--donation related-->
-  <string name="donate">Spende</string>
-  <string name="donate_summary">Benutze die sichere in-app Bezahlfunktion des Google Play Store.</string>
-  <string name="ui_dialog_donate_message">Bitte Betrag angeben:</string>
-  <string name="ui_donation_success_message">Spende erfolgreich, vielen Dank!</string>
-  <string name="ui_donation_failure_message">Spende nicht erfolgt: %1$s</string>
-  <!--purchase errors-->
-  <string name="donation_error_iab_unavailable">In-App-Abrechnung ist nicht verfügbar</string>
-  <string name="donation_error_unavailable">nicht verfügbar</string>
-  <string name="donation_error_canceled">gelöscht</string>
-  <string name="donation_error_already_owned">Du hast bereits gespendet</string>
-  <!--filter-->
-  <string name="blacklist">Negativliste/Blacklist</string>
-  <string name="whitelist">Positivliste/Whitelist</string>
-  <string name="filter">Filter</string>
-  <string name="enable_whitelist">Positivliste aktivieren</string>
-  <string name="enable_blacklist">Negativliste aktivieren</string>
-  <string name="no_whitelist">Keine Telefonnummern auf der Positivliste vorhanden. \n Drücke auf  \"+\", um eine hinzuzufügen.</string>
-  <string name="no_blacklist">Keine Telefonnummer auf der Negativliste vorhanden. \n Drücke auf \"+\", um eine hinzuzufügen.</string>
-  <string name="enter_phone_number">Gib eine Telefonnumer an</string>
-  <string name="add_phone_number">Füge eine Telefonnummer hinzu</string>
-  <string name="add_phone_number_list">Füge eine Telefonnummer zu der Liste hinzu</string>
-  <string name="no_phone_number_to_enable_whitelist">Füge mindestens eine Telefonnummer hinzu, um die Positivliste zu aktivieren.</string>
-  <string name="no_phone_number_to_enable_blacklist">Füge mindestens eine Telefonnummer hinzu, um die Negativliste zu aktivieren.</string>
-  <string name="no_phone_number_to_delete">Es gibt keine zu löschenden Telefonnummern.</string>
-  <string name="phone_number_deleted">Telefonnummer erfolgreich gelöscht.</string>
-  <string name="deleting_phone_number_failed">Telefonnummer konnte nicht gelöscht werden.</string>
-  <string name="disable_whitelist">Positivliste ist aktiviert. Du kannst nichts löschen bis diese Funktion deaktiviert ist. Deaktiviere die Positivliste und versuche es dann nochmal.</string>
-  <string name="disable_blacklist">Negativliste aktiviert. Du kannst nichts löschen bis diese Funktion deaktiviert ist. Deaktiviere die Negativliste und versuche es dann nochmal.</string>
-  <string name="failed_to_add_phone_number">Telefonnummer konnte nicht hinzugefügt werden</string>
-  <string name="failed_to_update_phone_number">Telefonnummer konnte nicht aktualisiert werden</string>
-  <!--sync scheme-->
-  <string name="sync_sheme">Synchronisationsschema</string>
-  <string name="sync_scheme_keys">Payload Schlüssel</string>
-  <string name="sync_scheme_method">HTTP Methode</string>
-  <string name="sync_scheme_data_format">Datenformat</string>
-  <string-array name="sync_methods">
-    <item>POST</item>
-    <item>PUT</item>
-  </string-array>
-  <string-array name="sync_formats">
-    <item>URLEncoded</item>
-    <item>JSON</item>
-    <item>XML</item>
-  </string-array>
-  <string name="all_fields_are_required">Alle Felder werden benötigt</string>
-  <string name="enter_key_for_secret">Gib den geheimen Schlüssel ein</string>
-  <string name="enter_key_for_from">Gib den Schlüssel für den Absender ein</string>
-  <string name="enter_key_for_message_id">Gib den Schlüssel für die Nachrichten-ID ein</string>
-  <string name="enter_key_for_message">Gib den Schlüssel für die Nachricht ein</string>
-  <string name="enter_key_for_sent_timestamp">Gib den Schlüssel für den Sende-Zeitstempel ein</string>
-  <string name="enter_key_for_sent_to">Gib den Schlüssel für den Adressaten ein</string>
-  <string name="enter_key_for_device_id">Gib die Geräte-ID ein</string>
-  <!--Debug and alert messages-->
-  <string name="battery_level_message">Die Akkuladung liegt bei %1$d</string>
-  <string name="successful_alert_to_server">Versand des Alarms an den Server war erfolgreich</string>
-  <string name="lost_connection_message">Keine Datenverbindung auf dem Gerät</string>
-  <string name="reception_ok_message">Funkzellenempfang ok</string>
-  <string name="server_respond_message">Der Server %1$s hat mit dem %2$d Statuscode \n geantwortet</string>
-  <string name="unsuccessful_server_connection_message">Kann Server nicht erreichen %1$s \n</string>
-  <!--Logs-->
-  <string name="malformed_url">Falsch geschriebene URL: %1$s</string>
-  <string name="logs">Logs</string>
-  <string name="action_settings">Einstellungen</string>
-  <string name="enable_logs">Logs aktivieren</string>
-  <string name="share">Teile</string>
-  <string name="data_connection">Datenverbindung</string>
-  <string name="battery_level">Akkukapazität</string>
-  <string name="data_connection_status">[ %1$s ]</string>
-  <string name="battery_level_status">[ %1$s ]</string>
-  <string name="can_ping_server_yes"> Kann den Server anpingen %1$s  -- Ja</string>
-  <string name="can_ping_server_no">Kann den Server nicht anpingen %1$s </string>
-  <string name="server_properly_configured_yes"> Server %1$s korrekt eingestellt -- Ja</string>
-  <string name="server_properly_configured_no">Server %1s$s nicht richtig konfiguriert. Erwartete JSON-Antwort nicht erhalten</string>
-  <string name="auto_sync_message_no">Automatische Synchronisation der Nachrichten $1$s to %2$s misslungen</string>
-  <string name="no_logs">Keine Logs.</string>
-  <string name="smssync_service_running">SMSsync Dienst läuft</string>
-  <string name="sync_started">Synchronisation gestartet</string>
-  <string name="not_syncing">Synchronisiert nicht %1$s</string>
-  <string name="perform_task">Aufgabenüberprüfung wird durchgeführt</string>
-  <string name="finish_task_check">Aufgabenüberprüfung erfolgreich durchgeführt</string>
-  <string name="auto_sending_pending_messages">[ %1$s ] Nachricht wird synchronisiert</string>
-  <string name="task_scheduler_running">Aufgabenplaner läuft</string>
-  <string name="run_scheduled_services">Der Aufgabenplaner verschickt die unerledigte Nachrichten an den Server</string>
-  <string name="scheduler_updated_to">Aufgabenplanerintervall aktualisiert</string>
-  <string name="stopped_scheduler">Aufgabenplaner angehalten</string>
-  <string name="stopping_scheduler">Aufgabenplaner anhalten</string>
-  <string name="log_entries_below">Logeinträge weiter unten</string>
-  <string name="phone_status">Telefonstatus</string>
-  <string name="log_message_from">Log-Nachrichten von Telefonnummer %1$s</string>
-  <string name="log_entries">SMSsync Logeinträge</string>
-  <string name="log_saved_at">Log wird auf der SD-Karte untert %1$s gespeichert</string>
-  <string name="auto_response_sent">Automatische Antworten werden als SMS verschickt</string>
-  <string name="auto_message_deleted"> %1$s auto gelöscht</string>
-  <string name="sms_sent_to_webserivce">SMS [ %1$s ] erfolgreich verschickt an [ %2$s ]</string>
-  <string name="processed_task">Nachricht wurde verschickt - [ %1$s ] als SMS</string>
-  <string name="received_msg">SMS erhalten - [ %1$s ] von [ %2$s ]</string>
-  <string name="sent_msg">Verschicke - [ %1$s ] als SMS an [ %2$s ]</string>
-  <string name="no_json_response">Die erwartete JSON-Antwort wurde nicht vom Server erhalten</string>
-  <string name="no_data_connection">Es gibt keine aktive Datenverbindung</string>
-  <string name="active_data_connection">Es gibt eine aktive Datenverbindung</string>
-  <string name="device_reboot">Das Gerät hat sich neu gestartet</string>
-  <string name="device_shutdown">Das Gerät hat sich ausgeschaltet</string>
-  <string name="battery_low">Die Akkukapazität ist niedrig.</string>
-  <string name="battery_okay">Die Akkukapazität ist ok.</string>
-  <string name="settings_changed">SMSsync Einstellungen - [ %1$s ] haben sich verändert von [ %2$s ] zu [ %3$s ]</string>
-  <string name="enabled">aktiviert</string>
-  <string name="disabled">deaktiviert</string>
-  <string name="invalid_data_format">Ungültiges Datenformat</string>
-  <string name="http_entity_format">HTTP Entity Format ist [ %1$s ]</string>
-  <!--Message Results API-->
-  <string name="message_processed_success">SMSsync hat diese Nachrichten erfolgreich verarbeitet.</string>
-  <string name="message_processed_failed">SMSsync konnte diese Nachrichten nicht erfolgreich bearbeiten.</string>
-  <string name="message_processed_json_failed">SMSsync konnte keine JSON Antwort erstellen.</string>
-  <string name="queued_messages_request_status">Queued Messages POST request returned status %1$s\n and body %2$s</string>
-  <string name="messages_result_request_status">Message result GET request returned status %1$s\n and body %2$s</string>
-  <!--enable message results api-->
-  <string name="chk_enable_message_results_api">Nachrichtenergebnis API aktivieren</string>
-  <string name="chk_enable_message_results_api_hint">Erlaube SMSsync, Informationen über gesendete Nachrichten an den Server zu schicken.</string>
-  <string name="message_results_api_setting">Nachrichtenergebnisse API Einstellungen</string>
-  <!--Survey Dialog-->
-  <string name="in_valid_email_address">ungültige E-Mail Adresse</string>
-  <string name="email_label">Gib Deine E-Mail Adresse ein, um mehr zu erfahren.</string>
-  <string name="rate_dialog_message">Bist Du daran interessiert, technische Hilfe oder weitere Anpassungmöglichkeiten für SMSsync zu bekommen?</string>
+    <string name="incoming">eingehende</string>
+    <string name="schedule">Planung</string>
+    <string name="manual">Manuell</string>
+    <string name="unknown">unbekannt</string>
+    <string name="sync">Synchronisieren</string>
+    <string name="idle">Leerlauf</string>
+    <string name="error">Fehler</string>
+    <string name="done">Erledigt</string>
+    <string name="never">Niemals</string>
+    <string name="idle_details">Letzte Synchronisation bei: &lt;xliff:g id="last_sync_date"&gt; %1$s&lt;/xliff:g&gt;</string>
+    <string name="working">Arbeitet</string>
+    <string name="canceled">Gelöscht</string>
+    <string name="sync_canceled_details">%1$d/%2$d Einträge erfolgreich synchronisiert.</string>
+    <string name="sync_error_details">Fehler während sync:\n&lt;xliff:g id="error_description"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <plurals name="sync_done_details">
+        <item quantity="one">Erfolgreich bearbeitet&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;            Eintrag.</item>
+        <item quantity="other">Erfolgreich bearbeitet&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;            Einträge.</item>
+    </plurals>
+    <string name="sync_status_done">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; synchronisiert ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt; misslungen</string>
+    <string name="stopping">Stoppt</string>
+    <string name="status_sync_details">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; synchronisiert ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt; misslungen /&lt;xliff:g id="total_items"&gt;%3$d&lt;/xliff:g&gt; Einträge\u2026</string>
+    <string name="open">Öffen</string>
+    <string name="close">Schließen</string>
+    <string name="unknown_issue">Unbekantes Problem</string>
+    <string name="sync_in_completed">Synchronisation vollständig</string>
+    <string name="sync_in_progress">Synchronisation wird durchgeführt</string>
+    <!--donation related-->
+    <string name="donate">Spende</string>
+    <string name="donate_summary">Benutze die sichere in-app Bezahlfunktion des Google Play Store.</string>
+    <string name="ui_dialog_donate_message">Bitte Betrag angeben:</string>
+    <string name="ui_donation_success_message">Spende erfolgreich, vielen Dank!</string>
+    <string name="ui_donation_failure_message">Spende nicht erfolgt: %1$s</string>
+    <!--purchase errors-->
+    <string name="donation_error_iab_unavailable">In-App-Abrechnung ist nicht verfügbar</string>
+    <string name="donation_error_unavailable">nicht verfügbar</string>
+    <string name="donation_error_canceled">gelöscht</string>
+    <string name="donation_error_already_owned">Du hast bereits gespendet</string>
+    <!--filter-->
+    <string name="blacklist">Negativliste/Blacklist</string>
+    <string name="whitelist">Positivliste/Whitelist</string>
+    <string name="filter">Filter</string>
+    <string name="enable_whitelist">Positivliste aktivieren</string>
+    <string name="enable_blacklist">Negativliste aktivieren</string>
+    <string name="no_whitelist">Keine Telefonnummern auf der Positivliste vorhanden. \n Drücke auf  \"+\", um eine hinzuzufügen.</string>
+    <string name="no_blacklist">Keine Telefonnummer auf der Negativliste vorhanden. \n Drücke auf \"+\", um eine hinzuzufügen.</string>
+    <string name="enter_phone_number">Gib eine Telefonnumer an</string>
+    <string name="add_phone_number">Füge eine Telefonnummer hinzu</string>
+    <string name="add_phone_number_list">Füge eine Telefonnummer zu der Liste hinzu</string>
+    <string name="no_phone_number_to_enable_whitelist">Füge mindestens eine Telefonnummer hinzu, um die Positivliste zu aktivieren.</string>
+    <string name="no_phone_number_to_enable_blacklist">Füge mindestens eine Telefonnummer hinzu, um die Negativliste zu aktivieren.</string>
+    <string name="no_phone_number_to_delete">Es gibt keine zu löschenden Telefonnummern.</string>
+    <string name="phone_number_deleted">Telefonnummer erfolgreich gelöscht.</string>
+    <string name="deleting_phone_number_failed">Telefonnummer konnte nicht gelöscht werden.</string>
+    <string name="disable_whitelist">Positivliste ist aktiviert. Du kannst nichts löschen bis diese Funktion deaktiviert ist. Deaktiviere die Positivliste und versuche es dann nochmal.</string>
+    <string name="disable_blacklist">Negativliste aktiviert. Du kannst nichts löschen bis diese Funktion deaktiviert ist. Deaktiviere die Negativliste und versuche es dann nochmal.</string>
+    <string name="failed_to_add_phone_number">Telefonnummer konnte nicht hinzugefügt werden</string>
+    <string name="failed_to_update_phone_number">Telefonnummer konnte nicht aktualisiert werden</string>
+    <!--sync scheme-->
+    <string name="sync_sheme">Synchronisationsschema</string>
+    <string name="sync_scheme_keys">Payload Schlüssel</string>
+    <string name="sync_scheme_method">HTTP Methode</string>
+    <string name="sync_scheme_data_format">Datenformat</string>
+    <string-array name="sync_methods">
+        <item>POST</item>
+        <item>PUT</item>
+    </string-array>
+    <string-array name="sync_formats">
+        <item>URLEncoded</item>
+        <item>JSON</item>
+        <item>XML</item>
+    </string-array>
+    <string name="all_fields_are_required">Alle Felder werden benötigt</string>
+    <string name="enter_key_for_secret">Gib den geheimen Schlüssel ein</string>
+    <string name="enter_key_for_from">Gib den Schlüssel für den Absender ein</string>
+    <string name="enter_key_for_message_id">Gib den Schlüssel für die Nachrichten-ID ein</string>
+    <string name="enter_key_for_message">Gib den Schlüssel für die Nachricht ein</string>
+    <string name="enter_key_for_sent_timestamp">Gib den Schlüssel für den Sende-Zeitstempel ein</string>
+    <string name="enter_key_for_sent_to">Gib den Schlüssel für den Adressaten ein</string>
+    <string name="enter_key_for_device_id">Gib die Geräte-ID ein</string>
+    <!--Debug and alert messages-->
+    <string name="battery_level_message">Die Akkuladung liegt bei %1$d</string>
+    <string name="successful_alert_to_server">Versand des Alarms an den Server war erfolgreich</string>
+    <string name="lost_connection_message">Keine Datenverbindung auf dem Gerät</string>
+    <string name="reception_ok_message">Funkzellenempfang ok</string>
+    <string name="server_respond_message">Der Server %1$s hat mit dem %2$d Statuscode \n geantwortet</string>
+    <string name="unsuccessful_server_connection_message">Kann Server nicht erreichen %1$s \n</string>
+    <!--Logs-->
+    <string name="malformed_url">Falsch geschriebene URL: %1$s</string>
+    <string name="logs">Logs</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="enable_logs">Logs aktivieren</string>
+    <string name="share">Teile</string>
+    <string name="data_connection">Datenverbindung</string>
+    <string name="battery_level">Akkukapazität</string>
+    <string name="data_connection_status">[ %1$s ]</string>
+    <string name="battery_level_status">[ %1$s ]</string>
+    <string name="can_ping_server_yes"> Kann den Server anpingen %1$s  -- Ja</string>
+    <string name="can_ping_server_no">Kann den Server nicht anpingen %1$s </string>
+    <string name="server_properly_configured_yes"> Server %1$s korrekt eingestellt -- Ja</string>
+    <string name="server_properly_configured_no">Server %1s$s nicht richtig konfiguriert. Erwartete JSON-Antwort nicht erhalten</string>
+    <string name="auto_sync_message_no">Automatische Synchronisation der Nachrichten $1$s to %2$s misslungen</string>
+    <string name="no_logs">Keine Logs.</string>
+    <string name="smssync_service_running">SMSsync Dienst läuft</string>
+    <string name="sync_started">Synchronisation gestartet</string>
+    <string name="not_syncing">Synchronisiert nicht %1$s</string>
+    <string name="perform_task">Aufgabenüberprüfung wird durchgeführt</string>
+    <string name="finish_task_check">Aufgabenüberprüfung erfolgreich durchgeführt</string>
+    <string name="auto_sending_pending_messages">[ %1$s ] Nachricht wird synchronisiert</string>
+    <string name="task_scheduler_running">Aufgabenplaner läuft</string>
+    <string name="run_scheduled_services">Der Aufgabenplaner verschickt die unerledigte Nachrichten an den Server</string>
+    <string name="scheduler_updated_to">Aufgabenplanerintervall aktualisiert</string>
+    <string name="stopped_scheduler">Aufgabenplaner angehalten</string>
+    <string name="stopping_scheduler">Aufgabenplaner anhalten</string>
+    <string name="log_entries_below">Logeinträge weiter unten</string>
+    <string name="phone_status">Telefonstatus</string>
+    <string name="log_message_from">Log-Nachrichten von Telefonnummer %1$s</string>
+    <string name="log_entries">SMSsync Logeinträge</string>
+    <string name="log_saved_at">Log wird auf der SD-Karte untert %1$s gespeichert</string>
+    <string name="auto_response_sent">Automatische Antworten werden als SMS verschickt</string>
+    <string name="auto_message_deleted"> %1$s auto gelöscht</string>
+    <string name="sms_sent_to_webserivce">SMS [ %1$s ] erfolgreich verschickt an [ %2$s ]</string>
+    <string name="processed_task">Nachricht wurde verschickt - [ %1$s ] als SMS</string>
+    <string name="received_msg">SMS erhalten - [ %1$s ] von [ %2$s ]</string>
+    <string name="sent_msg">Verschicke - [ %1$s ] als SMS an [ %2$s ]</string>
+    <string name="no_json_response">Die erwartete JSON-Antwort wurde nicht vom Server erhalten</string>
+    <string name="no_data_connection">Es gibt keine aktive Datenverbindung</string>
+    <string name="active_data_connection">Es gibt eine aktive Datenverbindung</string>
+    <string name="device_reboot">Das Gerät hat sich neu gestartet</string>
+    <string name="device_shutdown">Das Gerät hat sich ausgeschaltet</string>
+    <string name="battery_low">Die Akkukapazität ist niedrig.</string>
+    <string name="battery_okay">Die Akkukapazität ist ok.</string>
+    <string name="settings_changed">SMSsync Einstellungen - [ %1$s ] haben sich verändert von [ %2$s ] zu [ %3$s ]</string>
+    <string name="enabled">aktiviert</string>
+    <string name="disabled">deaktiviert</string>
+    <string name="invalid_data_format">Ungültiges Datenformat</string>
+    <string name="http_entity_format">HTTP Entity Format ist [ %1$s ]</string>
+    <!--Message Results API-->
+    <string name="message_processed_success">SMSsync hat diese Nachrichten erfolgreich verarbeitet.</string>
+    <string name="message_processed_failed">SMSsync konnte diese Nachrichten nicht erfolgreich bearbeiten.</string>
+    <string name="message_processed_json_failed">SMSsync konnte keine JSON Antwort erstellen.</string>
+    <string name="queued_messages_request_status">Queued Messages POST request returned status %1$s\n and body %2$s</string>
+    <string name="messages_result_request_status">Message result GET request returned status %1$s\n and body %2$s</string>
+    <!--enable message results api-->
+    <string name="chk_enable_message_results_api">Nachrichtenergebnis API aktivieren</string>
+    <string name="chk_enable_message_results_api_hint">Erlaube SMSsync, Informationen über gesendete Nachrichten an den Server zu schicken.</string>
+    <string name="message_results_api_setting">Nachrichtenergebnisse API Einstellungen</string>
+    <!--Survey Dialog-->
+    <string name="in_valid_email_address">ungültige E-Mail Adresse</string>
+    <string name="email_label">Gib Deine E-Mail Adresse ein, um mehr zu erfahren.</string>
+    <string name="rate_dialog_message">Bist Du daran interessiert, technische Hilfe oder weitere Anpassungmöglichkeiten für SMSsync zu bekommen?</string>
 </resources>

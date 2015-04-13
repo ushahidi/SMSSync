@@ -1,6 +1,5 @@
-/**
- * ****************************************************************************
- * Copyright (c) 2010 - 2013 Ushahidi Inc
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
  * All rights reserved
  * Contact: team@ushahidi.com
  * Website: http://www.ushahidi.com
@@ -11,10 +10,9 @@
  * packaging of this file. Please review the following information to
  * ensure the GNU Lesser General Public License version 3 requirements
  * will be met: http://www.gnu.org/licenses/lgpl.html.
- * <p/>
+ *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- * ****************************************************************************
  */
 
 package org.addhen.smssync.navdrawer;
@@ -43,7 +41,6 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     protected int count;
 
     /**
-     *
      * @param title
      * @param iconRes
      * @param activity

@@ -1,11 +1,26 @@
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
+
 package org.addhen.smssync.database;
 
-import org.addhen.smssync.models.Filter;
-import org.addhen.smssync.models.Message;
-import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.tasks.ThreadExecutor;
-
 import android.content.Context;
+
+import org.addhen.smssync.models.Filter;
+import org.addhen.smssync.tasks.ThreadExecutor;
 
 import java.util.List;
 
@@ -24,7 +39,7 @@ public class FilterDatabaseHelper extends BaseDatabseHelper implements FilterDat
     }
 
     public static synchronized FilterDatabaseHelper getInstance(Context context,
-            ThreadExecutor threadExecutor) {
+                                                                ThreadExecutor threadExecutor) {
 
         if (INSTANCE == null) {
             INSTANCE = new FilterDatabaseHelper(context, threadExecutor);
@@ -72,7 +87,7 @@ public class FilterDatabaseHelper extends BaseDatabseHelper implements FilterDat
 
     @Override
     public void fetchByStatus(final Filter.Status status,
-            final DatabaseCallback<List<Filter>> callback) {
+                              final DatabaseCallback<List<Filter>> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
@@ -217,7 +232,7 @@ public class FilterDatabaseHelper extends BaseDatabseHelper implements FilterDat
     }
 
     private int getSize(List<Filter> filters) {
-        if(filters !=null) {
+        if (filters != null) {
             return filters.size();
         }
 
@@ -225,15 +240,15 @@ public class FilterDatabaseHelper extends BaseDatabseHelper implements FilterDat
     }
 
     public List<Filter> fetchByStatus(Filter.Status status) {
-        if(!isClosed()) {
+        if (!isClosed()) {
             try {
                 final String whereClause = "status= ?";
                 return cupboard().withDatabase(getReadableDatabase())
                         .query(Filter.class)
                         .withSelection(whereClause, status.name()).orderBy("_id DESC")
                         .list();
-            }catch (Exception e) {
-                return  null;
+            } catch (Exception e) {
+                return null;
             }
         }
         return null;

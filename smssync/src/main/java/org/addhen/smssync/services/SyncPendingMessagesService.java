@@ -1,21 +1,25 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.services;
+
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.text.format.DateFormat;
 
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
@@ -23,7 +27,6 @@ import com.squareup.otto.Subscribe;
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.activities.MainActivity;
-import org.addhen.smssync.fragments.PendingMessages;
 import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.tasks.SyncConfig;
 import org.addhen.smssync.tasks.SyncPendingMessagesTask;
@@ -33,10 +36,6 @@ import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
-
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.text.format.DateFormat;
 
 import java.util.ArrayList;
 
@@ -55,13 +54,9 @@ public class SyncPendingMessagesService extends SmsSyncServices {
             .getSimpleName();
 
     private static SyncPendingMessagesService service;
-
-    private ArrayList<String> messageUuids = null;
-
-    private SyncPendingMessagesState mState = new SyncPendingMessagesState();
-
     protected Prefs prefs;
-
+    private ArrayList<String> messageUuids = null;
+    private SyncPendingMessagesState mState = new SyncPendingMessagesState();
     private LogUtil mLogUtil;
 
     public SyncPendingMessagesService() {
@@ -88,12 +83,12 @@ public class SyncPendingMessagesService extends SmsSyncServices {
         if (intent != null) {
             final SyncType syncType = SyncType.fromIntent(intent);
             // Get Id
-            if(intent.getFlags() == 100) {
+            if (intent.getFlags() == 100) {
                 log("Get syncMessages messagesUuid: ");
                 messageUuids = intent.getStringArrayListExtra(ServicesConstants.MESSAGE_UUID);
             }
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
-            Logger.log(CLASS_TAG, "doWakefulWork() executing this task with Flag "+intent.getFlags());
+            Logger.log(CLASS_TAG, "doWakefulWork() executing this task with Flag " + intent.getFlags());
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");

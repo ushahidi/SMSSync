@@ -1,19 +1,36 @@
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
+
 package org.addhen.smssync.database;
 
 /**
  * Created by Tomasz Stalka(tstalka@soldevelo.com) on 4/29/14.
  */
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.util.Log;
+
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.SyncScheme;
 import org.addhen.smssync.util.Logger;
-
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,49 +86,40 @@ public final class DatabaseUpgrade {
     public static final String INT = " INT";
 
     public static final String TEXT = " TEXT";
-
-    private static final String TAG = DatabaseUpgrade.class.getName();
-
-    private static final String ALTER_TABLE = "ALTER TABLE ";
-
-    private static final String ADD_COLUMN = " ADD COLUMN ";
-
     public static final String[] SENT_MESSAGES_COLUMNS = new String[]{
             SENT_MESSAGES_UUID, SENT_MESSAGES_FROM, SENT_MESSAGES_BODY,
             SENT_MESSAGES_DATE, SENT_MESSAGE_TYPE, SENT_RESULT_CODE,
             SENT_RESULT_MESSAGE, DELIVERY_RESULT_CODE, DELIVERY_RESULT_MESSAGE};
-
     public static final String[] MESSAGES_COLUMNS = new String[]{
             MESSAGE_UUID, MESSAGE_FROM, MESSAGE_BODY,
             MESSAGE_DATE, MESSAGE_TYPE, MESSAGE_SENT_RESULT_CODE,
             MESSAGE_SENT_RESULT_MESSAGE, MESSAGE_DELIVERY_RESULT_CODE, MESSAGE_DELIVERY_RESULT_MESSAGE};
-
     public static final int PENDING = 0;
-
     public static final int TASK = 1;
-
     public static final int UNCONFIRMED = 2;
-
     public static final int FAILED = 3;
+    private static final String TAG = DatabaseUpgrade.class.getName();
+    private static final String ALTER_TABLE = "ALTER TABLE ";
+    private static final String ADD_COLUMN = " ADD COLUMN ";
 
     private DatabaseUpgrade() {
 
     }
 
     private static void addStringColumn(SQLiteDatabase sqLiteDatabase, String tableName,
-            String column) {
+                                        String column) {
         sqLiteDatabase.execSQL(ALTER_TABLE + tableName + ADD_COLUMN
                 + column + TEXT + ";");
     }
 
     private static void addIntColumn(SQLiteDatabase sqLiteDatabase, String tableName,
-            String column) {
+                                     String column) {
         sqLiteDatabase.execSQL(ALTER_TABLE + tableName + ADD_COLUMN
                 + column + INT + ";");
     }
 
     private static void cloneTable(SQLiteDatabase sqLiteDatabase, String colums,
-            String newTableName, String oldTableName) {
+                                   String newTableName, String oldTableName) {
         sqLiteDatabase.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + newTableName + " AS SELECT " + colums + " FROM "
                         + oldTableName);
@@ -122,19 +130,19 @@ public final class DatabaseUpgrade {
     }
 
     private static void createTable(SQLiteDatabase sqLiteDatabase, String tableName,
-            String columnNames) {
+                                    String columnNames) {
         sqLiteDatabase.execSQL(
                 String.format("CREATE TABLE IF NOT EXISTS %s (%s) ", tableName, columnNames));
     }
 
     private static void insertInto(SQLiteDatabase sqLiteDatabase, String columns, String newTable,
-            String oldTable) {
+                                   String oldTable) {
         insertInto(sqLiteDatabase, columns, "*", newTable, oldTable);
 
     }
 
     private static void insertInto(SQLiteDatabase sqLiteDatabase, String newColumns, String oldColumns, String newTable,
-            String oldTable) {
+                                   String oldTable) {
         final String stmt = String.format("INSERT INTO %s (%s) SELECT %s FROM %s ", newTable, newColumns,
                 oldColumns, oldTable);
         sqLiteDatabase.execSQL(stmt);
@@ -173,10 +181,10 @@ public final class DatabaseUpgrade {
         try {
 
             Logger.log(TAG, "Cloning tables ");
-            final String CLONE_MESSAGE_TABLE = "clone_"+ MESSAGES_TABLE;
-            final String CLONE_SENT_TABLE = "clone_"+SENT_MESSAGES_TABLE;
+            final String CLONE_MESSAGE_TABLE = "clone_" + MESSAGES_TABLE;
+            final String CLONE_SENT_TABLE = "clone_" + SENT_MESSAGES_TABLE;
 
-            cloneTable(sqLiteDatabase, "*", CLONE_MESSAGE_TABLE , MESSAGES_TABLE);
+            cloneTable(sqLiteDatabase, "*", CLONE_MESSAGE_TABLE, MESSAGES_TABLE);
             cloneTable(sqLiteDatabase, "*", CLONE_SENT_TABLE, SENT_MESSAGES_TABLE);
 
             dropTable(sqLiteDatabase, MESSAGES_TABLE);
@@ -249,15 +257,15 @@ public final class DatabaseUpgrade {
                     message.setPhoneNumber(from);
                     message.setDate(new Date(Long.valueOf(date)));
                     message.setBody(body);
-                    if(type == TASK) {
+                    if (type == TASK) {
                         message.setType(Message.Type.TASK);
-                    } else if( type == PENDING) {
+                    } else if (type == PENDING) {
                         message.setType(Message.Type.PENDING);
                         message.setStatus(Message.Status.FAILED);
-                    } else if(type == UNCONFIRMED) {
+                    } else if (type == UNCONFIRMED) {
                         message.setType(Message.Type.TASK);
                         message.setStatus(Message.Status.UNCONFIRMED);
-                    } else if(type == FAILED) {
+                    } else if (type == FAILED) {
                         message.setType(Message.Type.TASK);
                         message.setStatus(Message.Status.FAILED);
                     }
@@ -315,7 +323,7 @@ public final class DatabaseUpgrade {
                     message.setDate(new Date(Long.valueOf(date)));
                     message.setBody(body);
 
-                    if(type == TASK) {
+                    if (type == TASK) {
 
                         message.setType(Message.Type.TASK);
                     } else {
@@ -351,7 +359,7 @@ public final class DatabaseUpgrade {
 
         final String CLONE_SYNC_URL = "clone_sync_url";
 
-        cloneTable(sqLiteDatabase, "*", CLONE_SYNC_URL , ISyncUrlSchema.TABLE);
+        cloneTable(sqLiteDatabase, "*", CLONE_SYNC_URL, ISyncUrlSchema.TABLE);
 
         dropTable(sqLiteDatabase, ISyncUrlSchema.TABLE);
 
@@ -387,7 +395,7 @@ public final class DatabaseUpgrade {
                     syncUrl.setKeywords(keywords);
                     syncUrl.setTitle(title);
                     syncUrl.setSyncScheme(new SyncScheme(scheme));
-                    if(status == 0) {
+                    if (status == 0) {
                         syncUrl.setStatus(SyncUrl.Status.DISABLED);
                     } else {
                         syncUrl.setStatus(SyncUrl.Status.ENABLED);
@@ -439,7 +447,7 @@ public final class DatabaseUpgrade {
                     int status = cursor.getInt(statusIndex);
                     String phoneNumber = cursor.getString(phoneIndex);
                     filter.setId(Long.valueOf(uuid));
-                    if(status == 0) {
+                    if (status == 0) {
                         filter.setStatus(Filter.Status.BLACKLIST);
                     } else {
                         filter.setStatus(Filter.Status.WHITELIST);
@@ -456,7 +464,7 @@ public final class DatabaseUpgrade {
             cupboard().withDatabase(sqLiteDatabase).put(filters);
         }
 
-        dropTable(sqLiteDatabase, CLONE_WHITELIST_BLACKLIST );
+        dropTable(sqLiteDatabase, CLONE_WHITELIST_BLACKLIST);
     }
 
 }

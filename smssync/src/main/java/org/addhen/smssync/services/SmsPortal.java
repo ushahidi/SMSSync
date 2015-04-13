@@ -1,6 +1,21 @@
-package org.addhen.smssync.services;
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
 
-import org.addhen.smssync.Settings;
+package org.addhen.smssync.services;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,6 +25,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.os.Messenger;
+
+import org.addhen.smssync.Settings;
 
 import java.util.ArrayList;
 
@@ -65,7 +82,7 @@ public class SmsPortal {
     private ServiceConnection getServiceConnection(final int number) {
         ServiceConnection mConnection = new ServiceConnection() {
             public void onServiceConnected(ComponentName className,
-                    IBinder service) {
+                                           IBinder service) {
                 Messenger messenger = new Messenger(service);
                 messengers.add(messenger);
             }

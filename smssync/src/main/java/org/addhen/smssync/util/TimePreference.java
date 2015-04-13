@@ -1,7 +1,21 @@
-package org.addhen.smssync.util;
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
 
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.Settings;
+package org.addhen.smssync.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,9 +24,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TimePicker;
 
+import org.addhen.smssync.Settings;
+import org.addhen.smssync.prefs.Prefs;
+
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 19.05.14.
- *
+ * <p/>
  * Fields and methods are inherited from DialogPreference and TimePicker so DO NOT BE MISLED by
  * those names
  */
@@ -27,11 +44,22 @@ public class TimePreference extends DialogPreference {
     private TimePicker picker = null;
 
     private Prefs prefs;
+
     public TimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
         prefs = new Prefs(context);
         setPositiveButtonText("Set");
         setNegativeButtonText("Cancel");
+    }
+
+    private static int getHour(String time) {
+        String[] pieces = time.split(":");
+        return (Integer.parseInt(pieces[0]));
+    }
+
+    private static int getMinute(String time) {
+        String[] pieces = time.split(":");
+        return (Integer.parseInt(pieces[1]));
     }
 
     @Override
@@ -108,16 +136,6 @@ public class TimePreference extends DialogPreference {
             sb.append(0);
         }
         return sb.append(time).toString();
-    }
-
-    private static int getHour(String time) {
-        String[] pieces = time.split(":");
-        return (Integer.parseInt(pieces[0]));
-    }
-
-    private static int getMinute(String time) {
-        String[] pieces = time.split(":");
-        return (Integer.parseInt(pieces[1]));
     }
 
     private void saveTimeFrequency() {

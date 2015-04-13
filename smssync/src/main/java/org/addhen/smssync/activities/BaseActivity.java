@@ -1,21 +1,37 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.activities;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
@@ -36,23 +52,6 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.View;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.text.format.DateFormat;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +124,7 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
      * @param listViewId     the resource id for the list view
      */
     protected BaseActivity(Class<V> view, int layout, int menu, int drawerLayoutId,
-            int listViewId) {
+                           int listViewId) {
 
         this.viewClass = view;
         this.layout = layout;
@@ -485,7 +484,7 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, android.view.View view, int position,
-                long id) {
+                                long id) {
             mPosition = position;
             setNavDrawerAdapterItems();
             view.getFocusables(position);

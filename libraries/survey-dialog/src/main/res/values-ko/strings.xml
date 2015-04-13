@@ -1,3 +1,20 @@
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <resources>
     <string name="rate_dialog_title">앱의 평가</string>
     <string name="rate_dialog_message">이 응용 프로그램을 사용하셔야 대단히 감사합니다. 만약 괜찮 으시면 1 분 정도로 끝나기 때문에이 응용 프로그램의 평가를 부탁드립니다. 도와 주셔서 감사합니다!</string>

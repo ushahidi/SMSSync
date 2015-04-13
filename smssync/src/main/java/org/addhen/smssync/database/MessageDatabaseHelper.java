@@ -1,12 +1,28 @@
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
+
 package org.addhen.smssync.database;
+
+import android.content.ContentValues;
+import android.content.Context;
 
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.tasks.ThreadExecutor;
 import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.Util;
-
-import android.content.ContentValues;
-import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +42,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
     }
 
     public static synchronized MessageDatabaseHelper getInstance(Context context,
-            ThreadExecutor threadExecutor) {
+                                                                 ThreadExecutor threadExecutor) {
 
         if (INSTANCE == null) {
             INSTANCE = new MessageDatabaseHelper(context, threadExecutor);
@@ -62,7 +78,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         final String whereArgs[] = {message.getUuid()};
                         ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
                         int rows = cupboard().withDatabase(getWritableDatabase()).update(Message.class, values, whereClause, whereArgs);
-                        if(rows == 0) {
+                        if (rows == 0) {
                             cupboard().withDatabase(getWritableDatabase()).put(message);
                         }
                         callback.onFinished(null);
@@ -84,7 +100,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         final String whereClause = "message_uuid = ?";
                         final String whereArgs[] = {message.getUuid()};
                         ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
-                        Logger.log("Update", "Updating "+values.toString());
+                        Logger.log("Update", "Updating " + values.toString());
                         cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                                 whereClause, whereArgs);
                         callback.onFinished(null);
@@ -103,14 +119,14 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             final String whereClause = "message_uuid = ?";
             final String whereArgs[] = {message.getUuid()};
             ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
-            Logger.log("Update", "Updating "+values.toString());
+            Logger.log("Update", "Updating " + values.toString());
             cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                     whereClause, whereArgs);
 
         }
     }
 
-    public void updateDeliveryFields(final Message message, final DatabaseCallback<Void> callback ) {
+    public void updateDeliveryFields(final Message message, final DatabaseCallback<Void> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
@@ -136,7 +152,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
         });
     }
 
-    public void updateSentFields(final Message message, final DatabaseCallback<Void> callback){
+    public void updateSentFields(final Message message, final DatabaseCallback<Void> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
@@ -156,7 +172,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         int rows = cupboard().withDatabase(getWritableDatabase()).update(Message.class, values,
                                 whereClause, whereArgs);
                         // Message doesn't exist in the db, add it as a new entry
-                        if(rows == 0) {
+                        if (rows == 0) {
                             cupboard().withDatabase(getWritableDatabase()).put(message);
                         }
                         callback.onFinished(null);
@@ -189,9 +205,8 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
     }
 
 
-
     public void deleteByUuid(final String uuid) {
-        if(!isClosed()) {
+        if (!isClosed()) {
 
             final String whereClause = "message_uuid = ?";
             final String whereArgs[] = {uuid};
@@ -241,17 +256,17 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     @Override
     public void fetchByType(final Message.Type type,
-            final DatabaseCallback<List<Message>> callback) {
+                            final DatabaseCallback<List<Message>> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
-                if(!isClosed()) {
+                if (!isClosed()) {
                     try {
                         final String whereClause = "message_type = ?";
                         List<Message> messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
                                 .withSelection(whereClause, type.name()).orderBy("messages_date DESC").list();
                         callback.onFinished(messages);
-                    }catch (Exception e) {
+                    } catch (Exception e) {
                         callback.onError(e);
                     }
                 }
@@ -261,11 +276,11 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     @Override
     public void fetchByStatus(final Message.Status status,
-            final DatabaseCallback<List<Message>> callback) {
+                              final DatabaseCallback<List<Message>> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
-                if(!isClosed()) {
+                if (!isClosed()) {
                     try {
                         final String whereClause = "status = ?";
                         List<Message> messages = cupboard().withDatabase(
@@ -273,7 +288,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                                 .withSelection(whereClause, status.name()).orderBy(
                                         "messages_date DESC").list();
                         callback.onFinished(messages);
-                    }catch(Exception e) {
+                    } catch (Exception e) {
                         callback.onError(e);
                     }
                 }
@@ -283,7 +298,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     @Override
     public void fetchByUuid(final String uuid,
-            final DatabaseCallback<Message> callback) {
+                            final DatabaseCallback<Message> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
@@ -313,7 +328,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     @Override
     public void fetchByUuids(final List<String> uuids,
-            final DatabaseCallback<List<Message>> callback) {
+                             final DatabaseCallback<List<Message>> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
@@ -339,13 +354,13 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
             @Override
             public void run() {
                 try {
-                    final List <Message> messages = fetchPendingQuery();
-                    if(messages !=null) {
+                    final List<Message> messages = fetchPendingQuery();
+                    if (messages != null) {
                         callback.onFinished(messages);
                     } else {
                         callback.onError(new Exception());
                     }
-                }catch (Exception e) {
+                } catch (Exception e) {
                     callback.onError(e);
                 }
             }
@@ -378,7 +393,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                     try {
 
                         List<Message> messages = fetchSentQuery();
-                        if(messages!=null) {
+                        if (messages != null) {
                             callback.onFinished(messages);
                         } else {
                             callback.onError(new Exception());
@@ -392,9 +407,9 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
     }
 
     private List<Message> fetchSentQuery() {
-        if(!isClosed()) {
+        if (!isClosed()) {
             final String whereClause = "status = ?";
-           return cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+            return cupboard().withDatabase(getReadableDatabase()).query(Message.class)
                     .withSelection(whereClause, Message.Status.SENT.name()).orderBy("messages_date DESC").list();
         }
         return null;
@@ -406,7 +421,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
     }
 
     private int getSize(List<Message> messages) {
-        if(messages !=null) {
+        if (messages != null) {
             return messages.size();
         } else {
             return 0;
@@ -437,7 +452,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
 
     @Override
     public void fetchByLimit(final int limit,
-            final DatabaseCallback<List<Message>> callback) {
+                             final DatabaseCallback<List<Message>> callback) {
         asyncRun(new Runnable() {
             @Override
             public void run() {
