@@ -453,24 +453,20 @@ public class ProcessSms {
      */
     private interface SmsQuery {
 
-        int TOKEN = 1;
+        Uri INBOX_CONTENT_URI = Inbox.CONTENT_URI;
 
-        static final Uri INBOX_CONTENT_URI = Inbox.CONTENT_URI;
+        Uri SMS_CONVERSATION_URI = Conversations.CONTENT_URI;
 
-        static final Uri SMS_CONVERSATION_URI = Conversations.CONTENT_URI;
-
-        static final String[] PROJECTION = {
+        String[] PROJECTION = {
                 Inbox._ID,
                 Inbox.ADDRESS,
                 Inbox.BODY,
                 Inbox.DATE,
         };
 
-        static final String SORT_ORDER = Telephony.Sms.Inbox.DEFAULT_SORT_ORDER;
+        String SORT_ORDER = Telephony.Sms.Inbox.DEFAULT_SORT_ORDER;
 
         int ID = 0;
-        int ADDRESS = 1;
-        int BODY = 2;
     }
 
 }
