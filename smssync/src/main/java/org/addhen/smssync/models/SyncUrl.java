@@ -105,6 +105,6 @@ public class SyncUrl extends Model {
     }
 
     public enum Status {
-        ENABLED, DISABLED;
+        ENABLED, DISABLED
     }
 }

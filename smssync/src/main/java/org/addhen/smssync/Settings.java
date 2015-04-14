@@ -125,67 +125,7 @@ public class Settings extends PreferenceActivity implements
         }
     };
     private RunServicesUtil runServicesUtil;
-    final Runnable mMessageResultsAPIEnabled = new Runnable() {
 
-        public void run() {
-
-            if (!prefs.serviceEnabled().get()) {
-                Util.showToast(Settings.this, R.string.no_configured_url);
-                enableMessageResultsAPI.setChecked(false);
-            } else {
-                enableMessageResultsAPI.setChecked(true);
-                runServicesUtil.runMessageResultsService();
-            }
-        }
-    };
-    /**
-     * Create runnable for validating callback URL. Putting the validation process in it own thread
-     * provides efficiency.
-     */
-    final Runnable mTaskCheckEnabled = new Runnable() {
-
-        public void run() {
-
-            if (!prefs.serviceEnabled().get()) {
-
-                Util.showToast(Settings.this, R.string.no_configured_url);
-
-                taskCheck.setChecked(false);
-                if (enableMessageResultsAPI.isChecked()) {
-                    enableMessageResultsAPI.setChecked(false);
-                }
-            } else {
-
-                taskCheck.setChecked(true);
-
-                // start the scheduler for task checking service
-                runServicesUtil.runCheckTaskService();
-            }
-        }
-    };
-    /**
-     *
-     */
-    final Runnable mAutoSyncEnabled = new Runnable() {
-
-        public void run() {
-
-            if (!prefs.serviceEnabled().get()) {
-
-                Util.showToast(Settings.this, R.string.no_configured_url);
-                autoSync.setChecked(false);
-
-            } else {
-
-                autoSync.setChecked(true);
-
-                // Initialize the selected time to frequently sync pending
-                // messages
-                autoSyncTimes.setEnabled(true);
-                runServicesUtil.runAutoSyncService();
-            }
-        }
-    };
     private String versionName;
 
     private StringBuilder versionLabel;
@@ -595,7 +535,7 @@ public class Settings extends PreferenceActivity implements
         if (key.equals(TASK_CHECK)) {
 
             if (sharedPreferences.getBoolean(TASK_CHECK, false)) {
-                autoTaskCheckValidateCallbackURL();
+                enableTaskChecking();
 
             } else {
 
@@ -646,39 +586,54 @@ public class Settings extends PreferenceActivity implements
     }
 
     /**
-     * Create a child thread and validate the callback URL in it when enabling auto task check
-     * preference.
+     * Enable task checking service
      *
      * @return void
      */
-    public void autoTaskCheckValidateCallbackURL() {
+    public void enableTaskChecking() {
 
-        Thread t = new Thread() {
-            public void run() {
-                mHandler.post(mTaskCheckEnabled);
+        if (!prefs.serviceEnabled().get()) {
+
+            Util.showToast(Settings.this, R.string.no_configured_url);
+
+            taskCheck.setChecked(false);
+            if (enableMessageResultsAPI.isChecked()) {
+                enableMessageResultsAPI.setChecked(false);
             }
-        };
-        t.start();
+        } else {
+
+            taskCheck.setChecked(true);
+            // start the scheduler for task checking service
+            runServicesUtil.runCheckTaskService();
+        }
     }
 
     public void autoSyncEnable() {
 
-        Thread t = new Thread() {
-            public void run() {
+        if (!prefs.serviceEnabled().get()) {
 
-                mHandler.post(mAutoSyncEnabled);
-            }
-        };
-        t.start();
+            Util.showToast(Settings.this, R.string.no_configured_url);
+            autoSync.setChecked(false);
+
+        } else {
+
+            autoSync.setChecked(true);
+
+            // Initialize the selected time to frequently sync pending
+            // messages
+            autoSyncTimes.setEnabled(true);
+            runServicesUtil.runAutoSyncService();
+        }
     }
 
     public void messageResultsAPIEnable() {
-        Thread t = new Thread() {
-            public void run() {
-                mHandler.post(mMessageResultsAPIEnabled);
-            }
-        };
-        t.start();
+        if (!prefs.serviceEnabled().get()) {
+            Util.showToast(Settings.this, R.string.no_configured_url);
+            enableMessageResultsAPI.setChecked(false);
+        } else {
+            enableMessageResultsAPI.setChecked(true);
+            runServicesUtil.runMessageResultsService();
+        }
     }
 
     /**
