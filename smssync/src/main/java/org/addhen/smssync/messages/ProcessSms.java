@@ -27,17 +27,13 @@ import android.net.Uri;
 import android.provider.Telephony;
 import android.provider.Telephony.Sms.Conversations;
 import android.provider.Telephony.Sms.Inbox;
-import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
-import android.text.format.DateFormat;
-import android.widget.Toast;
 
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.util.LogUtil;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -206,7 +202,7 @@ public class ProcessSms {
     }
 
     /**
-     * Import messages from the messages app's table and puts them in SMSSync's outbox table. 
+     * Import messages from the messages app's table and puts them in SMSSync's outbox table.
      * This will allow messages the imported messages to be sync'd to the configured Sync URL.
      *
      * @return true for success, false for failure.
@@ -390,7 +386,7 @@ public class ProcessSms {
 
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(message.getBody());
-        //String validUUID;
+
         for (int i = 0; i < parts.size(); i++) {
 
             Intent sentMessageIntent = new Intent(ServicesConstants.SENT);
@@ -411,27 +407,16 @@ public class ProcessSms {
             deliveryIntents.add(deliveryIntent);
         }
 
-        if (PhoneNumberUtils.isGlobalPhoneNumber(message.getPhoneNumber())) {
+        message.setStatus(Message.Status.UNCONFIRMED);
 
-            message.setStatus(Message.Status.UNCONFIRMED);
-
-            if (prefs.smsReportDelivery().get()) {
-                sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
-                        deliveryIntents);
-            } else {
-                sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
-                        null);
-            }
-
+        if (prefs.smsReportDelivery().get()) {
+            sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
+                    deliveryIntents);
         } else {
-            final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + message.getPhoneNumber();
-            Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
-            // Following copy/pasted from BaseBroadcastReceiver.. should be in shared util instead
-            if (prefs.enableLog().get()) {
-                new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(errNotGlobalPhoneNumber);
-            }
-            Toast.makeText(context, errNotGlobalPhoneNumber, Toast.LENGTH_LONG).show();
+            sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
+                    null);
         }
+
         return false;
     }
 
