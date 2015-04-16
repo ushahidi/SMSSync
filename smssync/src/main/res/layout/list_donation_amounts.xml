@@ -24,11 +24,15 @@
         android:id="@+id/donation_level_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingRight="2dp"
+        android:maxWidth="300dp"
         android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/donation_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/donation_level_title"
+        android:layout_toEndOf="@id/donation_level_title"
         android:layout_alignParentRight="true" />
 </RelativeLayout>
