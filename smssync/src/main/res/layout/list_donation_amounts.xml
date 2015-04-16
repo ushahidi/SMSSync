@@ -15,24 +15,20 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:gravity="center"
-    android:orientation="horizontal"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/donation_level_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:paddingRight="25dp" />
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/donation_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true" />
-</LinearLayout>
+</RelativeLayout>
