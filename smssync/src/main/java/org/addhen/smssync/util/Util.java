@@ -515,7 +515,7 @@ public class Util {
     /**
      * Check if the device runs Android 4.4 (KitKat) or higher.
      */
-    public static boolean isKitKat() {
+    public static boolean isKitKatOrHigher() {
         Logger.log(CLASS_TAG, " SDK INT is: " + Build.VERSION.SDK_INT);
         return Build.VERSION.SDK_INT >= KITKAT;
     }
@@ -534,7 +534,7 @@ public class Util {
     }
 
     public static boolean isDefaultSmsApp(Context context) {
-        if (isKitKat()) {
+        if (isKitKatOrHigher()) {
             return context.getPackageName().equals(Telephony.Sms.getDefaultSmsPackage(context));
         }
         return true;

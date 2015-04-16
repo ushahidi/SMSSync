@@ -107,7 +107,7 @@ public class ProcessSms {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
                         + threadId + " timestamp: " + timestamp);
-        if (Util.isKitKat()) {
+        if (Util.isKitKatOrHigher()) {
             return findMessageIdKitKat(threadId, timestamp);
         }
         long id = 0;
@@ -210,7 +210,7 @@ public class ProcessSms {
     public boolean importMessages() {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
-        if (Util.isKitKat()) {
+        if (Util.isKitKatOrHigher()) {
             return importMessageKitKat();
         }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
@@ -320,7 +320,7 @@ public class ProcessSms {
     public long getThreadId(String body, String address) {
         Logger.log(CLASS_TAG, "getId(): thread id");
 
-        if (Util.isKitKat()) {
+        if (Util.isKitKatOrHigher()) {
             return getThreadIdKitKat(body, address);
         }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
@@ -430,7 +430,7 @@ public class ProcessSms {
     public boolean delSmsFromInbox(String body, String address) {
         Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
         final long threadId = getThreadId(body, address);
-        Uri smsUri = Util.isKitKat() ? ContentUris.withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
+        Uri smsUri = Util.isKitKatOrHigher() ? ContentUris.withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
                 threadId) : ContentUris.withAppendedId(Uri.parse(SMS_CONTENT_URI), threadId);
         if (threadId >= 0) {
 
