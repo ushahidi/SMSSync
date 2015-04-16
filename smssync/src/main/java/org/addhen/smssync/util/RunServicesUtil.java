@@ -78,6 +78,7 @@ public class RunServicesUtil {
         final Intent intent = new Intent(context, CheckTaskScheduledReceiver.class);
 
         // stop the scheduled service
+        Logger.log(CLASS_TAG, "Stop CheckTaskScheduledService");
         stopServices(intent,
                 ServicesConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE);
 
@@ -94,6 +95,7 @@ public class RunServicesUtil {
                 AutoSyncScheduledReceiver.class);
 
         // stop the scheduled service
+        Logger.log(CLASS_TAG, "Stop AutoSyncScheduledService");
         stopServices(intent,
                 ServicesConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE);
 
@@ -103,24 +105,19 @@ public class RunServicesUtil {
      * Runs the {@link org.addhen.smssync.services.MessageResultsScheduledService}
      */
     public void runMessageResultsService() {
-        Logger.log(CLASS_TAG, "Running CheckResultsService " + prefs.taskCheckTime().get());
-
+        Logger.log(CLASS_TAG, "Running MessageResultService " + prefs.taskCheckTime().get());
         // load preferences
         if (prefs.messageResultsAPIEnable().get() && prefs.serviceEnabled().get()) {
-
             // start the scheduler for 'message results' service
             final long interval = TimeFrequencyUtil.calculateInterval(prefs.taskCheckTime().get());
-
             final Intent intent = new Intent(context,
                     MessageResultsScheduledReceiver.class);
-
             Logger.log(CLASS_TAG, "Message Results service started - interval: " + interval);
             Util.logActivities(context, "Message Results service started - interval: " + interval);
             // run the service
             runServices(intent,
                     ServicesConstants.MESSAGE_RESULTS_SCHEDULED_SERVICE_REQUEST_CODE,
                     interval);
-
         }
     }
 

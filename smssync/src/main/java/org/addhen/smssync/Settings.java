@@ -436,7 +436,6 @@ public class Settings extends PreferenceActivity implements
             }
         }
 
-
         if (prefs.messageResultsAPIEnable().get() != enableMessageResultsAPI.isChecked()) {
             boolean checked = enableMessageResultsAPI.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -483,7 +482,7 @@ public class Settings extends PreferenceActivity implements
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
                                           String key) {
-
+        this.savePreferences();
         if (key.equals(KEY_ENABLE_REPLY)) {
 
             if (sharedPreferences.getBoolean(KEY_ENABLE_REPLY, false)) {
@@ -514,9 +513,7 @@ public class Settings extends PreferenceActivity implements
 
             // restart service
             if (prefs.enableAutoSync().get()) {
-
                 runServicesUtil.runAutoSyncService();
-
             }
         }
 
@@ -582,7 +579,6 @@ public class Settings extends PreferenceActivity implements
                 }
             }
         }
-        this.savePreferences();
     }
 
     /**
