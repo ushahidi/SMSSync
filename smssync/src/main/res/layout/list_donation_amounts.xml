@@ -26,7 +26,8 @@
         android:layout_height="wrap_content"
         android:paddingRight="10dp"
         android:layout_toLeftOf="@+id/donation_amount"
-        android:layout_toStartOf="@+id/donation_amount" />
+        android:layout_toStartOf="@+id/donation_amount"
+        android:layout_alignParentLeft="true" />
 
     <TextView
         android:id="@+id/donation_amount"
