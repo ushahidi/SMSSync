@@ -192,8 +192,6 @@ public final class DatabaseUpgrade {
             cloneTable(sqLiteDatabase, "*", CLONE_MESSAGE_TABLE, MESSAGES_TABLE);
             cloneTable(sqLiteDatabase, "*", CLONE_SENT_TABLE, SENT_MESSAGES_TABLE);
 
-            fetchSentMessages(sqLiteDatabase, CLONE_SENT_TABLE);
-
             dropTable(sqLiteDatabase, MESSAGES_TABLE);
 
             dropTable(sqLiteDatabase, SENT_MESSAGES_TABLE);
@@ -212,8 +210,8 @@ public final class DatabaseUpgrade {
                     SENT_MESSAGES_TABLE, CLONE_SENT_TABLE);*/
 
             updatePendingMessages(sqLiteDatabase);
-
-            updateSentMessages(sqLiteDatabase);
+            fetchSentMessages(sqLiteDatabase, CLONE_SENT_TABLE);
+            updateSentMessages(sqLiteDatabase, CLONE_SENT_TABLE);
 
             upgradeSyncUrl(sqLiteDatabase);
 
@@ -342,9 +340,9 @@ public final class DatabaseUpgrade {
         }
     }
 
-    private static void updateSentMessages(SQLiteDatabase sqLiteDatabase) {
+    private static void updateSentMessages(SQLiteDatabase sqLiteDatabase, String clonedTable) {
         // Insert Items from old messages table into new message table
-        Cursor cursor = sqLiteDatabase.query(SENT_MESSAGES_TABLE, SENT_MESSAGES_COLUMNS, null, null, null, null, SENT_MESSAGES_DATE + " DESC");
+        Cursor cursor = sqLiteDatabase.query(clonedTable, SENT_MESSAGES_COLUMNS, null, null, null, null, SENT_MESSAGES_DATE + " DESC");
 
         List<Message> messages = new ArrayList<>();
 
@@ -446,7 +444,7 @@ public final class DatabaseUpgrade {
                     syncUrl.setTitle(title);
                     syncUrl.setSyncScheme(new SyncScheme(scheme));
                     syncUrl.setSecret(secret);
-                    
+
                     if (status == 0) {
                         syncUrl.setStatus(SyncUrl.Status.DISABLED);
                     } else {
