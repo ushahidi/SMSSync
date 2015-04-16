@@ -21,6 +21,7 @@ package org.addhen.smssync.database;
  * Created by Tomasz Stalka(tstalka@soldevelo.com) on 4/29/14.
  */
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -42,8 +43,6 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 public final class DatabaseUpgrade {
 
     public static final String MESSAGES_TABLE = "messages";
-
-    public static final String MESSAGE = "message";
 
     public static final String MESSAGE_TYPE = "message_type";
 
@@ -108,35 +107,41 @@ public final class DatabaseUpgrade {
 
     private static void addStringColumn(SQLiteDatabase sqLiteDatabase, String tableName,
                                         String column) {
+        Logger.log(TAG, "adding String column " + column + " to " + tableName);
         sqLiteDatabase.execSQL(ALTER_TABLE + tableName + ADD_COLUMN
                 + column + TEXT + ";");
     }
 
     private static void addIntColumn(SQLiteDatabase sqLiteDatabase, String tableName,
                                      String column) {
+        Logger.log(TAG, "adding a new int column " + column + " to " + tableName);
         sqLiteDatabase.execSQL(ALTER_TABLE + tableName + ADD_COLUMN
                 + column + INT + ";");
     }
 
     private static void cloneTable(SQLiteDatabase sqLiteDatabase, String colums,
                                    String newTableName, String oldTableName) {
+        Logger.log(TAG, "cloning table " + oldTableName + " into " + newTableName);
         sqLiteDatabase.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + newTableName + " AS SELECT " + colums + " FROM "
                         + oldTableName);
     }
 
     private static void dropTable(SQLiteDatabase sqLiteDatabase, String tableName) {
+        Logger.log(TAG, "drop table " + tableName);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + tableName);
     }
 
     private static void createTable(SQLiteDatabase sqLiteDatabase, String tableName,
                                     String columnNames) {
+        Logger.log(TAG, "create table " + tableName + " with column names " + columnNames);
         sqLiteDatabase.execSQL(
                 String.format("CREATE TABLE IF NOT EXISTS %s (%s) ", tableName, columnNames));
     }
 
     private static void insertInto(SQLiteDatabase sqLiteDatabase, String columns, String newTable,
                                    String oldTable) {
+        Logger.log(TAG, "insert into " + newTable + " from " + oldTable + " with columns " + columns);
         insertInto(sqLiteDatabase, columns, "*", newTable, oldTable);
 
     }
@@ -145,6 +150,7 @@ public final class DatabaseUpgrade {
                                    String oldTable) {
         final String stmt = String.format("INSERT INTO %s (%s) SELECT %s FROM %s ", newTable, newColumns,
                 oldColumns, oldTable);
+        Logger.log(TAG, stmt);
         sqLiteDatabase.execSQL(stmt);
     }
 
@@ -179,7 +185,6 @@ public final class DatabaseUpgrade {
 
         boolean success = false;
         try {
-
             Logger.log(TAG, "Cloning tables ");
             final String CLONE_MESSAGE_TABLE = "clone_" + MESSAGES_TABLE;
             final String CLONE_SENT_TABLE = "clone_" + SENT_MESSAGES_TABLE;
@@ -187,7 +192,10 @@ public final class DatabaseUpgrade {
             cloneTable(sqLiteDatabase, "*", CLONE_MESSAGE_TABLE, MESSAGES_TABLE);
             cloneTable(sqLiteDatabase, "*", CLONE_SENT_TABLE, SENT_MESSAGES_TABLE);
 
+            fetchSentMessages(sqLiteDatabase, CLONE_SENT_TABLE);
+
             dropTable(sqLiteDatabase, MESSAGES_TABLE);
+
             dropTable(sqLiteDatabase, SENT_MESSAGES_TABLE);
 
             createTable(sqLiteDatabase, IMessagesSchema.TABLE,
@@ -198,9 +206,10 @@ public final class DatabaseUpgrade {
             insertInto(sqLiteDatabase,
                     "message_uuid,messages_from,messages_body,messages_date,message_type,sent_result_code,sent_result_message,delivery_result_code,delivery_result_message",
                     MESSAGES_TABLE, CLONE_MESSAGE_TABLE);
-            insertInto(sqLiteDatabase,
+
+            /*insertInto(sqLiteDatabase,
                     "_id,messages_from,messages_body,messages_date,message_type,sent_result_code,sent_result_message,delivery_result_code,delivery_result_message",
-                    SENT_MESSAGES_TABLE, CLONE_SENT_TABLE);
+                    SENT_MESSAGES_TABLE, CLONE_SENT_TABLE);*/
 
             updatePendingMessages(sqLiteDatabase);
 
@@ -288,6 +297,51 @@ public final class DatabaseUpgrade {
         }
     }
 
+    private static void fetchSentMessages(SQLiteDatabase sqLiteDatabase, String clonedTable) {
+        Cursor cursor = sqLiteDatabase.query(SENT_MESSAGES_TABLE, SENT_MESSAGES_COLUMNS, null, null, null, null, SENT_MESSAGES_DATE + " DESC");
+
+        if (cursor != null) {
+            try {
+                while (cursor.moveToNext()) {
+                    int uuidIndex = cursor.getColumnIndexOrThrow(SENT_MESSAGES_UUID);
+                    int fromIndex = cursor.getColumnIndexOrThrow(SENT_MESSAGES_FROM);
+                    int dateIndex = cursor.getColumnIndexOrThrow(SENT_MESSAGES_DATE);
+                    int bodyIndex = cursor.getColumnIndexOrThrow(SENT_MESSAGES_BODY);
+                    int typeIndex = cursor.getColumnIndexOrThrow(SENT_MESSAGE_TYPE);
+                    int sentResultCodeIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_CODE);
+                    int sentResultMessageIndex = cursor.getColumnIndexOrThrow(SENT_RESULT_MESSAGE);
+                    int deliveryResultCodeIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_CODE);
+                    int deliveryResultMessageIndex = cursor.getColumnIndexOrThrow(DELIVERY_RESULT_MESSAGE);
+
+                    String uuid = cursor.getString(uuidIndex);
+                    String from = cursor.getString(fromIndex);
+                    String date = cursor.getString(dateIndex);
+                    String body = cursor.getString(bodyIndex);
+                    int type = cursor.getInt(typeIndex);
+                    int sentResultCode = cursor.getInt(sentResultCodeIndex);
+                    String sentResultMessage = cursor.getString(sentResultMessageIndex);
+                    int deliveryResultCode = cursor.getInt(deliveryResultCodeIndex);
+                    String deliveryResultMessage = cursor.getString(deliveryResultMessageIndex);
+                    ContentValues initialValues = new ContentValues();
+                    initialValues.put(SENT_MESSAGES_UUID, uuid);
+                    initialValues.put(SENT_MESSAGES_FROM, from);
+                    initialValues.put(SENT_MESSAGES_BODY, body);
+                    initialValues.put(SENT_MESSAGES_DATE, date);
+                    initialValues.put(SENT_MESSAGE_TYPE, type);
+                    initialValues.put(SENT_RESULT_CODE, sentResultCode);
+                    initialValues.put(SENT_RESULT_MESSAGE, sentResultMessage);
+                    initialValues.put(DELIVERY_RESULT_CODE, deliveryResultCode);
+                    initialValues.put(DELIVERY_RESULT_MESSAGE, deliveryResultMessage);
+                    sqLiteDatabase.insert(clonedTable, null, initialValues);
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        }
+    }
+
     private static void updateSentMessages(SQLiteDatabase sqLiteDatabase) {
         // Insert Items from old messages table into new message table
         Cursor cursor = sqLiteDatabase.query(SENT_MESSAGES_TABLE, SENT_MESSAGES_COLUMNS, null, null, null, null, SENT_MESSAGES_DATE + " DESC");
@@ -352,21 +406,16 @@ public final class DatabaseUpgrade {
     }
 
     private static void upgradeSyncUrl(SQLiteDatabase sqLiteDatabase) {
+        Logger.log(TAG, "Upgrading SyncUrl Table");
         final String CREATE_TABLE = ISyncUrlSchema.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ISyncUrlSchema.STATUS + " TEXT , " + ISyncUrlSchema.KEYWORDS + " TEXT, " + ISyncUrlSchema.TITLE
                 + " TEXT NOT NULL, " + ISyncUrlSchema.SECRET + " TEXT, " + ISyncUrlSchema.URL + " TEXT "
                 + ", " + ISyncUrlSchema.SYNCSCHEME + " TEXT";
 
         final String CLONE_SYNC_URL = "clone_sync_url";
-
         cloneTable(sqLiteDatabase, "*", CLONE_SYNC_URL, ISyncUrlSchema.TABLE);
-
         dropTable(sqLiteDatabase, ISyncUrlSchema.TABLE);
-
         createTable(sqLiteDatabase, ISyncUrlSchema.TABLE, CREATE_TABLE);
-
-        //insertInto(sqLiteDatabase, "_id, keywords, secret, status, syncscheme, title, url ", "Filter", "whitelist_blacklist");
-
         // Insert Items from old messages table into new message table
         Cursor cursor = sqLiteDatabase.query(CLONE_SYNC_URL, ISyncUrlSchema.COLUMNS, null, null, null, null, null);
 
@@ -412,7 +461,6 @@ public final class DatabaseUpgrade {
 
             cupboard().withDatabase(sqLiteDatabase).put(syncUrls);
         }
-
         dropTable(sqLiteDatabase, CLONE_SYNC_URL);
     }
 

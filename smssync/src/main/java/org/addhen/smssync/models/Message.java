@@ -177,10 +177,10 @@ public class Message extends Model implements Serializable {
     }
 
     public enum Status {
-        UNCONFIRMED, FAILED, SENT;
+        UNCONFIRMED, FAILED, SENT
     }
 
     public enum Type {
-        TASK, PENDING;
+        TASK, PENDING
     }
 }
