@@ -431,6 +431,7 @@ public final class DatabaseUpgrade {
                     int titleIndex = cursor.getColumnIndexOrThrow(ISyncUrlSchema.TITLE);
                     int schemeIndex = cursor.getColumnIndexOrThrow(ISyncUrlSchema.SYNCSCHEME);
                     int urlIndex = cursor.getColumnIndexOrThrow(ISyncUrlSchema.URL);
+                    int secretKey = cursor.getColumnIndexOrThrow(ISyncUrlSchema.SECRET);
 
                     int uuid = cursor.getInt(uuidIndex);
                     int status = cursor.getInt(statusIndex);
@@ -438,12 +439,14 @@ public final class DatabaseUpgrade {
                     String title = cursor.getString(titleIndex);
                     String url = cursor.getString(urlIndex);
                     String scheme = cursor.getString(schemeIndex);
-
+                    String secret = cursor.getString(secretKey);
                     SyncUrl syncUrl = new SyncUrl();
                     syncUrl.setId(Long.valueOf(uuid));
                     syncUrl.setKeywords(keywords);
                     syncUrl.setTitle(title);
                     syncUrl.setSyncScheme(new SyncScheme(scheme));
+                    syncUrl.setSecret(secret);
+                    
                     if (status == 0) {
                         syncUrl.setStatus(SyncUrl.Status.DISABLED);
                     } else {
