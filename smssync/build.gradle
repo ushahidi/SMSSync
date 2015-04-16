@@ -15,8 +15,9 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-import org.ajoberstar.grgit.Grgit
+
 import org.ajoberstar.gradle.git.release.opinion.Strategies
+import org.ajoberstar.grgit.Grgit
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
@@ -78,7 +79,7 @@ android {
         release {
             if (project.hasProperty('googleAnalyticsCode')) {
                 resValue "string", "ga_trackingId", "${googleAnalyticsCode}"
-            } else{
+            } else {
                 resValue "string", "ga_trackingId", ""
             }
 
@@ -100,7 +101,7 @@ android {
         debug {
             if (project.hasProperty('googleAnalyticsCode')) {
                 resValue "string", "ga_trackingId", "${googleAnalyticsCode}"
-            } else{
+            } else {
                 resValue "string", "ga_trackingId", ""
             }
             applicationIdSuffix ".debug"
@@ -116,7 +117,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         def publicKey = project.hasProperty('inAppPurchasePubKey') ? inAppPurchasePubKey : '';
 
-        buildConfigField "String", "PUBLIC_LICENSE_KEY", '"'+publicKey+'"'
+        buildConfigField "String", "PUBLIC_LICENSE_KEY", '"' + publicKey + '"'
     }
 
     lintOptions {
@@ -168,7 +169,7 @@ release {
 
     def tagMessage = readWhatsNewFile("whatsnew-${trackProperty()}");
 
-    versionStrategy  Strategies.PRE_RELEASE_ALPHA_BETA
+    versionStrategy Strategies.PRE_RELEASE_ALPHA_BETA
 
     android.defaultConfig.versionName = project.version.toString()
 

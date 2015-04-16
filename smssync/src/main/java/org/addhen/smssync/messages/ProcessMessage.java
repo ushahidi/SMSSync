@@ -269,10 +269,9 @@ public class ProcessMessage {
             try {
                 client.execute();
                 final Gson gson = new Gson();
-                smssyncResponses = gson.fromJson(client.getResponse(),
-                        SmssyncResponse.class);
+                smssyncResponses = gson.fromJson(client.getResponse(), SmssyncResponse.class);
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: " + client.getResponse());
                 Util.logActivities(context, "Task crashed: " + e.getMessage());
             }
 
