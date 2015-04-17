@@ -24,7 +24,7 @@
         android:id="@+id/donation_level_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingRight="10dp"
+        android:paddingRight="5dp"
         android:layout_toLeftOf="@+id/donation_amount"
         android:layout_toStartOf="@+id/donation_amount"
         android:layout_alignParentLeft="true" />
