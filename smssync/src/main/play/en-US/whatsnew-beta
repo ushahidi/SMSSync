@@ -1,15 +1,5 @@
-- Fix donation screen crashing on Lollipop devices.
-- Fix random stalls of enabled services.
-- Fix retries so it only deletes pending message when it's enabled.
-- Add Android 5.1 support.
-- Enable auto delete of pending messages after a configured number of retry is exceed.
-- Brought back HTTP client support for devices running Android v2.2.
-- Fix inconsistency with message result API codes.
-- Fix issue with sync to only one Sync URL even though multiple have been enabled.
-- Re-activate donation button.
-- Disable proguard minification.
-- Fix issue with date format being null.
-- Add Japanese, German and Indonesian translations.
-- Fix logs not propagating.
-- Fix Sync URL list view to reload when a new Sync URL is added.
-- Fix alert debug crashing when the app receives a key code.
+- Fix donation list to display both the donation title and the amount.
+- Style app for API level 10 and below to display edittext hint text properly
+- Fix so task and message results when enabled from settings screen actually starts
+- Fix data migration from v2.7.3 to v2.8.0
+- Allow alert phone number field accept international dialing prefix
