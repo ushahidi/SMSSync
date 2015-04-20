@@ -19,8 +19,8 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'android-library'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.0"
 
     sourceSets {
         main {

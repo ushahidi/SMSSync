@@ -146,16 +146,23 @@ public class SyncUrlFragment extends
             App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
                     SyncUrl.Status.ENABLED, new DatabaseCallback<List<SyncUrl>>() {
                         @Override
-                        public void onFinished(List<SyncUrl> result) {
-                            if (result != null && result.size() > 0) {
-                                showMessage(R.string.disable_to_delete_all_syncurl);
+                        public void onFinished(final List<SyncUrl> result) {
+                            UiThread.getInstance().post(new Runnable() {
 
-                                // check if a service is running
-                            } else if (prefs.serviceEnabled().get()) {
-                                showMessage(R.string.disable_smssync_service);
-                            } else {
-                                performDeleteAll();
-                            }
+                                @Override
+                                public void run() {
+                                    if (result != null && result.size() > 0) {
+                                        showMessage(R.string.disable_to_delete_all_syncurl);
+
+                                        // check if a service is running
+                                    } else if (prefs.serviceEnabled().get()) {
+                                        showMessage(R.string.disable_smssync_service);
+                                    } else {
+                                        performDeleteAll();
+                                    }
+                                }
+                            });
+
                         }
 
                         @Override
@@ -266,19 +273,25 @@ public class SyncUrlFragment extends
         // if edit was selected at the context menu, populate fields
         // with existing sync URL details
         if (edit) {
-
             App.getDatabaseInstance().getSyncUrlInstance()
                     .fetchSyncUrlById(id, new DatabaseCallback<SyncUrl>() {
                         @Override
-                        public void onFinished(SyncUrl syncUrl) {
-                            if (syncUrl != null) {
-                                addSyncUrl.title.setText(syncUrl.getTitle());
-                                addSyncUrl.url.setText(syncUrl.getUrl());
-                                addSyncUrl.secret.setText(syncUrl.getSecret());
-                                addSyncUrl.keywords.setText(syncUrl.getKeywords());
-                                addSyncUrl.status = syncUrl.getStatus();
-                                editSyncUrl.setSyncScheme(syncUrl.getSyncScheme());
-                            }
+                        public void onFinished(final SyncUrl syncUrl) {
+                            UiThread.getInstance().post(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    if (syncUrl != null) {
+                                        addSyncUrl.title.setText(syncUrl.getTitle());
+                                        addSyncUrl.url.setText(syncUrl.getUrl());
+                                        addSyncUrl.secret.setText(syncUrl.getSecret());
+                                        addSyncUrl.keywords.setText(syncUrl.getKeywords());
+                                        addSyncUrl.status = syncUrl.getStatus();
+                                        editSyncUrl.setSyncScheme(syncUrl.getSyncScheme());
+                                    }
+                                }
+                            });
+
                         }
 
                         @Override
