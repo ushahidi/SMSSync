@@ -568,16 +568,13 @@ public class Settings extends PreferenceActivity implements
 
         // Enable message result checking
         if (key.equals(MESSAGE_RESULTS_API)) {
-            if (!enableSmsReportDelivery.isChecked()) {
-                enableMessageResultsAPI.setChecked(false);
-                Util.showToast(Settings.this, R.string.validate_sms_delivery_report_status);
+
+            if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
+                messageResultsAPIEnable();
             } else {
-                if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
-                    messageResultsAPIEnable();
-                } else {
-                    runServicesUtil.stopMessageResultsService();
-                }
+                runServicesUtil.stopMessageResultsService();
             }
+
         }
     }
 
