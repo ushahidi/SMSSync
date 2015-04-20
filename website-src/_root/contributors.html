@@ -3,44 +3,31 @@ title : Contributors
 layout : default
 description : SMSsync contributors
 date : Mar 23, 2015
-header : <!--
-  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
-  ~ All rights reserved
-  ~ Contact: team@ushahidi.com
-  ~ Website: http://www.ushahidi.com
-  ~ GNU Lesser General Public License Usage
-  ~ This file may be used under the terms of the GNU Lesser
-  ~ General Public License version 3 as published by the Free Software
-  ~ Foundation and appearing in the file LICENSE.LGPL included in the
-  ~ packaging of this file. Please review the following information to
-  ~ ensure the GNU Lesser General Public License version 3 requirements
-  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
-  ~
-  ~ If you have questions regarding the use of this file, please contact
-  ~ Ushahidi developers at team@ushahidi.com.
-  -->
-
-<h3>Map of Contributors<small> These are people who have freely contributed their time towards making SMSsync better</small></h3>
+header : <h3>Map of Contributors<small> These are people who have freely contributed their time towards making SMSsync better</small></h3>
 ---
 {{# stylesheets.load }}
-	https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.css
+https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.css
 
-  	http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css
+http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css
 
-	http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css
-	http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css
+http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css
+http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css
 
 {{/ stylesheets.load }}
 <!--[if lte IE 8]>
-    	<link href='https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.ie.css' rel='stylesheet'>
-  	<![endif]-->
-  	<!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.ie.css" /><![endif]-->
-  	<!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css" /><![endif]-->
-<div id="map" class="thumbnail leaflet-container leaflet-fade-anim" tabindex="0" style="height:390px;"></div>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.ie.css' rel='stylesheet'>
+<![endif]-->
+<!--[if lte IE 8]>
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.ie.css"/><![endif]-->
+<!--[if lte IE 8]>
+<link rel="stylesheet"
+      href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css"/><![endif]-->
+<div id="map" class="thumbnail leaflet-container leaflet-fade-anim" tabindex="0"
+     style="height:390px;"></div>
 {{# javascripts.load }}
-	  https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.js
+https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.js
 
-	  http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster.js
-	  	  contributors.js
+http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster.js
+contributors.js
 {{/ javascripts.load }}
 <div class="table-responsive" id="contrib"></div>
