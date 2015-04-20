@@ -110,7 +110,7 @@ android {
     }
 
     defaultConfig {
-        versionCode 30
+        versionCode 31
         versionName "2.8.0"
         minSdkVersion 8
         targetSdkVersion 22
