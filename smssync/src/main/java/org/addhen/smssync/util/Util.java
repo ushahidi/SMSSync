@@ -556,6 +556,9 @@ public class Util {
      * @return String without whitespaces
      */
     public static String removeWhitespaces(String s) {
+        if (TextUtils.isEmpty(s)) {
+            return "";
+        }
         String withoutWhiteChars = s.replaceAll("\\s+", "");
         return withoutWhiteChars;
     }

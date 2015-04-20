@@ -427,13 +427,15 @@ public class Settings extends PreferenceActivity implements
                 );
             }
             prefs.alertPhoneNumber().set(number);
+
         } else {
-            if (prefs.alertPhoneNumber().get() != null) {
+            if (!prefs.alertPhoneNumber().get().equals("")) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, alertPhoneNumber.getTitle().toString(),
                                 prefs.alertPhoneNumber().get(), "")
                 );
             }
+            prefs.alertPhoneNumber().set("");
         }
 
         if (prefs.messageResultsAPIEnable().get() != enableMessageResultsAPI.isChecked()) {
