@@ -126,22 +126,23 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                 if (prefs.enableRetry().get()) {
                     final int retry = prefs.retries().get();
                     if ((message.getRetries() - 1) >= retry) {
-                        App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid(), new BaseDatabseHelper.DatabaseCallback<Void>() {
-                            @Override
-                            public void onFinished(Void result) {
-                                UiThread.getInstance().post(new Runnable() {
+                        App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid(),
+                                new BaseDatabseHelper.DatabaseCallback<Void>() {
                                     @Override
-                                    public void run() {
-                                        App.bus.post(new ReloadMessagesEvent());
+                                    public void onFinished(Void result) {
+                                        UiThread.getInstance().post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                App.bus.post(new ReloadMessagesEvent());
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onError(Exception exception) {
+
                                     }
                                 });
-                            }
-
-                            @Override
-                            public void onError(Exception exception) {
-
-                            }
-                        });
 
                         // Mark message as deleted so it's not updated
                         deleted = true;

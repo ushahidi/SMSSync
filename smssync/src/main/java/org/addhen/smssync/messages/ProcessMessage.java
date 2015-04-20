@@ -531,10 +531,8 @@ public class ProcessMessage {
         if (message.getUuid() == null || TextUtils.isEmpty(message.getUuid())) {
             message.setUuid(processSms.getUuid());
         }
-
         message.setType(Message.Type.TASK);
-        return processSms
-                .sendSms(message);
+        return processSms.sendSms(message);
     }
 
 }
