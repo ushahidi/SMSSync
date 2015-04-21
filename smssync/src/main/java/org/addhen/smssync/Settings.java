@@ -501,7 +501,6 @@ public class Settings extends PreferenceActivity implements
             if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
 
                 autoSyncEnable();
-                autoSyncTimes.setEnabled(false);
 
             } else {
                 // stop scheduler
