@@ -93,7 +93,12 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {
-                                // Save details to sent inbox
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        App.bus.post(new ReloadMessagesEvent());
+                                    }
+                                });
                             }
 
                             @Override

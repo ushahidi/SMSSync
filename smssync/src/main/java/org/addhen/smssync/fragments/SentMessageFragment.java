@@ -36,6 +36,7 @@ import org.addhen.smssync.adapters.SentMessagesAdapter;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.listeners.SentMessagesActionModeListener;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.state.ReloadMessagesEvent;
 import org.addhen.smssync.tasks.state.SyncPendingMessagesState;
 import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
@@ -192,8 +193,9 @@ public class SentMessageFragment
 
     }
 
-    public void refresh() {
-        fetchMessages();
+    @Subscribe
+    public void reloadMessages(final ReloadMessagesEvent event) {
+        refresh();
     }
 
     @Subscribe
@@ -209,7 +211,7 @@ public class SentMessageFragment
 
     }
 
-    private void fetchMessages() {
+    private void refresh() {
         view.emptyView.setVisibility(android.view.View.GONE);
         App.getDatabaseInstance().getMessageInstance().fetchSent(
                 new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
