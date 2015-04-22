@@ -246,12 +246,9 @@ public class ProcessSms {
                     c.close();
                 }
             }
-            return false;
-
-        } else {
             return true;
         }
-
+        return false;
     }
 
     private void saveMessage(List<Message> messages) {
@@ -298,17 +295,16 @@ public class ProcessSms {
                         messages.add(message);
 
                     } while (c.moveToNext());
+                    saveMessage(messages);
                 }
             } finally {
                 if (c != null) {
                     c.close();
                 }
             }
-            return false;
-
-        } else {
             return true;
         }
+        return false;
     }
 
     /**
