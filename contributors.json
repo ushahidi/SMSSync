@@ -158,6 +158,17 @@
       }
     },
     {
+      "name": "Sorin Pohontu",
+      "email": "sorin@frontline.ro",
+      "website": "http://www.frontline.ro",
+      "description": "Stress testing, bugs reports, suggested improvements and code hints.",
+      "country": {
+        "name": "Romania",
+        "latitude": 47.637849,
+        "longitude": 26.231793
+      }
+    },
+    {
       "name": "Tobias Quinn",
       "email": "tobias@tobiasquinn.com",
       "website": "https://github.com/tobiasquinn",
