@@ -28,6 +28,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.UiThread;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Message;
+import org.addhen.smssync.prefs.Prefs;
 import org.addhen.smssync.state.ReloadMessagesEvent;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.ServicesConstants;
@@ -123,50 +124,94 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         alertCallbacks.smsSendFailedRequest(resultMessage, errorCode);
                     }
                 }).start();*/
+                Prefs prefs = new Prefs(context);
+                // Make sure the message is not deleted before attempting to update its retries status;
+                message.setStatus(Message.Status.FAILED);
+                if (prefs.enableRetry().get()) {
 
-                App.getDatabaseInstance().getMessageInstance().fetchByUuid(message.getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
-                    @Override
-                    public void onFinished(final Message result) {
-                        UiThread.getInstance().post(new Runnable() {
+                    if (message.getRetries() >= prefs.retries().get()) {
+                        // Delete from db
+                        App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid(), new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
-                            public void run() {
-                                if (result != null) {
-                                    message.setRetries(result.getRetries());
-                                } else {
-                                    message.setRetries(1);
-                                }
-                                // Make sure the message is not deleted before attempting to update its retries status;
-                                message.setStatus(Message.Status.FAILED);
-                                Logger.log(SmsSentReceiver.class.getSimpleName(), "messages " + message);
-                                App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
-                                        new BaseDatabseHelper.DatabaseCallback<Void>() {
-                                            @Override
-                                            public void onFinished(Void result) {
-                                                UiThread.getInstance().post(new Runnable() {
+                            public void onFinished(Void result) {
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        App.bus.post(new ReloadMessagesEvent());
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+
+                            }
+                        });
+                    } else {
+                        App.getDatabaseInstance().getMessageInstance().fetchByUuid(message.getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
+                            @Override
+                            public void onFinished(final Message result) {
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (result != null) {
+                                            message.setRetries(result.getRetries());
+                                        } else {
+                                            message.setRetries(1);
+                                        }
+
+                                        Logger.log(SmsSentReceiver.class.getSimpleName(), "messages " + message);
+                                        App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
+                                                new BaseDatabseHelper.DatabaseCallback<Void>() {
                                                     @Override
-                                                    public void run() {
-                                                        App.bus.post(new ReloadMessagesEvent());
+                                                    public void onFinished(Void result) {
+                                                        UiThread.getInstance().post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                App.bus.post(new ReloadMessagesEvent());
+                                                            }
+                                                        });
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Exception exception) {
+
                                                     }
                                                 });
-                                            }
+                                    }
+                                });
 
-                                            @Override
-                                            public void onError(Exception exception) {
+                            }
 
-                                            }
-                                        });
+                            @Override
+                            public void onError(Exception exception) {
+
                             }
                         });
 
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
 
                     }
-                });
 
+                } else {
+                    Logger.log(SmsSentReceiver.class.getSimpleName(), "messages " + message);
+                    App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
+                            new BaseDatabseHelper.DatabaseCallback<Void>() {
+                                @Override
+                                public void onFinished(Void result) {
+                                    UiThread.getInstance().post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            App.bus.post(new ReloadMessagesEvent());
+                                        }
+                                    });
+                                }
 
+                                @Override
+                                public void onError(Exception exception) {
+
+                                }
+                            });
+                }
             }
         }
 
