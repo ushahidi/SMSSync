@@ -54,13 +54,15 @@ public class MessageResultsScheduledService extends SmsSyncServices {
                     .sendMessageResultGETRequest(syncUrl);
             if (response.isSuccess()) {
                 final List<MessageResult> messageResults = new ArrayList<>();
-                for (String uuids : response.getUuids()) {
-                    Message msg = App.getDatabaseInstance().getMessageInstance().fetchByUuid(uuids);
-                    if (msg != null) {
-                        MessageResult messageResult = new MessageResult(msg.getUuid(),
-                                msg.getSentResultCode(), msg.getSentResultMessage(),
-                                msg.getDeliveryResultCode(), msg.getDeliveryResultMessage());
-                        messageResults.add(messageResult);
+                if (response.getUuids() != null) {
+                    for (String uuids : response.getUuids()) {
+                        Message msg = App.getDatabaseInstance().getMessageInstance().fetchByUuid(uuids);
+                        if (msg != null) {
+                            MessageResult messageResult = new MessageResult(msg.getUuid(),
+                                    msg.getSentResultCode(), msg.getSentResultMessage(),
+                                    msg.getDeliveryResultCode(), msg.getDeliveryResultMessage());
+                            messageResults.add(messageResult);
+                        }
                     }
                 }
                 mMessageResultsController.sendMessageResultPOSTRequest(syncUrl, messageResults);
