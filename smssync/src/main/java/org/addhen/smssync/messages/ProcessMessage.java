@@ -451,11 +451,8 @@ public class ProcessMessage {
                 } else {
                     posted = sendTaskSms(message);
                 }
-
             }
-
         } else { // there is no filter text set up on a sync URL
-
             if (message.getType() == Message.Type.PENDING) {
                 posted = syncReceivedSms(message, client);
                 setErrorMessage(syncUrl.getUrl());
@@ -470,7 +467,6 @@ public class ProcessMessage {
         // Update number of tries.
         if (prefs.enableRetry().get() && message.getType() == Message.Type.PENDING) {
             if (!posted) {
-                Logger.log(TAG, "Messages Not posted: " + message);
                 if (message.getRetries() >= prefs.retries().get()) {
                     // Delete from db
                     deleteMessage(message);
