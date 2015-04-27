@@ -214,6 +214,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         final String whereArgs[] = {uuid};
                         cupboard().withDatabase(getWritableDatabase())
                                 .delete(Message.class, whereClause, whereArgs);
+                        callback.onFinished(null);
                     } catch (Exception e) {
                         callback.onError(e);
                     }

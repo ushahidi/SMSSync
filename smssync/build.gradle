@@ -197,6 +197,13 @@ if (project.hasProperty('releaseKeyStore') &&
 
 tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
 
+// Build and launch app from command line
+task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
+    //Linux command to launch the PostActivity when debug app is installed
+    commandLine 'adb', 'shell', 'am', 'start', '-n', 'org.addhen.smssync.debug/org.addhen.smssync.activities.MainActivity'
+}
+
+
 dependencies {
     compile project(':libraries:pay-me')
     compile project(':libraries:survey-dialog')
@@ -206,7 +213,7 @@ dependencies {
     compile 'nl.qbusict:cupboard:2.1.1'
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.squareup:otto:1.3.4'
-    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.commonsware.cwac:wakeful:1.0.+'
     androidTestCompile 'org.mockito:mockito-core:1.9.+'
     androidTestCompile 'com.google.dexmaker:dexmaker:1.+'

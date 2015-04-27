@@ -468,7 +468,7 @@ public class ProcessMessage {
         }
 
         // Update number of tries.
-        if (prefs.enableRetry().get()) {
+        if (prefs.enableRetry().get() && message.getType() == Message.Type.PENDING) {
             if (!posted) {
                 Logger.log(TAG, "Messages Not posted: " + message);
                 if (message.getRetries() >= prefs.retries().get()) {
