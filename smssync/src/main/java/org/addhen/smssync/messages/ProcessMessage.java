@@ -444,6 +444,7 @@ public class ProcessMessage {
                 Logger.log(TAG, syncUrl.getUrl());
 
                 if (message.getType() == Message.Type.PENDING) {
+                    Logger.log(TAG, "Process message with keyword filtering enabled " + message);
                     posted = syncReceivedSms(message, client);
                     if (posted) {
                         postToSentBox(message);
@@ -454,6 +455,7 @@ public class ProcessMessage {
             }
         } else { // there is no filter text set up on a sync URL
             if (message.getType() == Message.Type.PENDING) {
+                Logger.log(TAG, "Process message with keyword filtering disabled " + message);
                 posted = syncReceivedSms(message, client);
                 setErrorMessage(syncUrl.getUrl());
                 if (posted) {
@@ -466,14 +468,17 @@ public class ProcessMessage {
 
         // Update number of tries.
         if (prefs.enableRetry().get() && message.getType() == Message.Type.PENDING) {
+            Logger.log(TAG, "Process pending message retry enabled " + message);
             if (!posted) {
                 if (message.getRetries() >= prefs.retries().get()) {
+                    Logger.log(TAG, "Delete failed pending message using message retry feature");
                     // Delete from db
                     deleteMessage(message);
                 } else {
                     // Increase message's number of tries for future comparison to know when to delete it.
                     int retries = message.getRetries() + 1;
                     message.setRetries(retries);
+                    Logger.log(TAG, "Increase retry value because pending message is refusing to be sent");
                     App.getDatabaseInstance().getMessageInstance().update(message);
 
                 }
