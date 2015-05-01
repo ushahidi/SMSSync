@@ -8,7 +8,7 @@
 - Updated Japanese, German and Indonesian translations.
 - Fixed logs not propagating with activities.
 - Refreshes Sync URL list view when a new Sync URL is added.
-- Fixed Alert Debug crashing when the app receives a key code.
+- Fixed Alert Debug crashing when the app receives a query code.
 - Styled app support API level 10 and below.
 - Fixed so Message Result API is started from the settings screen when enabled.
 - Allow alert phone number field to accept international dialing prefix.
