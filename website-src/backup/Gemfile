@@ -3,3 +3,4 @@ gem 'ruhoh', "~> 2"
 gem 'json_pure'
 gem 'json'
 gem 'redcarpet'
+gem 'nokogiri', "~> 1.5"
