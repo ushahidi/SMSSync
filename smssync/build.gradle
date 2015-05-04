@@ -167,8 +167,7 @@ release {
 
     def tagMessage = readWhatsNewFile("whatsnew-${trackProperty()}");
 
-    versionStrategy Strategies.PRE_RELEASE_ALPHA_BETA.
-            copyWith(stages: ['alpha', 'beta', 'rc', 'final'] as SortedSet)
+    versionStrategy Strategies.PRE_RELEASE_ALPHA_BETA
 
     android.defaultConfig.versionName = project.version.toString()
 
