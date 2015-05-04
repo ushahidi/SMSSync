@@ -1,0 +1,1122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SMSsync</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on SMSsync</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 May 2015 16:42:24 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Screenshots</title>
+      <link>http://localhost:1313/screenshots/</link>
+      <pubDate>Fri, 01 May 2015 16:42:24 +0900</pubDate>
+      
+      <guid>http://localhost:1313/screenshots/</guid>
+      <description>&lt;div class=&#34;row&#34;&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/auto_reply.png&#34; title=&#34;Auto Reply&#34;&gt;&lt;img alt=&#34;Auto Reply&#34; src=&#34;http://localhost:1313/images/screenshots/auto_reply.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Auto Reply&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sync_url.png&#34; title=&#34;Manage Sync URL&#34;&gt;&lt;img alt=&#34;Manage Sync URL&#34; src=&#34;http://localhost:1313/images/screenshots/sync_url.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Manage Sync URLs&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/add_sync_url.png&#34; title=&#34;Add Sync URL&#34;&gt;&lt;img alt=&#34;Add Sync URL&#34; src=&#34;http://localhost:1313/images/screenshots/add_sync_url.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Add Sync URL&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sent_messages.png&#34; title=&#34;Sent Messages&#34;&gt;&lt;img alt=&#34;Sent Messages&#34; src=&#34;http://localhost:1313/images/screenshots/sent_messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Sent Messages&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/pending_messages.png&#34; title=&#34;Pending Messages&#34;&gt;&lt;img alt=&#34;Pending Messages&#34; src=&#34;http://localhost:1313/images/screenshots/pending_messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Pending Messages&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/settings.png&#34; title=&#34;Settings&#34;&gt;&lt;img alt=&#34;Settings&#34; src=&#34;http://localhost:1313/images/screenshots/settings.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Settings&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/log.png&#34; title=&#34;Logs&#34;&gt;&lt;img alt=&#34;Logs&#34; src=&#34;http://localhost:1313/images/screenshots/log.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Logs&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/whitelist.png&#34; title=&#34;Whitelist&#34;&gt;&lt;img alt=&#34;Whitelist&#34; src=&#34;http://localhost:1313/images/screenshots/whitelist.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Whitelist&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/blacklist.png&#34; title=&#34;Blacklist&#34;&gt;&lt;img alt=&#34;Blacklist&#34; src=&#34;http://localhost:1313/images/screenshots/blacklist.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Empty Whitelist&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/multi-select.png&#34; title=&#34;Multi select items&#34;&gt;&lt;img alt=&#34;Multi select items&#34; src=&#34;http://localhost:1313/images/screenshots/multi-select.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Notification&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sync-scheme.png&#34; title=&#34;Configure a sync scheme&#34;&gt;&lt;img alt=&#34;configure a sync scheme&#34; src=&#34;http://localhost:1313/images/screenshots/sync-scheme.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Configure a Sync URL&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/add_sync_url_http_auth.png&#34; title=&#34;Add Sync URL with HTTP basic authentication&lt;&#34;&gt;&lt;img alt=&#34;configure a sync scheme&#34; src=&#34;http://localhost:1313/images/screenshots/add_sync_url_http_auth.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Making SMSsync the default SMS app&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Features</title>
+      <link>http://localhost:1313/features/</link>
+      <pubDate>Fri, 01 May 2015 16:38:16 +0900</pubDate>
+      
+      <guid>http://localhost:1313/features/</guid>
+      <description>
+
+&lt;ul&gt;
+&lt;li&gt;Scheduler to auto sync pending messages.&lt;/li&gt;
+&lt;li&gt;Pending and sent message views.&lt;/li&gt;
+&lt;li&gt;Configurable auto-reply messages.&lt;/li&gt;
+&lt;li&gt;Instant auto-reply messages from server.&lt;/li&gt;
+&lt;li&gt;Import existing messages from inbox.&lt;/li&gt;
+&lt;li&gt;Keyword based SMS filtering.&lt;/li&gt;
+&lt;li&gt;Multiple languages.&lt;/li&gt;
+&lt;li&gt;Task scheduling.&lt;/li&gt;
+&lt;li&gt;Multiple Sync URLs.&lt;/li&gt;
+&lt;li&gt;Filter by phone number. Either Whitelist or Blacklist a phone number.&lt;/li&gt;
+&lt;li&gt;HTTP basic authentication support in Sync URLs.&lt;/li&gt;
+&lt;li&gt;Logviewer to see the activities on the application.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;limitations:e1ec7fcfd5aa4d3ea3e990d9b707a3b4&#34;&gt;Limitations&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Android enforces an outgoing limit of 100 SMS messages per hour. However, there are ways to override this limitation. Check &lt;a href=&#34;http://www.xda-developers.com/android/increase-the-sms-limit-on-android&#34;&gt;this&lt;/a&gt; thread for details.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;caveats:e1ec7fcfd5aa4d3ea3e990d9b707a3b4&#34;&gt;Caveats&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;There may be security holes. Patches are humbly accepted.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Developers</title>
+      <link>http://localhost:1313/developers/</link>
+      <pubDate>Fri, 01 May 2015 16:26:41 +0900</pubDate>
+      
+      <guid>http://localhost:1313/developers/</guid>
+      <description>&lt;div class=&#34;row&#34;&gt;
+    &lt;div class=&#34;col-lg-6&#34;&gt;
+        &lt;h2&gt;Instructions&lt;/h2&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                SMSsync uses the &lt;a href=&#34;http://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol&#34;&gt;HTTP&lt;/a&gt;
+                and &lt;a href=&#34;http://en.wikipedia.org/wiki/HTTPS&#34;&gt;HTTPS&lt;/a&gt; protocols for
+                communication.&lt;br/&gt;
+                To start the SMSsync Gateway, you&#39;ll need to specify a Sync URL. This URL is where
+                all incoming SMS will be transmitted to. Remember to enter the full URL including
+                the filename. A typical example will be &lt;code&gt;http://somedomain.com/index.php&lt;/code&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                For security you can specify a secret key to be sent to the Sync URL. If the secret
+                key doesn&#39;t match on the server, the Sync URL can ignore the transmission.
+            &lt;/li&gt;
+            &lt;li&gt;
+                Additionally, you can specify keywords with which to filter incoming SMS. Only
+                matching messages will be forwarded to the SMSsync Gateway URL.
+            &lt;/li&gt;
+            &lt;li&gt;
+                SMSsync uses the following variables to transmit the incoming SMS via the POST
+                method:
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;strong&gt;from&lt;/strong&gt; -- the number that sent the SMS&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;message&lt;/strong&gt; -- the SMS sent&lt;/strong&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;message_id&lt;/strong&gt; -- the unique ID of the SMS&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;sent_to&lt;/strong&gt; -- the phone number registered on the SIM card
+                        otherwise it&#39;s the value set on the app as device ID
+                    &lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;secret&lt;/strong&gt; -- the secret key set on the app&lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;device_id&lt;/strong&gt; -- the unique id set on the device to be used by
+                        the server to identify which device is communicating with it. Note:
+                        supported from v2.6.1 and above
+                    &lt;/li&gt;
+                    &lt;li&gt;&lt;strong&gt;sent_timestamp&lt;/strong&gt; -- the timestamp the SMS was sent. In the
+                        UNIX timestamp format&lt;/strong&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;p&gt;
+            In order for SMSsync to ensure perfect transmission, the Sync URL must return a
+            JSON-formatted status message, as shown below.
+            &lt;br/&gt;&lt;br/&gt;
+            &lt;strong&gt;Succeeded&lt;/strong&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+{
+    &#34;payload&#34;:
+    {
+        &#34;success&#34;: true,
+        &#34;error&#34;: null
+    }
+}&lt;/pre&gt;
+        &lt;br/&gt;&lt;br/&gt;
+        &lt;strong&gt;Failed&lt;/strong&gt;
+        &lt;br/&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+{
+    &#34;payload&#34;:
+    {
+        &#34;success&#34;: false,
+        &#34;error&#34;: &#34;error message from the server&#34;
+    }
+}&lt;/pre&gt;
+        &lt;/p&gt;
+        &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+        &lt;strong&gt;Response from server&lt;/strong&gt;
+        &lt;p&gt;
+            SMSsync allows either an auto-response message to be configured on the app itself, or to
+            be retrieved from the server. When the app makes an HTTP Post request to sync the
+            incoming SMS to the configured URL, the server can respond with JSON-encoded messages
+            alongside the success message. The app then sends these messages by SMS to the specified
+            users phone.
+        &lt;/p&gt;
+        &lt;p&gt;
+            This makes it possible to have an instant response via SMS when an HTTP Post request is
+            made. To leverage this feature, a JSON formatted string like the one below needs to be
+            returned by the configured URL in response to the app&#39;s HTTP Post request.
+        &lt;/p&gt;
+        &lt;p&gt;
+            In the app itself, ensure &lt;strong&gt;*Get Reply from Server*&lt;/strong&gt; is checked to enable
+            this feature.
+        &lt;p&gt;
+            &lt;strong&gt;Response JSON data from the Sync URL&lt;/strong&gt;
+&lt;pre id=&#34;code&#34; class=&#34;prettyprint linenums&#34;&gt;{
+    &#34;payload&#34;: {
+        &#34;success&#34;: &#34;true&#34;,
+        &#34;task&#34;: &#34;send&#34;,
+        &#34;messages&#34;: [
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;042b3515-ef6b-f424-c4qd&#34;
+            },
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;026b3515-ef6b-f424-c4qd&#34;
+            },
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;096b3515-ef6b-f424-c4qd&#34;
+            }
+        ]
+    }
+}&lt;/pre&gt;
+        &lt;/p&gt;
+        &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+        &lt;strong&gt;Task&lt;/strong&gt;
+        &lt;p&gt;
+            SMSsync supports execution of tasks defined on the server. Currently it supports sending
+            of messages sent from the Sync URL as SMS. This feature is targeted towards developers.
+            The app can be configured to poll the server for new tasks at a given frequency. The
+            server then needs to respond to HTTP GET requests with &lt;code&gt;?task=send&lt;/code&gt; (for
+            example &lt;code&gt;http://callback_url/smssync?task=send&lt;/code&gt;). The format of this response
+            is shown below.
+        &lt;/p&gt;
+        &lt;br/&gt;&lt;br/&gt;
+        &lt;p&gt;&lt;strong&gt;Response JSON data from the Sync URL&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;{
+    &#34;payload&#34;: {
+        &#34;task&#34;: &#34;send&#34;,
+        &#34;secret&#34;: &#34;secret_key&#34;,
+        &#34;messages&#34;: [
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;042bf515-eq6b-f424-c4pz&#34;
+            },
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;022b3515-ef6b-f424-c4ws&#34;
+            },
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;042b3515-ef6b-f424-c4qd&#34;
+            }
+        ]
+    }
+}&lt;/pre&gt;
+        &lt;br/&gt;&lt;br/&gt;
+        &lt;strong&gt;Notes:&lt;/strong&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                The secret key provided by the server must match the secret key configured within
+                SMSsync, otherwise SMSsync will not execute the task.
+            &lt;/li&gt;
+            &lt;li&gt;
+                To ensure the message is sent to the correct recipient, add the country code to the
+                phone number. Eg. &lt;strong&gt;+254&lt;/strong&gt;700709142. Without this, the message is sent
+                to the number in the country where the phone is.
+            &lt;/li&gt;
+            &lt;li&gt;
+                The web service should check the value of the secret key passed with each task
+                request that SMSsync makes to it for messages to send and respond appropriately to
+                ensure that not any instance of SMSsync can communicate with it.
+            &lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;a name=&#34;message-results&#34;&gt;&lt;strong&gt;Message Results API&lt;/strong&gt;&lt;/a&gt;
+        &lt;p&gt;Message Results API is a way to get SMS status delivery report back to the server so the
+            server knows that messages have been
+            successfully sent to their respective recipients or not.&lt;/p&gt;
+        &lt;p&gt;This feature is supported on v2.7 and above. To make use of this feature, you have to
+            enable the &lt;code&gt;Message Results API&lt;/code&gt; and &lt;code&gt;SMS Delivery Report&lt;/code&gt; from
+            the Settings screen.&lt;/p&gt;
+        &lt;p&gt;SMSsync will periodically send a Task request to the server for messages to send as SMS.
+            &lt;strong&gt;Note:&lt;/strong&gt; The server needs to include a unique ID for the messages in the
+            JSON response as &lt;code&gt;&#34;uuid&#34;:&#34;unique_id&#34;&lt;/code&gt; key. See below for a sample JSON
+            response from the server&lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+GET /smssync?task=send HTTP/1.1
+Host: testserver.local
+
+HTTP/1.1 200 OK
+Server: nginx/1.5.2
+Content-Type: application/json; charset=utf-8
+{
+    &#34;payload&#34;: {
+        &#34;task&#34;: &#34;send&#34;,
+        &#34;secret&#34;: &#34;secret_key&#34;,
+        &#34;messages&#34;: [
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;aada21b0-0615-4957-bcb3&#34;
+            },
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;1ba368bd-c467-4374-bf28&#34;
+            },
+            {
+                &#34;to&#34;: &#34;+000-000-0000&#34;,
+                &#34;message&#34;: &#34;the message goes here&#34;,
+                &#34;uuid&#34;: &#34;95df126b-ee80-4175-a6fb&#34;
+            }
+        ]
+    }
+}&lt;/pre&gt;
+        Once SMSsync receives messages to be sent as SMS it will make a &lt;code&gt;POST ?task=sent&lt;/code&gt;
+        request with the message UUIDs as below to the server to acknowledge that it has received
+        the messages
+        and has queued them up for processing.
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+POST /smssync?task=sent HTTP/1.1
+Host: testserver.local
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+{
+    &#34;queued_messages&#34;: [
+        &#34;aada21b0-0615-4957-bcb3&#34;,
+        &#34;1ba368bd-c467-4374-bf28&#34;,
+        &#34;95df126b-ee80-4175-a6fb&#34;
+    ]
+}&lt;/pre&gt;
+        &lt;p&gt;Next, the server needs to process the JSON response sent by SMSsync. It needs to remove
+            all the message UUIDs sent by SMSsync from
+            the subsequent outgoing messages list so SMSsync avoids processing those again. Once the
+            server receives the UUIDs of the queued up messages, it needs to send a response
+            back to SMSsync as JSON response with the received messages UUIDs as JSON array. If
+            there are no received messages UUIDs, it needs to send back an empty message_uuids JSON
+            array to SMSsync&lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+POST /smssync?task=sent HTTP/1.1
+Host: testserver.local
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+{
+    &#34;message_uuids&#34;: [
+        &#34;aada21b0-0615-4957-bcb3&#34;,
+        &#34;1ba368bd-c467-4374-bf28&#34;,
+        &#34;95df126b-ee80-4175-a6fb&#34;
+    ]
+}&lt;/pre&gt;
+        &lt;p&gt;Sample empty message uuids JSON response.&lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+POST /smssync?task=sent HTTP/1.1
+Host: testserver.local
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+{
+    &#34;message_uuids&#34;: []
+}&lt;/pre&gt;
+        &lt;p&gt;To send SMS status delivery report back to the server, SMSsync will make a &lt;code&gt;GET
+            ?task=result&lt;/code&gt; to the server and should receive a list
+            of message UUIDs that are waiting to receive delivery reports. The server should send
+            the JSON response below&lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+GET /smssync?task=result HTTP/1.1
+Host: testserver.local
+
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+{
+    &#34;message_uuids&#34;: [
+        &#34;aada21b0-0615-4957-bcb3&#34;,
+        &#34;1ba368bd-c467-4374-bf28&#34;,
+        &#34;95df126b-ee80-4175-a6fb&#34;
+    ]
+}&lt;/pre&gt;
+        &lt;p&gt;Then SMSsync will send delivery reports for the message uuids above as a POST
+            request&lt;code&gt;POST ?task=result&lt;/code&gt; with the JSON response below&lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+POST /smssync?task=result HTTP/1.1
+Host: testserver.local
+Content-Type: application/json; charset=utf-8
+
+{
+    &#34;message_result&#34;: [
+        {
+            &#34;uuid&#34;: &#34;052bf515-ef6b-f424-c4ee&#34;,
+            &#34;sent_result_code&#34;: 0,
+            &#34;sent_result_message&#34;: &#34;SMSSync Message Sent&#34;
+            &#34;delivered_result_code&#34;: -1,
+            &#34;delivered_result_message&#34;: &#34;&#34;
+        },
+        {
+            &#34;uuid&#34;: &#34;aada21b0-0615-4957-bcb3&#34;,
+            &#34;sent_result_code&#34;: 0,
+            &#34;sent_result_message&#34;: &#34;SMSSync Message Sent&#34;,
+            &#34;delivered_result_code&#34;: 0,
+            &#34;delivered_result_message&#34;: &#34;SMS Delivered&#34;
+        },
+        {
+            &#34;uuid&#34;: &#34;1ba368bd-c467-4374-bf28&#34;,
+            &#34;sent_result_code&#34;: 1,
+            &#34;sent_result_message&#34;: &#34;Failed to send SMS - Maybe insufficient air time on the phone.&#34;,
+            &#34;delivered_result_code&#34;: -1,
+            &#34;delivered_result_message&#34;: &#34;&#34;
+        },
+        {
+            &#34;uuid&#34;: &#34;95df126b-ee80-4175-a6fb&#34;,
+            &#34;sent_result_code&#34;: 4,
+            &#34;sent_result_message&#34;: &#34;No service&#34;,
+            &#34;delivered_result_code&#34;: -1,
+            &#34;delivered_result_message&#34;: &#34;&#34;
+        }
+    ]
+}&lt;/pre&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-lg-6&#34;&gt;
+        &lt;h2&gt;A sample web service&lt;/h2&gt;
+        &lt;p&gt;This is a sample PHP script to demonstrate how to write a webservice to successfully
+            communicate with SMSsync.&lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+/**
+ * Gets the messages(SMSs) sent by SMSsync as a POST request.
+ *
+ */
+function get_message()
+{
+    $error = NULL;
+    // Set success to false as the default success status
+    $success = false;
+    /**
+     *  Get the phone number that sent the SMS.
+     */
+    if (isset($_POST[&#39;from&#39;]))
+    {
+        $from = $_POST[&#39;from&#39;];
+    }
+    else
+    {
+        $error = &#39;The from variable was not set&#39;;
+    }
+    /**
+     * Get the SMS aka the message sent.
+     */
+    if (isset($_POST[&#39;message&#39;]))
+    {
+        $message = $_POST[&#39;message&#39;];
+    }
+    else
+    {
+        $error = &#39;The message variable was not set&#39;;
+    }
+    /**
+     * Get the secret key set on SMSsync side
+     * for matching on the server side.
+     */
+    if (isset($_POST[&#39;secret&#39;]))
+    {
+        $secret = $_POST[&#39;secret&#39;];
+    }
+    /**
+     * Get the timestamp of the SMS
+     */
+    if(isset($_POST[&#39;sent_timestamp&#39;]))
+    {
+        $sent_timestamp = $_POST[&#39;sent_timestamp&#39;];
+    }
+    /**
+     * Get the phone number of the device SMSsync is
+     * installed on.
+     */
+    if (isset($_POST[&#39;sent_to&#39;]))
+    {
+        $sent_to = $_POST[&#39;sent_to&#39;];
+    }
+    /**
+     * Get the unique message id
+     */
+    if (isset($_POST[&#39;message_id&#39;]))
+    {
+        $message_id = $_POST[&#39;message_id&#39;];
+    }
+    /**
+     * Get device ID
+     */
+    if (isset($_POST[&#39;device_id&#39;]))
+    {
+        $device_id = $_POST[&#39;device_id&#39;];
+    }
+    /**
+     * Now we have retrieved the data sent over by SMSsync
+     * via HTTP. Next thing to do is to do something with
+     * the data. Either echo it or write it to a file or even
+     * store it in a database. This is entirely up to you.
+     * After, return a JSON string back to SMSsync to know
+     * if the web service received the message successfully or not.
+     *
+     * In this demo, we are just going to save the data
+     * received into a text file.
+     *
+     */
+    if ((strlen($from) &gt; 0) AND (strlen($message) &gt; 0) AND
+        (strlen($sent_timestamp) &gt; 0 )
+        AND (strlen($message_id) &gt; 0))
+    {
+        /* The screte key set here is 123456. Make sure you enter
+         * that on SMSsync.
+         */
+        if ( ( $secret == &#39;123456&#39;))
+        {
+            $success = true;
+        } else
+        {
+            $error = &#34;The secret value sent from the device does not match the one on the server&#34;;
+        }
+        // now let&#39;s write the info sent by SMSsync
+        //to a file called test.txt
+        $string = &#34;From: &#34;.$from.&#34;\n&#34;;
+        $string .= &#34;Message: &#34;.$message.&#34;\n&#34;;
+        $string .= &#34;Timestamp: &#34;.$sent_timestamp.&#34;\n&#34;;
+        $string .= &#34;Messages Id:&#34; .$message_id.&#34;\n&#34;;
+        $string .= &#34;Sent to: &#34;.$sent_to.&#34;\n&#34;;
+        $string .= &#34;Device ID: &#34;.$device_id.&#34;\n\n\n&#34;;
+        write_message_to_file($string);
+    }
+    /**
+     * Comment the code below out if you want to send an instant
+     * reply as SMS to the user.
+     *
+     * This feature requires the &#34;Get reply from server&#34; checked on SMSsync.
+     */
+     send_instant_message($from);
+    /**
+      * Now send a JSON formatted string to SMSsync to
+      * acknowledge that the web service received the message
+      */
+     $response = json_encode([
+        &#34;payload&#34;=&gt; [
+            &#34;success&#34;=&gt;$success,
+                &#34;error&#34; =&gt; $error
+            ]
+        ]);
+     //send_response($response);
+}
+
+/**
+ * Writes the received responses to a file. This acts as a database.
+ */
+function write_message_to_file($message)
+{
+    $myFile = &#34;test.txt&#34;;
+    $fh = fopen($myFile, &#39;a&#39;) or die(&#34;can&#39;t open file&#34;);
+    @fwrite($fh, $message);
+    @fclose($fh);
+}
+
+/**
+ * Implements the task feature. Sends messages to SMSsync to be sent as
+ * SMS to users.
+ */
+function send_task()
+{
+    /**
+     * Comment the code below out if you want to send an instant
+     * reply as SMS to the user.
+     *
+     * This feature requires the &#34;Get reply from server&#34; checked on SMSsync.
+     */
+    if (isset($_GET[&#39;task&#39;]) AND $_GET[&#39;task&#39;] === &#39;send&#39;)
+    {
+        $m = &#34;Sample Task Message&#34;;
+        $f = &#34;+000-000-0000&#34;;
+        $s = &#34;true&#34;;
+        $reply[0] = [
+            &#34;to&#34; =&gt; $f,
+            &#34;message&#34; =&gt; $m,
+            &#34;uuid&#34; =&gt; &#34;1ba368bd-c467-4374-bf28&#34;
+        ];
+        // Send JSON response back to SMSsync
+        $response = json_encode(
+            [&#34;payload&#34;=&gt;[
+                &#34;success&#34;=&gt;$s,
+                &#34;task&#34;=&gt;&#34;send&#34;,
+                &#34;secret&#34; =&gt; &#34;123456&#34;,
+                &#34;messages&#34;=&gt;array_values($reply)]
+            ]);
+        send_response($response);
+    }
+}
+
+/**
+ * This sends an instant response when the server receive messages(SMSs) from
+ * SMSsync. This requires the settings &#34;Get Reply from Server&#34; enabled on
+ * SMSsync.
+ */
+function send_instant_message($to)
+{
+    $m = &#34;Your message has been received&#34;;
+    $f = &#34;+000-000-0000&#34;;
+    $s = true;
+    $reply[0] = [
+        &#34;to&#34; =&gt; $to,
+        &#34;message&#34; =&gt; $m,
+        &#34;uuid&#34; =&gt; &#34;1ba368bd-c467-4374-bf28&#34;
+    ];
+    // Send JSON response back to SMSsync
+    $response = json_encode(
+        [&#34;payload&#34;=&gt;[
+            &#34;success&#34;=&gt;$s,
+            &#34;task&#34;=&gt;&#34;send&#34;,
+            &#34;secret&#34; =&gt; &#34;123456&#34;,
+            &#34;messages&#34;=&gt;array_values($reply)]
+        ]);
+    send_response($response);09048370465
+}
+
+function send_response($response)
+{
+    // Avoid caching
+    header(&#34;Cache-Control: no-cache, must-revalidate&#34;); // HTTP/1.1
+    header(&#34;Expires: Sat, 26 Jul 1997 05:00:00 GMT&#34;); // Date in the past
+    header(&#34;Content-type: application/json; charset=utf-8&#34;);
+    echo $response;
+}
+
+function get_sent_message_uuids()
+{
+    $data = file_get_contents(&#39;php://input&#39;);
+    $queued_messages = file_get_contents(&#39;php://input&#39;);
+    // Writing this to a file for demo purposes.
+    // In production, you will have to process the JSON string
+    // and remove the messages from the database or where ever the
+    // messages are stored so the next Task run, the server won&#39;t add
+    // these messages.
+    write_message_to_file($queued_messages.&#34;\n\n&#34;);
+    send_message_uuids_waiting_for_a_delivery_report($queued_messages);
+
+}
+
+/**
+ * Sends message UUIDS to SMSsync for their sms delivery status report.
+ * When SMSsync send messages from the server as SMS to phone numbers, SMSsync
+ * can send back status delivery report for these messages.
+ */
+function send_message_uuids_waiting_for_a_delivery_report($queued_messages)
+{
+    // Send back the received messages UUIDs back to SMSsync
+    $json_obj = json_decode($queued_messages);
+    $response = json_encode(
+    [
+        &#34;message_uuids&#34;=&gt;$json_obj-&gt;queued_messages
+    ]);
+    send_response($response);
+}
+
+function send_messages_uuids_for_sms_delivery_report()
+{
+    if(isset($_GET[&#39;task&#39;]) AND $_GET[&#39;task&#39;] == &#39;result&#39;){
+        $response = json_encode(
+        [
+            &#34;message_uuids&#34; =&gt; [&#39;1ba368bd-c467-4374-bf28&#39;]
+        ]);
+        send_response($response);
+    }
+
+}
+
+/**
+ * Get status delivery report on sent messages
+ *
+ */
+function get_sms_delivery_report()
+{
+    if($_GET[&#39;task&#39;] === &#39;result&#39; AND $_GET[&#39;secret&#39;]=== &#39;123456&#39;)
+    {
+        $message_results = file_get_contents(&#39;php://input&#39;);
+        write_message_to_file(&#34;message &#34;.$message_results.&#34;\n\n&#34;);
+    }
+}
+
+// Execute functions above
+if($_SERVER[&#39;REQUEST_METHOD&#39;] === &#39;POST&#39;)
+{
+    if(isset($_GET[&#39;task&#39;]) AND $_GET[&#39;task&#39;] === &#39;result&#39;){
+        get_sms_delivery_report();
+    }
+    else if( isset($_GET[&#39;task&#39;]) &amp;&amp; $_GET[&#39;task&#39;] === &#39;sent&#39;)
+    {
+        get_sent_message_uuids();
+    }
+    else
+    {
+        get_message();
+    }
+}
+else
+{
+    send_task();
+    send_messages_uuids_for_sms_delivery_report();
+}
+&lt;/pre&gt;
+        &lt;p&gt;
+            Assuming you&#39;ve the above code saved in a file called demo.php and is located at your
+            web server&#39;s document root, you can issue the command below to test.
+        &lt;/p&gt;
+&lt;pre class=&#34;prettyprint linenums&#34;&gt;
+    $ curl -D - -X POST http://localhost/demo.php \
+        -F &#34;from=+000-000-0000&#34; \
+        -F &#34;message=sample text message&#34; \
+        -F &#34;secret=123456&#34; \
+        -F &#34;device_id=1&#34; \
+        -F &#34;sent_timestamp=123456789&#34; \
+        -F &#34;message_id=80&#34; \
+&lt;/pre&gt;
+        &lt;p&gt;
+            The server should return a JSON response indicating a success:true or success:false
+        &lt;/p&gt;
+        &lt;p&gt;
+            For a complete web service application, look at Ushahidi&#39;s &lt;a
+                href=&#34;https://github.com/ushahidi/Ushahidi_Web/tree/master/plugins/smssync&#34;&gt;SMSsync
+            plugin&lt;/a&gt; which utilizes most of SMSsync&#39;s features.
+        &lt;/p&gt;
+        &lt;p&gt;
+            There is also SMSsync webservice for Django that implements most of the features. You
+            can download it from &lt;a
+                href=&#34;https://github.com/cwanjau/SMSsync-Python-Django-webservice&#34;&gt;GitHub.com&lt;/a&gt;.
+            Thanks to &lt;a href=&#34;https://github.com/cwanjau&#34;&gt;Caine Wanjau&lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p&gt;&amp;nbsp;&lt;/p&gt;
+        &lt;a name=&#34;alerts&#34;&gt;&lt;strong&gt;Alerts&lt;/strong&gt;&lt;/a&gt;
+        &lt;p&gt;As of v2.7 and above, you should be able to query for the status of the device running
+            SMSsync with query codes. For example, if you want to know if the device can still reach
+            the web server, just text @20 to the device and you should receive a text message back
+            with the status of the server.&lt;/p&gt;
+        Below are the query codes supported at the moment.
+        &lt;table class=&#34;table table-bordered table-striped&#34;&gt;
+            &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Query code @xx&lt;/th&gt;
+                &lt;th&gt;Query&lt;/th&gt;
+                &lt;th&gt;+ Query response&lt;/th&gt;
+                &lt;th&gt;- Query response&lt;/th&gt;
+            &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;code&gt;@10&lt;/code&gt;&lt;/td&gt;
+                &lt;td&gt;Is cell reception ok&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-success&#34;&gt;cell reception ok&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-warning&#34;&gt;The phone sends no response.&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;code&gt;@20&lt;/code&gt;&lt;/td&gt;
+                &lt;td&gt;Is server ok&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-success&#34;&gt;server responded with &lt;HTTP Status Code&gt; status
+                    code.Eg. server responded with 200 status code&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-warning&#34;&gt;Cannot reach server.&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;code&gt;@30&lt;/code&gt;&lt;/td&gt;
+                &lt;td&gt;Battery level&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-success&#34;&gt;Battery level is &lt;percentage of battery level&gt; Eg.
+                    battery level is 10%&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-warning&#34;&gt;The phone sends no response.&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;code&gt;@40&lt;/code&gt;&lt;/td&gt;
+                &lt;td&gt;Get all statuses&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-success&#34;&gt;All the query&#39;s positive responses&lt;/span&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;span class=&#34;text-warning&#34;&gt;All the query&#39;s negative responses&lt;/span&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Configure</title>
+      <link>http://localhost:1313/configure/</link>
+      <pubDate>Fri, 01 May 2015 14:01:52 +0900</pubDate>
+      
+      <guid>http://localhost:1313/configure/</guid>
+      <description>&lt;div class=&#34;container bs-docs-container&#34;&gt;
+    &lt;div class=&#34;row&#34;&gt;
+        &lt;div class=&#34;col-md-3&#34;&gt;
+            &lt;div class=&#34;bs-sidebar hidden-print&#34; role=&#34;complementary&#34;&gt;
+                &lt;ul class=&#34;nav bs-sidenav&#34;&gt;
+                    &lt;li&gt;
+                        &lt;a href=&#34;#overview&#34;&gt;Overview&lt;/a&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=&#34;#manage-sync-urls&#34;&gt;Manage Sync URLs&lt;/a&gt;
+                        &lt;ul class=&#34;nav&#34;&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#add-new-sync-url&#34;&gt;Add new Sync URL&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#edit-sync-url&#34;&gt;Edit a Sync URL&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#change-sync-scheme&#34;&gt;Change Sync Scheme&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#delete-all-existing-sync-url&#34;&gt;Delete All Existing Sync URLs&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#delete-an-existing-sync-url&#34;&gt;Delete An Existing Sync URL&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#start-smssync-service&#34;&gt;Start SMSsync service&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#stop-smssync-service&#34;&gt;Stop SMSsync service&lt;/a&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=&#34;#preferences&#34;&gt;Preferences&lt;/a&gt;
+                        &lt;ul class=&#34;nav&#34;&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#general-settings&#34;&gt;General Settings&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#reply-message-settings&#34;&gt;Reply Message Settings&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#auto-sync-settings&#34;&gt;Auto Sync Settings&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#task-settings&#34;&gt;Task Settings&lt;/a&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=&#34;#manage-pending-messages&#34;&gt;Manage Pending Messages&lt;/a&gt;
+                        &lt;ul class=&#34;nav&#34;&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#manually-sync-all-pending-messages&#34;&gt;Manually sync all pending messages&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#manually-sync-a-single-pending-message&#34;&gt;Manaully sync a single pending message&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#delete-pending-messages&#34;&gt;Delete pending messages&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#import-sms&#34;&gt;Import SMS&lt;/a&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;a href=&#34;#manage-sent-messages&#34;&gt;Manage Sent Messages&lt;/a&gt;
+                        &lt;ul class=&#34;nav&#34;&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#delete-an-individual-sent-message&#34;&gt;Delete An Individual Sent Message&lt;/a&gt;
+                            &lt;/li&gt;
+                            &lt;li&gt;
+                                &lt;a href=&#34;#delete-all-sent-messages&#34;&gt;Delete All Sent Messages&lt;/a&gt;
+                            &lt;/li&gt;
+                        &lt;/ul&gt;
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&#34;col-md-9&#34; role=&#34;main&#34;&gt;
+            &lt;div class=&#34;bs-docs-section&#34;&gt;
+                &lt;div class=&#34;page-header&#34;&gt;
+                    &lt;h1 id=&#34;overview&#34;&gt;Overview&lt;/h1&gt;
+                &lt;/div&gt;
+                This how to covers the essential configuration to get SMSsync up and running. The application has been designed to be intuitive enough to easily get it running.
+                &lt;strong&gt;**Note:**&lt;/strong&gt; SMSsync works on any &lt;acronym title=&#34;Short Message Service&#34;&gt;SMS&lt;/acronym&gt;-enabled device running Android 2.1 and above.
+            &lt;/div&gt;
+            &lt;div class=&#34;bs-docs-section&#34;&gt;
+                &lt;div class=&#34;page-header&#34;&gt;
+                    &lt;h1 id=&#34;manage-sync-urls&#34;&gt;Manage Sync URLs&lt;/h1&gt;
+                &lt;/div&gt;
+                Here you can manage multiple Sync URLs. Sync URLs are the URLs of your webservices. These are where the messages from SMSsync are actually pushed to.
+                &lt;h3 id=&#34;add-new-sync-url&#34;&gt;Add new Sync URL&lt;/h3&gt;
+                &lt;p&gt;To add a new Sync URL:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Tap on the &lt;strong&gt;&lt;em&gt;Sync URL&lt;/em&gt;&lt;/strong&gt; from the navigation drawer.&lt;/li&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/new.png&#34; alt=&#34;Add icon&#34;/&gt; icon on the actionbar. An input dialog should open.&lt;/li&gt;
+                    &lt;li&gt;Enter a title for the Sync URL.&lt;/li&gt;
+                    &lt;li&gt;Enter a secret key if required by the webservices. Make sure you enter the exact key here. The secret key should be presented as string of any characters without spaces.&lt;/li&gt;
+                    &lt;li&gt;Enter a comma separated value for the keyword(s). These keywords will be used by SMSsync to filter incoming SMS and pending messages to the Sync URL you are adding. As of v2.0.2. You can now add Regular Expresssion code for filtering. This means, it can either be CSV or RegExp. It cannot be both.&lt;/li&gt;
+                    &lt;li&gt;Enter the URL for your webservice. Don&amp;#39;t forget to start with the &lt;strong&gt;&lt;em&gt;HTTP&lt;/em&gt;&lt;/strong&gt; or &lt;strong&gt;&lt;em&gt;HTTPS&lt;/em&gt;&lt;/strong&gt; protocol. e.g. &lt;code&gt;https://example.com/api-v1/add-record/&lt;/code&gt;&lt;/li&gt;
+                    &lt;li&gt;Tap &lt;strong&gt;&lt;em&gt;OK&lt;/em&gt;&lt;/strong&gt; to save the new entry.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;p&gt;Note: Version 2.5 or higher supports &lt;a href=&#34;http://en.wikipedia.org/wiki/Basic_access_authentication&#34;&gt;basic auth&lt;/a&gt; credentials in the URL, e.g. &lt;code&gt;https://username:pass@example.com/api-v1/add-record/&lt;/code&gt;.&lt;/p&gt;
+                &lt;h3 id=&#34;edit-sync-url&#34;&gt;Edit a Sync URL&lt;/h3&gt;
+                &lt;p&gt;To edit an existing Sync URL:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Long press on the Sync URL you want to edit by tapping and holding it until the actionbar menu changes.&lt;/li&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/edit.png&#34; alt=&#34;Edit icon&#34;/&gt; icon on the actionbar. An input dialog should open repopulated with the details of the Sync URL.&lt;/li&gt;
+                    &lt;li&gt;Edit the necessary field(s) accordinlgy.&lt;/li&gt;
+                    &lt;li&gt;Tap &lt;strong&gt;&lt;em&gt;OK&lt;/em&gt;&lt;/strong&gt; to save the edited entry.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;change-sync-scheme&#34;&gt;Change Sync Scheme&lt;/h3&gt;
+                &lt;p&gt;The default sync scheme uses URLEncoded. However, with &lt;strong&gt;version 2.5 and above&lt;/strong&gt; you can now customize which sync scheme should be used for synchronization. The supported formats are URLEncoded, JSON, XML&lt;/p&gt;
+                &lt;p&gt;To change the sync scheme:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Long press on the Sync URL you want to edit by tapping and holding it until the actionbar menu changes.&lt;/li&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/settings.png&#34; alt=&#34;Change sync scheme&#34; /&gt; icon on the actionbar. A dialog will pop up.&lt;/li&gt;
+                    &lt;li&gt;Select the HTTP Method to use. POST and PUT are supported&lt;/li&gt;
+                    &lt;li&gt;Select the Data Format. URLEncoded, JSON and XML are supported for now.&lt;/li&gt;
+                    &lt;li&gt;Set the Payload Keys to use. You can only set 5 keys. Make sure the keys matches what is expected on the server. In most cases it is safe to stick to the default keys.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;delete-all-existing-sync-url&#34;&gt;Delete All Existing Sync URLs&lt;/h3&gt;
+                &lt;p&gt;Delete all Sync URL by:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;If there are any Sync URLs enabled(checked), disable(uncheck) them.&lt;/li&gt;
+                    &lt;li&gt;Stop the SMSsync service if it&amp;#39;s running(checked).&lt;/li&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/delete.png&#34; alt=&#34;Delete icon&#34;/&gt; icon on the actionbar. A confirmation dialog should open.&lt;/li&gt;
+                    &lt;li&gt;Tap &lt;strong&gt;&lt;em&gt;Yes&lt;/em&gt;&lt;/strong&gt; to delete all Sync URL or &lt;strong&gt;&lt;em&gt;No&lt;/em&gt;&lt;/strong&gt; to cancel the deletion.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;delete-an-existing-sync-url&#34;&gt;Delete An Existing Sync URL&lt;/h3&gt;
+                &lt;p&gt;Delete an existing Sync URL by:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;If the Sync URL to be deleted is enabled&amp;nbsp;(checked), disable it. Otherwise, move to the next item.&lt;/li&gt;
+                    &lt;li&gt;Long press on the Sync URL you want to delete by tapping and holding it until the actionbar menu changes.&lt;/li&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/delete.png&#34; alt=&#34;Delete icon&#34;/&gt; icon on the actionbar. A confirmation dialog should open.&lt;/li&gt;
+                    &lt;li&gt;Tap &lt;strong&gt;&lt;em&gt;Yes&lt;/em&gt;&lt;/strong&gt; to delete it or &lt;strong&gt;&lt;em&gt;No&lt;/em&gt;&lt;/strong&gt; to cancel the deletion.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;start-smssync-service&#34;&gt;Start SMSsync service&lt;/h3&gt;
+                &lt;p&gt;To start the SMSsync service:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Make sure you have added and enabled&amp;nbsp;(checked) at least one Sync URL.&lt;/li&gt;
+                    &lt;li&gt;On the &lt;strong&gt;&lt;em&gt;SYNC URL&lt;/em&gt;&lt;/strong&gt; screen, tap on the &lt;strong&gt;&lt;em&gt;Start SMSsync service&lt;/em&gt;&lt;/strong&gt; to start the service. You do this if the service is disabled.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;stop-smssync-service&#34;&gt;Stop SMSsync service&lt;/h3&gt;
+                &lt;p&gt;To stop the SMSsync service:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;On the &lt;strong&gt;&lt;em&gt;SYNC URL&lt;/em&gt;&lt;/strong&gt; screen, uncheck the &lt;strong&gt;&lt;em&gt;Start SMSsync service&lt;/em&gt;&lt;/strong&gt; option to stop the service.&lt;/li&gt;
+                &lt;/ol&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;bs-docs-section&#34;&gt;
+                &lt;div class=&#34;page-header&#34;&gt;
+                    &lt;h1 id=&#34;preferences&#34;&gt;Preferences&lt;/h1&gt;
+                &lt;/div&gt;
+                &lt;p&gt;Using the options available in the app settings, you can configure the behaviour however you like.&lt;/p&gt;
+                &lt;h3 id=&#34;general-settings&#34;&gt;General Settings&lt;/h3&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Go to Settings screen by tapping the &lt;img src=&#34;{{urls.media}}/icons/settings.png&#34; alt=&#34;Settings icon&#34;/&gt; icon on the actionbar or option menu.&lt;/li&gt;
+                    &lt;li&gt;Tap on &lt;strong&gt;&lt;em&gt;Enter Unique ID&lt;/em&gt;&lt;/strong&gt; to enter a Unique ID to identify the device SMSsync is installed on.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;reply-message-settings&#34;&gt;Reply Message Settings&lt;/h3&gt;
+                &lt;p&gt;This is where you set auto reply message to be sent to the user that sent SMS to SMSsync. You can specify a message on the phone or get the message from the server.
+            To set a reply message:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Go to Settings screen by tapping the &lt;img src=&#34;{{urls.media}}/icons/settings.png&#34; alt=&#34;Settings icon&#34;/&gt; icon on the actionbar or option menu.&lt;/li&gt;
+                    &lt;li&gt;Tap on &lt;strong&gt;&lt;em&gt;Get Reply From Server&lt;/em&gt;&lt;/strong&gt; if you want to send an instant reply message from the Sync URL. Otherwise, tap on &lt;strong&gt;&lt;em&gt;Reply Messages&lt;/em&gt;&lt;/strong&gt; to set the instant reply message on the phone.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;auto-sync-settings&#34;&gt;Auto Sync Settings&lt;/h3&gt;
+                &lt;p&gt;This is where you enable SMSsync to periodically send pending messages to the enabled Sync URLs.
+            To enable auto sync:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Go to Settings screen by tapping the &lt;img src=&#34;{{urls.media}}/icons/settings.png&#34; alt=&#34;Settings icon&#34;/&gt; icon on the actionbar or option menu.&lt;/li&gt;
+                    &lt;li&gt;Tap on &lt;strong&gt;&lt;em&gt;Enable Auto Sync&lt;/em&gt;&lt;/strong&gt; to enable the auto sync service.&lt;/li&gt;
+                    &lt;li&gt;Tap on &lt;strong&gt;&lt;em&gt;Auto sync frequency&lt;/em&gt;&lt;/strong&gt; to set the frequency at which the auto sync should run.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;task-settings&#34;&gt;Task Settings&lt;/h3&gt;
+                &lt;p&gt;The Task feature allows you to send SMS to users as defined by the server. It works by regularly checking the server for new messages to be sent.
+            To enable Task Checking feature:&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Go to Settings screen by tapping the &lt;img src=&#34;{{urls.media}}/icons/settings.png&#34; alt=&#34;Settings icon&#34;/&gt; icon on the actionbar or option menu.&lt;/li&gt;
+                    &lt;li&gt;Tap on &lt;strong&gt;&lt;em&gt;Enable Task Checking&lt;/em&gt;&lt;/strong&gt; to enable the task service.&lt;/li&gt;
+                    &lt;li&gt;Tap on &lt;strong&gt;&lt;em&gt;Frequency&lt;/em&gt;&lt;/strong&gt; to set the frequency at which the task checking service should run.&lt;/li&gt;
+                &lt;/ol&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;bs-docs-section&#34;&gt;
+                &lt;div class=&#34;page-header&#34;&gt;
+                    &lt;h1 id=&#34;manage-pending-messages&#34;&gt;Manage Pending Messages&lt;/h1&gt;
+                &lt;/div&gt;
+                &lt;p&gt;Pending messages are failed SMS that couldn&amp;#39;t make it to any of the enabled Sync URLs.
+            SMSsync allows you to manage these pending messages. You can either configure the app to automatically or manually sync these failed messages or delete them.&lt;/p&gt;
+                &lt;h3 id=&#34;manually-sync-all-pending-messages&#34;&gt;Manually sync all pending messages&lt;/h3&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/refresh.png&#34; alt=&#34;Sync icon&#34;/&gt; icon on the actionbar. The sync icon should spin for a while.&lt;/li&gt;
+                    &lt;li&gt;After the sync icon spins for a while, a Toast should show up with a status message.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;manually-sync-a-single-pending-message&#34;&gt;Manaully sync a single pending message&lt;/h3&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Long press on the pending message you want to sync by tapping and holding it until the actionbar menu changes.&lt;/li&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/refresh.png&#34; alt=&#34;Sync icon&#34;/&gt; icon on the actionbar. The sync icon should spin for a while.&lt;/li&gt;
+                    &lt;li&gt;After the sync icon stops spinning, a popup should appear with a status message.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;delete-pending-messages&#34;&gt;Delete pending messages&lt;/h3&gt;
+                &lt;p&gt;Delete all pending messages saved on the device.&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/delete.png&#34; alt=&#34;Delete icon&#34;/&gt; icon on the actionbar. A confirmation dialog should open.&lt;/li&gt;
+                    &lt;li&gt;Tap &lt;strong&gt;&lt;em&gt;Yes&lt;/em&gt;&lt;/strong&gt; to delete all pending messages or &lt;strong&gt;&lt;em&gt;No&lt;/em&gt;&lt;/strong&gt; to cancel the deletion.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;import-sms&#34;&gt;Import SMS&lt;/h3&gt;
+                &lt;p&gt;Import SMS from the device&amp;#39;s messages inbox.&lt;/p&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/import.png&#34; alt=&#34;Import icon&#34;/&gt; icon on the actionbar. A progress dialog should open. Leave it to run until it finishes. Depending on the number of messages in your inbox, this could take a while.&lt;/li&gt;
+                &lt;/ol&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;bs-docs-section&#34;&gt;
+                &lt;div class=&#34;page-header&#34;&gt;
+                    &lt;h1 id=&#34;manage-sent-messages&#34;&gt;Manage Sent Messages&lt;/h1&gt;
+                &lt;/div&gt;
+                &lt;p&gt;Sent messages are SMS or pending messages that have successfully been sync&amp;#39;d to the enabled Sync URL. This is to allow you to see which messages were successfully sent. Here you can view and delete these sent messages. This section will show you how to delete sent messages individually or all at the same time.&lt;/p&gt;
+                &lt;h3 id=&#34;delete-an-individual-sent-message&#34;&gt;Delete An Individual Sent Message&lt;/h3&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Long press on the sent message you want to delete by tapping and holding it until the actionbar menu changes.&lt;/li&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/delete.png&#34; alt=&#34;Delete icon&#34;/&gt; icon on the actionbar. A confirmation dialog should open.&lt;/li&gt;
+                    &lt;li&gt;Tap &lt;strong&gt;&lt;em&gt;Yes&lt;/em&gt;&lt;/strong&gt; to delete it or &lt;strong&gt;&lt;em&gt;No&lt;/em&gt;&lt;/strong&gt; to cancel the deletion.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;h3 id=&#34;delete-all-sent-messages&#34;&gt;Delete All Sent Messages&lt;/h3&gt;
+                &lt;ol&gt;
+                    &lt;li&gt;Tap on the &lt;img src=&#34;{{urls.media}}/icons/delete.png&#34; alt=&#34;Delete icon&#34;/&gt; icon on the actionbar. A confirmation dialog should open.&lt;/li&gt;
+                    &lt;li&gt;Tap &lt;strong&gt;&lt;em&gt;Yes&lt;/em&gt;&lt;/strong&gt; to delete all sent messages or &lt;strong&gt;&lt;em&gt;No&lt;/em&gt;&lt;/strong&gt; to cancel the deletion.&lt;/li&gt;
+                &lt;/ol&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Contributors</title>
+      <link>http://localhost:1313/contributors/</link>
+      <pubDate>Fri, 01 May 2015 13:06:28 +0900</pubDate>
+      
+      <guid>http://localhost:1313/contributors/</guid>
+      <description>&lt;div id=&#34;map&#34; class=&#34;thumbnail leaflet-container leaflet-fade-anim&#34; tabindex=&#34;0&#34; style=&#34;height:390px;&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;table-responsive&#34; id=&#34;contrib&#34;&gt;&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Downloads</title>
+      <link>http://localhost:1313/download/</link>
+      <pubDate>Fri, 01 May 2015 12:31:51 +0900</pubDate>
+      
+      <guid>http://localhost:1313/download/</guid>
+      <description>&lt;div class=&#34;row&#34;&gt;
+    &lt;div class=&#34;col-lg-4&#34;&gt;
+        &lt;h2&gt;QR Code&lt;/h2&gt;
+
+        &lt;p&gt;&lt;strong&gt;Scan the QR below to install SMSsync on your Android powered phone&lt;/strong&gt;&lt;/p&gt;
+
+        &lt;div class=&#34;thumbnails&#34;&gt;
+            &lt;img class=&#34;thumbnail&#34; width=&#34;200&#34;
+                 src=&#34;http://qr.kaywa.com/?s=8&amp;d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync&#34;
+                 alt=&#34;Scan to download SMSsync&#34; title=&#34;Scan to download SMSsync&#34;/&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-lg-4&#34;&gt;
+        &lt;h2&gt;Android market&lt;/h2&gt;
+
+        &lt;p&gt;&lt;strong&gt;The app is available today on the Android market. You can download it on your
+            phone by clicking on the image on the below or scanning the QR code on the left.
+            Enjoy!&lt;/strong&gt;&lt;/p&gt;
+
+        &lt;div class=&#34;thumbnails&#34;&gt;
+            &lt;a href=&#34;https://play.google.com/store/apps/details?id=org.addhen.smssync&#34;&gt;&lt;img
+                    class=&#34;thumbnail&#34; title=&#34;Android market&#34;
+                    src=&#34;http://blog.ushahidi.com/wp-content/uploads/2011/07/ushahidi_android_on_the_market-150x150.png&#34;
+                    alt=&#34;Android market&#34; width=&#34;200&#34; height=&#34;200&#34;/&gt;&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-lg-4&#34;&gt;
+        &lt;h2&gt;F-Droid&lt;/h2&gt;
+
+        &lt;p&gt;&lt;strong&gt;The app is available today on the F-Droid market. You can download it on your
+            phone by clicking on the image on the below.
+            Enjoy!&lt;/strong&gt;&lt;/p&gt;
+
+        &lt;div class=&#34;thumbnails&#34;&gt;
+            &lt;a href=&#34;https://f-droid.org/repository/browse/?fdfilter=smssync&amp;fdid=org.addhen.smssync&#34;&gt;&lt;img
+                    class=&#34;thumbnail&#34; title=&#34;SMSsync on F-Droid market&#34;
+                    src=&#34;http://localhost:1313/images/f-droid.png&#34;
+                    alt=&#34;F-Droid&#34; width=&#34;200&#34; height=&#34;67&#34;/&gt;&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;  
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Releases</title>
+      <link>http://localhost:1313/releases/</link>
+      <pubDate>Fri, 01 May 2015 10:07:05 +0900</pubDate>
+      
+      <guid>http://localhost:1313/releases/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
