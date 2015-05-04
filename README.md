@@ -7,10 +7,10 @@ Welcome to **"SMSSync"**, an android application that turns your android powered
 Read about it at **[smssync.ushahidi.com](http://smssync.ushahidi.com/)**.
 
 ---
-<a href="http://smssync.ushahidi.com/screenshots/"><img src="http://smssync.ushahidi.com/images/screenshots/settings.png" width="155px" height="272px" alt="Settings " title="Settings"></a> <a href="http://smssync.ushahidi.com/screenshots/"><img src="http://smssync.ushahidi.com/images/screenshots/pending_messages.png" width="155px" height="272px" alt="Pending Messages" title="Pending Messages"></a>
+<a href="http://smssync.ushahidi.com/screenshots/"><img src="http://smssync.ushahidi.com/images/screenshots/settings.png" width="155px" height="272px" alt="Settings " title="Settings"></a> <a href="http://smssync.ushahidi.com/screenshots/"><img src="http://smssync.ushahidi.com/images/screenshots/pending_messages.png" width="155px" height="272px" alt="Pending Messages" title="Pending Messages"></a> <a href="http://smssync.ushahidi.com/screenshots/"><img src="http://smssync.ushahidi.com/images/screenshots/log.png" width="155px" height="272px" alt="Logs" title="Logs"></a>
 ---
 
-[![F-Droid](https://raw.githubusercontent.com/ushahidi/SMSSync/develop/arts/f-droid-badge.png)](https://f-droid.org/repository/browse/?fdid=org.addhen.smssync"F-Droid Store") [![GitHub](https://spideroak.com/share/IFEU2U2JINCA/GitHub/home/SecUpwN/SpiderOak/MISC/external/GitHub.png)](https://github.com/ushahidi/SMSSync/releases "GitHub Releases") [![Playstore](https://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=org.addhen.smssync."Google Playstore")
+[![F-Droid](https://raw.githubusercontent.com/ushahidi/SMSSync/develop/art/f-droid-badge.png)](https://f-droid.org/repository/browse/?fdid=org.addhen.smssync"F-Droid Store") [![GitHub](https://raw.githubusercontent.com/ushahidi/SMSSync/develop/art/github-badge.png)](https://github.com/ushahidi/SMSSync/releases "GitHub Releases") [![Playstore](https://raw.githubusercontent.com/ushahidi/SMSSync/develop/art/playstore-badge.png)](https://play.google.com/store/apps/details?id=org.addhen.smssync."Google Playstore")
 
 ## Installation
 
