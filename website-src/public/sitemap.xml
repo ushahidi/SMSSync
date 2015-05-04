@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2015-05-01T16:42:24+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/screenshots/</loc>
+    <lastmod>2015-05-01T16:42:24+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/features/</loc>
+    <lastmod>2015-05-01T16:38:16+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/developers/</loc>
+    <lastmod>2015-05-01T16:26:41+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/configure/</loc>
+    <lastmod>2015-05-01T14:01:52+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/contributors/</loc>
+    <lastmod>2015-05-01T13:06:28+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/download/</loc>
+    <lastmod>2015-05-01T12:31:51+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:1313/releases/</loc>
+    <lastmod>2015-05-01T10:07:05+09:00</lastmod>
+  </url>
+  
+</urlset>
