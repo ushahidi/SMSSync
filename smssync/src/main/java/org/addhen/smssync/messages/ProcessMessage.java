@@ -25,7 +25,6 @@ import com.google.gson.Gson;
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.controllers.MessageResultsController;
-import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.MessagesUUIDSResponse;
@@ -35,6 +34,7 @@ import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.net.MainHttpClient;
 import org.addhen.smssync.net.MessageSyncHttpClient;
 import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.state.ReloadMessagesEvent;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.Util;
@@ -76,17 +76,8 @@ public class ProcessMessage {
         Logger.log(TAG,
                 "saveMessage(): save text messages as received from the user's phone");
         App.getDatabaseInstance().getMessageInstance()
-                .put(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
-                    @Override
-                    public void onFinished(Void result) {
-                        // Do nothing
-                    }
-
-                    @Override
-                    public void onError(Exception exception) {
-                        // Do nothing
-                    }
-                });
+                .put(message);
+        App.bus.post(new ReloadMessagesEvent());
         return true;
     }
 
@@ -208,6 +199,7 @@ public class ProcessMessage {
         Logger.log(TAG, " message ID " + message.getUuid());
         App.getDatabaseInstance().getMessageInstance()
                 .deleteByUuid(message.getUuid());
+        App.bus.post(new ReloadMessagesEvent());
     }
 
     /**
@@ -452,6 +444,7 @@ public class ProcessMessage {
                 Logger.log(TAG, syncUrl.getUrl());
 
                 if (message.getType() == Message.Type.PENDING) {
+                    Logger.log(TAG, "Process message with keyword filtering enabled " + message);
                     posted = syncReceivedSms(message, client);
                     if (posted) {
                         postToSentBox(message);
@@ -459,12 +452,10 @@ public class ProcessMessage {
                 } else {
                     posted = sendTaskSms(message);
                 }
-
             }
-
         } else { // there is no filter text set up on a sync URL
-
             if (message.getType() == Message.Type.PENDING) {
+                Logger.log(TAG, "Process message with keyword filtering disabled " + message);
                 posted = syncReceivedSms(message, client);
                 setErrorMessage(syncUrl.getUrl());
                 if (posted) {
@@ -476,18 +467,21 @@ public class ProcessMessage {
         }
 
         // Update number of tries.
+        if (prefs.enableRetry().get() && message.getType() == Message.Type.PENDING) {
+            Logger.log(TAG, "Process pending message retry enabled " + message);
+            if (!posted) {
+                if (message.getRetries() >= prefs.retries().get()) {
+                    Logger.log(TAG, "Delete failed pending message using message retry feature");
+                    // Delete from db
+                    deleteMessage(message);
+                } else {
+                    // Increase message's number of tries for future comparison to know when to delete it.
+                    int retries = message.getRetries() + 1;
+                    message.setRetries(retries);
+                    Logger.log(TAG, "Increase retry value because pending message is refusing to be sent");
+                    App.getDatabaseInstance().getMessageInstance().update(message);
 
-        if (!posted) {
-            Logger.log(TAG, "Messages Not posted: " + message);
-            if (message.getRetries() > prefs.retries().get()) {
-                // Delete from db
-                deleteMessage(message);
-            } else {
-                // Increase message's number of tries for future comparison to know when to delete it.
-                int retries = message.getRetries() + 1;
-                message.setRetries(retries);
-                App.getDatabaseInstance().getMessageInstance().update(message);
-
+                }
             }
         }
         return posted;

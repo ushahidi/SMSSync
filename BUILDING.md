@@ -1,43 +1,58 @@
 ## How To Build SMSSync app
 
-The build setup here supports Android Studio and the new Gradle build system.
-To build this project make sure you've either set `ANDROID_HOME` to point to where
-you have your Android SDK installed or you have defined the location of the Android
-SDK in the local.property file. In local.property file, make sure `sdk.dir` points to the location of the Android SDK.
+This is a Gradle based project. You can build it using Android Studio or from the command line. To 
+do so follow the steps below:
 
-Step 1:
+1. Install the following software:
+       - Android SDK:
+         http://developer.android.com/sdk/index.html
+       - Gradle:
+         http://www.gradle.org/downloads
+       - Android Studio - Optional: 
+         http://developer.android.com/sdk/installing/studio.html
 
-Create a local.properties file in the root document of the project and insert the absolute path where you have
-your sdk stored. Eg. `sdk.dir=/home/username/android-sdk-linux_x86`
+2. Run the Android SDK Manager by pressing the SDK Manager toolbar button
+   in Android Studio or by running the 'android' command in a terminal
+   window.
 
-Step 2:
+3. In the Android SDK Manager, ensure that the following are installed,
+   and are updated to the latest available version:
+       - Tools -> Android SDK Platform-tools (rev 20 or above)
+       - Tools -> Android SDK Tools (rev 23.0.2 or above)
+       - Tools -> Android SDK Build-tools version 20
+       - Tools -> Android SDK Build-tools version 19.1
+       - Android 4.4 -> SDK Platform (API 8) at least
+       - Android L (API 22)
+       - Extras -> Android Support Repository
+       - Extras -> Android Support Library
+       - Extras -> Google Play services
+       - Extras -> Google Repository
 
-Build the app on the command line `./build.sh`
+4. Create a file in the root of the project called local.properties. Enter the path to your Android SDK.
+    Eg. `sdk.dir=/opt/android-studio/sdk`
 
-OR
+5. Import the project in Android Studio:
 
-Build with Android Studio.
+    1. Press File > Import Project
+    2. Navigate to and choose the settings.gradle file in this project
+    3. Press OK
 
-* Go to File
-* Select Import Project...
-* Select `build.gradle` located in the project's root document.
-* After it finishes the import, hit Shift + F10 to build the project.
 
 ## How To Build SMSSync website
 
 ### Preview website
 
-The SMSSync website hosted on github pages is generated using [ruhoh](http://ruhoh.com).
-Please refer to the [ruhoh installation](http://ruhoh.com/docs/2/installation/) guide on how to get it running.
+The SMSSync website hosted on github pages is generated using [hugo](http://gohugo.io/).
+Please refer to the [hugo's installation](http://gohugo.io/overview/installing/) guide on how to get it running.
 
 ```
 $ cd website-src
 
-$ bundle exec ruhoh  server 9292
+$ hugo server -w
 
 ```
 
-You then preview the site at [http://localhost:9292]( http://localhost:9292)
+You then preview the site at [http://localhost:1313]( http://localhost:1313)
 
 ### Compile HTML files
 
@@ -57,7 +72,7 @@ $ bundle exec ruhoh  compile '<path_to_a_folder_to_compile_the_html_into>'
 Publish the compiled HTML files to [github pages](http://ushahidi.github.io/SMSSync/)
 
 ```
-$ cd <path_compiled_html_folder>
+$ cd website-src/public
 
 $ git init .
 
@@ -68,3 +83,40 @@ $ git commit -m "<update_message>"
 $ git push git@github.com:ushahidi/SMSSync.git master:gh-pages --force
 
 ```
+## Release Build
+
+To make a release make sure you have `gradle.properties` in the root of the `app` module with the
+following content.
+
+**gradle.properties**
+```
+releaseKeyStore=<key_store_file>
+releaseKeyPassword=<key_password>
+releaseKeyStorePassword=<key_store_password>
+releaseKeyAlias=key_alias
+googleDocsForm=<link_to_google_docs_feedback_form>
+gPlaystoreServiceAccountEmailAddress=<playstore_service_account_email>
+gPlaystorePKFile=<google-playstore-pk-file.p12>
+inAppPurchasePubKey=<In-app_purchase_public_key>
+googleAnalyticsCode=<google-analytics-code>
+```
+
+A typical `gradle.properties` content should look like this:
+```
+releaseKeyStore=/home/username/.android/debug.keystore
+releaseKeyStorePassword=android
+releaseKeyAlias=androiddebugkey
+releaseKeyPassword=android
+googleDocsForm=https://docs.google.com/forms/d/1lL/formResponse
+gPlaystoreServiceAccountEmailAddress=9323892392132-842jajdkdadummy@developer.gserviceaccount.com
+gPlaystorePKFile=/home/username/pdummy-pk-file.p12
+inAppPurchasePubKey=MIDKDLSkdakidkkse8283-23jjkasdk
+googleAnalyticsCode=UA-1234567890
+```
+
+Then in the project's root directory, issue:
+
+`./release major milestone alpha`
+
+This should build the app, version it, create a tag and push it to the remote repo and publish
+to the Google Playstore's alpha track.

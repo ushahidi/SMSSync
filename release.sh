@@ -2,7 +2,7 @@
 
 if [[ $# -lt 3 ]]
 then
-  echo "Usage: release.sh [Scope; valid are major, minor, patch] [Stage; valid are alpha, beta, rc, dev] [Track; valid are alpha, production, beta]"
+  echo "Usage: release.sh [Scope; valid are major, minor, patch] [Stage; valid are alpha, beta, rc, final, dev] [Track; valid are alpha, production, beta]"
   echo "Eg. command ./release.sh minor alpha alpha"
   exit
 fi
@@ -17,7 +17,7 @@ TAG_NAME=$1
 TAG_MESSAGE=$2
 DEVELOP='develop'
 MASTER='master'
-TMP_DIR='/tmp/website-src'
+TMP_DIR='/tmp/public'
 echo $TAG_MESSAGE
 
 # SMSSync source code
@@ -46,9 +46,8 @@ echo "Compiling website"
 
 pushd website-src
 
-bundle exec ruhoh compile $TMP_DIR
+hugo -d $TMP_DIR
 
-cp CNAME $TMP_DIR
 popd
 
 pushd $TMP_DIR

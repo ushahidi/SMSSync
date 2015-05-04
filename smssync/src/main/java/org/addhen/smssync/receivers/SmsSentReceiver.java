@@ -37,11 +37,12 @@ import org.addhen.smssync.util.ServicesConstants;
  * Created by Tomasz Stalka(tstalka@soldevelo.com) on 5/5/14.
  */
 public class SmsSentReceiver extends BaseBroadcastReceiver {
+    Message message = null;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
         Bundle extras = intent.getExtras();
-        Message message = null;
+
         if (extras != null) {
             message = (Message) extras.getSerializable(ServicesConstants.SENT_SMS_BUNDLE);
         }
@@ -93,7 +94,12 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         new BaseDatabseHelper.DatabaseCallback<Void>() {
                             @Override
                             public void onFinished(Void result) {
-                                // Save details to sent inbox
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        App.bus.post(new ReloadMessagesEvent());
+                                    }
+                                });
                             }
 
                             @Override
@@ -118,21 +124,40 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                         alertCallbacks.smsSendFailedRequest(resultMessage, errorCode);
                     }
                 }).start();*/
-
                 Prefs prefs = new Prefs(context);
-                boolean deleted = false;
-
-                Logger.log(SmsSentReceiver.class.getSimpleName(), "Statuses: " + prefs.enableRetry().get());
                 if (prefs.enableRetry().get()) {
-                    final int retry = prefs.retries().get();
-                    if ((message.getRetries() - 1) >= retry) {
-                        App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid(),
+                    if (message.getRetries() >= prefs.retries().get()) {
+                        Logger.log(SmsSentReceiver.class.getSimpleName(), "Delete failed messages " + message);
+                        App.getDatabaseInstance().getMessageInstance().deleteByUuid(message.getUuid(), new BaseDatabseHelper.DatabaseCallback<Void>() {
+                            @Override
+                            public void onFinished(Void result) {
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Logger.log(SmsSentReceiver.class.getSimpleName(), "Failed message deleted ");
+                                        App.bus.post(new ReloadMessagesEvent());
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onError(Exception exception) {
+
+                            }
+                        });
+                    } else {
+                        int retries = message.getRetries() + 1;
+                        message.setRetries(retries);
+                        message.setStatus(Message.Status.FAILED);
+                        Logger.log(SmsSentReceiver.class.getSimpleName(), "update messages retries " + message);
+                        App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
                                 new BaseDatabseHelper.DatabaseCallback<Void>() {
                                     @Override
                                     public void onFinished(Void result) {
                                         UiThread.getInstance().post(new Runnable() {
                                             @Override
                                             public void run() {
+                                                Logger.log(SmsSentReceiver.class.getSimpleName(), "update messages retries updated ");
                                                 App.bus.post(new ReloadMessagesEvent());
                                             }
                                         });
@@ -144,29 +169,7 @@ public class SmsSentReceiver extends BaseBroadcastReceiver {
                                     }
                                 });
 
-                        // Mark message as deleted so it's not updated
-                        deleted = true;
-                    } else {
-                        int retries = message.getRetries() + 1;
-                        message.setRetries(retries);
                     }
-                }
-
-                // Make sure the message is not deleted before attempting to update it retries status;
-                if (!deleted) {
-                    message.setStatus(Message.Status.FAILED);
-                    Logger.log(SmsSentReceiver.class.getSimpleName(), "messages " + message);
-                    App.getDatabaseInstance().getMessageInstance().updateSentFields(message,
-                            new BaseDatabseHelper.DatabaseCallback<Void>() {
-                                @Override
-                                public void onFinished(Void result) {
-                                }
-
-                                @Override
-                                public void onError(Exception exception) {
-
-                                }
-                            });
                 }
             }
         }

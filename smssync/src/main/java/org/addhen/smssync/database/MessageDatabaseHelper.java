@@ -91,6 +91,24 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
         });
     }
 
+    public void put(final Message message) {
+        asyncRun(new Runnable() {
+            @Override
+            public void run() {
+                if (!isClosed()) {
+                    final String whereClause = "message_uuid = ?";
+                    final String whereArgs[] = {message.getUuid()};
+                    ContentValues values = cupboard().withEntity(Message.class).toContentValues(message);
+                    int rows = cupboard().withDatabase(getWritableDatabase()).update(Message.class, values, whereClause, whereArgs);
+                    if (rows == 0) {
+                        cupboard().withDatabase(getWritableDatabase()).put(message);
+                    }
+
+                }
+            }
+        });
+    }
+
     public void update(final Message message, final DatabaseCallback<Void> callback) {
         asyncRun(new Runnable() {
             @Override
@@ -196,6 +214,7 @@ public class MessageDatabaseHelper extends BaseDatabseHelper implements MessageD
                         final String whereArgs[] = {uuid};
                         cupboard().withDatabase(getWritableDatabase())
                                 .delete(Message.class, whereClause, whereArgs);
+                        callback.onFinished(null);
                     } catch (Exception e) {
                         callback.onError(e);
                     }
