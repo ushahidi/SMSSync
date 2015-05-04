@@ -46,7 +46,7 @@ echo "Compiling website"
 
 pushd website-src
 
-hugo $TMP_DIR
+hugo -d $TMP_DIR
 
 popd
 
