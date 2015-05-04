@@ -15,7 +15,6 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-
 import org.ajoberstar.gradle.git.release.opinion.Strategies
 import org.ajoberstar.grgit.Grgit
 
@@ -29,7 +28,8 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 def getGooglePlaystoreServiceAccountEmail() {
-    return project.hasProperty('gPlaystoreServiceAccountEmailAddress') ? gPlaystoreServiceAccountEmailAddress : ''
+    return project.hasProperty('gPlaystoreServiceAccountEmailAddress') ?
+            gPlaystoreServiceAccountEmailAddress : ''
 }
 
 def getGooglePlaystoreServicepk12File() {
@@ -44,7 +44,8 @@ def trackProperty() {
 
 def readWhatsNewFile(filename) {
     File file = new File('smssync/src/main/play/en-US/' + filename);
-    return file.exists() ? file.text + '\n\n' : new File('smssync/src/main/play/en-US/whatsnew').text;
+    return file.exists() ? file.text + '\n\n' :
+            new File('smssync/src/main/play/en-US/whatsnew').text;
 }
 
 android {
@@ -56,7 +57,8 @@ android {
         defaultConfig {
             testApplicationId "org.addhen.smssync.tests"
             applicationId "org.addhen.smssync"
-            buildConfigField "String", "GOOGLE_FORM_URL", project.hasProperty('googleDocsForm') ? googleDocsForm : "\"\""
+            buildConfigField "String", "GOOGLE_FORM_URL",
+                    project.hasProperty('googleDocsForm') ? googleDocsForm : "\"\""
         }
 
         // Move the build types to build-types/<type>
@@ -129,7 +131,8 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 def newName = outputFile.name.replace(outputFile.name,
-                        "smssync-v" + defaultConfig.versionName + "-" + variant.buildType.name.toUpperCase() +
+                        "smssync-v" + defaultConfig.versionName + "-" +
+                                variant.buildType.name.toUpperCase() +
                                 ".apk");
 
                 output.outputFile = file("$project.buildDir/apk/" + newName);
@@ -164,7 +167,8 @@ release {
 
     def tagMessage = readWhatsNewFile("whatsnew-${trackProperty()}");
 
-    versionStrategy Strategies.PRE_RELEASE_ALPHA_BETA
+    versionStrategy Strategies.PRE_RELEASE_ALPHA_BETA.
+            copyWith(stages: ['alpha', 'beta', 'rc', 'final'] as SortedSet)
 
     android.defaultConfig.versionName = project.version.toString()
 
@@ -200,7 +204,8 @@ tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
 // Build and launch app from command line
 task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
     //Linux command to launch the PostActivity when debug app is installed
-    commandLine 'adb', 'shell', 'am', 'start', '-n', 'org.addhen.smssync.debug/org.addhen.smssync.activities.MainActivity'
+    commandLine 'adb', 'shell', 'am', 'start', '-n',
+            'org.addhen.smssync.debug/org.addhen.smssync.activities.MainActivity'
 }
 
 
