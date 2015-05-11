@@ -6,7 +6,8 @@ build:
     - arjen/hugo-build:
         version: 0.13
         config: ./website-src/config.toml
-        flags: --buildDrafts=true --source=./website-src
+        flags: --buildDrafts=true
+        flags: --source=./website-src
 # A step that deploys hugo build
 deploy:
   steps:
@@ -16,5 +17,5 @@ deploy:
   after-steps:
     - hipchat-notify:
         token: $HIPCHAT_TOKEN
-        room-id: id
-        from-name: name
+        room-id: Ninja Spam
+        from-name: Wercker Builds
