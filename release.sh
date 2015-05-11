@@ -39,30 +39,6 @@ echo "Building a release apk"
 
 ./gradlew release -Prelease.scope=$SCOPE -Prelease.stage=$STAGE -PuploadTrack=$TRACK
 
-# Compile HTML files
-
-# cd into the website folder
-echo "Compiling website"
-
-pushd website-src
-
-hugo -d $TMP_DIR
-
-popd
-
-pushd $TMP_DIR
-git init
-
-git add .
-
-git commit -m "Updating webiste..."
-
-git push git@github.com:ushahidi/SMSSync.git master:gh-pages --force
-
-popd
-
-echo "Website update done"
-
 # Checkout develop branch
 echo "Checking out develop branch..."
 git checkout $DEVELOP
