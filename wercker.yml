@@ -10,7 +10,7 @@ build:
 # A step that deploys hugo build
 deploy:
   steps:
-    - lukevivier/gh-pages:
+    - eyedol/deploy-gh-pages@0.2.1:
         token: $GIT_TOKEN
         domain: smssync.ushahidi.com
         basedir: $WERCKER_SOURCE_DIR/website-src/public
