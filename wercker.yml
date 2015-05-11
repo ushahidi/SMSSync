@@ -13,4 +13,5 @@ deploy:
     - lukevivier/gh-pages:
         token: $GIT_TOKEN
         domain: smssync.ushahidi.com
-        basedir: $WERCKER_SOURCE_DIR/website-src/public 
+        basedir: $WERCKER_SOURCE_DIR/website-src/public
+        repo: ushahidi/SMSSync
