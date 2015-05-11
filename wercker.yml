@@ -10,12 +10,7 @@ build:
 # A step that deploys hugo build
 deploy:
   steps:
-    - lukevivier/gh-pages@0.2.1:
+    - lukevivier/gh-pages:
         token: $GIT_TOKEN
         domain: smssync.ushahidi.com
-        basedir: $WERCKER_SOURCE_DIR/website-src/public
-  after-steps:
-    - hipchat-notify:
-        token: $HIPCHAT_TOKEN
-        room-id: 460208
-        from-name: wercker
+        basedir: $WERCKER_SOURCE_DIR/website-src/public 
