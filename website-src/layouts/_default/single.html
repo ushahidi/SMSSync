@@ -22,20 +22,19 @@
         {{ partial "alerts.html" . }}
         <div class="jumbotron">
             <h2>{{ .Site.Params.tagline }}</h2>
-      </div>
-      <!-- header ends -->
-    <div class="container">
-      <div class="page-header">
+        </div>
+        <!-- header ends -->
+        <div class="container">
+          <div class="page-header">
             {{ .Params.header | safeHtml }}
-      </div>
+          </div>
+        </div>
+        <!-- body starts -->
+        <div class="container">
+          {{ .Content }}
+        </div> <!-- body ends -->
+          {{ partial "container-footer.html" . }}
     </div>
-    <!-- body starts -->
-    <div class="container">
-        {{ .Content }}
-    </div> <!-- body ends -->
-        {{ partial "container-footer.html" . }}
-     </div>
-     
 {{ partial "footer-scripts.html" . }}
 {{ partial "google-analytics.html" . }}
 {{ partial "footer.html" . }}
