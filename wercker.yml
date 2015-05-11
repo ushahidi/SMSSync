@@ -1,0 +1,19 @@
+box: wercker/default
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    - arjen/hugo-build:
+        version: 0.13
+        flags: --buildDrafts=true --source=./website-src
+# A step that deploys hugo build
+deploy:
+  steps:
+    - lukevivier/gh-pages@0.2.1:
+        domain: smssync.ushahidi.com
+        basedir: public
+  after-steps:
+    - hipchat-notify:
+        token: $HIPCHAT_TOKEN
+        room-id: id
+        from-name: name
