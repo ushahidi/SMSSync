@@ -1,0 +1,19 @@
+box: wercker/android
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    - script:
+        name: show base information
+        code: |
+          gradle -v
+          echo $ANDROID_HOME
+          echo $ANDROID_SDK_VERSION
+          echo $ANDROID_BUILD_TOOLS
+          echo $ANDROID_UPDATE_FILTER
+          echo $ANDROID_NDK_HOME
+    # A step that executes `gradle build` command
+    - script:
+        name: run gradle
+        code: |
+          gradle --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
