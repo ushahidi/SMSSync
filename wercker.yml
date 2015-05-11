@@ -12,9 +12,4 @@ deploy:
   steps:
     - lukevivier/gh-pages@0.2.1:
         domain: smssync.ushahidi.com
-        basedir: public
-  after-steps:
-    - hipchat-notify:
-        token: $HIPCHAT_TOKEN
-        room-id: Ninja Spam
-        from-name: Wercker Builds
+        basedir: public 
