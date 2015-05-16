@@ -56,7 +56,7 @@ You then preview the site at [http://localhost:1313]( http://localhost:1313)
 
 ## Release Build
 
-To make a release make sure you have `gradle.properties` in the root of the `app` module with the
+To make a release make sure you have `gradle.properties` in the root of `smssync` folder with the
 following content.
 
 **gradle.properties**
