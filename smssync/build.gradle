@@ -205,7 +205,7 @@ tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
 
 // Build and launch app from command line
 task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
-    //Linux command to launch the PostActivity when debug app is installed
+    //Linux command to launch the MainActivity when debug app is installed
     commandLine 'adb', 'shell', 'am', 'start', '-n',
             'org.addhen.smssync.debug/org.addhen.smssync.activities.MainActivity'
 }
