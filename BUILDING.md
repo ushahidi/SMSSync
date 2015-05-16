@@ -54,35 +54,6 @@ $ hugo server -w
 
 You then preview the site at [http://localhost:1313]( http://localhost:1313)
 
-### Compile HTML files
-
-Compile the ruhoh site to HTML so it can be published to a hosting server. We use github pages to host SMSSync's website.
-
-```
-$ cd website-src
-
-$ bundle exec ruhoh  compile '<path_to_a_folder_to_compile_the_html_into>'
-
-```
-
-**Note:** The folder to compile the html files into has to be empty as the `ruhoh compile` command will delete any files in it.
-
-### Publish compiled HTML files
-
-Publish the compiled HTML files to [github pages](http://ushahidi.github.io/SMSSync/)
-
-```
-$ cd website-src/public
-
-$ git init .
-
-$ git add .
-
-$ git commit -m "<update_message>"
-
-$ git push git@github.com:ushahidi/SMSSync.git master:gh-pages --force
-
-```
 ## Release Build
 
 To make a release make sure you have `gradle.properties` in the root of the `app` module with the
