@@ -1,61 +1,78 @@
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                tools:context=".LogActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    tools:context=".LogActivity">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/data_connection_status"
-            android:id="@+id/data_connection_status"
-            android:paddingBottom="10dp"
-            android:textColor="@color/status_done"
-            android:layout_alignBottom="@+id/data_connection"
-            android:layout_alignParentRight="true"/>
+        android:id="@+id/data_connection_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/data_connection"
+        android:layout_alignParentRight="true"
+        android:paddingBottom="10dp"
+        android:text="@string/data_connection_status"
+        android:textColor="@color/status_done" />
 
     <TextView
-            android:id="@+id/phone_status_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="+819094220927 - status"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"/>
+        android:id="@+id/phone_status_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="+819094220927 - status"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-            android:id="@+id/data_connection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/data_connection"
-            android:paddingBottom="10dp"
-            android:layout_below="@+id/phone_status_label"
-            android:layout_alignParentLeft="true"/>
+        android:id="@+id/data_connection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/phone_status_label"
+        android:paddingBottom="10dp"
+        android:text="@string/data_connection" />
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/battery_level"
-            android:id="@+id/battery_level"
-            android:paddingBottom="10dp"
-            android:layout_below="@+id/data_connection"
-            android:layout_alignParentLeft="true"/>
+        android:id="@+id/battery_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/data_connection"
+        android:paddingBottom="10dp"
+        android:text="@string/battery_level" />
 
     <TextView
-            android:id="@+id/battery_level_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/battery_level_status"
-            android:textColor="@color/status_done"
-            android:paddingBottom="10dp"
-            android:layout_alignTop="@+id/battery_level"
-            android:layout_alignParentRight="true"/>
+        android:id="@+id/battery_level_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/battery_level"
+        android:paddingBottom="10dp"
+        android:text="@string/battery_level_status"
+        android:textColor="@color/status_done" />
 
     <TextView
-            android:id="@+id/seperator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/battery_level_status"
-            android:background="?android:attr/listDivider"/>
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/battery_level_status"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>

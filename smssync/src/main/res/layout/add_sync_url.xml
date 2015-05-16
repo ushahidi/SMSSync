@@ -1,29 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:padding="8dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <EditText
-            android:id="@+id/sync_url_title"
-            style="@style/EditText"
-            android:hint="@string/enter_sync_title"/>
+        android:id="@+id/sync_url_title"
+        style="@style/EditText"
+        android:hint="@string/enter_sync_title" />
 
     <EditText
-            android:id="@+id/sync_url_secret"
-            style="@style/EditText.SyncUrl"
-            android:hint="@string/edittxt_api_key_pref"/>
+        android:id="@+id/sync_url_secret"
+        style="@style/EditText.SyncUrl"
+        android:hint="@string/edittxt_api_key_pref" />
 
     <EditText
-            android:id="@+id/sync_url_keyword"
-            style="@style/EditText.SyncUrl"
-            android:hint="@string/edittxt_keyword"/>
+        android:id="@+id/sync_url_keyword"
+        style="@style/EditText.SyncUrl"
+        android:hint="@string/edittxt_keyword" />
 
     <EditText
-            android:id="@+id/sync_url"
-            style="@style/EditText.SyncUrl"
-            android:hint="@string/edittxt_website_pref"
-            android:inputType="textMultiLine|textUri"/>
+        android:id="@+id/sync_url"
+        style="@style/EditText.SyncUrl"
+        android:hint="@string/edittxt_website_pref"
+        android:inputType="textMultiLine|textUri" />
 
 </LinearLayout>

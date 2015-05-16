@@ -1,19 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (c) 2010 - 2011 Ushahidi Inc All rights reserved Contact: 
-	team@ushahidi.com Website: http://www.ushahidi.com GNU Lesser General Public 
-	License Usage This file may be used under the terms of the GNU Lesser General 
-	Public License version 3 as published by the Free Software Foundation and 
-	appearing in the file LICENSE.LGPL included in the packaging of this file. 
-	Please review the following information to ensure the GNU Lesser General 
-	Public License version 3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. 
-	If you have questions regarding the use of this file, please contact Ushahidi 
-	developers at team@ushahidi.com.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.addhen.smssync"
     android:versionCode="21"
-    android:versionName="2.6" >
+    android:versionName="2.6">
 
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -30,14 +34,15 @@
 
     <!-- Account manager permissions -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-sdk android:minSdkVersion="8"
+    <uses-sdk
+        android:minSdkVersion="8"
         android:targetSdkVersion="19" />
     <application
         android:name=".App"
         android:icon="@drawable/ic_launcher"
         android:installLocation="auto"
         android:label="@string/app_name"
-        android:theme="@style/Theme.SmsSync" >
+        android:theme="@style/Theme.SmsSync">
 
         <!-- Services -->
         <service android:name="org.addhen.smssync.services.SmsReceiverService" />
@@ -55,7 +60,7 @@
             android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
             android:exported="false"
             android:label="@string/app_name"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -68,7 +73,7 @@
             android:name=".activities.MainActivity"
             android:configChanges="screenLayout|orientation|keyboardHidden|touchscreen|navigation"
             android:label="@string/app_name"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,38 +83,38 @@
 
         <!-- donation -->
         <activity
-            android:name=".activities.DonationActivity"
-            android:label="@string/donate" />
-        <activity
             android:name=".activities.FilterTabActivity"
             android:label="@string/filter" />
 
         <!-- sms -->
         <!-- Receiver for sms sent code -->
-        <receiver android:name="org.addhen.smssync.receivers.SmsSentReceiver" >
+        <receiver android:name="org.addhen.smssync.receivers.SmsSentReceiver">
             <intent-filter>
                 <action android:name="SMS_SENT" />
             </intent-filter>
         </receiver>
 
         <!-- Receiver for sms delivered code -->
-        <receiver android:name="org.addhen.smssync.receivers.SmsDeliveredReceiver" >
+        <receiver android:name="org.addhen.smssync.receivers.SmsDeliveredReceiver">
             <intent-filter>
                 <action android:name="SMS_DELIVERED" />
             </intent-filter>
         </receiver>
 
         <!-- Receiver for pre kitkat. This is disabled when it's kitkat and above -->
-        <receiver android:name="org.addhen.smssync.receivers.SmsReceiver" android:enabled="@bool/is_pre_kitkat" >
+        <receiver
+            android:name="org.addhen.smssync.receivers.SmsReceiver"
+            android:enabled="@bool/is_pre_kitkat">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <!-- Receiver for kitkat. This is disabled when it's pre-kitkat releases -->
-        <receiver android:name="org.addhen.smssync.receivers.SmsReceiverKitKat"
-                  android:enabled="@bool/is_kitkat"
-                  android:permission="android.permission.BROADCAST_SMS" >
+        <receiver
+            android:name="org.addhen.smssync.receivers.SmsReceiverKitKat"
+            android:enabled="@bool/is_kitkat"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
             </intent-filter>
@@ -117,9 +122,10 @@
 
         <!-- Add these to allow SMSSync to be set as default SMS app on Android 4.4+ -->
         <!-- BroadcastReceiver that listens for incoming MMS messages -->
-        <receiver android:name=".MmsReceiver"
-                  android:enabled="@bool/is_kitkat"
-                  android:permission="android.permission.BROADCAST_WAP_PUSH">
+        <receiver
+            android:name=".MmsReceiver"
+            android:enabled="@bool/is_kitkat"
+            android:permission="android.permission.BROADCAST_WAP_PUSH">
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
                 <data android:mimeType="application/vnd.wap.mms-message" />
@@ -127,12 +133,14 @@
         </receiver>
 
         <!-- Activity that allows the user to send new SMS/MMS messages -->
-        <activity android:name=".ComposeSmsActivity" >
+        <activity android:name=".ComposeSmsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
                 <data android:scheme="mms" />
@@ -141,12 +149,14 @@
         </activity>
 
         <!-- Service that delivers messages from the phone "quick response" -->
-        <service android:name=".HeadlessSmsSendService"
-                 android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE"
-                 android:exported="true" >
+        <service
+            android:name=".HeadlessSmsSendService"
+            android:exported="true"
+            android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
             <intent-filter>
                 <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
                 <data android:scheme="mms" />
@@ -156,14 +166,14 @@
         <!-- End Android 4.4+ support-->
 
         <!-- connectivity changed -->
-        <receiver android:name="org.addhen.smssync.receivers.ConnectivityChangedReceiver" >
+        <receiver android:name="org.addhen.smssync.receivers.ConnectivityChangedReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <!-- power changed -->
-        <receiver android:name="org.addhen.smssync.receivers.PowerStateChangedReceiver" >
+        <receiver android:name="org.addhen.smssync.receivers.PowerStateChangedReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />
@@ -171,7 +181,7 @@
         </receiver>
 
         <!-- boot -->
-        <receiver android:name="org.addhen.smssync.receivers.BootReceiver" >
+        <receiver android:name="org.addhen.smssync.receivers.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
@@ -190,7 +200,7 @@
         <!-- app widget provider -->
         <receiver
             android:name="org.addhen.smssync.widget.SmsSyncAppWidgetProvider"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

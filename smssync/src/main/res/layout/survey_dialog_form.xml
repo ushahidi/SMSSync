@@ -1,37 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
-	Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
-	This file may be used under the terms of the GNU Lesser General Public License 
-	version 3 as published by the Free Software Foundation and appearing in the 
-	file LICENSE.LGPL included in the packaging of this file. Please review the 
-	following information to ensure the GNU Lesser General Public License version 
-	3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
-	have questions regarding the use of this file, please contact Ushahidi developers 
-	at team@ushahidi.com.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:paddingTop="5dp"
-              android:paddingLeft="18dp"
-              android:paddingRight="18dp"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="18dp"
+    android:paddingRight="18dp"
+    android:paddingTop="5dp">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textStyle="bold"
-            android:text="@string/email_label"
-            android:id="@+id/textView"/>
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email_label"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold" />
 
     <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:ems="10"
-            android:id="@+id/editText"
-            android:hint="sample@example.com"
-            android:layout_gravity="center_horizontal"/>
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:ems="10"
+        android:hint="sample@example.com"
+        android:inputType="textEmailAddress" />
 </LinearLayout>

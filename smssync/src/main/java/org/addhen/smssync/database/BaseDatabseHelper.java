@@ -1,21 +1,26 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.database;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.database.converter.EnumEntityFieldConverter;
@@ -24,11 +29,6 @@ import org.addhen.smssync.models.Filter;
 import org.addhen.smssync.models.Message;
 import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.tasks.ThreadExecutor;
-
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import nl.qbusict.cupboard.Cupboard;
 import nl.qbusict.cupboard.CupboardBuilder;
@@ -50,7 +50,8 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
     private static final int LAST_DATABASE_NUKE_VERSION = 6;
 
     private static final Class[] ENTITIES = new Class[]{Message.class, SyncUrl.class,
-            Filter.class, SyncUrl.class };
+            Filter.class, SyncUrl.class};
+    private static String TAG = BaseDatabseHelper.class.getSimpleName();
 
     static {
 
@@ -58,7 +59,7 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
 
             @Override
             public <T> EntityConverter<T> create(Cupboard cupboard, Class<T> type) {
-                if(type == SyncUrl.class) {
+                if (type == SyncUrl.class) {
                     return (EntityConverter<T>) new SyncUrlConverter(cupboard);
                 }
                 return null;
@@ -78,13 +79,9 @@ public abstract class BaseDatabseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private static String TAG = BaseDatabseHelper.class.getSimpleName();
-
-    private boolean mIsClosed;
-
-    private Context mContext;
-
     protected final ThreadExecutor mThreadExecutor;
+    private boolean mIsClosed;
+    private Context mContext;
 
     public BaseDatabseHelper(Context context, ThreadExecutor threadExecutor) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

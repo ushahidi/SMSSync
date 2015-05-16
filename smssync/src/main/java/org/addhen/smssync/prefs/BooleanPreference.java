@@ -1,18 +1,18 @@
 /*
- * Copyright (c) 2014 Ushahidi.
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program in the file LICENSE-AGPL. If not, see
- * https://www.gnu.org/licenses/agpl-3.0.html
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
  */
 
 package org.addhen.smssync.prefs;
@@ -44,7 +44,7 @@ public class BooleanPreference extends BasePreference<Boolean> {
      * @param defaultValue      The default value
      */
     public BooleanPreference(SharedPreferences sharedPreferences, String key,
-            Boolean defaultValue) {
+                             Boolean defaultValue) {
         super(sharedPreferences, key, defaultValue);
     }
 
@@ -66,7 +66,7 @@ public class BooleanPreference extends BasePreference<Boolean> {
     @Override
     public void set(final Boolean value) {
 
-        if(value == null) {
+        if (value == null) {
             throw new IllegalArgumentException("Boolean cannot be null");
         }
         getSharedPreferences().edit().putBoolean(getKey(), value).commit();

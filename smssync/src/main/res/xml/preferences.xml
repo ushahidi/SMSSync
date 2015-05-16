@@ -1,13 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2008 The Android Open Source Project Licensed under the 
-	Apache License, Version 2.0 (the "License"); you may not use this file except 
-	in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
-	Unless required by applicable law or agreed to in writing, software distributed 
-	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
-	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
-	the specific language governing permissions and limitations under the License.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 
 <!--
      This is a primitive example showing the different types of preferences 
@@ -17,87 +23,86 @@
 
     <PreferenceCategory android:title="@string/general_settings">
         <EditTextPreference
-                android:dialogTitle="@string/edittxt_unique_id_pref"
-                android:hint="@string/edittxt_unique_id_hint"
-                android:key="unique_id_preference"
-                android:summary="@string/edittxt_unique_id_pref_summary"
-                android:title="@string/edittxt_unique_id_pref"/>
+            android:dialogTitle="@string/edittxt_unique_id_pref"
+            android:hint="@string/edittxt_unique_id_hint"
+            android:key="unique_id_preference"
+            android:summary="@string/edittxt_unique_id_pref_summary"
+            android:title="@string/edittxt_unique_id_pref" />
 
         <CheckBoxPreference
-                android:key="auto_delete_preference"
-                android:summary="@string/chk_auto_delete_hint"
-                android:title="@string/chk_enable_auto_delete"/>
+            android:key="auto_delete_preference"
+            android:summary="@string/chk_auto_delete_hint"
+            android:title="@string/chk_enable_auto_delete" />
 
         <CheckBoxPreference
-                android:key="auto_delete_pending_messages_preference"
-                android:summary="@string/chk_enable_auto_delete_pending_messages_hint"
-                android:title="@string/chk_enable_auto_delete_pending_messages"/>
+            android:key="auto_delete_pending_messages_preference"
+            android:summary="@string/chk_enable_auto_delete_pending_messages_hint"
+            android:title="@string/chk_enable_auto_delete_pending_messages" />
         <ListPreference
-                android:key="auto_delete_pending_messages_retries_preference"
-                android:title="@string/select_number_of_retries"
-                android:summary="@string/select_number_of_retries_hint"
-                android:entries="@array/retry_entries"
-                android:entryValues="@array/retry_entries"
-                android:dependency="auto_delete_pending_messages_preference"/>
+            android:dependency="auto_delete_pending_messages_preference"
+            android:entries="@array/retry_entries"
+            android:entryValues="@array/retry_entries"
+            android:key="auto_delete_pending_messages_retries_preference"
+            android:summary="@string/select_number_of_retries_hint"
+            android:title="@string/select_number_of_retries" />
         <CheckBoxPreference
-                android:key="enable_sms_report_delivery_preference"
-                android:summary="@string/chk_sms_delivery_report_hint"
-                android:title="@string/chk_enable_sms_delivery_report"/>
+            android:key="enable_sms_report_delivery_preference"
+            android:summary="@string/chk_sms_delivery_report_hint"
+            android:title="@string/chk_enable_sms_delivery_report" />
 
         <EditTextPreference
             android:dialogTitle="@string/edittxt_alert_phone_pref"
+            android:inputType="phone"
             android:key="alert_phone_number_preference"
             android:summary="@string/edittxt_alert_phone_pref_summary"
-            android:title="@string/edittxt_alert_phone_pref"
-            android:inputType="number"
-            android:digits="0123456789"/>
+            android:title="@string/edittxt_alert_phone_pref" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/reply_settings">
         <CheckBoxPreference
-                android:key="enable_reply_frm_server_preference"
-                android:summary="@string/chk_reply_frm_server_hint"
-                android:title="@string/chk_enable_reply_frm_server"/>
+            android:key="enable_reply_frm_server_preference"
+            android:summary="@string/chk_reply_frm_server_hint"
+            android:title="@string/chk_enable_reply_frm_server" />
         <CheckBoxPreference
-                android:key="enable_reply_preference"
-                android:summary="@string/chk_reply_hint"
-                android:title="@string/chk_enable_reply"/>
+            android:key="enable_reply_preference"
+            android:summary="@string/chk_reply_hint"
+            android:title="@string/chk_enable_reply" />
 
         <EditTextPreference
-                android:defaultValue="@string/edittxt_reply_default"
-                android:dialogTitle="@string/edittxt_reply"
-                android:key="reply_preference"
-                android:summary="@string/edittxt_reply_summary"
-                android:title="@string/edittxt_reply_title"/>
+            android:defaultValue="@string/edittxt_reply_default"
+            android:dialogTitle="@string/edittxt_reply"
+            android:key="reply_preference"
+            android:summary="@string/edittxt_reply_summary"
+            android:title="@string/edittxt_reply_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/auto_sync_settings">
         <CheckBoxPreference
-                android:key="auto_sync_preference"
-                android:summary="@string/chk_enable_auto_sync_hint"
-                android:title="@string/chk_enable_auto_sync"/>
+            android:key="auto_sync_preference"
+            android:summary="@string/chk_enable_auto_sync_hint"
+            android:title="@string/chk_enable_auto_sync" />
         <org.addhen.smssync.util.TimePreference
-                android:dialogTitle="@string/txt_auto_sync_delay"
-                android:key="auto_sync_times"
-                android:summary="@string/auto_sync_delay_hint"
-                android:title="@string/txt_auto_sync_delay"
-                android:dependency="auto_sync_preference"/>
+            android:dependency="auto_sync_preference"
+            android:dialogTitle="@string/txt_auto_sync_delay"
+            android:key="auto_sync_times"
+            android:summary="@string/auto_sync_delay_hint"
+            android:title="@string/txt_auto_sync_delay" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/task_check_settings">
         <CheckBoxPreference
-                android:key="task_check_preference"
-                android:summary="@string/chk_enable_task_check_hint"
-                android:title="@string/chk_enable_task_check"/>
+            android:key="task_check_preference"
+            android:summary="@string/chk_enable_task_check_hint"
+            android:title="@string/chk_enable_task_check" />
         <org.addhen.smssync.util.TimePreference
-                android:dialogTitle="@string/txt_task_check_delay"
-                android:key="task_check_times"
-                android:summary="@string/txt_task_check_delay_hint"
-                android:title="@string/txt_task_check_delay"
-                android:dependency="task_check_preference"/>
+            android:dependency="task_check_preference"
+            android:dialogTitle="@string/txt_task_check_delay"
+            android:key="task_check_times"
+            android:summary="@string/txt_task_check_delay_hint"
+            android:title="@string/txt_task_check_delay" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/message_results_api_setting">
         <CheckBoxPreference
-                android:key="message_results_api_preference"
-                android:summary="@string/chk_enable_message_results_api_hint"
-                android:title="@string/chk_enable_message_results_api"/>
+            android:key="message_results_api_preference"
+            android:summary="@string/chk_enable_message_results_api_hint"
+            android:title="@string/chk_enable_message_results_api" />
     </PreferenceCategory>
     <!--
     TODO: Test this properly and enable it in future release
@@ -108,7 +113,7 @@
                 android:title="@string/chk_enable_sms_portals" />
     </PreferenceCategory> -->
     <PreferenceCategory android:title="@string/about_smssync">
-        <Preference android:key="powered_preference"/>
+        <Preference android:key="powered_preference" />
     </PreferenceCategory>
 
 </PreferenceScreen>

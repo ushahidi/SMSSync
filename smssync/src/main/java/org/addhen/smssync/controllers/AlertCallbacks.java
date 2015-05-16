@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
+
 package org.addhen.smssync.controllers;
 
 import org.addhen.smssync.App;
@@ -52,7 +69,7 @@ public class AlertCallbacks {
                 } catch (Exception e) {
                     Util.logActivities(prefs.getContext(), e.getMessage());
                 } finally {
-                    if(client !=null) {
+                    if (client != null) {
                         if (HttpStatus.SC_OK == client.responseCode()) {
                             Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
                                     .getString(R.string.successful_alert_to_server));
@@ -66,7 +83,7 @@ public class AlertCallbacks {
             ProcessSms process = new ProcessSms(prefs.getContext());
             final Long timeMills = System.currentTimeMillis();
             Message message = new Message();
-            message.setBody( prefs.getContext().getResources()
+            message.setBody(prefs.getContext().getResources()
                     .getString(R.string.battery_level_message, batteryLevel));
             message.setDate(new Date(timeMills));
             message.setPhoneNumber(prefs.alertPhoneNumber().get());
@@ -80,7 +97,7 @@ public class AlertCallbacks {
      * If an SMS fails to send (due to credit, cell coverage, or bad number) post alert to server
      */
     public void smsSendFailedRequest(String resultMessage,
-            String errorCode) {
+                                     String errorCode) {
         List<SyncUrl> syncUrls = App.getDatabaseInstance().getSyncUrlInstance().fetchSyncUrlByStatus(
                 SyncUrl.Status.ENABLED);
         for (SyncUrl syncUrl : syncUrls) {
@@ -97,7 +114,7 @@ public class AlertCallbacks {
                 } catch (Exception e) {
                     Util.logActivities(prefs.getContext(), e.getMessage());
                 } finally {
-                    if(client !=null) {
+                    if (client != null) {
                         if (HttpStatus.SC_OK == client.responseCode()) {
                             Util.logActivities(prefs.getContext(), prefs.getContext().getResources()
                                     .getString(R.string.successful_alert_to_server));
@@ -117,7 +134,7 @@ public class AlertCallbacks {
             ProcessSms process = new ProcessSms(prefs.getContext());
             final Long timeMills = System.currentTimeMillis();
             Message message = new Message();
-            message.setBody( prefs.getContext().getResources().getString(R.string.lost_connection_message));
+            message.setBody(prefs.getContext().getResources().getString(R.string.lost_connection_message));
             message.setDate(new Date(timeMills));
             message.setPhoneNumber(prefs.alertPhoneNumber().get());
             message.setUuid(process.getUuid());

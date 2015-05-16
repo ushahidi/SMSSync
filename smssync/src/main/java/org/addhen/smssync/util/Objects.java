@@ -1,19 +1,19 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 package org.addhen.smssync.util;
 
 import android.util.Log;
@@ -65,7 +65,7 @@ public class Objects {
 
     @SuppressWarnings("unchecked")
     public static <T> T createInstance(Class type, Class constructor,
-            Object... params) {
+                                       Object... params) {
         try {
             return (T) type.getConstructor(constructor).newInstance(params);
         } catch (InstantiationException e) {
@@ -82,7 +82,7 @@ public class Objects {
 
     @SuppressWarnings("unchecked")
     public static <T> T createInstance(Class type, Class[] constructors,
-            Object... params) {
+                                       Object... params) {
         try {
             return (T) type.getConstructor(constructors).newInstance(params);
         } catch (InstantiationException e) {
@@ -107,7 +107,7 @@ public class Objects {
 
     @SuppressWarnings("unchecked")
     public static <T> T createInstance(Type type, Class[] constructorClasses,
-            Object[] constructorParams) {
+                                       Object[] constructorParams) {
         try {
             Log.i("Type", type.toString());
             if (type.getClass().getConstructors().length > 0) {

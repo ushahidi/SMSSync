@@ -1,17 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2008 The Android Open Source Project Licensed under the 
-	Apache License, Version 2.0 (the "License"); you may not use this file except 
-	in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
-	Unless required by applicable law or agreed to in writing, software distributed 
-	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
-	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
-	the specific language governing permissions and limitations under the License.
--->
-<!-- This handles all the strings in the app. -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation">
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  --><!-- This handles all the strings in the app. -->
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" tools:ignore="MissingTranslation">
 
     <!-- preferences -->
     <!-- sync URL -->
@@ -366,7 +369,7 @@
     <string name="no_data_connection">There is no active data connection</string>
     <string name="active_data_connection">There is active data connection</string>
     <string name="device_reboot">The device has rebooted</string>
-    <string name="device_shutdown">The device has shutdown</string>
+    <string name="device_shutdown">The device has shutdown at %1$s</string>
     <string name="battery_low">The device battery level is low</string>
     <string name="battery_okay">The device battery level is okay</string>
     <string name="settings_changed">SMSsync settings - [ %1$s ] has changed from [ %2$s ] to [ %3$s ]</string>

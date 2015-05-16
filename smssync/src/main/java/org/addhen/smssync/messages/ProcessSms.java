@@ -1,32 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.messages;
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.R;
-import org.addhen.smssync.database.BaseDatabseHelper;
-import org.addhen.smssync.models.Message;
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.util.LogUtil;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.SentMessagesUtil;
-import org.addhen.smssync.util.ServicesConstants;
-import org.addhen.smssync.util.Util;
 
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -38,10 +27,16 @@ import android.net.Uri;
 import android.provider.Telephony;
 import android.provider.Telephony.Sms.Conversations;
 import android.provider.Telephony.Sms.Inbox;
-import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
-import android.text.format.DateFormat;
-import android.widget.Toast;
+
+import org.addhen.smssync.App;
+import org.addhen.smssync.R;
+import org.addhen.smssync.database.BaseDatabseHelper;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,11 +103,11 @@ public class ProcessSms {
      * @return the message id
      */
     public long findMessageId(long threadId,
-            long timestamp) {
+                              long timestamp) {
         Logger.log(CLASS_TAG,
                 "findMessageId(): get the message id using thread id and timestamp: threadId: "
                         + threadId + " timestamp: " + timestamp);
-        if (Util.isKitKat()) {
+        if (Util.isKitKatOrHigher()) {
             return findMessageIdKitKat(threadId, timestamp);
         }
         long id = 0;
@@ -207,16 +202,15 @@ public class ProcessSms {
     }
 
     /**
-     * TODO:// refactor so this method return boolean <p/> Import messages from the messages app's
-     * table and puts them in SMSSync's outbox table. This will allow messages the imported messages
-     * to be sync'd to the configured Sync URL.
+     * Import messages from the messages app's table and puts them in SMSSync's outbox table.
+     * This will allow messages the imported messages to be sync'd to the configured Sync URL.
      *
-     * @return int 0 for success, 1 for failure.
+     * @return true for success, false for failure.
      */
-    public int importMessages() {
+    public boolean importMessages() {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
-        if (Util.isKitKat()) {
+        if (Util.isKitKatOrHigher()) {
             return importMessageKitKat();
         }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
@@ -252,12 +246,9 @@ public class ProcessSms {
                     c.close();
                 }
             }
-            return 0;
-
-        } else {
-            return 1;
+            return true;
         }
-
+        return false;
     }
 
     private void saveMessage(List<Message> messages) {
@@ -276,7 +267,7 @@ public class ProcessSms {
                 });
     }
 
-    public int importMessageKitKat() {
+    public boolean importMessageKitKat() {
         Logger.log(CLASS_TAG,
                 "importMessages(): import messages from messages app");
         Uri uriSms = SmsQuery.INBOX_CONTENT_URI;
@@ -304,17 +295,16 @@ public class ProcessSms {
                         messages.add(message);
 
                     } while (c.moveToNext());
+                    saveMessage(messages);
                 }
             } finally {
                 if (c != null) {
                     c.close();
                 }
             }
-            return 0;
-
-        } else {
-            return 1;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -326,7 +316,7 @@ public class ProcessSms {
     public long getThreadId(String body, String address) {
         Logger.log(CLASS_TAG, "getId(): thread id");
 
-        if (Util.isKitKat()) {
+        if (Util.isKitKatOrHigher()) {
             return getThreadIdKitKat(body, address);
         }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
@@ -386,14 +376,13 @@ public class ProcessSms {
         ArrayList<PendingIntent> sentIntents = new ArrayList<PendingIntent>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<PendingIntent>();
         Logger.log(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: "
-                + message.getPhoneNumber() + " message: " + message.getBody() +" message"+message);
+                + message.getPhoneNumber() + " message: " + message.getBody() + " message" + message);
 
         Util.logActivities(context, context.getString(R.string.sent_msg, message.getBody(), message.getPhoneNumber()));
 
         SmsManager sms = SmsManager.getDefault();
         ArrayList<String> parts = sms.divideMessage(message.getBody());
-        //String validUUID;
-        message.setType(Message.Type.TASK);
+
         for (int i = 0; i < parts.size(); i++) {
 
             Intent sentMessageIntent = new Intent(ServicesConstants.SENT);
@@ -414,41 +403,17 @@ public class ProcessSms {
             deliveryIntents.add(deliveryIntent);
         }
 
-        if (PhoneNumberUtils.isGlobalPhoneNumber(message.getPhoneNumber())) {
+        message.setStatus(Message.Status.UNCONFIRMED);
 
-            if (prefs.smsReportDelivery().get()) {
-                sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
-                        deliveryIntents);
-            } else {
-                sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
-                        null);
-            }
-            message.setStatus(Message.Status.UNCONFIRMED);
-            return postToSentBox(message);
+        if (prefs.smsReportDelivery().get()) {
+            sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
+                    deliveryIntents);
         } else {
-            final String errNotGlobalPhoneNumber = "sendSms(): !PhoneNumberUtils.isGlobalPhoneNumber: " + message.getPhoneNumber();
-            Logger.log(CLASS_TAG, errNotGlobalPhoneNumber);
-            // Following copy/pasted from BaseBroadcastReceiver.. should be in shared util instead
-            if (prefs.enableLog().get()) {
-                new LogUtil(DateFormat.getDateFormatOrder(context)).appendAndClose(errNotGlobalPhoneNumber);
-            }
-            Toast.makeText(context, errNotGlobalPhoneNumber, Toast.LENGTH_LONG).show();
+            sms.sendMultipartTextMessage(message.getPhoneNumber(), null, parts, sentIntents,
+                    null);
         }
+
         return false;
-    }
-
-    private void updateMessage(Message message) {
-        App.getDatabaseInstance().getMessageInstance().update(message, new BaseDatabseHelper.DatabaseCallback<Void>() {
-            @Override
-            public void onFinished(Void result) {
-                // Do nothing
-            }
-
-            @Override
-            public void onError(Exception exception) {
-                // Do nothing
-            }
-        });
     }
 
     /**
@@ -461,7 +426,7 @@ public class ProcessSms {
     public boolean delSmsFromInbox(String body, String address) {
         Logger.log(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
         final long threadId = getThreadId(body, address);
-        Uri smsUri = Util.isKitKat() ? ContentUris.withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
+        Uri smsUri = Util.isKitKatOrHigher() ? ContentUris.withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
                 threadId) : ContentUris.withAppendedId(Uri.parse(SMS_CONTENT_URI), threadId);
         if (threadId >= 0) {
 
@@ -475,17 +440,6 @@ public class ProcessSms {
         return false;
     }
 
-    /**
-     * Saves successfully sent messages into the db
-     *
-     * @param message the message
-     */
-    public boolean postToSentBox(Message message) {
-        Logger.log(CLASS_TAG, "postToSentBox(): post message to sentbox "+message.toString());
-        return SentMessagesUtil.processSentMessages(message);
-
-    }
-
     public Context getContext() {
         return context;
     }
@@ -495,24 +449,20 @@ public class ProcessSms {
      */
     private interface SmsQuery {
 
-        int TOKEN = 1;
+        Uri INBOX_CONTENT_URI = Inbox.CONTENT_URI;
 
-        static final Uri INBOX_CONTENT_URI = Inbox.CONTENT_URI;
+        Uri SMS_CONVERSATION_URI = Conversations.CONTENT_URI;
 
-        static final Uri SMS_CONVERSATION_URI = Conversations.CONTENT_URI;
-
-        static final String[] PROJECTION = {
+        String[] PROJECTION = {
                 Inbox._ID,
                 Inbox.ADDRESS,
                 Inbox.BODY,
                 Inbox.DATE,
         };
 
-        static final String SORT_ORDER = Telephony.Sms.Inbox.DEFAULT_SORT_ORDER;
+        String SORT_ORDER = Telephony.Sms.Inbox.DEFAULT_SORT_ORDER;
 
         int ID = 0;
-        int ADDRESS = 1;
-        int BODY = 2;
     }
 
 }

@@ -1,28 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.widget;
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.R;
-import org.addhen.smssync.Settings;
-import org.addhen.smssync.activities.FilterTabActivity;
-import org.addhen.smssync.models.Message;
-import org.addhen.smssync.util.Util;
 
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -39,28 +32,76 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import org.addhen.smssync.App;
+import org.addhen.smssync.R;
+import org.addhen.smssync.Settings;
+import org.addhen.smssync.activities.FilterTabActivity;
+import org.addhen.smssync.models.Message;
+import org.addhen.smssync.util.Util;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
 
+    public static final String INTENT_TYPE = "type";
+    public static final String INTENT_PREV = "PREV";
+    public static final String INTENT_NEXT = "NEXT";
+    public static final String INTENT_REFRESH = "REFRESH";
     // log CLASS_TAG
     private static final String CLASS_TAG = SmsSyncAppWidgetProvider.class
             .getSimpleName();
-
-    public static final String INTENT_TYPE = "type";
-
-    public static final String INTENT_PREV = "PREV";
-
-    public static final String INTENT_NEXT = "NEXT";
-
-    public static final String INTENT_REFRESH = "REFRESH";
-
     private static final int LIMIT = 5;
+    public static List<Message> pendingMsgs = new ArrayList<Message>();
+    public static List<Integer> pendingMsgIds;
+    public static int pendingMsgIndex = 0;
+
+    // implement next screen
+    public static Message getNextPendingMessages() {
+        if (pendingMsgs != null && pendingMsgs.size() > 0) {
+            pendingMsgIndex = (pendingMsgIndex + 1) % pendingMsgs.size();
+            return pendingMsgs.get(pendingMsgIndex);
+        }
+        return null;
+    }
+
+    // implement previous screen.
+    public static Message getPrevPendingMessages() {
+        if (pendingMsgs != null && pendingMsgs.size() > 0) {
+            pendingMsgIndex = pendingMsgIndex - 1;
+            pendingMsgIndex = pendingMsgIndex < 0 ? pendingMsgs.size() - 1
+                    : pendingMsgIndex;
+            return pendingMsgs.get(pendingMsgIndex);
+        }
+        return null;
+    }
+
+    // implement current screen
+    public static Message getCurrentPendingMessages() {
+
+        if (pendingMsgs != null && pendingMsgs.size() > 0) {
+            pendingMsgIndex = pendingMsgIndex < 0 ? 0 : pendingMsgIndex;
+            return pendingMsgs.get(pendingMsgIndex);
+        }
+        return null;
+    }
+
+    public static List<Message> showMessages() {
+
+        final List<Message> messages = App.getDatabaseInstance().getMessageInstance().fetchByLimit(LIMIT);
+        if (messages != null) {
+            if (messages.size() == 0) {
+                pendingMsgs.clear();
+            }
+            pendingMsgs = messages;
+
+        }
+        return pendingMsgs;
+    }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-            int[] appWidgetIds) {
+                         int[] appWidgetIds) {
 
         // why is appWidgetIds > 1
         for (int i = 0; i < appWidgetIds.length; ++i) {
@@ -92,42 +133,6 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
         } else {
             super.onReceive(ctxt, intent);
         }
-    }
-
-    public static List<Message> pendingMsgs = new ArrayList<Message>();
-
-    public static List<Integer> pendingMsgIds;
-
-    public static int pendingMsgIndex = 0;
-
-    // implement next screen
-    public static Message getNextPendingMessages() {
-        if (pendingMsgs != null && pendingMsgs.size() > 0) {
-            pendingMsgIndex = (pendingMsgIndex + 1) % pendingMsgs.size();
-            return pendingMsgs.get(pendingMsgIndex);
-        }
-        return null;
-    }
-
-    // implement previous screen.
-    public static Message getPrevPendingMessages() {
-        if (pendingMsgs != null && pendingMsgs.size() > 0) {
-            pendingMsgIndex = pendingMsgIndex - 1;
-            pendingMsgIndex = pendingMsgIndex < 0 ? pendingMsgs.size() - 1
-                    : pendingMsgIndex;
-            return pendingMsgs.get(pendingMsgIndex);
-        }
-        return null;
-    }
-
-    // implement current screen
-    public static Message getCurrentPendingMessages() {
-
-        if (pendingMsgs != null && pendingMsgs.size() > 0) {
-            pendingMsgIndex = pendingMsgIndex < 0 ? 0 : pendingMsgIndex;
-            return pendingMsgs.get(pendingMsgIndex);
-        }
-        return null;
     }
 
     public static class SmsSyncAppWidgetService extends IntentService {
@@ -281,19 +286,6 @@ public class SmsSyncAppWidgetProvider extends AppWidgetProvider {
                         ConnectivityManager.CONNECTIVITY_ACTION));
             }
         }
-    }
-
-    public static List<Message> showMessages() {
-
-        final List<Message> messages = App.getDatabaseInstance().getMessageInstance().fetchByLimit(LIMIT);
-        if (messages != null) {
-            if (messages.size() == 0) {
-                pendingMsgs.clear();
-            }
-            pendingMsgs = messages;
-
-        }
-        return pendingMsgs;
     }
 
 }

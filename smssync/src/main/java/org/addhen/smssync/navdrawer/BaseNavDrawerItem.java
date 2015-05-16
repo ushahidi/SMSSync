@@ -1,31 +1,30 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.navdrawer;
 
-import org.addhen.smssync.R;
-import org.addhen.smssync.models.NavDrawerItem;
-
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+
+import org.addhen.smssync.R;
+import org.addhen.smssync.models.NavDrawerItem;
 
 
 /**
@@ -41,10 +40,7 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
 
     protected int count;
 
-    protected Handler mHandler = new Handler();
-
     /**
-     *
      * @param title
      * @param iconRes
      * @param activity
@@ -75,8 +71,6 @@ public abstract class BaseNavDrawerItem extends NavDrawerItem {
     public boolean isVisible() {
         return true;
     }
-
-    ;
 
     protected void showFragment(String tag) {
         fragmentManager = mActivity.getSupportFragmentManager();

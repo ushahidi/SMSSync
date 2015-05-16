@@ -1,31 +1,22 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.fragments;
 
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.adapters.BaseListAdapter;
-import org.addhen.smssync.models.Model;
-import org.addhen.smssync.util.LogUtil;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.Objects;
-import org.addhen.smssync.views.View;
 
 import android.app.Activity;
 import android.content.Context;
@@ -39,6 +30,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.addhen.smssync.App;
+import org.addhen.smssync.adapters.BaseListAdapter;
+import org.addhen.smssync.models.Model;
+import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.LogUtil;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.Objects;
+import org.addhen.smssync.views.View;
 
 /**
  * @author eyedol
@@ -99,7 +99,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
      * @param listView list view resource id
      */
     protected BaseListFragment(Class<V> view, Class<L> adapter, int layout,
-            int menu, int listView) {
+                               int menu, int listView) {
         this.adapterClass = adapter;
         this.listViewId = listView;
         this.viewClass = view;
@@ -139,7 +139,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
 
     @Override
     public android.view.View onCreateView(LayoutInflater inflater,
-            ViewGroup container, Bundle savedInstanceState) {
+                                          ViewGroup container, Bundle savedInstanceState) {
         android.view.View root = null;
         if (layout != 0) {
             root = inflater.inflate(layout, container, false);
@@ -172,7 +172,7 @@ public abstract class BaseListFragment<V extends View, M extends Model, L extend
     }
 
     public void onItemSelected(AdapterView<?> adapterView,
-            android.view.View view, int position, long id) {
+                               android.view.View view, int position, long id) {
     }
 
     public void onNothingSelected(AdapterView<?> adapterView) {

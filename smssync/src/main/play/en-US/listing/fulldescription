@@ -1,0 +1,1 @@
+SMSSync allows you to turn your Android powered phone into an SMS gateway. It supports filtering text messages by keywords and can transmit the text message to a configured callback URL via HTTP POST request.

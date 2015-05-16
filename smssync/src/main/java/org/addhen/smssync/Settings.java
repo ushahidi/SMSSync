@@ -1,27 +1,21 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync;
-
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.RunServicesUtil;
-import org.addhen.smssync.util.TimePreference;
-import org.addhen.smssync.util.Util;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,8 +33,12 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.text.TextUtils;
 
+import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.util.RunServicesUtil;
+import org.addhen.smssync.util.TimePreference;
+import org.addhen.smssync.util.Util;
+
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class handles all related task for settings on SMSSync. TODO // move the UI code into it's
@@ -72,11 +70,11 @@ public class Settings extends PreferenceActivity implements
 
     public static final String AUTO_SYNC_TIMES = "auto_sync_times";
 
-   // public static final String KEY_ENABLE_SMS_PORTALS = "enable_sms_portals";
+    // public static final String KEY_ENABLE_SMS_PORTALS = "enable_sms_portals";
 
     public static final String KEY_ENABLE_RETRIES = "auto_delete_pending_messages_preference";
 
-    public static final String KEY_LIST_RETRIES  = "auto_delete_pending_messages_retries_preference";
+    public static final String KEY_LIST_RETRIES = "auto_delete_pending_messages_retries_preference";
 
     public static final String TASK_CHECK = "task_check_preference";
 
@@ -91,111 +89,25 @@ public class Settings extends PreferenceActivity implements
     public static ArrayList<Messenger> availableConnections = new ArrayList<Messenger>();
 
     public static int currentConnectionIndex = -1;
-
-    final Runnable mMessageResultsAPIEnabled = new Runnable() {
-
-        public void run() {
-
-            if (!prefs.serviceEnabled().get()) {
-                Util.showToast(Settings.this, R.string.no_configured_url);
-                enableMessageResultsAPI.setChecked(false);
-            } else {
-                enableMessageResultsAPI.setChecked(true);
-                runServicesUtil.runMessageResultsService();
-            }
-        }
-    };
-
-    /**
-     * Create runnable for validating callback URL. Putting the validation process in it own thread
-     * provides efficiency.
-     */
-    final Runnable mTaskCheckEnabled = new Runnable() {
-
-        public void run() {
-
-            if (!prefs.serviceEnabled().get()) {
-
-                Util.showToast(Settings.this, R.string.no_configured_url);
-
-                taskCheck.setChecked(false);
-                if (enableMessageResultsAPI.isChecked()) {
-                    enableMessageResultsAPI.setChecked(false);
-                }
-            } else {
-
-                taskCheck.setChecked(true);
-
-                // start the scheduler for task checking service
-                runServicesUtil.runCheckTaskService();
-            }
-        }
-    };
-
-    /**
-     *
-     */
-    final Runnable mAutoSyncEnabled = new Runnable() {
-
-        public void run() {
-
-            if (!prefs.serviceEnabled().get()) {
-
-                Util.showToast(Settings.this, R.string.no_configured_url);
-                autoSync.setChecked(false);
-
-            } else {
-
-                autoSync.setChecked(true);
-
-                // Initialize the selected time to frequently sync pending
-                // messages
-                autoSyncTimes.setEnabled(true);
-                runServicesUtil.runAutoSyncService();
-            }
-        }
-    };
-
     private final Handler mHandler = new Handler();
-
     private EditTextPreference replyPref;
-
     private CheckBoxPreference enableReplyFrmServer;
-
     private CheckBoxPreference enableAutoDelete;
-
     private CheckBoxPreference enableSmsReportDelivery;
-
     private CheckBoxPreference enableReply;
-
     private CheckBoxPreference autoSync;
-
     private CheckBoxPreference useSmsPortals;
-
     private CheckBoxPreference taskCheck;
-
     private TimePreference autoSyncTimes;
-
     private CheckBoxPreference enableMessageResultsAPI;
-
     private ListPreference retry;
-
     private CheckBoxPreference enableRetry;
-
     private TimePreference taskCheckTimes;
-
     private EditTextPreference uniqueId;
-
     private EditTextPreference alertPhoneNumber;
-
     private Preference about;
-
     private Prefs prefs;
-
     private int uniqueIdValidityStatus = 1;
-
-    private RunServicesUtil runServicesUtil;
-
     /**
      * Create runnable to validate unique ID.
      */
@@ -212,6 +124,7 @@ public class Settings extends PreferenceActivity implements
             }
         }
     };
+    private RunServicesUtil runServicesUtil;
 
     private String versionName;
 
@@ -270,7 +183,7 @@ public class Settings extends PreferenceActivity implements
         /*useSmsPortals = (CheckBoxPreference) getPreferenceScreen()
                 .findPreference(KEY_ENABLE_SMS_PORTALS);*/
 
-        enableRetry  = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_ENABLE_RETRIES);
+        enableRetry = (CheckBoxPreference) getPreferenceScreen().findPreference(KEY_ENABLE_RETRIES);
 
         retry = (ListPreference) getPreferenceScreen().findPreference(KEY_LIST_RETRIES);
 
@@ -343,13 +256,13 @@ public class Settings extends PreferenceActivity implements
             enableMessageResultsAPI.setEnabled(false);
         }
 
-        if(enableRetry.isChecked()) {
+        if (enableRetry.isChecked()) {
             retry.setEnabled(true);
         } else {
             retry.setEnabled(false);
         }
 
-        prefs.reply().set(replyPref.getText().toString());
+
         // log reply changes.
         if (!prefs.reply().get().equals(replyPref.getText().toString())) {
             // Log old value and new value.
@@ -357,7 +270,7 @@ public class Settings extends PreferenceActivity implements
                     replyPref.getDialogTitle().toString(), prefs.reply().get(),
                     replyPref.getText().toString()));
         }
-        prefs.autoDelete().set(enableAutoDelete.isChecked());
+        prefs.reply().set(replyPref.getText().toString());
 
         if (prefs.autoDelete().get() != enableAutoDelete.isChecked()) {
             boolean checked = enableAutoDelete.isChecked() ? true : false;
@@ -369,8 +282,7 @@ public class Settings extends PreferenceActivity implements
                     enableAutoDelete.getTitle().toString(), status,
                     check));
         }
-
-        prefs.smsReportDelivery().set(enableSmsReportDelivery.isChecked());
+        prefs.autoDelete().set(enableAutoDelete.isChecked());
 
         if (prefs.smsReportDelivery().get() != enableSmsReportDelivery.isChecked()) {
             boolean checked = enableSmsReportDelivery.isChecked() ? true : false;
@@ -382,8 +294,8 @@ public class Settings extends PreferenceActivity implements
                     enableSmsReportDelivery.getTitle().toString(), status,
                     check));
         }
+        prefs.smsReportDelivery().set(enableSmsReportDelivery.isChecked());
 
-        prefs.enableReply().set(enableReply.isChecked());
         if (prefs.enableReply().get() != enableReply.isChecked()) {
             boolean checked = enableReply.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -394,8 +306,8 @@ public class Settings extends PreferenceActivity implements
                     enableReply.getTitle().toString(), status,
                     check));
         }
+        prefs.enableReply().set(enableReply.isChecked());
 
-        prefs.enableReplyFrmServer().set(enableReplyFrmServer.isChecked());
         if (prefs.enableReplyFrmServer().get() != enableReplyFrmServer.isChecked()) {
             boolean checked = enableReplyFrmServer.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -406,8 +318,8 @@ public class Settings extends PreferenceActivity implements
                     enableReplyFrmServer.getTitle().toString(), status,
                     check));
         }
+        prefs.enableReplyFrmServer().set(enableReplyFrmServer.isChecked());
 
-        prefs.enableTaskCheck().set(taskCheck.isChecked());
         if (prefs.enableTaskCheck().get() != taskCheck.isChecked()) {
             boolean checked = taskCheck.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -418,8 +330,8 @@ public class Settings extends PreferenceActivity implements
                     taskCheck.getTitle().toString(), status,
                     check));
         }
+        prefs.enableTaskCheck().set(taskCheck.isChecked());
 
-        prefs.enableAutoSync().set(autoSync.isChecked());
         if (prefs.enableAutoSync().get() != autoSync.isChecked()) {
             boolean checked = autoSync.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -430,29 +342,31 @@ public class Settings extends PreferenceActivity implements
                     autoSync.getTitle().toString(), status,
                     check));
         }
+        prefs.enableAutoSync().set(autoSync.isChecked());
 
-        prefs.autoTime().set(autoSyncTimes.getTimeValueAsString());
         if (!prefs.autoTime().get().equals(autoSyncTimes.getTimeValueAsString())) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     autoSyncTimes.getTitle().toString(),
                     prefs.autoTime().get(), autoSyncTimes.getTimeValueAsString()));
         }
+        prefs.autoTime().set(autoSyncTimes.getTimeValueAsString());
 
-        prefs.enableReply().set(enableReply.isChecked());
-        if(prefs.enableReply().get() != enableRetry.isChecked()) {
-            boolean checked = enableReply.isChecked() ? true : false;
+        // Enable or Disable Pending messages delete retries.
+        if (prefs.enableRetry().get() != enableRetry.isChecked()) {
+            boolean checked = enableRetry.isChecked() ? true : false;
 
             String check = getCheckedStatus(checked);
 
             String status = getCheckedStatus(prefs.enableRetry().get());
 
             Util.logActivities(Settings.this, getString(R.string.settings_changed,
-                    enableReply.getTitle().toString(), status,
+                    enableRetry.getTitle().toString(), status,
                     check));
         }
+        prefs.enableRetry().set(enableRetry.isChecked());
 
-        for(int i = 0; i < retry.getEntryValues().length; i++) {
-            if(retry.getEntry() !=null ) {
+        for (int i = 0; i < retry.getEntryValues().length; i++) {
+            if (retry.getEntry() != null) {
                 if (retry.getValue()
                         .matches(getResources().getStringArray(R.array.retry_entries)[i])) {
                     prefs.retries().set(getResources().getIntArray(R.array.retry_values)[i]);
@@ -474,51 +388,56 @@ public class Settings extends PreferenceActivity implements
                     check));
         }*/
 
-        prefs.taskCheckTime().set(taskCheckTimes.getTimeValueAsString());
+
         if (!prefs.taskCheckTime().get().equals(taskCheckTimes.getTimeValueAsString())) {
             Util.logActivities(this, getString(R.string.settings_changed,
                     taskCheckTimes.getTitle().toString(),
                     prefs.taskCheckTime().get(), taskCheckTimes.getTimeValueAsString()));
         }
+        prefs.taskCheckTime().set(taskCheckTimes.getTimeValueAsString());
 
         if (!TextUtils.isEmpty(uniqueId.getText())) {
             String id = Util.removeWhitespaces(uniqueId.getText());
-            prefs.uniqueId().set(id);
+
             if (!prefs.uniqueId().get().equals(uniqueId.getText())) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, uniqueId.getTitle(),
                                 prefs.uniqueId().get(), id)
                 );
             }
+            prefs.uniqueId().set(id);
         } else {
-            prefs.uniqueId().set("");
+
             if (!prefs.uniqueId().get().equals("")) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, uniqueId.getTitle(),
                                 prefs.uniqueId().get(), "")
                 );
             }
+            prefs.uniqueId().set("");
         }
 
         if (!TextUtils.isEmpty(alertPhoneNumber.getText())) {
             String number = Util.removeWhitespaces(alertPhoneNumber.getText());
-            prefs.alertPhoneNumber().set(number);
+
             if (!prefs.alertPhoneNumber().get().equals(alertPhoneNumber.getText())) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, alertPhoneNumber.getTitle().toString(),
                                 prefs.alertPhoneNumber().get(), number)
                 );
             }
+            prefs.alertPhoneNumber().set(number);
+
         } else {
-            if (prefs.alertPhoneNumber().get() != null) {
+            if (!prefs.alertPhoneNumber().get().equals("")) {
                 Util.logActivities(this,
                         getString(R.string.settings_changed, alertPhoneNumber.getTitle().toString(),
                                 prefs.alertPhoneNumber().get(), "")
                 );
             }
+            prefs.alertPhoneNumber().set("");
         }
 
-        prefs.messageResultsAPIEnable().set(enableMessageResultsAPI.isChecked());
         if (prefs.messageResultsAPIEnable().get() != enableMessageResultsAPI.isChecked()) {
             boolean checked = enableMessageResultsAPI.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
@@ -529,6 +448,7 @@ public class Settings extends PreferenceActivity implements
                     enableMessageResultsAPI.getTitle().toString(), status,
                     check));
         }
+        prefs.messageResultsAPIEnable().set(enableMessageResultsAPI.isChecked());
     }
 
     @Override
@@ -563,8 +483,8 @@ public class Settings extends PreferenceActivity implements
      * @return void
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-            String key) {
-
+                                          String key) {
+        this.savePreferences();
         if (key.equals(KEY_ENABLE_REPLY)) {
 
             if (sharedPreferences.getBoolean(KEY_ENABLE_REPLY, false)) {
@@ -581,7 +501,6 @@ public class Settings extends PreferenceActivity implements
             if (sharedPreferences.getBoolean(AUTO_SYNC, false)) {
 
                 autoSyncEnable();
-                autoSyncTimes.setEnabled(false);
 
             } else {
                 // stop scheduler
@@ -595,9 +514,7 @@ public class Settings extends PreferenceActivity implements
 
             // restart service
             if (prefs.enableAutoSync().get()) {
-
                 runServicesUtil.runAutoSyncService();
-
             }
         }
 
@@ -616,7 +533,7 @@ public class Settings extends PreferenceActivity implements
         if (key.equals(TASK_CHECK)) {
 
             if (sharedPreferences.getBoolean(TASK_CHECK, false)) {
-                autoTaskCheckValidateCallbackURL();
+                enableTaskChecking();
 
             } else {
 
@@ -638,13 +555,13 @@ public class Settings extends PreferenceActivity implements
 
         // Enable SMS delivery report
         if (key.equals(KEY_ENABLE_SMS_REPORT_DELIVERY)) {
-            if(sharedPreferences.getBoolean(KEY_ENABLE_SMS_REPORT_DELIVERY, false)) {
+            if (sharedPreferences.getBoolean(KEY_ENABLE_SMS_REPORT_DELIVERY, false)) {
                 enableSmsReportDelivery.setChecked(true);
             } else {
                 if (!enableSmsReportDelivery.isChecked() && enableMessageResultsAPI.isChecked()) {
                     enableSmsReportDelivery.setChecked(true);
                     Util.showToast(Settings.this, R.string.validate_message_result_api);
-                }else {
+                } else {
                     enableSmsReportDelivery.setChecked(false);
                 }
             }
@@ -652,54 +569,65 @@ public class Settings extends PreferenceActivity implements
 
         // Enable message result checking
         if (key.equals(MESSAGE_RESULTS_API)) {
-            if(!enableSmsReportDelivery.isChecked()) {
-                enableMessageResultsAPI.setChecked(false);
-                Util.showToast(Settings.this, R.string.validate_sms_delivery_report_status);
+
+            if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
+                messageResultsAPIEnable();
             } else {
-                if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
-                    messageResultsAPIEnable();
-                } else {
-                    runServicesUtil.stopMessageResultsService();
-                }
+                runServicesUtil.stopMessageResultsService();
             }
+
         }
-        this.savePreferences();
     }
 
     /**
-     * Create a child thread and validate the callback URL in it when enabling auto task check
-     * preference.
+     * Enable task checking service
      *
      * @return void
      */
-    public void autoTaskCheckValidateCallbackURL() {
+    public void enableTaskChecking() {
 
-        Thread t = new Thread() {
-            public void run() {
-                mHandler.post(mTaskCheckEnabled);
+        if (!prefs.serviceEnabled().get()) {
+
+            Util.showToast(Settings.this, R.string.no_configured_url);
+
+            taskCheck.setChecked(false);
+            if (enableMessageResultsAPI.isChecked()) {
+                enableMessageResultsAPI.setChecked(false);
             }
-        };
-        t.start();
+        } else {
+
+            taskCheck.setChecked(true);
+            // start the scheduler for task checking service
+            runServicesUtil.runCheckTaskService();
+        }
     }
 
     public void autoSyncEnable() {
 
-        Thread t = new Thread() {
-            public void run() {
+        if (!prefs.serviceEnabled().get()) {
 
-                mHandler.post(mAutoSyncEnabled);
-            }
-        };
-        t.start();
+            Util.showToast(Settings.this, R.string.no_configured_url);
+            autoSync.setChecked(false);
+
+        } else {
+
+            autoSync.setChecked(true);
+
+            // Initialize the selected time to frequently sync pending
+            // messages
+            autoSyncTimes.setEnabled(true);
+            runServicesUtil.runAutoSyncService();
+        }
     }
 
     public void messageResultsAPIEnable() {
-        Thread t = new Thread() {
-            public void run() {
-                mHandler.post(mMessageResultsAPIEnabled);
-            }
-        };
-        t.start();
+        if (!prefs.serviceEnabled().get()) {
+            Util.showToast(Settings.this, R.string.no_configured_url);
+            enableMessageResultsAPI.setChecked(false);
+        } else {
+            enableMessageResultsAPI.setChecked(true);
+            runServicesUtil.runMessageResultsService();
+        }
     }
 
     /**

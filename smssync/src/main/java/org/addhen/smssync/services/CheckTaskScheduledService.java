@@ -1,21 +1,23 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.services;
+
+import android.content.Intent;
 
 import com.squareup.otto.Produce;
 
@@ -28,8 +30,6 @@ import org.addhen.smssync.models.SyncUrl;
 import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.Util;
 
-import android.content.Intent;
-
 import java.util.List;
 
 public class CheckTaskScheduledService extends SmsSyncServices {
@@ -37,11 +37,8 @@ public class CheckTaskScheduledService extends SmsSyncServices {
     private static final String CLASS_TAG = CheckTaskScheduledService.class
             .getSimpleName();
 
-    private SyncUrl model;
-
     public CheckTaskScheduledService() {
         super(CLASS_TAG);
-        model = new SyncUrl();
     }
 
     @Override
@@ -53,8 +50,9 @@ public class CheckTaskScheduledService extends SmsSyncServices {
                 SyncUrl.Status.ENABLED, new BaseDatabseHelper.DatabaseCallback<List<SyncUrl>>() {
                     @Override
                     public void onFinished(List<SyncUrl> result) {
-                        for(SyncUrl syncUrl: result) {
-                            new ProcessMessage(CheckTaskScheduledService.this,new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
+                        for (SyncUrl syncUrl : result) {
+                            new ProcessMessage(CheckTaskScheduledService.this,
+                                    new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
                         }
                     }
 

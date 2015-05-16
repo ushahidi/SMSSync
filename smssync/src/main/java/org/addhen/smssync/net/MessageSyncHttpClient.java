@@ -1,23 +1,26 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 package org.addhen.smssync.net;
 
-import com.google.gson.Gson;
+import android.content.Context;
+import android.content.res.Resources;
+import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.squareup.otto.Produce;
 
 import org.addhen.smssync.R;
@@ -31,10 +34,6 @@ import org.addhen.smssync.util.DataFormatUtil;
 import org.addhen.smssync.util.Util;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.protocol.HTTP;
-
-import android.content.Context;
-import android.content.res.Resources;
-import android.text.TextUtils;
 
 import java.util.Locale;
 
@@ -67,7 +66,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
         addParam(syncScheme.getKey(SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncDataKey.FROM), message.getPhoneNumber());
         addParam(syncScheme.getKey(SyncDataKey.MESSAGE), message.getBody());
-        if(message.getDate() !=null) {
+        if (message.getDate() != null) {
             addParam(
                     syncScheme.getKey(SyncDataKey.SENT_TIMESTAMP), String.valueOf(
                             message.getDate().getTime())
@@ -201,7 +200,7 @@ public class MessageSyncHttpClient extends MainHttpClient {
         final String code = res.getString(R.string.sending_failed_http_code, statusCode);
 
         this.serverError = String
-                .format("%s %s ", customError,code);
+                .format("%s %s ", customError, code);
         Util.logActivities(context, serverError);
     }
 

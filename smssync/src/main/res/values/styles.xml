@@ -1,15 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
-     Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
-	Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
-	This file may be used under the terms of the GNU Lesser General Public License 
-	version 3 as published by the Free Software Foundation and appearing in the 
-	file LICENSE.LGPL included in the packaging of this file. Please review the 
-	following information to ensure the GNU Lesser General Public License version 
-	3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
-	have questions regarding the use of this file, please contact Ushahidi developers 
-	at team@ushahidi.com.
--->
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.SmsSync" parent="@style/Theme.AppCompat">
@@ -20,6 +24,9 @@
         <item name="android:textColor">@color/text_light</item>
         <!-- setup text color of checkbox text field-->
         <item name="android:checkboxStyle">@style/CheckBox.Text</item>
+        <item name="actionModeBackground">@android:color/background_dark</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:actionModeStyle">@style/Theme.SmsSync.ActionMode</item>
     </style>
 
     <style name="ActionBar.Solid.SmsSync" parent="@style/Widget.AppCompat.ActionBar.Solid">
@@ -38,6 +45,15 @@
 
     <style name="EmptyStyle">
         <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="Theme.SmsSync.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="android:actionModeBackground">@android:color/background_dark</item>
+        <item name="actionModeBackground">@android:color/background_dark</item>
+        <item name="android:titleTextStyle">@android:color/background_light</item>
+        <item name="android:subtitleTextStyle">@android:color/background_light</item>
+        <item name="titleTextStyle">@android:color/background_light</item>
+        <item name="subtitleTextStyle">@android:color/background_light</item>
     </style>
 
     <!-- Title bar Text -->

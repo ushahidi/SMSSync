@@ -1,30 +1,12 @@
 language: android
 android:
   components:
-    - android-21
-    - build-tools-21.1.2
+    - android-22
+    - build-tools-22.0.0
+    - extra-android-support
+    - extra-android-m2repository
 
-env:
-  matrix:
-    - ANDROID_TARGET=android-21 ANDROID_ABI=armeabi-v7a
-
-before_install:
-  # Create and start emulator
-  - android list targets
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-
-install:
-  - TERM=dumb ./gradlew assemble
-
-#before_script:
-#  - adb devices
-#  - chmod +x ./wait_for_emulator
-#  - ./wait_for_emulator
-
-script:
-  - TERM=dumb ./gradlew build
-
+script: ./gradlew build
 notifications:
   hipchat:
     rooms:

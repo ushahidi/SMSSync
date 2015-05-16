@@ -1,19 +1,23 @@
 #!/bin/bash
 
-# Make a release to the SMSSync app.
-# TODO:: Look into making this a Gradle task
-
-if [[ $# -lt 2 ]]
+if [[ $# -lt 3 ]]
 then
-  echo "Usage: release.sh [version number. eg.v2.0.1] [tag message eg. Bug release]"
-  exit 1
+  echo "Usage: release.sh [Scope; valid are major, minor, patch] [Stage; valid are alpha, beta, rc, final, dev] [Track; valid are alpha, production, beta]"
+  echo "Eg. command ./release.sh minor alpha alpha"
+  exit
 fi
+
+SCOPE=$1
+STAGE=$2
+TRACK=$3
+
+echo "Releasing..."
 
 TAG_NAME=$1
 TAG_MESSAGE=$2
 DEVELOP='develop'
 MASTER='master'
-TMP_DIR='/tmp/website-src'
+TMP_DIR='/tmp/public'
 echo $TAG_MESSAGE
 
 # SMSSync source code
@@ -29,43 +33,11 @@ git checkout $MASTER
 echo "Merging develop branch into master"
 git merge $DEVELOP
 
-# Create the signed release tag
-echo "Creating release tag $TAG_NAME ..."
-git tag $TAG_NAME -m $TAG_MESSAGE
-
 # Create a release apk
 echo "Building a release apk"
-./gradlew clean assemble
+./gradlew clean
 
-# Push tags to remote repo
-echo "Pushing tags to remote repo..."
-git push origin master --tags
-
-# Compile HTML files
-
-# cd into the website folder
-echo "Compiling website"
-
-pushd website-src
-
-bundle exec ruhoh compile $TMP_DIR
-
-cp CNAME $TMP_DIR
-popd
-
-pushd $TMP_DIR
-git init
-
-git add .
-
-git commit -m "Updating webiste..."
-
-git push git@github.com:ushahidi/SMSSync.git master:gh-pages --force
-
-popd
-
-echo "Website update done"
-
+./gradlew release -Prelease.scope=$SCOPE -Prelease.stage=$STAGE -PuploadTrack=$TRACK
 
 # Checkout develop branch
 echo "Checking out develop branch..."

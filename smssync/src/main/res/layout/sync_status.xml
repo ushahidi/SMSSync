@@ -1,62 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/status_layout"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:paddingBottom="10dp"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp"
-              android:paddingTop="10dp">
+    android:id="@+id/status_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="10dp">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
-                android:id="@+id/status_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/status_done"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+            android:id="@+id/status_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/status_done"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <ProgressBar
-                android:id="@+id/details_sync_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/sync_button"
-                android:layout_toRightOf="@id/status_label"
-                android:indeterminate="false"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"/>
+            android:id="@+id/details_sync_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/sync_button"
+            android:layout_toRightOf="@id/status_label"
+            android:indeterminate="false"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
 
         <Button
-                android:id="@+id/sync_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/sync"
-                android:textStyle="bold"/>
+            android:id="@+id/sync_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="@string/sync"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <TextView
-            android:id="@+id/details_sync_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6dip"
-            android:gravity="center"
-            android:paddingBottom="10dip"/>
+        android:id="@+id/details_sync_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dip"
+        android:gravity="center"
+        android:paddingBottom="10dip" />
 
     <TextView
-            android:id="@+id/seperator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/listDivider"/>
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
 
 </LinearLayout>

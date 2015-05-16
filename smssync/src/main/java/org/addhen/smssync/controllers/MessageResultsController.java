@@ -1,4 +1,24 @@
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
+
 package org.addhen.smssync.controllers;
+
+import android.content.Context;
+import android.text.TextUtils;
 
 import com.google.gson.Gson;
 
@@ -15,17 +35,14 @@ import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.text.TextUtils;
-
 import java.net.URLEncoder;
 import java.util.List;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 23.04.14.
- *
+ * <p/>
  * This class handling Message Results API
- *
+ * <p/>
  * POST ?task=sent queued_messages {@link #sendQueuedMessagesPOSTRequest(org.addhen.smssync.models.SyncUrl,
  * org.addhen.smssync.models.QueuedMessages)} POST ?task=results message_results {@link
  * #sendMessageResultPOSTRequest(org.addhen.smssync.models.SyncUrl, java.util.List)} GET
@@ -81,7 +98,7 @@ public class MessageResultsController {
         } catch (Exception e) {
             mUtil.log(mContext.getString(R.string.message_processed_failed));
         } finally {
-            if(client !=null) {
+            if (client != null) {
                 if (HttpStatus.SC_OK == client.responseCode()) {
                     mUtil.log(mContext.getString(R.string.message_processed_success));
                 }
@@ -97,7 +114,7 @@ public class MessageResultsController {
      * message uuids
      */
     public MessagesUUIDSResponse sendQueuedMessagesPOSTRequest(SyncUrl syncUrl,
-            QueuedMessages messages) {
+                                                               QueuedMessages messages) {
         MessagesUUIDSResponse response = null;
         if (null != messages && !messages.getQueuedMessages().isEmpty()) {
             String newEndPointURL = syncUrl.getUrl().concat(TASK_SENT_URL_PARAM);
@@ -108,7 +125,7 @@ public class MessageResultsController {
                 client.setHeader("Accept", "application/json");
                 client.setHeader("Content-type", "application/json");
                 client.execute();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 mUtil.log("process crashed");
                 mUtil.log(mContext.getString(R.string.message_processed_failed));
@@ -116,7 +133,7 @@ public class MessageResultsController {
                         mContext.getString(R.string.message_processed_failed) + " " + e
                                 .getMessage());
             } finally {
-                if(client !=null) {
+                if (client != null) {
                     if (HttpStatus.SC_OK == client.responseCode()) {
 
                         mUtil.log(mContext.getString(R.string.message_processed_success));
@@ -175,7 +192,7 @@ public class MessageResultsController {
             Util.logActivities(mContext,
                     mContext.getString(R.string.message_processed_failed) + " " + e.getMessage());
         } finally {
-            if(client !=null) {
+            if (client != null) {
                 if (HttpStatus.SC_OK == client.responseCode()) {
                     response = parseMessagesUUIDSResponse(client);
                     response.setSuccess(true);
@@ -207,7 +224,7 @@ public class MessageResultsController {
 
             final Gson gson = new Gson();
             response = gson.fromJson(client.getResponse(), MessagesUUIDSResponse.class);
-            if(response == null) {
+            if (response == null) {
                 response = new MessagesUUIDSResponse(client.responseCode());
             } else {
                 response.setStatusCode(client.responseCode());

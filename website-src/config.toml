@@ -1,0 +1,55 @@
+languageCode = "en-us"
+title = "SMSsync"
+theme = "hugo-bootswatch"
+baseurl = "http://smssync.ushahidi.com"
+
+[params]
+    description = "SMSsync The free and open source SMS gateway for Android devices"
+    author = "Ushahidi Inc"
+    tagline = "The free and open source SMS gateway for Android"
+
+[[menu.main]]
+    name = "Home"
+    identifier = "home"
+    url = "/"
+    weight = 1
+[[menu.main]]
+    name = "Releases"
+    identifier = "releases"
+    url = "/releases/"
+    weight = 2
+[[menu.main]]
+    name = "Download"
+    identifier = "download"
+    url = "/download/"
+    weight = 3
+[[menu.main]]
+    name = "Contributors"
+    identifier = "contributors"
+    url = "/contributors/"
+    weight = 4
+[[menu.main]]
+    name = "Configure"
+    identifier = "configure"
+    url = "/configure/"
+    weight = 5
+[[menu.main]]
+    name = "Developers"
+    identifier = "developers"
+    url = "/Developers/"
+    weight = 6
+[[menu.main]]
+    name = "Features"
+    identifier = "features"
+    url = "/features/"
+    weight = 7
+[[menu.main]]
+    name = "Screenshots"
+    identifier = "screenshots"
+    url = "/screenshots/"
+    weight = 8
+[[menu.main]]
+  name = "Support"
+  identifier = "support"
+  url = "https://forums.ushahidi.com/category/smssync"
+  weight = 9

@@ -1,33 +1,37 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
-    Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
-    This file may be used under the terms of the GNU Lesser General Public License 
-    version 3 as published by the Free Software Foundation and appearing in the 
-    file LICENSE.LGPL included in the packaging of this file. Please review the 
-    following information to ensure the GNU Lesser General Public License version 
-    3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
-    have questions regarding the use of this file, please contact Ushahidi developers 
-    at team@ushahidi.com.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/sync_url_context_sync_scheme"
-            android:icon="@drawable/settings"
-            app:showAsAction="ifRoom"
-            android:title="@string/sync_sheme"/>
+        android:id="@+id/sync_url_context_sync_scheme"
+        android:icon="@drawable/settings"
+        android:title="@string/sync_sheme"
+        app:showAsAction="ifRoom" />
 
     <item
-            android:id="@+id/sync_url_context_edit_sync_url"
-            android:icon="@drawable/edit"
-            app:showAsAction="ifRoom"
-            android:title="@string/edit"/>
+        android:id="@+id/sync_url_context_edit_sync_url"
+        android:icon="@drawable/edit"
+        android:title="@string/edit"
+        app:showAsAction="ifRoom" />
     <item
-            android:id="@+id/sync_url_context_delete_sync_url"
-            android:icon="@drawable/delete"
-            app:showAsAction="ifRoom"
-            android:title="@string/menu_delete"/>
+        android:id="@+id/sync_url_context_delete_sync_url"
+        android:icon="@drawable/delete"
+        android:title="@string/menu_delete"
+        app:showAsAction="ifRoom" />
 
 </menu>

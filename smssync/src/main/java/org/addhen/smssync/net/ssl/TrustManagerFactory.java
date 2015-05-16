@@ -1,27 +1,27 @@
-/*******************************************************************************
- *  Copyright (c) 2010 - 2013 Ushahidi Inc
- *  All rights reserved
- *  Contact: team@ushahidi.com
- *  Website: http://www.ushahidi.com
- *  GNU Lesser General Public License Usage
- *  This file may be used under the terms of the GNU Lesser
- *  General Public License version 3 as published by the Free Software
- *  Foundation and appearing in the file LICENSE.LGPL included in the
- *  packaging of this file. Please review the following information to
- *  ensure the GNU Lesser General Public License version 3 requirements
- *  will be met: http://www.gnu.org/licenses/lgpl.html.
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
  *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
- ******************************************************************************/
+ */
 
 package org.addhen.smssync.net.ssl;
-
-import org.addhen.smssync.App;
 
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+
+import org.addhen.smssync.App;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,6 +52,122 @@ public final class TrustManagerFactory {
     private static File keyStoreFile;
 
     private static KeyStore keyStore;
+
+    static {
+        java.io.InputStream fis = null;
+        try {
+            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory
+                    .getInstance("X509");
+            Application app = App.app;
+            keyStoreFile = new File(app.getDir("KeyStore", Context.MODE_PRIVATE) + File.separator
+                    + "KeyStore.bks");
+            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            try {
+                fis = new java.io.FileInputStream(keyStoreFile);
+            } catch (FileNotFoundException e1) {
+                fis = null;
+            }
+            try {
+                keyStore.load(fis, "".toCharArray());
+            } catch (IOException e) {
+                Log.e(LOG_TAG, "KeyStore IOException while initializing TrustManagerFactory ", e);
+                keyStore = null;
+            } catch (CertificateException e) {
+                Log.e(LOG_TAG,
+                        "KeyStore CertificateException while initializing TrustManagerFactory ", e);
+                keyStore = null;
+            }
+            Log.i(LOG_TAG, "keyStore: " + keyStore.toString());
+            tmf.init(keyStore);
+            TrustManager[] tms = tmf.getTrustManagers();
+            if (tms != null) {
+                for (TrustManager tm : tms) {
+                    if (tm instanceof X509TrustManager) {
+                        localTrustManager = (X509TrustManager) tm;
+                        break;
+                    }
+                }
+            }
+            tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
+            tmf.init((KeyStore) null);
+            tms = tmf.getTrustManagers();
+            if (tms != null) {
+                for (TrustManager tm : tms) {
+                    if (tm instanceof X509TrustManager) {
+                        defaultTrustManager = (X509TrustManager) tm;
+                        break;
+                    }
+                }
+            }
+
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(LOG_TAG, "Unable to get X509 Trust Manager ", e);
+        } catch (KeyStoreException e) {
+            Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
+        } finally {
+
+        }
+        unsecureTrustManager = new SimpleX509TrustManager();
+    }
+
+    private TrustManagerFactory() {
+    }
+
+    public static X509TrustManager get(String host, boolean secure) {
+        return secure ? SecureX509TrustManager.getInstance(host) : unsecureTrustManager;
+    }
+
+    public static KeyStore getKeyStore() {
+        return keyStore;
+    }
+
+    public static X509Certificate[] getLastCertChain() {
+        return lastCertChain;
+    }
+
+    public static void setLastCertChain(X509Certificate[] chain) {
+        lastCertChain = chain;
+    }
+
+    public static void addCertificateChain(String alias, X509Certificate[] chain)
+            throws CertificateException {
+        try {
+            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory
+                    .getInstance("X509");
+            for (X509Certificate element : chain) {
+                keyStore.setCertificateEntry(element.getSubjectDN().toString(), element);
+            }
+
+            tmf.init(keyStore);
+            TrustManager[] tms = tmf.getTrustManagers();
+            if (tms != null) {
+                for (TrustManager tm : tms) {
+                    if (tm instanceof X509TrustManager) {
+                        localTrustManager = (X509TrustManager) tm;
+                        break;
+                    }
+                }
+            }
+            java.io.OutputStream keyStoreStream = null;
+            try {
+                keyStoreStream = new java.io.FileOutputStream(keyStoreFile);
+                keyStore.store(keyStoreStream, "".toCharArray());
+            } catch (FileNotFoundException e) {
+                throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
+            } catch (CertificateException e) {
+                throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
+            } catch (IOException e) {
+                throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
+            } finally {
+
+            }
+
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(LOG_TAG, "Unable to get X509 Trust Manager ", e);
+        } catch (KeyStoreException e) {
+            Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
+        }
+    }
 
     private static class SimpleX509TrustManager implements X509TrustManager {
 
@@ -126,121 +242,5 @@ public final class TrustManagerFactory {
             return defaultTrustManager.getAcceptedIssuers();
         }
 
-    }
-
-    static {
-        java.io.InputStream fis = null;
-        try {
-            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory
-                    .getInstance("X509");
-            Application app = App.app;
-            keyStoreFile = new File(app.getDir("KeyStore", Context.MODE_PRIVATE) + File.separator
-                    + "KeyStore.bks");
-            keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            try {
-                fis = new java.io.FileInputStream(keyStoreFile);
-            } catch (FileNotFoundException e1) {
-                fis = null;
-            }
-            try {
-                keyStore.load(fis, "".toCharArray());
-            } catch (IOException e) {
-                Log.e(LOG_TAG, "KeyStore IOException while initializing TrustManagerFactory ", e);
-                keyStore = null;
-            } catch (CertificateException e) {
-                Log.e(LOG_TAG,
-                        "KeyStore CertificateException while initializing TrustManagerFactory ", e);
-                keyStore = null;
-            }
-            Log.i(LOG_TAG, "keyStore: " + keyStore.toString());
-            tmf.init(keyStore);
-            TrustManager[] tms = tmf.getTrustManagers();
-            if (tms != null) {
-                for (TrustManager tm : tms) {
-                    if (tm instanceof X509TrustManager) {
-                        localTrustManager = (X509TrustManager) tm;
-                        break;
-                    }
-                }
-            }
-            tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
-            tmf.init((KeyStore) null);
-            tms = tmf.getTrustManagers();
-            if (tms != null) {
-                for (TrustManager tm : tms) {
-                    if (tm instanceof X509TrustManager) {
-                        defaultTrustManager = (X509TrustManager) tm;
-                        break;
-                    }
-                }
-            }
-
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(LOG_TAG, "Unable to get X509 Trust Manager ", e);
-        } catch (KeyStoreException e) {
-            Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
-        } finally {
-
-        }
-        unsecureTrustManager = new SimpleX509TrustManager();
-    }
-
-    private TrustManagerFactory() {
-    }
-
-    public static X509TrustManager get(String host, boolean secure) {
-        return secure ? SecureX509TrustManager.getInstance(host) : unsecureTrustManager;
-    }
-
-    public static KeyStore getKeyStore() {
-        return keyStore;
-    }
-
-    public static void setLastCertChain(X509Certificate[] chain) {
-        lastCertChain = chain;
-    }
-
-    public static X509Certificate[] getLastCertChain() {
-        return lastCertChain;
-    }
-
-    public static void addCertificateChain(String alias, X509Certificate[] chain)
-            throws CertificateException {
-        try {
-            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory
-                    .getInstance("X509");
-            for (X509Certificate element : chain) {
-                keyStore.setCertificateEntry(element.getSubjectDN().toString(), element);
-            }
-
-            tmf.init(keyStore);
-            TrustManager[] tms = tmf.getTrustManagers();
-            if (tms != null) {
-                for (TrustManager tm : tms) {
-                    if (tm instanceof X509TrustManager) {
-                        localTrustManager = (X509TrustManager) tm;
-                        break;
-                    }
-                }
-            }
-            java.io.OutputStream keyStoreStream = null;
-            try {
-                keyStoreStream = new java.io.FileOutputStream(keyStoreFile);
-                keyStore.store(keyStoreStream, "".toCharArray());
-            } catch (FileNotFoundException e) {
-                throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
-            } catch (CertificateException e) {
-                throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
-            } catch (IOException e) {
-                throw new CertificateException("Unable to write KeyStore: " + e.getMessage());
-            } finally {
-
-            }
-
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(LOG_TAG, "Unable to get X509 Trust Manager ", e);
-        } catch (KeyStoreException e) {
-            Log.e(LOG_TAG, "Key Store exception while initializing TrustManagerFactory ", e);
-        }
     }
 }

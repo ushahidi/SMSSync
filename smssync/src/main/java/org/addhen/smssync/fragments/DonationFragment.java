@@ -1,11 +1,21 @@
-package org.addhen.smssync.fragments;
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+package org.addhen.smssync.fragments;
 
 import com.github.jberkel.pay.me.IabHelper;
 import com.github.jberkel.pay.me.IabResult;
@@ -25,6 +35,13 @@ import org.addhen.smssync.adapters.DonationAdapter;
 import org.addhen.smssync.models.Donation;
 import org.addhen.smssync.views.DonationView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -38,14 +55,15 @@ import static org.addhen.smssync.util.DonationConstants.Billing.PUBLIC_KEY;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class DonationFragment extends BaseListFragment<DonationView, Donation, DonationAdapter> implements
+public class DonationFragment extends BaseListFragment<DonationView, Donation, DonationAdapter>
+        implements
         QueryInventoryFinishedListener,
         OnIabPurchaseFinishedListener,
         AdapterView.OnItemClickListener {
 
-    private static boolean DEBUG_IAB = BuildConfig.DEBUG;
-
     private static final int PURCHASE_REQUEST = 1;
+
+    private static boolean DEBUG_IAB = BuildConfig.DEBUG;
 
     private IabHelper mIabHelper;
 
@@ -56,7 +74,56 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
      * BaseListActivity
      */
     public DonationFragment() {
-        super(DonationView.class, DonationAdapter.class, R.layout.list_donation, 0, android.R.id.list);
+        super(DonationView.class, DonationAdapter.class, R.layout.list_donation, 0,
+                android.R.id.list);
+    }
+
+    private static boolean userHasDonated(Inventory inventory) {
+        for (String sku : ALL_SKUS) {
+            if (inventory.hasPurchase(sku)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void checkUserHasDonated(Context c, final DonationStatusListener l) {
+        if (Build.VERSION.SDK_INT < 8) {
+            l.userDonationState(DonationStatusListener.State.NOT_AVAILABLE);
+            return;
+        }
+
+        final IabHelper helper = new IabHelper(c, PUBLIC_KEY);
+        helper.startSetup(new OnIabSetupFinishedListener() {
+            @Override
+            public void onIabSetupFinished(IabResult result) {
+                if (result.isSuccess()) {
+                    helper.queryInventoryAsync(new QueryInventoryFinishedListener() {
+                        @Override
+                        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+                            try {
+                                if (result.isSuccess()) {
+                                    final DonationStatusListener.State s = userHasDonated(inv)
+                                            ? DonationStatusListener.State.DONATED
+                                            : DonationStatusListener.State.NOT_DONATED;
+                                    l.userDonationState(s);
+                                } else {
+                                    l.userDonationState(DonationStatusListener.State.UNKNOWN);
+                                }
+                            } finally {
+                                helper.dispose();
+                            }
+                        }
+                    });
+                } else {
+                    l.userDonationState(
+                            result.getResponse() == BILLING_UNAVAILABLE
+                                    ? DonationStatusListener.State.NOT_AVAILABLE
+                                    : DonationStatusListener.State.UNKNOWN);
+                    helper.dispose();
+                }
+            }
+        });
     }
 
     @Override
@@ -152,13 +219,18 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        if (!mIabHelper.mAsyncInProgress) {
+            launchPurchase(position);
+        }
+    }
+
+    private void launchPurchase(int position) {
         mIabHelper.launchPurchaseFlow(getActivity(),
                 adapter.getItem(position).getSkuDetails().getSku(),
                 ItemType.INAPP,
                 PURCHASE_REQUEST,
                 DonationFragment.this,
                 null);
-
     }
 
     @Override
@@ -166,6 +238,8 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
         logger("onActivityResult(" + requestCode + "," + resultCode + "," + data);
         if (!mIabHelper.handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
+            // Refresh list
+            setupDonations();
         } else {
             logger("onActivityResult handled by IABUtil.");
         }
@@ -199,15 +273,6 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
         getActivity().finish();
     }
 
-    private static boolean userHasDonated(Inventory inventory) {
-        for (String sku : ALL_SKUS) {
-            if (inventory.hasPurchase(sku)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void logger(String s) {
         if (DEBUG_IAB) {
             log(s);
@@ -215,51 +280,15 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
     }
 
     public interface DonationStatusListener {
+
+        void userDonationState(State s);
+
         enum State {
             DONATED,
             NOT_DONATED,
             UNKNOWN,
             NOT_AVAILABLE
         }
-
-        void userDonationState(State s);
-    }
-
-    public static void checkUserHasDonated(Context c, final DonationStatusListener l) {
-        if (Build.VERSION.SDK_INT < 8) {
-            l.userDonationState(DonationStatusListener.State.NOT_AVAILABLE);
-            return;
-        }
-
-        final IabHelper helper = new IabHelper(c, PUBLIC_KEY);
-        helper.startSetup(new OnIabSetupFinishedListener() {
-            @Override
-            public void onIabSetupFinished(IabResult result) {
-                if (result.isSuccess()) {
-                    helper.queryInventoryAsync(new QueryInventoryFinishedListener() {
-                        @Override
-                        public void onQueryInventoryFinished(IabResult result, Inventory inv) {
-                            try {
-                                if (result.isSuccess()) {
-                                    final DonationStatusListener.State s = userHasDonated(inv) ? DonationStatusListener.State.DONATED
-                                            : DonationStatusListener.State.NOT_DONATED;
-                                    l.userDonationState(s);
-                                } else {
-                                    l.userDonationState(DonationStatusListener.State.UNKNOWN);
-                                }
-                            } finally {
-                                helper.dispose();
-                            }
-                        }
-                    });
-                } else {
-                    l.userDonationState(
-                            result.getResponse() == BILLING_UNAVAILABLE ? DonationStatusListener.State.NOT_AVAILABLE
-                                    : DonationStatusListener.State.UNKNOWN);
-                    helper.dispose();
-                }
-            }
-        });
     }
 
     private static class SkuComparator implements Comparator<Donation> {
@@ -270,9 +299,11 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
         public int compare(Donation lhs, Donation rhs) {
             if (lhs.getSkuDetails().getPrice() != null && rhs.getSkuDetails().getPrice() != null) {
                 return lhs.getSkuDetails().getPrice().compareTo(rhs.getSkuDetails().getPrice());
-            } else if (lhs.getSkuDetails().getTitle() != null && rhs.getSkuDetails().getTitle() != null) {
+            } else if (lhs.getSkuDetails().getTitle() != null
+                    && rhs.getSkuDetails().getTitle() != null) {
                 return lhs.getSkuDetails().getTitle().compareTo(rhs.getSkuDetails().getTitle());
-            } else if (lhs.getSkuDetails().getSku() != null && rhs.getSkuDetails().getSku() != null) {
+            } else if (lhs.getSkuDetails().getSku() != null
+                    && rhs.getSkuDetails().getSku() != null) {
                 return lhs.getSkuDetails().getSku().compareTo(rhs.getSkuDetails().getSku());
             } else {
                 return 0;

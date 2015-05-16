@@ -1,28 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (c) 2010 Ushahidi Inc All rights reserved Contact: team@ushahidi.com 
-    Website: http://www.ushahidi.com GNU Lesser General Public License Usage 
-    This file may be used under the terms of the GNU Lesser General Public License 
-    version 3 as published by the Free Software Foundation and appearing in the 
-    file LICENSE.LGPL included in the packaging of this file. Please review the 
-    following information to ensure the GNU Lesser General Public License version 
-    3 requirements will be met: http://www.gnu.org/licenses/lgpl.html. If you 
-    have questions regarding the use of this file, please contact Ushahidi developers 
-    at team@ushahidi.com.
--->
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-            android:id="@+id/add_phone_number"
-            android:icon="@drawable/add"
-            android:orderInCategory="0"
-            app:showAsAction="ifRoom"
-            android:title="@string/add_phone_number"/>
+        android:id="@+id/add_phone_number"
+        android:icon="@drawable/add"
+        android:orderInCategory="0"
+        android:title="@string/add_phone_number"
+        app:showAsAction="ifRoom" />
     <item
-            android:id="@+id/delete_all_phone_numbers"
-            android:icon="@drawable/delete"
-            android:orderInCategory="1"
-            app:showAsAction="never"
-            android:title="@string/menu_delete_all"/>
+        android:id="@+id/delete_all_phone_numbers"
+        android:icon="@drawable/delete"
+        android:orderInCategory="1"
+        android:title="@string/menu_delete_all"
+        app:showAsAction="never" />
 </menu>

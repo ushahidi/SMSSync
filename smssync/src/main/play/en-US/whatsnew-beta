@@ -1,0 +1,5 @@
+- Fix donation list to display both the donation title and the amount.
+- Style app for API level 10 and below to display edittext hint text properly
+- Fix so task and message results when enabled from settings screen actually starts
+- Fix data migration from v2.7.3 to v2.8.0
+- Allow alert phone number field accept international dialing prefix
