@@ -17,22 +17,6 @@
 
 package org.addhen.smssync.activities;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.text.format.DateFormat;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.UiThread;
@@ -52,6 +36,22 @@ import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.Objects;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.View;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.text.format.DateFormat;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +124,7 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
      * @param listViewId     the resource id for the list view
      */
     protected BaseActivity(Class<V> view, int layout, int menu, int drawerLayoutId,
-                           int listViewId) {
+            int listViewId) {
 
         this.viewClass = view;
         this.layout = layout;
@@ -298,6 +298,16 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
     }
 
     private void setNavDrawerAdapterItems() {
+        navDrawerItem.clear();
+        navDrawerItem.add(pendingMessagesNavDrawerItem);
+        navDrawerItem.add(sentMessagesNavDrawerItem);
+        navDrawerItem.add(syncUrlNavDrawerItem);
+        navDrawerItem.add(whitelistNavDrawerItem);
+        navDrawerItem.add(filterNavDrawerItem);
+        navDrawerItem.add(logNavDrawerItem);
+        navDrawerAdapter.setItems(navDrawerItem);
+        listView.setAdapter(navDrawerAdapter);
+        selectItem(mPosition);
 
         Thread thread = new Thread() {
             public void run() {
@@ -307,36 +317,29 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
                 syncUrlNavDrawerItem.setCounter();
                 filterNavDrawerItem.setCounter();
                 whitelistNavDrawerItem.setCounter();
-                navDrawerItem.clear();
-                navDrawerItem.add(pendingMessagesNavDrawerItem);
-                navDrawerItem.add(sentMessagesNavDrawerItem);
-                navDrawerItem.add(syncUrlNavDrawerItem);
-                navDrawerItem.add(whitelistNavDrawerItem);
-                navDrawerItem.add(filterNavDrawerItem);
-                navDrawerItem.add(logNavDrawerItem);
-                DonationFragment.checkUserHasDonated(getApplication(), new DonationFragment.DonationStatusListener() {
-                    @Override
-                    public void userDonationState(State s) {
-                        switch (s) {
-                            case NOT_AVAILABLE:
-                            case DONATED:
-                            case UNKNOWN:
-                                navDrawerItem.remove(donationNavDrawerItem);
-                                break;
-                            default:
-                                navDrawerItem.add(donationNavDrawerItem);
-                                break;
-                        }
-                        UiThread.getInstance().post(new Runnable() {
+                navDrawerAdapter.notifyDataSetChanged();
+                DonationFragment.checkUserHasDonated(getApplication(),
+                        new DonationFragment.DonationStatusListener() {
                             @Override
-                            public void run() {
-                                navDrawerAdapter.setItems(navDrawerItem);
-                                listView.setAdapter(navDrawerAdapter);
-                                selectItem(mPosition);
+                            public void userDonationState(State s) {
+                                switch (s) {
+                                    case NOT_AVAILABLE:
+                                    case DONATED:
+                                    case UNKNOWN:
+                                        navDrawerItem.remove(donationNavDrawerItem);
+                                        break;
+                                    default:
+                                        navDrawerItem.add(donationNavDrawerItem);
+                                        break;
+                                }
+                                UiThread.getInstance().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        navDrawerAdapter.notifyDataSetChanged();
+                                    }
+                                });
                             }
                         });
-                    }
-                });
 
             }
         };
@@ -484,7 +487,7 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, android.view.View view, int position,
-                                long id) {
+                long id) {
             mPosition = position;
             setNavDrawerAdapterItems();
             view.getFocusables(position);
