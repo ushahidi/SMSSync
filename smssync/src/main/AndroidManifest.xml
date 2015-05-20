@@ -79,12 +79,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <!-- donation -->
         <activity
                 android:name=".activities.FilterTabActivity"
                 android:label="@string/filter"/>
-
         <!-- sms -->
         <!-- Receiver for sms sent code -->
         <receiver android:name="org.addhen.smssync.receivers.SmsSentReceiver">
@@ -203,7 +201,6 @@
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
-
             <meta-data
                     android:name="android.appwidget.provider"
                     android:resource="@xml/appwidget_info"/>
