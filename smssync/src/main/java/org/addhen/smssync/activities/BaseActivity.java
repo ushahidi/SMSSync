@@ -261,11 +261,6 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
         return super.onContextItemSelected(item);
     }
 
-    public void openActivityOrFragment(Intent intent) {
-        // Default implementation simply calls startActivity
-        startActivity(intent);
-    }
-
     private void initNavDrawerMenuItems() {
         pendingMessagesNavDrawerItem
                 = new PendingMessagesNavDrawerItem(
@@ -457,23 +452,6 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
 
     protected void toastLong(CharSequence message) {
         Toast.makeText(this, message.toString(), Toast.LENGTH_LONG).show();
-    }
-
-    protected void toastShort(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    protected void toastShort(String format, Object... args) {
-        Toast.makeText(this, String.format(format, args), Toast.LENGTH_SHORT)
-                .show();
-    }
-
-    protected void toastShort(int message) {
-        Toast.makeText(this, getText(message), Toast.LENGTH_SHORT).show();
-    }
-
-    protected void toastShort(CharSequence message) {
-        Toast.makeText(this, message.toString(), Toast.LENGTH_SHORT).show();
     }
 
     protected void logActivities(String message) {
