@@ -17,10 +17,6 @@
 
 package org.addhen.smssync.net;
 
-import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.util.Base64;
-
 import org.addhen.smssync.net.ssl.TrustedSocketFactory;
 import org.addhen.smssync.util.Logger;
 import org.apache.http.HttpEntity;
@@ -47,6 +43,10 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Base64;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,6 +54,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -187,13 +188,14 @@ public abstract class BaseHttpClient {
 
     public static String convertStreamToString(InputStream is) {
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is), 1024);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is,
+                Charset.forName("UTF-8")));
         StringBuilder sb = new StringBuilder();
 
-        String line;
+        int cp;
         try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+            while ((cp = reader.read()) != -1) {
+                sb.append((char) cp);
             }
         } catch (IOException e) {
             debug(e);

@@ -60,6 +60,9 @@ public class SmssyncResponseTest extends BaseTest {
             + "    }\n"
             + "}";
 
+    private final String TASK_JSON_STRING
+            = "{\"payload\":{\"task\":\"send\",\"secret\":\"coconut\",\"messages\":[{\"to\":\"+XXXXXXXX\",\"message\":\"from couch to you homes\",\"uuid\":\"aeefa9195f734d32b7e0f9d62d327f6d\"}]}}";
+
     private Gson mGson;
 
     private SmssyncResponse mSmssyncResponse;
@@ -68,7 +71,6 @@ public class SmssyncResponseTest extends BaseTest {
     public void setUp() throws Exception {
         super.setUp();
         mGson = new Gson();
-
     }
 
     @SmallTest
@@ -96,5 +98,21 @@ public class SmssyncResponseTest extends BaseTest {
         assertNull(mSmssyncResponse.getPayload().getTask());
         assertNull(mSmssyncResponse.getPayload().getMessages());
         System.out.println("messages:" + mSmssyncResponse.toString());
+    }
+
+    @SmallTest
+    public void testShouldSerializeTaskResponseWithNoSuccessProperty() throws Exception {
+        mSmssyncResponse = mGson.fromJson(TASK_JSON_STRING, SmssyncResponse.class);
+        assertNotNull(mSmssyncResponse);
+        assertNotNull(mSmssyncResponse.getPayload());
+        assertEquals("send", mSmssyncResponse.getPayload().getTask());
+        assertEquals("coconut", mSmssyncResponse.getPayload().getSecret());
+        assertNotNull(mSmssyncResponse.getPayload().getMessages());
+        assertEquals("+XXXXXXXX",
+                mSmssyncResponse.getPayload().getMessages().get(0).getPhoneNumber());
+        assertEquals("from couch to you homes",
+                mSmssyncResponse.getPayload().getMessages().get(0).getBody());
+        assertEquals("aeefa9195f734d32b7e0f9d62d327f6d",
+                mSmssyncResponse.getPayload().getMessages().get(0).getUuid());
     }
 }

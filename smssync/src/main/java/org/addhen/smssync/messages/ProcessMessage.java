@@ -17,9 +17,6 @@
 
 package org.addhen.smssync.messages;
 
-import android.content.Context;
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
 
 import org.addhen.smssync.App;
@@ -38,6 +35,9 @@ import org.addhen.smssync.state.ReloadMessagesEvent;
 import org.addhen.smssync.util.Logger;
 import org.addhen.smssync.util.SentMessagesUtil;
 import org.addhen.smssync.util.Util;
+
+import android.content.Context;
+import android.text.TextUtils;
 
 import java.net.URLEncoder;
 import java.util.Date;
@@ -174,7 +174,8 @@ public class ProcessMessage {
             }
 
             if (prefs.enableBlacklist().get()) {
-                List<Filter> filters = App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST);
+                List<Filter> filters = App.getDatabaseInstance().getFilterInstance()
+                        .fetchByStatus(Filter.Status.BLACKLIST);
                 for (Filter filter : filters) {
                     if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
                         Logger.log("message",
@@ -261,10 +262,14 @@ public class ProcessMessage {
             try {
                 client.execute();
                 final Gson gson = new Gson();
-                smssyncResponses = gson.fromJson(client.getResponse(), SmssyncResponse.class);
+                final String response = client.getResponse();
+                Util.logActivities(context, "HTTP Client Response: " + response);
+                smssyncResponses = gson.fromJson(response, SmssyncResponse.class);
             } catch (Exception e) {
-                Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: " + client.getResponse());
-                Util.logActivities(context, "Task crashed: " + e.getMessage());
+                Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: " + client
+                        .getResponse());
+                Util.logActivities(context,
+                        "Task crashed: " + e.getMessage() + " response: " + client.getResponse());
             }
 
             if (smssyncResponses != null) {
@@ -307,7 +312,7 @@ public class ProcessMessage {
     }
 
     private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl,
-                                                     List<Message> msgs) {
+            List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         for (Message msg : msgs) {
             msg.setType(Message.Type.TASK);
@@ -366,8 +371,9 @@ public class ProcessMessage {
                 for (final SyncUrl syncUrl : result) {
                     // white listed is enabled
                     if (prefs.enableWhitelist().get()) {
-                        List<Filter> filters = App.getDatabaseInstance().getFilterInstance().fetchByStatus(
-                                Filter.Status.WHITELIST);
+                        List<Filter> filters = App.getDatabaseInstance().getFilterInstance()
+                                .fetchByStatus(
+                                        Filter.Status.WHITELIST);
                         for (Filter filter : filters) {
                             if (filter.getPhoneNumber()
                                     .equals(message.getPhoneNumber())) {
@@ -382,7 +388,8 @@ public class ProcessMessage {
                     }
 
                     if (prefs.enableBlacklist().get()) {
-                        List<Filter> filters = App.getDatabaseInstance().getFilterInstance().fetchByStatus(Filter.Status.BLACKLIST);
+                        List<Filter> filters = App.getDatabaseInstance().getFilterInstance()
+                                .fetchByStatus(Filter.Status.BLACKLIST);
                         for (Filter filter : filters) {
                             if (filter.getPhoneNumber().equals(message.getPhoneNumber())) {
                                 Logger.log("message",
@@ -478,7 +485,8 @@ public class ProcessMessage {
                     // Increase message's number of tries for future comparison to know when to delete it.
                     int retries = message.getRetries() + 1;
                     message.setRetries(retries);
-                    Logger.log(TAG, "Increase retry value because pending message is refusing to be sent");
+                    Logger.log(TAG,
+                            "Increase retry value because pending message is refusing to be sent");
                     App.getDatabaseInstance().getMessageInstance().update(message);
 
                 }
