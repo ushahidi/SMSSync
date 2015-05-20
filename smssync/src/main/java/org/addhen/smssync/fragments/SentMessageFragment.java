@@ -17,16 +17,6 @@
 
 package org.addhen.smssync.fragments;
 
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.App;
@@ -42,6 +32,16 @@ import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.SentMessagesView;
 
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+
 import java.util.List;
 
 public class SentMessageFragment
@@ -56,7 +56,8 @@ public class SentMessageFragment
 
 
     /**
-     * This will refresh content of the listview aka the pending messages when smssync syncs pending
+     * This will refresh content of the listview aka the pending messages when smssync syncs
+     * pending
      * messages.
      */
 
@@ -105,6 +106,12 @@ public class SentMessageFragment
     public void onDestroy() {
         super.onDestroy();
         getActivity().unregisterReceiver(broadcastReceiver);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         App.bus.unregister(this);
     }
 
