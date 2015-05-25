@@ -1,14 +1,2 @@
-- Added Android 5.1 support.
-- Enabled auto deletion of pending of messages after a configured number of retry is exceeded.
-- Brought back HTTP client support for devices running Android v2.2.
-- Fixed inconsistency with Message Result API codes.
-- Fixed issue with multi Sync URL support.
-- Re-activated donation button.
-- Fixed issue with date format being null.
-- Updated Japanese, German and Indonesian translations.
-- Fixed logs not propagating with activities.
-- Refreshes Sync URL list view when a new Sync URL is added.
-- Fixed Alert Debug crashing when the app receives a query code.
-- Styled app support API level 10 and below.
-- Fixed so Message Result API is started from the settings screen when enabled.
-- Allow alert phone number field to accept international dialing prefix.
+- Fixed Navdrawer items not showing on older devices.
+- Fixed alert code sending wrong info when query for battery level.
