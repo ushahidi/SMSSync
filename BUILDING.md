@@ -57,19 +57,22 @@ You then preview the site at [http://localhost:1313]( http://localhost:1313)
 ## Release checklist
 These are guidelines to follow when you're about to make a release.
 ### Prepare
-[] Set release date and notify relevant stakeholders.
-[] Write changelog.
-    [] Make sure the relevant play store release info has been updated. Look inside `play/en-US` folder.
+- [ ] Set release date and notify relevant stakeholders.
+- [ ] Write changelog.
+  - [ ] Make sure the relevant play store release info has been updated. Look inside `play/en-US` folder.
        Usually you update this with the changelog entries for the version to be released.
-    [] Make sure changelog.json is updated and it validates. Use [jsonlint](http://jsonlint.com/) to validate the file.
-[] Request for design asset if needed.
-[] Draft a release announcement.
-[] Make sure documentation on the website is updated to reflect any feature additions or changes in
+  - [ ] Make sure changelog.json is updated and it validates. Use [jsonlint](http://jsonlint.com/) to validate the file.
+- [ ] Request for design asset if needed.
+- [ ] Draft a release announcement.
+- [ ] Make sure documentation on the website is updated to reflect any feature additions or changes in
    the release.
+- [ ] Make a local preview of the website to make sure nothing is broken. Refer to [How To Build SMSSync website above](#how-to-build-smssync-website).
 
 ### Release
-[] Issue the `./release.sh` command to make a release. This command has automated alot of the release process.
-[] Attach the release APK to the release tag on github. In the future this will be automated.
+- [ ] Make a release branch off `develop` branch with the name `release` by issuing ```git checkout -b release develop```
+- [ ] All additional polishing and clean ups including changelog updates should be done on the `release` branch.
+- [ ] Issue the `./release.sh` command to make a release. This command has automated a lot of the release process.
+- [ ] Attach the release APK to the release tag on github. In the future this will be automated.
 
 ## Release Build
 
