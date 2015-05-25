@@ -1,7 +1,7 @@
 {
   "title": "List of contributors to the SMSSync project",
   "note": "Sorted by last name",
-  "total": 16,
+  "total": 17,
   "contributors": [
     {
       "name": "Milan Andric",
@@ -202,7 +202,7 @@
       }
     },
     {
-      "name": "Agbenyegah Kirk Saviour",
+      "name": "Kirk Saviour Agbenyegah",
       "email": "savekirk@gmail.com",
       "website": "",
       "description": "Bug fixes",
