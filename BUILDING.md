@@ -69,8 +69,6 @@ These are guidelines to follow when you're about to make a release.
 - [ ] Make a local preview of the website to make sure nothing is broken. Refer to [How To Build SMSSync website above](#how-to-build-smssync-website).
 
 ### Release
-- [ ] Make a release branch off `develop` branch with the name `release` by issuing ```git checkout -b release develop```
-- [ ] All additional polishing and clean ups including changelog updates should be done on the `release` branch.
 - [ ] Issue the `./release.sh` command to make a release. This command has automated a lot of the release process.
 - [ ] Attach the release APK to the release tag on github. In the future this will be automated.
 
