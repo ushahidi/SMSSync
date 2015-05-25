@@ -69,6 +69,7 @@ These are guidelines to follow when you're about to make a release.
 - [ ] Make a local preview of the website to make sure nothing is broken. Refer to [How To Build SMSSync website above](#how-to-build-smssync-website).
 
 ### Release
+- [ ] Increase the 'versionCode' number in `smssync/build.gradle`
 - [ ] Issue the `./release.sh` command to make a release. This command has automated a lot of the release process.
 - [ ] Attach the release APK to the release tag on github. In the future this will be automated.
 
