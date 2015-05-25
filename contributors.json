@@ -200,6 +200,17 @@
         "latitude": 52.29778,
         "longitude": 104.29639
       }
+    },
+    {
+      "name": "Agbenyegah Kirk Saviour",
+      "email": "savekirk@gmail.com",
+      "website": "",
+      "description": "Bug fixes",
+      "country": {
+        "name": "Ghana",
+        "latitude": 5.5500,
+        "longitude": 0.2000
+      }
     }
   ]
 }
