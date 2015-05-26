@@ -27,8 +27,6 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
-def appName = "SMSsync"
-
 def getGooglePlaystoreServiceAccountEmail() {
     return project.hasProperty('gPlaystoreServiceAccountEmailAddress') ?
             gPlaystoreServiceAccountEmailAddress : ''
@@ -108,8 +106,6 @@ android {
             } else {
                 resValue "string", "ga_trackingId", ""
             }
-
-            resValue "string", "app_name", appName + " - DEBUG"
             applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
         }
@@ -153,14 +149,13 @@ android {
 
     flavorDimensions "analytics"
     productFlavors {
+
         withAnalytics {
             dimension "analytics"
-            resValue "string", "app_name", appName
         }
 
         noAnalytics {
             dimension "analytics"
-            resValue "string", "app_name", appName
         }
     }
 
