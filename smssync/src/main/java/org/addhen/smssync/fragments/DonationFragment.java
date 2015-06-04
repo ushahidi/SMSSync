@@ -17,13 +17,6 @@
 
 package org.addhen.smssync.fragments;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-
 import com.github.jberkel.pay.me.IabHelper;
 import com.github.jberkel.pay.me.IabResult;
 import com.github.jberkel.pay.me.listener.OnConsumeFinishedListener;
@@ -42,6 +35,13 @@ import org.addhen.smssync.adapters.DonationAdapter;
 import org.addhen.smssync.models.Donation;
 import org.addhen.smssync.views.DonationView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,13 +55,16 @@ import static org.addhen.smssync.util.DonationConstants.Billing.PUBLIC_KEY;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class DonationFragment extends BaseListFragment<DonationView, Donation, DonationAdapter> implements
+public class DonationFragment extends BaseListFragment<DonationView, Donation, DonationAdapter>
+        implements
         QueryInventoryFinishedListener,
         OnIabPurchaseFinishedListener,
         AdapterView.OnItemClickListener {
 
     private static final int PURCHASE_REQUEST = 1;
+
     private static boolean DEBUG_IAB = BuildConfig.DEBUG;
+
     private IabHelper mIabHelper;
 
     private List<Donation> mSkuDetailsList = new ArrayList<>();
@@ -71,7 +74,8 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
      * BaseListActivity
      */
     public DonationFragment() {
-        super(DonationView.class, DonationAdapter.class, R.layout.list_donation, 0, android.R.id.list);
+        super(DonationView.class, DonationAdapter.class, R.layout.list_donation, 0,
+                android.R.id.list);
     }
 
     private static boolean userHasDonated(Inventory inventory) {
@@ -99,7 +103,8 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
                         public void onQueryInventoryFinished(IabResult result, Inventory inv) {
                             try {
                                 if (result.isSuccess()) {
-                                    final DonationStatusListener.State s = userHasDonated(inv) ? DonationStatusListener.State.DONATED
+                                    final DonationStatusListener.State s = userHasDonated(inv)
+                                            ? DonationStatusListener.State.DONATED
                                             : DonationStatusListener.State.NOT_DONATED;
                                     l.userDonationState(s);
                                 } else {
@@ -112,7 +117,8 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
                     });
                 } else {
                     l.userDonationState(
-                            result.getResponse() == BILLING_UNAVAILABLE ? DonationStatusListener.State.NOT_AVAILABLE
+                            result.getResponse() == BILLING_UNAVAILABLE
+                                    ? DonationStatusListener.State.NOT_AVAILABLE
                                     : DonationStatusListener.State.UNKNOWN);
                     helper.dispose();
                 }
@@ -274,6 +280,7 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
     }
 
     public interface DonationStatusListener {
+
         void userDonationState(State s);
 
         enum State {
@@ -292,9 +299,11 @@ public class DonationFragment extends BaseListFragment<DonationView, Donation, D
         public int compare(Donation lhs, Donation rhs) {
             if (lhs.getSkuDetails().getPrice() != null && rhs.getSkuDetails().getPrice() != null) {
                 return lhs.getSkuDetails().getPrice().compareTo(rhs.getSkuDetails().getPrice());
-            } else if (lhs.getSkuDetails().getTitle() != null && rhs.getSkuDetails().getTitle() != null) {
+            } else if (lhs.getSkuDetails().getTitle() != null
+                    && rhs.getSkuDetails().getTitle() != null) {
                 return lhs.getSkuDetails().getTitle().compareTo(rhs.getSkuDetails().getTitle());
-            } else if (lhs.getSkuDetails().getSku() != null && rhs.getSkuDetails().getSku() != null) {
+            } else if (lhs.getSkuDetails().getSku() != null
+                    && rhs.getSkuDetails().getSku() != null) {
                 return lhs.getSkuDetails().getSku().compareTo(rhs.getSkuDetails().getSku());
             } else {
                 return 0;

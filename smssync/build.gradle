@@ -112,13 +112,16 @@ android {
     }
 
     defaultConfig {
-        versionCode 32
-        versionName "2.8.0"
+        versionCode 33
+        versionName "2.8.1"
         minSdkVersion 8
         targetSdkVersion 22
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        def publicKey = project.hasProperty('inAppPurchasePubKey') ? inAppPurchasePubKey : '';
-
+        def publicKey = project.hasProperty('inAppPurchasePubKey') ? inAppPurchasePubKey :
+                'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAogSL6I/lnQ0bVEEwttOu8CmrZvZzkTrFcsLiHjeb6Sw01+i8nTNW70QsTe1U2Hg4ELv3Hrm0Vt5gyQL2r9V4h8IWhbGNlHPAWJFP/dUgbwYFBUsJ4SSOS4N2kN9FER0mWwZ90boulNaHd8g8AQkwaBAzsNL5w+uij4hfZ9AsAO/rdhqXkAQeV6ykVgW0Q9qoWTcPg0ly7lOtxMmnvPFnrPXTt/SyoZEmNE5j02sh0eDdyGR5hEc16ZcMM2tvndRomfi+aYeswguZf3V+J+fAcXiBiX4Q81356g+nFJfMUxu8D7o0ZDPSS2u4FW79QhRjWzijJ/4EIw4TQ1jtKBapgwIDAQAB';
+        if (!project.hasProperty('inAppPurchasePubKey')) {
+            println 'Missing inAppPurchasePubKey. Using the default from SMSsync project'
+        }
         buildConfigField "String", "PUBLIC_LICENSE_KEY", '"' + publicKey + '"'
     }
 
@@ -148,17 +151,21 @@ android {
     productFlavors {
 
         withAnalytics {
-            flavorDimension "analytics"
+            dimension "analytics"
         }
 
         noAnalytics {
-            flavorDimension "analytics"
+            dimension "analytics"
         }
     }
 
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
         preDexLibraries = preDexEnabled && !isTravis
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
     }
 }
 
@@ -202,7 +209,7 @@ tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
 
 // Build and launch app from command line
 task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
-    //Linux command to launch the PostActivity when debug app is installed
+    //Linux command to launch the MainActivity when debug app is installed
     commandLine 'adb', 'shell', 'am', 'start', '-n',
             'org.addhen.smssync.debug/org.addhen.smssync.activities.MainActivity'
 }

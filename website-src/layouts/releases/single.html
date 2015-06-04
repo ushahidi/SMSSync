@@ -15,9 +15,11 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 {{ partial "header-media-links.html" . }}
+<title>{{ .Site.Title }} - {{ .Title }}</title>
 {{ partial "header.html" . }}
 {{ partial "menu.html" . }}
     <div class="container">
+        {{ partial "alerts.html" . }}
         <div class="jumbotron">
             <h2>{{ .Site.Params.tagline }}</h2>
       </div>

@@ -123,7 +123,7 @@ public class DebugCallbacks {
                         ProcessSms process = new ProcessSms(context);
                         final Long timeMills = System.currentTimeMillis();
                         Message message = new Message();
-                        message.setBody(isServerOKRequest(context));
+                        message.setBody(getBatteryLevelRequest(context));
                         message.setDate(new Date(timeMills));
                         message.setPhoneNumber(sms.getOriginatingAddress());
                         message.setUuid(process.getUuid());

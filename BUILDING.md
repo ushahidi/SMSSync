@@ -54,38 +54,28 @@ $ hugo server -w
 
 You then preview the site at [http://localhost:1313]( http://localhost:1313)
 
-### Compile HTML files
+## Release checklist
+These are guidelines to follow when you're about to make a release.
+### Prepare
+- [ ] Set release date and notify relevant stakeholders.
+- [ ] Write changelog.
+  - [ ] Make sure the relevant play store release info has been updated. Look inside `play/en-US` folder.
+       Usually you update this with the changelog entries for the version to be released.
+  - [ ] Make sure changelog.json is updated and it validates. Use [jsonlint](http://jsonlint.com/) to validate the file.
+- [ ] Request for design asset if needed.
+- [ ] Draft a release announcement.
+- [ ] Make sure documentation on the website is updated to reflect any feature additions or changes in
+   the release.
+- [ ] Make a local preview of the website to make sure nothing is broken. Refer to [How To Build SMSSync website above](#how-to-build-smssync-website).
 
-Compile the ruhoh site to HTML so it can be published to a hosting server. We use github pages to host SMSSync's website.
+### Release
+- [ ] Increase the 'versionCode' number in `smssync/build.gradle`
+- [ ] Issue the `./release.sh` command to make a release. This command has automated a lot of the release process.
+- [ ] Attach the release APK to the release tag on github. In the future this will be automated.
 
-```
-$ cd website-src
-
-$ bundle exec ruhoh  compile '<path_to_a_folder_to_compile_the_html_into>'
-
-```
-
-**Note:** The folder to compile the html files into has to be empty as the `ruhoh compile` command will delete any files in it.
-
-### Publish compiled HTML files
-
-Publish the compiled HTML files to [github pages](http://ushahidi.github.io/SMSSync/)
-
-```
-$ cd website-src/public
-
-$ git init .
-
-$ git add .
-
-$ git commit -m "<update_message>"
-
-$ git push git@github.com:ushahidi/SMSSync.git master:gh-pages --force
-
-```
 ## Release Build
 
-To make a release make sure you have `gradle.properties` in the root of the `app` module with the
+To make a release make sure you have `gradle.properties` in the root of `smssync` folder with the
 following content.
 
 **gradle.properties**
@@ -119,4 +109,7 @@ Then in the project's root directory, issue:
 `./release major milestone alpha`
 
 This should build the app, version it, create a tag and push it to the remote repo and publish
-to the Google Playstore's alpha track.
+it to the Google Playstore's alpha track.
+
+Note: always update the relevant stage and track for the release. Issue `./release` to know more
+about the valid options for the release command.

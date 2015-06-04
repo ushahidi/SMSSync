@@ -15,10 +15,12 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->*/}}
 {{ partial "header-media-links.html" . }}
+<title>{{ .Site.Title }} - {{ .Title }}</title>
 <link href='/css/google_prettify/sons-of-obsidian.css' type='text/css' rel='stylesheet' media='all'/>
 {{ partial "header.html" . }}
 {{ partial "menu.html" . }}
     <div class="container">
+        {{ partial "alerts.html" . }}
         <div class="jumbotron">
             <h2>{{ .Site.Params.tagline }}</h2>
       </div>
@@ -47,4 +49,4 @@
 </script>
 <!-- end Google Prettify -->
 {{ partial "google-analytics.html" . }}
-{{ partial "footer.html" . }}
+{{ partial "footer-end-tags.html" . }}

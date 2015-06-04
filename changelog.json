@@ -1,5 +1,14 @@
 [
   {
+    "version": "v2.8.1",
+    "date": "5th June, 2015",
+    "features": [],
+    "bugs": [
+      "Fixed Navigation drawer. Items not showing on older devices.",
+      "Fixed alert code sending wrong info when querying for battery level."
+    ]
+  },
+  {
     "version": "v2.8.0",
     "date": "4th May, 2015",
     "features": [

@@ -147,7 +147,7 @@ public class PendingMessages
     public void onPause() {
         log("onPause()");
         super.onPause();
-
+        App.bus.unregister(this);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class PendingMessages
         log("onDestroy()");
         super.onDestroy();
         getActivity().unregisterReceiver(failedReceiver);
-        App.bus.unregister(this);
+
     }
 
     private void idle() {

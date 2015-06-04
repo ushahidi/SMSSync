@@ -1,0 +1,16 @@
+box: wercker/default
+# Build definition
+build:
+  # The steps that will be executed on build
+  steps:
+    - arjen/hugo-build:
+        version: 0.13
+        config: ./website-src/config.toml
+        flags: --buildDrafts=true --source=$WERCKER_SOURCE_DIR/website-src
+# A step that deploys hugo build
+deploy:
+  steps:
+    - lukevivier/gh-pages@0.2.1:
+        token: $GIT_TOKEN
+        domain: smssync.ushahidi.com
+        basedir: $WERCKER_SOURCE_DIR/website-src/public

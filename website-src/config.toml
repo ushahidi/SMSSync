@@ -1,7 +1,7 @@
 languageCode = "en-us"
 title = "SMSsync"
 theme = "hugo-bootswatch"
-baseurl = "http://smsssync.ushahidi.com"
+baseurl = "http://smssync.ushahidi.com"
 
 [params]
     description = "SMSsync The free and open source SMS gateway for Android devices"

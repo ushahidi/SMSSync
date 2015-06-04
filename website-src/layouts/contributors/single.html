@@ -15,6 +15,7 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->*/}}
 {{ partial "header-media-links.html" . }}
+<title>{{ .Site.Title }} - {{ .Title }}</title>
 <link href='https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.css' type='text/css' rel='stylesheet' media='all'>
 <link href='http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.css' type='text/css' rel='stylesheet' media='all'>
 <link href='http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css' type='text/css' rel='stylesheet' media='all'>
@@ -26,9 +27,10 @@
 <!--[if lte IE 8]>
 <link rel="stylesheet"
       href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css"/><![endif]-->
-{{ partial "header.html" . }}
+{{ partial "header-end-tags.html" . }}
 {{ partial "menu.html" . }}
     <div class="container">
+        {{ partial "alerts.html" . }}
         <div class="jumbotron">
             <h2>{{ .Site.Params.tagline }}</h2>
       </div>
@@ -50,4 +52,4 @@
 <script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src="/js/contributors.js"></script>
 {{ partial "google-analytics.html" . }}
-{{ partial "footer.html" . }}
+{{ partial "footer-end-tags.html" . }}
