@@ -21,7 +21,7 @@ import org.ajoberstar.grgit.Grgit
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'org.ajoberstar.release-opinion'
-apply plugin: 'play'
+apply plugin: 'com.github.triplet.play'
 
 def isTravis = "true".equals(System.getenv("TRAVIS"))
 
