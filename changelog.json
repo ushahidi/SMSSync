@@ -1,5 +1,13 @@
 [
   {
+    "version": "v2.8.2",
+    "date": "9th June, 2015",
+    "features": [],
+    "bugs": [
+      "Upgrade otto to v1.3.7 to fix synthetic bridge methods created by JDK 8"
+    ]
+  },
+  {
     "version": "v2.8.1",
     "date": "5th June, 2015",
     "features": [],
