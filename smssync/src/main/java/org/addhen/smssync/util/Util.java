@@ -17,6 +17,16 @@
 
 package org.addhen.smssync.util;
 
+import org.addhen.smssync.App;
+import org.addhen.smssync.BuildConfig;
+import org.addhen.smssync.R;
+import org.addhen.smssync.activities.MainActivity;
+import org.addhen.smssync.prefs.Prefs;
+import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
+import org.addhen.smssync.state.LogEvent;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.annotation.TargetApi;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -39,16 +49,6 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.addhen.smssync.App;
-import org.addhen.smssync.BuildConfig;
-import org.addhen.smssync.R;
-import org.addhen.smssync.activities.MainActivity;
-import org.addhen.smssync.prefs.Prefs;
-import org.addhen.smssync.receivers.ConnectivityChangedReceiver;
-import org.addhen.smssync.state.LogEvent;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,6 +57,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -171,7 +172,7 @@ public class Util {
      * @return String
      */
     public static String formatDate(String dateFormat, String date,
-                                    String toFormat) {
+            String toFormat) {
 
         String formatted = "";
 
@@ -280,7 +281,7 @@ public class Util {
      * @param notificationTitle notification title
      */
     public static void showFailNotification(Context context, String message,
-                                            String notificationTitle) {
+            String notificationTitle) {
 
         Intent baseIntent = new Intent(context, MainActivity.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -304,7 +305,7 @@ public class Util {
      * @param ongoing  True if you don't want the user to clear the notification
      */
     public static void buildNotification(Context context, int drawable,
-                                         String message, String title, PendingIntent intent, boolean ongoing) {
+            String message, String title, PendingIntent intent, boolean ongoing) {
 
         NotificationManager notificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -627,5 +628,9 @@ public class Util {
 
     public void log(String message, Exception ex) {
         Logger.log(getClass().getName(), message, ex);
+    }
+
+    public static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
     }
 }
