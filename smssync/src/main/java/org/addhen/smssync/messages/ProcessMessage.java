@@ -216,7 +216,7 @@ public class ProcessMessage {
         }
 
         if (response != null && response.getPayload() != null
-                && response.getPayload().getMessages().size() > 0) {
+                && (!Util.isEmpty(response.getPayload().getMessages()))) {
             for (Message msg : response.getPayload().getMessages()) {
                 sendTaskSms(msg);
             }

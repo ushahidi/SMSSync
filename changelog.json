@@ -4,7 +4,8 @@
     "date": "9th June, 2015",
     "features": [],
     "bugs": [
-      "Upgrade otto to v1.3.7 to fix synthetic bridge methods created by JDK 8"
+      "Upgrade otto to v1.3.7 to fix synthetic bridge methods created by JDK 8",
+      "Fix issue when messages received from server is empty."
     ]
   },
   {
