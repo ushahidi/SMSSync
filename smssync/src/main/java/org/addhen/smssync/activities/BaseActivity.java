@@ -312,7 +312,13 @@ public abstract class BaseActivity<V extends View> extends ActionBarActivity {
                 syncUrlNavDrawerItem.setCounter();
                 filterNavDrawerItem.setCounter();
                 whitelistNavDrawerItem.setCounter();
-                navDrawerAdapter.notifyDataSetChanged();
+                UiThread.getInstance().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        navDrawerAdapter.notifyDataSetChanged();
+                    }
+                });
+
                 DonationFragment.checkUserHasDonated(getApplication(),
                         new DonationFragment.DonationStatusListener() {
                             @Override
