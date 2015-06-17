@@ -17,17 +17,6 @@
 
 package org.addhen.smssync.fragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.App;
@@ -51,6 +40,17 @@ import org.addhen.smssync.util.ServicesConstants;
 import org.addhen.smssync.util.Util;
 import org.addhen.smssync.views.PendingMessagesView;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -63,7 +63,9 @@ public class PendingMessages
         android.view.View.OnClickListener {
 
     public static final int PENDING_MESSAGES_INTENT_FLAG = 4;
+
     private static final String STATE_CHECKED = "org.addhen.smssync.fragments.STATE_CHECKED";
+
     private Intent syncPendingMessagesServiceIntent;
 
     private LinkedHashSet<Integer> mSelectedItemsPositions;
@@ -117,7 +119,6 @@ public class PendingMessages
             }
         }
         view.sync.setOnClickListener(this);
-        App.bus.register(this);
         getActivity().registerReceiver(failedReceiver,
                 new IntentFilter(ServicesConstants.FAILED_ACTION));
     }
@@ -133,6 +134,7 @@ public class PendingMessages
     public void onResume() {
         log("onResume()");
         super.onResume();
+        App.bus.register(this);
         idle();
         loadingTask();
     }
@@ -462,30 +464,31 @@ public class PendingMessages
     }
 
     private void fetchMessages() {
-        App.getDatabaseInstance().getMessageInstance().fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
-            @Override
-            public void onFinished(final List<Message> result) {
-                if (result != null) {
-                    UiThread.getInstance().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.listLoadingProgress.setVisibility(android.view.View.GONE);
-                            view.emptyView.setVisibility(View.VISIBLE);
-                            adapter.setItems(result);
-                            listView.setAdapter(adapter);
+        App.getDatabaseInstance().getMessageInstance()
+                .fetchPending(new BaseDatabseHelper.DatabaseCallback<List<Message>>() {
+                    @Override
+                    public void onFinished(final List<Message> result) {
+                        if (result != null) {
+                            UiThread.getInstance().post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    view.listLoadingProgress.setVisibility(android.view.View.GONE);
+                                    view.emptyView.setVisibility(View.VISIBLE);
+                                    adapter.setItems(result);
+                                    listView.setAdapter(adapter);
+                                }
+                            });
+                        } else {
+                            toastLong("No pending messages");
                         }
-                    });
-                } else {
-                    toastLong("No pending messages");
-                }
 
-            }
+                    }
 
-            @Override
-            public void onError(Exception exception) {
+                    @Override
+                    public void onError(Exception exception) {
 
-            }
-        });
+                    }
+                });
     }
 
     @Subscribe
@@ -554,31 +557,34 @@ public class PendingMessages
                 if (deletebyUuid) {
 
                     for (Integer position : mSelectedItemsPositions) {
-                        App.getDatabaseInstance().getMessageInstance().fetchByUuid(adapter.getItem(position).getUuid(), new BaseDatabseHelper.DatabaseCallback<Message>() {
-                            @Override
-                            public void onFinished(Message result) {
-                                // Do nothing
-                            }
+                        App.getDatabaseInstance().getMessageInstance()
+                                .fetchByUuid(adapter.getItem(position).getUuid(),
+                                        new BaseDatabseHelper.DatabaseCallback<Message>() {
+                                            @Override
+                                            public void onFinished(Message result) {
+                                                // Do nothing
+                                            }
 
-                            @Override
-                            public void onError(Exception exception) {
-                                // Do nothing
-                            }
-                        });
+                                            @Override
+                                            public void onError(Exception exception) {
+                                                // Do nothing
+                                            }
+                                        });
 
                     }
                 } else {
-                    App.getDatabaseInstance().getMessageInstance().deleteAll(new BaseDatabseHelper.DatabaseCallback<Void>() {
-                        @Override
-                        public void onFinished(Void result) {
-                            // Do nothing
-                        }
+                    App.getDatabaseInstance().getMessageInstance()
+                            .deleteAll(new BaseDatabseHelper.DatabaseCallback<Void>() {
+                                @Override
+                                public void onFinished(Void result) {
+                                    // Do nothing
+                                }
 
-                        @Override
-                        public void onError(Exception exception) {
-                            //Do nothing
-                        }
-                    });
+                                @Override
+                                public void onError(Exception exception) {
+                                    //Do nothing
+                                }
+                            });
                 }
                 deleted = 2;
             }
