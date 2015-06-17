@@ -87,8 +87,6 @@ public class SentMessageFragment
         listView.setLongClickable(true);
         listView.setOnItemLongClickListener(new SentMessagesActionModeListener(
                 this, listView));
-        App.bus.register(this);
-
     }
 
     @Override

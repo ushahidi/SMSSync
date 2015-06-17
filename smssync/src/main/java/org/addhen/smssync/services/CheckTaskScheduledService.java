@@ -17,18 +17,15 @@
 
 package org.addhen.smssync.services;
 
-import android.content.Intent;
-
-import com.squareup.otto.Produce;
-
 import org.addhen.smssync.App;
 import org.addhen.smssync.R;
 import org.addhen.smssync.database.BaseDatabseHelper;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
 import org.addhen.smssync.models.SyncUrl;
-import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.Util;
+
+import android.content.Intent;
 
 import java.util.List;
 
@@ -52,7 +49,8 @@ public class CheckTaskScheduledService extends SmsSyncServices {
                     public void onFinished(List<SyncUrl> result) {
                         for (SyncUrl syncUrl : result) {
                             new ProcessMessage(CheckTaskScheduledService.this,
-                                    new ProcessSms(CheckTaskScheduledService.this)).performTask(syncUrl);
+                                    new ProcessSms(CheckTaskScheduledService.this))
+                                    .performTask(syncUrl);
                         }
                     }
 
@@ -62,10 +60,5 @@ public class CheckTaskScheduledService extends SmsSyncServices {
                     }
                 });
 
-    }
-
-    @Produce
-    public LogEvent readLog() {
-        return new LogEvent();
     }
 }

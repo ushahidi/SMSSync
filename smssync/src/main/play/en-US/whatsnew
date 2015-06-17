@@ -1,2 +1,3 @@
-- Upgrade otto to v1.3.7 to fix synthetic bridge methods created by JDK 8.
-- Fix issue when messages received from server is empty.
+- Fix issue with app crashing because of unnecessary definition of otto bus @Producers.
+- Fix issue with app crashing because otto bus is not properly registered.
+- Fix issue with app sporadically crashing when you invoke navigation drawer.

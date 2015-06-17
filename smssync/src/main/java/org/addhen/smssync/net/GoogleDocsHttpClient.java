@@ -17,13 +17,11 @@
 
 package org.addhen.smssync.net;
 
-import android.content.Context;
-import android.content.res.Resources;
-
-import com.squareup.otto.Produce;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.util.Util;
+
+import android.content.Context;
+import android.content.res.Resources;
 
 import java.util.Locale;
 
@@ -73,10 +71,5 @@ public class GoogleDocsHttpClient extends MainHttpClient {
                 .format("%s %s ", res.getString(R.string.sending_failed_custom_error, error),
                         res.getString(R.string.sending_failed_http_code, statusCode));
         Util.logActivities(context, serverError);
-    }
-
-    @Produce
-    public boolean reloadLog() {
-        return true;
     }
 }

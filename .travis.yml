@@ -10,4 +10,4 @@ script: ./gradlew build
 notifications:
   hipchat:
     rooms:
-      secure: pofqFB1dvZq/Ue0okcuy3cWDKMxkq/5acPGoK2VlB8Sj1OEPm3Uau2y4Kx0DKtV9vQCLmAwc9Wvy26eIbihFIjzM6O8BDS5kdWlApJIlnJtT5hJ/YT5JB0jDHW6P1aU4muu9PXtBMMZhUWmBU3jIUPTgiLbCAygCYPGOkVRku+g=
+      secure: WiQT1MnkaN41pXrDA/OFzpTU88K7UZZrV2ESGPD8Cz5KJOCJUeFZlmSlRZiwmVj5SBKP/7k2dVfmtoA/4exhKgRzei9UF63udwDBN63HCwb4CUGMWRbJYub99KB/QW5J52M4fsDd8w3p20I9L2ht9rZJMzqU+QPxcuNtkdEYZgA=
