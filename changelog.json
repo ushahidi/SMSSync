@@ -1,5 +1,15 @@
 [
   {
+    "version": "v2.8.3",
+    "date": "17th June, 2015",
+    "features": [],
+    "bugs": [
+      "Fix issue with app crashing because of unnecessary definition of otto bus @Producers",
+      "Fix issue with app crashing because otto bus is not properly registered.",
+      "Fix issue with app sporadically crashing when you invoke navigation drawer."
+    ]
+  },
+  {
     "version": "v2.8.2",
     "date": "9th June, 2015",
     "features": [],
