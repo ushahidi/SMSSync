@@ -17,6 +17,15 @@
 
 package org.addhen.smssync.services;
 
+import org.addhen.smssync.App;
+import org.addhen.smssync.R;
+import org.addhen.smssync.controllers.DebugCallbacks;
+import org.addhen.smssync.messages.ProcessMessage;
+import org.addhen.smssync.messages.ProcessSms;
+import org.addhen.smssync.util.Logger;
+import org.addhen.smssync.util.ServicesConstants;
+import org.addhen.smssync.util.Util;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -30,18 +39,6 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
-
-import com.squareup.otto.Produce;
-
-import org.addhen.smssync.App;
-import org.addhen.smssync.R;
-import org.addhen.smssync.controllers.DebugCallbacks;
-import org.addhen.smssync.messages.ProcessMessage;
-import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.state.LogEvent;
-import org.addhen.smssync.util.Logger;
-import org.addhen.smssync.util.ServicesConstants;
-import org.addhen.smssync.util.Util;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
@@ -258,7 +255,8 @@ public class SmsReceiverService extends Service {
         log("handleSmsReceived() messagesUuid: " + messagesUuid);
         // Log received SMS
 
-        Util.logActivities(this, getString(R.string.received_msg, msg.getBody(), msg.getPhoneNumber()));
+        Util.logActivities(this,
+                getString(R.string.received_msg, msg.getBody(), msg.getPhoneNumber()));
 
         // route the sms
         boolean sent = mProcessMessage.routeSms(msg);
@@ -290,17 +288,12 @@ public class SmsReceiverService extends Service {
         Logger.log(getClass().getName(), message, ex);
     }
 
-    @Produce
-    public LogEvent reloadLog() {
-        return new LogEvent();
-    }
-
     private static class ServiceHandler extends Handler {
 
         private final WeakReference<SmsReceiverService> mSmsReceiverService;
 
         public ServiceHandler(SmsReceiverService mSmsReceiverService,
-                              Looper looper) {
+                Looper looper) {
             super(looper);
             this.mSmsReceiverService = new WeakReference<>(
                     mSmsReceiverService);

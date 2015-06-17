@@ -17,15 +17,12 @@
 
 package org.addhen.smssync.services;
 
-import android.content.Intent;
-
-import com.squareup.otto.Produce;
-
 import org.addhen.smssync.App;
 import org.addhen.smssync.messages.ProcessMessage;
 import org.addhen.smssync.messages.ProcessSms;
-import org.addhen.smssync.state.LogEvent;
 import org.addhen.smssync.util.ServicesConstants;
+
+import android.content.Intent;
 
 /**
  * This class handles background services for periodic synchronization of pending messages.
@@ -62,10 +59,5 @@ public class AutoSyncScheduledService extends SmsSyncServices {
             statusIntent.putExtra("status", processMessage.getErrorMessage());
             sendBroadcast(statusIntent);
         }
-    }
-
-    @Produce
-    public LogEvent readLogs() {
-        return new LogEvent();
     }
 }

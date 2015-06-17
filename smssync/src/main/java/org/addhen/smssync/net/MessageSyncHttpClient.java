@@ -16,12 +16,7 @@
  */
 package org.addhen.smssync.net;
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.text.TextUtils;
-
 import com.google.gson.Gson;
-import com.squareup.otto.Produce;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.models.Message;
@@ -34,6 +29,10 @@ import org.addhen.smssync.util.DataFormatUtil;
 import org.addhen.smssync.util.Util;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.protocol.HTTP;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.text.TextUtils;
 
 import java.util.Locale;
 
@@ -210,11 +209,6 @@ public class MessageSyncHttpClient extends MainHttpClient {
 
     public void setServerSuccessResp(SmssyncResponse smssyncResponse) {
         this.smssyncResponse = smssyncResponse;
-    }
-
-    @Produce
-    public boolean reloadLog() {
-        return true;
     }
 
     public SyncUrl getSyncUrl() {
