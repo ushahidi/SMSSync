@@ -21,7 +21,7 @@ import com.addhen.android.raiburari.domain.executor.PostExecutionThread;
 import com.addhen.android.raiburari.domain.executor.ThreadExecutor;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 
-import org.addhen.smssync.domain.entity.Filter;
+import org.addhen.smssync.domain.entity.FilterEntity;
 import org.addhen.smssync.domain.repository.FilterRepository;
 
 import javax.inject.Inject;
@@ -35,7 +35,7 @@ public class AddFilter extends Usecase {
 
     private final FilterRepository mFilterRepository;
 
-    private Filter mFilter;
+    private FilterEntity mFilter;
 
     @Inject
     protected AddFilter(FilterRepository filterRepository, ThreadExecutor threadExecutor,
@@ -44,14 +44,14 @@ public class AddFilter extends Usecase {
         mFilterRepository = filterRepository;
     }
 
-    public void setFilter(Filter filter) {
+    public void setFilter(FilterEntity filter) {
         mFilter = filter;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
         if (mFilter == null) {
-            throw new RuntimeException("Filter is null. You must call setFilter(...)");
+            throw new RuntimeException("FilterEntity is null. You must call setFilter(...)");
         }
         return mFilterRepository.addEntity(mFilter);
     }

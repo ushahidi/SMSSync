@@ -15,28 +15,25 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.domain.entity;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
 
-import org.addhen.smssync.domain.entity.FilterEntity;
-
-import java.util.List;
-
-import rx.Observable;
+import com.addhen.android.raiburari.domain.entity.Entity;
 
 /**
- * Repository for manipulating {@link FilterEntity} data
- *
- * @author Ushahidi Team <team@ushahidi.com>
+ * LogEntity messages
  */
-public interface FilterRepository extends Repository<FilterEntity> {
+public class LogEntity extends Entity {
 
-    Observable<Boolean> deleteAllWhiteList();
+    public String message;
 
-    Observable<Boolean> deleteAllBlackList();
+    public CharSequence timestamp;
 
-    Observable<Boolean> deleteById();
-
-    Observable<List<FilterEntity>> fetchByStatus();
+    @Override
+    public String toString() {
+        return "LogEntity{" +
+                "message='" + message + '\'' +
+                ", timestamp=" + timestamp +
+                '}';
+    }
 }

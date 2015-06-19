@@ -378,7 +378,7 @@
     <string name="invalid_data_format">Invalid data format</string>
     <string name="http_entity_format">HTTP Entity format is [ %1$s ]</string>
 
-    <!-- Message Results API-->
+    <!-- MessageEntity Results API-->
     <string name="message_processed_success">SMSsync has completed processing this message.</string>
     <string name="message_processed_failed">SMSsync has failed processing this message.</string>
     <string name="message_processed_json_failed">SMSsync has failed creating JSON response.</string>

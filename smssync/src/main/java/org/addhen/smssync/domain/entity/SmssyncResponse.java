@@ -24,7 +24,7 @@ import com.addhen.android.raiburari.domain.entity.Entity;
  */
 public class SmssyncResponse extends Entity {
 
-    public Payload payload;
+    public PayloadEntity payload;
 
     @Override
     public String toString() {

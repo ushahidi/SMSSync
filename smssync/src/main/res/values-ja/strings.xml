@@ -412,7 +412,7 @@ SMS メッセージがあるかご確認ください。</string>
     <string name="disabled">無効</string>
     <string name="invalid_data_format">データ形式が正しくありません</string>
     <string name="http_entity_format">HTTP エンティティ形式は [ %1$s ]</string>
-    <!--Message Results API-->
+    <!--MessageEntity Results API-->
     <string name="message_processed_success">SMSsync はこのメッセージを正常に処理しました。</string>
     <string name="message_processed_failed">SMSsync はこのメッセージの処理を失敗しました。</string>
     <string name="message_processed_json_failed">SMSsync は JSON レスポンスの作成に失敗しました。</string>

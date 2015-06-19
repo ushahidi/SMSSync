@@ -15,28 +15,40 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.data.entity;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
-
-import org.addhen.smssync.domain.entity.FilterEntity;
-
-import java.util.List;
-
-import rx.Observable;
+import com.addhen.android.raiburari.data.entity.DataEntity;
 
 /**
- * Repository for manipulating {@link FilterEntity} data
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface FilterRepository extends Repository<FilterEntity> {
+public class SyncUrl extends DataEntity {
 
-    Observable<Boolean> deleteAllWhiteList();
+    private String title;
 
-    Observable<Boolean> deleteAllBlackList();
+    private String keywords;
 
-    Observable<Boolean> deleteById();
+    private String url;
 
-    Observable<List<FilterEntity>> fetchByStatus();
+    private String secret;
+
+    private SyncUrl syncScheme;
+
+    private Status status;
+
+    @Override
+    public String toString() {
+        return "SyncUrlEntity{" +
+                "title='" + title + '\'' +
+                ", keywords='" + keywords + '\'' +
+                ", url='" + url + '\'' +
+                ", secret='" + secret + '\'' +
+                ", syncScheme=" + syncScheme +
+                ", status=" + status +
+                '}';
+    }
+
+    public enum Status {
+        ENABLED, DISABLED
+    }
 }
