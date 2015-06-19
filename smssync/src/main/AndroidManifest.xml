@@ -43,7 +43,7 @@
             android:icon="@drawable/ic_launcher"
             android:installLocation="auto"
             android:label="@string/app_name"
-            android:theme="@style/Theme.SmsSync">
+            android:theme="@style/AppTheme">
 
         <!-- Services -->
         <service android:name="org.addhen.smssync.services.SmsReceiverService"/>
