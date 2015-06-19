@@ -16,13 +16,7 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<resources>
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlHighlight">?colorAccent</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <solid android:color="@color/color_accent"/>
+</shape>

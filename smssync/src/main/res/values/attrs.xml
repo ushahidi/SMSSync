@@ -17,12 +17,5 @@
   -->
 
 <resources>
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlHighlight">?colorAccent</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+    <attr name="photoItemForeground" format="reference"/>
 </resources>

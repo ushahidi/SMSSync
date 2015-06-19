@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                tools:ignore="MissingPrefix"
+                android:foreground="?photoItemForeground">
+    <ImageView
+            android:id="@+id/user_profile_background_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nav_drawer_user_profile_background_height"
+            android:contentDescription="@string/clear"
+            android:src="@drawable/default_user_profile_background"
+            android:scaleType="fitXY"/>
+    <com.addhen.android.raiburari.presentation.ui.widget.BezelImageView
+            android:id="@+id/user_profile_image"
+            android:layout_width="@dimen/nav_drawer_user_profile_image_size"
+            android:layout_height="@dimen/nav_drawer_user_profile_image_size"
+            android:src="@drawable/user_profile_image_empty"
+            android:scaleType="centerCrop"
+            app:maskDrawable="@drawable/circle_mask"
+            android:layout_marginStart="@dimen/view_spacing_large"
+            android:layout_marginLeft="@dimen/view_spacing_large"
+            android:layout_marginTop="@dimen/view_spacing_large"/>
+    <RelativeLayout
+            android:id="@+id/chosen_account_content_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/nav_drawer_user_profile_layout_height"
+            android:layout_alignBottom="@+id/user_profile_background_image"
+            android:paddingLeft="@dimen/view_spacing_large"
+            android:paddingRight="@dimen/view_spacing_large"
+            android:paddingTop="@dimen/view_spacing_large"
+            android:layout_marginBottom="@dimen/view_spacing_large"
+            android:gravity="center_vertical">
+        <ImageView
+                android:id="@+id/expand_profile_indicator"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:visibility="visible"
+                android:layout_marginLeft="@dimen/view_spacing_large"
+                android:paddingBottom="@dimen/view_spacing_large"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_drawer_profile_expand"/>
+        <TextView
+                android:id="@+id/user_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="@color/white"
+                android:layout_toLeftOf="@id/expand_profile_indicator"
+                android:paddingBottom="@dimen/view_spacing_large"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="Henry Addo Junior"
+                fontPath="fonts/Roboto-Regular.ttf"/>
+        <TextView
+                android:id="@+id/user_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:textColor="@color/white"
+                android:text="henry@ushahidi.com"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:ellipsize="end"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+    </RelativeLayout>
+</RelativeLayout>

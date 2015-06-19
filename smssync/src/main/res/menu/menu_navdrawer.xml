@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+                android:id="@+id/nav_pending"
+                android:icon="@drawable/pending"
+                android:title="@string/pending_messages"/>
+        <item
+                android:id="@+id/nav_sent"
+                android:icon="@drawable/sent"
+                android:title="@string/sent_messages"/>
+        <item
+                android:id="@+id/nav_sync_url"
+                android:icon="@drawable/sync_url"
+                android:title="@string/sync_url"/>
+        <item
+                android:id="@+id/nav_whitelist"
+                android:icon="@drawable/whitelist"
+                android:title="@string/whitelist"/>
+        <item
+                android:id="@+id/nav_blacklist"
+                android:icon="@drawable/blacklist"
+                android:title="@string/blacklist"/>
+        <item
+                android:id="@+id/nav_logs"
+                android:icon="@drawable/log"
+                android:title="@string/logs"/>
+        <item android:title="">
+            <item android:icon="@drawable/settings"
+                  android:title="@string/action_settings"/>
+        </item>
+    </group>
+</menu>
