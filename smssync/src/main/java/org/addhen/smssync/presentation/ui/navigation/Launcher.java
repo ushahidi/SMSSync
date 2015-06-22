@@ -17,9 +17,42 @@
 
 package org.addhen.smssync.presentation.ui.navigation;
 
+import org.addhen.smssync.presentation.ui.activity.SettingsActivity;
+import org.addhen.smssync.presentation.ui.fragment.LogFragment;
+import org.addhen.smssync.presentation.ui.fragment.MessageFragment;
+import org.addhen.smssync.presentation.ui.fragment.SyncUrlFragment;
+
+import android.app.Activity;
+import android.content.Intent;
+
+import javax.inject.Inject;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class Launcher {
 
+    private final Activity mActivity;
+
+    @Inject
+    public Launcher(Activity activity) {
+        mActivity = activity;
+    }
+
+    public void launchSettings() {
+        Intent intent = SettingsActivity.getIntent(mActivity);
+        mActivity.startActivity(intent);
+    }
+
+    public MessageFragment launchMessages() {
+        return new MessageFragment();
+    }
+
+    public LogFragment launchLogs() {
+        return new LogFragment();
+    }
+
+    public SyncUrlFragment launchSyncUrls() {
+        return new SyncUrlFragment();
+    }
 }

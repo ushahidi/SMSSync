@@ -20,7 +20,6 @@ import org.ajoberstar.grgit.Grgit
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
-apply plugin: 'com.android.databinding'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.ajoberstar.release-opinion'

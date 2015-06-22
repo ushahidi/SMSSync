@@ -34,6 +34,7 @@ import android.support.annotation.NonNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -48,6 +49,7 @@ public class ListFilterPresenter implements Presenter {
 
     private ListFilterView mListFilterView;
 
+    @Inject
     public ListFilterPresenter(@Named("filterList") ListFilterUsecase listUsecase,
             FilterModelDataMapper filterModelDataMapper) {
         mListFiltersUsecase = listUsecase;

@@ -150,17 +150,15 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
         }));
     }
 
-    public Observable<Boolean> deleteById(final Long id) {
+    public Observable<Long> deleteById(final Long id) {
         return Observable.create((subscriber -> {
             if (!isClosed()) {
-                Boolean deleted = false;
                 try {
-                    deleted = cupboard().withDatabase(getWritableDatabase())
-                            .delete(Filter.class, id);
+                    cupboard().withDatabase(getWritableDatabase()).delete(Filter.class, id);
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
-                subscriber.onNext(deleted);
+                subscriber.onNext(1l);
                 subscriber.onCompleted();
             }
         }));

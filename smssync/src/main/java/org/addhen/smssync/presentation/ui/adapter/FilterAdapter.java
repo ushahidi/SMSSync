@@ -20,15 +20,16 @@ package org.addhen.smssync.presentation.ui.adapter;
 import com.addhen.android.raiburari.presentation.ui.adapter.BaseRecyclerViewAdapter;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.databinding.FilterListItemBinding;
 import org.addhen.smssync.presentation.model.FilterModel;
 
-import android.databinding.DataBindingUtil;
-import android.support.annotation.UiThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -37,10 +38,8 @@ public class FilterAdapter extends BaseRecyclerViewAdapter<FilterModel> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
-        final LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        final FilterListItemBinding filterListItemBinding = DataBindingUtil
-                .inflate(inflater, R.layout.filter_list_item, viewGroup, false);
-        return new Widgets(filterListItemBinding.getRoot(), filterListItemBinding);
+        return new Widgets(LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.filter_list_item, viewGroup, false));
     }
 
     @Override
@@ -50,25 +49,18 @@ public class FilterAdapter extends BaseRecyclerViewAdapter<FilterModel> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final FilterModel filterModel = getItem(position);
-        ((Widgets) holder).bindData(filterModel);
+        ((Widgets) holder).phoneNumber.setText(getItem(position).phoneNumber);
     }
 
     public class Widgets extends RecyclerView.ViewHolder {
 
-        private final FilterListItemBinding mFilterListItemBinding;
+        @InjectView(R.id.filter_phone_number)
+        TextView phoneNumber;
 
-        public final View mView;
-
-        public Widgets(final View view, final FilterListItemBinding filterListItemBinding) {
+        public Widgets(final View view) {
             super(view);
-            mView = view;
-            mFilterListItemBinding = filterListItemBinding;
-        }
+            ButterKnife.inject(this, view);
 
-        @UiThread
-        public void bindData(FilterModel filterModel) {
-            mFilterListItemBinding.setFilter(filterModel);
         }
     }
 }

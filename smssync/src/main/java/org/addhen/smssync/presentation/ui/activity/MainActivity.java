@@ -17,9 +17,13 @@
 
 package org.addhen.smssync.presentation.ui.activity;
 
+import com.addhen.android.raiburari.presentation.di.HasComponent;
 import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.presentation.di.component.DaggerFilterComponent;
+import org.addhen.smssync.presentation.di.component.FilterComponent;
+import org.addhen.smssync.presentation.ui.navigation.Launcher;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -29,12 +33,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import javax.inject.Inject;
+
 import butterknife.InjectView;
 
 /**
  * @author Henry Addo
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements HasComponent<FilterComponent> {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
@@ -45,6 +51,11 @@ public class MainActivity extends BaseActivity {
     @InjectView((R.id.nav_view))
     NavigationView mNavigationView;
 
+    @Inject
+    Launcher mLauncher;
+
+    private FilterComponent mFilterComponent;
+
     public MainActivity() {
         super(R.layout.activity_main, 0);
     }
@@ -52,6 +63,7 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        injector();
         initViews();
     }
 
@@ -66,6 +78,14 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void injector() {
+        mFilterComponent = DaggerFilterComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -79,9 +99,34 @@ public class MainActivity extends BaseActivity {
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
-                    menuItem.setChecked(true);
+                    final int id = menuItem.getItemId();
+                    switch (id) {
+                        case R.id.nav_settings:
+                            mLauncher.launchSettings();
+                            break;
+                        case R.id.nav_sync_url:
+                            replaceFragment(R.id.fragment_main_content, mLauncher.launchSyncUrls(),
+                                    "syncurl");
+                            break;
+                        case R.id.nav_logs:
+                            replaceFragment(R.id.fragment_main_content, mLauncher.launchSyncUrls(),
+                                    "logs");
+                        default:
+                            setupMessagesFragment();
+                    }
+                    menuItem.setChecked(menuItem.isChecked());
                     mDrawerLayout.closeDrawers();
                     return true;
                 });
+        setupMessagesFragment();
+    }
+
+    private void setupMessagesFragment() {
+        replaceFragment(R.id.fragment_main_content, mLauncher.launchMessages(), "messages");
+    }
+
+    @Override
+    public FilterComponent getComponent() {
+        return mFilterComponent;
     }
 }

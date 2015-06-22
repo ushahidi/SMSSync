@@ -18,25 +18,20 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item
-                android:id="@+id/nav_pending"
-                android:icon="@drawable/pending"
-                android:title="@string/title_bar_text"/>
-        <item
-                android:id="@+id/nav_sync_url"
-                android:icon="@drawable/sync_url"
-                android:title="@string/sync_url"/>
-        <item
-                android:id="@+id/nav_filters"
-                android:icon="@drawable/whitelist"
-                android:title="@string/filters"/>
-        <item
-                android:id="@+id/nav_logs"
-                android:icon="@drawable/log"
-                android:title="@string/logs"/>
-        <item android:title="">
-            <item android:icon="@drawable/settings"
-                  android:title="@string/action_settings"/>
-        </item>
+        <item android:id="@+id/nav_pending"
+              android:icon="@drawable/pending"
+              android:title="@string/title_bar_text"/>
+        <item android:id="@+id/nav_sync_url"
+              android:icon="@drawable/sync_url"
+              android:title="@string/sync_url"/>
+        <item android:id="@+id/nav_filters"
+              android:icon="@drawable/whitelist"
+              android:title="@string/filters"/>
+        <item android:id="@+id/nav_logs"
+              android:icon="@drawable/log"
+              android:title="@string/logs"/>
+        <item android:id="@+id/nav_settings"
+              android:icon="@drawable/settings"
+              android:title="@string/action_settings"/>
     </group>
 </menu>

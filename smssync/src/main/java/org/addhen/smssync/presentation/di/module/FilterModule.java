@@ -20,6 +20,8 @@ package org.addhen.smssync.presentation.di.module;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
+import org.addhen.smssync.data.repository.FilterDataRepository;
+import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.usecase.filter.AddFilterUsecase;
 import org.addhen.smssync.domain.usecase.filter.ListFilterUsecase;
 
@@ -37,14 +39,14 @@ public class FilterModule {
     @Provides
     @ActivityScope
     @Named("filterList")
-    ListFilterUsecase provideAddDeploymentUseCase(ListFilterUsecase listFilterUsecase) {
+    ListFilterUsecase provideListFilterUseCase(ListFilterUsecase listFilterUsecase) {
         return listFilterUsecase;
     }
 
     @Provides
     @ActivityScope
     @Named("filterAdd")
-    Usecase provideAddDeploymentUseCase(AddFilterUsecase addFilterUsecase) {
+    Usecase provideAddFilterUseCase(AddFilterUsecase addFilterUsecase) {
         return addFilterUsecase;
     }
 }

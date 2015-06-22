@@ -48,11 +48,6 @@ public class FilterDatabaseSource implements FilterDataSource {
     }
 
     @Override
-    public Observable<Boolean> deleteById(Long id) {
-        return mFilterDatabaseHelper.deleteById(id);
-    }
-
-    @Override
     public Observable<List<Filter>> fetchByStatus(Filter.Status status) {
         return mFilterDatabaseHelper.fetchByStatus(status);
     }
@@ -78,7 +73,7 @@ public class FilterDatabaseSource implements FilterDataSource {
     }
 
     @Override
-    public Observable<Boolean> deleteEntity(Long id) {
+    public Observable<Long> deleteEntity(Long id) {
         return mFilterDatabaseHelper.deleteById(id);
     }
 }

@@ -15,31 +15,25 @@
   ~ If you have questions regarding the use of this file, please contact
   ~ Ushahidi developers at team@ushahidi.com.
   -->
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        >
-    <data>
-        <variable name="filter" type="org.addhen.smssync.presentation.model.FilterModel"/>
-    </data>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:padding="10dp">
 
-        <TextView
-                android:id="@+id/filter_phone_number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:clickable="false"
-                android:ellipsize="end"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:lines="1"
-                android:paddingLeft="3dp"
-                android:textStyle="bold"
-                android:text="@{filter.phoneNumber}"/>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="?attr/selectableItemBackground"
+        android:padding="10dp">
 
-    </RelativeLayout>
-</layout>
+    <TextView
+            android:id="@+id/filter_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:clickable="false"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:lines="1"
+            android:paddingLeft="3dp"
+            android:textStyle="bold"/>
+</RelativeLayout>

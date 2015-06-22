@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2010 - 2015 Ushahidi Inc
   ~ All rights reserved
   ~ Contact: team@ushahidi.com
@@ -13,10 +14,9 @@
   ~
   ~ If you have questions regarding the use of this file, please contact
   ~ Ushahidi developers at team@ushahidi.com.
-  -->
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="org.addhen.smssync">
-
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
     <uses-permission android:name="android.permission.READ_SMS"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
@@ -30,12 +30,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="com.android.vending.BILLING"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-
     <!-- Account manager permissions -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-sdk
-            android:minSdkVersion="8"
-            android:targetSdkVersion="19"/>
     <application
             android:name=".presentation.App"
             android:icon="@drawable/ic_launcher"
@@ -54,6 +50,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+                android:name=".presentation.ui.activity.SettingsActivity"
+                android:label="@string/action_settings"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.ui.activity.MainActivity"/>
+        <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".presentation.ui.activity.MainActivity"/>
     </application>
-
 </manifest>

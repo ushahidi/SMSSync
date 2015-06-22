@@ -15,28 +15,13 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.module;
+package org.addhen.smssync.presentation.ui.fragment;
 
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
-
-import org.addhen.smssync.data.repository.FilterDataRepository;
-import org.addhen.smssync.domain.repository.FilterRepository;
-
-import dagger.Module;
-import dagger.Provides;
+import android.support.v4.app.Fragment;
 
 /**
- * Reusable Dagger modules for the entire app
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Module
-public class AppModule {
+public class SyncUrlFragment extends Fragment {
 
-    @Provides
-    @ActivityScope
-    FilterRepository provideFilterRepository(
-            FilterDataRepository filterDataRepository) {
-        return filterDataRepository;
-    }
 }

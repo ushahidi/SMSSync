@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.presentation.model.mapper;
 
+import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
+
 import org.addhen.smssync.domain.entity.FilterEntity;
 import org.addhen.smssync.presentation.model.FilterModel;
 
@@ -24,12 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * @author Henry Addo
  */
-@Singleton
+@ActivityScope
 public class FilterModelDataMapper {
 
     @Inject
