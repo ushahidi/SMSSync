@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.presentation.model;
 
-import com.addhen.android.raiburari.data.entity.DataEntity;
 import com.addhen.android.raiburari.presentation.model.Model;
 
 /**
