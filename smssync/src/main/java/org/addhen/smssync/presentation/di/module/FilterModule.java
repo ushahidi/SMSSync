@@ -15,28 +15,36 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di;
+package org.addhen.smssync.presentation.di.module;
 
-import org.addhen.smssync.data.repository.FilterDataRepository;
-import org.addhen.smssync.domain.repository.FilterRepository;
+import com.addhen.android.raiburari.domain.usecase.Usecase;
+import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import javax.inject.Singleton;
+import org.addhen.smssync.domain.usecase.filter.AddFilterUsecase;
+import org.addhen.smssync.domain.usecase.filter.ListFilterUsecase;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * Reusable Dagger modules for the entire app
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @Module
-public class AppModule {
+public class FilterModule {
 
     @Provides
-    @Singleton
-    FilterRepository provideFilterRepository(
-            FilterDataRepository filterDataRepository) {
-        return filterDataRepository;
+    @ActivityScope
+    @Named("filterList")
+    Usecase provideAddDeploymentUseCase(ListFilterUsecase listFilterUsecase) {
+        return listFilterUsecase;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("filterAdd")
+    Usecase provideAddDeploymentUseCase(AddFilterUsecase addFilterUsecase) {
+        return addFilterUsecase;
     }
 }

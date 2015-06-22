@@ -15,26 +15,24 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.presentation.model;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
-
-import org.addhen.smssync.domain.entity.FilterEntity;
-
-import java.util.List;
-
-import rx.Observable;
+import com.addhen.android.raiburari.data.entity.DataEntity;
+import com.addhen.android.raiburari.presentation.model.Model;
 
 /**
- * Repository for manipulating {@link FilterEntity} data
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface FilterRepository extends Repository<FilterEntity> {
+public class FilterModel extends Model {
 
-    Observable<Integer> deleteAllWhiteList();
+    public String phoneNumber;
 
-    Observable<Integer> deleteAllBlackList();
+    public Status status;
 
-    Observable<List<FilterEntity>> fetchByStatus(FilterEntity.Status status);
+    /**
+     * The status of the filtered phone number.
+     */
+    public enum Status {
+        WHITELIST, BLACKLIST
+    }
 }

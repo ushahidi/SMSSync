@@ -15,26 +15,28 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.presentation.di.module;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
+import org.addhen.smssync.data.repository.FilterDataRepository;
+import org.addhen.smssync.domain.repository.FilterRepository;
 
-import org.addhen.smssync.domain.entity.FilterEntity;
+import javax.inject.Singleton;
 
-import java.util.List;
-
-import rx.Observable;
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * Repository for manipulating {@link FilterEntity} data
+ * Reusable Dagger modules for the entire app
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface FilterRepository extends Repository<FilterEntity> {
+@Module
+public class AppModule {
 
-    Observable<Integer> deleteAllWhiteList();
-
-    Observable<Integer> deleteAllBlackList();
-
-    Observable<List<FilterEntity>> fetchByStatus(FilterEntity.Status status);
+    @Provides
+    @Singleton
+    FilterRepository provideFilterRepository(
+            FilterDataRepository filterDataRepository) {
+        return filterDataRepository;
+    }
 }

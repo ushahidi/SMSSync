@@ -15,28 +15,18 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.module.filter;
+package org.addhen.smssync.presentation.view.filters;
 
-import com.addhen.android.raiburari.domain.usecase.Usecase;
+import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
-import org.addhen.smssync.domain.usecase.filter.AddFilterUsecase;
+import org.addhen.smssync.presentation.model.FilterModel;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import dagger.Module;
-import dagger.Provides;
+import java.util.List;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Module
-public class AddFilterModule {
+public interface ListFilterView extends LoadDataView {
 
-    @Provides
-    @Singleton
-    @Named("filterAdd")
-    Usecase provideAddDeploymentUseCase(AddFilterUsecase addDeploymentUsecase) {
-        return addDeploymentUsecase;
-    }
+    void showFilters(List<FilterModel> filterModelList);
 }
