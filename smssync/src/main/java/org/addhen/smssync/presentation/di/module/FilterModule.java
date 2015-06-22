@@ -37,7 +37,7 @@ public class FilterModule {
     @Provides
     @ActivityScope
     @Named("filterList")
-    Usecase provideAddDeploymentUseCase(ListFilterUsecase listFilterUsecase) {
+    ListFilterUsecase provideAddDeploymentUseCase(ListFilterUsecase listFilterUsecase) {
         return listFilterUsecase;
     }
 

@@ -20,12 +20,13 @@ package org.addhen.smssync.presentation.presenter;
 import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
 import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
-import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
 import org.addhen.smssync.domain.entity.FilterEntity;
+import org.addhen.smssync.domain.usecase.filter.ListFilterUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
+import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.model.mapper.FilterModelDataMapper;
 import org.addhen.smssync.presentation.view.filters.ListFilterView;
 
@@ -41,13 +42,13 @@ import javax.inject.Named;
 @ActivityScope
 public class ListFilterPresenter implements Presenter {
 
-    private final Usecase mListFiltersUsecase;
+    private final ListFilterUsecase mListFiltersUsecase;
 
     private final FilterModelDataMapper mFilterModelDataMapper;
 
     private ListFilterView mListFilterView;
 
-    public ListFilterPresenter(@Named("filterList") Usecase listUsecase,
+    public ListFilterPresenter(@Named("filterList") ListFilterUsecase listUsecase,
             FilterModelDataMapper filterModelDataMapper) {
         mListFiltersUsecase = listUsecase;
         mFilterModelDataMapper = filterModelDataMapper;
@@ -55,7 +56,6 @@ public class ListFilterPresenter implements Presenter {
 
     @Override
     public void resume() {
-        loadFilters();
     }
 
     @Override
@@ -72,9 +72,10 @@ public class ListFilterPresenter implements Presenter {
         mListFilterView = listFilterView;
     }
 
-    public void loadFilters() {
+    public void loadFilters(FilterModel.Status status) {
         mListFilterView.hideRetry();
         mListFilterView.showLoading();
+        mListFiltersUsecase.setStatus(mFilterModelDataMapper.map(status));
         mListFiltersUsecase.execute(new DefaultSubscriber<List<FilterEntity>>() {
             @Override
             public void onCompleted() {

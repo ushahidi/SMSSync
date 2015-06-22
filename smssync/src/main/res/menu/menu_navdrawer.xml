@@ -21,23 +21,15 @@
         <item
                 android:id="@+id/nav_pending"
                 android:icon="@drawable/pending"
-                android:title="@string/pending_messages"/>
-        <item
-                android:id="@+id/nav_sent"
-                android:icon="@drawable/sent"
-                android:title="@string/sent_messages"/>
+                android:title="@string/title_bar_text"/>
         <item
                 android:id="@+id/nav_sync_url"
                 android:icon="@drawable/sync_url"
                 android:title="@string/sync_url"/>
         <item
-                android:id="@+id/nav_whitelist"
+                android:id="@+id/nav_filters"
                 android:icon="@drawable/whitelist"
-                android:title="@string/whitelist"/>
-        <item
-                android:id="@+id/nav_blacklist"
-                android:icon="@drawable/blacklist"
-                android:title="@string/blacklist"/>
+                android:title="@string/filters"/>
         <item
                 android:id="@+id/nav_logs"
                 android:icon="@drawable/log"

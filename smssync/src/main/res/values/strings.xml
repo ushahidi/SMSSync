@@ -348,6 +348,7 @@
     <string name="no_blacklist">No blacklisted phone numbers. \nUse the "+" button above to add
         one.
     </string>
+    <string name="filters">Filters</string>
     <string name="enter_phone_number">Enter a phone number</string>
     <string name="add_phone_number">Add a phone number</string>
     <string name="add_phone_number_list">Add a phone number to the list</string>

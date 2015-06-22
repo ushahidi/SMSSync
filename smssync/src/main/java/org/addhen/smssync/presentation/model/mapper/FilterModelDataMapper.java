@@ -90,4 +90,8 @@ public class FilterModelDataMapper {
     public FilterModel.Status map(FilterEntity.Status status) {
         return FilterModel.Status.valueOf(status.name());
     }
+
+    public FilterEntity.Status map(FilterModel.Status status) {
+        return FilterEntity.Status.valueOf(status.name());
+    }
 }

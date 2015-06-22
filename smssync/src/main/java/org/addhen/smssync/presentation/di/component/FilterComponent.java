@@ -24,6 +24,7 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import org.addhen.smssync.presentation.di.module.AppModule;
 import org.addhen.smssync.presentation.di.module.FilterModule;
 import org.addhen.smssync.presentation.presenter.ListFilterPresenter;
+import org.addhen.smssync.presentation.ui.fragment.FilterFragment;
 
 import dagger.Component;
 
@@ -35,6 +36,8 @@ import dagger.Component;
         AppModule.class,
         FilterModule.class})
 public interface FilterComponent extends AppComponent {
+
+    void inject(FilterFragment filterFragment);
 
     ListFilterPresenter listFilterPresenter();
 }
