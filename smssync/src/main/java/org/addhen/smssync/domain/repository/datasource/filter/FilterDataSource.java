@@ -15,26 +15,32 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.domain.repository.datasource.filter;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
-
-import org.addhen.smssync.domain.entity.FilterEntity;
+import org.addhen.smssync.data.entity.Filter;
 
 import java.util.List;
 
 import rx.Observable;
 
 /**
- * Repository for manipulating {@link FilterEntity} data
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface FilterRepository extends Repository<FilterEntity> {
+public interface FilterDataSource {
 
     Observable<Integer> deleteAllWhiteList();
 
     Observable<Integer> deleteAllBlackList();
 
-    Observable<List<FilterEntity>> fetchByStatus(FilterEntity.Status status);
+    Observable<List<Filter>> fetchByStatus(Filter.Status status);
+
+    Observable<List<Filter>> getEntities();
+
+    Observable<Filter> getEntity(Long aLong);
+
+    Observable<Long> addEntity(Filter filterEntity);
+
+    Observable<Long> updateEntity(Filter filterEntity);
+
+    Observable<Long> deleteEntity(Long id);
 }

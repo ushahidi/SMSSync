@@ -86,4 +86,8 @@ public class FilterEntityDataMapper {
         }
         return filterEntityList;
     }
+
+    public Filter.Status map(FilterEntity.Status status) {
+        return Filter.Status.valueOf(status.name());
+    }
 }

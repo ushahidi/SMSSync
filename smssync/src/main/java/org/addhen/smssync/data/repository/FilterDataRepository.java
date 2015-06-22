@@ -17,10 +17,15 @@
 
 package org.addhen.smssync.data.repository;
 
+import org.addhen.smssync.data.entity.mapper.FilterEntityDataMapper;
 import org.addhen.smssync.domain.entity.FilterEntity;
 import org.addhen.smssync.domain.repository.FilterRepository;
+import org.addhen.smssync.domain.repository.datasource.filter.FilterDataSource;
+import org.addhen.smssync.domain.repository.datasource.filter.FilterDataSourceFactory;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
@@ -31,48 +36,66 @@ import rx.Observable;
  */
 public class FilterDataRepository implements FilterRepository {
 
-    @Override
-    public Observable<Boolean> deleteAllWhiteList() {
-        return null;
+    private final FilterEntityDataMapper mFilterEntityDataMapper;
+
+    private final FilterDataSourceFactory mFilterDataSourceFactory;
+
+    private FilterDataSource mFilterDataSource;
+
+    @Inject
+    public FilterDataRepository(FilterEntityDataMapper filterEntityDataMapper,
+            FilterDataSourceFactory filterDataSourceFactory) {
+        mFilterEntityDataMapper = filterEntityDataMapper;
+        mFilterDataSourceFactory = filterDataSourceFactory;
     }
 
     @Override
-    public Observable<Boolean> deleteAllBlackList() {
-        return null;
+    public Observable<Integer> deleteAllWhiteList() {
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.deleteAllWhiteList();
     }
 
     @Override
-    public Observable<Boolean> deleteById() {
-        return null;
+    public Observable<Integer> deleteAllBlackList() {
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.deleteAllBlackList();
     }
 
     @Override
-    public Observable<List<FilterEntity>> fetchByStatus() {
-        return null;
+    public Observable<List<FilterEntity>> fetchByStatus(FilterEntity.Status status) {
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.fetchByStatus(mFilterEntityDataMapper.map(status))
+                .map((filters -> mFilterEntityDataMapper.map(filters)));
     }
 
     @Override
     public Observable<List<FilterEntity>> getEntities() {
-        return null;
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.getEntities()
+                .map((filters -> mFilterEntityDataMapper.map(filters)));
     }
 
     @Override
-    public Observable<FilterEntity> getEntity(Long aLong) {
-        return null;
+    public Observable<FilterEntity> getEntity(Long id) {
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.getEntity(id).map((filter -> mFilterEntityDataMapper.map(filter)));
     }
 
     @Override
     public Observable<Long> addEntity(FilterEntity filterEntity) {
-        return null;
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.addEntity(mFilterEntityDataMapper.map(filterEntity));
     }
 
     @Override
     public Observable<Long> updateEntity(FilterEntity filterEntity) {
-        return null;
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.updateEntity(mFilterEntityDataMapper.map(filterEntity));
     }
 
     @Override
-    public Observable<Long> deleteEntity(Long aLong) {
-        return null;
+    public Observable<Long> deleteEntity(Long id) {
+        mFilterDataSource = mFilterDataSourceFactory.createFilterDataSource();
+        return mFilterDataSource.deleteEntity(id);
     }
 }
