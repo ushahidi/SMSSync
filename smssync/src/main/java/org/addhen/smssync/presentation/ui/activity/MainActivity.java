@@ -23,7 +23,6 @@ import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.DaggerFilterComponent;
 import org.addhen.smssync.presentation.di.component.FilterComponent;
-import org.addhen.smssync.presentation.ui.navigation.Launcher;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -32,8 +31,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
-import javax.inject.Inject;
 
 import butterknife.InjectView;
 
@@ -50,9 +47,6 @@ public class MainActivity extends BaseActivity implements HasComponent<FilterCom
 
     @InjectView((R.id.nav_view))
     NavigationView mNavigationView;
-
-    @Inject
-    Launcher mLauncher;
 
     private FilterComponent mFilterComponent;
 
@@ -102,14 +96,16 @@ public class MainActivity extends BaseActivity implements HasComponent<FilterCom
                     final int id = menuItem.getItemId();
                     switch (id) {
                         case R.id.nav_settings:
-                            mLauncher.launchSettings();
+                            mFilterComponent.launcher().launchSettings();
                             break;
                         case R.id.nav_sync_url:
-                            replaceFragment(R.id.fragment_main_content, mLauncher.launchSyncUrls(),
+                            replaceFragment(R.id.fragment_main_content,
+                                    mFilterComponent.launcher().launchSyncUrls(),
                                     "syncurl");
                             break;
                         case R.id.nav_logs:
-                            replaceFragment(R.id.fragment_main_content, mLauncher.launchSyncUrls(),
+                            replaceFragment(R.id.fragment_main_content,
+                                    mFilterComponent.launcher().launchSyncUrls(),
                                     "logs");
                         default:
                             setupMessagesFragment();
@@ -122,7 +118,8 @@ public class MainActivity extends BaseActivity implements HasComponent<FilterCom
     }
 
     private void setupMessagesFragment() {
-        replaceFragment(R.id.fragment_main_content, mLauncher.launchMessages(), "messages");
+        replaceFragment(R.id.fragment_main_content, mFilterComponent.launcher().launchMessages(),
+                "messages");
     }
 
     @Override

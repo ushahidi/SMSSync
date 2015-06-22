@@ -21,6 +21,9 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
+import org.addhen.smssync.presentation.ui.navigation.Launcher;
+
+import android.app.Activity;
 
 import dagger.Module;
 import dagger.Provides;
@@ -32,6 +35,12 @@ import dagger.Provides;
  */
 @Module
 public class AppModule {
+
+    @Provides
+    @ActivityScope
+    Launcher provideLauncher(Activity activity) {
+        return new Launcher(activity);
+    }
 
     @Provides
     @ActivityScope

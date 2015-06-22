@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/relativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:background="?attr/selectableItemBackground"
+                android:padding="5dip">
+    <AppCompatTextView
+            android:id="@+id/status"
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:layout_alignTop="@+id/message_from"
+            android:layout_alignBottom="@+id/sent_message_status"
+            android:layout_alignParentLeft="true"/>
+    <AppCompatTextView
+            android:id="@+id/message_from"
+            style="@style/TextView.Description"
+            android:layout_width="wrap_content"
+            android:text="09393929299s9s"
+            android:lines="1"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/status"
+            android:layout_toEndOf="@+id/status"/>
+
+    <AppCompatTextView
+            android:id="@+id/message_date"
+            style="@style/TextView.Description"
+            android:layout_width="wrap_content"
+            android:text="Apri, 2015 at 2pm"
+            android:lines="1"
+            android:textColor="@color/grey_light"
+            android:layout_alignParentTop="true" android:layout_toRightOf="@+id/sent_message_type"
+            android:layout_toEndOf="@+id/sent_message_type" android:layout_marginLeft="699dp"
+            android:layout_marginStart="699dp"/>
+
+    <AppCompatTextView
+            android:id="@+id/message"
+            style="@style/TextView.Description"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="Sample text messages comes here"
+            android:layout_below="@+id/message_date"
+            android:layout_toEndOf="@+id/status"
+            android:layout_toRightOf="@+id/status"/>
+
+    <AppCompatTextView
+            android:id="@+id/sent_message_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:padding="3dp"
+            android:text="Task"
+            android:textIsSelectable="true"
+            android:layout_marginLeft="27dp"
+            android:layout_marginStart="27dp" android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/status" android:layout_toEndOf="@+id/status"/>
+
+    <AppCompatTextView
+            android:id="@+id/sent_message_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/message"
+            android:ellipsize="end"
+            android:lines="1"
+            android:padding="3dp"
+            android:text="FAILED"
+            android:textIsSelectable="true"/>
+</RelativeLayout>
