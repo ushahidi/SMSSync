@@ -37,12 +37,15 @@ public class FileManager {
 
     private String dateFormat;
 
+    private String mName;
+
     @Inject
     public FileManager(char[] format) {
         this(LOG_NAME, format);
     }
 
     private FileManager(String name, char[] format) {
+        mName = name;
         for (char c : format) {
             if (c == 'M') {
                 dateFormat = "MM-dd kk:mm";
@@ -254,7 +257,7 @@ public class FileManager {
 
     public Observable<List<Log>> getLogs() {
         return Observable.create(subscriber -> {
-            final List<Log> logs = readLogFile(getFile(LOG_NAME));
+            final List<Log> logs = readLogFile(getFile(mName));
             if (logs != null) {
                 subscriber.onNext(logs);
                 subscriber.onCompleted();
@@ -274,7 +277,7 @@ public class FileManager {
 
     public Observable<Long> deleteLog() {
         return Observable.create(subscriber -> {
-            deleteLog(LOG_NAME);
+            deleteLog(mName);
             subscriber.onNext(1l);
             subscriber.onCompleted();
         });
@@ -282,7 +285,7 @@ public class FileManager {
 
     public Observable<Log> getLog() {
         return Observable.create(subscriber -> {
-            final String logString = readLogs(LOG_NAME);
+            final String logString = readLogs(mName);
             if (logString != null) {
                 Log log = new Log();
                 log.message = logString;
