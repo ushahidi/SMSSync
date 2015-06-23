@@ -1,6 +1,8 @@
-package org.addhen.smssync;
+package org.addhen.smssync.presentation;
 
 import com.google.analytics.tracking.android.EasyTracker;
+
+import org.addhen.smssync.presentation.AppTracker;
 
 import android.app.Activity;
 import android.content.Context;

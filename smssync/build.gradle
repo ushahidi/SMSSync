@@ -93,6 +93,7 @@ android {
             }
             applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
+            debuggable true
         }
     }
 
