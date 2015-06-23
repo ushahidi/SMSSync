@@ -45,42 +45,55 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
 
     public Observable<List<Filter>> getFilterList() {
         return Observable.create((subscriber -> {
-            List<Filter> filters = cupboard().withDatabase(getReadableDatabase())
-                    .query(Filter.class).list();
-            if (filters != null) {
-                subscriber.onNext(filters);
-                subscriber.onCompleted();
+            if (!isClosed()) {
+                List<Filter> filters = cupboard().withDatabase(getReadableDatabase())
+                        .query(Filter.class).list();
+                if (filters != null) {
+                    subscriber.onNext(filters);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new FilterNotFoundException());
+                }
             } else {
-                subscriber.onError(new FilterNotFoundException());
+                subscriber.onError(new Exception());
             }
         }));
     }
 
     public Observable<Filter> getFilter(@NonNull Long id) {
         return Observable.create((subscriber -> {
-            Filter filter = cupboard().withDatabase(getReadableDatabase())
-                    .get(Filter.class, id);
-            if (filter != null) {
-                subscriber.onNext(filter);
-                subscriber.onCompleted();
+            if (!isClosed()) {
+                Filter filter = cupboard().withDatabase(getReadableDatabase())
+                        .get(Filter.class, id);
+                if (filter != null) {
+                    subscriber.onNext(filter);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new FilterNotFoundException());
+                }
             } else {
-                subscriber.onError(new FilterNotFoundException());
+                subscriber.onError(new Exception());
             }
         }));
     }
 
     public Observable<List<Filter>> fetchByStatus(@NonNull Filter.Status status) {
         return Observable.create((subscriber -> {
-            final String whereClause = "status= ?";
-            List<Filter> filters = cupboard().withDatabase(getReadableDatabase())
-                    .query(Filter.class)
-                    .withSelection(whereClause, status.name()).orderBy("_id DESC")
-                    .list();
-            if (filters != null) {
-                subscriber.onNext(filters);
-                subscriber.onCompleted();
+            if (!isClosed()) {
+                final String whereClause = "status= ?";
+                List<Filter> filters = cupboard().withDatabase(getReadableDatabase())
+                        .query(Filter.class)
+                        .withSelection(whereClause, status.name()).orderBy("_id DESC")
+                        .list();
+                if (filters != null) {
+                    subscriber.onNext(filters);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new FilterNotFoundException());
+                }
+
             } else {
-                subscriber.onError(new FilterNotFoundException());
+                subscriber.onError(new Exception());
             }
         }));
     }
@@ -95,6 +108,8 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
                 }
                 subscriber.onNext(true);
                 subscriber.onCompleted();
+            } else {
+                subscriber.onError(new Exception());
             }
         }));
     }
@@ -110,6 +125,8 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
                 }
                 subscriber.onNext(row);
                 subscriber.onCompleted();
+            } else {
+                subscriber.onError(new Exception());
             }
         }));
     }
@@ -128,6 +145,8 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
                 }
                 subscriber.onNext(row);
                 subscriber.onCompleted();
+            } else {
+                subscriber.onError(new Exception());
             }
         }));
     }
@@ -146,6 +165,8 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
                 }
                 subscriber.onNext(row);
                 subscriber.onCompleted();
+            } else {
+                subscriber.onError(new Exception());
             }
         }));
     }
@@ -160,6 +181,8 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
                 }
                 subscriber.onNext(1l);
                 subscriber.onCompleted();
+            } else {
+                subscriber.onError(new Exception());
             }
         }));
     }
