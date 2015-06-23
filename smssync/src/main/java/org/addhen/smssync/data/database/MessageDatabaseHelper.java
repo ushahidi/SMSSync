@@ -18,6 +18,7 @@
 package org.addhen.smssync.data.database;
 
 import org.addhen.smssync.data.entity.Message;
+import org.addhen.smssync.data.exception.MessageNotFoundException;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -91,8 +92,12 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
-                subscriber.onNext(messages);
-                subscriber.onCompleted();
+                if (messages != null) {
+                    subscriber.onNext(messages);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new MessageNotFoundException());
+                }
             } else {
                 subscriber.onError(new Exception());
             }
@@ -111,8 +116,12 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
-                subscriber.onNext(messages);
-                subscriber.onCompleted();
+                if (messages != null) {
+                    subscriber.onNext(messages);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new MessageNotFoundException());
+                }
             } else {
                 subscriber.onError(new Exception());
             }
@@ -146,8 +155,12 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
-                subscriber.onNext(message);
-                subscriber.onCompleted();
+                if (message != null) {
+                    subscriber.onNext(message);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new MessageNotFoundException());
+                }
             } else {
                 subscriber.onError(new Exception());
             }

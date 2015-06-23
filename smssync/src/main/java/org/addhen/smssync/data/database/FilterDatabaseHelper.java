@@ -46,8 +46,13 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
     public Observable<List<Filter>> getFilterList() {
         return Observable.create((subscriber -> {
             if (!isClosed()) {
-                List<Filter> filters = cupboard().withDatabase(getReadableDatabase())
-                        .query(Filter.class).list();
+                List<Filter> filters = null;
+                try {
+                    filters = cupboard().withDatabase(getReadableDatabase())
+                            .query(Filter.class).list();
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
                 if (filters != null) {
                     subscriber.onNext(filters);
                     subscriber.onCompleted();
