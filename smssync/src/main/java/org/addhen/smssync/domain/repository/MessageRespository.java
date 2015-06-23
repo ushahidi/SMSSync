@@ -15,12 +15,26 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.usecase.message;
+package org.addhen.smssync.domain.repository;
+
+import com.addhen.android.raiburari.domain.repository.Repository;
+
+import org.addhen.smssync.domain.entity.MessageEntity;
+
+import java.util.List;
+
+import rx.Observable;
 
 /**
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class ListMessage {
+public interface MessageRespository extends Repository<MessageEntity> {
 
+    Observable<Integer> deleteByUuid(String uuid);
+
+    Observable<Integer> deleteAll();
+
+    Observable<List<MessageEntity>> fetchByType(MessageEntity.Type type);
+
+    Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status);
 }
