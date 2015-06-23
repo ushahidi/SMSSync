@@ -21,8 +21,7 @@ import com.addhen.android.raiburari.presentation.di.HasComponent;
 import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.presentation.di.component.DaggerFilterComponent;
-import org.addhen.smssync.presentation.di.component.FilterComponent;
+import org.addhen.smssync.presentation.di.component.AppComponent;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -37,7 +36,7 @@ import butterknife.InjectView;
 /**
  * @author Henry Addo
  */
-public class MainActivity extends BaseActivity implements HasComponent<FilterComponent> {
+public class MainActivity extends BaseActivity implements HasComponent<AppComponent> {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
@@ -48,7 +47,7 @@ public class MainActivity extends BaseActivity implements HasComponent<FilterCom
     @InjectView((R.id.nav_view))
     NavigationView mNavigationView;
 
-    private FilterComponent mFilterComponent;
+    private AppComponent mAppComponent;
 
     public MainActivity() {
         super(R.layout.activity_main, 0);
@@ -73,7 +72,7 @@ public class MainActivity extends BaseActivity implements HasComponent<FilterCom
     }
 
     private void injector() {
-        mFilterComponent = DaggerFilterComponent.builder()
+        mAppComponent = DaggerAppComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -96,16 +95,16 @@ public class MainActivity extends BaseActivity implements HasComponent<FilterCom
                     final int id = menuItem.getItemId();
                     switch (id) {
                         case R.id.nav_settings:
-                            mFilterComponent.launcher().launchSettings();
+                            mAppComponent.launcher().launchSettings();
                             break;
                         case R.id.nav_sync_url:
                             replaceFragment(R.id.fragment_main_content,
-                                    mFilterComponent.launcher().launchSyncUrls(),
+                                    mAppComponent.launcher().launchSyncUrls(),
                                     "syncurl");
                             break;
                         case R.id.nav_logs:
                             replaceFragment(R.id.fragment_main_content,
-                                    mFilterComponent.launcher().launchSyncUrls(),
+                                    mAppComponent.launcher().launchSyncUrls(),
                                     "logs");
                         default:
                             setupMessagesFragment();
@@ -118,12 +117,12 @@ public class MainActivity extends BaseActivity implements HasComponent<FilterCom
     }
 
     private void setupMessagesFragment() {
-        replaceFragment(R.id.fragment_main_content, mFilterComponent.launcher().launchMessages(),
+        replaceFragment(R.id.fragment_main_content, mAppComponent.launcher().launchMessages(),
                 "messages");
     }
 
     @Override
-    public FilterComponent getComponent() {
-        return mFilterComponent;
+    public AppComponent getComponent() {
+        return mAppComponent;
     }
 }

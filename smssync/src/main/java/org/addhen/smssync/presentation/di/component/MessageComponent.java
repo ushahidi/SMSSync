@@ -17,18 +17,28 @@
 
 package org.addhen.smssync.presentation.di.component;
 
+import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
+import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.navigation.Launcher;
+import org.addhen.smssync.presentation.di.module.AppModule;
+import org.addhen.smssync.presentation.di.module.MessageModule;
+import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
+import org.addhen.smssync.presentation.ui.fragment.MessageFragment;
+
+import dagger.Component;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @ActivityScope
-public interface AppComponent {
+@Component(dependencies = {ApplicationComponent.class}, modules = {
+        ActivityModule.class,
+        AppModule.class,
+        MessageModule.class})
+public interface MessageComponent extends AppComponent {
 
-    void inject(MainActivity mainActivity);
+    void inject(MessageFragment filterFragment);
 
-    Launcher launcher();
+    ListMessagePresenter listFilterPresenter();
 }

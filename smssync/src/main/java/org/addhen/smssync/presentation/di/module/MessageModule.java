@@ -15,20 +15,27 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.component;
+package org.addhen.smssync.presentation.di.module;
 
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.navigation.Launcher;
+import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
+
+import javax.inject.Named;
+
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@ActivityScope
-public interface AppComponent {
+@Module
+public class MessageModule {
 
-    void inject(MainActivity mainActivity);
-
-    Launcher launcher();
+    @Provides
+    @ActivityScope
+    @Named("messageList")
+    ListMessageUsecase provideListFilterUseCase(ListMessageUsecase listMessageUsecase) {
+        return listMessageUsecase;
+    }
 }

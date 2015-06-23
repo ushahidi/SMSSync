@@ -20,7 +20,9 @@ package org.addhen.smssync.presentation.di.module;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.data.repository.FilterDataRepository;
+import org.addhen.smssync.data.repository.MessageDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
+import org.addhen.smssync.domain.repository.MessageRespository;
 import org.addhen.smssync.presentation.ui.navigation.Launcher;
 
 import android.app.Activity;
@@ -47,5 +49,12 @@ public class AppModule {
     FilterRepository provideFilterRepository(
             FilterDataRepository filterDataRepository) {
         return filterDataRepository;
+    }
+
+    @Provides
+    @ActivityScope
+    MessageRespository provideMessageRepository(
+            MessageDataRepository messageDataRepository) {
+        return messageDataRepository;
     }
 }

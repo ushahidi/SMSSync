@@ -19,6 +19,7 @@ package org.addhen.smssync.presentation.util;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -29,5 +30,9 @@ public class Utility {
     public static String formatDate(Date messageDate) {
         DateFormat formatter = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a");
         return formatter.format(messageDate);
+    }
+
+    public static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
     }
 }

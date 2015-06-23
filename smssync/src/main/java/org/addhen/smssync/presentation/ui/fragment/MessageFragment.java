@@ -22,11 +22,17 @@ import com.addhen.android.raiburari.presentation.ui.listener.SwipeToDismissTouch
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
+import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
 import org.addhen.smssync.presentation.ui.adapter.MessageAdapter;
+import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.filters.ListMessageView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -34,12 +40,17 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, MessageAdapter> {
+public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, MessageAdapter>
+        implements
+        ListMessageView {
 
     @InjectView(R.id.messages_fab)
     FloatingActionButton mFab;
@@ -49,6 +60,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @InjectView(R.id.empty_list_view)
     TextView mEmptyView;
+
+    @Inject
+    ListMessagePresenter mListMessagePresenter;
 
     private MessageAdapter mMessageAdapter;
 
@@ -68,31 +82,34 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        swipeToDeleteUndo();
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        initialize();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mListMessagePresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        mListMessagePresenter.pause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mListMessagePresenter.destroy();
     }
 
+    private void initialize() {
+        getComponent(MessageComponent.class).inject(this);
+        mListMessagePresenter.setView(this);
+        initRecyclerView();
+    }
 
-    private void swipeToDeleteUndo() {
+    private void initRecyclerView() {
         mMessageAdapter = new MessageAdapter(mEmptyView);
         mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessageRecyclerView.setFocusable(true);
@@ -110,9 +127,56 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                     @Override
                     public void onDismiss(RecyclerView view,
                             List<SwipeToDismissTouchListener.PendingDismissData> dismissData) {
-                        // perform swap to delete
+                        // Implement swipe to delete
                     }
                 });
+        mMessageRecyclerView.enableDefaultSwipeRefresh(true);
     }
 
+    @OnClick(R.id.messages_fab)
+    void syncItems() {
+        // TODO: Perform message sync. For now reload the messages list
+        mListMessagePresenter.loadMessages();
+    }
+
+    @Override
+    public void showMessages(List<MessageModel> messageModelList) {
+        if (Utility.isEmpty(messageModelList)) {
+            mMessageAdapter.setItems(messageModelList);
+        }
+    }
+
+    @Override
+    public void showLoading() {
+        // Do nothing
+    }
+
+    @Override
+    public void hideLoading() {
+        // Do nothing
+    }
+
+    @Override
+    public void showRetry() {
+        // Do nothing
+    }
+
+    @Override
+    public void hideRetry() {
+        // Do nothing
+    }
+
+    @Override
+    public void showError(String s) {
+        Snackbar snackbar = Snackbar.make(getView(), s, Snackbar.LENGTH_LONG);
+        View view = snackbar.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(getAppContext().getResources().getColor(R.color.red));
+        snackbar.show();
+    }
+
+    @Override
+    public Context getAppContext() {
+        return getActivity().getApplicationContext();
+    }
 }

@@ -50,9 +50,9 @@ public class ListMessagePresenter implements Presenter {
 
     @Inject
     public ListMessagePresenter(@Named("filterList") ListMessageUsecase listUsecase,
-            MessageModelDataMapper filterModelDataMapper) {
+            MessageModelDataMapper messageModelDataMapper) {
         mListMessageUsecase = listUsecase;
-        mMessageModelDataMapper = filterModelDataMapper;
+        mMessageModelDataMapper = messageModelDataMapper;
     }
 
     @Override
