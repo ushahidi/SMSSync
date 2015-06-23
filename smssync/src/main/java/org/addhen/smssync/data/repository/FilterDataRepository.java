@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.data.repository;
 
-import org.addhen.smssync.data.entity.mapper.FilterEntityDataMapper;
+import org.addhen.smssync.data.entity.mapper.FilterDataMapper;
 import org.addhen.smssync.domain.entity.FilterEntity;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSource;
@@ -36,14 +36,14 @@ import rx.Observable;
  */
 public class FilterDataRepository implements FilterRepository {
 
-    private final FilterEntityDataMapper mFilterEntityDataMapper;
+    private final FilterDataMapper mFilterEntityDataMapper;
 
     private final FilterDataSourceFactory mFilterDataSourceFactory;
 
     private FilterDataSource mFilterDataSource;
 
     @Inject
-    public FilterDataRepository(FilterEntityDataMapper filterEntityDataMapper,
+    public FilterDataRepository(FilterDataMapper filterEntityDataMapper,
             FilterDataSourceFactory filterDataSourceFactory) {
         mFilterEntityDataMapper = filterEntityDataMapper;
         mFilterDataSourceFactory = filterDataSourceFactory;

@@ -28,10 +28,10 @@ import javax.inject.Inject;
 /**
  * @author Henry Addo
  */
-public class FilterEntityDataMapper {
+public class FilterDataMapper {
 
     @Inject
-    public FilterEntityDataMapper() {
+    public FilterDataMapper() {
         // Do nothing
     }
 
