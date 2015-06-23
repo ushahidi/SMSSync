@@ -27,7 +27,7 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
 import org.addhen.smssync.presentation.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.util.Utility;
-import org.addhen.smssync.presentation.view.filters.ListMessageView;
+import org.addhen.smssync.presentation.view.post.ListMessageView;
 
 import android.content.Context;
 import android.os.Bundle;

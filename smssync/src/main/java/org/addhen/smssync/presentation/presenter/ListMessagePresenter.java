@@ -27,7 +27,7 @@ import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
-import org.addhen.smssync.presentation.view.filters.ListMessageView;
+import org.addhen.smssync.presentation.view.post.ListMessageView;
 
 import android.support.annotation.NonNull;
 

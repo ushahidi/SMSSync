@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.filters;
+package org.addhen.smssync.presentation.view.post;
 
 import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
