@@ -24,7 +24,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="5dip">
     <AppCompatTextView
-            android:id="@+id/status"
+            android:id="@+id/status_indicator"
             android:layout_width="5dp"
             android:layout_height="wrap_content"
             android:background="@color/red"
@@ -39,8 +39,8 @@
             android:lines="1"
             android:textStyle="bold"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/status"
-            android:layout_toEndOf="@+id/status"/>
+            android:layout_toRightOf="@+id/status_indicator"
+            android:layout_toEndOf="@+id/status_indicator"/>
 
     <AppCompatTextView
             android:id="@+id/message_date"
@@ -60,8 +60,8 @@
             android:layout_alignParentLeft="true"
             android:text="Sample text messages comes here"
             android:layout_below="@+id/message_date"
-            android:layout_toEndOf="@+id/status"
-            android:layout_toRightOf="@+id/status"/>
+            android:layout_toEndOf="@+id/status_indicator"
+            android:layout_toRightOf="@+id/status_indicator"/>
 
     <AppCompatTextView
             android:id="@+id/sent_message_type"
@@ -72,9 +72,9 @@
             android:padding="3dp"
             android:text="Task"
             android:textIsSelectable="true"
-            android:layout_marginLeft="27dp"
-            android:layout_marginStart="27dp" android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/status" android:layout_toEndOf="@+id/status"/>
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/status_indicator"
+            android:layout_toEndOf="@+id/status_indicator"/>
 
     <AppCompatTextView
             android:id="@+id/sent_message_status"

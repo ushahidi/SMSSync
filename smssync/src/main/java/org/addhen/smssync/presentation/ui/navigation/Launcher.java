@@ -45,7 +45,7 @@ public class Launcher {
     }
 
     public MessageFragment launchMessages() {
-        return new MessageFragment();
+        return MessageFragment.newInstance();
     }
 
     public LogFragment launchLogs() {

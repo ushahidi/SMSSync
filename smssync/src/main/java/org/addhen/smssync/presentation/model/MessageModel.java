@@ -15,29 +15,23 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.data.entity;
+package org.addhen.smssync.presentation.model;
 
-import com.google.gson.annotations.SerializedName;
-
-import com.addhen.android.raiburari.data.entity.DataEntity;
+import com.addhen.android.raiburari.presentation.model.Model;
 
 import java.util.Date;
 
 /**
  * @author Henry Addo
  */
-public class Message extends DataEntity {
+public class MessageModel extends Model {
 
-    @SerializedName("message")
     public String messageBody;
 
-    @SerializedName("to")
     public String messageFrom;
 
-    @SerializedName("timestamp")
     public Date messageDate;
 
-    @SerializedName("uuid")
     public String messageUuid;
 
     public Type messageType;

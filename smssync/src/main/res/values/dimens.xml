@@ -35,4 +35,7 @@
     <dimen name="nav_drawer_user_profile_pic_top_padding">38dp</dimen>
     <dimen name="nav_drawer_user_profile_layout_height">56dp</dimen>
     <dimen name="nav_drawer_user_profile_background_height">164dp</dimen>
+
+    <!-- floatingaction button -->
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
