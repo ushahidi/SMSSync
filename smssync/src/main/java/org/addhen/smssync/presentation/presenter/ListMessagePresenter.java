@@ -20,11 +20,11 @@ package org.addhen.smssync.presentation.presenter;
 import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
 import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
+import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
 import org.addhen.smssync.domain.entity.MessageEntity;
-import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
 import org.addhen.smssync.presentation.view.post.ListMessageView;
@@ -42,16 +42,16 @@ import javax.inject.Named;
 @ActivityScope
 public class ListMessagePresenter implements Presenter {
 
-    private final ListMessageUsecase mListMessageUsecase;
+    private final Usecase mListMessageUsecase;
 
     private final MessageModelDataMapper mMessageModelDataMapper;
 
     private ListMessageView mListMessageView;
 
     @Inject
-    public ListMessagePresenter(@Named("filterList") ListMessageUsecase listUsecase,
+    public ListMessagePresenter(@Named("messageList") Usecase listMessageUsecase,
             MessageModelDataMapper messageModelDataMapper) {
-        mListMessageUsecase = listUsecase;
+        mListMessageUsecase = listMessageUsecase;
         mMessageModelDataMapper = messageModelDataMapper;
     }
 

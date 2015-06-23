@@ -22,6 +22,9 @@ import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.AppComponent;
+import org.addhen.smssync.presentation.di.component.DaggerAppComponent;
+import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
+import org.addhen.smssync.presentation.di.component.MessageComponent;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -49,6 +52,8 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
 
     private AppComponent mAppComponent;
 
+    private MessageComponent mMessageComponent;
+
     public MainActivity() {
         super(R.layout.activity_main, 0);
     }
@@ -73,6 +78,11 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
 
     private void injector() {
         mAppComponent = DaggerAppComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+
+        mMessageComponent = DaggerMessageComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
@@ -124,5 +134,9 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
     @Override
     public AppComponent getComponent() {
         return mAppComponent;
+    }
+
+    public MessageComponent getMessageComponent() {
+        return mMessageComponent;
     }
 }

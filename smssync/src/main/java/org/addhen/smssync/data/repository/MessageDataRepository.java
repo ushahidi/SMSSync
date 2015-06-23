@@ -17,17 +17,36 @@
 
 package org.addhen.smssync.data.repository;
 
+import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
+import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
+import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.domain.entity.MessageEntity;
-import org.addhen.smssync.domain.repository.MessageRespository;
+import org.addhen.smssync.domain.repository.MessageRepository;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class MessageDataRepository implements MessageRespository {
+public class MessageDataRepository implements MessageRepository {
+
+    private final MessageDataMapper mMessageDataMapper;
+
+    private final MessageDataSourceFactory mMessageDataSourceFactory;
+
+    private MessageDataSource mMessageDataSource;
+
+    @Inject
+    public MessageDataRepository(MessageDataMapper messageDataMapper,
+            MessageDataSourceFactory messageDataSourceFactory) {
+        mMessageDataMapper = messageDataMapper;
+        mMessageDataSourceFactory = messageDataSourceFactory;
+
+    }
 
     @Override
     public Observable<Integer> deleteByUuid(String uuid) {

@@ -21,7 +21,7 @@ import com.addhen.android.raiburari.domain.executor.PostExecutionThread;
 import com.addhen.android.raiburari.domain.executor.ThreadExecutor;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 
-import org.addhen.smssync.domain.repository.FilterRepository;
+import org.addhen.smssync.domain.repository.MessageRepository;
 
 import android.support.annotation.NonNull;
 
@@ -34,18 +34,18 @@ import rx.Observable;
  */
 public class ListMessageUsecase extends Usecase {
 
-    private final FilterRepository mFilterRepository;
+    private final MessageRepository mMessageRepository;
 
     @Inject
-    protected ListMessageUsecase(@NonNull FilterRepository filterRepository,
+    protected ListMessageUsecase(@NonNull MessageRepository messageRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
-        mFilterRepository = filterRepository;
+        mMessageRepository = messageRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return mFilterRepository.getEntities();
+        return mMessageRepository.getEntities();
     }
 }

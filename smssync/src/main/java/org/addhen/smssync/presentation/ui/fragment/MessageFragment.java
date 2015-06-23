@@ -25,6 +25,7 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
+import org.addhen.smssync.presentation.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.post.ListMessageView;
@@ -104,7 +105,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     private void initialize() {
-        getComponent(MessageComponent.class).inject(this);
+        getMessageComponent(MessageComponent.class).inject(this);
         mListMessagePresenter.setView(this);
         initRecyclerView();
     }
@@ -178,5 +179,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @Override
     public Context getAppContext() {
         return getActivity().getApplicationContext();
+    }
+
+    protected <C> C getMessageComponent(Class<C> componentType) {
+        return componentType.cast(((MainActivity) getActivity()).getMessageComponent());
     }
 }

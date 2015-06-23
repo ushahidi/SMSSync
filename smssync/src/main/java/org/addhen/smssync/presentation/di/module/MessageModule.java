@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.presentation.di.module;
 
+import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
@@ -35,7 +36,7 @@ public class MessageModule {
     @Provides
     @ActivityScope
     @Named("messageList")
-    ListMessageUsecase provideListFilterUseCase(ListMessageUsecase listMessageUsecase) {
+    Usecase provideListFilterUseCase(ListMessageUsecase listMessageUsecase) {
         return listMessageUsecase;
     }
 }

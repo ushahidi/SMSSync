@@ -28,7 +28,7 @@ import rx.Observable;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface MessageRespository extends Repository<MessageEntity> {
+public interface MessageRepository extends Repository<MessageEntity> {
 
     Observable<Integer> deleteByUuid(String uuid);
 
