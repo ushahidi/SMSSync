@@ -23,11 +23,17 @@ import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppComponent;
+import org.addhen.smssync.presentation.di.component.DaggerFilterComponent;
+import org.addhen.smssync.presentation.di.component.DaggerLogComponent;
 import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
+import org.addhen.smssync.presentation.di.component.FilterComponent;
+import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -53,6 +59,10 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
     private AppComponent mAppComponent;
 
     private MessageComponent mMessageComponent;
+
+    private LogComponent mLogComponent;
+
+    private FilterComponent mFilterComponent;
 
     public MainActivity() {
         super(R.layout.activity_main, 0);
@@ -86,6 +96,16 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
+
+        mLogComponent = DaggerLogComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
+
+        mFilterComponent = DaggerFilterComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .build();
     }
 
     @Override
@@ -113,12 +133,19 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
                             break;
                         case R.id.nav_logs:
                             replaceFragment(R.id.fragment_main_content,
-                                    mAppComponent.launcher().launchSyncUrls(),
+                                    mAppComponent.launcher().launchLogs(),
                                     "logs");
+                            break;
+                        case R.id.nav_filters:
+                            replaceFragment(R.id.fragment_main_content,
+                                    mAppComponent.launcher().launchFilters(),
+                                    "filters");
+                            break;
                         default:
                             setupMessagesFragment();
                     }
                     menuItem.setChecked(menuItem.isChecked());
+                    mToolbar.setTitle(menuItem.getTitle());
                     mDrawerLayout.closeDrawers();
                     return true;
                 });
@@ -130,6 +157,15 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
                 "messages");
     }
 
+    protected void replaceFragment(int containerViewId, Fragment fragment, String tag) {
+        FragmentTransaction fragmentTransaction = this.getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(containerViewId, fragment, tag);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+
     @Override
     public AppComponent getComponent() {
         return mAppComponent;
@@ -137,5 +173,13 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
 
     public MessageComponent getMessageComponent() {
         return mMessageComponent;
+    }
+
+    public LogComponent getLogComponent() {
+        return mLogComponent;
+    }
+
+    public FilterComponent getFilterComponent() {
+        return mFilterComponent;
     }
 }

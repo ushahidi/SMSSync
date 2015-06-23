@@ -24,10 +24,10 @@ import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
-import org.addhen.smssync.domain.entity.MessageEntity;
+import org.addhen.smssync.domain.entity.LogEntity;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
-import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
-import org.addhen.smssync.presentation.view.message.ListMessageView;
+import org.addhen.smssync.presentation.model.mapper.LogModelDataMapper;
+import org.addhen.smssync.presentation.view.log.ListLogView;
 
 import android.support.annotation.NonNull;
 
@@ -40,19 +40,19 @@ import javax.inject.Named;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @ActivityScope
-public class ListMessagePresenter implements Presenter {
+public class ListLogPresenter implements Presenter {
 
-    private final Usecase mListMessageUsecase;
+    private final Usecase mListLogUsecase;
 
-    private final MessageModelDataMapper mMessageModelDataMapper;
+    private final LogModelDataMapper mLogModelDataMapper;
 
-    private ListMessageView mListMessageView;
+    private ListLogView mListLogView;
 
     @Inject
-    public ListMessagePresenter(@Named("messageList") Usecase listMessageUsecase,
-            MessageModelDataMapper messageModelDataMapper) {
-        mListMessageUsecase = listMessageUsecase;
-        mMessageModelDataMapper = messageModelDataMapper;
+    public ListLogPresenter(@Named("logList") Usecase listLogUsecase,
+            LogModelDataMapper logModelDataMapper) {
+        mListLogUsecase = listLogUsecase;
+        mLogModelDataMapper = logModelDataMapper;
     }
 
     @Override
@@ -67,40 +67,40 @@ public class ListMessagePresenter implements Presenter {
 
     @Override
     public void destroy() {
-        mListMessageUsecase.unsubscribe();
+        mListLogUsecase.unsubscribe();
     }
 
-    public void setView(@NonNull ListMessageView listMessageView) {
-        mListMessageView = listMessageView;
+    public void setView(@NonNull ListLogView listLogView) {
+        mListLogView = listLogView;
     }
 
     public void loadMessages() {
-        mListMessageView.hideRetry();
-        mListMessageView.showLoading();
-        mListMessageUsecase.execute(new DefaultSubscriber<List<MessageEntity>>() {
+        mListLogView.hideRetry();
+        mListLogView.showLoading();
+        mListLogUsecase.execute(new DefaultSubscriber<List<LogEntity>>() {
             @Override
             public void onCompleted() {
-                mListMessageView.hideLoading();
+                mListLogView.hideLoading();
             }
 
             @Override
-            public void onNext(List<MessageEntity> filterList) {
-                mListMessageView.hideLoading();
-                mListMessageView.showMessages(mMessageModelDataMapper.map(filterList));
+            public void onNext(List<LogEntity> logList) {
+                mListLogView.hideLoading();
+                mListLogView.showLogs(mLogModelDataMapper.map(logList));
             }
 
             @Override
             public void onError(Throwable e) {
-                mListMessageView.hideLoading();
+                mListLogView.hideLoading();
                 showErrorMessage(new DefaultErrorHandler((Exception) e));
-                mListMessageView.showRetry();
+                mListLogView.showRetry();
             }
         });
     }
 
     private void showErrorMessage(ErrorHandler errorHandler) {
-        String errorMessage = ErrorMessageFactory.create(mListMessageView.getAppContext(),
+        String errorMessage = ErrorMessageFactory.create(mListLogView.getAppContext(),
                 errorHandler.getException());
-        mListMessageView.showError(errorMessage);
+        mListLogView.showError(errorMessage);
     }
 }

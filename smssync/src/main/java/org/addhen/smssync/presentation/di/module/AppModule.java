@@ -19,13 +19,18 @@ package org.addhen.smssync.presentation.di.module;
 
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
+import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.repository.FilterDataRepository;
+import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.data.repository.MessageDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
+import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.presentation.ui.navigation.Launcher;
 
 import android.app.Activity;
+import android.content.Context;
+import android.text.format.DateFormat;
 
 import dagger.Module;
 import dagger.Provides;
@@ -56,5 +61,17 @@ public class AppModule {
     MessageRepository provideMessageRepository(
             MessageDataRepository messageDataRepository) {
         return messageDataRepository;
+    }
+
+    @Provides
+    @ActivityScope
+    LogRepository provideLogRepository(LogDataRepository logDataRepository) {
+        return logDataRepository;
+    }
+
+    @Provides
+    @ActivityScope
+    FileManager provideFileManager(Context context) {
+        return new FileManager(DateFormat.getDateFormatOrder(context));
     }
 }

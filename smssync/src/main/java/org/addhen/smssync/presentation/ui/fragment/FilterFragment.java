@@ -18,15 +18,19 @@
 package org.addhen.smssync.presentation.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
+import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.FilterComponent;
 import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.presenter.ListFilterPresenter;
+import org.addhen.smssync.presentation.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.ui.adapter.FilterAdapter;
 import org.addhen.smssync.presentation.view.filters.ListFilterView;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.widget.TextView;
 
 import java.util.List;
@@ -53,8 +57,13 @@ public class FilterFragment extends BaseRecyclerViewFragment<FilterModel, Filter
     @InjectView(android.R.id.empty)
     TextView mEmptyView;
 
+    @InjectView(android.R.id.list)
+    BloatedRecyclerView mFilterRecyclerView;
+
+    FilterAdapter mFilterAdapter;
+
     public FilterFragment() {
-        super(FilterAdapter.class, 0, 0);
+        super(FilterAdapter.class, R.layout.fragment_filter_list, 0);
     }
 
     public static FilterFragment newInstance(FilterModel.Status status) {
@@ -72,7 +81,7 @@ public class FilterFragment extends BaseRecyclerViewFragment<FilterModel, Filter
     }
 
     private void initialize(Bundle savedInstanceState) {
-        getComponent(FilterComponent.class).inject(this);
+        getFilterComponent(FilterComponent.class).inject(this);
         mListFilterPresenter.setView(this);
         final FilterModel.Status status;
         if (savedInstanceState == null) {
@@ -82,6 +91,13 @@ public class FilterFragment extends BaseRecyclerViewFragment<FilterModel, Filter
             status = (FilterModel.Status) savedInstanceState
                     .getSerializable(BUNDLE_STATE_FILTER_STATUS);
         }
+        mFilterAdapter = new FilterAdapter(mEmptyView);
+        mFilterRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mFilterRecyclerView.setFocusable(true);
+        mFilterRecyclerView.setFocusableInTouchMode(true);
+        mFilterAdapter.setHasStableIds(true);
+        mFilterRecyclerView.setAdapter(mFilterAdapter);
+        mFilterRecyclerView.addItemDividerDecoration(getActivity());
         mListFilterPresenter.loadFilters(status);
     }
 
@@ -118,5 +134,9 @@ public class FilterFragment extends BaseRecyclerViewFragment<FilterModel, Filter
     @Override
     public Context getAppContext() {
         return null;
+    }
+
+    protected <C> C getFilterComponent(Class<C> componentType) {
+        return componentType.cast(((MainActivity) getActivity()).getFilterComponent());
     }
 }

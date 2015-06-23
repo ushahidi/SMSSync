@@ -15,28 +15,30 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.module;
+package org.addhen.smssync.presentation.di.component;
 
-import com.addhen.android.raiburari.domain.usecase.Usecase;
+import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
+import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
+import org.addhen.smssync.presentation.di.module.AppModule;
+import org.addhen.smssync.presentation.di.module.LogModule;
+import org.addhen.smssync.presentation.presenter.ListLogPresenter;
+import org.addhen.smssync.presentation.ui.fragment.LogFragment;
 
-import javax.inject.Named;
-
-import dagger.Module;
-import dagger.Provides;
+import dagger.Component;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Module
-public class MessageModule {
+@ActivityScope
+@Component(dependencies = {ApplicationComponent.class}, modules = {
+        ActivityModule.class,
+        AppModule.class,
+        LogModule.class})
+public interface LogComponent extends AppComponent {
 
-    @Provides
-    @ActivityScope
-    @Named("messageList")
-    Usecase provideListMessageUseCase(ListMessageUsecase listMessageUsecase) {
-        return listMessageUsecase;
-    }
+    void inject(LogFragment logFragment);
+
+    ListLogPresenter listLogPresenter();
 }

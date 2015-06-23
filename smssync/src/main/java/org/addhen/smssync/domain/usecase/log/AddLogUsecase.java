@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.domain.executor.PostExecutionThread;
 import com.addhen.android.raiburari.domain.executor.ThreadExecutor;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 
+import org.addhen.smssync.domain.entity.LogEntity;
 import org.addhen.smssync.domain.repository.LogRepository;
 
 import android.support.annotation.NonNull;
@@ -36,7 +37,7 @@ public class AddLogUsecase extends Usecase {
 
     private final LogRepository mLogRepository;
 
-    private String mName;
+    private LogEntity mLogEntity;
 
     @Inject
     public AddLogUsecase(@NonNull LogRepository logRepository,
@@ -45,15 +46,12 @@ public class AddLogUsecase extends Usecase {
         mLogRepository = logRepository;
     }
 
-    public void setName(String name) {
-        mName = name;
+    public void setLog(LogEntity logEntity) {
+        mLogEntity = logEntity;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        if (mName == null) {
-            throw new RuntimeException("Log name cannot be null. You must call setName(...)");
-        }
-        return mLogRepository.addLog(mName);
+        return mLogRepository.addLog(mLogEntity);
     }
 }

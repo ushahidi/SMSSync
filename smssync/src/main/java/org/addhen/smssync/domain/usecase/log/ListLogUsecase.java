@@ -36,8 +36,6 @@ public class ListLogUsecase extends Usecase {
 
     private final LogRepository mLogRepository;
 
-    private String mName;
-
     @Inject
     public ListLogUsecase(@NonNull LogRepository logRepository,
             ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
@@ -45,15 +43,8 @@ public class ListLogUsecase extends Usecase {
         mLogRepository = logRepository;
     }
 
-    public void setName(String name) {
-        mName = name;
-    }
-
     @Override
     protected Observable buildUseCaseObservable() {
-        if (mName == null) {
-            throw new RuntimeException("Log name cannot be null. You must call setName(...)");
-        }
-        return mLogRepository.getLogs(mName);
+        return mLogRepository.getLogs();
     }
 }

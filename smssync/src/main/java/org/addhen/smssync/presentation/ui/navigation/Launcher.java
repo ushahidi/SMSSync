@@ -17,7 +17,9 @@
 
 package org.addhen.smssync.presentation.ui.navigation;
 
+import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.ui.activity.SettingsActivity;
+import org.addhen.smssync.presentation.ui.fragment.FilterFragment;
 import org.addhen.smssync.presentation.ui.fragment.LogFragment;
 import org.addhen.smssync.presentation.ui.fragment.MessageFragment;
 import org.addhen.smssync.presentation.ui.fragment.SyncUrlFragment;
@@ -49,10 +51,14 @@ public class Launcher {
     }
 
     public LogFragment launchLogs() {
-        return new LogFragment();
+        return LogFragment.newInstance();
     }
 
     public SyncUrlFragment launchSyncUrls() {
         return new SyncUrlFragment();
+    }
+
+    public FilterFragment launchFilters() {
+        return FilterFragment.newInstance(FilterModel.Status.WHITELIST);
     }
 }

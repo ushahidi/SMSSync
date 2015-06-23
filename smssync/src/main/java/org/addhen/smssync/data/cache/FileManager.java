@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 
 /**
@@ -35,6 +37,7 @@ public class FileManager {
 
     private String dateFormat;
 
+    @Inject
     public FileManager(char[] format) {
         this(LOG_NAME, format);
     }

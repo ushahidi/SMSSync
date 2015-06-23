@@ -15,28 +15,18 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.module;
+package org.addhen.smssync.presentation.view.message;
 
-import com.addhen.android.raiburari.domain.usecase.Usecase;
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
+import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
-import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
+import org.addhen.smssync.presentation.model.MessageModel;
 
-import javax.inject.Named;
-
-import dagger.Module;
-import dagger.Provides;
+import java.util.List;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Module
-public class MessageModule {
+public interface ListMessageView extends LoadDataView {
 
-    @Provides
-    @ActivityScope
-    @Named("messageList")
-    Usecase provideListMessageUseCase(ListMessageUsecase listMessageUsecase) {
-        return listMessageUsecase;
-    }
+    void showMessages(List<MessageModel> messageModelList);
 }

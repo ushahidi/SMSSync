@@ -15,18 +15,23 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.post;
+package org.addhen.smssync.presentation.model;
 
-import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
-
-import org.addhen.smssync.presentation.model.MessageModel;
-
-import java.util.List;
+import com.addhen.android.raiburari.presentation.model.Model;
 
 /**
+ * Log message
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface ListMessageView extends LoadDataView {
+public class LogModel extends Model {
 
-    void showMessages(List<MessageModel> messageModelList);
+    public String message;
+
+    @Override
+    public String toString() {
+        return "Log{" +
+                "message='" + message + '\'' +
+                '}';
+    }
 }
