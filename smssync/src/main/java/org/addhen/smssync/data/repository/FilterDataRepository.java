@@ -20,8 +20,8 @@ package org.addhen.smssync.data.repository;
 import org.addhen.smssync.data.entity.mapper.FilterEntityDataMapper;
 import org.addhen.smssync.domain.entity.FilterEntity;
 import org.addhen.smssync.domain.repository.FilterRepository;
-import org.addhen.smssync.domain.repository.datasource.filter.FilterDataSource;
-import org.addhen.smssync.domain.repository.datasource.filter.FilterDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.filter.FilterDataSource;
+import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
 
 import java.util.List;
 

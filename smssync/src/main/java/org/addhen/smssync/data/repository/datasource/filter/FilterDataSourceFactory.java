@@ -15,32 +15,27 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository.datasource.filter;
+package org.addhen.smssync.data.repository.datasource.filter;
 
-import org.addhen.smssync.data.entity.Filter;
+import org.addhen.smssync.data.database.FilterDatabaseHelper;
 
-import java.util.List;
+import android.support.annotation.NonNull;
 
-import rx.Observable;
+import javax.inject.Inject;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface FilterDataSource {
+public class FilterDataSourceFactory {
 
-    Observable<Integer> deleteAllWhiteList();
+    private final FilterDatabaseHelper mFilterDatabaseHelper;
 
-    Observable<Integer> deleteAllBlackList();
+    @Inject
+    FilterDataSourceFactory(@NonNull FilterDatabaseHelper filterDatabaseHelper) {
+        mFilterDatabaseHelper = filterDatabaseHelper;
+    }
 
-    Observable<List<Filter>> fetchByStatus(Filter.Status status);
-
-    Observable<List<Filter>> getEntities();
-
-    Observable<Filter> getEntity(Long aLong);
-
-    Observable<Long> addEntity(Filter filterEntity);
-
-    Observable<Long> updateEntity(Filter filterEntity);
-
-    Observable<Long> deleteEntity(Long id);
+    public FilterDataSource createFilterDataSource() {
+        return new FilterDatabaseSource(mFilterDatabaseHelper);
+    }
 }

@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository.datasource.filter;
+package org.addhen.smssync.data.repository.datasource.filter;
 
 import org.addhen.smssync.data.database.FilterDatabaseHelper;
 import org.addhen.smssync.data.entity.Filter;

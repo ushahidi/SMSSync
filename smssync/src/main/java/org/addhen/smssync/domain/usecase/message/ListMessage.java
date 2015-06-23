@@ -15,27 +15,12 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository.datasource.filter;
-
-import org.addhen.smssync.data.database.FilterDatabaseHelper;
-
-import android.support.annotation.NonNull;
-
-import javax.inject.Inject;
+package org.addhen.smssync.domain.usecase.message;
 
 /**
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class FilterDataSourceFactory {
+public class ListMessage {
 
-    private final FilterDatabaseHelper mFilterDatabaseHelper;
-
-    @Inject
-    FilterDataSourceFactory(@NonNull FilterDatabaseHelper filterDatabaseHelper) {
-        mFilterDatabaseHelper = filterDatabaseHelper;
-    }
-
-    public FilterDataSource createFilterDataSource() {
-        return new FilterDatabaseSource(mFilterDatabaseHelper);
-    }
 }
