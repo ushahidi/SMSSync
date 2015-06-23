@@ -489,4 +489,7 @@
     </string>
     <string name="exception_message_no_connection">There is no internet connection</string>
     <string name="exception_message_filter_not_found">Filter not found.</string>
+    <string name="exception_message_message_not_found">Message not found.</string>
+    <string name="open_navigation">Open Navigation drawer</string>
+    <string name="close_navigation">Close Navigationd drawer</string>
 </resources>

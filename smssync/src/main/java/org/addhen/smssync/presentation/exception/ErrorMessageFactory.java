@@ -19,6 +19,7 @@ package org.addhen.smssync.presentation.exception;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.exception.FilterNotFoundException;
+import org.addhen.smssync.data.exception.MessageNotFoundException;
 
 import android.content.Context;
 
@@ -43,6 +44,8 @@ public class ErrorMessageFactory {
     public static String create(Context context, Exception exception) {
         String message = context.getString(R.string.exception_message_generic);
         if (exception instanceof FilterNotFoundException) {
+            message = context.getString(R.string.exception_message_filter_not_found);
+        } else if(exception instanceof MessageNotFoundException) {
             message = context.getString(R.string.exception_message_filter_not_found);
         }
         return message;

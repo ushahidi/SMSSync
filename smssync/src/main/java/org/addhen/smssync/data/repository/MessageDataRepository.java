@@ -50,46 +50,58 @@ public class MessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<Integer> deleteByUuid(String uuid) {
-        return null;
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.deleteByUuid(uuid);
     }
 
     @Override
     public Observable<Integer> deleteAll() {
-        return null;
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.deleteAll();
     }
 
     @Override
     public Observable<List<MessageEntity>> fetchByType(MessageEntity.Type type) {
-        return null;
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.fetchMessageByType(mMessageDataMapper.map(type))
+                .map((messageList -> mMessageDataMapper.map(messageList)));
     }
 
     @Override
     public Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status) {
-        return null;
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.fetchMessageByStatus(mMessageDataMapper.map(status))
+                .map((messageList -> mMessageDataMapper.map(messageList)));
     }
 
     @Override
     public Observable<List<MessageEntity>> getEntities() {
-        return null;
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.getMessages()
+                .map((messageList -> mMessageDataMapper.map(messageList)));
     }
 
     @Override
-    public Observable<MessageEntity> getEntity(Long aLong) {
-        return null;
+    public Observable<MessageEntity> getEntity(Long id) {
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.getMessage(id).map(message -> mMessageDataMapper.map(message));
     }
 
     @Override
     public Observable<Long> addEntity(MessageEntity messageEntity) {
-        return null;
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.put(mMessageDataMapper.map(messageEntity));
     }
 
     @Override
     public Observable<Long> updateEntity(MessageEntity messageEntity) {
-        return null;
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.put(mMessageDataMapper.map(messageEntity));
     }
 
     @Override
-    public Observable<Long> deleteEntity(Long aLong) {
-        return null;
+    public Observable<Long> deleteEntity(Long id) {
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        return mMessageDataSource.deleteEntity(id);
     }
 }

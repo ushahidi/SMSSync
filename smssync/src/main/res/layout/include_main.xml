@@ -23,9 +23,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               tools:context=".presentation.ui.activity.ListDeploymentActivity">
-
     <include layout="@layout/toolbar_actionbar"/>
-
     <FrameLayout
             android:id="@+id/fragment_main_content"
             android:layout_width="match_parent"

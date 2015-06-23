@@ -169,7 +169,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Override
     public void showError(String s) {
-        Snackbar snackbar = Snackbar.make(getView(), s, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mFab, s, Snackbar.LENGTH_LONG);
         View view = snackbar.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(getAppContext().getResources().getColor(R.color.red));

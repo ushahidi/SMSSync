@@ -22,7 +22,11 @@
                                         android:layout_height="match_parent"
                                         android:layout_width="match_parent"
                                         android:fitsSystemWindows="true">
-    <include layout="@layout/include_main"/>
+    <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <include layout="@layout/include_main"/>
+    </android.support.design.widget.CoordinatorLayout>
     <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_height="match_parent"

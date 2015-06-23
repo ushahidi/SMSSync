@@ -42,7 +42,7 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
     }
 
     public Observable<Integer> deleteByUuid(String uuid) {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 Integer row = null;
                 final String whereClause = "message_uuid = ?";
@@ -59,11 +59,11 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 
     public Observable<Integer> deleteAll() {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 Integer row = null;
                 try {
@@ -77,11 +77,11 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 
     public Observable<List<Message>> fetchMessageByType(Message.Type type) {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 List<Message> messages = null;
                 final String whereClause = "message_type = ?";
@@ -101,11 +101,11 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 
     public Observable<List<Message>> fetchMessageByStatus(Message.Status status) {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 final String whereClause = "status = ?";
                 List<Message> messages = null;
@@ -125,11 +125,11 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 
     public Observable<List<Message>> getMessages() {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 List<Message> messages = null;
                 try {
@@ -138,16 +138,20 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
-                subscriber.onNext(messages);
-                subscriber.onCompleted();
+                if (messages != null) {
+                    subscriber.onNext(messages);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new MessageNotFoundException());
+                }
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 
     public Observable<Message> getMessage(Long id) {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 Message message = null;
                 try {
@@ -164,11 +168,11 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 
     public Observable<Long> put(Message message) {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 try {
                     cupboard().withDatabase(getWritableDatabase()).put(message);
@@ -180,11 +184,11 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 
     public Observable<Long> deleteEntity(Long id) {
-        return Observable.create((subscriber -> {
+        return Observable.create(subscriber -> {
             if (!isClosed()) {
                 try {
                     cupboard().withDatabase(getWritableDatabase()).delete(Message.class, id);
@@ -196,6 +200,6 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
             } else {
                 subscriber.onError(new Exception());
             }
-        }));
+        });
     }
 }

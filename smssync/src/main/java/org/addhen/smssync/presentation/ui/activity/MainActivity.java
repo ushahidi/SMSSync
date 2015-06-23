@@ -88,7 +88,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
                 .build();
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
