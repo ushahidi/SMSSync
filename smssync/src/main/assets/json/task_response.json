@@ -1,23 +1,152 @@
-{
-  "payload": {
-    "task": "send",
-    "secret": "secret_key",
-    "messages": [
-      {
-        "to": "+000-000-0000",
-        "message": "the message goes here",
-        "uuid": "aada21b0-0615-4957-bcb3"
-      },
-      {
-        "to": "+000-000-0000",
-        "message": "the message goes here",
-        "uuid": "1ba368bd-c467-4374-bf28"
-      },
-      {
-        "to": "+000-000-0000",
-        "message": "the message goes here",
-        "uuid": "95df126b-ee80-4175-a6fb"
-      }
-    ]
+[
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
+  },
+  {
+    "from": 99393,
+    "message": "Hello there",
+    "sent_to": "020302032",
+    "timestamp": 4930403403,
+    "to": 2030239203943,
+    "message_uuid": "042b3515-ef6b-f424-c4qd",
+    "retries": 3,
+    "sent_result_code": 0,
+    "sent_result_message": "SMSSync Message Sent",
+    "delivered_result_code": -1,
+    "delivered_result_message": "No message",
+    "status": "failed",
+    "type": "pending"
   }
-}
+]

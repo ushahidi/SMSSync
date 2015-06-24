@@ -17,9 +17,17 @@
 
 package org.addhen.smssync.data.repository;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
 
+import android.content.Context;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,8 +41,11 @@ import rx.Observable;
 @Singleton
 public class InternalMessageDataRepository implements MessageRepository {
 
+    private Context mContext;
+
     @Inject
-    public InternalMessageDataRepository() {
+    public InternalMessageDataRepository(Context context) {
+        mContext = context;
     }
 
     @Override
@@ -59,7 +70,14 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<List<MessageEntity>> getEntities() {
-        return null;
+        return Observable.create(subscriber -> {
+            final Gson gson = new Gson();
+            Type messageList = new TypeToken<List<MessageEntity>>() {
+            }.getType();
+            List<MessageEntity> messageEntityList = gson.fromJson(loadJSONFromAsset(), messageList);
+            subscriber.onNext(messageEntityList);
+            subscriber.onCompleted();
+        });
     }
 
     @Override
@@ -80,5 +98,21 @@ public class InternalMessageDataRepository implements MessageRepository {
     @Override
     public Observable<Long> deleteEntity(Long aLong) {
         return null;
+    }
+
+    private String loadJSONFromAsset() {
+        String json;
+        try {
+            InputStream is = mContext.getAssets().open("json/messages.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 }
