@@ -4,6 +4,7 @@ import org.addhen.smssync.data.entity.Log;
 import org.addhen.smssync.data.exception.LogNotFoundException;
 import org.addhen.smssync.data.util.Logger;
 
+import android.content.Context;
 import android.os.Environment;
 import android.text.format.DateFormat;
 
@@ -19,12 +20,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class FileManager {
 
     public static final String LOG_NAME = "smssync_log";
@@ -40,11 +43,12 @@ public class FileManager {
     private String mName;
 
     @Inject
-    public FileManager(char[] format) {
-        this(LOG_NAME, format);
+    public FileManager(Context context) {
+
+        this(LOG_NAME, DateFormat.getDateFormatOrder(context));
     }
 
-    private FileManager(String name, char[] format) {
+    public FileManager(String name, char[] format) {
         mName = name;
         for (char c : format) {
             if (c == 'M') {

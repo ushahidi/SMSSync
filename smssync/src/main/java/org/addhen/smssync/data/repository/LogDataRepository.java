@@ -26,12 +26,14 @@ import org.addhen.smssync.domain.repository.LogRepository;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class LogDataRepository implements LogRepository {
 
     private final LogDataMapper mLogDataMapper;

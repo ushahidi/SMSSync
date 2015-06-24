@@ -15,26 +15,26 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.component;
+package org.addhen.smssync.presentation.di.module;
 
-import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
+import org.addhen.smssync.data.repository.InternalMessageDataRepository;
+import org.addhen.smssync.domain.repository.MessageRepository;
 
-import org.addhen.smssync.presentation.di.module.LogModule;
-import org.addhen.smssync.presentation.presenter.ListLogPresenter;
-import org.addhen.smssync.presentation.ui.fragment.LogFragment;
+import javax.inject.Singleton;
 
-import dagger.Component;
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@ActivityScope
-@Component(dependencies = AppComponent.class, modules = {
-        ActivityModule.class, LogModule.class})
-public interface LogComponent extends AppActivityComponent {
+@Module
+public class InternalAppModule {
 
-    void inject(LogFragment logFragment);
-
-    ListLogPresenter listLogPresenter();
+    @Provides
+    @Singleton
+    MessageRepository provideInternalMessageRepository(
+            InternalMessageDataRepository internalMessageDataRepository) {
+        return internalMessageDataRepository;
+    }
 }

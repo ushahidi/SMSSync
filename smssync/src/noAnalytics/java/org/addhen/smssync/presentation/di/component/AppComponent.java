@@ -17,28 +17,26 @@
 
 package org.addhen.smssync.presentation.di.component;
 
-import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
+import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 
-import org.addhen.smssync.presentation.di.module.FilterModule;
-import org.addhen.smssync.presentation.presenter.ListFilterPresenter;
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.fragment.FilterFragment;
+import org.addhen.smssync.presentation.di.module.AppModule;
+
+import javax.inject.Singleton;
 
 import dagger.Component;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@ActivityScope
-@Component(dependencies = AppComponent.class, modules = {
-        ActivityModule.class,
-        FilterModule.class})
-public interface FilterComponent extends AppActivityComponent {
+@Singleton
+@Component(modules = {AppModule.class})
+public interface AppComponent extends ApplicationComponent {
 
-    void inject(MainActivity mainActivity);
+    FilterRepository filterRepository();
 
-    void inject(FilterFragment filterFragment);
+    MessageRepository messageRepository();
 
-    ListFilterPresenter listFilterPresenter();
+    LogRepository logRepository();
+
+    FileManager fileManager();
 }

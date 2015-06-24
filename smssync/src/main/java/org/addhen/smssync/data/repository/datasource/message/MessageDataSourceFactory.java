@@ -22,10 +22,12 @@ import org.addhen.smssync.data.database.MessageDatabaseHelper;
 import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class MessageDataSourceFactory {
 
     private final MessageDatabaseHelper mMessageDatabaseHelper;

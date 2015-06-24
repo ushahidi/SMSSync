@@ -15,26 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.component;
-
-import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
-
-import org.addhen.smssync.presentation.di.module.LogModule;
-import org.addhen.smssync.presentation.presenter.ListLogPresenter;
-import org.addhen.smssync.presentation.ui.fragment.LogFragment;
-
-import dagger.Component;
+package org.addhen.smssync.presentation;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@ActivityScope
-@Component(dependencies = AppComponent.class, modules = {
-        ActivityModule.class, LogModule.class})
-public interface LogComponent extends AppActivityComponent {
+public class TrackerResolver {
 
-    void inject(LogFragment logFragment);
-
-    ListLogPresenter listLogPresenter();
+    public static AppTracker getInstance() {
+        return new NoInternalTracker();
+    }
 }

@@ -22,10 +22,12 @@ import org.addhen.smssync.data.database.FilterDatabaseHelper;
 import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class FilterDataSourceFactory {
 
     private final FilterDatabaseHelper mFilterDatabaseHelper;

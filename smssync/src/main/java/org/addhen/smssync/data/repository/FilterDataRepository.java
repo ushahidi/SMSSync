@@ -18,14 +18,15 @@
 package org.addhen.smssync.data.repository;
 
 import org.addhen.smssync.data.entity.mapper.FilterDataMapper;
-import org.addhen.smssync.domain.entity.FilterEntity;
-import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSource;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
+import org.addhen.smssync.domain.entity.FilterEntity;
+import org.addhen.smssync.domain.repository.FilterRepository;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
@@ -34,6 +35,7 @@ import rx.Observable;
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class FilterDataRepository implements FilterRepository {
 
     private final FilterDataMapper mFilterEntityDataMapper;

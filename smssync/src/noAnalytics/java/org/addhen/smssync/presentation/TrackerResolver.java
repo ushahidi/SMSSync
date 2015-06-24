@@ -17,8 +17,10 @@
 
 package org.addhen.smssync.presentation;
 
+/**
+ * @author Ushahidi Team <team@ushahidi.com>
+ */
 public class TrackerResolver {
-
     public static AppTracker getInstance() {
         return new NoTracker();
     }

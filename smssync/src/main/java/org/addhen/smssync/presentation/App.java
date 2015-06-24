@@ -18,19 +18,34 @@
 package org.addhen.smssync.presentation;
 
 import com.addhen.android.raiburari.presentation.BaseApplication;
-import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
+import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
+
+import org.addhen.smssync.presentation.di.component.AppComponent;
+import org.addhen.smssync.presentation.di.component.DaggerAppComponent;
+import org.addhen.smssync.presentation.di.module.AppModule;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class App extends BaseApplication {
 
-    ApplicationComponent mApplicationComponent;
+    AppComponent mAppComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mApplicationComponent = getApplicationComponent();
+        initializeInjector();
+    }
+
+    private void initializeInjector() {
+        mAppComponent = DaggerAppComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .appModule(new AppModule(this))
+                .build();
+    }
+
+    public AppComponent getAppComponent() {
+        return mAppComponent;
     }
 
     /**

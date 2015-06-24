@@ -142,15 +142,18 @@ android {
         }
     }
 
-    flavorDimensions "analytics"
     productFlavors {
 
         withAnalytics {
-            dimension "analytics"
+            applicationId 'org.addhen.smssync'
         }
 
         noAnalytics {
-            dimension "analytics"
+            applicationId 'org.addhen.smssync'
+        }
+
+        internal {
+            applicationId 'org.addhen.smssync.internal'
         }
     }
 

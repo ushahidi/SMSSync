@@ -20,10 +20,12 @@ package org.addhen.smssync.data.repository.datasource.log;
 import org.addhen.smssync.data.cache.FileManager;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class LogDataSourceFactory {
 
     private final FileManager mFileManager;

@@ -26,6 +26,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
@@ -34,6 +35,7 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class MessageDatabaseHelper extends BaseDatabaseHelper {
 
     @Inject

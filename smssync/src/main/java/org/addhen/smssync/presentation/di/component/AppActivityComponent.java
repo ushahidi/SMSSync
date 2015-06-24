@@ -17,24 +17,22 @@
 
 package org.addhen.smssync.presentation.di.component;
 
-import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
+/**
+ * @author Ushahidi Team <team@ushahidi.com>
+ */
+
 import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import org.addhen.smssync.presentation.di.module.AppModule;
 import org.addhen.smssync.presentation.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.ui.navigation.Launcher;
 
 import dagger.Component;
 
-/**
- * @author Ushahidi Team <team@ushahidi.com>
- */
 @ActivityScope
-@Component(dependencies = {ApplicationComponent.class}, modules = {
-        ActivityModule.class,
-        AppModule.class})
-public interface AppComponent {
+@Component(dependencies = AppComponent.class, modules = {
+        ActivityModule.class})
+public interface AppActivityComponent {
 
     void inject(MainActivity mainActivity);
 

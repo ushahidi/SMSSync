@@ -26,12 +26,14 @@ import org.addhen.smssync.domain.repository.MessageRepository;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class MessageDataRepository implements MessageRepository {
 
     private final MessageDataMapper mMessageDataMapper;

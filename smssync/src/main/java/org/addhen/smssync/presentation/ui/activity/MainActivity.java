@@ -21,8 +21,10 @@ import com.addhen.android.raiburari.presentation.di.HasComponent;
 import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.di.component.AppActivityComponent;
 import org.addhen.smssync.presentation.di.component.AppComponent;
-import org.addhen.smssync.presentation.di.component.DaggerAppComponent;
+import org.addhen.smssync.presentation.di.component.DaggerAppActivityComponent;
 import org.addhen.smssync.presentation.di.component.DaggerFilterComponent;
 import org.addhen.smssync.presentation.di.component.DaggerLogComponent;
 import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
@@ -45,7 +47,7 @@ import butterknife.InjectView;
 /**
  * @author Henry Addo
  */
-public class MainActivity extends BaseActivity implements HasComponent<AppComponent> {
+public class MainActivity extends BaseActivity implements HasComponent<AppActivityComponent> {
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
@@ -56,7 +58,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
     @InjectView((R.id.nav_view))
     NavigationView mNavigationView;
 
-    private AppComponent mAppComponent;
+    private AppActivityComponent mAppComponent;
 
     private MessageComponent mMessageComponent;
 
@@ -87,23 +89,24 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
     }
 
     private void injector() {
-        mAppComponent = DaggerAppComponent.builder()
-                .applicationComponent(getApplicationComponent())
+        getAppComponent().inject(this);
+        mAppComponent = DaggerAppActivityComponent.builder()
+                .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
 
         mMessageComponent = DaggerMessageComponent.builder()
-                .applicationComponent(getApplicationComponent())
+                .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
 
         mLogComponent = DaggerLogComponent.builder()
-                .applicationComponent(getApplicationComponent())
+                .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
 
         mFilterComponent = DaggerFilterComponent.builder()
-                .applicationComponent(getApplicationComponent())
+                .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
     }
@@ -167,8 +170,17 @@ public class MainActivity extends BaseActivity implements HasComponent<AppCompon
 
 
     @Override
-    public AppComponent getComponent() {
+    public AppActivityComponent getComponent() {
         return mAppComponent;
+    }
+
+    /**
+     * Gets the Main Application component for dependency injection.
+     *
+     * @return {@link com.addhen.android.raiburari.presentation.di.component.ApplicationComponent}
+     */
+    public AppComponent getAppComponent() {
+        return ((App) getApplication()).getAppComponent();
     }
 
     public MessageComponent getMessageComponent() {

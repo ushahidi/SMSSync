@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.presentation.di.module;
 
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
+import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.repository.FilterDataRepository;
@@ -26,11 +26,11 @@ import org.addhen.smssync.data.repository.MessageDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
-import org.addhen.smssync.presentation.ui.navigation.Launcher;
+import org.addhen.smssync.presentation.App;
 
-import android.app.Activity;
 import android.content.Context;
-import android.text.format.DateFormat;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -40,38 +40,38 @@ import dagger.Provides;
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Module
+@Module(includes = ApplicationModule.class)
 public class AppModule {
 
-    @Provides
-    @ActivityScope
-    Launcher provideLauncher(Activity activity) {
-        return new Launcher(activity);
+    App mApp;
+
+    public AppModule(App application) {
+        mApp = application;
     }
 
     @Provides
-    @ActivityScope
+    @Singleton
     FilterRepository provideFilterRepository(
             FilterDataRepository filterDataRepository) {
         return filterDataRepository;
     }
 
     @Provides
-    @ActivityScope
+    @Singleton
     MessageRepository provideMessageRepository(
             MessageDataRepository messageDataRepository) {
         return messageDataRepository;
     }
 
     @Provides
-    @ActivityScope
+    @Singleton
     LogRepository provideLogRepository(LogDataRepository logDataRepository) {
         return logDataRepository;
     }
 
     @Provides
-    @ActivityScope
+    @Singleton
     FileManager provideFileManager(Context context) {
-        return new FileManager(DateFormat.getDateFormatOrder(context));
+        return new FileManager(context);
     }
 }

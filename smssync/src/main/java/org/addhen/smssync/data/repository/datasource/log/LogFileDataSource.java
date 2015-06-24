@@ -23,12 +23,14 @@ import org.addhen.smssync.data.entity.Log;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import rx.Observable;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class LogFileDataSource implements LogDataSource {
 
     private final FileManager mFileManager;
