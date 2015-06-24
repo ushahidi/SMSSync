@@ -15,33 +15,26 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.component;
+package org.addhen.smssync.presentation.di.module;
 
-import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
-
-import org.addhen.smssync.data.cache.FileManager;
-import org.addhen.smssync.domain.repository.FilterRepository;
-import org.addhen.smssync.domain.repository.LogRepository;
+import org.addhen.smssync.data.repository.MessageDataRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
-import org.addhen.smssync.presentation.di.module.AppModule;
-import org.addhen.smssync.presentation.di.module.WithAnalyticsAppModule;
 
 import javax.inject.Singleton;
 
-import dagger.Component;
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Singleton
-@Component(modules = {AppModule.class, WithAnalyticsAppModule.class})
-public interface AppComponent extends ApplicationComponent {
+@Module
+public class WithAnalyticsAppModule {
 
-    FilterRepository filterRepository();
-
-    MessageRepository messageRepository();
-
-    LogRepository logRepository();
-
-    FileManager fileManager();
+    @Provides
+    @Singleton
+    MessageRepository provideMessageRepository(
+            MessageDataRepository messageDataRepository) {
+        return messageDataRepository;
+    }
 }

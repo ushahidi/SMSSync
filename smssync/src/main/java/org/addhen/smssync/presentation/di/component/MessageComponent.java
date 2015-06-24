@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.presentation.di.component;
 
+import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 

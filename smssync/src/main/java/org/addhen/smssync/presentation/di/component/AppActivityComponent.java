@@ -21,6 +21,7 @@ package org.addhen.smssync.presentation.di.component;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 
+import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
@@ -30,8 +31,7 @@ import org.addhen.smssync.presentation.ui.navigation.Launcher;
 import dagger.Component;
 
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = {
-        ActivityModule.class})
+@Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class})
 public interface AppActivityComponent {
 
     void inject(MainActivity mainActivity);

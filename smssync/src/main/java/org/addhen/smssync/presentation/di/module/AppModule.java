@@ -22,10 +22,8 @@ import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
-import org.addhen.smssync.data.repository.MessageDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
-import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.presentation.App;
 
 import android.content.Context;
@@ -54,13 +52,6 @@ public class AppModule {
     FilterRepository provideFilterRepository(
             FilterDataRepository filterDataRepository) {
         return filterDataRepository;
-    }
-
-    @Provides
-    @Singleton
-    MessageRepository provideMessageRepository(
-            MessageDataRepository messageDataRepository) {
-        return messageDataRepository;
     }
 
     @Provides

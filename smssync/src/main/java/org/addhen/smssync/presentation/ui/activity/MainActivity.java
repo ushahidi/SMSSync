@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private void injector() {
         getAppComponent().inject(this);
         mAppComponent = DaggerAppActivityComponent.builder()
-                .appComponent(getAppComponent())
+                .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
 

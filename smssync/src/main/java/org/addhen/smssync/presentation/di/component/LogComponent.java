@@ -30,8 +30,7 @@ import dagger.Component;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = {
-        ActivityModule.class, LogModule.class})
+@Component(dependencies = AppComponent.class, modules = {ActivityModule.class, LogModule.class})
 public interface LogComponent extends AppActivityComponent {
 
     void inject(LogFragment logFragment);

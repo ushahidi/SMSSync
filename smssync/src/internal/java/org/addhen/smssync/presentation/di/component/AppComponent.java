@@ -22,6 +22,7 @@ import com.addhen.android.raiburari.presentation.di.component.ApplicationCompone
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
+import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.presentation.di.module.AppModule;
 import org.addhen.smssync.presentation.di.module.InternalAppModule;
 
@@ -38,7 +39,7 @@ public interface AppComponent extends ApplicationComponent {
 
     FilterRepository filterRepository();
 
-    //MessageRepository messageRepository();
+    MessageRepository messageRepository();
 
     LogRepository logRepository();
 

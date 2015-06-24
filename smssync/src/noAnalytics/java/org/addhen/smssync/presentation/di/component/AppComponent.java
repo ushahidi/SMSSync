@@ -19,6 +19,10 @@ package org.addhen.smssync.presentation.di.component;
 
 import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 
+import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.domain.repository.FilterRepository;
+import org.addhen.smssync.domain.repository.LogRepository;
+import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.presentation.di.module.AppModule;
 
 import javax.inject.Singleton;
@@ -29,7 +33,7 @@ import dagger.Component;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @Singleton
-@Component(modules = {AppModule.class})
+@Component(modules = {AppModule.class, NoAnalyticsAppModule.class})
 public interface AppComponent extends ApplicationComponent {
 
     FilterRepository filterRepository();

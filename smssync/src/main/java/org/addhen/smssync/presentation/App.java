@@ -18,7 +18,6 @@
 package org.addhen.smssync.presentation;
 
 import com.addhen.android.raiburari.presentation.BaseApplication;
-import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
 import org.addhen.smssync.presentation.di.component.AppComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppComponent;
@@ -39,7 +38,6 @@ public class App extends BaseApplication {
 
     private void initializeInjector() {
         mAppComponent = DaggerAppComponent.builder()
-                .applicationModule(new ApplicationModule(this))
                 .appModule(new AppModule(this))
                 .build();
     }

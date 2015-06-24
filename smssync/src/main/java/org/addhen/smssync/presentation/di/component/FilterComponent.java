@@ -31,9 +31,7 @@ import dagger.Component;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @ActivityScope
-@Component(dependencies = AppComponent.class, modules = {
-        ActivityModule.class,
-        FilterModule.class})
+@Component(dependencies = AppComponent.class, modules = {ActivityModule.class, FilterModule.class})
 public interface FilterComponent extends AppActivityComponent {
 
     void inject(MainActivity mainActivity);
