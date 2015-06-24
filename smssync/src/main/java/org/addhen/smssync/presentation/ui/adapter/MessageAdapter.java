@@ -23,7 +23,6 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
 
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,10 +103,10 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
     public class Widgets extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.status_indicator)
-        AppCompatTextView statusIndicator;
+        TextView statusIndicator;
 
         @InjectView(R.id.message_from)
-        AppCompatTextView messageFrom;
+        TextView messageFrom;
 
         @InjectView(R.id.message_date)
         TextView messageDate;

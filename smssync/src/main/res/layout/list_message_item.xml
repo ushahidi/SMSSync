@@ -21,9 +21,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dip"
-                android:background="?attr/selectableItemBackground"
-                android:padding="5dip">
-    <AppCompatTextView
+                android:background="?attr/selectableItemBackground">
+    <TextView
             android:id="@+id/status_indicator"
             android:layout_width="5dp"
             android:layout_height="wrap_content"
@@ -31,7 +30,7 @@
             android:layout_alignTop="@+id/message_from"
             android:layout_alignBottom="@+id/sent_message_status"
             android:layout_alignParentLeft="true"/>
-    <AppCompatTextView
+    <TextView
             android:id="@+id/message_from"
             style="@style/TextView.Description"
             android:layout_width="wrap_content"
@@ -42,18 +41,18 @@
             android:layout_toRightOf="@+id/status_indicator"
             android:layout_toEndOf="@+id/status_indicator"/>
 
-    <AppCompatTextView
+    <TextView
             android:id="@+id/message_date"
             style="@style/TextView.Description"
             android:layout_width="wrap_content"
             android:text="Apri, 2015 at 2pm"
             android:lines="1"
             android:textColor="@color/grey_light"
-            android:layout_alignParentTop="true" android:layout_toRightOf="@+id/sent_message_type"
-            android:layout_toEndOf="@+id/sent_message_type" android:layout_marginLeft="699dp"
-            android:layout_marginStart="699dp"/>
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
-    <AppCompatTextView
+    <TextView
             android:id="@+id/message"
             style="@style/TextView.Description"
             android:layout_width="wrap_content"
@@ -63,7 +62,7 @@
             android:layout_toEndOf="@+id/status_indicator"
             android:layout_toRightOf="@+id/status_indicator"/>
 
-    <AppCompatTextView
+    <TextView
             android:id="@+id/sent_message_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,7 +75,7 @@
             android:layout_toRightOf="@+id/status_indicator"
             android:layout_toEndOf="@+id/status_indicator"/>
 
-    <AppCompatTextView
+    <TextView
             android:id="@+id/sent_message_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

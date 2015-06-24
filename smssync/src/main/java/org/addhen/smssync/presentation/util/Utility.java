@@ -28,7 +28,7 @@ import java.util.Date;
 public class Utility {
 
     public static String formatDate(Date messageDate) {
-        DateFormat formatter = new SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a");
+        DateFormat formatter = new SimpleDateFormat("hh:mm a");
         return formatter.format(messageDate);
     }
 

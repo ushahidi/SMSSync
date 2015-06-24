@@ -21,12 +21,15 @@ import com.google.gson.annotations.SerializedName;
 
 import com.addhen.android.raiburari.data.entity.DataEntity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author Henry Addo
  */
-public class Message extends DataEntity {
+public class Message extends DataEntity implements Serializable {
+
+    private static final long serialVersionUID = 1094372288105228610L;
 
     @SerializedName("message")
     public String messageBody;
@@ -40,14 +43,19 @@ public class Message extends DataEntity {
     @SerializedName("uuid")
     public String messageUuid;
 
+    @SerializedName("type")
     public Type messageType;
 
+    @SerializedName("sent_result_code")
     public int sentResultCode;
 
+    @SerializedName("sent_result_message")
     public String sentResultMessage;
 
+    @SerializedName("delivery_result_code")
     public int deliveryResultCode;
 
+    @SerializedName("delivered_result_message")
     public String deliveryResultMessage;
 
     public int retries;
@@ -55,10 +63,18 @@ public class Message extends DataEntity {
     public Status status;
 
     public enum Status {
-        UNCONFIRMED, FAILED, SENT
+        @SerializedName("unconfirmed")
+        UNCONFIRMED,
+        @SerializedName("failed")
+        FAILED,
+        @SerializedName("sent")
+        SENT
     }
 
     public enum Type {
-        TASK, PENDING
+        @SerializedName("task")
+        TASK,
+        @SerializedName("pending")
+        PENDING
     }
 }

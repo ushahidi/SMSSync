@@ -18,8 +18,12 @@
 package org.addhen.smssync.data.repository;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 
+import org.addhen.smssync.data.entity.Message;
+import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
 
@@ -28,6 +32,7 @@ import android.content.Context;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,9 +48,12 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     private Context mContext;
 
+    private final MessageDataMapper mMessageDataMapper;
+
     @Inject
-    public InternalMessageDataRepository(Context context) {
+    public InternalMessageDataRepository(Context context, MessageDataMapper messageDataMapper) {
         mContext = context;
+        mMessageDataMapper = messageDataMapper;
     }
 
     @Override
@@ -71,11 +79,22 @@ public class InternalMessageDataRepository implements MessageRepository {
     @Override
     public Observable<List<MessageEntity>> getEntities() {
         return Observable.create(subscriber -> {
-            final Gson gson = new Gson();
-            Type messageList = new TypeToken<List<MessageEntity>>() {
+            JsonDeserializer<Date> date = (json, typeOfT, context) ->
+                    json == null ? null : new Date(json.getAsLong());
+            final Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, date)
+                    .setDateFormat("h:mm a").create();
+            Type messageList = new TypeToken<List<Message>>() {
             }.getType();
-            List<MessageEntity> messageEntityList = gson.fromJson(loadJSONFromAsset(), messageList);
-            subscriber.onNext(messageEntityList);
+            String json = loadJSONFromAsset();
+            List<Message> messageEntityList = null;
+            try {
+                messageEntityList = gson.fromJson(json, messageList);
+            } catch (Exception e) {
+                e.printStackTrace();
+                subscriber.onError(e);
+            }
+            List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
+            subscriber.onNext(messages);
             subscriber.onCompleted();
         });
     }

@@ -142,7 +142,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Override
     public void showMessages(List<MessageModel> messageModelList) {
-        if (Utility.isEmpty(messageModelList)) {
+        if (!Utility.isEmpty(messageModelList)) {
             mMessageAdapter.setItems(messageModelList);
         }
     }

@@ -56,7 +56,7 @@ public class MessageDataMapper {
 
     public Message map(MessageEntity messageEntity) {
         Message message = null;
-        if (message != null) {
+        if (messageEntity != null) {
             message = new Message();
             message._id = messageEntity._id;
             message.messageBody = messageEntity.messageBody;
