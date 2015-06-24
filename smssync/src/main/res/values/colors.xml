@@ -22,6 +22,8 @@
     <color name="color_accent">#0db5a9</color>
     <color name="white">#deffffff</color>
     <color name="grey_light">#AFAFAF</color>
+    <color name="grey_lighter">#B6B6B6</color>
     <color name="red">#F44336</color>
     <color name="green">#388E3C</color>
+    <color name="amber">#FF9800</color>
 </resources>

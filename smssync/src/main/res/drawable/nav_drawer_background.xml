@@ -16,13 +16,11 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<resources>
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorControlHighlight">@color/grey_lighter</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true">
+        <color android:color="@android:color/transparent"/>
+    </item>
+    <item>
+        <color android:color="@android:color/white"/>
+    </item>
+</selector>

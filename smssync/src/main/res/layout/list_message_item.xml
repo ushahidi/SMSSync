@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:background="@color/red"
             android:layout_alignTop="@+id/message_from"
-            android:layout_alignBottom="@+id/sent_message_status"
+            android:layout_alignBottom="@+id/sent_message_type"
             android:layout_alignParentLeft="true"/>
     <TextView
             android:id="@+id/message_from"
@@ -56,34 +56,32 @@
             android:id="@+id/message"
             style="@style/TextView.Description"
             android:layout_width="wrap_content"
-            android:layout_alignParentLeft="true"
             android:text="Sample text messages comes here"
             android:layout_below="@+id/message_date"
+            android:layout_alignParentLeft="true"
             android:layout_toEndOf="@+id/status_indicator"
             android:layout_toRightOf="@+id/status_indicator"/>
 
     <TextView
             android:id="@+id/sent_message_type"
+            style="@style/TextView.Description"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
-            android:padding="3dp"
             android:text="Task"
             android:textIsSelectable="true"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/status_indicator"
-            android:layout_toEndOf="@+id/status_indicator"/>
-
+            android:layout_below="@+id/message"
+            android:layout_alignParentLeft="true"
+            android:layout_toEndOf="@+id/status_indicator"
+            android:layout_toRightOf="@+id/status_indicator"/>
     <TextView
             android:id="@+id/sent_message_status"
+            style="@style/TextView.Description"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/message"
             android:ellipsize="end"
             android:lines="1"
-            android:padding="3dp"
             android:text="FAILED"
             android:textIsSelectable="true"/>
 </RelativeLayout>

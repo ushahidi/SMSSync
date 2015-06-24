@@ -97,6 +97,15 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
                 .setTextColor(((Widgets) holder).itemView.getContext().getResources().getColor(
                         R.color.red));
 
+        if (messageModel.status.equals(MessageModel.Status.FAILED)) {
+            ((Widgets) holder).statusIndicator.setBackgroundColor(
+                    ((Widgets) holder).itemView.getContext().getResources().getColor(
+                            R.color.red));
+        } else {
+            ((Widgets) holder).statusIndicator.setBackgroundColor(
+                    ((Widgets) holder).itemView.getContext().getResources().getColor(
+                            R.color.green));
+        }
         ((Widgets) holder).messageStatus.setText(messageModel.status.name());
     }
 
