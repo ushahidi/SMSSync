@@ -6,7 +6,9 @@ android:
   components:
   - build-tools-23.0.0_rc2
   - android-22
-
+  - extra-android-support
+  - extra-android-m2repository
+    
 script: ./gradlew assembleInternal
 notifications:
   hipchat:
