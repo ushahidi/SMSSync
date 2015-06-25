@@ -22,12 +22,13 @@ import org.addhen.smssync.domain.repository.MessageRepository;
 
 import javax.inject.Singleton;
 
+import dagger.Module;
 import dagger.Provides;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Singleton
+@Module
 public class NoAnalyticsAppModule {
 
     @Provides
