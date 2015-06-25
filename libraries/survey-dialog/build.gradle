@@ -17,12 +17,15 @@
 
 apply plugin: 'android-library'
 
+def globalConfiguration = rootProject.extensions.getByName("ext")
+
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.0"
+    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
+
     defaultConfig {
-        minSdkVersion 7
-        targetSdkVersion 21
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
     }
 
     lintOptions {
