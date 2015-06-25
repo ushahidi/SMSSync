@@ -9,7 +9,7 @@ android:
   - extra-android-support
   - extra-android-m2repository
     
-script: ./gradlew assembleInternal
+script: ./gradlew build
 notifications:
   hipchat:
     rooms:
