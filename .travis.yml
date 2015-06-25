@@ -6,9 +6,6 @@ android:
   components:
   - build-tools-23.0.0-preview
   - android-22
-  - extra-google-m2repository
-  - extra-android-support
-  - extra-android-m2repository
 
 script: ./gradlew assembleInternal
 notifications:
