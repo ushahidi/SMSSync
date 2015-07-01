@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
     <View
             android:id="@+id/navigation_header_line"
             android:layout_alignParentBottom="true"
@@ -13,7 +14,6 @@
                   android:orientation="horizontal"
                   android:layout_marginRight="@dimen/view_spacing_large"
                   android:layout_marginLeft="@dimen/view_spacing_large"
-                  android:layout_marginTop="20dp"
                   android:layout_marginBottom="20dp">
         <android.support.v7.widget.AppCompatTextView
                 style="@style/TextAppearance.AppCompat.Large"
@@ -29,6 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Version 3.0.0"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textSize="18sp"
                 android:layout_centerHorizontal="true"/>
     </LinearLayout>
