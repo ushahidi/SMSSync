@@ -24,5 +24,6 @@
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="lineColorDivider">@color/grey_lighter</item>
     </style>
 </resources>

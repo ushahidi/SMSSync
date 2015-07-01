@@ -16,10 +16,10 @@
   -->
 
 <resources>
-    <color name="color_primary">#0db5a9</color>
-    <color name="color_primary_dark">#0db5a9</color>
+    <color name="color_primary">#00796B</color>
+    <color name="color_primary_dark">#00796B</color>
     <color name="primary_light">#C8E6C9</color>
-    <color name="color_accent">#0db5a9</color>
+    <color name="color_accent">#00796B</color>
     <color name="white">#deffffff</color>
     <color name="grey_light">#AFAFAF</color>
     <color name="grey_lighter">#B6B6B6</color>

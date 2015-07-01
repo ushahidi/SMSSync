@@ -126,19 +126,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 menuItem -> {
                     final int id = menuItem.getItemId();
                     switch (id) {
-                        case R.id.nav_settings:
-                            mAppComponent.launcher().launchSettings();
-                            break;
-                        case R.id.nav_sync_url:
-                            replaceFragment(R.id.fragment_main_content,
-                                    mAppComponent.launcher().launchSyncUrls(),
-                                    "syncurl");
-                            break;
-                        case R.id.nav_logs:
-                            replaceFragment(R.id.fragment_main_content,
-                                    mAppComponent.launcher().launchLogs(),
-                                    "logs");
-                            break;
                         case R.id.nav_filters:
                             replaceFragment(R.id.fragment_main_content,
                                     mAppComponent.launcher().launchFilters(),

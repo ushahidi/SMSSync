@@ -19,19 +19,37 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_pending"
-              android:icon="@drawable/pending"
+              android:icon="@drawable/ic_message_black_24dp"
               android:title="@string/title_bar_text"/>
-        <item android:id="@+id/nav_sync_url"
-              android:icon="@drawable/sync_url"
-              android:title="@string/sync_url"/>
         <item android:id="@+id/nav_filters"
-              android:icon="@drawable/whitelist"
+              android:icon="@drawable/ic_filter_list_black_24dp"
               android:title="@string/filters"/>
-        <item android:id="@+id/nav_logs"
-              android:icon="@drawable/log"
-              android:title="@string/logs"/>
-        <item android:id="@+id/nav_settings"
-              android:icon="@drawable/settings"
-              android:title="@string/action_settings"/>
+
+        <item android:id="@+id/nav_automation"
+              android:icon="@drawable/ic_history_black_24dp"
+              android:title="@string/automation"/>
+
+        <item android:id="@+id/nav_reports"
+              android:icon="@drawable/ic_assessment_black_24dp"
+              android:title="@string/reports"/>
+    </group>
+    <group>
+        <item android:title="@string/integrations">
+            <menu>
+                <item
+                        android:icon="@drawable/ic_add_black_24dp"
+                        android:title="@string/add_integration"/>
+                <item
+                        android:title="@string/twitter"/>
+            </menu>
+        </item>
+    </group>
+    <group>
+        <item android:title="Ushahidi Phone 1234">
+            <menu>
+                <item
+                        android:title="Edit Device Info"/>
+            </menu>
+        </item>
     </group>
 </menu>

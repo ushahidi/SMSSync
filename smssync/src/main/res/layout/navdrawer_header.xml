@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-    <include layout="@layout/include_nav_drawer_login"/>
-
-    <include layout="@layout/include_nav_drawer_user_profile"/>
-</LinearLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+    <View
+            android:id="@+id/navigation_header_line"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/lineColorDivider"/>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginRight="@dimen/view_spacing_large"
+                  android:layout_marginLeft="@dimen/view_spacing_large"
+                  android:layout_marginTop="20dp"
+                  android:layout_marginBottom="20dp">
+        <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="25sp"
+                android:layout_centerHorizontal="true"
+                android:paddingRight="@dimen/view_spacing_normal"
+                android:id="@+id/view"/>
+        <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Version 3.0.0"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"/>
+    </LinearLayout>
+</RelativeLayout>

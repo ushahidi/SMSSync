@@ -20,8 +20,15 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
             android:id="@+id/import_sms"
-            android:icon="@drawable/import_sms"
+            android:icon="@drawable/ic_refresh_white_24dp"
             android:orderInCategory="0"
             android:title="@string/menu_import"
             app:showAsAction="ifRoom"/>
+    <item
+            android:id="@+id/menu_search_message"
+            android:icon="@drawable/ic_search_white_24dp"
+            android:title="@string/search"
+            android:orderInCategory="1"
+            app:actionViewClass="android.support.v7.widget.SearchView"
+            app:showAsAction="collapseActionView|always"/>
 </menu>
