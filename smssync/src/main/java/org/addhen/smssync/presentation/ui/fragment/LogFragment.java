@@ -42,7 +42,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -51,10 +51,10 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         implements
         ListLogView {
 
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     BloatedRecyclerView mLogRecyclerView;
 
-    @InjectView(R.id.empty_list_view)
+    @Bind(R.id.empty_list_view)
     TextView mEmptyView;
 
     @Inject

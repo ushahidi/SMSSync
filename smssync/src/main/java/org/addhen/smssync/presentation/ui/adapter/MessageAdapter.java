@@ -32,8 +32,8 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -111,27 +111,27 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
 
     public class Widgets extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.status_indicator)
+        @Bind(R.id.status_indicator)
         TextView statusIndicator;
 
-        @InjectView(R.id.message_from)
+        @Bind(R.id.message_from)
         TextView messageFrom;
 
-        @InjectView(R.id.message_date)
+        @Bind(R.id.message_date)
         TextView messageDate;
 
-        @InjectView(R.id.message)
+        @Bind(R.id.message)
         TextView message;
 
-        @InjectView(R.id.sent_message_type)
+        @Bind(R.id.sent_message_type)
         TextView messageType;
 
-        @InjectView(R.id.sent_message_status)
+        @Bind(R.id.sent_message_status)
         TextView messageStatus;
 
         public Widgets(final View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

@@ -42,20 +42,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author Henry Addo
  */
 public class MainActivity extends BaseActivity implements HasComponent<AppActivityComponent> {
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
-    @InjectView(R.id.drawer_layout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @InjectView((R.id.nav_view))
+    @Bind((R.id.nav_view))
     NavigationView mNavigationView;
 
     private AppActivityComponent mAppComponent;

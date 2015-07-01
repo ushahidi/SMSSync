@@ -30,8 +30,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -77,12 +77,12 @@ public class FilterAdapter extends BaseRecyclerViewAdapter<FilterModel> {
 
     public class Widgets extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.filter_phone_number)
+        @Bind(R.id.filter_phone_number)
         TextView phoneNumber;
 
         public Widgets(final View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
 
         }
     }

@@ -31,7 +31,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -79,12 +79,12 @@ public class LogAdapter extends BaseRecyclerViewAdapter<LogModel> {
 
     public class Widgets extends RecyclerView.ViewHolder {
 
-        @InjectView(R.id.log_message)
+        @Bind(R.id.log_message)
         AppCompatTextView logMessage;
 
         public Widgets(final View view) {
             super(view);
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 }

@@ -37,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -54,10 +54,10 @@ public class FilterFragment extends BaseRecyclerViewFragment<FilterModel, Filter
     @Inject
     ListFilterPresenter mListFilterPresenter;
 
-    @InjectView(android.R.id.empty)
+    @Bind(android.R.id.empty)
     TextView mEmptyView;
 
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     BloatedRecyclerView mFilterRecyclerView;
 
     FilterAdapter mFilterAdapter;

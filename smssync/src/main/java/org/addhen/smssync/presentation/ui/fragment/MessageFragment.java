@@ -43,7 +43,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.InjectView;
+import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
@@ -53,13 +53,13 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         implements
         ListMessageView {
 
-    @InjectView(R.id.messages_fab)
+    @Bind(R.id.messages_fab)
     FloatingActionButton mFab;
 
-    @InjectView(android.R.id.list)
+    @Bind(android.R.id.list)
     BloatedRecyclerView mMessageRecyclerView;
 
-    @InjectView(R.id.empty_list_view)
+    @Bind(R.id.empty_list_view)
     TextView mEmptyView;
 
     @Inject
