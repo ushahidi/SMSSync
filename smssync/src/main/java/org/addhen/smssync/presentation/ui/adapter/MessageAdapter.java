@@ -23,12 +23,12 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
 
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.List;
 import java.util.Locale;
@@ -111,16 +111,16 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         ImageView statusIndicator;
 
         @Bind(R.id.message_from)
-        TextView messageFrom;
+        AppCompatTextView messageFrom;
 
         @Bind(R.id.message_date)
-        TextView messageDate;
+        AppCompatTextView messageDate;
 
         @Bind(R.id.message)
-        TextView message;
+        AppCompatTextView message;
 
         @Bind(R.id.sent_message_type)
-        TextView messageType;
+        AppCompatTextView messageType;
 
         public Widgets(final View view) {
             super(view);

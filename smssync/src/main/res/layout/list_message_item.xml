@@ -51,7 +51,7 @@
                     android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
         </RelativeLayout>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/message_from"
                 style="@style/TextView.Description"
                 android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                 android:textStyle="bold"
                 android:layout_toRightOf="@+id/message_icon"/>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/message_date"
                 style="@style/TextView.Description"
                 android:layout_width="wrap_content"
@@ -72,11 +72,10 @@
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/message_from"
                 android:layout_toEndOf="@+id/message_from"/>
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/message"
                 style="@style/TextView.Description"
                 android:layout_width="wrap_content"
-                android:text="Tecno to set up an Assembly Plant in Nairobi with an aim of scooping Kshs 17 billion worth of laptop tenders. Tecno announced its intention to put up an assembly plant in Kenya for assembly of tablets with an aim of scooping the 17 billion government tender to supply laptops to governmental schools. By setting up the local plant, companies in the country eyeing the tender might be under threat."
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:paddingRight="@dimen/view_spacing_normal"
@@ -94,7 +93,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"/>
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/sent_message_type"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
