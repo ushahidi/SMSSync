@@ -18,7 +18,6 @@
 package org.addhen.smssync.presentation.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
-import com.addhen.android.raiburari.presentation.ui.listener.SwipeToDismissTouchListener;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 
 import org.addhen.smssync.R;
@@ -27,6 +26,7 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
 import org.addhen.smssync.presentation.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.ui.adapter.MessageAdapter;
+import org.addhen.smssync.presentation.ui.listener.OnSwipeableRecyclerViewTouchListener;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 
@@ -34,6 +34,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -117,8 +118,31 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.setFocusableInTouchMode(true);
         mMessageAdapter.setHasStableIds(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
+        mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageRecyclerView.addItemDividerDecoration(getActivity());
-        mMessageRecyclerView.setSwipeToDismissCallback(
+        OnSwipeableRecyclerViewTouchListener swipeTouchListener =
+                new OnSwipeableRecyclerViewTouchListener(mMessageRecyclerView.recyclerView,
+                        new OnSwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView,
+                                    int[] reverseSortedPositions) {
+                                // TODO: Implement swipe action
+
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView,
+                                    int[] reverseSortedPositions) {
+                                // TODO: Implement swipe action
+
+                            }
+                        });
+        /*mMessageRecyclerView.setSwipeToDismissCallback(
                 new SwipeToDismissTouchListener.DismissCallbacks() {
                     @Override
                     public SwipeToDismissTouchListener.SwipeDirection canDismiss(int position) {
@@ -130,7 +154,8 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                             List<SwipeToDismissTouchListener.PendingDismissData> dismissData) {
                         // Implement swipe to delete
                     }
-                });
+                });*/
+        mMessageRecyclerView.recyclerView.addOnItemTouchListener(swipeTouchListener);
         mMessageRecyclerView.enableDefaultSwipeRefresh(true);
     }
 
