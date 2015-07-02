@@ -18,7 +18,7 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_pending"
+        <item android:id="@+id/nav_messages"
               android:icon="@drawable/ic_message_black_24dp"
               android:title="@string/title_bar_text"/>
         <item android:id="@+id/nav_filters"
@@ -38,6 +38,7 @@
             <menu>
                 <item
                         android:icon="@drawable/ic_add_black_24dp"
+                        android:id="@+id/nav_integration"
                         android:title="@string/add_integration"/>
                 <item
                         android:title="@string/twitter"/>

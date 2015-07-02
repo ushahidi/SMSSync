@@ -45,6 +45,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -82,6 +83,12 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initialize();
@@ -97,6 +104,12 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     public void onPause() {
         super.onPause();
         mListMessagePresenter.pause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @Override
@@ -142,19 +155,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
                             }
                         });
-        /*mMessageRecyclerView.setSwipeToDismissCallback(
-                new SwipeToDismissTouchListener.DismissCallbacks() {
-                    @Override
-                    public SwipeToDismissTouchListener.SwipeDirection canDismiss(int position) {
-                        return SwipeToDismissTouchListener.SwipeDirection.BOTH;
-                    }
-
-                    @Override
-                    public void onDismiss(RecyclerView view,
-                            List<SwipeToDismissTouchListener.PendingDismissData> dismissData) {
-                        // Implement swipe to delete
-                    }
-                });*/
         mMessageRecyclerView.recyclerView.addOnItemTouchListener(swipeTouchListener);
         mMessageRecyclerView.enableDefaultSwipeRefresh(true);
     }

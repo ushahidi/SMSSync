@@ -27,4 +27,7 @@
     <color name="green">#388E3C</color>
     <color name="amber">#FF9800</color>
     <color name="orange_light">#ffb35b</color>
+    <color name="blue_cornflower">#55acee</color>
+    <color name="linen">#f1f0e6</color>
+    <color name="brown">#8d1919</color>
 </resources>

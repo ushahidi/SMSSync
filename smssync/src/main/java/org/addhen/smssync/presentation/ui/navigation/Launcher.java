@@ -20,9 +20,9 @@ package org.addhen.smssync.presentation.ui.navigation;
 import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.ui.activity.SettingsActivity;
 import org.addhen.smssync.presentation.ui.fragment.FilterFragment;
+import org.addhen.smssync.presentation.ui.fragment.IntegrationFragment;
 import org.addhen.smssync.presentation.ui.fragment.LogFragment;
 import org.addhen.smssync.presentation.ui.fragment.MessageFragment;
-import org.addhen.smssync.presentation.ui.fragment.SyncUrlFragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,8 +54,8 @@ public class Launcher {
         return LogFragment.newInstance();
     }
 
-    public SyncUrlFragment launchSyncUrls() {
-        return new SyncUrlFragment();
+    public IntegrationFragment launchIntegrations() {
+        return IntegrationFragment.newInstance();
     }
 
     public FilterFragment launchFilters() {

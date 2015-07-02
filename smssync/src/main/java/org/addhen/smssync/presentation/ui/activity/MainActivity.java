@@ -32,13 +32,14 @@ import org.addhen.smssync.presentation.di.component.FilterComponent;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -58,6 +59,9 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     @Bind((R.id.nav_view))
     NavigationView mNavigationView;
 
+    private static final String BUNDLE_STATE_PARAM_CURRENT_MENU
+            = "org.addhen.smssync.presentation.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
+
     private AppActivityComponent mAppComponent;
 
     private MessageComponent mMessageComponent;
@@ -66,6 +70,10 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
     private FilterComponent mFilterComponent;
 
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private int mCurrentMenu;
+
     public MainActivity() {
         super(R.layout.activity_main, 0);
     }
@@ -73,19 +81,32 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            mCurrentMenu = R.id.nav_messages;
+        } else {
+            mCurrentMenu = savedInstanceState
+                    .getInt(BUNDLE_STATE_PARAM_CURRENT_MENU, R.id.nav_messages);
+        }
         injector();
         initViews();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(BUNDLE_STATE_PARAM_CURRENT_MENU, mCurrentMenu);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     private void initViews() {
         setSupportActionBar(mToolbar);
-        final ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        ab.setDisplayHomeAsUpEnabled(true);
-
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name,
+                R.string.app_name);
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
         if (mNavigationView != null) {
             setupDrawerContent(mNavigationView);
         }
+        setupFragment(mCurrentMenu);
     }
 
     private void injector() {
@@ -124,27 +145,32 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
-                    final int id = menuItem.getItemId();
-                    switch (id) {
-                        case R.id.nav_filters:
-                            replaceFragment(R.id.fragment_main_content,
-                                    mAppComponent.launcher().launchFilters(),
-                                    "filters");
-                            break;
-                        default:
-                            setupMessagesFragment();
-                    }
+                    mCurrentMenu = menuItem.getItemId();
+                    setupFragment(mCurrentMenu);
                     menuItem.setChecked(menuItem.isChecked());
                     mToolbar.setTitle(menuItem.getTitle());
                     mDrawerLayout.closeDrawers();
                     return true;
                 });
-        setupMessagesFragment();
     }
 
-    private void setupMessagesFragment() {
-        replaceFragment(R.id.fragment_main_content, mAppComponent.launcher().launchMessages(),
-                "messages");
+    private void setupFragment(int menuItem) {
+        switch (menuItem) {
+            case R.id.nav_messages:
+                replaceFragment(R.id.fragment_main_content,
+                        mAppComponent.launcher().launchMessages(), "messages");
+                break;
+            case R.id.nav_filters:
+                replaceFragment(R.id.fragment_main_content,
+                        mAppComponent.launcher().launchFilters(), "filters");
+                break;
+            case R.id.nav_integration:
+                replaceFragment(R.id.fragment_main_content,
+                        mAppComponent.launcher().launchIntegrations(), "integrations");
+                break;
+            default:
+                break;
+        }
     }
 
     protected void replaceFragment(int containerViewId, Fragment fragment, String tag) {
@@ -155,6 +181,26 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         fragmentTransaction.commit();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public AppActivityComponent getComponent() {
