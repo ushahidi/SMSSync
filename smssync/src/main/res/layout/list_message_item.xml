@@ -16,72 +16,94 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/relativeLayout1"
-                android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="?attr/selectableItemBackground">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/view_spacing_large"
+                    android:paddingEnd="@dimen/view_spacing_large"
+                    android:paddingLeft="@dimen/view_spacing_large"
+                    android:paddingRight="@dimen/view_spacing_large"
+                    android:paddingBottom="@dimen/view_spacing_large"
+                    android:background="?attr/selectableItemBackground">
+        <RelativeLayout
+                android:id="@+id/message_icon"
+                android:layout_width="@dimen/message_list_icon_size"
+                android:layout_height="@dimen/message_list_icon_size"
+                android:layout_gravity="center"
+                android:layout_below="@+id/status_indicator"
+                android:background="@drawable/message_icon_circle_mask">
+            <com.addhen.android.raiburari.presentation.ui.widget.BezelImageView
+                    android:id="@+id/message_icons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_call_white_18dp"
+                    android:paddingLeft="@dimen/view_spacing_normal"
+                    android:paddingRight="@dimen/view_spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/message_icon_circle_mask"
+                    app:maskDrawable="@drawable/message_icon_circle_mask"
+                    android:layout_centerVertical="true" android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <TextView
+                android:id="@+id/message_from"
+                style="@style/TextView.Description"
+                android:layout_width="wrap_content"
+                android:text="512-123-4567"
+                android:lines="1"
+                android:layout_alignParentTop="true"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:layout_toRightOf="@+id/message_icon"/>
+
+        <TextView
+                android:id="@+id/message_date"
+                style="@style/TextView.Description"
+                android:layout_width="wrap_content"
+                android:text="5:09pm"
+                android:lines="1"
+                android:textColor="@color/grey_light"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/message_from"
+                android:layout_toEndOf="@+id/message_from"/>
+        <TextView
+                android:id="@+id/message"
+                style="@style/TextView.Description"
+                android:layout_width="wrap_content"
+                android:text="Tecno to set up an Assembly Plant in Nairobi with an aim of scooping Kshs 17 billion worth of laptop tenders. Tecno announced its intention to put up an assembly plant in Kenya for assembly of tablets with an aim of scooping the 17 billion government tender to supply laptops to governmental schools. By setting up the local plant, companies in the country eyeing the tender might be under threat."
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:paddingRight="@dimen/view_spacing_normal"
+                android:layout_below="@+id/message_date"
+                android:layout_marginTop="@dimen/view_spacing_normal"
+                android:layout_alignTop="@+id/message_icon"
+                android:layout_toRightOf="@+id/message_icon"
+                android:layout_toLeftOf="@+id/status_indicator"
+                android:layout_toStartOf="@+id/status_indicator"/>
+        <ImageView
+                android:id="@+id/status_indicator"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dip"
-                android:background="?attr/selectableItemBackground">
-    <TextView
-            android:id="@+id/status_indicator"
-            android:layout_width="5dp"
-            android:layout_height="wrap_content"
-            android:background="@color/red"
-            android:layout_alignTop="@+id/message_from"
-            android:layout_alignBottom="@+id/sent_message_type"
-            android:layout_alignParentLeft="true"/>
-    <TextView
-            android:id="@+id/message_from"
-            style="@style/TextView.Description"
-            android:layout_width="wrap_content"
-            android:text="09393929299s9s"
-            android:lines="1"
-            android:textStyle="bold"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/status_indicator"
-            android:layout_toEndOf="@+id/status_indicator"/>
-
-    <TextView
-            android:id="@+id/message_date"
-            style="@style/TextView.Description"
-            android:layout_width="wrap_content"
-            android:text="Apri, 2015 at 2pm"
-            android:lines="1"
-            android:textColor="@color/grey_light"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
-
-    <TextView
-            android:id="@+id/message"
-            style="@style/TextView.Description"
-            android:layout_width="wrap_content"
-            android:text="Sample text messages comes here"
-            android:layout_below="@+id/message_date"
-            android:layout_alignParentLeft="true"
-            android:layout_toEndOf="@+id/status_indicator"
-            android:layout_toRightOf="@+id/status_indicator"/>
-
-    <TextView
-            android:id="@+id/sent_message_type"
-            style="@style/TextView.Description"
-            android:layout_width="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="Task"
-            android:textIsSelectable="true"
-            android:layout_below="@+id/message"
-            android:layout_alignParentLeft="true"
-            android:layout_toEndOf="@+id/status_indicator"
-            android:layout_toRightOf="@+id/status_indicator"/>
-    <TextView
-            android:id="@+id/sent_message_status"
-            style="@style/TextView.Description"
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/message"
-            android:ellipsize="end"
-            android:lines="1"
-            android:text="FAILED"
-            android:textIsSelectable="true"/>
-</RelativeLayout>
+                android:scaleType="centerCrop"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+        <TextView
+                android:id="@+id/sent_message_type"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="Task"
+                android:paddingLeft="@dimen/view_spacing_large"
+                android:layout_alignBottom="@+id/message"
+                android:layout_alignLeft="@+id/message"
+                android:layout_alignStart="@+id/message"/>
+    </RelativeLayout>
+</LinearLayout>

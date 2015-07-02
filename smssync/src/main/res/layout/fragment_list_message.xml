@@ -27,6 +27,7 @@
                 android:id="@id/android:list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingTop="@dimen/view_spacing_normal"
                 android:cacheColorHint="@android:color/transparent"
                 app:recyclerviewEmptyView="@layout/list_empty_view"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

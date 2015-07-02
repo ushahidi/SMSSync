@@ -22,15 +22,16 @@
     <dimen name="view_spacing_large">16dp</dimen>
     <dimen name="view_spacing_normal">8dp</dimen>
     <dimen name="view_spacing_small">4dp</dimen>
-
+    <!-- Typography -->
     <dimen name="text_size_xsmall">11sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">14sp</dimen>
     <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_xlarge">20sp</dimen>
-
-    <!-- nav drawer -->
+    <!-- Navigation drawer -->
     <dimen name="nav_drawer_header_padding">16dp</dimen>
-    <!-- floatingaction button -->
+    <!-- Floating action button -->
     <dimen name="fab_margin">16dp</dimen>
+    <!-- Message list -->
+    <dimen name="message_list_icon_size">40dp</dimen>
 </resources>

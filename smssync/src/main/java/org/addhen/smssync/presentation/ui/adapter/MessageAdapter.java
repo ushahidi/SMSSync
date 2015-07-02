@@ -27,6 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -75,7 +76,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final MessageModel messageModel = getItem(position);
-        // initialize view with content
+        // Initialize view with content
         ((Widgets) holder).messageFrom.setText(messageModel.messageFrom);
         if (messageModel.messageDate != null) {
             ((Widgets) holder).messageDate.setText(Utility.formatDate(messageModel.messageDate));
@@ -98,21 +99,16 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
                         R.color.red));
 
         if (messageModel.status.equals(MessageModel.Status.FAILED)) {
-            ((Widgets) holder).statusIndicator.setBackgroundColor(
-                    ((Widgets) holder).itemView.getContext().getResources().getColor(
-                            R.color.red));
+            ((Widgets) holder).statusIndicator.setImageResource(R.drawable.ic_autorenew_green_18dp);
         } else {
-            ((Widgets) holder).statusIndicator.setBackgroundColor(
-                    ((Widgets) holder).itemView.getContext().getResources().getColor(
-                            R.color.green));
+            ((Widgets) holder).statusIndicator.setImageResource(R.drawable.ic_done_green_18dp);
         }
-        ((Widgets) holder).messageStatus.setText(messageModel.status.name());
     }
 
     public class Widgets extends RecyclerView.ViewHolder {
 
         @Bind(R.id.status_indicator)
-        TextView statusIndicator;
+        ImageView statusIndicator;
 
         @Bind(R.id.message_from)
         TextView messageFrom;
@@ -125,9 +121,6 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
 
         @Bind(R.id.sent_message_type)
         TextView messageType;
-
-        @Bind(R.id.sent_message_status)
-        TextView messageStatus;
 
         public Widgets(final View view) {
             super(view);
