@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.smslibs.model;
+package org.addhen.smssync.smslib.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

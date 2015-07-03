@@ -15,11 +15,11 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.smslibs.sms;
+package org.addhen.smssync.smslib.sms;
 
-import org.addhen.smssync.smslibs.model.SmsMessage;
-import org.addhen.smssync.smslibs.util.LogUtil;
-import org.addhen.smssync.smslibs.util.Util;
+import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.smslib.util.LogUtil;
+import org.addhen.smssync.smslib.util.Util;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;

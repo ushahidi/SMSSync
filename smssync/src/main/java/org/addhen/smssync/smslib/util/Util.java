@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.smslibs.util;
+package org.addhen.smssync.smslib.util;
 
 import android.content.Context;
 import android.os.Build;
