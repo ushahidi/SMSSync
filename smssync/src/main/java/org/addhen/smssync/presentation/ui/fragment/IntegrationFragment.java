@@ -50,18 +50,18 @@ public class IntegrationFragment extends BaseFragment {
     @OnClick(R.id.google_drive)
     void onGoogleDriveClicked() {
         // TODO: Launch View to sign into Google drive
-        showSnabackar(getView(), "Twitter CardView Clicked");
+        showSnabackar(getView(), "Twitter Google Drive Clicked");
     }
 
     @OnClick(R.id.ushahidi)
     void onUshahidiClicked() {
         // TODO: Launch View to sign into Ushahidi
-        showSnabackar(getView(), "Twitter CardView Clicked");
+        showSnabackar(getView(), "Twitter Ushahidi Clicked");
     }
 
     @OnClick(R.id.custom_web_service)
     void onCustomWebServiceClicked() {
-        // TODO: Launch View to ad custom web service
+        // TODO: Launch View to add custom web service
         showSnabackar(getView(), "Twitter Custom Service Clicked");
     }
 }

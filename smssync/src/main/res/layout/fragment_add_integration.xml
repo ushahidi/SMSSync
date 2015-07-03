@@ -44,12 +44,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
-                android:layout_marginBottom="@dimen/view_spacing_large"
+                android:layout_marginBottom="@dimen/view_spacing_normal"
                 android:background="?attr/selectableItemBackground">
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true">
+                    android:layout_height="wrap_content">
                 <RelativeLayout
                         android:id="@+id/twitter_icon_container"
                         android:layout_width="80dp"
@@ -97,12 +96,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
-                android:layout_marginBottom="@dimen/view_spacing_large"
+                android:layout_marginBottom="@dimen/view_spacing_normal"
                 android:background="?attr/selectableItemBackground">
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true">
+                    android:layout_height="wrap_content">
                 <RelativeLayout
                         android:id="@+id/drive_icon_container"
                         android:layout_width="80dp"
@@ -153,8 +151,7 @@
                 android:background="?attr/selectableItemBackground">
             <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true">
+                    android:layout_height="wrap_content">
                 <RelativeLayout
                         android:id="@+id/ushahidi_icon_container"
                         android:layout_width="80dp"
