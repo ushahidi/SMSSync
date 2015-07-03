@@ -333,7 +333,7 @@ Weile dauern.</string>
     <string name="disabled">deaktiviert</string>
     <string name="invalid_data_format">Ungültiges Datenformat</string>
     <string name="http_entity_format">HTTP Entity Format ist [ %1$s ]</string>
-    <!--Message Results API-->
+    <!--MessageEntity Results API-->
     <string name="message_processed_success">SMSsync hat diese Nachrichten erfolgreich verarbeitet.</string>
     <string name="message_processed_failed">SMSsync konnte diese Nachrichten nicht erfolgreich bearbeiten.</string>
     <string name="message_processed_json_failed">SMSsync konnte keine JSON Antwort erstellen.</string>

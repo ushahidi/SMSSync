@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2010 - 2015 Ushahidi Inc
   ~ All rights reserved
   ~ Contact: team@ushahidi.com
@@ -14,16 +15,14 @@
   ~ If you have questions regarding the use of this file, please contact
   ~ Ushahidi developers at team@ushahidi.com.
   -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dip"
-    android:padding="5dip">
 
-    <TextView
-        android:id="@+id/log_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="3dp" />
-
-</RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <AppCompatTextView
+            android:id="@+id/log_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/view_spacing_normal"/>
+</LinearLayout>

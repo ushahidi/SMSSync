@@ -1,0 +1,71 @@
+/*
+ * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * All rights reserved
+ * Contact: team@ushahidi.com
+ * Website: http://www.ushahidi.com
+ * GNU Lesser General Public License Usage
+ * This file may be used under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software
+ * Foundation and appearing in the file LICENSE.LGPL included in the
+ * packaging of this file. Please review the following information to
+ * ensure the GNU Lesser General Public License version 3 requirements
+ * will be met: http://www.gnu.org/licenses/lgpl.html.
+ *
+ * If you have questions regarding the use of this file, please contact
+ * Ushahidi developers at team@ushahidi.com.
+ */
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+    //Android
+    androidBuildToolsVersion = "23.0.0 rc2"
+    androidMinSdkVersion = 8
+    androidTargetSdkVersion = 22
+    androidCompileSdkVersion = 22
+
+    //Libraries
+    daggerVersion = '2.0.1'
+    javaxAnnotationVersion = '10.0-b28'
+    raiburariVersion = '2.3.1'
+    cupboardVersion = '2.1.1'
+    qrCodeReaderViewVersion = '1.0.0'
+    ottoVersion = '1.3.5'
+    wakefulVersion = '1.0.5'
+
+    //Testing
+    jUnitVersion = '4.12'
+    mockitoVersion = '1.9.5'
+    dexmakerVersion = '1.0'
+    espressoVersion = '2.0'
+    testingSupportLibVersion = '0.1'
+    robolectricVersion = '3.0-rc3'
+    truthVersion = '0.26'
+
+    appDependencies = [
+            daggerCompiler  : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger          : "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            raiburari       : "com.addhen.android:raiburari:${raiburariVersion}",
+            cupboard        : "nl.qbusict:cupboard:${cupboardVersion}",
+            qrCodeReaderView: "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
+            otto            : "com.squareup:otto:${ottoVersion}",
+            wakeful         : "com.commonsware.cwac:wakeful:${wakefulVersion}",
+    ]
+
+    appTestDependencies = [
+            mockito          : "org.mockito:mockito-core:${mockitoVersion}",
+            dexmaker         : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
+            dexmakerMockito  : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
+            espresso         : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+            testingSupportLib: "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
+            junit            : "junit:junit:${jUnitVersion}",
+            mockito          : "org.mockito:mockito-core:${mockitoVersion}",
+            robolectric      : "org.robolectric:robolectric:${robolectricVersion}",
+            truth            : "com.google.truth:truth:${truthVersion}",
+    ]
+}

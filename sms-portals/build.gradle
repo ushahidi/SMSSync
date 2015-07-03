@@ -17,18 +17,16 @@
 
 apply plugin: 'android'
 
+def globalConfiguration = rootProject.extensions.getByName("ext")
+
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
 
     defaultConfig {
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
         applicationId "com.smssync.portal.one"
-        minSdkVersion 8
-        targetSdkVersion 19
-        compileOptions {
-            sourceCompatibility JavaVersion.VERSION_1_7
-            targetCompatibility JavaVersion.VERSION_1_7
-        }
     }
 
     buildTypes {

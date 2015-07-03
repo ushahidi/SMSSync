@@ -20,6 +20,8 @@ import org.ajoberstar.grgit.Grgit
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.ajoberstar.release-opinion'
 apply plugin: 'com.github.triplet.play'
 
@@ -48,28 +50,11 @@ def readWhatsNewFile(filename) {
             new File('smssync/src/main/play/en-US/whatsnew').text;
 }
 
+def globalConfiguration = rootProject.extensions.getByName("ext")
+
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.0"
-
-    sourceSets {
-
-        defaultConfig {
-            testApplicationId "org.addhen.smssync.tests"
-            applicationId "org.addhen.smssync"
-            buildConfigField "String", "GOOGLE_FORM_URL",
-                    project.hasProperty('googleDocsForm') ? googleDocsForm : "\"\""
-        }
-
-        // Move the build types to build-types/<type>
-        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
-        // This moves them out of them default location under src/<type>/... which would
-        // conflict with src/ being used by the main source set.
-        // Adding new build types or product flavors should be accompanied
-        // by a similar customization.
-        debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
-    }
+    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
 
     signingConfigs {
 
@@ -108,25 +93,35 @@ android {
             }
             applicationIdSuffix ".debug"
             versionNameSuffix "-DEBUG"
+            debuggable true
         }
     }
 
     defaultConfig {
-        versionCode 36
-        versionName "2.8.3"
-        minSdkVersion 8
-        targetSdkVersion 22
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+        versionCode globalConfiguration.getAt("androidVersionCode")
+        testInstrumentationRunner globalConfiguration.getAt("testInstrumentationRunner")
         def publicKey = project.hasProperty('inAppPurchasePubKey') ? inAppPurchasePubKey :
                 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAogSL6I/lnQ0bVEEwttOu8CmrZvZzkTrFcsLiHjeb6Sw01+i8nTNW70QsTe1U2Hg4ELv3Hrm0Vt5gyQL2r9V4h8IWhbGNlHPAWJFP/dUgbwYFBUsJ4SSOS4N2kN9FER0mWwZ90boulNaHd8g8AQkwaBAzsNL5w+uij4hfZ9AsAO/rdhqXkAQeV6ykVgW0Q9qoWTcPg0ly7lOtxMmnvPFnrPXTt/SyoZEmNE5j02sh0eDdyGR5hEc16ZcMM2tvndRomfi+aYeswguZf3V+J+fAcXiBiX4Q81356g+nFJfMUxu8D7o0ZDPSS2u4FW79QhRjWzijJ/4EIw4TQ1jtKBapgwIDAQAB';
         if (!project.hasProperty('inAppPurchasePubKey')) {
             println 'Missing inAppPurchasePubKey. Using the default from SMSsync project'
         }
         buildConfigField "String", "PUBLIC_LICENSE_KEY", '"' + publicKey + '"'
+
+        testApplicationId "org.addhen.smssync.tests"
+        applicationId "org.addhen.smssync"
+        buildConfigField "String", "GOOGLE_FORM_URL",
+                project.hasProperty('googleDocsForm') ? googleDocsForm : "\"\""
     }
 
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     android.applicationVariants.all { variant ->
@@ -147,15 +142,18 @@ android {
         }
     }
 
-    flavorDimensions "analytics"
     productFlavors {
 
         withAnalytics {
-            dimension "analytics"
+            applicationId 'org.addhen.smssync'
         }
 
         noAnalytics {
-            dimension "analytics"
+            applicationId 'org.addhen.smssync'
+        }
+
+        internal {
+            applicationId 'org.addhen.smssync.internal'
         }
     }
 
@@ -164,9 +162,17 @@ android {
         preDexLibraries = preDexEnabled && !isTravis
     }
 
-    packagingOptions {
-        exclude 'LICENSE.txt'
+    testOptions {
+        unitTests.returnDefaultValues = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+retrolambda {
+    jvmArgs '-noverify'
 }
 
 release {
@@ -211,23 +217,32 @@ tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
 task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
     //Linux command to launch the MainActivity when debug app is installed
     commandLine 'adb', 'shell', 'am', 'start', '-n',
-            'org.addhen.smssync.debug/org.addhen.smssync.activities.MainActivity'
+            'org.addhen.smssync.debug/org.addhen.smssync.presentation.ui.activity.MainActivity'
 }
 
-
 dependencies {
+    def appDependencies = rootProject.ext.appDependencies
+    def appTestDependencies = rootProject.ext.appTestDependencies
+    apt appDependencies.daggerCompiler
     compile project(':libraries:pay-me')
     compile project(':libraries:survey-dialog')
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:support-v4:22.0.0'
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'nl.qbusict:cupboard:2.1.1'
-    compile 'com.squareup.okhttp:okhttp:2.2.0'
-    compile 'com.squareup:otto:1.3.5'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.commonsware.cwac:wakeful:1.0.+'
-    androidTestCompile 'org.mockito:mockito-core:1.9.+'
-    androidTestCompile 'com.google.dexmaker:dexmaker:1.+'
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.+'
-    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    compile appDependencies.raiburari
+    compile appDependencies.cupboard
+    compile appDependencies.otto
+    compile appDependencies.wakeful
+    compile appDependencies.qrCodeReaderView
+    provided appDependencies.javaxAnnotation
+
+    testCompile appTestDependencies.junit
+    testCompile appTestDependencies.mockito
+    testCompile appTestDependencies.robolectric
+    testCompile appTestDependencies.truth
+    testApt appDependencies.daggerCompiler
+
+    androidTestCompile appTestDependencies.mockito
+    androidTestCompile appTestDependencies.dexmaker
+    androidTestCompile appTestDependencies.dexmakerMockito
+    androidTestCompile appTestDependencies.espresso
+    androidTestCompile appTestDependencies.testingSupportLib
 }

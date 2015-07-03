@@ -344,7 +344,7 @@ service SMSsync berjalan.</string>
     <string name="disabled">Dinonaktifkan</string>
     <string name="invalid_data_format">Format data tidak valid</string>
     <string name="http_entity_format">Entitas Format HTTP adalah [ %1$s ]</string>
-    <!--Message Results API-->
+    <!--MessageEntity Results API-->
     <string name="message_processed_success">SMSsync telah selesai memproses pesan ini.</string>
     <string name="message_processed_failed">SMSsync telah gagal memproses pesan ini.</string>
     <string name="message_processed_json_failed">SMSsync telah gagal membuat JSON respon.</string>

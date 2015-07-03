@@ -14,17 +14,19 @@
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
  */
-
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'dependencies/dependencies.gradle'
 buildscript {
     repositories {
         jcenter()
+        maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:1.3.0-beta4'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.5-SNAPSHOT'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.0'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.0'
-        classpath 'org.ajoberstar:gradle-git:1.1.0'
+        classpath 'org.ajoberstar:gradle-git:1.2.0'
     }
 }
 
@@ -35,5 +37,10 @@ allprojects {
         maven {
             url "http://repo.commonsware.com.s3.amazonaws.com"
         }
+    }
+
+    ext {
+        androidVersionCode = 36
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 }
