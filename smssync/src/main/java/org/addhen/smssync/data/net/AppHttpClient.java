@@ -35,6 +35,10 @@ import android.os.Build;
 import java.io.File;
 
 /**
+ * A Singleton class for accessing RequestQueue instance. It instantiates the
+ * RequestQueue using the application context. This way possible memory leaks
+ * are avoided in case user passes in an Activity's context.
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class AppHttpClient {
@@ -42,8 +46,6 @@ public class AppHttpClient {
     private Context mContext;
 
     private RequestQueue mRequestQueue;
-
-    private HttpStack mHttpStack;
 
     private static AppHttpClient mAppHttpClient;
 
@@ -101,6 +103,12 @@ public class AppHttpClient {
         return mRequestQueue;
     }
 
+    /**
+     * Make a Typed base request. Regular string and Json requests
+     *
+     * @param req The request type
+     * @param <T> The Typed request
+     */
     public <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
