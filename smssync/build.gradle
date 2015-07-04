@@ -232,6 +232,7 @@ dependencies {
     compile appDependencies.otto
     compile appDependencies.wakeful
     compile appDependencies.qrCodeReaderView
+    compile appDependencies.volley
     provided appDependencies.javaxAnnotation
 
     testCompile appTestDependencies.junit
