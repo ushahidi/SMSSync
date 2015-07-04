@@ -64,7 +64,8 @@ public class ProcessSms {
 
     /**
      * Send message as SMS to a phone number. When sendDeliveryReport is set to true
-     * the message {@link SmsMessage} will be sent as part of the delivery report Intent
+     * the message {@link SmsMessage} will be sent as part of the delivery report Intent. So you
+     * can know which message actually got delivered.
      *
      * @param message            The message of the SMS
      * @param sendDeliveryReport Whether to send delivery report or not
@@ -132,10 +133,10 @@ public class ProcessSms {
     }
 
     /**
-     * Import messages from the messages app's table and puts them in SMSSync's outbox table.
-     * This will allow messages the imported messages to be sync'd to the configured Sync URL.
+     * Import messages from the messages app's table with a limitation of 10 messages.
      *
-     * @return true for success, false for failure.
+     * @return An empty list of {@link SmsMessage} when know message is imported or the total number
+     * of messages imported.
      */
     public List<SmsMessage> importMessages() {
         LogUtil.logInfo(CLASS_TAG, "importMessages(): import messages from messages app");
@@ -255,7 +256,7 @@ public class ProcessSms {
     }
 
     /**
-     * A basic SmsQuery on android.provider.Telephony.Sms.Inbox
+     * A basic SmsQuery based on android.provider.Telephony.Sms.Inbox
      */
     @SuppressLint("NewApi")
     private interface SmsQuery {
