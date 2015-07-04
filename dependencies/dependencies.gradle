@@ -36,6 +36,7 @@ ext {
     qrCodeReaderViewVersion = '1.0.0'
     ottoVersion = '1.3.5'
     wakefulVersion = '1.0.5'
+    volleyVersion = '1.0.16'
 
     //Testing
     jUnitVersion = '4.12'
@@ -55,6 +56,7 @@ ext {
             qrCodeReaderView: "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
             otto            : "com.squareup:otto:${ottoVersion}",
             wakeful         : "com.commonsware.cwac:wakeful:${wakefulVersion}",
+            volley          : "com.mcxiaoke.volley:library:${volleyVersion}",
     ]
 
     appTestDependencies = [
