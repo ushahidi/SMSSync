@@ -2,9 +2,10 @@ language: android
 jdk: oraclejdk8
 before_install:
   - export JAVA8_HOME=$JAVA_HOME
+  - android list sdk --no-ui --all --extended
 android:
   components:
-  - build-tools-23.0.0_rc2
+  - build-tools-23.0.0_rc3
   - android-22
   - extra-android-support
   - extra-android-m2repository

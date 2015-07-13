@@ -23,7 +23,7 @@ allprojects {
 
 ext {
     //Android
-    androidBuildToolsVersion = "23.0.0 rc2"
+    androidBuildToolsVersion = "23.0.0 rc3"
     androidMinSdkVersion = 8
     androidTargetSdkVersion = 22
     androidCompileSdkVersion = 22
@@ -31,12 +31,13 @@ ext {
     //Libraries
     daggerVersion = '2.0.1'
     javaxAnnotationVersion = '10.0-b28'
-    raiburariVersion = '2.3.1'
+    raiburariVersion = '2.4.0'
     cupboardVersion = '2.1.1'
     qrCodeReaderViewVersion = '1.0.0'
     ottoVersion = '1.3.5'
     wakefulVersion = '1.0.5'
     volleyVersion = '1.0.16'
+    scribeVersion = '1.3.7'
 
     //Testing
     jUnitVersion = '4.12'
@@ -44,7 +45,7 @@ ext {
     dexmakerVersion = '1.0'
     espressoVersion = '2.0'
     testingSupportLibVersion = '0.1'
-    robolectricVersion = '3.0-rc3'
+    robolectricVersion = '3.0'
     truthVersion = '0.26'
 
     appDependencies = [
@@ -57,6 +58,7 @@ ext {
             otto            : "com.squareup:otto:${ottoVersion}",
             wakeful         : "com.commonsware.cwac:wakeful:${wakefulVersion}",
             volley          : "com.mcxiaoke.volley:library:${volleyVersion}",
+            scribe          : "org.scribe:scribe:${scribeVersion}",
     ]
 
     appTestDependencies = [

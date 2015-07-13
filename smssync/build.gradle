@@ -233,6 +233,7 @@ dependencies {
     compile appDependencies.wakeful
     compile appDependencies.qrCodeReaderView
     compile appDependencies.volley
+    compile appDependencies.scribe
     provided appDependencies.javaxAnnotation
 
     testCompile appTestDependencies.junit

@@ -173,7 +173,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         }
     }
 
-    protected void replaceFragment(int containerViewId, Fragment fragment, String tag) {
+    public void replaceFragment(int containerViewId, Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager()
                 .beginTransaction();
         fragmentTransaction.replace(containerViewId, fragment, tag);
