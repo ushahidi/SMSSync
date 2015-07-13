@@ -507,4 +507,8 @@
     <string name="ushahidi_blurb">Publish incoming SMS messages on an Ushahidi deployment</string>
     <string name="integration_header">What do you want to do with your incoming SMS message</string>
     <string name="integration_custom_services_title">Connect to custom web service</string>
+    <string name="logout">Logout</string>
+    <string name="twitter_login_profile_info">All incoming SMS will be sent as Twitter messages as
+        the logged in user below.
+    </string>
 </resources>
