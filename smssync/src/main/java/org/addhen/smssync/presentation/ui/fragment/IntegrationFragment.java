@@ -20,6 +20,7 @@ package org.addhen.smssync.presentation.ui.fragment;
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.presentation.App;
 
 import butterknife.OnClick;
 
@@ -43,7 +44,9 @@ public class IntegrationFragment extends BaseFragment {
 
     @OnClick(R.id.twitter)
     void onTwitterClicked() {
-        // TODO: Launch View to sign into twitter
+        if (App.getTwitterIntance().getSessionManager().getActiveSession() == null) {
+            App.getTwitterIntance().login(getActivity());
+        }
         showSnabackar(getView(), "Twitter CardView Clicked");
     }
 
