@@ -16,14 +16,13 @@
  * limitations under the License.
  */
 
-package org.addhen.smssync.presentation.ui.listener;
+package org.addhen.smssync.presentation.view.ui.listener;
 
 import android.graphics.Rect;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.animation.AnimatorCompatHelper;
 import android.support.v4.animation.AnimatorListenerCompat;
-import android.support.v4.animation.AnimatorUpdateListenerCompat;
 import android.support.v4.animation.ValueAnimatorCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;

@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.fragment;
+package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
@@ -24,8 +24,8 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.FilterComponent;
 import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.presenter.ListFilterPresenter;
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.adapter.FilterAdapter;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.view.ui.adapter.FilterAdapter;
 import org.addhen.smssync.presentation.view.filters.ListFilterView;
 
 import android.content.Context;
@@ -46,10 +46,10 @@ public class FilterFragment extends BaseRecyclerViewFragment<FilterModel, Filter
         ListFilterView {
 
     private static final String ARGUMENT_KEY_FILTER_STATUS
-            = "org.addhen.smssync.presentation.ui.fragment.ARGUMENT_FILTER_STATUS";
+            = "org.addhen.smssync.presentation.view.ui.fragment.ARGUMENT_FILTER_STATUS";
 
     private static final String BUNDLE_STATE_FILTER_STATUS
-            = "org.addhen.smssync.presentation.ui.fragment.BUNDLE_STATE_FILTER_STATUS";
+            = "org.addhen.smssync.presentation.view.ui.fragment.BUNDLE_STATE_FILTER_STATUS";
 
     @Inject
     ListFilterPresenter mListFilterPresenter;

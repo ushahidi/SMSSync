@@ -17,13 +17,12 @@
 
 package org.addhen.smssync.presentation.di.component;
 
-import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.MessageModule;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
-import org.addhen.smssync.presentation.ui.fragment.MessageFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 
 import dagger.Component;
 

@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.fragment;
+package org.addhen.smssync.presentation.view.ui.fragment;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>

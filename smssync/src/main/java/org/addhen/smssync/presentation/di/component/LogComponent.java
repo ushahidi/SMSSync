@@ -22,7 +22,7 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.LogModule;
 import org.addhen.smssync.presentation.presenter.ListLogPresenter;
-import org.addhen.smssync.presentation.ui.fragment.LogFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 
 import dagger.Component;
 

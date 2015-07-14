@@ -22,8 +22,8 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.FilterModule;
 import org.addhen.smssync.presentation.presenter.ListFilterPresenter;
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.fragment.FilterFragment;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
 
 import dagger.Component;
 

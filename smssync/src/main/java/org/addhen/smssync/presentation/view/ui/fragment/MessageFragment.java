@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.fragment;
+package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
@@ -24,9 +24,9 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.adapter.MessageAdapter;
-import org.addhen.smssync.presentation.ui.listener.OnSwipeableRecyclerViewTouchListener;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
+import org.addhen.smssync.presentation.view.ui.listener.OnSwipeableRecyclerViewTouchListener;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 

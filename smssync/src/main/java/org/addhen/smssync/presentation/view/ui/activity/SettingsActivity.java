@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.activity;
+package org.addhen.smssync.presentation.view.ui.activity;
 
 import org.addhen.smssync.R;
 

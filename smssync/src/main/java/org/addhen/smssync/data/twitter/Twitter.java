@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.data.twitter;
 
-import org.addhen.smssync.presentation.ui.activity.OauthActivity;
+import org.addhen.smssync.presentation.view.ui.activity.OauthActivity;
 
 import android.app.Activity;
 import android.content.Context;

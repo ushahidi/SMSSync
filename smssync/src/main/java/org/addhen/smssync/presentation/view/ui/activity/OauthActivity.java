@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.activity;
+package org.addhen.smssync.presentation.view.ui.activity;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.twitter.OAuthResponse;
@@ -56,7 +56,7 @@ public class OauthActivity extends Activity {
     private static final String STATE_PROGRESS = "progress";
 
     public static String INTENT_EXTRA_TWITTER_CONFIG
-            = "org.addhen.smssync.presentation.ui.TWITTER_CONFIG";
+            = "org.addhen.smssync.presentation.view.ui.TWITTER_CONFIG";
 
     private WebView mWebView;
 

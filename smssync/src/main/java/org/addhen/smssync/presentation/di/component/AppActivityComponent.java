@@ -25,8 +25,8 @@ import com.addhen.android.raiburari.presentation.di.component.ApplicationCompone
 import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.navigation.Launcher;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 
 import dagger.Component;
 
