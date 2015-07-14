@@ -19,4 +19,17 @@
 <resources>
     <attr name="photoItemForeground" format="reference"/>
     <attr name="lineColorDivider" format="reference|color"/>
+    <declare-styleable name="TagView">
+        <attr name="tagTextColor" format="color"/>
+        <attr name="tagTextSize" format="dimension"/>
+        <attr name="isActionAnimated" format="boolean"/>
+        <attr name="tagCornerRadius" format="dimension"/>
+        <attr name="tagMargin" format="dimension"/>
+        <attr name="textPaddingLeft" format="dimension"/>
+        <attr name="textPaddingRight" format="dimension"/>
+        <attr name="textPaddingTop" format="dimension"/>
+        <attr name="textPaddingBottom" format="dimension"/>
+        <attr name="tagDrawablePadding" format="dimension"/>
+        <attr name="tagUppercase" format="boolean"/>
+    </declare-styleable>
 </resources>
