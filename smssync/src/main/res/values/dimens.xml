@@ -34,4 +34,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <!-- Message list -->
     <dimen name="message_list_icon_size">40dp</dimen>
+    <!-- keywords view -->
+    <dimen name="keyword_icon_size">5dp</dimen>
 </resources>

@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.fragment;
+package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.listener.SwipeToDismissTouchListener;
@@ -25,8 +25,8 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.model.LogModel;
 import org.addhen.smssync.presentation.presenter.ListLogPresenter;
-import org.addhen.smssync.presentation.ui.activity.MainActivity;
-import org.addhen.smssync.presentation.ui.adapter.LogAdapter;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.view.ui.adapter.LogAdapter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.log.ListLogView;
 

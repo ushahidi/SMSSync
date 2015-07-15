@@ -19,6 +19,7 @@ package org.addhen.smssync.presentation;
 
 import com.addhen.android.raiburari.presentation.BaseApplication;
 
+import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.data.twitter.Twitter;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.presentation.di.component.AppComponent;
@@ -37,7 +38,8 @@ public class App extends BaseApplication {
     public static synchronized Twitter getTwitterIntance() {
         if (mTwitter == null) {
             // TODO: Load consumer key and secret from build script
-            mTwitter = new TwitterBuilder().consumerKey("").consumerSecret("")
+            mTwitter = new TwitterBuilder().consumerKey(BuildConfig.TWITTER_CONSUMER_KEY)
+                    .consumerSecret(BuildConfig.TWITTER_CONSUMER_SECRET)
                     .context(mApp).build();
         }
         return mTwitter;

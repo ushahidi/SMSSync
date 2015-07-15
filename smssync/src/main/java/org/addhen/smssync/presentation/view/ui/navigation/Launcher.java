@@ -15,14 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.navigation;
+package org.addhen.smssync.presentation.view.ui.navigation;
 
 import org.addhen.smssync.presentation.model.FilterModel;
-import org.addhen.smssync.presentation.ui.activity.SettingsActivity;
-import org.addhen.smssync.presentation.ui.fragment.FilterFragment;
-import org.addhen.smssync.presentation.ui.fragment.IntegrationFragment;
-import org.addhen.smssync.presentation.ui.fragment.LogFragment;
-import org.addhen.smssync.presentation.ui.fragment.MessageFragment;
+import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
+import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.IntegrationFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 
 import android.app.Activity;
 import android.content.Intent;

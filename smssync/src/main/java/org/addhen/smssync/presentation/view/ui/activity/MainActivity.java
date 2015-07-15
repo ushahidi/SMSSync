@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.ui.activity;
+package org.addhen.smssync.presentation.view.ui.activity;
 
 import com.addhen.android.raiburari.presentation.di.HasComponent;
 import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     NavigationView mNavigationView;
 
     private static final String BUNDLE_STATE_PARAM_CURRENT_MENU
-            = "org.addhen.smssync.presentation.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
+            = "org.addhen.smssync.presentation.view.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
 
     private AppActivityComponent mAppComponent;
 

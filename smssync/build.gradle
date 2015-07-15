@@ -107,7 +107,21 @@ android {
         if (!project.hasProperty('inAppPurchasePubKey')) {
             println 'Missing inAppPurchasePubKey. Using the default from SMSsync project'
         }
+
+        def twitterConsumerKey = project.hasProperty('twitterConsumerKey') ? twitterConsumerKey :
+                'consumer_key'
+        def twitterConsumerSecret = project.hasProperty('twitterSecretKey') ? twitterSecretKey :
+                'consumer_secret'
+        if (!project.hasProperty('twitterConsumerKey')) {
+            println 'Missing Twitter Consumer Key. Using a dummy key for now'
+        }
+
+        if (!project.hasProperty('twitterSecretKey')) {
+            println 'Missing Twitter Secret Key. Using the dummy secret for now'
+        }
         buildConfigField "String", "PUBLIC_LICENSE_KEY", '"' + publicKey + '"'
+        buildConfigField "String", "TWITTER_CONSUMER_KEY", '"' + twitterConsumerKey + '"'
+        buildConfigField "String", "TWITTER_CONSUMER_SECRET", '"' + twitterConsumerSecret + '"'
 
         testApplicationId "org.addhen.smssync.tests"
         applicationId "org.addhen.smssync"
@@ -217,7 +231,7 @@ tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
 task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
     //Linux command to launch the MainActivity when debug app is installed
     commandLine 'adb', 'shell', 'am', 'start', '-n',
-            'org.addhen.smssync.debug/org.addhen.smssync.presentation.ui.activity.MainActivity'
+            'org.addhen.smssync.debug/org.addhen.smssync.presentation.view.ui.activity.MainActivity'
 }
 
 dependencies {
@@ -234,6 +248,7 @@ dependencies {
     compile appDependencies.qrCodeReaderView
     compile appDependencies.volley
     compile appDependencies.scribe
+    compile appDependencies.nineOldAndroids
     provided appDependencies.javaxAnnotation
 
     testCompile appTestDependencies.junit
