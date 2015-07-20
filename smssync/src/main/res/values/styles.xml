@@ -20,10 +20,10 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="android:background">@color/color_primary</item>
         <item name="android:theme">@style/ActionBarThemeOverlay</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
     </style>
 
-    <style name="ActionBarThemeOverlay">
-        <item name="android:textColorPrimary">@android:color/white</item>
+    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark">
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlHighlight">@color/color_accent</item>
     </style>

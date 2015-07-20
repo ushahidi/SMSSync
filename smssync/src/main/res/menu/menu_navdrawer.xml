@@ -18,38 +18,44 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/nav_messages"
-              android:icon="@drawable/ic_message_black_24dp"
-              android:title="@string/title_bar_text"/>
+        <item android:title="@string/title_bar_text">
+            <menu android:checkableBehavior="single">
+                <item android:id="@+id/nav_incoming_messages"
+                      android:icon="@drawable/ic_inbox_black_24dp"
+                      android:title="@string/nav_menu_incoming"/>
+                <item android:id="@+id/nav_published_messages"
+                      android:icon="@drawable/ic_done_black_24dp"
+                      android:title="@string/published"/>
+            </menu>
+        </item>
         <item android:id="@+id/nav_filters"
               android:icon="@drawable/ic_filter_list_black_24dp"
               android:title="@string/filters"/>
 
-        <item android:id="@+id/nav_automation"
-              android:icon="@drawable/ic_history_black_24dp"
-              android:title="@string/automation"/>
-
         <item android:id="@+id/nav_reports"
               android:icon="@drawable/ic_assessment_black_24dp"
               android:title="@string/reports"/>
+
+        <item android:id="@+id/nav_settings"
+              android:icon="@drawable/ic_settings_white_24dp"
+              android:title="@string/action_settings"/>
     </group>
     <group>
         <item android:title="@string/integrations">
             <menu>
-                <item
-                        android:icon="@drawable/ic_add_black_24dp"
-                        android:id="@+id/nav_integration"
-                        android:title="@string/add_integration"/>
-                <item
-                        android:title="@string/twitter"/>
+                <item android:icon="@drawable/ic_add_black_24dp"
+                      android:id="@+id/nav_integration"
+                      android:title="@string/add_integration"/>
+                <item android:title="@string/twitter"/>
             </menu>
         </item>
     </group>
     <group>
-        <item android:title="Ushahidi Phone 1234">
+        <item android:title="Ushahidi Phone 1234"
+              android:id="@+id/nav_device_name">
             <menu>
-                <item
-                        android:title="Edit Device Info"/>
+                <item android:title="Edit Device Info"
+                      android:id="@+id/nav_edit_device_name"/>
             </menu>
         </item>
     </group>

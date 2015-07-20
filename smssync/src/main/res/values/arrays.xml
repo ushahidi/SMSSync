@@ -29,4 +29,28 @@
         <item>4</item>
         <item>5</item>
     </integer-array>
+    <!-- Sync frequency times -->
+    <string-array name="sync_frequencies">
+        <item>@string/every_one_minute</item>
+        <item>@string/every_five_minutes</item>
+        <item>@string/every_thirty_minutes</item>
+        <item>@string/every_hour</item>
+        <item>@string/every_twelve_hours</item>
+        <item>@string/every_24_hours</item>
+    </string-array>
+    <integer-array name="sync_frequency_values">
+        <!-- Hard coding the milli seconds here to avoid unnecessary conversion in code -->
+        <!-- 1 minute -->
+        <item>60000</item>
+        <!-- 5 minutes -->
+        <item>300000</item>
+        <!-- 30 minutes -->
+        <item>1800000</item>
+        <!-- 1 hour -->
+        <item>3600000</item>
+        <!-- 12 hours -->
+        <item>43200000</item>
+        <!-- 24 hours -->
+        <item>86400000</item>
+    </integer-array>
 </resources>

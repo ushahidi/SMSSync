@@ -50,7 +50,12 @@
         server to identify which device is sending it messages.
     </string>
     <string name="edittxt_unique_id_hint">01234</string>
-
+    <!-- unique name -->
+    <string name="edittxt_unique_name_pref">Enter name to identify the device.</string>
+    <string name="edittxt_unique_name_pref_summary">Specify a short name to identify this device.
+        Used by the server to identify which device is sending it messages.
+    </string>
+    <string name="edittxt_unique_name_hint">Enter a short name.</string>
     <!-- alert phone -->
     <string name="edittxt_alert_phone_pref">Enter alert phone number</string>
     <string name="edittxt_alert_phone_pref_summary">Specify a phone number to send alerts to.
@@ -67,7 +72,7 @@
     <string name="sms_sync_disabled">SMSsync Disabled</string>
 
     <!-- general settings -->
-    <string name="general_settings">General Settings</string>
+    <string name="general_settings">General</string>
     <string name="chk_enable_sms_sync">Start SMSsync service</string>
     <string name="chk_sms_sync_hint">Start and Stop SMS gateway.</string>
 
@@ -86,13 +91,16 @@
     <!-- auto delete pending messages -->
     <string name="chk_enable_auto_delete_pending_messages">Auto Delete Pending Messages</string>
     <string name="chk_enable_auto_delete_pending_messages_hint">Automatically delete pending
-        messages
-        that have failed to be sent.
+        messages that have failed to be sent.
     </string>
 
     <string name="select_number_of_retries">No. of retries for pending messages</string>
     <string name="select_number_of_retries_hint">Set the number of retries before the app
         automatically deletes pending messages.
+    </string>
+    <string name="select_sync_frequency">Select A Time Frequency</string>
+    <string name="select_sync_frequency_hint">Pre configured time frequencies at which the task will
+        be executed
     </string>
     <string name="one_try">One try</string>
     <string name="two_tries">Two tries</string>
@@ -105,6 +113,13 @@
     <string name="three">3</string>
     <string name="four">4</string>
     <string name="five">5</string>
+
+    <string name="every_one_minute">Every 1 minute</string>
+    <string name="every_five_minutes">Every 5 minutes</string>
+    <string name="every_thirty_minutes">Every 30 minutes</string>
+    <string name="every_hour">Every hour</string>
+    <string name="every_twelve_hours">Every 12 hours</string>
+    <string name="every_24_hours">Every 24 hours</string>
 
     <!-- enable sms delivery report  -->
     <string name="chk_enable_sms_delivery_report">SMS Delivery Report</string>
@@ -120,7 +135,7 @@
     <!-- auto sync delay -->
     <string name="txt_auto_sync_delay">Auto sync frequency</string>
     <string name="auto_sync_delay_hint">Set how often SMSsync syncronizes with the configured
-        callback URL.
+        Sync URL.
     </string>
 
     <!-- enable SMS Portals -->
@@ -133,13 +148,12 @@
     <!-- enable task check -->
     <string name="chk_enable_task_check">Enable Task Checking</string>
     <string name="chk_enable_task_check_hint">Allow SMSsync to periodically check for tasks enabled
-        on the callback URL. SMSsync then executes the task. Eg. SMSsync sends SMS
+        on the Sync URL. SMSsync then executes the task. Eg. SMSsync sends SMS
     </string>
 
     <!-- task check delay -->
-    <string name="txt_task_check_delay">Frequency</string>
-    <string name="txt_task_check_delay_hint">Set how often SMSsync checks for a task to be
-        executed.
+    <string name="txt_task_check_delay">Set A Specific Time Frequency</string>
+    <string name="txt_task_check_delay_hint">A specific time at which the frequency will run
     </string>
     <string name="app_name">SMSsync</string>
     <string name="outbox">SMSsync Pending Messages</string>
@@ -159,7 +173,11 @@
         and sync URL configuration.
     </string>
     <string name="powered">Powered</string>
-    <string name="powered_by">Created by Ushahidi</string>
+    <string name="powered_by">
+        <xliff:g id="powered_info">%1$s</xliff:g>
+        \n
+        Created by Ushahidi
+    </string>
     <string name="menu_delete_all">Delete All</string>
     <string name="menu_sync_all">Synchronize All</string>
     <string name="menu_delete">Delete</string>
@@ -472,7 +490,7 @@
     <!-- enable message results api -->
     <string name="chk_enable_message_results_api">Enable Message Results API"</string>
     <string name="chk_enable_message_results_api_hint">Allow SMSsync to send information about sent
-        messages to server.
+        messages to the server.
     </string>
     <string name="message_results_api_setting">Message Results API Settings</string>
 
@@ -511,4 +529,20 @@
     <string name="twitter_login_profile_info">All incoming SMS will be sent as Twitter messages as
         the logged in user below.
     </string>
+    <string name="published">Published</string>
+    <string name="nav_menu_incoming">Incoming</string>
+    <string name="settings_title_format">
+        <xliff:g id="setting">%1$s</xliff:g>
+        -
+        <xliff:g id="setting">%2$s</xliff:g>
+    </string>
+    <string name="translate_title">Translate SMSsync</string>
+    <string name="translate_hint">Help us translate SMSsync into other languages</string>
+    <string name="google_plus_community_title">Google+ community</string>
+    <string name="google_plus_community_hint">Connect with us on our Google+ community page. Read
+        about releases, share ideas or suggest improvements
+    </string>
+    <string name="forums_title">SMSsync forum</string>
+    <string name="forums_hint">Report issues or help someone with issues</string>
+    <string name="about">About</string>
 </resources>

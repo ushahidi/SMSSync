@@ -117,7 +117,7 @@ android {
         }
 
         if (!project.hasProperty('twitterSecretKey')) {
-            println 'Missing Twitter Secret Key. Using the dummy secret for now'
+            println 'Missing Twitter Secret Key. Using a dummy secret for now'
         }
         buildConfigField "String", "PUBLIC_LICENSE_KEY", '"' + publicKey + '"'
         buildConfigField "String", "TWITTER_CONSUMER_KEY", '"' + twitterConsumerKey + '"'
@@ -237,7 +237,7 @@ task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
 dependencies {
     def appDependencies = rootProject.ext.appDependencies
     def appTestDependencies = rootProject.ext.appTestDependencies
-    apt appDependencies.daggerCompiler
+    apt appDependencies.daggerCompiler // Needed for source code generation
     compile project(':libraries:pay-me')
     compile project(':libraries:survey-dialog')
     compile fileTree(dir: 'libs', include: '*.jar')
@@ -249,17 +249,19 @@ dependencies {
     compile appDependencies.volley
     compile appDependencies.scribe
     compile appDependencies.nineOldAndroids
-    provided appDependencies.javaxAnnotation
+    compile appDependencies.preferencefragment
+    compile appDependencies.preferenceSwitchCompat
+    provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     testCompile appTestDependencies.junit
     testCompile appTestDependencies.mockito
     testCompile appTestDependencies.robolectric
     testCompile appTestDependencies.truth
-    testApt appDependencies.daggerCompiler
 
     androidTestCompile appTestDependencies.mockito
     androidTestCompile appTestDependencies.dexmaker
     androidTestCompile appTestDependencies.dexmakerMockito
     androidTestCompile appTestDependencies.espresso
     androidTestCompile appTestDependencies.testingSupportLib
+    androidTestApt appDependencies.daggerCompiler
 }

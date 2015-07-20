@@ -15,26 +15,27 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.ui.activity;
+package org.addhen.smssync.presentation.di.module;
 
-import org.addhen.smssync.R;
+import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+import org.addhen.smssync.domain.usecase.log.AddLogUsecase;
+
+import javax.inject.Named;
+
+import dagger.Module;
+import dagger.Provides;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class SettingsActivity extends BasePreferenceActivity {
+@Module
+public class SettingsModule {
 
-    public static Intent getIntent(final Context context) {
-        return new Intent(context, SettingsActivity.class);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference_headers_legacy);
+    @Provides
+    @ActivityScope
+    @Named("logAdd")
+    AddLogUsecase provideListFilterUseCase(AddLogUsecase addLogUsecase) {
+        return addLogUsecase;
     }
 }

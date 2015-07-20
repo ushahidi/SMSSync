@@ -75,17 +75,17 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private int mCurrentMenu;
 
     public MainActivity() {
-        super(R.layout.activity_main, 0);
+        super(R.layout.activity_main, R.menu.menu_main);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            mCurrentMenu = R.id.nav_messages;
+            mCurrentMenu = R.id.nav_incoming_messages;
         } else {
-            mCurrentMenu = savedInstanceState
-                    .getInt(BUNDLE_STATE_PARAM_CURRENT_MENU, R.id.nav_messages);
+            mCurrentMenu = savedInstanceState.getInt(BUNDLE_STATE_PARAM_CURRENT_MENU,
+                    R.id.nav_incoming_messages);
         }
         injector();
         initViews();
@@ -138,6 +138,9 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.settings:
+                mAppComponent.launcher().launchSettings();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -156,10 +159,13 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
     private void setupFragment(int menuItem) {
         switch (menuItem) {
-            case R.id.nav_messages:
+            case R.id.nav_incoming_messages:
                 replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchMessages(), "messages");
+                        mAppComponent.launcher().launchMessages(), "incoming_messages");
                 break;
+            case R.id.nav_published_messages:
+                replaceFragment(R.id.fragment_main_content,
+                        mAppComponent.launcher().launchMessages(), "published_messages");
             case R.id.nav_filters:
                 replaceFragment(R.id.fragment_main_content,
                         mAppComponent.launcher().launchFilters(), "filters");
@@ -167,6 +173,9 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             case R.id.nav_integration:
                 replaceFragment(R.id.fragment_main_content,
                         mAppComponent.launcher().launchIntegrations(), "integrations");
+                break;
+            case R.id.nav_settings:
+                mAppComponent.launcher().launchSettings();
                 break;
             default:
                 break;
@@ -199,6 +208,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 

@@ -16,14 +16,20 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<resources>
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">@color/grey_lighter</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="lineColorDivider">@color/grey_lighter</item>
-    </style>
-</resources>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+            android:title="@string/about_smssync"
+            android:key="about_preference"/>
+    <Preference
+            android:title="@string/translate_title"
+            android:summary="@string/translate_hint"
+            android:key="translate_preference"/>
+    <Preference
+            android:title="@string/google_plus_community_title"
+            android:summary="@string/google_plus_community_hint"
+            android:key="google_plus_preference"/>
+    <Preference
+            android:title="@string/forums_title"
+            android:summary="@string/forums_hint"
+            android:key="forums_preference"/>
+</PreferenceScreen>
