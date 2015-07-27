@@ -27,4 +27,16 @@
         <item name="colorControlNormal">@android:color/white</item>
         <item name="colorControlHighlight">@color/color_accent</item>
     </style>
+
+    <style name="GettingStartedWelcomeHeadingAppearance"
+           parent="@android:style/TextAppearance.Large">
+        <item name="android:textSize">@dimen/text_size_xxlarge</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GettingStartedWelcomeContentAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>

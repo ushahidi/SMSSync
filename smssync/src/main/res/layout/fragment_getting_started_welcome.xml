@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/getting_started_welcome_fragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:clipChildren="false"
+              android:background="@color/color_primary_dark"
+              android:layout_weight="6"
+              android:paddingTop="48dp">
+
+    <FrameLayout
+            android:id="@+id/images"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:clipChildren="false">
+        <ImageView
+                android:id="@+id/getting_started_welcome_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:src="@drawable/smssync_welcome_logo"
+                android:paddingLeft="@dimen/view_spacing_large"
+                android:paddingRight="@dimen/view_spacing_large"
+                android:layout_gravity="center_horizontal|top"/>
+
+    </FrameLayout>
+
+    <TextView
+            android:id="@+id/getting_started_welcome_heading"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.50"
+            android:paddingLeft="@dimen/view_spacing_xlarge"
+            android:paddingRight="@dimen/view_spacing_xlarge"
+            android:paddingBottom="@dimen/view_spacing_xlarge"
+            android:textColor="@android:color/black"
+            android:gravity="bottom|center_horizontal"
+            android:text="@string/app_name"
+            android:textAppearance="@style/GettingStartedWelcomeHeadingAppearance"/>
+
+    <TextView
+            android:id="@+id/getting_started_welcome_content"
+            android:text="A fast, simple, and cheap way to liberate the SMS messages on your phone."
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/view_spacing_xlarge"
+            android:paddingRight="@dimen/view_spacing_xlarge"
+            android:gravity="top|center_horizontal"
+            android:minHeight="96dp"
+            android:textAppearance="@style/GettingStartedWelcomeHeadingAppearance"/>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@android:color/transparent"/>
+
+</LinearLayout>

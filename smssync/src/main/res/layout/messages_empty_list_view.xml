@@ -19,7 +19,7 @@
                 android:id="@android:id/empty"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-    <!-- TODO replace this pixelated icon because its resized nature with the original size -->
+    <!-- TODO replace this pixelated icon because its resized nature from the original size -->
     <ImageView
             android:id="@+id/empty_view_logo"
             android:layout_width="100dp"

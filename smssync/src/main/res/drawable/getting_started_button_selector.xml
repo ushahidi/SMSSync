@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2010 - 2015 Ushahidi Inc
   ~ All rights reserved
@@ -15,20 +16,10 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<resources>
-    <color name="color_primary">#00796B</color>
-    <color name="color_primary_dark">#00796B</color>
-    <color name="primary_light">#C8E6C9</color>
-    <color name="color_accent">#00796B</color>
-    <color name="white">#deffffff</color>
-    <color name="grey_light">#AFAFAF</color>
-    <color name="grey_lighter">#B6B6B6</color>
-    <color name="grey_dark">#33ffffff</color>
-    <color name="red">#F44336</color>
-    <color name="green">#388E3C</color>
-    <color name="amber">#FF9800</color>
-    <color name="orange_light">#ffb35b</color>
-    <color name="blue_cornflower">#55acee</color>
-    <color name="linen">#f1f0e6</color>
-    <color name="brown">#8d1919</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+          android:exitFadeDuration="@android:integer/config_mediumAnimTime">
+    <item android:state_pressed="false" android:state_focused="true"
+          android:drawable="@drawable/background_item_selected"/>
+    <item android:state_pressed="true" android:drawable="@drawable/background_item_selected"/>
+    <item android:drawable="@android:color/transparent"/>
+</selector>
