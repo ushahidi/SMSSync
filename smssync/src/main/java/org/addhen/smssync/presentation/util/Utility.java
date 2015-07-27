@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.presentation.util;
 
+import android.text.TextUtils;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -34,5 +36,19 @@ public class Utility {
 
     public static boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
+    }
+
+    /**
+     * This method removes all whitespaces from passed string
+     *
+     * @param s String to be trimmed
+     * @return String without whitespaces
+     */
+    public static String removeWhitespaces(String s) {
+        if (TextUtils.isEmpty(s)) {
+            return "";
+        }
+        String withoutWhiteChars = s.replaceAll("\\s+", "");
+        return withoutWhiteChars;
     }
 }

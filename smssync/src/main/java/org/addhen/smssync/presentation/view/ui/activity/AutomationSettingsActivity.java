@@ -19,22 +19,19 @@ package org.addhen.smssync.presentation.view.ui.activity;
 
 import org.addhen.smssync.R;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 /**
+ * Automation settings
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class SettingsActivity extends BasePreferenceActivity {
-
-    public static Intent getIntent(final Context context) {
-        return new Intent(context, SettingsActivity.class);
-    }
+public class AutomationSettingsActivity extends BasePreferenceActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference_headers_legacy);
+        addPreferencesFromResource(R.xml.automation_preferences);
+        setToolbarTitle(R.string.automation);
     }
 }

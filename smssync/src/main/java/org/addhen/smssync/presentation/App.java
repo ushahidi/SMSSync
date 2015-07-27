@@ -29,7 +29,7 @@ import org.addhen.smssync.presentation.di.component.AppComponent;
  */
 public class App extends BaseApplication {
 
-    AppComponent mAppComponent;
+    private static AppComponent mAppComponent;
 
     private static Twitter mTwitter;
 

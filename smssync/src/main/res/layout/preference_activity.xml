@@ -16,14 +16,13 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<resources>
-    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light">
-        <item name="colorControlHighlight">@color/grey_lighter</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryDark">@color/color_primary_dark</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="lineColorDivider">@color/grey_lighter</item>
-    </style>
-</resources>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/preference_container"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <fragment android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:name="org.addhen.smssync.presentation.view.ui.fragment.TaskSettingsFragment"
+              android:id="@+id/fragment"/>
+</FrameLayout>

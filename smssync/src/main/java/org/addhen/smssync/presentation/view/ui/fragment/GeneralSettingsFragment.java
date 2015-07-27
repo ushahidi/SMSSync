@@ -15,26 +15,16 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.ui.activity;
+package org.addhen.smssync.presentation.view.ui.fragment;
 
-import org.addhen.smssync.R;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+import com.github.machinarius.preferencefragment.PreferenceFragment;
 
 /**
+ * Fragments for showing general settings
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class SettingsActivity extends BasePreferenceActivity {
+public class GeneralSettingsFragment extends PreferenceFragment {
 
-    public static Intent getIntent(final Context context) {
-        return new Intent(context, SettingsActivity.class);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference_headers_legacy);
-    }
 }

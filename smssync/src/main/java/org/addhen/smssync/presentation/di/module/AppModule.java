@@ -25,6 +25,7 @@ import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.Prefs;
 
 import android.content.Context;
 
@@ -64,5 +65,11 @@ public class AppModule {
     @Singleton
     FileManager provideFileManager(Context context) {
         return new FileManager(context);
+    }
+
+    @Provides
+    @Singleton
+    Prefs providePrefs(Context context) {
+        return new Prefs(context);
     }
 }

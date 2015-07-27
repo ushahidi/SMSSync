@@ -15,26 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.ui.activity;
+package org.addhen.smssync.presentation.view.log;
 
-import org.addhen.smssync.R;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+import com.addhen.android.raiburari.presentation.ui.view.UiView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class SettingsActivity extends BasePreferenceActivity {
+public interface AddLogView extends UiView {
 
-    public static Intent getIntent(final Context context) {
-        return new Intent(context, SettingsActivity.class);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference_headers_legacy);
-    }
+    void onAdded(Long row);
 }
