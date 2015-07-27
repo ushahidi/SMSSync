@@ -24,11 +24,11 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
+import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.view.ui.listener.OnSwipeableRecyclerViewTouchListener;
-import org.addhen.smssync.presentation.util.Utility;
-import org.addhen.smssync.presentation.view.message.ListMessageView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -38,6 +38,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.List;
@@ -61,8 +62,8 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @Bind(android.R.id.list)
     BloatedRecyclerView mMessageRecyclerView;
 
-    @Bind(R.id.empty_list_view)
-    TextView mEmptyView;
+    @Bind(android.R.id.empty)
+    ViewGroup mEmptyView;
 
     @Inject
     ListMessagePresenter mListMessagePresenter;
@@ -165,11 +166,20 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mListMessagePresenter.loadMessages();
     }
 
+    @OnClick(android.R.id.empty)
+    void importItems() {
+        // TODO: perform SMS import
+        showSnabackar(mFab, "Empty view was clicked");
+    }
+
     @Override
     public void showMessages(List<MessageModel> messageModelList) {
         if (!Utility.isEmpty(messageModelList)) {
             mMessageAdapter.setItems(messageModelList);
+            mFab.setVisibility(View.VISIBLE);
+            return;
         }
+        mFab.setVisibility(View.GONE);
     }
 
     @Override
