@@ -549,4 +549,6 @@
     </string>
     <string name="empty_view_messages_sub_header">Go high-five someone, or...</string>
     <string name="empty_view_messages_action">Fetch new messages</string>
+    <string name="skip">skip</string>
+    <string name="getting_started">Getting started</string>
 </resources>

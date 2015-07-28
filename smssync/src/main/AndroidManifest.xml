@@ -56,6 +56,16 @@
                     android:value=".presentation.view.ui.activity.MainActivity"/>
         </activity>
         <activity
+                android:name=".presentation.view.ui.activity.GettingStartedActivity"
+                android:label="@string/getting_started"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.MainActivity"/>
+        </activity>
+        <activity
                 android:name=".presentation.view.ui.activity.OauthActivity"
                 android:theme="@style/AppTheme"
                 android:label="@string/app_name">
