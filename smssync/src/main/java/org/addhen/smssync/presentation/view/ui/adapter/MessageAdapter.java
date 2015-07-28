@@ -23,6 +23,8 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
 
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,6 +42,8 @@ import butterknife.ButterKnife;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
+
+    private static final int ANIMATION_DURATION = 300;
 
     private View mEmptyView;
 
@@ -105,7 +109,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         }
     }
 
-    public class Widgets extends RecyclerView.ViewHolder {
+    public class Widgets extends AnimateItemViewHolder {
 
         @Bind(R.id.status_indicator)
         ImageView statusIndicator;
@@ -125,6 +129,37 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         public Widgets(final View view) {
             super(view);
             ButterKnife.bind(this, view);
+        }
+
+        @Override
+        public void animateAddImpl(ViewPropertyAnimatorListener listener) {
+            ViewCompat.animate(itemView)
+                    .translationY(0)
+                    .alpha(1)
+                    .setDuration(ANIMATION_DURATION)
+                    .setListener(listener)
+                    .start();
+        }
+
+        @Override
+        public void preAnimateAddImpl() {
+            // Do nothing
+        }
+
+        @Override
+        public void preAnimateRemoveImpl() {
+            ViewCompat.setTranslationY(itemView, -itemView.getHeight() * 0.3f);
+            ViewCompat.setAlpha(itemView, 0);
+        }
+
+        @Override
+        public void animateRemoveImpl(ViewPropertyAnimatorListener listener) {
+            ViewCompat.animate(itemView)
+                    .translationY(0)
+                    .alpha(1)
+                    .setDuration(ANIMATION_DURATION)
+                    .setListener(listener)
+                    .start();
         }
     }
 }

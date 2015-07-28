@@ -29,6 +29,7 @@
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/view_spacing_normal"
                 android:cacheColorHint="@android:color/transparent"
+                app:recyclerviewEmptyView="@layout/messages_empty_list_view"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         <android.support.design.widget.FloatingActionButton
                 android:id="@+id/messages_fab"
@@ -43,5 +44,4 @@
                 android:layout_marginRight="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"/>
     </android.support.design.widget.CoordinatorLayout>
-    <include layout="@layout/messages_empty_list_view"/>
 </RelativeLayout>

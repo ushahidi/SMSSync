@@ -28,15 +28,18 @@ import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
-import org.addhen.smssync.presentation.view.ui.listener.OnSwipeableRecyclerViewTouchListener;
+import org.addhen.smssync.presentation.view.ui.animators.SlideInLeftAnimator;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -71,6 +74,10 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     private MessageAdapter mMessageAdapter;
 
     private static MessageFragment mMessageFragment;
+
+    private int mRemovedItemPosition = 0;
+
+    private MessageModel mRemovedMessage;
 
     public MessageFragment() {
         super(MessageAdapter.class, R.layout.fragment_list_message, R.menu.menu_messages);
@@ -132,32 +139,69 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.setFocusableInTouchMode(true);
         mMessageAdapter.setHasStableIds(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
-        mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mMessageRecyclerView.setItemAnimator(new SlideInLeftAnimator());
         mMessageRecyclerView.addItemDividerDecoration(getActivity());
-        OnSwipeableRecyclerViewTouchListener swipeTouchListener =
-                new OnSwipeableRecyclerViewTouchListener(mMessageRecyclerView.recyclerView,
-                        new OnSwipeableRecyclerViewTouchListener.SwipeListener() {
-                            @Override
-                            public boolean canSwipe(int position) {
-                                return true;
-                            }
+        mMessageRecyclerView.recyclerView.getItemAnimator().setRemoveDuration(0);
+        ItemTouchHelper.SimpleCallback swipeToDismiss = new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                    RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-                            @Override
-                            public void onDismissedBySwipeLeft(RecyclerView recyclerView,
-                                    int[] reverseSortedPositions) {
-                                // TODO: Implement swipe action
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                remove(viewHolder.getAdapterPosition());
+            }
 
-                            }
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView,
+                    RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState,
+                    boolean isCurrentlyActive) {
+                drawSwipeListItemBackground(c, (int) dX, viewHolder.itemView, actionState);
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState,
+                        isCurrentlyActive);
+            }
 
-                            @Override
-                            public void onDismissedBySwipeRight(RecyclerView recyclerView,
-                                    int[] reverseSortedPositions) {
-                                // TODO: Implement swipe action
+            @Override
+            public long getAnimationDuration(RecyclerView recyclerView, int animationType,
+                    float animateDx, float animateDy) {
+                return animationType == ItemTouchHelper.ANIMATION_TYPE_DRAG
+                        ? DEFAULT_DRAG_ANIMATION_DURATION
+                        : DEFAULT_SWIPE_ANIMATION_DURATION;
+            }
 
-                            }
-                        });
-        mMessageRecyclerView.recyclerView.addOnItemTouchListener(swipeTouchListener);
-        mMessageRecyclerView.enableDefaultSwipeRefresh(true);
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDismiss);
+        itemTouchHelper.attachToRecyclerView(mMessageRecyclerView.recyclerView);
+        mMessageRecyclerView.enableDefaultSwipeRefresh(false);
+    }
+
+    private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            Drawable d;
+            // Swiping right
+            if (dX > 0) {
+                d = ContextCompat
+                        .getDrawable(getAppContext(), R.drawable.swipe_right_list_item_background);
+                d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
+            } else { // Swiping left
+                d = ContextCompat
+                        .getDrawable(getAppContext(), R.drawable.swipe_left_list_item_background);
+                d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
+                        itemView.getBottom());
+            }
+            d.draw(c);
+        }
+    }
+
+    private void remove(int position) {
+        mRemovedItemPosition = position;
+        mRemovedMessage = mMessageAdapter.getItem(position);
+        mMessageAdapter.removeItem(mRemovedMessage);
+        showUndoSnackbar(1);
     }
 
     @OnClick(R.id.messages_fab)
@@ -218,5 +262,15 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     protected <C> C getMessageComponent(Class<C> componentType) {
         return componentType.cast(((MainActivity) getActivity()).getMessageComponent());
+    }
+
+    private void showUndoSnackbar(int count) {
+        Snackbar snackbar = Snackbar
+                .make(mFab, getString(R.string.item_deleted, count), Snackbar.LENGTH_LONG);
+        snackbar.setAction(R.string.undo, v -> {
+            // Restore item
+            mMessageAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
+        });
+        snackbar.show();
     }
 }
