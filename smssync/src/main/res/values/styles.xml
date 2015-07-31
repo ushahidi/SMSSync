@@ -39,4 +39,12 @@
         <item name="android:textSize">@dimen/text_size_large</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="AppTheme.SmsSync.ActionMode" parent="@style/Widget.AppCompat.ActionMode">
+        <item name="android:actionModeBackground">@android:color/background_dark</item>
+        <item name="actionModeBackground">@android:color/background_dark</item>
+        <item name="android:titleTextStyle">@android:color/background_light</item>
+        <item name="android:subtitleTextStyle">@android:color/background_light</item>
+        <item name="titleTextStyle">@android:color/background_light</item>
+        <item name="subtitleTextStyle">@android:color/background_light</item>
+    </style>
 </resources>
