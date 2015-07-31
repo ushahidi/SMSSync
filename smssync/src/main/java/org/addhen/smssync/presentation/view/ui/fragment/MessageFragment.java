@@ -18,6 +18,7 @@
 package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
+import com.addhen.android.raiburari.presentation.ui.listener.RecyclerViewItemTouchListenerAdapter;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 
 import org.addhen.smssync.R;
@@ -30,6 +31,7 @@ import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.view.ui.animators.SlideInLeftAnimator;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -142,6 +144,54 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.setItemAnimator(new SlideInLeftAnimator());
         mMessageRecyclerView.addItemDividerDecoration(getActivity());
         mMessageRecyclerView.recyclerView.getItemAnimator().setRemoveDuration(0);
+        mMessageRecyclerView.enableDefaultSwipeRefresh(false);
+        RecyclerViewItemTouchListenerAdapter recyclerViewItemTouchListenerAdapter
+                = new RecyclerViewItemTouchListenerAdapter(mMessageRecyclerView.recyclerView,
+                new RecyclerViewItemTouchListenerAdapter.RecyclerViewOnItemClickListener() {
+                    @Override
+                    public void onItemClick(RecyclerView recyclerView, View view, int i) {
+                        // Do nothing
+                    }
+
+                    @Override
+                    public void onItemLongClick(RecyclerView recyclerView, View view, int i) {
+
+                    }
+                });
+        mMessageRecyclerView.recyclerView
+                .addOnItemTouchListener(recyclerViewItemTouchListenerAdapter);
+        enableSwipeToPerformAction();
+    }
+
+    private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            Drawable d;
+            // Swiping right
+            if (dX > 0) {
+                d = ContextCompat
+                        .getDrawable(getAppContext(), R.drawable.swipe_right_list_item_background);
+                d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
+            } else { // Swiping left
+                d = ContextCompat
+                        .getDrawable(getAppContext(), R.drawable.swipe_left_list_item_background);
+                d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
+                        itemView.getBottom());
+            }
+            d.draw(c);
+        }
+    }
+
+    private void remove(int position) {
+        mRemovedItemPosition = position;
+        mRemovedMessage = mMessageAdapter.getItem(position);
+        mMessageAdapter.removeItem(mRemovedMessage);
+        showUndoSnackbar(1);
+    }
+
+    @TargetApi(11)
+    private void enableSwipeToPerformAction() {
+        // Swiping works well on API 11 and above because the android support lib ships
+        // with buggy APIs that makes it hard to implement on older devices
         ItemTouchHelper.SimpleCallback swipeToDismiss = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -176,32 +226,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDismiss);
         itemTouchHelper.attachToRecyclerView(mMessageRecyclerView.recyclerView);
-        mMessageRecyclerView.enableDefaultSwipeRefresh(false);
-    }
-
-    private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            Drawable d;
-            // Swiping right
-            if (dX > 0) {
-                d = ContextCompat
-                        .getDrawable(getAppContext(), R.drawable.swipe_right_list_item_background);
-                d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
-            } else { // Swiping left
-                d = ContextCompat
-                        .getDrawable(getAppContext(), R.drawable.swipe_left_list_item_background);
-                d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
-                        itemView.getBottom());
-            }
-            d.draw(c);
-        }
-    }
-
-    private void remove(int position) {
-        mRemovedItemPosition = position;
-        mRemovedMessage = mMessageAdapter.getItem(position);
-        mMessageAdapter.removeItem(mRemovedMessage);
-        showUndoSnackbar(1);
     }
 
     @OnClick(R.id.messages_fab)

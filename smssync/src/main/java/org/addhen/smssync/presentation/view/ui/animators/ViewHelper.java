@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.presentation.view.ui.animators;
 
+import org.addhen.smssync.BuildConfig;
+
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
@@ -35,9 +37,12 @@ public final class ViewHelper {
         ViewCompat.setRotation(v, 0);
         ViewCompat.setRotationY(v, 0);
         ViewCompat.setRotationX(v, 0);
-        // @TODO https://code.google.com/p/android/issues/detail?id=80863
-//        ViewCompat.setPivotY(v, v.getMeasuredHeight() / 2);
-        v.setPivotY(v.getMeasuredHeight() / 2);
+        if (BuildConfig.VERSION_CODE >= 11) {
+            // @TODO https://code.google.com/p/android/issues/detail?id=80863
+            ViewCompat.setPivotY(v, v.getMeasuredHeight() / 2);
+        } else {
+            v.setPivotY(v.getMeasuredHeight() / 2);
+        }
         ViewCompat.setPivotX(v, v.getMeasuredWidth() / 2);
         ViewCompat.animate(v).setInterpolator(null);
     }
