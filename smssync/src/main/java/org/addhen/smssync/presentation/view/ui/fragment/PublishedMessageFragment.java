@@ -38,7 +38,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.view.ActionMode;
@@ -61,18 +60,14 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, MessageAdapter>
+public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageModel, MessageAdapter>
         implements ListMessageView {
 
     private static final int HONEYCOMB = 11;
-
-    @Bind(R.id.messages_fab)
-    FloatingActionButton mFab;
 
     @Bind(android.R.id.list)
     BloatedRecyclerView mMessageRecyclerView;
@@ -85,7 +80,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private MessageAdapter mMessageAdapter;
 
-    private static MessageFragment mMessageFragment;
+    private static PublishedMessageFragment mMessageFragment;
 
     private int mRemovedItemPosition = 0;
 
@@ -98,13 +93,13 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     /** List of items pending to to be deleted **/
     public List<PendingDeletedMessage> mPendingDeletedMessages;
 
-    public MessageFragment() {
+    public PublishedMessageFragment() {
         super(MessageAdapter.class, R.layout.fragment_list_message, R.menu.menu_messages);
     }
 
-    public static MessageFragment newInstance() {
+    public static PublishedMessageFragment newInstance() {
         if (mMessageFragment == null) {
-            mMessageFragment = new MessageFragment();
+            mMessageFragment = new PublishedMessageFragment();
         }
         return mMessageFragment;
     }
@@ -165,14 +160,12 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageAdapter.setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
-                .sheet(R.menu.menu_messages_more_actions)
+                .sheet(R.menu.menu_published_messages_more_actions)
                 .listener((dialog, which) -> {
                     switch (which) {
-                        case R.id.menu_messages_more_actions_delete:
+                        case R.id.menu_published_messages_more_actions_delete:
                             showUndoSnackbar(position);
                             break;
-                        default:
-                            showUndoSnackbar(position);
                     }
                 }).show());
         if (Build.VERSION.SDK_INT >= HONEYCOMB) {
@@ -190,11 +183,13 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             // Swiping right
             if (dX > 0) {
                 d = ContextCompat
-                        .getDrawable(getAppContext(), R.drawable.swipe_right_list_item_background);
+                        .getDrawable(getAppContext(),
+                                R.drawable.swipe_right_publish_list_item_background);
                 d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
             } else { // Swiping left
                 d = ContextCompat
-                        .getDrawable(getAppContext(), R.drawable.swipe_left_list_item_background);
+                        .getDrawable(getAppContext(),
+                                R.drawable.swipe_left_publish_list_item_background);
                 d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
                         itemView.getBottom());
             }
@@ -248,26 +243,11 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         itemTouchHelper.attachToRecyclerView(mMessageRecyclerView.recyclerView);
     }
 
-    @OnClick(R.id.messages_fab)
-    void syncItems() {
-        // TODO: Perform message sync. For now reload the messages list
-        mListMessagePresenter.loadMessages();
-    }
-
-    @OnClick(android.R.id.empty)
-    void importItems() {
-        // TODO: perform SMS import
-        showSnabackar(mFab, "Empty view was clicked");
-    }
-
     @Override
     public void showMessages(List<MessageModel> messageModelList) {
         if (!Utility.isEmpty(messageModelList)) {
             mMessageAdapter.setItems(messageModelList);
-            mFab.setVisibility(View.VISIBLE);
-            return;
         }
-        mFab.setVisibility(View.GONE);
     }
 
     @Override
@@ -292,7 +272,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Override
     public void showError(String s) {
-        Snackbar snackbar = Snackbar.make(mFab, s, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(getView(), s, Snackbar.LENGTH_LONG);
         View view = snackbar.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(getAppContext().getResources().getColor(R.color.red));
@@ -310,7 +290,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private void showUndoSnackbar(int count) {
         Snackbar snackbar = Snackbar
-                .make(mFab, getString(R.string.item_deleted, count), Snackbar.LENGTH_LONG);
+                .make(getView(), getString(R.string.item_deleted, count), Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.undo, v -> {
             // Restore item
             mMessageAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
@@ -360,7 +340,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         //Sort in ascending order for restoring deleted items
         Comparator cmp = Collections.reverseOrder();
         Collections.sort(mPendingDeletedMessages, cmp);
-        Snackbar snackbar = Snackbar.make(mFab, getActivity()
+        Snackbar snackbar = Snackbar.make(getView(), getActivity()
                         .getString(R.string.item_deleted, mPendingDeletedMessages.size()),
                 Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.undo, e -> {

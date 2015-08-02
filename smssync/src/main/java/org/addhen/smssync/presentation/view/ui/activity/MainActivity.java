@@ -166,7 +166,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 break;
             case R.id.nav_published_messages:
                 replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchMessages(), "published_messages");
+                        mAppComponent.launcher().launchPublishedMessages(), "published_messages");
             case R.id.nav_filters:
                 replaceFragment(R.id.fragment_main_content,
                         mAppComponent.launcher().launchFilters(), "filters");

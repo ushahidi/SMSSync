@@ -23,6 +23,7 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import org.addhen.smssync.presentation.di.module.MessageModule;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
 
 import dagger.Component;
 
@@ -35,6 +36,8 @@ import dagger.Component;
 public interface MessageComponent extends AppActivityComponent {
 
     void inject(MessageFragment filterFragment);
+
+    void inject(PublishedMessageFragment publishedMessageFragment);
 
     ListMessagePresenter listFilterPresenter();
 }
