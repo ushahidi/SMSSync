@@ -556,4 +556,5 @@
         <xliff:g id="deleted">%1$s</xliff:g>
         message was deleted
     </string>
+    <string name="publish">Publish</string>
 </resources>

@@ -19,6 +19,7 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
+import com.cocosw.bottomsheet.BottomSheet;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
@@ -161,10 +162,19 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.addItemDividerDecoration(getActivity());
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageRecyclerView.enableDefaultSwipeRefresh(false);
-
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
+        mMessageAdapter.setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
+                .sheet(R.menu.menu_messages_more_actions)
+                .listener((dialog, which) -> {
+                    switch (which) {
+                        case R.id.menu_messages_more_actions_delete:
+                            showUndoSnackbar(position);
+                            break;
+                        case R.id.menu_messages_more_actions_publish:
+                            showUndoSnackbar(position);
+                    }
+                }).show());
         if (Build.VERSION.SDK_INT >= HONEYCOMB) {
             enableSwipeToPerformAction();
         }

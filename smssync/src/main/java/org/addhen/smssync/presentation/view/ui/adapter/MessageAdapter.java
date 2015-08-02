@@ -53,6 +53,8 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
 
     private OnCheckedListener mOnCheckedListener;
 
+    private OnMoreActionListener mOnMoreActionListener;
+
     private TextDrawable.IBuilder mDrawableBuilder = TextDrawable.builder()
             .round();
 
@@ -148,6 +150,10 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         mOnCheckedListener = onCheckedListener;
     }
 
+    public void setOnMoreActionListener(OnMoreActionListener onMoreActionListener) {
+        mOnMoreActionListener = onMoreActionListener;
+    }
+
     private void updateCheckedState(Widgets holder, int position) {
         if (isChecked(position)) {
             holder.imageView.setImageDrawable(
@@ -228,6 +234,11 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         });
 
         updateCheckedState(widgets, position);
+        widgets.statusIndicator.setOnClickListener(v -> {
+            if (mOnMoreActionListener != null) {
+                mOnMoreActionListener.onMoreActionTap(position);
+            }
+        });
     }
 
     public class Widgets extends RecyclerView.ViewHolder {
@@ -262,5 +273,10 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
     public interface OnCheckedListener {
 
         void onChecked(int position);
+    }
+
+    public interface OnMoreActionListener {
+
+        void onMoreActionTap(int position);
     }
 }

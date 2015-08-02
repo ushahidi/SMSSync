@@ -41,6 +41,7 @@ ext {
     nineOldAndroidsVersion = '2.4.0'
     preferencefragmentVersion = '0.1.1'
     preferenceSwitchCompatVersion = '1.0.0'
+    bottomsheetVersion = '1.1.1'
 
     //Testing
     jUnitVersion = '4.12'
@@ -65,6 +66,7 @@ ext {
             nineOldAndroids       : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
             preferencefragment    : "com.github.machinarius:preferencefragment:${preferencefragmentVersion}",
             preferenceSwitchCompat: "com.infstory:switch-preference-compat:${preferenceSwitchCompatVersion}",
+            bottomSheet           : "com.cocosw:bottomsheet:${bottomsheetVersion}",
     ]
 
     appTestDependencies = [
