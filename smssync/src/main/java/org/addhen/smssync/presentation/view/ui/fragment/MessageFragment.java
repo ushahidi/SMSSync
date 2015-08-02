@@ -427,6 +427,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             if (menuItem.getItemId() == R.id.context_menu_delete) {
                 deleteItems();
                 isDeleted = true;
+            } else if (menuItem.getItemId() == R.id.context_menu_import_sms) {
+                // TODO: Implement multiple upload. Remove snackbar prompt when implemented
+                showUndoSnackbar(2);
             }
 
             if (mActionMode != null) {

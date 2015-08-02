@@ -19,9 +19,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+            android:id="@+id/context_menu_import_sms"
+            android:icon="@drawable/ic_publish_white_24dp"
+            android:orderInCategory="1"
+            android:title="@string/menu_import"
+            app:showAsAction="always"/>
+    <item
             android:id="@+id/context_menu_delete"
             android:icon="@drawable/ic_delete_white_24dp"
-            android:orderInCategory="0"
+            android:orderInCategory="1"
             android:title="@string/menu_delete"
             app:showAsAction="ifRoom"/>
 </menu>
