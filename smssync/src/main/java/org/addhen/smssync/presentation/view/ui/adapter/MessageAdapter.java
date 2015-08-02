@@ -22,14 +22,20 @@ import com.addhen.android.raiburari.presentation.ui.adapter.BaseRecyclerViewAdap
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.ui.widget.TextDrawable;
 
+import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,9 +49,26 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
 
     private View mEmptyView;
 
-    public MessageAdapter(final View emptyView) {
+    private SparseBooleanArray mSelectedItems;
+
+    private OnCheckedListener mOnCheckedListener;
+
+    private OnMoreActionListener mOnMoreActionListener;
+
+    private TextDrawable.IBuilder mDrawableBuilder = TextDrawable.builder()
+            .round();
+
+    private Animation flipIn;
+
+    private Animation flipOut;
+
+    public MessageAdapter(Context context, final View emptyView) {
         mEmptyView = emptyView;
         onDataSetChanged();
+        mSelectedItems = new SparseBooleanArray();
+        flipIn = AnimationUtils.loadAnimation(context, R.anim.flip_front);
+        flipOut = AnimationUtils.loadAnimation(context, R.anim.flip_back);
+
     }
 
     @Override
@@ -73,36 +96,149 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
+    /**
+     * Toggles an item in the adapter as selected or de-selected
+     *
+     * @param position The index of the item to be toggled
+     */
+    public void toggleSelection(int position) {
+        if (mSelectedItems.get(position, false)) {
+            mSelectedItems.delete(position);
+        } else {
+            mSelectedItems.put(position, true);
+        }
+    }
+
+    private boolean isChecked(int position) {
+        if (mSelectedItems.get(position, false)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Count of the selected item
+     *
+     * @return The selected item size
+     */
+    public int getSelectedItemCount() {
+        return mSelectedItems.size();
+    }
+
+    /**
+     * Clear all selections
+     */
+    public void clearSelections() {
+        mSelectedItems.clear();
+        onDataSetChanged();
+    }
+
+    /**
+     * Gets all selected items
+     *
+     * @return The list of selected items
+     */
+    public List<Integer> getSelectedItems() {
+        List<Integer> items = new ArrayList<>(mSelectedItems.size());
+        for (int i = 0; i < mSelectedItems.size(); i++) {
+            items.add(mSelectedItems.keyAt(i));
+        }
+        return items;
+    }
+
+    public void setOnCheckedListener(OnCheckedListener onCheckedListener) {
+        mOnCheckedListener = onCheckedListener;
+    }
+
+    public void setOnMoreActionListener(OnMoreActionListener onMoreActionListener) {
+        mOnMoreActionListener = onMoreActionListener;
+    }
+
+    private void updateCheckedState(Widgets holder, int position) {
+        if (isChecked(position)) {
+            holder.imageView.setImageDrawable(
+                    mDrawableBuilder.build(holder.itemView.getContext().getResources()
+                            .getDrawable(R.drawable.ic_done_white_18dp), 0xff616161));
+        } else {
+            TextDrawable drawable = mDrawableBuilder
+                    .build(holder.itemView.getContext().getResources()
+                                    .getDrawable(R.drawable.ic_call_white_18dp),
+                            holder.itemView.getContext().getResources().getColor(
+                                    R.color.orange_light));
+            holder.imageView.setImageDrawable(drawable);
+        }
+    }
+
+    private void setFlipAnimation(Widgets widgets, int position) {
+        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                if (animation == flipOut) {
+                    updateCheckedState(widgets, position);
+                }
+                widgets.imageView.clearAnimation();
+                widgets.imageView.setAnimation(flipIn);
+                widgets.imageView.startAnimation(flipIn);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isChecked(position)) {
+                    widgets.checkIcon.setVisibility(View.VISIBLE);
+                } else {
+                    widgets.checkIcon.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+        flipIn.setAnimationListener(animationListener);
+        flipOut.setAnimationListener(animationListener);
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final MessageModel messageModel = getItem(position);
         // Initialize view with content
-        ((Widgets) holder).messageFrom.setText(messageModel.messageFrom);
+        Widgets widgets = ((Widgets) holder);
+        widgets.messageFrom.setText(messageModel.messageFrom);
         if (messageModel.messageDate != null) {
-            ((Widgets) holder).messageDate.setText(Utility.formatDate(messageModel.messageDate));
+            widgets.messageDate.setText(Utility.formatDate(messageModel.messageDate));
         }
-        ((Widgets) holder).message.setText(messageModel.messageBody);
+        widgets.message.setText(messageModel.messageBody);
         // Pending messages
         if (messageModel.messageType == MessageModel.Type.PENDING) {
-            ((Widgets) holder).messageType
-                    .setText(((Widgets) holder).itemView.getContext().getString(
-                            R.string.sms).toUpperCase(
-                            Locale.getDefault()));
+            widgets.messageType.setText(widgets.itemView.getContext().getString(
+                    R.string.sms).toUpperCase(Locale.getDefault()));
         } else if (messageModel.messageType == MessageModel.Type.TASK) {
             // Task messages
-            ((Widgets) holder).messageType.setText(
-                    ((Widgets) holder).itemView.getContext().getString(R.string.task)
-                            .toUpperCase(Locale.getDefault()));
+            widgets.messageType
+                    .setText(widgets.itemView.getContext().getString(R.string.task).toUpperCase(
+                            Locale.getDefault()));
         }
-        ((Widgets) holder).messageType
-                .setTextColor(((Widgets) holder).itemView.getContext().getResources().getColor(
-                        R.color.red));
+        widgets.messageType
+                .setTextColor(widgets.itemView.getContext().getResources().getColor(R.color.red));
 
-        if (messageModel.status.equals(MessageModel.Status.FAILED)) {
-            ((Widgets) holder).statusIndicator.setImageResource(R.drawable.ic_autorenew_green_18dp);
-        } else {
-            ((Widgets) holder).statusIndicator.setImageResource(R.drawable.ic_done_green_18dp);
-        }
+        widgets.imageView.setOnClickListener(v -> {
+
+            if (mOnCheckedListener != null) {
+                mOnCheckedListener.onChecked(position);
+            }
+            widgets.imageView.clearAnimation();
+            widgets.imageView.setAnimation(flipOut);
+            widgets.imageView.startAnimation(flipOut);
+            setFlipAnimation(widgets, position);
+        });
+
+        updateCheckedState(widgets, position);
+        widgets.statusIndicator.setOnClickListener(v -> {
+            if (mOnMoreActionListener != null) {
+                mOnMoreActionListener.onMoreActionTap(position);
+            }
+        });
     }
 
     public class Widgets extends RecyclerView.ViewHolder {
@@ -122,9 +258,25 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         @Bind(R.id.sent_message_type)
         AppCompatTextView messageType;
 
+        @Bind(R.id.message_icons)
+        ImageView imageView;
+
+        @Bind(R.id.check_icon)
+        ImageView checkIcon;
+
         public Widgets(final View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    public interface OnCheckedListener {
+
+        void onChecked(int position);
+    }
+
+    public interface OnMoreActionListener {
+
+        void onMoreActionTap(int position);
     }
 }

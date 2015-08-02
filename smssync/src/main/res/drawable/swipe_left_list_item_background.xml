@@ -16,19 +16,12 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-            android:id="@+id/import_sms"
-            android:icon="@drawable/ic_refresh_white_24dp"
-            android:orderInCategory="0"
-            android:title="@string/menu_import"
-            app:showAsAction="always"/>
-    <item
-            android:id="@+id/menu_search_message"
-            android:icon="@drawable/ic_search_white_24dp"
-            android:title="@string/search"
-            android:orderInCategory="1"
-            app:actionViewClass="android.support.v7.widget.SearchView"
-            app:showAsAction="collapseActionView|always"/>
-</menu>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="@color/green"/>
+    </item>
+    <item android:right="16dp">
+        <bitmap android:src="@drawable/ic_publish_white_24dp"
+                android:gravity="right|center_vertical"/>
+    </item>
+</layer-list>

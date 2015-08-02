@@ -251,6 +251,7 @@ dependencies {
     compile appDependencies.nineOldAndroids
     compile appDependencies.preferencefragment
     compile appDependencies.preferenceSwitchCompat
+    compile appDependencies.bottomSheet
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     testCompile appTestDependencies.junit

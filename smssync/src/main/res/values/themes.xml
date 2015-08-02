@@ -25,5 +25,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="lineColorDivider">@color/grey_lighter</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">@android:color/background_dark</item>
+        <item name="android:actionModeStyle">@style/AppTheme.SmsSync.ActionMode</item>
     </style>
 </resources>

@@ -551,4 +551,10 @@
     <string name="empty_view_messages_action">Fetch new messages</string>
     <string name="skip">skip</string>
     <string name="getting_started">Getting started</string>
+    <string name="undo">Undo</string>
+    <string name="item_deleted">
+        <xliff:g id="deleted">%1$s</xliff:g>
+        message was deleted
+    </string>
+    <string name="publish">Publish</string>
 </resources>
