@@ -17,12 +17,13 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group_messages">
         <item android:title="@string/title_bar_text">
-            <menu android:checkableBehavior="single">
+            <menu android:id="@+id/menu_messages">
                 <item android:id="@+id/nav_incoming_messages"
                       android:icon="@drawable/ic_inbox_black_24dp"
-                      android:title="@string/nav_menu_incoming"/>
+                      android:title="@string/nav_menu_incoming"
+                      android:checked="true"/>
                 <item android:id="@+id/nav_published_messages"
                       android:icon="@drawable/ic_done_black_24dp"
                       android:title="@string/published"/>
@@ -34,13 +35,13 @@
 
         <item android:id="@+id/nav_reports"
               android:icon="@drawable/ic_assessment_black_24dp"
-              android:title="@string/reports"/>
+              android:title="@string/logs"/>
 
         <item android:id="@+id/nav_settings"
-              android:icon="@drawable/ic_settings_white_24dp"
+              android:icon="@drawable/ic_settings_black_24dp"
               android:title="@string/action_settings"/>
     </group>
-    <group>
+    <group android:id="@+id/group_integrations">
         <item android:title="@string/integrations">
             <menu>
                 <item android:icon="@drawable/ic_add_black_24dp"
@@ -50,7 +51,7 @@
             </menu>
         </item>
     </group>
-    <group>
+    <group android:id="@+id/group_device_info">
         <item android:title="Ushahidi Phone 1234"
               android:id="@+id/nav_device_name">
             <menu>

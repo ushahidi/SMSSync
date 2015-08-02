@@ -110,7 +110,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     }
 
     private void injector() {
-        //getAppComponent().inject(this);
         mAppComponent = DaggerAppActivityComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
@@ -151,11 +150,25 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 menuItem -> {
                     mCurrentMenu = menuItem.getItemId();
                     setupFragment(mCurrentMenu);
-                    menuItem.setChecked(menuItem.isChecked());
+                    onNavigationItemSelected(navigationView, menuItem);
                     mToolbar.setTitle(menuItem.getTitle());
                     mDrawerLayout.closeDrawers();
                     return true;
                 });
+    }
+
+    public void onNavigationItemSelected(NavigationView navigationView, final MenuItem menuItem) {
+        final int groupId = menuItem.getGroupId();
+        navigationView.getMenu()
+                .setGroupCheckable(R.id.group_messages, (groupId == R.id.group_messages), true);
+        navigationView.getMenu()
+                .setGroupCheckable(R.id.menu_messages, (groupId == R.id.group_messages), true);
+        navigationView.getMenu()
+                .setGroupCheckable(R.id.group_integrations, (groupId == R.id.group_messages), true);
+        navigationView.getMenu()
+                .setGroupCheckable(R.id.group_device_info, (groupId == R.id.group_device_info),
+                        true);
+        menuItem.setChecked(true);
     }
 
     private void setupFragment(int menuItem) {
@@ -167,9 +180,14 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             case R.id.nav_published_messages:
                 replaceFragment(R.id.fragment_main_content,
                         mAppComponent.launcher().launchPublishedMessages(), "published_messages");
+                break;
             case R.id.nav_filters:
                 replaceFragment(R.id.fragment_main_content,
                         mAppComponent.launcher().launchFilters(), "filters");
+                break;
+            case R.id.nav_reports:
+                replaceFragment(R.id.fragment_main_content,
+                        mAppComponent.launcher().launchLogs(), "reports");
                 break;
             case R.id.nav_integration:
                 replaceFragment(R.id.fragment_main_content,

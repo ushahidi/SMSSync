@@ -25,7 +25,7 @@ import com.nineoldandroids.view.ViewHelper;
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
-import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
+import org.addhen.smssync.presentation.presenter.ListPublishedMessagePresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
@@ -76,7 +76,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     ViewGroup mEmptyView;
 
     @Inject
-    ListMessagePresenter mListMessagePresenter;
+    ListPublishedMessagePresenter mListMessagePresenter;
 
     private MessageAdapter mMessageAdapter;
 
@@ -94,7 +94,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     public List<PendingDeletedMessage> mPendingDeletedMessages;
 
     public PublishedMessageFragment() {
-        super(MessageAdapter.class, R.layout.fragment_list_message, R.menu.menu_messages);
+        super(MessageAdapter.class, R.layout.fragment_list_published_message, 0);
     }
 
     public static PublishedMessageFragment newInstance() {
