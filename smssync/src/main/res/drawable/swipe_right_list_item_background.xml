@@ -18,10 +18,10 @@
 
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <color android:color="@color/red"/>
+        <color android:color="@color/green"/>
     </item>
     <item android:left="16dp">
-        <bitmap android:src="@drawable/ic_delete_white_24dp"
+        <bitmap android:src="@drawable/ic_publish_white_24dp"
                 android:gravity="left|center_vertical"/>
     </item>
 </layer-list>
