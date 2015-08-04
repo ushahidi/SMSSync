@@ -97,7 +97,8 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
                 android:layout_marginBottom="@dimen/view_spacing_normal"
-                android:background="?attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:visibility="gone">
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -148,7 +149,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
-                android:background="?attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:visibility="gone">
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
