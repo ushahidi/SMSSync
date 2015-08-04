@@ -97,6 +97,10 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    public void onResume() {
+        super.onResume();
+    }
+
     private void initViews() {
         setSupportActionBar(mToolbar);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.app_name,

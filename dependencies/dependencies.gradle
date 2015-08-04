@@ -37,7 +37,7 @@ ext {
     ottoVersion = '1.3.5'
     wakefulVersion = '1.0.5'
     volleyVersion = '1.0.16'
-    scribeVersion = '1.3.7'
+    twitter4jCoreVersion = '4.0.2'
     nineOldAndroidsVersion = '2.4.0'
     preferencefragmentVersion = '0.1.1'
     preferenceSwitchCompatVersion = '1.0.0'
@@ -62,7 +62,7 @@ ext {
             otto                  : "com.squareup:otto:${ottoVersion}",
             wakeful               : "com.commonsware.cwac:wakeful:${wakefulVersion}",
             volley                : "com.mcxiaoke.volley:library:${volleyVersion}",
-            scribe                : "org.scribe:scribe:${scribeVersion}",
+            twitter4jCore         : "org.twitter4j:twitter4j-core:${twitter4jCoreVersion}",
             nineOldAndroids       : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
             preferencefragment    : "com.github.machinarius:preferencefragment:${preferencefragmentVersion}",
             preferenceSwitchCompat: "com.infstory:switch-preference-compat:${preferenceSwitchCompatVersion}",

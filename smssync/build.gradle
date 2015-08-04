@@ -247,7 +247,7 @@ dependencies {
     compile appDependencies.wakeful
     compile appDependencies.qrCodeReaderView
     compile appDependencies.volley
-    compile appDependencies.scribe
+    compile appDependencies.twitter4jCore
     compile appDependencies.nineOldAndroids
     compile appDependencies.preferencefragment
     compile appDependencies.preferenceSwitchCompat

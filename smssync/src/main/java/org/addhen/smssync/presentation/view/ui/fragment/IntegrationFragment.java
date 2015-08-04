@@ -43,6 +43,10 @@ public class IntegrationFragment extends BaseFragment {
         return mIntegrationFragment;
     }
 
+    public void onResume() {
+        super.onResume();
+    }
+
     @OnClick(R.id.twitter)
     void onTwitterClicked() {
         if (App.getTwitterIntance().getSessionManager().getActiveSession() == null) {
