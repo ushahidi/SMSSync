@@ -32,6 +32,7 @@ import android.content.Context;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,7 +74,11 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status) {
-        return null;
+        return Observable.defer(() -> {
+            List<Message> messageEntityList = new ArrayList<>();
+            List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
+            return Observable.just(messages);
+        });
     }
 
     @Override

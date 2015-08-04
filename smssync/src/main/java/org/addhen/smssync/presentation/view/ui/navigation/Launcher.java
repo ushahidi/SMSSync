@@ -24,6 +24,7 @@ import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.IntegrationFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -61,6 +62,10 @@ public class Launcher {
 
     public FilterFragment launchFilters() {
         return FilterFragment.newInstance(FilterModel.Status.WHITELIST);
+    }
+
+    public PublishedMessageFragment launchPublishedMessages() {
+        return PublishedMessageFragment.newInstance();
     }
 
     public void launchGettingStarted() {
