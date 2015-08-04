@@ -26,7 +26,6 @@ import com.addhen.android.raiburari.presentation.presenter.Presenter;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.usecase.message.ListPublishedMessageUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
-import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 
@@ -80,8 +79,6 @@ public class ListPublishedMessagePresenter implements Presenter {
     public void loadMessages() {
         mListMessageView.hideRetry();
         mListMessageView.showLoading();
-        mListPublishedMessageUsecase
-                .setMessageStatus(mMessageModelDataMapper.map(MessageModel.Status.SENT));
         mListPublishedMessageUsecase.execute(new PublishedMessageSubscriber());
     }
 

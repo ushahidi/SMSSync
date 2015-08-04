@@ -37,8 +37,6 @@ public class ListPublishedMessageUsecase extends Usecase {
 
     private final MessageRepository mMessageRepository;
 
-    private MessageEntity.Status mMessageStatus;
-
     @Inject
     protected ListPublishedMessageUsecase(@NonNull MessageRepository messageRepository,
             ThreadExecutor threadExecutor,
@@ -47,13 +45,9 @@ public class ListPublishedMessageUsecase extends Usecase {
         mMessageRepository = messageRepository;
     }
 
-    public void setMessageStatus(MessageEntity.Status messageStatus) {
-        mMessageStatus = messageStatus;
-    }
-
     @Override
     protected Observable buildUseCaseObservable() {
-        return mMessageRepository.fetchByStatus(mMessageStatus);
+        return mMessageRepository.fetchByStatus(MessageEntity.Status.SENT);
     }
 
 }
