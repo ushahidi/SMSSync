@@ -44,6 +44,7 @@
     <!--alert phone-->
     <string name="edittxt_alert_phone_pref">Masukkan nomor telepon siaga</string>
     <string name="edittxt_alert_phone_pref_summary">Tentukan nomor telepon untuk mengirim peringatan.</string>
+    <string name="edittxt_alert_phone_set_msg">This number has been set to receive alerts from SMSSync.</string>
     <!--response message-->
     <string name="edittxt_reply">Masukkan Sebuah Pesan Respon</string>
     <string name="edittxt_reply_title">Pesan Respon</string>
