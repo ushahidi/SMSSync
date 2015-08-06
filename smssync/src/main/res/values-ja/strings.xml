@@ -50,6 +50,7 @@
     <!--alert phone-->
     <string name="edittxt_alert_phone_pref">警告する電話番号を入力</string>
     <string name="edittxt_alert_phone_pref_summary">警告の送信先の電話番号を指定します。</string>
+    <string name="edittxt_alert_phone_set_msg">This number has been set to receive alerts from SMSSync.</string>
     <!--response message-->
   <string name="edittxt_reply">
 		返答メッセージを入力
