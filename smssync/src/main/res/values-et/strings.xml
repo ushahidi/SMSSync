@@ -45,6 +45,10 @@
         kasutatakse sünkroniseerimise URL-i poolt, et teada täpselt, mis seade sõnumeid saadab.
     </string>
     <string name="edittxt_unique_id_hint">01234</string>
+    <!-- alert phone -->
+    <string name="edittxt_alert_phone_pref">Enter alert phone number</string>
+    <string name="edittxt_alert_phone_pref_summary">Specify a phone number to send alerts to.</string>
+    <string name="edittxt_alert_phone_set_msg">This number has been set to receive alerts from SMSSync.</string>
     <!--response message-->
     <string name="edittxt_reply">Sisesta vastuse sõnum</string>
     <string name="edittxt_reply_title">Vastuse sõnum</string>

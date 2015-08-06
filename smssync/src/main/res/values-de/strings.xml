@@ -41,6 +41,7 @@ Nachrichten zu filtern.</string>
     <!--alert phone-->
     <string name="edittxt_alert_phone_pref">Rufnummer für Meldungen eingeben</string>
     <string name="edittxt_alert_phone_pref_summary">Gib die Telefonnummer ein, an welche die Meldungen geschickt werden sollen.</string>
+    <string name="edittxt_alert_phone_set_msg">This number has been set to receive alerts from SMSSync.</string>
     <!--response message-->
     <string name="edittxt_reply">Fügen Sie eine Antwortnachricht hinzu</string>
     <string name="edittxt_reply_title">Eine Antwort</string>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Screenshots on SMSsync</title>
+    <link>http://localhost:1313/screenshots/</link>
+    <description>Recent content in Screenshots on SMSsync</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 May 2015 16:42:24 +0900</lastBuildDate>
+    <atom:link href="http://localhost:1313/screenshots/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Screenshots</title>
+      <link>http://localhost:1313/screenshots/</link>
+      <pubDate>Fri, 01 May 2015 16:42:24 +0900</pubDate>
+      
+      <guid>http://localhost:1313/screenshots/</guid>
+      <description>&lt;div class=&#34;row&#34;&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/auto_reply.png&#34; title=&#34;Auto Reply&#34;&gt;&lt;img alt=&#34;Auto Reply&#34; src=&#34;http://localhost:1313/images/screenshots/auto_reply.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Auto Reply&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sync_url.png&#34; title=&#34;Manage Sync URL&#34;&gt;&lt;img alt=&#34;Manage Sync URL&#34; src=&#34;http://localhost:1313/images/screenshots/sync_url.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Manage Sync URLs&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/add_sync_url.png&#34; title=&#34;Add Sync URL&#34;&gt;&lt;img alt=&#34;Add Sync URL&#34; src=&#34;http://localhost:1313/images/screenshots/add_sync_url.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Add Sync URL&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sent_messages.png&#34; title=&#34;Sent Messages&#34;&gt;&lt;img alt=&#34;Sent Messages&#34; src=&#34;http://localhost:1313/images/screenshots/sent_messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Sent Messages&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/pending_messages.png&#34; title=&#34;Pending Messages&#34;&gt;&lt;img alt=&#34;Pending Messages&#34; src=&#34;http://localhost:1313/images/screenshots/pending_messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Pending Messages&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/settings.png&#34; title=&#34;Settings&#34;&gt;&lt;img alt=&#34;Settings&#34; src=&#34;http://localhost:1313/images/screenshots/settings.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Settings&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/log.png&#34; title=&#34;Logs&#34;&gt;&lt;img alt=&#34;Logs&#34; src=&#34;http://localhost:1313/images/screenshots/log.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Logs&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/whitelist.png&#34; title=&#34;Whitelist&#34;&gt;&lt;img alt=&#34;Whitelist&#34; src=&#34;http://localhost:1313/images/screenshots/whitelist.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Whitelist&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/blacklist.png&#34; title=&#34;Blacklist&#34;&gt;&lt;img alt=&#34;Blacklist&#34; src=&#34;http://localhost:1313/images/screenshots/blacklist.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Empty Whitelist&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/multi-select.png&#34; title=&#34;Multi select items&#34;&gt;&lt;img alt=&#34;Multi select items&#34; src=&#34;http://localhost:1313/images/screenshots/multi-select.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Notification&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sync-scheme.png&#34; title=&#34;Configure a sync scheme&#34;&gt;&lt;img alt=&#34;configure a sync scheme&#34; src=&#34;http://localhost:1313/images/screenshots/sync-scheme.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Configure a Sync URL&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/add_sync_url_http_auth.png&#34; title=&#34;Add Sync URL with HTTP basic authentication&lt;&#34;&gt;&lt;img alt=&#34;configure a sync scheme&#34; src=&#34;http://localhost:1313/images/screenshots/add_sync_url_http_auth.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Making SMSsync the default SMS app&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

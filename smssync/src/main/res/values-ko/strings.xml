@@ -41,6 +41,10 @@
         발송되었는 지 확인하는데 사용하게 됩니다.
     </string>
     <string name="edittxt_unique_id_hint">01234</string>
+    <!-- alert phone -->
+    <string name="edittxt_alert_phone_pref">Enter alert phone number</string>
+    <string name="edittxt_alert_phone_pref_summary">Specify a phone number to send alerts to.</string>
+    <string name="edittxt_alert_phone_set_msg">This number has been set to receive alerts from SMSSync.</string>
     <!--response message-->
     <string name="edittxt_reply">응답 메시지를 입력하세요.</string>
     <string name="edittxt_reply_title">응답 메시지</string>
