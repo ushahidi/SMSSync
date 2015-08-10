@@ -18,9 +18,10 @@
 package org.addhen.smssync.data.repository.datasource.webservice;
 
 
-import android.support.annotation.NonNull;
-
+import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.entity.WebService;
+
+import android.support.annotation.NonNull;
 
 import java.util.List;
 
@@ -46,12 +47,12 @@ public class WebServiceDatabaseDataSource implements WebServiceDataSource {
     }
 
     @Override
-    public Observable<List<WebService>> getWebServiceEntityList() {
+    public Observable<List<WebService>> getWebServiceList() {
         return mWebServiceDatabaseHelper.getWebServices();
     }
 
     @Override
-    public Observable<WebService> getWebServiceEntity(Long webServiceId) {
+    public Observable<WebService> getWebService(Long webServiceId) {
         return mWebServiceDatabaseHelper.getWebService(webServiceId);
     }
 
@@ -61,17 +62,17 @@ public class WebServiceDatabaseDataSource implements WebServiceDataSource {
     }
 
     @Override
-    public Observable<Long> addWebServiceEntity(WebService webService) {
+    public Observable<Long> addWebService(WebService webService) {
         return mWebServiceDatabaseHelper.put(webService);
     }
 
     @Override
-    public Observable<Long> updateWebServiceEntity(WebServiceEntity webService) {
+    public Observable<Long> updateWebService(WebService webService) {
         return mWebServiceDatabaseHelper.put(webService);
     }
 
     @Override
-    public Observable<Long> deleteWebServiceEntity(Long webServiceId) {
+    public Observable<Long> deleteWebService(Long webServiceId) {
         return mWebServiceDatabaseHelper.deleteWebService(webServiceId);
     }
 }

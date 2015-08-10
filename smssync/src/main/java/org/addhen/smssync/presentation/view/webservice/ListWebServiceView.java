@@ -19,6 +19,8 @@ package org.addhen.smssync.presentation.view.webservice;
 
 import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
+import org.addhen.smssync.presentation.model.WebServiceModel;
+
 import java.util.List;
 
 /**
@@ -29,9 +31,9 @@ import java.util.List;
 public interface ListWebServiceView extends LoadDataView {
 
     /**
-     * Render a deployment list in the UI.
+     * Render a web service model list in the UI.
      *
-     * @param deploymentModel The collection of {@link WebServiceModel} that will be shown.
+     * @param webServiceModel The collection of {@link WebServiceModel} that will be shown.
      */
-    void renderCustomWebServiceList(List<WebServiceModel> deploymentModel);
+    void renderCustomWebServiceList(List<WebServiceModel> webServiceModel);
 }

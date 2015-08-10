@@ -27,9 +27,9 @@ import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 public interface AddWebServiceView extends LoadDataView {
 
     /**
-     * Show the status of {@link com.ushahidi.android.presentation.model.CustomWebServiceModel} deletion
+     * Show the status of {@link org.addhen.smssync.presentation.model.WebServiceModel} deletion
      *
      * @param row The affected row
      */
-    void onCustomWebServiceSuccessfullyAdded(Long row);
+    void onWebServiceSuccessfullyAdded(Long row);
 }

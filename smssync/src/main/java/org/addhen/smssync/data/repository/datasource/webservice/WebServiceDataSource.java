@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.data.repository.datasource.webservice;
 
-import com.ushahidi.android.data.entity.DeploymentEntity;
+import org.addhen.smssync.data.entity.WebService;
 
 import java.util.List;
 
@@ -31,55 +31,55 @@ import rx.Observable;
 public interface WebServiceDataSource {
 
     /**
-     * Get an {@link Observable} which will emit a List of {@link DeploymentEntity}.
+     * Get an {@link Observable} which will emit a List of {@link WebService}.
      *
-     * @return Observable that emits list of {@link DeploymentEntity}
+     * @return Observable that emits list of {@link WebService}
      */
-    Observable<List<DeploymentEntity>> getDeploymentEntityList();
+    Observable<List<WebService>> getWebServiceList();
 
     /**
-     * Get an {@link Observable} which will emit a {@link DeploymentEntity} by its id.
+     * Get an {@link Observable} which will emit a {@link WebService} by its id.
      *
      * @param deploymentId The id to retrieve user data.
-     * @return Observable that emits a {@link DeploymentEntity}
+     * @return Observable that emits a {@link WebService}
      */
-    Observable<DeploymentEntity> getDeploymentEntity(Long deploymentId);
+    Observable<WebService> getWebService(Long deploymentId);
 
     /**
-     * Get an {@link Observable} which will emit a {@link DeploymentEntity} by its id.
+     * Get an {@link Observable} which will emit a {@link WebService} by its id.
      *
      * @param status The deployment status to be used for retrieving a deployment
-     * @return Observable that emits a {@link DeploymentEntity}
+     * @return Observable that emits a {@link WebService}
      */
-    Observable<DeploymentEntity> getByStatus(DeploymentEntity.Status status);
+    Observable<WebService> getByStatus(WebService.Status status);
 
     /**
-     * Adds an {@link DeploymentEntity} to storage and then returns an {@link Observable} for all
+     * Adds an {@link WebService} to storage and then returns an {@link Observable} for all
      * subscribers
      * to react to it.
      *
      * @param deployment The deployment to be added
      * @return The row affected
      */
-    Observable<Long> addDeploymentEntity(DeploymentEntity deployment);
+    Observable<Long> addWebService(WebService deployment);
 
     /**
-     * Adds an {@link DeploymentEntity} to storage and then returns an {@link Observable} for all
+     * Adds an {@link WebService} to storage and then returns an {@link Observable} for all
      * subscribers
      * to react to it.
      *
      * @param deployment The deployment to be added
      * @return The row affected
      */
-    Observable<Long> updateDeploymentEntity(DeploymentEntity deployment);
+    Observable<Long> updateWebService(WebService deployment);
 
     /**
-     * Deletes an {@link DeploymentEntity} from storage and then returns an {@link Observable} for
+     * Deletes an {@link WebService} from storage and then returns an {@link Observable} for
      * all
      * subscribers to react to it.
      *
      * @param deploymentId The deployment to be deleted
      * @return The row affected
      */
-    Observable<Long> deleteDeploymentEntity(Long deploymentId);
+    Observable<Long> deleteWebService(Long deploymentId);
 }

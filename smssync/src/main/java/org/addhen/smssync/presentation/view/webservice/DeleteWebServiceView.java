@@ -21,7 +21,7 @@ import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
 /**
  * View that facilitates communication between
- * {@link com.ushahidi.android.presentation.presenter.DeleteCustomWebServicePresenter}
+ * {@link WebServicePresenter}
  * and activity views
  *
  * @author Ushahidi Team <team@ushahidi.com>
@@ -31,5 +31,5 @@ public interface DeleteWebServiceView extends LoadDataView {
     /**
      * Shows that a custom web service has been successfully deleted
      */
-    void onCustomWebServiceDeleted();
+    void onWebServiceDeleted();
 }

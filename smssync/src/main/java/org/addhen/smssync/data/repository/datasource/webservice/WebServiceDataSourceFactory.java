@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.data.repository.datasource.webservice;
 
-import com.ushahidi.android.data.database.DeploymentDatabaseHelper;
+import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 
 import android.support.annotation.NonNull;
 
@@ -25,14 +25,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * A factory class for creating the different datasource for {@link com.ushahidi.android.data.entity.DeploymentEntity}
+ * A factory class for creating the different datasource for {@link org.addhen.smssync.data.entity.WebService}
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @Singleton
 public class WebServiceDataSourceFactory {
 
-    private final DeploymentDatabaseHelper mDeploymentDatabaseHelper;
+    private final WebServiceDatabaseHelper mWebServiceDatabaseHelper;
 
     /**
      * Default constructor that constructs {@link WebServiceDataSourceFactory}
@@ -40,16 +40,16 @@ public class WebServiceDataSourceFactory {
      * @param deploymentDatabaseHelper The deployment database helper
      */
     @Inject
-    WebServiceDataSourceFactory(@NonNull DeploymentDatabaseHelper deploymentDatabaseHelper) {
-        mDeploymentDatabaseHelper = deploymentDatabaseHelper;
+    WebServiceDataSourceFactory(@NonNull WebServiceDatabaseHelper deploymentDatabaseHelper) {
+        mWebServiceDatabaseHelper = deploymentDatabaseHelper;
     }
 
     /**
-     * Creates {@link DeploymentDatabaseDataSource}
+     * Creates {@link WebServiceDatabaseDataSource}
      *
      * @return The deployment database source
      */
     public WebServiceDataSource createDatabaseDataSource() {
-        return new DeploymentDatabaseDataSource(mDeploymentDatabaseHelper);
+        return new WebServiceDatabaseDataSource(mWebServiceDatabaseHelper);
     }
 }
