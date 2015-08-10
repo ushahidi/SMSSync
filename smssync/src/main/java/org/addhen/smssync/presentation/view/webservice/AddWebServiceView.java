@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.integration;
+package org.addhen.smssync.presentation.view.webservice;
 
 import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
@@ -24,7 +24,7 @@ import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface AddCustomWebServiceView extends LoadDataView {
+public interface AddWebServiceView extends LoadDataView {
 
     /**
      * Show the status of {@link com.ushahidi.android.presentation.model.CustomWebServiceModel} deletion

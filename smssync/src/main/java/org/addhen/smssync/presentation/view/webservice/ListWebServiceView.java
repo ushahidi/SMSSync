@@ -15,29 +15,23 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.integration;
+package org.addhen.smssync.presentation.view.webservice;
 
 import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
-import com.ushahidi.android.presentation.model.CustomWebServiceModel;
+
+import java.util.List;
 
 /**
- * Update deployment View
+ * List deployment view
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface UpdateCustomWebServiceView extends LoadDataView {
+public interface ListWebServiceView extends LoadDataView {
 
     /**
-     * Shows when a deployment has been successfully updated
+     * Render a deployment list in the UI.
      *
-     * @param row The affacted row
+     * @param deploymentModel The collection of {@link WebServiceModel} that will be shown.
      */
-    void onCustomWebServiceSuccessfullyUpdated(Long row);
-
-    /**
-     * Renders a {@link CustomWebServiceModel}
-     *
-     * @param deploymentModel The deployment model to be rendered
-     */
-    void showCustomWebService(CustomWebServiceModel deploymentModel);
+    void renderCustomWebServiceList(List<WebServiceModel> deploymentModel);
 }
