@@ -38,7 +38,7 @@ public class WebServiceModelDataMapper {
         // Do nothing
     }
 
-    public WebServiceEntity map(WebService webService) {
+    public WebServiceEntity map(WebServiceModel webService) {
         WebServiceEntity webServiceEntity = null;
         if (webService != null) {
             webServiceEntity = new WebServiceEntity();
@@ -52,7 +52,7 @@ public class WebServiceModelDataMapper {
         return webServiceEntity;
     }
 
-    public WebServiceModel map(WebServiceEntity webServiceEntity) {
+    public WebServiceModel map(WebService webServiceEntity) {
         WebServiceModel webService = null;
         if (webServiceEntity != null) {
             webService = new WebServiceModel();
@@ -67,10 +67,10 @@ public class WebServiceModelDataMapper {
         return webService;
     }
 
-    public List<WebServiceModel> map(List<WebServiceEntity> webServices) {
+    public List<WebServiceModel> map(List<WebService> webServices) {
         List<WebServiceModel> webServiceEntities = new ArrayList<>();
         WebServiceModel webServiceEntity;
-        for (WebServiceEntity webService : webServices) {
+        for (WebService webService : webServices) {
             webServiceEntity = map(webService);
             if (webServiceEntity != null) {
                 webServiceEntities.add(webServiceEntity);
