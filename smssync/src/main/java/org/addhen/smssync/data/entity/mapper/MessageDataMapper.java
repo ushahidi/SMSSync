@@ -65,8 +65,8 @@ public class MessageDataMapper {
             message.messageUuid = messageEntity.messageUuid;
             message.sentResultMessage = messageEntity.sentResultMessage;
             message.sentResultCode = messageEntity.sentResultCode;
-            message.messageType = Message.Type.valueOf(messageEntity.messageType.name());
-            message.status = Message.Status.valueOf(messageEntity.status.name());
+            message.messageType = map(messageEntity.messageType);
+            message.status = map(messageEntity.status);
             message.deliveryResultCode = messageEntity.deliveryResultCode;
             message.deliveryResultMessage = messageEntity.deliveryResultMessage;
         }

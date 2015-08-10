@@ -15,14 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.entity;
+package org.addhen.smssync.data.entity;
 
-import com.addhen.android.raiburari.domain.entity.Entity;
+import com.addhen.android.raiburari.data.entity.DataEntity;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class WebServiceEntity extends Entity {
+public class WebService extends DataEntity {
 
     private String title;
 
@@ -58,11 +58,11 @@ public class WebServiceEntity extends Entity {
         this.secret = secret;
     }
 
-    public SyncSchemeEntity getSyncScheme() {
-        return new SyncSchemeEntity(syncScheme);
+    public SyncScheme getSyncScheme() {
+        return new SyncScheme(syncScheme);
     }
 
-    public void setSyncScheme(SyncSchemeEntity syncScheme) {
+    public void setSyncScheme(SyncScheme syncScheme) {
         this.syncScheme = syncScheme.toJSONString();
     }
 

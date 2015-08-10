@@ -19,10 +19,9 @@ package org.addhen.smssync.data.database;
 
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.data.database.converter.EnumEntityFieldConverter;
-import org.addhen.smssync.data.database.converter.SyncUrlConverter;
+import org.addhen.smssync.data.database.converter.WebServiceConverter;
 import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
-import org.addhen.smssync.data.entity.SyncUrl;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -63,7 +62,7 @@ public abstract class BaseDatabaseHelper extends SQLiteOpenHelper {
             @Override
             public <T> EntityConverter<T> create(Cupboard cupboard, Class<T> type) {
                 if (type == SyncUrl.class) {
-                    return (EntityConverter<T>) new SyncUrlConverter(cupboard);
+                    return (EntityConverter<T>) new WebServiceConverter(cupboard);
                 }
                 return null;
             }
