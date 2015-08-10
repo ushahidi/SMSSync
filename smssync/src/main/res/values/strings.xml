@@ -557,4 +557,9 @@
         message was deleted
     </string>
     <string name="publish">Publish</string>
+    <string name="custom_web_service_description">All incoming messages will be published to the
+        following web service:
+    </string>
+    <string name="custom_web_service_title_hint">Enter a title for the custom service</string>
+    <string name="custom_web_service_url_hint">Enter the url</string>
 </resources>

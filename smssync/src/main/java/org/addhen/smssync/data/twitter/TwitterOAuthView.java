@@ -560,9 +560,9 @@ public class TwitterOAuthView extends WebView {
             dummyCallbackUrl = (Boolean) args[3];
             listener = (Listener) args[4];
 
-            /*if (isDebugEnabled()) {
+            if (isDebugEnabled()) {
                 debugDoInBackground(args);
-            }*/
+            }
 
             // Create a Twitter instance with the given pair of
             // consumer key and consumer secret.
@@ -614,10 +614,10 @@ public class TwitterOAuthView extends WebView {
 
 
         private void debugDoInBackground(Object... args) {
-            Log.d(TAG, "CONSUMER KEY = " + (String) args[0]);
-            Log.d(TAG, "CONSUMER SECRET = " + (String) args[1]);
-            Log.d(TAG, "CALLBACK URL = " + (String) args[2]);
-            Log.d(TAG, "DUMMY CALLBACK URL = " + (Boolean) args[3]);
+            Log.d(TAG, "CONSUMER KEY = " + args[0]);
+            Log.d(TAG, "CONSUMER SECRET = " + args[1]);
+            Log.d(TAG, "CALLBACK URL = " + args[2]);
+            Log.d(TAG, "DUMMY CALLBACK URL = " + args[3]);
 
             System.setProperty("twitter4j.debug", "true");
         }
