@@ -569,4 +569,7 @@
         service
     </string>
     <string name="custom_web_service">Custom web service</string>
+    <string name="manage_custom_web_services">Manage custom web services</string>
+    <string name="add_web_service">Add web service</string>
+    <string name="update_web_service">Update web service</string>
 </resources>

@@ -86,6 +86,46 @@
                     android:value=".presentation.view.ui.activity.MainActivity"/>
         </activity>
         <activity
+                android:name=".presentation.view.ui.activity.IntegrationActivity"
+                android:label="@string/integrations"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".presentation.view.ui.activity.ListWebServiceActivity"
+                android:label="@string/integrations"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".presentation.view.ui.activity.AddWebServiceActivity"
+                android:label="@string/add_web_service"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.ListWebServiceActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.ListWebServiceActivity"/>
+        </activity>
+        <activity
+                android:name=".presentation.view.ui.activity.UpdateWebServiceActivity"
+                android:label="@string/update_web_service"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.ListWebServiceActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.ListWebServiceActivity"/>
+        </activity>
+        <activity
                 android:name=".presentation.view.ui.activity.TaskSettingsActivity"
                 android:label="@string/action_settings"
                 android:exported="false"
