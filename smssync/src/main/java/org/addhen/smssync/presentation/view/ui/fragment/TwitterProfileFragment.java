@@ -42,7 +42,7 @@ public class TwitterProfileFragment extends BaseFragment {
     AppCompatTextView mLoggedInUser;
 
     public TwitterProfileFragment() {
-        super(R.layout.fragment_add_integration, 0);
+        super(R.layout.fragment_getting_started_add_integration, 0);
     }
 
     public static TwitterProfileFragment newInstance() {

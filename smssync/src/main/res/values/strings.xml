@@ -568,4 +568,5 @@
     <string name="validation_message_no_deployment_title">Please provide a title for the custom web
         service
     </string>
+    <string name="custom_web_service">Custom web service</string>
 </resources>

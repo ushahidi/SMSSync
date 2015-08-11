@@ -33,7 +33,7 @@ public class IntegrationFragment extends BaseFragment {
     private static IntegrationFragment mIntegrationFragment;
 
     public IntegrationFragment() {
-        super(R.layout.fragment_add_integration, 0);
+        super(R.layout.fragment_getting_started_add_integration, 0);
     }
 
     public static IntegrationFragment newInstance() {
