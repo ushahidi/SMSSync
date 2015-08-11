@@ -15,25 +15,35 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.webservice;
+package org.addhen.smssync.presentation.validator;
 
-import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
+import android.text.TextUtils;
+import android.util.Patterns;
 
-import org.addhen.smssync.presentation.model.WebServiceModel;
-
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
- * List deployment view
+ * Validates a given URL
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface ListWebServiceView extends LoadDataView {
+public class UrlValidator implements Validator {
 
-    /**
-     * Render a web service model list in the UI.
-     *
-     * @param webServiceModel The collection of {@link WebServiceModel} that will be shown.
-     */
-    void renderWebServiceList(List<WebServiceModel> webServiceModel);
+    @Override
+    public boolean isValid(CharSequence text) {
+        return valid(text.toString());
+    }
+
+    private boolean valid(String url) {
+        if (TextUtils.isEmpty(url)) {
+            return false;
+        }
+        final Pattern pattern = Patterns.WEB_URL;
+        final Matcher matcher = pattern.matcher(url);
+        if (matcher.matches()) {
+            return true;
+        }
+        return false;
+    }
 }

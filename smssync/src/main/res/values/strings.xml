@@ -562,4 +562,10 @@
     </string>
     <string name="custom_web_service_title_hint">Enter a title for the custom service</string>
     <string name="custom_web_service_url_hint">Enter the url</string>
+    <string name="validation_message_invalid_url">Please provide a valid URL for your custom web
+        service
+    </string>
+    <string name="validation_message_no_deployment_title">Please provide a title for the custom web
+        service
+    </string>
 </resources>

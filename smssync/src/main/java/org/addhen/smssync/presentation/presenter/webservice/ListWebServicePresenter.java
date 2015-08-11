@@ -93,7 +93,7 @@ public class ListWebServicePresenter implements
             @Override
             public void onNext(List<WebService> webServiceList) {
                 mListWebServiceView.hideLoading();
-                mListWebServiceView.renderCustomWebServiceList(
+                mListWebServiceView.renderWebServiceList(
                         mWebServiceModelDataMapper.map(webServiceList));
             }
 

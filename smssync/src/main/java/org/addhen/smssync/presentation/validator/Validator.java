@@ -15,25 +15,20 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.webservice;
-
-import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
-
-import org.addhen.smssync.presentation.model.WebServiceModel;
-
-import java.util.List;
+package org.addhen.smssync.presentation.validator;
 
 /**
- * List deployment view
+ * Interface for implementing various validation scheme
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface ListWebServiceView extends LoadDataView {
+public interface Validator {
 
     /**
-     * Render a web service model list in the UI.
+     * Checks for valid strings
      *
-     * @param webServiceModel The collection of {@link WebServiceModel} that will be shown.
+     * @param text The character sequence to be validated
+     * @return Boolean
      */
-    void renderWebServiceList(List<WebServiceModel> webServiceModel);
+    boolean isValid(CharSequence text);
 }

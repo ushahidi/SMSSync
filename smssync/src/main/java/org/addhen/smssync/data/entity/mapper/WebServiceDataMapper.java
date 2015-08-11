@@ -75,4 +75,8 @@ public class WebServiceDataMapper {
         }
         return webServiceEntities;
     }
+
+    public WebService.Status map(WebServiceEntity.Status status) {
+        return WebService.Status.valueOf(status.name());
+    }
 }

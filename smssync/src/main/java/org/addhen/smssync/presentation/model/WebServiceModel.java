@@ -17,12 +17,15 @@
 
 package org.addhen.smssync.presentation.model;
 
-import com.addhen.android.raiburari.data.entity.DataEntity;
+import com.addhen.android.raiburari.presentation.model.Model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class WebServiceModel extends DataEntity {
+public class WebServiceModel extends Model implements Parcelable {
 
     private String title;
 
@@ -33,6 +36,9 @@ public class WebServiceModel extends DataEntity {
     private String syncScheme;
 
     private Status status;
+
+    public WebServiceModel() {
+    }
 
     public String getTitle() {
         return title;
@@ -88,4 +94,40 @@ public class WebServiceModel extends DataEntity {
     public enum Status {
         ENABLED, DISABLED
     }
+
+    protected WebServiceModel(Parcel in) {
+        title = in.readString();
+        url = in.readString();
+        secret = in.readString();
+        syncScheme = in.readString();
+        status = (Status) in.readValue(Status.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(url);
+        dest.writeString(secret);
+        dest.writeString(syncScheme);
+        dest.writeValue(status);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<WebServiceModel> CREATOR
+            = new Parcelable.Creator<WebServiceModel>() {
+        @Override
+        public WebServiceModel createFromParcel(Parcel in) {
+            return new WebServiceModel(in);
+        }
+
+        @Override
+        public WebServiceModel[] newArray(int size) {
+            return new WebServiceModel[size];
+        }
+    };
 }
