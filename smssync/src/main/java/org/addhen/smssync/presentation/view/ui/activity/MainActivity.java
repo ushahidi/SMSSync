@@ -194,8 +194,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                         mAppComponent.launcher().launchLogs(), "reports");
                 break;
             case R.id.nav_integration:
-                replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchIntegrations(), "integrations");
+                mAppComponent.launcher().launchIntegrations();
                 break;
             case R.id.nav_settings:
                 mAppComponent.launcher().launchSettings();

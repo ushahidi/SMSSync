@@ -19,9 +19,9 @@ package org.addhen.smssync.presentation.view.ui.navigation;
 
 import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.view.ui.activity.GettingStartedActivity;
+import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
 import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
-import org.addhen.smssync.presentation.view.ui.fragment.IntegrationFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
@@ -56,8 +56,8 @@ public class Launcher {
         return LogFragment.newInstance();
     }
 
-    public IntegrationFragment launchIntegrations() {
-        return IntegrationFragment.newInstance();
+    public void launchIntegrations() {
+        mActivity.startActivity(IntegrationActivity.getIntent(mActivity));
     }
 
     public FilterFragment launchFilters() {

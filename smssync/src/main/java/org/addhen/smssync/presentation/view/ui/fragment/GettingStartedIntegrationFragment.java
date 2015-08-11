@@ -28,17 +28,17 @@ import butterknife.OnClick;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class IntegrationFragment extends BaseFragment {
+public class GettingStartedIntegrationFragment extends BaseFragment {
 
-    private static IntegrationFragment mIntegrationFragment;
+    private static GettingStartedIntegrationFragment mIntegrationFragment;
 
-    public IntegrationFragment() {
-        super(R.layout.fragment_integration, 0);
+    public GettingStartedIntegrationFragment() {
+        super(R.layout.fragment_getting_started_add_integration, 0);
     }
 
-    public static IntegrationFragment newInstance() {
+    public static GettingStartedIntegrationFragment newInstance() {
         if (mIntegrationFragment == null) {
-            mIntegrationFragment = new IntegrationFragment();
+            mIntegrationFragment = new GettingStartedIntegrationFragment();
         }
         return mIntegrationFragment;
     }
@@ -47,7 +47,7 @@ public class IntegrationFragment extends BaseFragment {
         super.onResume();
     }
 
-    @OnClick(R.id.integration_twitter)
+    @OnClick(R.id.twitter)
     void onTwitterClicked() {
         if (App.getTwitterIntance().getSessionManager().getActiveSession() == null) {
             App.getTwitterIntance().login(getActivity());
@@ -58,7 +58,19 @@ public class IntegrationFragment extends BaseFragment {
                 TwitterProfileFragment.newInstance(), "twitter_profile");
     }
 
-    @OnClick(R.id.integration_web_service)
+    @OnClick(R.id.google_drive)
+    void onGoogleDriveClicked() {
+        // TODO: Launch View to sign into Google drive
+        showSnabackar(getView(), "Twitter Google Drive Clicked");
+    }
+
+    @OnClick(R.id.ushahidi)
+    void onUshahidiClicked() {
+        // TODO: Launch View to sign into Ushahidi
+        showSnabackar(getView(), "Twitter Ushahidi Clicked");
+    }
+
+    @OnClick(R.id.custom_web_service)
     void onCustomWebServiceClicked() {
         // TODO: Launch View to add custom web service
         showSnabackar(getView(), "Twitter Custom Service Clicked");
