@@ -38,12 +38,13 @@
             android:icon="@drawable/ic_launcher"
             android:installLocation="auto"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme"
             tools:replace="android:theme">
         <!-- messages tab -->
         <activity
                 android:name=".presentation.view.ui.activity.MainActivity"
                 android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar"
                 android:launchMode="singleTask"
                 android:parentActivityName=".presentation.view.ui.activity.MainActivity">
             <intent-filter>
@@ -60,6 +61,7 @@
                 android:label="@string/getting_started"
                 android:exported="false"
                 android:launchMode="singleTask"
+                android:theme="@style/AppTheme.NoActionBar"
                 android:parentActivityName=".presentation.view.ui.activity.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -97,7 +99,7 @@
         </activity>
         <activity
                 android:name=".presentation.view.ui.activity.ListWebServiceActivity"
-                android:label="@string/integrations"
+                android:label="@string/manage_custom_web_services"
                 android:exported="false"
                 android:launchMode="singleTask"
                 android:parentActivityName=".presentation.view.ui.activity.MainActivity">

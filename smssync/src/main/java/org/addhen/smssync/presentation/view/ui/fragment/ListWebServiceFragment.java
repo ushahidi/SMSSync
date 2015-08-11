@@ -41,7 +41,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class ListWebServiceFragment
     FloatingActionButton mFab;
 
     @Bind(android.R.id.empty)
-    TextView mEmptyView;
+    RelativeLayout mEmptyView;
 
     @Bind(android.R.id.list)
     BloatedRecyclerView mWebServiceRecyclerView;

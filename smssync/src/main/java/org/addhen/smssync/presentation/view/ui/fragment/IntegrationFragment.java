@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
 import butterknife.OnClick;
@@ -60,7 +61,6 @@ public class IntegrationFragment extends BaseFragment {
 
     @OnClick(R.id.integration_web_service)
     void onCustomWebServiceClicked() {
-        // TODO: Launch View to add custom web service
-        showSnabackar(getView(), "Twitter Custom Service Clicked");
+        getActivity().startActivity(ListWebServiceActivity.getIntent(getActivity()));
     }
 }
