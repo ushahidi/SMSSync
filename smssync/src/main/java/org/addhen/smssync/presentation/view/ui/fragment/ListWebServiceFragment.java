@@ -117,8 +117,7 @@ public class ListWebServiceFragment
         mWebServiceAdapter = new WebServiceAdapter();
         if (mFab != null) {
             setViewGone(mFab, false);
-            // TODO: Launch add web service
-            // mFab.setOnClickListener(v -> mLauncher.launchAddWebService());
+            mFab.setOnClickListener(v -> mLauncher.launchAddWebServices());
         }
         mWebServiceRecyclerView.setFocusable(true);
         mWebServiceRecyclerView.setFocusableInTouchMode(true);

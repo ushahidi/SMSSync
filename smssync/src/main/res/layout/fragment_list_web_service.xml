@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:cacheColorHint="@android:color/transparent"
-                app:recyclerviewEmptyView="@layout/messages_empty_list_view"
+                app:recyclerviewEmptyView="@layout/web_services_empty_list_view"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
         <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"

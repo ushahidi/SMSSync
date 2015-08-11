@@ -572,4 +572,6 @@
     <string name="manage_custom_web_services">Manage web services</string>
     <string name="add_web_service">Add web service</string>
     <string name="update_web_service">Update web service</string>
+    <string name="empty_view_web_service_header">No web service added</string>
+    <string name="empty_view_web_service_subheader">Tap the button below to add one</string>
 </resources>

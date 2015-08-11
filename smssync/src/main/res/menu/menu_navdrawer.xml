@@ -47,7 +47,6 @@
                 <item android:icon="@drawable/ic_add_black_24dp"
                       android:id="@+id/nav_integration"
                       android:title="@string/add_integration"/>
-                <item android:title="@string/twitter"/>
             </menu>
         </item>
     </group>
