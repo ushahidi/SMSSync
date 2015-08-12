@@ -22,6 +22,7 @@ import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.view.ui.fragment.GettingStartedWelcomeFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.IntegrationFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -125,6 +126,7 @@ public class GettingStartedActivity extends BaseActivity {
         mPagerAdapter.addFragment(
                 GettingStartedWelcomeFragment
                         .newInstance(R.layout.fragment_getting_started_welcome));
+        mPagerAdapter.addFragment(IntegrationFragment.newInstance());
         mNumOfPages = mPagerAdapter.getCount();
         viewPager.setAdapter(mPagerAdapter);
         viewPager.setPageTransformer(true, new CrossfadePageTransformer(viewPager));
