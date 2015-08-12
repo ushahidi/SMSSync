@@ -165,13 +165,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         final int groupId = menuItem.getGroupId();
         navigationView.getMenu()
                 .setGroupCheckable(R.id.group_messages, (groupId == R.id.group_messages), true);
-        navigationView.getMenu()
-                .setGroupCheckable(R.id.menu_messages, (groupId == R.id.group_messages), true);
-        navigationView.getMenu()
-                .setGroupCheckable(R.id.group_integrations, (groupId == R.id.group_messages), true);
-        navigationView.getMenu()
-                .setGroupCheckable(R.id.group_device_info, (groupId == R.id.group_device_info),
-                        true);
         menuItem.setChecked(true);
     }
 
