@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
 import butterknife.OnClick;
@@ -58,21 +59,8 @@ public class GettingStartedIntegrationFragment extends BaseFragment {
                 TwitterProfileFragment.newInstance(), "twitter_profile");
     }
 
-    @OnClick(R.id.google_drive)
-    void onGoogleDriveClicked() {
-        // TODO: Launch View to sign into Google drive
-        showSnabackar(getView(), "Twitter Google Drive Clicked");
-    }
-
-    @OnClick(R.id.ushahidi)
-    void onUshahidiClicked() {
-        // TODO: Launch View to sign into Ushahidi
-        showSnabackar(getView(), "Twitter Ushahidi Clicked");
-    }
-
     @OnClick(R.id.custom_web_service)
     void onCustomWebServiceClicked() {
-        // TODO: Launch View to add custom web service
-        showSnabackar(getView(), "Twitter Custom Service Clicked");
+        getActivity().startActivity(ListWebServiceActivity.getIntent(getActivity()));
     }
 }

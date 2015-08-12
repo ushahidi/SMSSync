@@ -161,7 +161,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.setAdapter(mMessageAdapter);
         mMessageRecyclerView.addItemDividerDecoration(getActivity());
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mMessageRecyclerView.enableDefaultSwipeRefresh(false);
+        mMessageRecyclerView.enableDefaultSwipeRefresh(true);
+        mMessageRecyclerView
+                .setDefaultOnRefreshListener(() -> mListMessagePresenter.loadMessages());
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageAdapter.setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
@@ -251,6 +253,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @OnClick(R.id.messages_fab)
     void syncItems() {
         // TODO: Perform message sync. For now reload the messages list
+        mMessageRecyclerView.setRefreshing(true);
         mListMessagePresenter.loadMessages();
     }
 
@@ -277,7 +280,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Override
     public void hideLoading() {
-        // Do nothing
+        mMessageRecyclerView.setRefreshing(false);
     }
 
     @Override
@@ -287,7 +290,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Override
     public void hideRetry() {
-        // Do nothing
+        mMessageRecyclerView.setRefreshing(false);
     }
 
     @Override

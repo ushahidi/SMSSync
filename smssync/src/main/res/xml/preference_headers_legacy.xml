@@ -21,21 +21,21 @@
             android:title="@string/general_settings">
         <intent
                 android:targetPackage="org.addhen.smssync"
-                android:targetClass="org.addhen.smssync.presentation.view.ui.activity.SettingsActivity"
+                android:targetClass="org.addhen.smssync.presentation.view.ui.activity.GeneralSettingsActivity"
                 android:action="org.addhen.smssync.presentation.view.ui.activity.GENERAL_SETTINGS"/>
     </Preference>
     <Preference
             android:title="@string/title_bar_text">
         <intent
                 android:targetPackage="org.addhen.smssync"
-                android:targetClass="org.addhen.smssync.presentation.view.ui.activity.SettingsActivity"
+                android:targetClass="org.addhen.smssync.presentation.view.ui.activity.MessageSettingsActivity"
                 android:action="org.addhen.smssync.presentation.view.ui.activity.MESSAGES_SETTINGS"/>
     </Preference>
     <Preference
             android:title="@string/automation">
         <intent
                 android:targetPackage="org.addhen.smssync"
-                android:targetClass="org.addhen.smssync.presentation.view.ui.activity.SettingsActivity"
+                android:targetClass="org.addhen.smssync.presentation.view.ui.activity.AutomationSettingsActivity"
                 android:action="org.addhen.smssync.presentation.view.ui.activity.AUTOMATION_SETTINGS"/>
     </Preference>
     <Preference
