@@ -27,6 +27,7 @@ import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 import org.addhen.smssync.presentation.view.webservice.AddWebServiceView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -154,7 +155,7 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
 
     @OnClick(R.id.qr_code_scanner)
     public void onQrCodeScannerClick() {
-        // Launch QR codes
+        mLauncher.launchQrcodeReader();
     }
 
     public void setWebService(@NonNull WebServiceModel webServiceModel) {
@@ -185,5 +186,10 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     @Override
     public void hideRetry() {
         // Do nothing
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO: Implement QR code activity
     }
 }

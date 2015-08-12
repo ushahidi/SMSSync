@@ -252,7 +252,7 @@ dependencies {
     compile appDependencies.preferencefragment
     compile appDependencies.preferenceSwitchCompat
     compile appDependencies.bottomSheet
-    compile appDependencies.barcodescanner
+    compile appDependencies.qrCodeReaderView
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     testCompile appTestDependencies.junit

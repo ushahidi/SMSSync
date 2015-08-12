@@ -95,9 +95,4 @@ public class AddWebServiceActivity extends BaseActivity
     public AppComponent getAppComponent() {
         return ((App) getApplication()).getAppComponent();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO: Implement QR code activity
-    }
 }

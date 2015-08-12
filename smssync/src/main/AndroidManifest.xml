@@ -82,6 +82,7 @@
                 android:label="@string/action_settings"
                 android:exported="false"
                 android:launchMode="singleTask"
+                android:theme="@style/AppTheme.NoActionBar"
                 android:parentActivityName=".presentation.view.ui.activity.MainActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -112,6 +113,7 @@
                 android:label="@string/add_web_service"
                 android:exported="false"
                 android:launchMode="singleTask"
+                android:windowSoftInputMode="stateVisible|adjustResize"
                 android:parentActivityName=".presentation.view.ui.activity.ListWebServiceActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
@@ -122,10 +124,20 @@
                 android:label="@string/update_web_service"
                 android:exported="false"
                 android:launchMode="singleTask"
+                android:windowSoftInputMode="stateVisible|adjustResize"
                 android:parentActivityName=".presentation.view.ui.activity.ListWebServiceActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".presentation.view.ui.activity.ListWebServiceActivity"/>
+        </activity>
+        <activity
+                android:name=".presentation.view.ui.activity.QrcodeReaderActivity"
+                android:label="@string/scan_qr_code"
+                android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".presentation.view.ui.activity.TaskSettingsActivity"

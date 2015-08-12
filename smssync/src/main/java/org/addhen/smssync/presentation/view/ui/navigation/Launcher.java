@@ -23,6 +23,7 @@ import org.addhen.smssync.presentation.view.ui.activity.AddWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.GettingStartedActivity;
 import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
+import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
 import org.addhen.smssync.presentation.view.ui.activity.UpdateWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
@@ -86,5 +87,13 @@ public class Launcher {
 
     public void launchUpdateWebServices(WebServiceModel webServiceModel) {
         mActivity.startActivity(UpdateWebServiceActivity.getIntent(mActivity, webServiceModel));
+    }
+
+    /**
+     * Launches the barcode reader
+     */
+    public void launchQrcodeReader() {
+        mActivity.startActivityForResult(QrcodeReaderActivity.getIntent(mActivity),
+                QrcodeReaderActivity.QRCODE_READER_REQUEST_CODE);
     }
 }

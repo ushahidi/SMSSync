@@ -24,10 +24,12 @@ import org.addhen.smssync.presentation.di.component.WebServiceComponent;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.validator.UrlValidator;
+import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -59,6 +61,9 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @Inject
     UpdateWebServicePresenter mUpdateWebServicePresenter;
+
+    @Inject
+    Launcher mLauncher;
 
     private UpdateWebServiceListener mActionListener;
 
@@ -195,6 +200,11 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
         mUpdateWebServicePresenter.updateWebService(mWebServiceModel);
     }
 
+    @OnClick(R.id.qr_code_scanner)
+    public void onQrCodeScannerClick() {
+        mLauncher.launchQrcodeReader();
+    }
+
     @Override
     public void showLoading() {
         // Do nothing
@@ -213,6 +223,11 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     @Override
     public void hideRetry() {
         // Do nothing
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO: Implement QR code activity
     }
 
     /**

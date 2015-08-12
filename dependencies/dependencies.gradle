@@ -42,7 +42,7 @@ ext {
     preferencefragmentVersion = '0.1.1'
     preferenceSwitchCompatVersion = '1.0.0'
     bottomsheetVersion = '1.1.1'
-    barcodescannerVersion = '1.7.2'
+    qrCodeReaderViewVersion = '1.0.0'
 
     //Testing
     jUnitVersion = '4.12'
@@ -68,7 +68,7 @@ ext {
             preferencefragment    : "com.github.machinarius:preferencefragment:${preferencefragmentVersion}",
             preferenceSwitchCompat: "com.infstory:switch-preference-compat:${preferenceSwitchCompatVersion}",
             bottomSheet           : "com.cocosw:bottomsheet:${bottomsheetVersion}",
-            barcodescanner        : "me.dm7.barcodescanner:zxing:${barcodescannerVersion}",
+            qrCodeReaderView      : "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
     ]
 
     appTestDependencies = [
