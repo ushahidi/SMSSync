@@ -44,6 +44,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * @author Henry Addo
@@ -224,6 +225,13 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         } else {
             super.onBackPressed();
             finish();
+        }
+    }
+
+    @OnClick(R.id.nav_header_container)
+    void headerClicked() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         }
     }
 
