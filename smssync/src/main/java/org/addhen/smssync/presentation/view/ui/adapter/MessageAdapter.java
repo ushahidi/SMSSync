@@ -18,6 +18,7 @@
 package org.addhen.smssync.presentation.view.ui.adapter;
 
 import com.addhen.android.raiburari.presentation.ui.adapter.BaseRecyclerViewAdapter;
+import com.addhen.android.raiburari.presentation.ui.widget.CapitalizedTextView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.MessageModel;
@@ -253,7 +254,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
         AppCompatTextView messageDate;
 
         @Bind(R.id.message)
-        AppCompatTextView message;
+        CapitalizedTextView message;
 
         @Bind(R.id.sent_message_type)
         AppCompatTextView messageType;
