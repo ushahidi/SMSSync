@@ -14,5 +14,8 @@ android:
 script: ./gradlew build
 notifications:
   hipchat:
+    template: '<a href="%{build_url}">%{repository}#%{build_number}</a> (%{branch} - <a href="%{compare_url}">%{commit}</a> : %{author}): %{message}'
+      format: html
+      notify: true
     rooms:
       secure: WiQT1MnkaN41pXrDA/OFzpTU88K7UZZrV2ESGPD8Cz5KJOCJUeFZlmSlRZiwmVj5SBKP/7k2dVfmtoA/4exhKgRzei9UF63udwDBN63HCwb4CUGMWRbJYub99KB/QW5J52M4fsDd8w3p20I9L2ht9rZJMzqU+QPxcuNtkdEYZgA=
