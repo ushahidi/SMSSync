@@ -15,11 +15,20 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.data.entity;
+package org.addhen.smssync.presentation.validator;
 
 /**
- * @author Henry Addo
+ * Interface for implementing various validation scheme
+ *
+ * @author Ushahidi Team <team@ushahidi.com>
  */
-public class SyncUrl {
+public interface Validator {
 
+    /**
+     * Checks for valid strings
+     *
+     * @param text The character sequence to be validated
+     * @return Boolean
+     */
+    boolean isValid(CharSequence text);
 }

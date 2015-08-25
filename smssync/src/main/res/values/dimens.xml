@@ -37,4 +37,5 @@
     <dimen name="message_list_icon_size">40dp</dimen>
     <!-- keywords view -->
     <dimen name="keyword_icon_size">5dp</dimen>
+    <dimen name="qr_code_icon_size">80dp</dimen>
 </resources>

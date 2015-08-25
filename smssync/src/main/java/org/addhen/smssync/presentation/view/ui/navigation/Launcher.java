@@ -18,10 +18,15 @@
 package org.addhen.smssync.presentation.view.ui.navigation;
 
 import org.addhen.smssync.presentation.model.FilterModel;
+import org.addhen.smssync.presentation.model.WebServiceModel;
+import org.addhen.smssync.presentation.view.ui.activity.AddWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.GettingStartedActivity;
+import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
+import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
+import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
+import org.addhen.smssync.presentation.view.ui.activity.UpdateWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
-import org.addhen.smssync.presentation.view.ui.fragment.IntegrationFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
@@ -56,8 +61,8 @@ public class Launcher {
         return LogFragment.newInstance();
     }
 
-    public IntegrationFragment launchIntegrations() {
-        return IntegrationFragment.newInstance();
+    public void launchIntegrations() {
+        mActivity.startActivity(IntegrationActivity.getIntent(mActivity));
     }
 
     public FilterFragment launchFilters() {
@@ -70,5 +75,25 @@ public class Launcher {
 
     public void launchGettingStarted() {
         mActivity.startActivity(GettingStartedActivity.getIntent(mActivity));
+    }
+
+    public void launchListWebServices() {
+        mActivity.startActivity(ListWebServiceActivity.getIntent(mActivity));
+    }
+
+    public void launchAddWebServices() {
+        mActivity.startActivity(AddWebServiceActivity.getIntent(mActivity));
+    }
+
+    public void launchUpdateWebServices(WebServiceModel webServiceModel) {
+        mActivity.startActivity(UpdateWebServiceActivity.getIntent(mActivity, webServiceModel));
+    }
+
+    /**
+     * Launches the barcode reader
+     */
+    public void launchQrcodeReader() {
+        mActivity.startActivityForResult(QrcodeReaderActivity.getIntent(mActivity),
+                QrcodeReaderActivity.QRCODE_READER_REQUEST_CODE);
     }
 }

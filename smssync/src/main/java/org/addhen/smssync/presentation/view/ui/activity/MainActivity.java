@@ -44,6 +44,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * @author Henry Addo
@@ -95,6 +96,10 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(BUNDLE_STATE_PARAM_CURRENT_MENU, mCurrentMenu);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void onResume() {
+        super.onResume();
     }
 
     private void initViews() {
@@ -161,13 +166,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         final int groupId = menuItem.getGroupId();
         navigationView.getMenu()
                 .setGroupCheckable(R.id.group_messages, (groupId == R.id.group_messages), true);
-        navigationView.getMenu()
-                .setGroupCheckable(R.id.menu_messages, (groupId == R.id.group_messages), true);
-        navigationView.getMenu()
-                .setGroupCheckable(R.id.group_integrations, (groupId == R.id.group_messages), true);
-        navigationView.getMenu()
-                .setGroupCheckable(R.id.group_device_info, (groupId == R.id.group_device_info),
-                        true);
         menuItem.setChecked(true);
     }
 
@@ -190,8 +188,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                         mAppComponent.launcher().launchLogs(), "reports");
                 break;
             case R.id.nav_integration:
-                replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchIntegrations(), "integrations");
+                mAppComponent.launcher().launchIntegrations();
                 break;
             case R.id.nav_settings:
                 mAppComponent.launcher().launchSettings();
@@ -228,6 +225,13 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         } else {
             super.onBackPressed();
             finish();
+        }
+    }
+
+    @OnClick(R.id.nav_header_container)
+    void headerClicked() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         }
     }
 

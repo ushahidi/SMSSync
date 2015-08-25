@@ -24,6 +24,7 @@ import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
+import org.addhen.smssync.domain.repository.WebServiceRepository;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.Prefs;
 import org.addhen.smssync.presentation.di.module.AppModule;
@@ -43,6 +44,8 @@ public interface AppComponent extends ApplicationComponent {
     FilterRepository filterRepository();
 
     MessageRepository messageRepository();
+
+    WebServiceRepository webServiceRepository();
 
     LogRepository logRepository();
 

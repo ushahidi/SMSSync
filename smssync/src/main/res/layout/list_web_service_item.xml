@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/list_web_service_item_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/view_spacing_normal"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true">
+
+    <CheckedTextView
+            android:id="@+id/web_service_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:layout_margin="@dimen/view_spacing_normal"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            />
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:divider="?android:dividerHorizontal"
+            android:showDividers="end"
+            android:layout_alignTop="@+id/web_service_selected"
+            android:layout_toRightOf="@+id/web_service_selected"
+            android:layout_toEndOf="@+id/web_service_selected">
+
+        <com.addhen.android.raiburari.presentation.ui.widget.CapitalizedTextView
+                android:id="@+id/web_service_title"
+                style="@style/TextView.Title"
+                android:paddingRight="@dimen/view_spacing_large"/>
+
+        <TextView
+                android:id="@+id/web_service_description"
+                style="@style/TextView.Description"
+                android:paddingRight="@dimen/view_spacing_large"
+                android:paddingBottom="@dimen/view_spacing_large"/>
+    </LinearLayout>
+</RelativeLayout>

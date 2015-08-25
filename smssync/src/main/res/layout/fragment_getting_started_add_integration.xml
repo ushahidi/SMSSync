@@ -20,7 +20,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/color_primary_dark">
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -35,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/integration_header"
+                android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:textSize="20sp"/>
 
@@ -62,7 +64,7 @@
                             android:id="@+id/twitter_icon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_filter_list_black_24dp"
+                            android:src="@drawable/ic_twitter_white_48dp"
                             android:layout_centerVertical="true"
                             android:layout_centerHorizontal="true"/>
                 </RelativeLayout>
@@ -97,7 +99,8 @@
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
                 android:layout_marginBottom="@dimen/view_spacing_normal"
-                android:background="?attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:visibility="gone">
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -148,7 +151,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
-                android:background="?attr/selectableItemBackground">
+                android:background="?attr/selectableItemBackground"
+                android:visibility="gone">
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -199,7 +203,7 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/color_accent"
+                android:textColor="@color/white"
                 android:text="@string/integration_custom_services_title"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -557,4 +557,22 @@
         message was deleted
     </string>
     <string name="publish">Publish</string>
+    <string name="custom_web_service_description">All incoming messages will be published to the
+        following web service:
+    </string>
+    <string name="custom_web_service_title_hint">Enter a title for the custom service</string>
+    <string name="custom_web_service_url_hint">Enter the url</string>
+    <string name="validation_message_invalid_url">Please provide a valid URL for your custom web
+        service
+    </string>
+    <string name="validation_message_no_deployment_title">Please provide a title for the custom web
+        service
+    </string>
+    <string name="custom_web_service">Custom web service</string>
+    <string name="manage_custom_web_services">Manage Web Services</string>
+    <string name="add_web_service">Add web service</string>
+    <string name="update_web_service">Update web service</string>
+    <string name="empty_view_web_service_header">No web service added</string>
+    <string name="empty_view_web_service_subheader">Tap the button below to add one</string>
+    <string name="scan_qr_code">Scan QR code</string>
 </resources>

@@ -18,7 +18,9 @@
 package org.addhen.smssync.presentation.di.module;
 
 import org.addhen.smssync.data.repository.InternalMessageDataRepository;
+import org.addhen.smssync.data.repository.WebServiceDataRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
+import org.addhen.smssync.domain.repository.WebServiceRepository;
 
 import javax.inject.Singleton;
 
@@ -36,5 +38,12 @@ public class InternalAppModule {
     MessageRepository provideInternalMessageRepository(
             InternalMessageDataRepository internalMessageDataRepository) {
         return internalMessageDataRepository;
+    }
+
+    @Provides
+    @Singleton
+    WebServiceRepository providesInternalWebServiceRepository(
+            WebServiceDataRepository webServiceRepository) {
+        return webServiceRepository;
     }
 }

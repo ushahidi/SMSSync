@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.addhen.smssync.data.entity.SyncScheme;
-import org.addhen.smssync.data.entity.SyncUrl;
+import org.addhen.smssync.data.entity.WebService;
 
 import java.lang.reflect.Field;
 
@@ -32,10 +32,10 @@ import nl.qbusict.cupboard.convert.ReflectiveEntityConverter;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class SyncUrlConverter extends ReflectiveEntityConverter<SyncUrl> {
+public class WebServiceConverter extends ReflectiveEntityConverter<WebService> {
 
-    public SyncUrlConverter(Cupboard cupboard) {
-        super(cupboard, SyncUrl.class);
+    public WebServiceConverter(Cupboard cupboard) {
+        super(cupboard, WebService.class);
     }
 
     @Override

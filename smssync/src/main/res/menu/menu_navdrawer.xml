@@ -18,17 +18,16 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/group_messages">
-        <item android:title="@string/title_bar_text">
-            <menu android:id="@+id/menu_messages">
-                <item android:id="@+id/nav_incoming_messages"
-                      android:icon="@drawable/ic_inbox_black_24dp"
-                      android:title="@string/nav_menu_incoming"
-                      android:checked="true"/>
-                <item android:id="@+id/nav_published_messages"
-                      android:icon="@drawable/ic_done_black_24dp"
-                      android:title="@string/published"/>
-            </menu>
-        </item>
+        <item android:id="@+id/nav_incoming_messages"
+              android:icon="@drawable/ic_inbox_black_24dp"
+              android:title="@string/nav_menu_incoming"
+              android:checked="true"/>
+        <item android:id="@+id/nav_published_messages"
+              android:icon="@drawable/ic_done_black_24dp"
+              android:title="@string/published"/>
+        <item android:icon="@drawable/ic_add_black_24dp"
+              android:id="@+id/nav_integration"
+              android:title="@string/add_integration"/>
         <item android:id="@+id/nav_filters"
               android:icon="@drawable/ic_filter_list_black_24dp"
               android:title="@string/filters"/>
@@ -40,16 +39,6 @@
         <item android:id="@+id/nav_settings"
               android:icon="@drawable/ic_settings_black_24dp"
               android:title="@string/action_settings"/>
-    </group>
-    <group android:id="@+id/group_integrations">
-        <item android:title="@string/integrations">
-            <menu>
-                <item android:icon="@drawable/ic_add_black_24dp"
-                      android:id="@+id/nav_integration"
-                      android:title="@string/add_integration"/>
-                <item android:title="@string/twitter"/>
-            </menu>
-        </item>
     </group>
     <group android:id="@+id/group_device_info">
         <item android:title="Ushahidi Phone 1234"

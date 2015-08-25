@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
 import butterknife.OnClick;
@@ -33,7 +34,7 @@ public class IntegrationFragment extends BaseFragment {
     private static IntegrationFragment mIntegrationFragment;
 
     public IntegrationFragment() {
-        super(R.layout.fragment_add_integration, 0);
+        super(R.layout.fragment_integration, 0);
     }
 
     public static IntegrationFragment newInstance() {
@@ -43,7 +44,11 @@ public class IntegrationFragment extends BaseFragment {
         return mIntegrationFragment;
     }
 
-    @OnClick(R.id.twitter)
+    public void onResume() {
+        super.onResume();
+    }
+
+    @OnClick(R.id.integration_twitter)
     void onTwitterClicked() {
         if (App.getTwitterIntance().getSessionManager().getActiveSession() == null) {
             App.getTwitterIntance().login(getActivity());
@@ -54,21 +59,8 @@ public class IntegrationFragment extends BaseFragment {
                 TwitterProfileFragment.newInstance(), "twitter_profile");
     }
 
-    @OnClick(R.id.google_drive)
-    void onGoogleDriveClicked() {
-        // TODO: Launch View to sign into Google drive
-        showSnabackar(getView(), "Twitter Google Drive Clicked");
-    }
-
-    @OnClick(R.id.ushahidi)
-    void onUshahidiClicked() {
-        // TODO: Launch View to sign into Ushahidi
-        showSnabackar(getView(), "Twitter Ushahidi Clicked");
-    }
-
-    @OnClick(R.id.custom_web_service)
+    @OnClick(R.id.integration_web_service)
     void onCustomWebServiceClicked() {
-        // TODO: Launch View to add custom web service
-        showSnabackar(getView(), "Twitter Custom Service Clicked");
+        getActivity().startActivity(ListWebServiceActivity.getIntent(getActivity()));
     }
 }

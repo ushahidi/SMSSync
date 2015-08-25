@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 def globalConfiguration = rootProject.extensions.getByName("ext")
 

@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.presentation.view.ui.fragment.GettingStartedIntegrationFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.GettingStartedWelcomeFragment;
 
 import android.content.Context;
@@ -122,9 +123,9 @@ public class GettingStartedActivity extends BaseActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), viewPager);
-        mPagerAdapter.addFragment(
-                GettingStartedWelcomeFragment
-                        .newInstance(R.layout.fragment_getting_started_welcome));
+        mPagerAdapter.addFragment(GettingStartedWelcomeFragment.newInstance(
+                R.layout.fragment_getting_started_welcome));
+        mPagerAdapter.addFragment(GettingStartedIntegrationFragment.newInstance());
         mNumOfPages = mPagerAdapter.getCount();
         viewPager.setAdapter(mPagerAdapter);
         viewPager.setPageTransformer(true, new CrossfadePageTransformer(viewPager));
@@ -132,7 +133,7 @@ public class GettingStartedActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                     int positionOffsetPixels) {
-                if (position == mNumOfPages - 2 && positionOffset > 0) {
+                if (position == mNumOfPages - 1 && positionOffset > 0) {
                     if (mIsOpaque) {
                         mViewPager.setBackgroundColor(Color.TRANSPARENT);
                         mIsOpaque = false;
@@ -149,11 +150,11 @@ public class GettingStartedActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 setIndicator(position);
-                if (position == mNumOfPages - 2) {
+                if (position == mNumOfPages - 1) {
                     mSkip.setVisibility(View.GONE);
                     mNext.setVisibility(View.GONE);
                     mDone.setVisibility(View.VISIBLE);
-                } else if (position < mNumOfPages - 2) {
+                } else if (position < mNumOfPages - 1) {
                     mSkip.setVisibility(View.VISIBLE);
                     mNext.setVisibility(View.VISIBLE);
                     mDone.setVisibility(View.GONE);

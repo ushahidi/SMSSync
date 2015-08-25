@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/view_spacing_normal"
+                android:animateLayoutChanges="true">
+
+            <com.addhen.android.raiburari.presentation.ui.widget.FontSupportedTextView
+                    android:id="@+id/textview_custom_web_service_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/custom_web_service_description"
+                    android:padding="@dimen/view_spacing_normal"
+                    android:textStyle="bold"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    app:fontFile="RobotoCondensed-Regular.ttf"/>
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_spacing_normal">
+
+                <EditText
+                        android:id="@+id/add_custom_web_service_title"
+                        style="@style/EditText.Name"
+                        android:hint="@string/custom_web_service_title_hint"
+                        android:imeOptions="actionNext"
+                        android:nextFocusDown="@+id/add_custom_web_service_url"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/view_spacing_normal">
+
+                <EditText
+                        android:id="@+id/add_custom_web_service_url"
+                        style="@style/EditText.URL"
+                        android:hint="@string/custom_web_service_url_hint"
+                        android:layout_gravity="center"
+                        android:imeOptions="actionDone"/>
+            </android.support.design.widget.TextInputLayout>
+            <ImageButton
+                    android:layout_width="@dimen/qr_code_icon_size"
+                    android:layout_height="@dimen/qr_code_icon_size"
+                    android:id="@+id/qr_code_scanner"
+                    android:src="@drawable/qr_code_icon"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_alignRight="@+id/searchBar"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/dividerVertical"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/add_custom_web_service_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/cancel"
+                android:textColor="@color/red"
+                style="?attr/buttonBarButtonStyle"
+                android:layout_toStartOf="@+id/add_custom_web_service_add"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/add_custom_web_service_add"/>
+
+        <Button
+                android:id="@+id/add_custom_web_service_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/add"
+                style="?attr/buttonBarButtonStyle"/>
+    </RelativeLayout>
+</LinearLayout>
