@@ -83,6 +83,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @Inject
     ListMessagePresenter mListMessagePresenter;
 
+    /** List of items pending to to be deleted **/
+    public List<PendingDeletedMessage> mPendingDeletedMessages;
+
     private MessageAdapter mMessageAdapter;
 
     private static MessageFragment mMessageFragment;
@@ -94,9 +97,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     private ActionMode mActionMode;
 
     private boolean mIsPermanentlyDeleted = true;
-
-    /** List of items pending to to be deleted **/
-    public List<PendingDeletedMessage> mPendingDeletedMessages;
 
     public MessageFragment() {
         super(MessageAdapter.class, R.layout.fragment_list_message, R.menu.menu_messages);
@@ -180,6 +180,26 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         if (Build.VERSION.SDK_INT >= HONEYCOMB) {
             enableSwipeToPerformAction();
         }
+    }
+
+
+    public void requestQuery(final String query) {
+        Handler handler = new Handler();
+        final Runnable filterDeployments = new Runnable() {
+            public void run() {
+                try {
+                    mMessageAdapter.getFilter().filter(query);
+                } catch (Exception e) {
+                    reloadMessages();
+                }
+            }
+        };
+
+        handler.post(filterDeployments);
+    }
+
+    public void reloadMessages() {
+        mListMessagePresenter.loadMessages();
     }
 
     private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {

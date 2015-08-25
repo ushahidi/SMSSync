@@ -48,10 +48,14 @@
                 android:launchMode="singleTask"
                 android:parentActivityName=".presentation.view.ui.activity.MainActivity">
             <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <meta-data
+                    android:name="android.app.searchable"
+                    android:resource="@xml/message_searchable"/>
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".presentation.view.ui.activity.MainActivity"/>
