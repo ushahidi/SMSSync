@@ -9,14 +9,14 @@ The repository is made up of two main branches: **master (stable)** and **releas
 * **master** has the most tested latest code, it's tags are released as [SMSSync][1] on the Google playstore.
 * **release** is a branch of `master` after feature freeze. Mainly for fine tuning and testing to get the code stable for a release. The changes made here are finally merged into master branch. After which a version tag is created for a release.
 
-Always, branch off the `master` branch.
+Always, branch off the `master` branch. Typically something in this syntax.
 
 Feel free to join our public chat rooms on either [IRC, HipChat or Gitter][7] in case you want to talk
 more about what' you're working on. Actually we encourage you let us know what you're working.
 
 ### File Issues
 
-If you're exepriencing an issue and want to file it for the contributors to work on, you can do so by
+If you're experiencing an issue and want to file it for the contributors to work on, you can do so by
 
 1. Search the [Github issue tracker][3] to make sure your issue has not been filed already. If it has, please add comment to the existing issue to add more details to it.
 
