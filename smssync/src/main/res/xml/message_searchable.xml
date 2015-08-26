@@ -16,19 +16,7 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <item
-            android:id="@+id/menu_search_message"
-            android:icon="@drawable/ic_search_white_24dp"
-            android:title="@string/search"
-            android:orderInCategory="1"
-            app:actionViewClass="android.support.v7.widget.SearchView"
-            app:showAsAction="collapseActionView|always"/>
-    <item
-            android:id="@+id/settings"
-            android:icon="@drawable/ic_settings_white_24dp"
-            android:title="@string/menu_settings"
-            app:showAsAction="never"/>
-</menu>
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+            android:label="@string/incoming_messages"
+            android:hint="@string/search_hint"
+            android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"/>

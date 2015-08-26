@@ -34,6 +34,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ import butterknife.ButterKnife;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
+public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implements Filterable {
 
     private View mEmptyView;
 
@@ -56,12 +58,13 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
 
     private OnMoreActionListener mOnMoreActionListener;
 
-    private TextDrawable.IBuilder mDrawableBuilder = TextDrawable.builder()
-            .round();
+    private TextDrawable.IBuilder mDrawableBuilder = TextDrawable.builder().round();
 
     private Animation flipIn;
 
     private Animation flipOut;
+
+    private Filter mFilter = null;
 
     public MessageAdapter(Context context, final View emptyView) {
         mEmptyView = emptyView;
@@ -153,6 +156,14 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
 
     public void setOnMoreActionListener(OnMoreActionListener onMoreActionListener) {
         mOnMoreActionListener = onMoreActionListener;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (mFilter == null) {
+            mFilter = new MessageFilter();
+        }
+        return mFilter;
     }
 
     private void updateCheckedState(Widgets holder, int position) {
@@ -280,4 +291,33 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> {
 
         void onMoreActionTap(int position);
     }
+
+    private class MessageFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            constraint = constraint.toString().toLowerCase();
+            results.values = getItems();
+            results.count = getItems().size();
+            if (constraint != null && constraint.toString().length() > 0) {
+                ArrayList<MessageModel> filteredItems = new ArrayList<>();
+                for (MessageModel message : getItems()) {
+                    if (message.messageBody.toLowerCase().contains(constraint.toString())) {
+                        filteredItems.add(message);
+                    }
+                }
+                results.count = filteredItems.size();
+                results.values = filteredItems;
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+            List<MessageModel> messageModels = (ArrayList<MessageModel>) filterResults.values;
+            setItems(messageModels);
+        }
+    }
+
 }

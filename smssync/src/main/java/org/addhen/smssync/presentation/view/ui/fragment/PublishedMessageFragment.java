@@ -208,6 +208,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     private void enableSwipeToPerformAction() {
         // Swiping doesn't work well on API 11 and below because the android support lib ships
         // with buggy APIs that makes it hard to implement on older devices.
+        // See http://b.android/181858
         ItemTouchHelper.SimpleCallback swipeToDismiss = new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override

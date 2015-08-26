@@ -20,41 +20,44 @@ package org.addhen.smssync.domain.util;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-import android.util.Xml;
 
-import org.apache.http.NameValuePair;
+import org.addhen.smssync.domain.entity.HttpNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlSerializer;
+
+import android.util.Xml;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
 /**
- * Class: DataFormatUtil Description: Serialize sync data in appropriate format. Author: Salama A.B.
+ * Class: DataFormatUtil Description: Serialize sync data in appropriate format. Author: Salama
+ * A.B.
  * <devaksal@gmail.com>
  */
 public class DataFormatUtil {
 
-    public static String makeJSONString(List<NameValuePair> pairs) throws JSONException {
+    public static String makeJSONString(List<HttpNameValuePair> pairs) throws JSONException {
         JSONObject obj = new JSONObject();
 
-        for (NameValuePair pair : pairs) {
+        for (HttpNameValuePair pair : pairs) {
             obj.put(pair.getName(), pair.getValue());
         }
 
         return obj.toString();
     }
 
-    public static String makeXMLString(List<NameValuePair> pairs, String parentNode, String charset)
+    public static String makeXMLString(List<HttpNameValuePair> pairs, String parentNode,
+            String charset)
             throws IOException {
         XmlSerializer serializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
         serializer.setOutput(writer);
         serializer.startDocument(charset, true);
         serializer.startTag("", parentNode);
-        for (NameValuePair pair : pairs) {
+        for (HttpNameValuePair pair : pairs) {
             serializer.startTag("", pair.getName());
             serializer.text(pair.getValue());
             serializer.endTag("", pair.getName());

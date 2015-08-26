@@ -24,11 +24,5 @@
             android:orderInCategory="0"
             android:title="@string/menu_import"
             app:showAsAction="always"/>
-    <item
-            android:id="@+id/menu_search_message"
-            android:icon="@drawable/ic_search_white_24dp"
-            android:title="@string/search"
-            android:orderInCategory="1"
-            app:actionViewClass="android.support.v7.widget.SearchView"
-            app:showAsAction="collapseActionView|always"/>
+
 </menu>

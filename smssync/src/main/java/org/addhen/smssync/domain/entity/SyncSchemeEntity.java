@@ -17,8 +17,6 @@
 package org.addhen.smssync.domain.entity;
 
 import org.addhen.smssync.domain.util.DataFormatUtil;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,9 +85,9 @@ public class SyncSchemeEntity {
      * Initialize sync scheme with custom method, data format and keys
      */
     public void init(SyncMethod method, SyncDataFormat dataFormat,
-                     String kSecret, String kFrom, String kMessage,
-                     String kMessageID, String kSentTimestamp,
-                     String kSentTo, String kDeviceID) {
+            String kSecret, String kFrom, String kMessage,
+            String kMessageID, String kSentTimestamp,
+            String kSentTo, String kDeviceID) {
         this.method = method;
         this.format = dataFormat;
 
@@ -182,16 +180,16 @@ public class SyncSchemeEntity {
      */
     public String toJSONString() {
 
-        List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("method", method.toString()));
-        nameValuePairs.add(new BasicNameValuePair("dataFormat", format.toString()));
-        nameValuePairs.add(new BasicNameValuePair("kSecret", keySecret));
-        nameValuePairs.add(new BasicNameValuePair("kFrom", keyFrom));
-        nameValuePairs.add(new BasicNameValuePair("kSentTimestamp", keySentTimeStamp));
-        nameValuePairs.add(new BasicNameValuePair("kMessage", keyMessage));
-        nameValuePairs.add(new BasicNameValuePair("kSentTo", keySentTo));
-        nameValuePairs.add(new BasicNameValuePair("kMessageID", keyMessageID));
-        nameValuePairs.add(new BasicNameValuePair("kDeviceID", keyDeviceID));
+        List<HttpNameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new HttpNameValuePair("method", method.toString()));
+        nameValuePairs.add(new HttpNameValuePair("dataFormat", format.toString()));
+        nameValuePairs.add(new HttpNameValuePair("kSecret", keySecret));
+        nameValuePairs.add(new HttpNameValuePair("kFrom", keyFrom));
+        nameValuePairs.add(new HttpNameValuePair("kSentTimestamp", keySentTimeStamp));
+        nameValuePairs.add(new HttpNameValuePair("kMessage", keyMessage));
+        nameValuePairs.add(new HttpNameValuePair("kSentTo", keySentTo));
+        nameValuePairs.add(new HttpNameValuePair("kMessageID", keyMessageID));
+        nameValuePairs.add(new HttpNameValuePair("kDeviceID", keyDeviceID));
 
         try {
             return DataFormatUtil.makeJSONString(nameValuePairs);

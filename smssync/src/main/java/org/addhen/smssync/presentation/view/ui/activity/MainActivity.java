@@ -31,16 +31,24 @@ import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
 import org.addhen.smssync.presentation.di.component.FilterComponent;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
+import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import butterknife.Bind;
@@ -63,6 +71,8 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private static final String BUNDLE_STATE_PARAM_CURRENT_MENU
             = "org.addhen.smssync.presentation.view.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
 
+    private static final String INCOMING_FAG_TAG = "incoming_messages";
+
     private AppActivityComponent mAppComponent;
 
     private MessageComponent mMessageComponent;
@@ -74,6 +84,12 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private ActionBarDrawerToggle mDrawerToggle;
 
     private int mCurrentMenu;
+
+    private SearchView mSearchView = null;
+
+    private String mQuery = "";
+
+    private MessageFragment mMessageFragment;
 
     public MainActivity() {
         super(R.layout.activity_main, R.menu.menu_main);
@@ -112,7 +128,101 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             setupDrawerContent(mNavigationView);
         }
         setupFragment(mCurrentMenu);
+        findMessageFragment();
+        handleSearchIntent(getIntent());
     }
+
+    private void findMessageFragment() {
+        mMessageFragment = (MessageFragment) getSupportFragmentManager()
+                .findFragmentByTag(INCOMING_FAG_TAG);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleSearchIntent(intent);
+    }
+
+    private void handleSearchIntent(Intent intent) {
+
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            query = query == null ? "" : query;
+            mQuery = query;
+            performQuery(query);
+            if (mSearchView != null) {
+                mSearchView.setQuery(query, false);
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.menu_search_message);
+        if (searchItem != null) {
+            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            initSearchView();
+        }
+        return true;
+    }
+
+    private void initSearchView() {
+        final SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        mSearchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.clearFocus();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                mSearchView.clearFocus();
+                performQuery(s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)) {
+                    reloadMessages();
+                } else {
+                    performQuery(s);
+                }
+
+                return true;
+            }
+        });
+
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                reloadMessages();
+                return false;
+            }
+        });
+
+        if (!TextUtils.isEmpty(mQuery)) {
+            mSearchView.setQuery(mQuery, false);
+        }
+        SearchView.SearchAutoComplete searchAutoComplete
+                = (SearchView.SearchAutoComplete) mSearchView
+                .findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete.setHintTextColor(getResources().getColor(android.R.color.white));
+        searchAutoComplete.setTextSize(14);
+    }
+
+    private void reloadMessages() {
+        if (mMessageFragment != null) {
+            mMessageFragment.reloadMessages();
+        }
+    }
+
+    private void performQuery(String query) {
+        if (mMessageFragment != null) {
+            mMessageFragment.requestQuery(query);
+        }
+    }
+
 
     private void injector() {
         mAppComponent = DaggerAppActivityComponent.builder()
@@ -134,7 +244,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
-        mAppComponent.launcher().launchGettingStarted();
+        //mAppComponent.launcher().launchGettingStarted();
     }
 
     @Override
@@ -155,6 +265,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 menuItem -> {
                     mCurrentMenu = menuItem.getItemId();
                     setupFragment(mCurrentMenu);
+                    findMessageFragment();
                     onNavigationItemSelected(navigationView, menuItem);
                     mToolbar.setTitle(menuItem.getTitle());
                     mDrawerLayout.closeDrawers();
@@ -173,7 +284,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         switch (menuItem) {
             case R.id.nav_incoming_messages:
                 replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchMessages(), "incoming_messages");
+                        mAppComponent.launcher().launchMessages(), INCOMING_FAG_TAG);
                 break;
             case R.id.nav_published_messages:
                 replaceFragment(R.id.fragment_main_content,

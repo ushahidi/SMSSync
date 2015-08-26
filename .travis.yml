@@ -7,7 +7,7 @@ before_install:
 android:
   components:
   - build-tools-23.0.0
-  - android-22
+  - android-23
   - extra-android-support
   - extra-android-m2repository
     
