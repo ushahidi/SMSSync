@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ushahidi/SMSSync.png?branch=develop)](https://travis-ci.org/ushahidi/SMSSync) [![Join the chat at https://gitter.im/ushahidi/Community](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/obliviondev/oblivion-mudlet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/ushahidi/SMSSync.png?branch=develop)](https://travis-ci.org/ushahidi/SMSSync) [![Join the chat at https://gitter.im/ushahidi/Community](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ushahidi/Community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # SMSSync
 
