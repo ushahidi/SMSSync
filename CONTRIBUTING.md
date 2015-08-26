@@ -1,18 +1,18 @@
 ## Development
 
-If you would like to contribute code to SMSSync you can do so by forking the [repository][1] and sending a pull request. We will review your code. If everything with the pull request looks good, we will humbly merge your changes.
+If you would like to contribute code to SMSSync you can do so by [forking](https://guides.github.com/activities/forking/) the [repository][1] and sending a pull request. We will review your code. If everything with the pull request looks good, we will humbly merge your changes.
 
 ### Branch structure
 
-The repository is made up of three main branches: **master (stable)**, **develop (ustable)** and **release (quite stable and a temporary branch)**.
+The repository is made up of two main branches: **master (stable)** and **release (quite stable and a temporary branch)**.
 
-* **master** has the latest stable code, it's tags are released as [SMSSync][1] on the Google playstore.
-* **develop** has the latest unstable code. It's codes are merge into master.
-* **release** is a branch of develop after feature freeze. mainly for fine tuning and testing to get the code stable for a release. The changes made here are finally merged into develop then develop is merged into master branch. After which a version tag is created for a release.
+* **master** has the most tested latest code, it's tags are released as [SMSSync][1] on the Google playstore.
+* **release** is a branch of `master` after feature freeze. Mainly for fine tuning and testing to get the code stable for a release. The changes made here are finally merged into master branch. After which a version tag is created for a release.
 
-Always, work with the `develop` branch.
+Always, branch off the `master` branch.
 
-Join the [developer mailing list][2] and let us hear what you're working on.
+Feel free to join our public chat rooms on either [IRC, HipChat or Gitter][7] in case you want to talk
+more about what' you're working on. Actually we encourage you let us know what you're working.
 
 ### File Issues
 
@@ -28,9 +28,12 @@ If you're exepriencing an issue and want to file it for the contributors to work
 
 Thanks for supporting the SMSSync development team.
 
+You're welcome to [**connect**][7] with us with the rest of the team and the community.
+
 [1]: https://github.com/ushahidi/SMSSync
 [2]: http://list.ushahidi.com
 [3]: https://github.com/ushahidi/SMSSync/issues
 [4]: https://wiki.ushahidi.com/display/WIKI/Report+a+bug
 [5]: https://docs.google.com/forms/d/15LyeKTOP36T5u3290o4hsmqv79v-m_s2QSmgMJXpYp8/viewform
 [6]: https://wiki.ushahidi.com/display/WIKI/Licenses
+[7]: http://docs.ushahidi.org/get-involved.html
