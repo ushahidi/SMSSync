@@ -82,6 +82,11 @@ public class InternalMessageDataRepository implements MessageRepository {
     }
 
     @Override
+    public Observable<MessageEntity> publishMessage(MessageEntity messageEntity) {
+        return null;
+    }
+
+    @Override
     public Observable<List<MessageEntity>> getEntities() {
         return Observable.create(subscriber -> {
             JsonDeserializer<Date> date = (json, typeOfT, context) ->

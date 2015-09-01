@@ -37,4 +37,6 @@ public interface MessageRepository extends Repository<MessageEntity> {
     Observable<List<MessageEntity>> fetchByType(MessageEntity.Type type);
 
     Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status);
+
+    Observable<MessageEntity> publishMessage(MessageEntity messageEntity);
 }

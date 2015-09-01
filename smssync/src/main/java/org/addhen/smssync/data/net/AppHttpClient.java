@@ -17,19 +17,25 @@
 
 package org.addhen.smssync.data.net;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
+import com.squareup.okhttp.Headers;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+
+import org.addhen.smssync.domain.entity.HttpNameValuePair;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Base64;
 
-import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A Singleton class for accessing RequestQueue instance. It instantiates the
@@ -40,72 +46,202 @@ import java.io.File;
  */
 public class AppHttpClient {
 
-    private Context mContext;
+    private static final int TIME_OUT_CONNECTION = 30;
 
-    private RequestQueue mRequestQueue;
+    private static final String DEFAULT_ENCODING = "UTF-8";
+    
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=" + DEFAULT_ENCODING);
 
-    private static AppHttpClient mAppHttpClient;
+    public static final MediaType XML = MediaType
+            .parse("application/json; charset=" + DEFAULT_ENCODING);
 
-    /** Default on-disk cache directory. */
-    private static final String DEFAULT_CACHE_DIR = "smssync-volley";
+    public static final MediaType YAML = MediaType
+            .parse("application/xml; charset=" + DEFAULT_ENCODING);
+
+    private static final String CLASS_TAG = AppHttpClient.class.getSimpleName();
+
+    protected OkHttpClient mHttpClient;
+
+    protected Context mContext;
+
+    protected String mUrl;
+
+    private Response mResponse;
+
+    private Request request;
+
+    private ArrayList<HttpNameValuePair> params;
+
+    private Map<String, String> header;
+
+    private Headers headers;
+
+    private HttpMethod method = HttpMethod.GET;
+
+    private RequestBody requestBody;
+
 
     private AppHttpClient(Context context) {
         mContext = context;
-        mRequestQueue = getRequestQueue();
+        mHttpClient = new OkHttpClient();
+        mHttpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
+        mHttpClient.setWriteTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
+        mHttpClient.setReadTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
     }
 
-    public static synchronized AppHttpClient getInstance(Context context) {
-        if (mAppHttpClient == null) {
-            mAppHttpClient = new AppHttpClient(context);
-        }
-        return mAppHttpClient;
+    public void setUrl(String url) {
+        mUrl = url;
     }
 
-    /**
-     * Creates an instance of the worker pool and calls {@link RequestQueue#start()} on it.
-     *
-     * @return A started {@link RequestQueue} instance.
-     */
-    @SuppressWarnings("deprecation")
-    public RequestQueue getRequestQueue() {
-        File cacheDir = new File(mContext.getCacheDir(), DEFAULT_CACHE_DIR);
-        if (mRequestQueue == null) {
-            Network network = new BasicNetwork(new HurlStack());
-            // getApplicationContext() is key, it keeps the app from leaking the
-            // Activity or BroadcastReceiver if someone should pass one in.
-            mRequestQueue = new RequestQueue(new DiskBasedCache(cacheDir), network);
-            mRequestQueue.start();
-        }
-        return mRequestQueue;
+    public void setHeader(String name, String value) {
+        this.header.put(name, value);
     }
 
-    private String getUserAgent() {
-        StringBuilder userAgent = new StringBuilder("SMSSync-Android/");
-        userAgent.append("v");
+    public void setHeaders(Headers headers) {
+        this.headers = headers;
+    }
+
+    private void addHeader() {
+
         try {
+            URI uri = new URI(mUrl);
+            String userInfo = uri.getUserInfo();
+            if (userInfo != null) {
+                setHeader("Authorization", "Basic " + base64Encode(userInfo));
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        // add user-agent header
+        try {
+            final String versionName = mContext.getPackageManager().getPackageInfo(
+                    mContext.getPackageName(), 0).versionName;
             // Add version name to user agent
-            String packageName = mContext.getPackageName();
-            PackageInfo packageInfo = mContext.getPackageManager()
-                    .getPackageInfo(packageName, 0);
-            userAgent.append(packageInfo.versionName);
+            StringBuilder userAgent = new StringBuilder("SMSSync-Android/");
+            userAgent.append("v");
+            userAgent.append(versionName);
+            setHeader("User-Agent", userAgent.toString());
         } catch (PackageManager.NameNotFoundException e) {
-            // Ignore exception for now
+            e.printStackTrace();
         }
-        return userAgent.toString();
+
+        // set headers on request
+        Headers.Builder headerBuilder = new Headers.Builder();
+        for (String key : header.keySet()) {
+            headerBuilder.set(key, header.get(key));
+        }
+        setHeaders(headerBuilder.build());
     }
 
-    /**
-     * Make a Typed base request. Regular string and Json requests
-     *
-     * @param req The request type
-     * @param <T> The Typed request
-     */
-    public <T> void addToRequestQueue(Request<T> req) {
-        try {
-            req.getHeaders().put("User-Agent", getUserAgent());
-        } catch (AuthFailureError authFailureError) {
-            authFailureError.printStackTrace();
+    public void addParam(String name, String value) {
+        this.params.add(new HttpNameValuePair(name, value));
+    }
+
+    public ArrayList getParams() {
+        return params;
+    }
+
+    public void execute() throws Exception {
+        prepareRequest();
+        if (request != null) {
+            final Response resp = mHttpClient.newCall(request).execute();
+            setResponse(resp);
         }
-        getRequestQueue().add(req);
+    }
+
+    public boolean isMethodSupported(HttpMethod method) {
+        return (method.equals(HttpMethod.GET) || method.equals(HttpMethod.POST) || method
+                .equals(HttpMethod.PUT));
+    }
+
+    public void setMethod(HttpMethod method) throws Exception {
+        if (!isMethodSupported(method)) {
+            throw new Exception(
+                    "Invalid method '" + method + "'."
+                            + " POST, PUT and GET currently supported."
+            );
+        }
+        this.method = method;
+    }
+
+    public void setRequestBody(RequestBody requestBody) throws Exception {
+        this.requestBody = requestBody;
+    }
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public static String base64Encode(String str) {
+        byte[] bytes = str.getBytes();
+        return Base64.encodeToString(bytes, Base64.NO_WRAP);
+    }
+
+    private void prepareRequest() throws Exception {
+        addHeader();
+        // setup parameters on request
+        if (method.equals(HttpMethod.GET)) {
+            request = new Request.Builder()
+                    .url(mUrl + getQueryString())
+                    .headers(headers)
+                    .build();
+        } else if (method.equals(HttpMethod.POST)) {
+            request = new Request.Builder()
+                    .url(mUrl)
+                    .headers(headers)
+                    .post(requestBody)
+                    .build();
+
+        } else if (method.equals(HttpMethod.PUT)) {
+            request = new Request.Builder()
+                    .url(mUrl)
+                    .headers(headers)
+                    .put(requestBody)
+                    .build();
+        }
+    }
+
+    private String getQueryString() throws Exception {
+        //add query parameters
+        String combinedParams = "";
+        if (!params.isEmpty()) {
+            combinedParams += "?";
+            for (HttpNameValuePair p : params) {
+                String paramString = p.getName() + "=" + URLEncoder
+                        .encode(p.getValue(), DEFAULT_ENCODING);
+                if (combinedParams.length() > 1) {
+                    combinedParams += "&" + paramString;
+                } else {
+                    combinedParams += paramString;
+                }
+            }
+        }
+        return combinedParams;
+    }
+
+    public Response getResponse() {
+        return mResponse;
+    }
+
+    public void setResponse(Response response) {
+        mResponse = response;
+    }
+
+    public enum HttpMethod {
+        POST("POST"),
+        GET("GET"),
+        PUT("PUT");
+
+        private final String mMethod;
+
+        HttpMethod(String method) {
+            mMethod = method;
+        }
+
+        public String value() {
+            return mMethod;
+        }
     }
 }

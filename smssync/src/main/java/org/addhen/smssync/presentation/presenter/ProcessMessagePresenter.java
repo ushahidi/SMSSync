@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2010 - 2015 Ushahidi Inc
  * All rights reserved
@@ -16,37 +15,27 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.tests.services;
+package org.addhen.smssync.presentation.presenter;
 
-import android.test.ServiceTestCase;
-import android.test.suitebuilder.annotation.LargeTest;
-
-import org.addhen.smssync.services.SyncPendingMessagesService;
+import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
 /**
- * Testcase for testing submission of pending messages when SMS fails to submit
- * to the configured URL.
- * 
- * @author eyedol
+ * @author Ushahidi Team <team@ushahidi.com>
  */
-public class SyncPendingMessagesServiceTestCase extends ServiceTestCase<SyncPendingMessagesService> {
+public class ProcessMessagePresenter implements Presenter {
 
-    public SyncPendingMessagesServiceTestCase() {
-        super(SyncPendingMessagesService.class);
+    @Override
+    public void resume() {
 
     }
 
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
+    public void pause() {
 
-    }
-
-    @LargeTest
-    public void testSyncMessages() {
     }
 
     @Override
-    public void tearDown() {
+    public void destroy() {
+
     }
 }

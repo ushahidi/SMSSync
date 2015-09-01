@@ -77,6 +77,11 @@ public class MessageDataRepository implements MessageRepository {
     }
 
     @Override
+    public Observable<MessageEntity> publishMessage(MessageEntity messageEntity) {
+        return null;
+    }
+
+    @Override
     public Observable<List<MessageEntity>> getEntities() {
         mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
         return mMessageDataSource.getMessages()
