@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.WebServiceComponent;
+import org.addhen.smssync.presentation.model.SyncSchemeModel;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.validator.UrlValidator;
@@ -35,6 +36,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -54,10 +56,41 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
             = "org.addhen.smssync.ARGUMENT_WEB_SERVICE_MODEL";
 
     @Bind(R.id.add_custom_web_service_title)
-    EditText title;
+    EditText mEditTextTitle;
 
     @Bind(R.id.add_custom_web_service_url)
-    EditText url;
+    EditText mEditTextUrl;
+
+    @Bind(R.id.add_custom_web_service_secret)
+    EditText mEditTextSecret;
+
+
+    @Bind(R.id.sync_method)
+    Spinner mSpinnerMethods;
+
+    @Bind(R.id.sync_data_format)
+    Spinner mSpinnerDataFormats;
+
+    @Bind(R.id.sync_kSecret)
+    EditText mKeySecret;
+
+    @Bind(R.id.sync_kFrom)
+    EditText mKeyFrom;
+
+    @Bind(R.id.sync_kMessage)
+    EditText mKeyMessage;
+
+    @Bind(R.id.sync_kSentTimestamp)
+    EditText mKeySentTimeStamp;
+
+    @Bind(R.id.sync_kSentTo)
+    EditText mKeySentTo;
+
+    @Bind(R.id.sync_kMessageID)
+    EditText mKeyMessageID;
+
+    @Bind(R.id.sync_kDeviceID)
+    EditText mKeyDeviceID;
 
     @Inject
     UpdateWebServicePresenter mUpdateWebServicePresenter;
@@ -96,12 +129,12 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initialize();
-        url.setOnTouchListener((view, event) -> setHttpProtocol());
+        mEditTextUrl.setOnTouchListener((view, event) -> setHttpProtocol());
     }
 
     private boolean setHttpProtocol() {
-        if (TextUtils.isEmpty(url.getText().toString())) {
-            url.setText("http://");
+        if (TextUtils.isEmpty(mEditTextUrl.getText().toString())) {
+            mEditTextUrl.setText("http://");
         }
         return false;
     }
@@ -162,8 +195,8 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     @Override
     public void showWebService(@NonNull WebServiceModel webServiceModel) {
         mWebServiceModel = webServiceModel;
-        title.setText(webServiceModel.getTitle());
-        url.setText(webServiceModel.getUrl());
+        mEditTextTitle.setText(webServiceModel.getTitle());
+        mEditTextUrl.setText(webServiceModel.getUrl());
     }
 
     @OnClick(R.id.add_custom_web_service_add)
@@ -173,7 +206,7 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @OnEditorAction(R.id.add_custom_web_service_url)
     boolean onEditorAction(TextView textView, int actionId) {
-        if (textView == url) {
+        if (textView == mEditTextUrl) {
             switch (actionId) {
                 case EditorInfo.IME_ACTION_DONE:
                     submit();
@@ -186,17 +219,31 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     }
 
     private void submit() {
-        url.setError(null);
-        if (TextUtils.isEmpty(title.getText().toString())) {
-            title.setError(getString(R.string.validation_message_no_deployment_title));
+        mEditTextUrl.setError(null);
+        if (TextUtils.isEmpty(mEditTextTitle.getText().toString())) {
+            mEditTextTitle.setError(getString(R.string.validation_message_no_deployment_title));
             return;
         }
-        if (!(new UrlValidator().isValid(url.getText().toString()))) {
-            url.setError(getString(R.string.validation_message_invalid_url));
+        if (!(new UrlValidator().isValid(mEditTextUrl.getText().toString()))) {
+            mEditTextUrl.setError(getString(R.string.validation_message_invalid_url));
             return;
         }
-        mWebServiceModel.setTitle(title.getText().toString());
-        mWebServiceModel.setUrl(url.getText().toString());
+
+        SyncSchemeModel syncSchemeModel = new SyncSchemeModel();
+        SyncSchemeModel.SyncMethod syncMethod = SyncSchemeModel.SyncMethod
+                .valueOf(mSpinnerMethods.getSelectedItem().toString());
+        SyncSchemeModel.SyncDataFormat dataFormat = SyncSchemeModel.SyncDataFormat
+                .valueOf(mSpinnerDataFormats.getSelectedItem().toString());
+        syncSchemeModel.init(syncMethod, dataFormat,
+                mKeySecret.getText().toString(), mKeyFrom.getText().toString(),
+                mKeyMessage.getText().toString(), mKeyMessageID.getText().toString(),
+                mKeySentTimeStamp.getText().toString(), mKeySentTo.getText().toString(),
+                mKeyDeviceID.getText().toString());
+
+        mWebServiceModel.setTitle(mEditTextTitle.getText().toString());
+        mWebServiceModel.setUrl(mEditTextUrl.getText().toString());
+        mWebServiceModel.setSecret(mEditTextSecret.getText().toString());
+        mWebServiceModel.setSyncScheme(syncSchemeModel);
         mUpdateWebServicePresenter.updateWebService(mWebServiceModel);
     }
 

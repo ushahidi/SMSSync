@@ -82,7 +82,7 @@ public class InternalMessageDataRepository implements MessageRepository {
     }
 
     @Override
-    public Observable<MessageEntity> publishMessage(MessageEntity messageEntity) {
+    public Observable<Boolean> publishMessage(MessageEntity messageEntity) {
         return null;
     }
 

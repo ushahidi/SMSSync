@@ -84,6 +84,11 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    public List<WebService> listWebServices() {
+        return cupboard()
+                .withDatabase(getReadableDatabase()).query(WebService.class).list();
+    }
+
     /**
      * Gets a webService
      *

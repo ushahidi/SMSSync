@@ -18,6 +18,7 @@
 package org.addhen.smssync.data.repository;
 
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
+import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.domain.entity.MessageEntity;
@@ -42,12 +43,15 @@ public class MessageDataRepository implements MessageRepository {
 
     private MessageDataSource mMessageDataSource;
 
+    private ProcessMessage mProcessMessage;
+
     @Inject
     public MessageDataRepository(MessageDataMapper messageDataMapper,
-            MessageDataSourceFactory messageDataSourceFactory) {
+            MessageDataSourceFactory messageDataSourceFactory,
+            ProcessMessage processMessage) {
         mMessageDataMapper = messageDataMapper;
         mMessageDataSourceFactory = messageDataSourceFactory;
-
+        mProcessMessage = processMessage;
     }
 
     @Override
@@ -77,8 +81,11 @@ public class MessageDataRepository implements MessageRepository {
     }
 
     @Override
-    public Observable<MessageEntity> publishMessage(MessageEntity messageEntity) {
-        return null;
+    public Observable<Boolean> publishMessage(MessageEntity messageEntity) {
+        boolean status = mProcessMessage.postMessage(mMessageDataMapper.map(messageEntity), null);
+        return Observable.defer(() -> {
+            return Observable.just(status);
+        });
     }
 
     @Override

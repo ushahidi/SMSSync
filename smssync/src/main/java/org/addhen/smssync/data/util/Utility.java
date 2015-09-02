@@ -15,28 +15,17 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.data.util;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
 
-import org.addhen.smssync.domain.entity.MessageEntity;
-
-import java.util.List;
-
-import rx.Observable;
+import java.util.Collection;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface MessageRepository extends Repository<MessageEntity> {
+public class Utility {
 
-    Observable<Integer> deleteByUuid(String uuid);
-
-    Observable<Integer> deleteAll();
-
-    Observable<List<MessageEntity>> fetchByType(MessageEntity.Type type);
-
-    Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status);
-
-    Observable<Boolean> publishMessage(MessageEntity messageEntity);
+    public static boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
 }

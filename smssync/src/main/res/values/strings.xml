@@ -502,8 +502,7 @@
     </string>
 
     <!--Exception messages -->
-    <string name="exception_message_generic">Something funky is going on here. An unknown error
-        occurred
+    <string name="exception_message_generic">Sorry, something went wrong. Try the action again.
     </string>
     <string name="exception_message_no_connection">There is no internet connection</string>
     <string name="exception_message_filter_not_found">Filter not found.</string>
@@ -578,4 +577,8 @@
     <string name="empty_view_web_service_header">No web service added</string>
     <string name="empty_view_web_service_subheader">Tap the button below to add one</string>
     <string name="scan_qr_code">Scan QR code</string>
+    <string name="test_integration">Test Integration</string>
+    <string name="show_secret_checkbox">Show secret key</string>
+    <string name="edit_sync_sync_prompt">Optional: Edit the Sync scheme
+    </string>
 </resources>

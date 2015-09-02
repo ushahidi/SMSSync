@@ -24,6 +24,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.domain.entity.HttpNameValuePair;
 
 import android.content.Context;
@@ -44,12 +45,12 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class AppHttpClient {
+public class BaseHttpClient {
 
     private static final int TIME_OUT_CONNECTION = 30;
 
     private static final String DEFAULT_ENCODING = "UTF-8";
-    
+
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=" + DEFAULT_ENCODING);
 
@@ -59,7 +60,7 @@ public class AppHttpClient {
     public static final MediaType YAML = MediaType
             .parse("application/xml; charset=" + DEFAULT_ENCODING);
 
-    private static final String CLASS_TAG = AppHttpClient.class.getSimpleName();
+    private static final String CLASS_TAG = BaseHttpClient.class.getSimpleName();
 
     protected OkHttpClient mHttpClient;
 
@@ -82,7 +83,7 @@ public class AppHttpClient {
     private RequestBody requestBody;
 
 
-    private AppHttpClient(Context context) {
+    public BaseHttpClient(Context context) {
         mContext = context;
         mHttpClient = new OkHttpClient();
         mHttpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
@@ -243,5 +244,17 @@ public class AppHttpClient {
         public String value() {
             return mMethod;
         }
+    }
+
+    protected void log(String message) {
+        Logger.log(getClass().getName(), message);
+    }
+
+    protected void log(String format, Object... args) {
+        Logger.log(getClass().getName(), format, args);
+    }
+
+    protected void log(String message, Exception ex) {
+        Logger.log(getClass().getName(), message, ex);
     }
 }

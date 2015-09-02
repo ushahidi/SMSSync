@@ -189,6 +189,15 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    public void putMessage(Message message) {
+        if (!isClosed()) {
+            try {
+                cupboard().withDatabase(getWritableDatabase()).put(message);
+            } catch (Exception e) {
+            }
+        }
+    }
+
     public Observable<Long> deleteEntity(Long id) {
         return Observable.create(subscriber -> {
             if (!isClosed()) {

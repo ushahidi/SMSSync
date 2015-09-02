@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.WebServiceComponent;
+import org.addhen.smssync.presentation.model.SyncSchemeModel;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.AddWebServicePresenter;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
@@ -30,14 +31,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
@@ -49,10 +54,42 @@ import butterknife.OnEditorAction;
 public class AddWebServiceFragment extends BaseFragment implements AddWebServiceView {
 
     @Bind(R.id.add_custom_web_service_title)
-    EditText title;
+    EditText mEditTextTitle;
 
     @Bind(R.id.add_custom_web_service_url)
-    EditText url;
+    EditText mEditTextUrl;
+
+    @Bind(R.id.add_custom_web_service_secret)
+    EditText mEditTextSecret;
+
+
+    @Bind(R.id.sync_method)
+    Spinner mSpinnerMethods;
+
+    @Bind(R.id.sync_data_format)
+    Spinner mSpinnerDataFormats;
+
+    @Bind(R.id.sync_kSecret)
+    EditText mKeySecret;
+
+    @Bind(R.id.sync_kFrom)
+    EditText mKeyFrom;
+
+    @Bind(R.id.sync_kMessage)
+    EditText mKeyMessage;
+
+    @Bind(R.id.sync_kSentTimestamp)
+    EditText mKeySentTimeStamp;
+
+    @Bind(R.id.sync_kSentTo)
+    EditText mKeySentTo;
+
+    @Bind(R.id.sync_kMessageID)
+    EditText mKeyMessageID;
+
+    @Bind(R.id.sync_kDeviceID)
+    EditText mKeyDeviceID;
+
 
     @Inject
     AddWebServicePresenter mAddWebServicePresenter;
@@ -76,12 +113,12 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initialize();
-        url.setOnTouchListener((view, event) -> setHttpProtocol());
+        mEditTextUrl.setOnTouchListener((view, event) -> setHttpProtocol());
     }
 
     private boolean setHttpProtocol() {
-        if (TextUtils.isEmpty(url.getText().toString())) {
-            url.setText("http://");
+        if (TextUtils.isEmpty(mEditTextUrl.getText().toString())) {
+            mEditTextUrl.setText("http://");
         }
         return false;
     }
@@ -127,7 +164,7 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
 
     @OnEditorAction(R.id.add_custom_web_service_add)
     boolean onEditorAction(TextView textView, int actionId) {
-        if (textView == url) {
+        if (textView == mEditTextUrl) {
             switch (actionId) {
                 case EditorInfo.IME_ACTION_DONE:
                     submit();
@@ -140,11 +177,24 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     }
 
     private void submit() {
-        url.setError(null);
+        mEditTextUrl.setError(null);
         // TODO: Validate URL
+        SyncSchemeModel syncSchemeModel = new SyncSchemeModel();
+        SyncSchemeModel.SyncMethod syncMethod = SyncSchemeModel.SyncMethod
+                .valueOf(mSpinnerMethods.getSelectedItem().toString());
+        SyncSchemeModel.SyncDataFormat dataFormat = SyncSchemeModel.SyncDataFormat
+                .valueOf(mSpinnerDataFormats.getSelectedItem().toString());
+        syncSchemeModel.init(syncMethod, dataFormat,
+                mKeySecret.getText().toString(), mKeyFrom.getText().toString(),
+                mKeyMessage.getText().toString(), mKeyMessageID.getText().toString(),
+                mKeySentTimeStamp.getText().toString(), mKeySentTo.getText().toString(),
+                mKeyDeviceID.getText().toString());
         WebServiceModel webServiceModel = new WebServiceModel();
-        webServiceModel.setTitle(title.getText().toString());
-        webServiceModel.setUrl(url.getText().toString());
+        webServiceModel.setTitle(mEditTextTitle.getText().toString());
+        webServiceModel.setUrl(mEditTextUrl.getText().toString());
+        webServiceModel.setSecret(mEditTextSecret.getText().toString());
+        webServiceModel.setSyncScheme(syncSchemeModel);
+        webServiceModel.setStatus(WebServiceModel.Status.ENABLED);
         mAddWebServicePresenter.addWebService(webServiceModel);
     }
 
@@ -158,9 +208,20 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
         mLauncher.launchQrcodeReader();
     }
 
+    @OnCheckedChanged(R.id.add_custom_web_service_show_password)
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            mEditTextSecret.setInputType(
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            return;
+        }
+        mEditTextSecret
+                .setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    }
+
     public void setWebService(@NonNull WebServiceModel webServiceModel) {
-        title.setText(webServiceModel.getTitle());
-        url.setText(webServiceModel.getUrl());
+        mEditTextTitle.setText(webServiceModel.getTitle());
+        mEditTextUrl.setText(webServiceModel.getUrl());
     }
 
     @Override
