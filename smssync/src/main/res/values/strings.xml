@@ -579,6 +579,6 @@
     <string name="scan_qr_code">Scan QR code</string>
     <string name="test_integration">Test Integration</string>
     <string name="show_secret_checkbox">Show secret key</string>
-    <string name="edit_sync_sync_prompt">Optional: Edit the Sync scheme
-    </string>
+    <string name="edit_sync_sync_prompt">Optional: Edit the Sync scheme</string>
+    <string name="update_btn">Update</string>
 </resources>

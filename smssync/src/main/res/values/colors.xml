@@ -34,4 +34,5 @@
     <color name="progress_done">#388E3C</color>
     <color name="progress_background">#FF9800</color>
     <color name="progress_background_dark">#8d1919</color>
+    <color name="black">#000000</color>
 </resources>

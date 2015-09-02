@@ -46,6 +46,8 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     private SparseBooleanArray mSelectedItems;
 
+    private OnItemCheckedListener mOnItemCheckedListener;
+
     /**
      * Default constructor
      */
@@ -55,9 +57,16 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        //((Widgets) viewHolder).title.setText(getItem(position).getTitle());
+        ((Widgets) viewHolder).title.setText(getItem(position).getTitle());
         ((Widgets) viewHolder).url.setText(getItem(position).getUrl());
-        ((Widgets) viewHolder).listCheckBox.setChecked(mSelectedItems.get(position, false));
+        CheckedTextView checkedTextView = ((Widgets) viewHolder).listCheckBox;
+        checkedTextView.setOnClickListener(v -> {
+            if (mOnItemCheckedListener != null) {
+                toggleSelection(position);
+                mOnItemCheckedListener.onItemChecked(position, !checkedTextView.isChecked());
+            }
+        });
+        checkedTextView.setChecked(mSelectedItems.get(position, false));
     }
 
     @Override
@@ -115,6 +124,10 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
         return items;
     }
 
+    public void setOnItemCheckedListener(OnItemCheckedListener onItemCheckedListener) {
+        mOnItemCheckedListener = onItemCheckedListener;
+    }
+
     /**
      * View holder
      */
@@ -139,5 +152,10 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
             ButterKnife.bind(this, view);
         }
 
+    }
+
+    public interface OnItemCheckedListener {
+
+        void onItemChecked(int position, boolean status);
     }
 }

@@ -56,13 +56,12 @@
 
         <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/message_from"
-                style="@style/TextView.Description"
+                style="@style/TextView.Title"
                 android:layout_width="wrap_content"
                 android:text="512-123-4567"
                 android:lines="1"
                 android:layout_alignParentTop="true"
                 android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
                 android:layout_toRightOf="@+id/message_icon"/>
 
         <android.support.v7.widget.AppCompatTextView

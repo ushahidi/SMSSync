@@ -21,6 +21,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/view_spacing_normal"
                 android:background="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/view_spacing_large"
+                android:paddingEnd="@dimen/view_spacing_large"
+                android:paddingLeft="@dimen/view_spacing_large"
+                android:paddingRight="@dimen/view_spacing_large"
+                android:paddingBottom="@dimen/view_spacing_large"
                 android:clickable="true">
 
     <CheckedTextView
@@ -30,10 +35,8 @@
             android:clickable="false"
             android:checkMark="?android:attr/listChoiceIndicatorMultiple"
             android:textAppearance="?attr/textAppearanceListItem"
-            android:layout_margin="@dimen/view_spacing_normal"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            />
+            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 
     <LinearLayout
             android:orientation="vertical"
@@ -49,11 +52,16 @@
         <com.addhen.android.raiburari.presentation.ui.widget.CapitalizedTextView
                 android:id="@+id/web_service_title"
                 style="@style/TextView.Title"
+                android:text="Demo deployment"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:paddingRight="@dimen/view_spacing_large"/>
 
         <TextView
                 android:id="@+id/web_service_description"
                 style="@style/TextView.Description"
+                android:text="Hello there"
+                android:paddingTop="0dp"
                 android:paddingRight="@dimen/view_spacing_large"
                 android:paddingBottom="@dimen/view_spacing_large"/>
     </LinearLayout>

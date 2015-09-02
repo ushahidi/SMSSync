@@ -48,10 +48,9 @@
 
     <TextView
             android:id="@+id/integration_web_service"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/custom_web_service"
-            android:gravity="center"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/view_spacing_xlarge"
             android:drawablePadding="@dimen/view_spacing_large"
