@@ -18,6 +18,7 @@
 package org.addhen.smssync.presentation.view.ui.adapter;
 
 import com.addhen.android.raiburari.presentation.ui.adapter.BaseRecyclerViewAdapter;
+import com.addhen.android.raiburari.presentation.ui.widget.CapitalizedTextView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.WebServiceModel;
@@ -54,7 +55,7 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
-        ((Widgets) viewHolder).title.setText(getItem(position).getTitle());
+        //((Widgets) viewHolder).title.setText(getItem(position).getTitle());
         ((Widgets) viewHolder).url.setText(getItem(position).getUrl());
         ((Widgets) viewHolder).listCheckBox.setChecked(mSelectedItems.get(position, false));
     }
@@ -120,7 +121,7 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
     public class Widgets extends RecyclerView.ViewHolder {
 
         @Bind(R.id.web_service_title)
-        TextView title;
+        CapitalizedTextView title;
 
         @Bind(R.id.web_service_description)
         TextView url;

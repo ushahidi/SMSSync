@@ -162,41 +162,69 @@
                         android:paddingTop="@dimen/view_spacing_small"
                         android:text="@string/sync_scheme_keys"
                         android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <EditText
-                        android:id="@+id/sync_kSecret"
-                        style="@style/EditText"
-                        android:hint="@string/enter_key_for_secret"/>
-
-                <EditText
-                        android:id="@+id/sync_kFrom"
-                        style="@style/EditText"
-                        android:hint="@string/enter_key_for_from"/>
-
-                <EditText
-                        android:id="@+id/sync_kMessageID"
-                        style="@style/EditText"
-                        android:hint="@string/enter_key_for_message_id"/>
-
-                <EditText
-                        android:id="@+id/sync_kMessage"
-                        style="@style/EditText"
-                        android:hint="@string/enter_key_for_message"/>
-
-                <EditText
-                        android:id="@+id/sync_kSentTimestamp"
-                        style="@style/EditText"
-                        android:hint="@string/enter_key_for_sent_timestamp"/>
-
-                <EditText
-                        android:id="@+id/sync_kSentTo"
-                        style="@style/EditText"
-                        android:hint="@string/enter_key_for_sent_to"/>
-
-                <EditText
-                        android:id="@+id/sync_kDeviceID"
-                        style="@style/EditText"
-                        android:hint="@string/enter_key_for_device_id"/>
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                               android:layout_height="wrap_content"
+                                                               android:layout_marginTop="@dimen/view_spacing_normal">
+                    <EditText
+                            android:id="@+id/sync_kSecret"
+                            style="@style/EditText"
+                            android:text="secret"
+                            android:hint="@string/enter_key_for_secret"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                               android:layout_height="wrap_content"
+                                                               android:layout_marginTop="@dimen/view_spacing_normal">
+                    <EditText
+                            android:id="@+id/sync_kFrom"
+                            style="@style/EditText"
+                            android:text="from"
+                            android:hint="@string/enter_key_for_from"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                               android:layout_height="wrap_content"
+                                                               android:layout_marginTop="@dimen/view_spacing_normal">
+                    <EditText
+                            android:id="@+id/sync_kMessageID"
+                            style="@style/EditText"
+                            android:text="message_id"
+                            android:hint="@string/enter_key_for_message_id"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                               android:layout_height="wrap_content"
+                                                               android:layout_marginTop="@dimen/view_spacing_normal">
+                    <EditText
+                            android:id="@+id/sync_kMessage"
+                            style="@style/EditText"
+                            android:text="message"
+                            android:hint="@string/enter_key_for_message"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                               android:layout_height="wrap_content"
+                                                               android:layout_marginTop="@dimen/view_spacing_normal">
+                    <EditText
+                            android:id="@+id/sync_kSentTimestamp"
+                            style="@style/EditText"
+                            android:text="sent_timestamp"
+                            android:hint="@string/enter_key_for_sent_timestamp"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                               android:layout_height="wrap_content"
+                                                               android:layout_marginTop="@dimen/view_spacing_normal">
+                    <EditText
+                            android:id="@+id/sync_kSentTo"
+                            style="@style/EditText"
+                            android:text="sent_to"
+                            android:hint="@string/enter_key_for_sent_to"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                                                               android:layout_height="wrap_content"
+                                                               android:layout_marginTop="@dimen/view_spacing_normal">
+                    <EditText
+                            android:id="@+id/sync_kDeviceID"
+                            style="@style/EditText"
+                            android:text="device_id"
+                            android:hint="@string/enter_key_for_device_id"/>
+                </android.support.design.widget.TextInputLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

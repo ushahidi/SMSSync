@@ -22,7 +22,7 @@ import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.domain.entity.WebServiceEntity;
 import org.addhen.smssync.domain.usecase.webservice.ListWebServiceUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.mapper.WebServiceModelDataMapper;
@@ -84,14 +84,14 @@ public class ListWebServicePresenter implements
     public void loadWebServices() {
         mListWebServiceView.hideRetry();
         mListWebServiceView.showLoading();
-        mUsecase.execute(new DefaultSubscriber<List<WebService>>() {
+        mUsecase.execute(new DefaultSubscriber<List<WebServiceEntity>>() {
             @Override
             public void onCompleted() {
                 mListWebServiceView.hideLoading();
             }
 
             @Override
-            public void onNext(List<WebService> webServiceList) {
+            public void onNext(List<WebServiceEntity> webServiceList) {
                 mListWebServiceView.hideLoading();
                 mListWebServiceView.renderWebServiceList(
                         mWebServiceModelDataMapper.map(webServiceList));

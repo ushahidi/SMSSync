@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.presentation.exception;
 
+import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.exception.FilterNotFoundException;
 import org.addhen.smssync.data.exception.MessageNotFoundException;
@@ -45,8 +46,13 @@ public class ErrorMessageFactory {
         String message = context.getString(R.string.exception_message_generic);
         if (exception instanceof FilterNotFoundException) {
             message = context.getString(R.string.exception_message_filter_not_found);
-        } else if(exception instanceof MessageNotFoundException) {
+        } else if (exception instanceof MessageNotFoundException) {
             message = context.getString(R.string.exception_message_filter_not_found);
+        }
+
+        // Only print stacktrace when running a debug build for debugging purposes
+        if (BuildConfig.DEBUG) {
+            exception.printStackTrace();
         }
         return message;
     }

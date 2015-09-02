@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.presentation.model.mapper;
 
-import org.addhen.smssync.data.entity.WebService;
 import org.addhen.smssync.domain.entity.SyncSchemeEntity;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 import org.addhen.smssync.presentation.model.SyncSchemeModel;
@@ -54,7 +53,7 @@ public class WebServiceModelDataMapper {
         return webServiceEntity;
     }
 
-    public WebServiceModel map(WebService webServiceEntity) {
+    public WebServiceModel map(WebServiceEntity webServiceEntity) {
         WebServiceModel webService = null;
         if (webServiceEntity != null) {
             webService = new WebServiceModel();
@@ -71,10 +70,10 @@ public class WebServiceModelDataMapper {
         return webService;
     }
 
-    public List<WebServiceModel> map(List<WebService> webServices) {
+    public List<WebServiceModel> map(List<WebServiceEntity> webServices) {
         List<WebServiceModel> webServiceEntities = new ArrayList<>();
         WebServiceModel webServiceEntity;
-        for (WebService webService : webServices) {
+        for (WebServiceEntity webService : webServices) {
             webServiceEntity = map(webService);
             if (webServiceEntity != null) {
                 webServiceEntities.add(webServiceEntity);
