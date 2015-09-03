@@ -69,7 +69,7 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
         checkedTextView.setOnClickListener(v -> {
             if (mOnItemCheckedListener != null) {
                 mOnItemCheckedListener
-                        .onItemChecked(position, !checkedTextView.isChecked(), checkedTextView);
+                        .onItemChecked(position, checkedTextView.isChecked(), checkedTextView);
             }
         });
     }

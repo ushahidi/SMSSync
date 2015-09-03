@@ -29,11 +29,13 @@ import org.addhen.smssync.presentation.di.component.WebServiceComponent;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.DeleteWebServicePresenter;
 import org.addhen.smssync.presentation.presenter.webservice.ListWebServicePresenter;
+import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.adapter.WebServiceAdapter;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 import org.addhen.smssync.presentation.view.webservice.DeleteWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.ListWebServiceView;
+import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
 
 import android.app.Activity;
 import android.content.Context;
@@ -79,6 +81,9 @@ public class ListWebServiceFragment
 
     @Inject
     DeleteWebServicePresenter mDeleteWebServicePresenter;
+
+    @Inject
+    UpdateWebServicePresenter mUpdateWebServicePresenter;
 
     @Inject
     PrefsFactory mPrefs;
@@ -161,21 +166,66 @@ public class ListWebServiceFragment
                         mRemovedWebServiceModel.getTitle()));
             }
         });
+
+        mUpdateWebServicePresenter.setView(new UpdateWebServiceView() {
+            @Override
+            public void onWebServiceSuccessfullyUpdated(Long row) {
+
+            }
+
+            @Override
+            public void showWebService(WebServiceModel webServiceModel) {
+
+            }
+
+            @Override
+            public void showLoading() {
+                // Do nothing
+            }
+
+            @Override
+            public void hideLoading() {
+                // Do nothing
+            }
+
+            @Override
+            public void showRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void hideRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void showError(String s) {
+
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getActivity().getApplicationContext();
+            }
+        });
         initRecyclerView();
     }
 
     private void initRecyclerView() {
         mWebServiceAdapter = new WebServiceAdapter();
         mWebServiceAdapter.setOnItemCheckedListener((position, status, checkTextView) -> {
+            final WebServiceModel webServiceModel = mWebServiceAdapter.getItem(position);
             if (status) {
                 if (mWebServiceAdapter.getItemCount() == 1 && mPrefs.serviceEnabled().get()) {
                     showSnabackar(getView(), R.string.disable_last_sync_url);
                 } else {
-                    //TODO: Disable web service
+                    webServiceModel.setStatus(WebServiceModel.Status.DISABLED);
+                    mUpdateWebServicePresenter.updateWebService(webServiceModel);
                     checkTextView.setChecked(false);
                 }
             } else {
-                // TODO: Enable web serivce
+                webServiceModel.setStatus(WebServiceModel.Status.ENABLED);
+                mUpdateWebServicePresenter.updateWebService(webServiceModel);
                 checkTextView.setChecked(true);
             }
         });
