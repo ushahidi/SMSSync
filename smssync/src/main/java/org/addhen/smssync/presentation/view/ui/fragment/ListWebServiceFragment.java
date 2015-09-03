@@ -289,7 +289,13 @@ public class ListWebServiceFragment
         mRemovedItemPosition = position;
         mRemovedWebServiceModel = mWebServiceAdapter.getItem(position);
         mWebServiceAdapter.removeItem(mRemovedWebServiceModel);
-        showUndoSnackbar(1);
+        if (mRemovedWebServiceModel.getStatus() == WebServiceModel.Status.DISABLED) {
+            showUndoSnackbar(1);
+        } else {
+            // Restore item
+            mWebServiceAdapter.addItem(mRemovedWebServiceModel, mRemovedItemPosition);
+            showSnabackar(mFab, getString(R.string.delete_enabled_webservice));
+        }
     }
 
     private void showUndoSnackbar(int count) {

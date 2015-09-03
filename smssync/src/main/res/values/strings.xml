@@ -592,4 +592,6 @@
             Web Services successfully deleted
         </item>
     </plurals>
+    <string name="delete_enabled_webservice">Could not disable web service because it is enabled
+    </string>
 </resources>
