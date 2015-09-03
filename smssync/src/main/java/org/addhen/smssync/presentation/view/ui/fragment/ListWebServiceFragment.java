@@ -289,6 +289,7 @@ public class ListWebServiceFragment
         mRemovedItemPosition = position;
         mRemovedWebServiceModel = mWebServiceAdapter.getItem(position);
         mWebServiceAdapter.removeItem(mRemovedWebServiceModel);
+        // Make sure web service is diasbled before allowing deletion
         if (mRemovedWebServiceModel.getStatus() == WebServiceModel.Status.DISABLED) {
             showUndoSnackbar(1);
         } else {

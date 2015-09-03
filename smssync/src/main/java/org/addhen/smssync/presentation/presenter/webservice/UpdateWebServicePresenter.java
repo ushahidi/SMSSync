@@ -22,10 +22,12 @@ import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
+import org.addhen.smssync.domain.usecase.webservice.TestWebServiceUsecase;
 import org.addhen.smssync.domain.usecase.webservice.UpdateWebServiceUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.model.mapper.WebServiceModelDataMapper;
+import org.addhen.smssync.presentation.view.webservice.TestWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
 
 import android.support.annotation.NonNull;
@@ -44,6 +46,10 @@ public class UpdateWebServicePresenter implements Presenter {
 
     private UpdateWebServiceView mUpdateWebServiceView;
 
+    private final TestWebServiceUsecase mTestWebServiceUsecase;
+
+    private TestWebServiceView mTestWebServiceView;
+
     /**
      * Default use case.
      *
@@ -53,9 +59,11 @@ public class UpdateWebServicePresenter implements Presenter {
     @Inject
     public UpdateWebServicePresenter(
             @Named("webServiceUpdate") UpdateWebServiceUsecase updateWebServiceUsecase,
-            WebServiceModelDataMapper deploymentModelDataMapper) {
+            WebServiceModelDataMapper deploymentModelDataMapper,
+            @Named("testWebService") TestWebServiceUsecase testWebServiceUsecase) {
         mUpdateWebServiceUsecase = updateWebServiceUsecase;
         mWebServiceModelDataMapper = deploymentModelDataMapper;
+        mTestWebServiceUsecase = testWebServiceUsecase;
     }
 
     @Override
@@ -71,10 +79,15 @@ public class UpdateWebServicePresenter implements Presenter {
     @Override
     public void destroy() {
         mUpdateWebServiceUsecase.unsubscribe();
+        mTestWebServiceUsecase.unsubscribe();
     }
 
     public void setView(@NonNull UpdateWebServiceView addWebServiceView) {
         mUpdateWebServiceView = addWebServiceView;
+    }
+
+    public void setTestWebServiceView(@NonNull TestWebServiceView testWebServiceView) {
+        mTestWebServiceView = testWebServiceView;
     }
 
     /**
@@ -103,6 +116,33 @@ public class UpdateWebServicePresenter implements Presenter {
             @Override
             public void onNext(Long row) {
                 mUpdateWebServiceView.onWebServiceSuccessfullyUpdated(row);
+            }
+        });
+    }
+
+    public void testWebService(String url) {
+        mTestWebServiceUsecase.setWebServiceUrl(url);
+        mTestWebServiceUsecase.execute(new DefaultSubscriber<Boolean>() {
+            @Override
+            public void onStart() {
+                mTestWebServiceView.showLoading();
+            }
+
+            @Override
+            public void onCompleted() {
+                mTestWebServiceView.hideLoading();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mTestWebServiceView.hideLoading();
+                showErrorMessage(new DefaultErrorHandler((Exception) e));
+                mTestWebServiceView.showRetry();
+            }
+
+            @Override
+            public void onNext(Boolean status) {
+                mTestWebServiceView.webServiceTested(status);
             }
         });
     }

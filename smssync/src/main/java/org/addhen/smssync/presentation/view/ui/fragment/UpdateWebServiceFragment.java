@@ -26,6 +26,7 @@ import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.validator.UrlValidator;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
+import org.addhen.smssync.presentation.view.webservice.TestWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
 
 import android.app.Activity;
@@ -35,10 +36,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -101,6 +104,9 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @Bind(R.id.add_custom_web_service_add)
     Button mButton;
+
+    @Bind(R.id.test_progress_bar)
+    ProgressBar mProgressBar;
 
     @Inject
     UpdateWebServicePresenter mUpdateWebServicePresenter;
@@ -185,6 +191,46 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     private void initialize() {
         getComponent(WebServiceComponent.class).inject(this);
+        mUpdateWebServicePresenter.setTestWebServiceView(new TestWebServiceView() {
+            @Override
+            public void webServiceTested(boolean status) {
+                if (status) {
+                    showSnabackar(getView(), R.string.valid_web_service);
+                } else {
+                    showSnabackar(getView(), R.string.failed_to_test_web_service);
+                }
+            }
+
+            @Override
+            public void showLoading() {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void hideLoading() {
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void showRetry() {
+
+            }
+
+            @Override
+            public void hideRetry() {
+
+            }
+
+            @Override
+            public void showError(String s) {
+                showSnabackar(getView(), s);
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getActivity();
+            }
+        });
         mUpdateWebServicePresenter.setView(this);
         mButton.setText(R.string.update_btn);
     }
@@ -300,14 +346,22 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
         mLauncher.launchQrcodeReader();
     }
 
+    @OnClick(R.id.test_integration)
+    public void testIntegration() {
+        final String url = mEditTextUrl.getText().toString();
+        if (!TextUtils.isEmpty(url)) {
+            mUpdateWebServicePresenter.testWebService(url);
+        }
+    }
+
     @Override
     public void showLoading() {
-        // Do nothing
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        // Do nothing
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override

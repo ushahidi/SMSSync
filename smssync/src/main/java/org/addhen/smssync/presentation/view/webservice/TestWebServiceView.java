@@ -15,28 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.presentation.view.webservice;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
-
-import org.addhen.smssync.domain.entity.WebServiceEntity;
-
-import rx.Observable;
+import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
 /**
- * Repository for manipulating {@link org.addhen.smssync.domain.entity.WebServiceEntity} data
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface WebServiceRepository extends Repository<WebServiceEntity> {
+public interface TestWebServiceView extends LoadDataView {
 
-    /**
-     * Get an {@link WebServiceEntity} by its status.
-     *
-     * @param status The web service status to be used for retrieving web service data.
-     * @return The web service
-     */
-    Observable<WebServiceEntity> getByStatus(WebServiceEntity.Status status);
-
-    Observable<Boolean> testWebService(String url);
+    void webServiceTested(boolean status);
 }

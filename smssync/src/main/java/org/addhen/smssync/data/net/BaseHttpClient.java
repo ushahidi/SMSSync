@@ -35,6 +35,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -72,11 +73,11 @@ public class BaseHttpClient {
 
     private Request request;
 
-    private ArrayList<HttpNameValuePair> params;
+    private ArrayList<HttpNameValuePair> mParams;
 
-    private Map<String, String> header;
+    private Map<String, String> mHeader;
 
-    private Headers headers;
+    private Headers mHeaders;
 
     private HttpMethod method = HttpMethod.GET;
 
@@ -85,22 +86,24 @@ public class BaseHttpClient {
 
     public BaseHttpClient(Context context) {
         mContext = context;
+        mParams = new ArrayList<>();
+        mHeader = new HashMap<>();
         mHttpClient = new OkHttpClient();
         mHttpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
         mHttpClient.setWriteTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
         mHttpClient.setReadTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
     }
 
-    public void setUrl(String url) {
+    protected void setUrl(String url) {
         mUrl = url;
     }
 
-    public void setHeader(String name, String value) {
-        this.header.put(name, value);
+    protected void setHeader(String name, String value) {
+        this.mHeader.put(name, value);
     }
 
-    public void setHeaders(Headers headers) {
-        this.headers = headers;
+    protected void setHeaders(Headers mHeaders) {
+        this.mHeaders = mHeaders;
     }
 
     private void addHeader() {
@@ -115,7 +118,7 @@ public class BaseHttpClient {
             e.printStackTrace();
         }
 
-        // add user-agent header
+        // add user-agent mHeader
         try {
             final String versionName = mContext.getPackageManager().getPackageInfo(
                     mContext.getPackageName(), 0).versionName;
@@ -128,23 +131,23 @@ public class BaseHttpClient {
             e.printStackTrace();
         }
 
-        // set headers on request
-        Headers.Builder headerBuilder = new Headers.Builder();
-        for (String key : header.keySet()) {
-            headerBuilder.set(key, header.get(key));
+        // set mHeaders on request
+        Headers.Builder mHeaderBuilder = new Headers.Builder();
+        for (String key : mHeader.keySet()) {
+            mHeaderBuilder.set(key, mHeader.get(key));
         }
-        setHeaders(headerBuilder.build());
+        setHeaders(mHeaderBuilder.build());
     }
 
     public void addParam(String name, String value) {
-        this.params.add(new HttpNameValuePair(name, value));
+        this.mParams.add(new HttpNameValuePair(name, value));
     }
 
     public ArrayList getParams() {
-        return params;
+        return mParams;
     }
 
-    public void execute() throws Exception {
+    protected void execute() throws Exception {
         prepareRequest();
         if (request != null) {
             final Response resp = mHttpClient.newCall(request).execute();
@@ -152,12 +155,12 @@ public class BaseHttpClient {
         }
     }
 
-    public boolean isMethodSupported(HttpMethod method) {
+    protected boolean isMethodSupported(HttpMethod method) {
         return (method.equals(HttpMethod.GET) || method.equals(HttpMethod.POST) || method
                 .equals(HttpMethod.PUT));
     }
 
-    public void setMethod(HttpMethod method) throws Exception {
+    protected void setMethod(HttpMethod method) throws Exception {
         if (!isMethodSupported(method)) {
             throw new Exception(
                     "Invalid method '" + method + "'."
@@ -167,15 +170,15 @@ public class BaseHttpClient {
         this.method = method;
     }
 
-    public void setRequestBody(RequestBody requestBody) throws Exception {
+    protected void setRequestBody(RequestBody requestBody) throws Exception {
         this.requestBody = requestBody;
     }
 
-    public Request getRequest() {
+    protected Request getRequest() {
         return request;
     }
 
-    public static String base64Encode(String str) {
+    protected static String base64Encode(String str) {
         byte[] bytes = str.getBytes();
         return Base64.encodeToString(bytes, Base64.NO_WRAP);
     }
@@ -186,19 +189,19 @@ public class BaseHttpClient {
         if (method.equals(HttpMethod.GET)) {
             request = new Request.Builder()
                     .url(mUrl + getQueryString())
-                    .headers(headers)
+                    .headers(mHeaders)
                     .build();
         } else if (method.equals(HttpMethod.POST)) {
             request = new Request.Builder()
                     .url(mUrl)
-                    .headers(headers)
+                    .headers(mHeaders)
                     .post(requestBody)
                     .build();
 
         } else if (method.equals(HttpMethod.PUT)) {
             request = new Request.Builder()
                     .url(mUrl)
-                    .headers(headers)
+                    .headers(mHeaders)
                     .put(requestBody)
                     .build();
         }
@@ -207,9 +210,9 @@ public class BaseHttpClient {
     private String getQueryString() throws Exception {
         //add query parameters
         String combinedParams = "";
-        if (!params.isEmpty()) {
+        if (!mParams.isEmpty()) {
             combinedParams += "?";
-            for (HttpNameValuePair p : params) {
+            for (HttpNameValuePair p : mParams) {
                 String paramString = p.getName() + "=" + URLEncoder
                         .encode(p.getValue(), DEFAULT_ENCODING);
                 if (combinedParams.length() > 1) {
@@ -222,11 +225,11 @@ public class BaseHttpClient {
         return combinedParams;
     }
 
-    public Response getResponse() {
+    protected Response getResponse() {
         return mResponse;
     }
 
-    public void setResponse(Response response) {
+    protected void setResponse(Response response) {
         mResponse = response;
     }
 

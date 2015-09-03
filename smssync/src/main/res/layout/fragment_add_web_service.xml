@@ -246,6 +246,13 @@
                 android:text="@string/test_integration"
                 android:textColor="@color/color_accent"
                 style="?attr/buttonBarButtonStyle"/>
+        <ProgressBar
+                android:id="@+id/test_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                style="?android:attr/progressBarStyle"/>
         <Button
                 android:id="@+id/add_custom_web_service_cancel"
                 android:layout_width="wrap_content"

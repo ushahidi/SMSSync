@@ -18,6 +18,7 @@
 package org.addhen.smssync.data.repository;
 
 import org.addhen.smssync.data.entity.mapper.WebServiceDataMapper;
+import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSource;
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
@@ -42,6 +43,7 @@ public class WebServiceDataRepository implements WebServiceRepository {
 
     private final WebServiceDataMapper mWebServiceEntityDataMapper;
 
+    private final AppHttpClient mAppHttpClient;
 
     /**
      * Constructs a {@link WebServiceRepository}.
@@ -52,9 +54,10 @@ public class WebServiceDataRepository implements WebServiceRepository {
      */
     @Inject
     public WebServiceDataRepository(WebServiceDataSourceFactory dataSourceFactory,
-            WebServiceDataMapper webserviceEntityDataMapper) {
+            WebServiceDataMapper webserviceEntityDataMapper, AppHttpClient appHttpClient) {
         mWebServiceDataStoreFactory = dataSourceFactory;
         mWebServiceEntityDataMapper = webserviceEntityDataMapper;
+        mAppHttpClient = appHttpClient;
     }
 
     @Override
@@ -63,6 +66,11 @@ public class WebServiceDataRepository implements WebServiceRepository {
                 .createDatabaseDataSource();
         return webserviceDataSource.getByStatus(mWebServiceEntityDataMapper.map(status))
                 .map(mWebServiceEntityDataMapper::map);
+    }
+
+    @Override
+    public Observable<Boolean> testWebService(String url) {
+        return mAppHttpClient.makeRequest(url);
     }
 
     @Override

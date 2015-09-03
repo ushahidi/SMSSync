@@ -40,12 +40,14 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import static com.squareup.okhttp.internal.Util.UTF_8;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class MessageHttpClient extends BaseHttpClient {
 
     private String mServerError;
@@ -217,6 +219,4 @@ public class MessageHttpClient extends BaseHttpClient {
     public void setServerSuccessResp(SmssyncResponse smssyncResponse) {
         mSmssyncResponse = smssyncResponse;
     }
-
-
 }

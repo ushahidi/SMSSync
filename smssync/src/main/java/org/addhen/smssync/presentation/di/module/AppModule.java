@@ -21,6 +21,8 @@ import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.net.AppHttpClient;
+import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
@@ -88,5 +90,17 @@ public class AppModule {
     @Singleton
     PrefsFactory providePrefsFactory(Context context, SharedPreferences sharedPreferences) {
         return new PrefsFactory(context, sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    MessageHttpClient provideMessageHttpClient(Context context, FileManager fileManager) {
+        return new MessageHttpClient(context, fileManager);
+    }
+
+    @Provides
+    @Singleton
+    AppHttpClient provideAppHttpClient(Context context) {
+        return new AppHttpClient(context);
     }
 }

@@ -22,6 +22,8 @@ import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.net.AppHttpClient;
+import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
@@ -55,6 +57,10 @@ public interface AppComponent extends ApplicationComponent {
     Prefs prefs();
 
     PrefsFactory prefsFactory();
+
+    AppHttpClient appHttpClient();
+
+    MessageHttpClient messageHttpClient();
 
     final class Initializer {
 

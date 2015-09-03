@@ -594,4 +594,7 @@
     </plurals>
     <string name="delete_enabled_webservice">Could not disable web service because it is enabled
     </string>
+    <string name="failed_to_test_web_service">Web service doesn\'t seem to have the right endpoint
+    </string>
+    <string name="valid_web_service">A valid SMSsync web service</string>
 </resources>

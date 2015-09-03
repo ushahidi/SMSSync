@@ -22,6 +22,7 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import org.addhen.smssync.domain.usecase.webservice.AddWebServiceUsecase;
 import org.addhen.smssync.domain.usecase.webservice.DeleteWebServiceUsecase;
 import org.addhen.smssync.domain.usecase.webservice.ListWebServiceUsecase;
+import org.addhen.smssync.domain.usecase.webservice.TestWebServiceUsecase;
 import org.addhen.smssync.domain.usecase.webservice.UpdateWebServiceUsecase;
 
 import javax.inject.Named;
@@ -88,6 +89,13 @@ public class WebServiceModule {
     UpdateWebServiceUsecase provideUpdateWebServiceUseCase(
             UpdateWebServiceUsecase updateWebServiceUsecase) {
         return updateWebServiceUsecase;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("testWebService")
+    TestWebServiceUsecase providTestWebServiceUsecase(TestWebServiceUsecase testWebServiceUsecase) {
+        return testWebServiceUsecase;
     }
 
 }
