@@ -57,16 +57,21 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        final WebServiceModel webServiceModel = getItem(position);
         ((Widgets) viewHolder).title.setText(getItem(position).getTitle());
         ((Widgets) viewHolder).url.setText(getItem(position).getUrl());
         CheckedTextView checkedTextView = ((Widgets) viewHolder).listCheckBox;
+        if (webServiceModel.getStatus() == WebServiceModel.Status.ENABLED) {
+            checkedTextView.setChecked(true);
+        } else {
+            checkedTextView.setChecked(false);
+        }
         checkedTextView.setOnClickListener(v -> {
             if (mOnItemCheckedListener != null) {
-                toggleSelection(position);
-                mOnItemCheckedListener.onItemChecked(position, !checkedTextView.isChecked());
+                mOnItemCheckedListener
+                        .onItemChecked(position, !checkedTextView.isChecked(), checkedTextView);
             }
         });
-        checkedTextView.setChecked(mSelectedItems.get(position, false));
     }
 
     @Override
@@ -156,6 +161,6 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     public interface OnItemCheckedListener {
 
-        void onItemChecked(int position, boolean status);
+        void onItemChecked(int position, boolean status, CheckedTextView checkedTextView);
     }
 }

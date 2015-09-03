@@ -581,4 +581,15 @@
     <string name="show_secret_checkbox">Show secret key</string>
     <string name="edit_sync_sync_prompt">Optional: Edit the Sync scheme</string>
     <string name="update_btn">Update</string>
+    <string name="item_successfully_deleted">%1$s successfully deleted</string>
+    <plurals name="webservice_deleted">
+        <item quantity="one">
+            <xliff:g id="total_items">%1$d</xliff:g>
+            Web Service successfully deleted
+        </item>
+        <item quantity="other">
+            <xliff:g id="total_items">%1$d</xliff:g>
+            Web Services successfully deleted
+        </item>
+    </plurals>
 </resources>

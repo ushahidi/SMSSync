@@ -19,6 +19,7 @@ package org.addhen.smssync.presentation.di.module;
 
 import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
@@ -28,6 +29,7 @@ import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.Prefs;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -41,6 +43,8 @@ import dagger.Provides;
  */
 @Module(includes = ApplicationModule.class)
 public class AppModule {
+
+    private static final String PREF_NAME = "SMS_SYNC_PREF";
 
     App mApp;
 
@@ -71,5 +75,18 @@ public class AppModule {
     @Singleton
     Prefs providePrefs(Context context) {
         return new Prefs(context);
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreference(Context context) {
+        return context.getApplicationContext()
+                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    @Singleton
+    PrefsFactory providePrefsFactory(Context context, SharedPreferences sharedPreferences) {
+        return new PrefsFactory(context, sharedPreferences);
     }
 }

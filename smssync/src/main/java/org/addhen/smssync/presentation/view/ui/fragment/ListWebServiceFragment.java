@@ -19,12 +19,12 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.listener.RecyclerViewItemTouchListenerAdapter;
-import com.addhen.android.raiburari.presentation.ui.listener.SwipeToDismissTouchListener;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 import com.addhen.android.raiburari.presentation.ui.widget.DividerItemDecoration;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.di.component.WebServiceComponent;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.DeleteWebServicePresenter;
@@ -62,7 +62,7 @@ import butterknife.Bind;
  */
 public class ListWebServiceFragment
         extends BaseRecyclerViewFragment<WebServiceModel, WebServiceAdapter>
-        implements ListWebServiceView, DeleteWebServiceView,
+        implements ListWebServiceView,
         RecyclerViewItemTouchListenerAdapter.RecyclerViewOnItemClickListener {
 
     @Bind(R.id.fab)
@@ -79,6 +79,9 @@ public class ListWebServiceFragment
 
     @Inject
     DeleteWebServicePresenter mDeleteWebServicePresenter;
+
+    @Inject
+    PrefsFactory mPrefs;
 
     @Inject
     Launcher mLauncher;
@@ -119,17 +122,61 @@ public class ListWebServiceFragment
     private void initialize() {
         getComponent(WebServiceComponent.class).inject(this);
         mListWebServicePresenter.setView(this);
-        mDeleteWebServicePresenter.setView(this);
+        mDeleteWebServicePresenter.setView(new DeleteWebServiceView() {
+
+            @Override
+            public void showError(String s) {
+
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getActivity().getApplicationContext();
+            }
+
+            @Override
+            public void showLoading() {
+                // Do nothing
+            }
+
+            @Override
+            public void hideLoading() {
+                // Do nothing
+            }
+
+            @Override
+            public void showRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void hideRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void onWebServiceDeleted() {
+                mListWebServicePresenter.loadWebServices();
+                showToast(getActivity().getString(R.string.item_successfully_deleted,
+                        mRemovedWebServiceModel.getTitle()));
+            }
+        });
         initRecyclerView();
     }
 
     private void initRecyclerView() {
         mWebServiceAdapter = new WebServiceAdapter();
-        mWebServiceAdapter.setOnItemCheckedListener((position, status) -> {
+        mWebServiceAdapter.setOnItemCheckedListener((position, status, checkTextView) -> {
             if (status) {
-                // TODO: Disable account 
+                if (mWebServiceAdapter.getItemCount() == 1 && mPrefs.serviceEnabled().get()) {
+                    showSnabackar(getView(), R.string.disable_last_sync_url);
+                } else {
+                    //TODO: Disable web service
+                    checkTextView.setChecked(false);
+                }
             } else {
-                // TODO: Enable account 
+                // TODO: Enable web serivce
+                checkTextView.setChecked(true);
             }
         });
         if (mFab != null) {
@@ -149,24 +196,12 @@ public class ListWebServiceFragment
                 this);
         mWebServiceRecyclerView.recyclerView
                 .addOnItemTouchListener(recyclerViewItemTouchListenerAdapter);
-        setEmptyView();
         enableSwipeToPerformAction();
     }
 
-    private void setEmptyView() {
-        if (mWebServiceAdapter != null && mWebServiceAdapter.getItemCount() == 0) {
-            setViewGone(mEmptyView, false);
-        } else {
-            setViewGone(mEmptyView);
-        }
-    }
-
     private void enableSwipeToPerformAction() {
-        // Swiping doesn't work well on API 11 and below because the android support lib ships
-        // with buggy APIs that makes it hard to implement on older devices.
-        // See http://b.android/181858
         ItemTouchHelper.SimpleCallback swipeToDismiss = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+                ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                     RecyclerView.ViewHolder target) {
@@ -209,10 +244,20 @@ public class ListWebServiceFragment
 
     private void showUndoSnackbar(int count) {
         Snackbar snackbar = Snackbar
-                .make(mFab, getString(R.string.item_deleted, count), Snackbar.LENGTH_LONG);
+                .make(mFab, getResources().getQuantityString(R.plurals.webservice_deleted, count,
+                        count), Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.undo, v -> {
             // Restore item
             mWebServiceAdapter.addItem(mRemovedWebServiceModel, mRemovedItemPosition);
+        });
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                    mDeleteWebServicePresenter.deleteWebService(mRemovedWebServiceModel._id);
+                }
+            }
         });
         snackbar.show();
     }
@@ -220,44 +265,17 @@ public class ListWebServiceFragment
     private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             // Fade out the view as it is swiped out of the parent's bounds
-            final float alpha = 1.0f - Math.abs(dX) / (float) itemView.getWidth();
+            final float alpha = 2.0f - Math.abs(dX) / (float) itemView.getWidth();
             ViewHelper.setAlpha(itemView, alpha);
             ViewHelper.setTranslationX(itemView, dX);
-            Drawable d;
-            // Swiping right
-            if (dX > 0) {
-                d = ContextCompat
-                        .getDrawable(getAppContext(),
-                                R.drawable.swipe_right_publish_list_item_background);
-                d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
-            } else { // Swiping left
-                d = ContextCompat
-                        .getDrawable(getAppContext(),
-                                R.drawable.swipe_left_publish_list_item_background);
-                d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
-                        itemView.getBottom());
-            }
+
+            final Drawable d = ContextCompat
+                    .getDrawable(getAppContext(),
+                            R.drawable.swipe_left_publish_list_item_background);
+            d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
+                    itemView.getBottom());
             d.draw(c);
         }
-    }
-
-    private void swipeToDeleteUndo() {
-        mWebServiceRecyclerView
-                .setSwipeToDismissCallback(new SwipeToDismissTouchListener.DismissCallbacks() {
-                    @Override
-                    public SwipeToDismissTouchListener.SwipeDirection canDismiss(int position) {
-                        return SwipeToDismissTouchListener.SwipeDirection.BOTH;
-                    }
-
-                    @Override
-                    public void onDismiss(RecyclerView view,
-                            List<SwipeToDismissTouchListener.PendingDismissData> dismissData) {
-
-                        for (SwipeToDismissTouchListener.PendingDismissData data : dismissData) {
-                            // TODO: Perform swipe to delete
-                        }
-                    }
-                });
     }
 
     @Override
@@ -335,11 +353,6 @@ public class ListWebServiceFragment
                 mWebServiceListListener.onWebServiceClicked(webServiceModel);
             }
         }
-    }
-
-    @Override
-    public void onWebServiceDeleted() {
-        mListWebServicePresenter.loadWebServices();
     }
 
     /**

@@ -53,6 +53,8 @@ public interface AppComponent extends ApplicationComponent {
 
     Prefs prefs();
 
+    PrefsFactory prefsFactory();
+
     final class Initializer {
 
         private Initializer() {
