@@ -27,68 +27,68 @@ import android.os.Parcelable;
  */
 public class WebServiceModel extends Model implements Parcelable {
 
-    private String title;
+    private String mTitle;
 
-    private String url;
+    private String mUrl;
 
-    private String secret;
+    private String mSecret;
 
-    private String syncScheme;
+    private String mSyncScheme;
 
-    private Status status;
+    private Status mStatus;
 
     public WebServiceModel() {
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        mTitle = title;
     }
 
     public String getUrl() {
-        return url;
+        return mUrl;
     }
 
     public void setUrl(String url) {
-        this.url = url;
+        mUrl = url;
     }
 
     public String getSecret() {
-        return secret;
+        return mSecret;
     }
 
     public void setSecret(String secret) {
-        this.secret = secret;
+        mSecret = secret;
     }
 
     public SyncSchemeModel getSyncScheme() {
-        return new SyncSchemeModel(syncScheme);
+        return new SyncSchemeModel(mSyncScheme);
     }
 
     public void setSyncScheme(SyncSchemeModel syncScheme) {
-        this.syncScheme = syncScheme.toJSONString();
+        mSyncScheme = syncScheme.toJSONString();
     }
 
     public Status getStatus() {
-        return status;
+        return mStatus;
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+        mStatus = status;
     }
 
     @Override
     public String toString() {
         return "SyncUrl{" +
                 "id=" + _id +
-                "title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", secret='" + secret + '\'' +
-                ", syncScheme=" + syncScheme +
-                ", status=" + status +
+                "title='" + mTitle + '\'' +
+                ", url='" + mUrl + '\'' +
+                ", secret='" + mSecret + '\'' +
+                ", syncScheme=" + mSyncScheme +
+                ", status=" + mStatus +
                 '}';
     }
 
@@ -97,11 +97,12 @@ public class WebServiceModel extends Model implements Parcelable {
     }
 
     protected WebServiceModel(Parcel in) {
-        title = in.readString();
-        url = in.readString();
-        secret = in.readString();
-        syncScheme = in.readString();
-        status = (Status) in.readValue(Status.class.getClassLoader());
+        _id = in.readLong();
+        mTitle = in.readString();
+        mUrl = in.readString();
+        mSecret = in.readString();
+        mSyncScheme = in.readString();
+        mStatus = (Status) in.readValue(Status.class.getClassLoader());
     }
 
     @Override
@@ -111,11 +112,12 @@ public class WebServiceModel extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(url);
-        dest.writeString(secret);
-        dest.writeString(syncScheme);
-        dest.writeValue(status);
+        dest.writeLong(_id);
+        dest.writeString(mTitle);
+        dest.writeString(mUrl);
+        dest.writeString(mSecret);
+        dest.writeString(mSyncScheme);
+        dest.writeValue(mStatus);
     }
 
     @SuppressWarnings("unused")
