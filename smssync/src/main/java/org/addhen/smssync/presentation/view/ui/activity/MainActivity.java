@@ -36,6 +36,7 @@ import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -45,6 +46,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -67,6 +69,9 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
     @Bind((R.id.nav_view))
     NavigationView mNavigationView;
+
+    @Bind(R.id.header_app_version)
+    AppCompatTextView mAppCompatTextView;
 
     private static final String BUNDLE_STATE_PARAM_CURRENT_MENU
             = "org.addhen.smssync.presentation.view.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
@@ -124,6 +129,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 R.string.app_name);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mAppCompatTextView.setText(getAppVersionName());
         if (mNavigationView != null) {
             setupDrawerContent(mNavigationView);
         }
@@ -135,6 +141,18 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private void findMessageFragment() {
         mMessageFragment = (MessageFragment) getSupportFragmentManager()
                 .findFragmentByTag(INCOMING_FAG_TAG);
+    }
+
+    private String getAppVersionName() {
+        String versionName = null;
+        try {
+            versionName = getPackageManager().getPackageInfo(
+                    this.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return versionName;
     }
 
     @Override
