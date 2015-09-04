@@ -23,11 +23,20 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class Utility {
+
+    private static final String URL_PATTERN
+            = "\\b(https?|ftp|file)://[-a-zA-Z0-9+\\$&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+    private static Pattern pattern;
+
+    private static Matcher matcher;
 
     public static String formatDate(Date messageDate) {
         DateFormat formatter = new SimpleDateFormat("hh:mm a");
@@ -50,5 +59,25 @@ public class Utility {
         }
         String withoutWhiteChars = s.replaceAll("\\s+", "");
         return withoutWhiteChars;
+    }
+
+    /**
+     * Validate the callback URL
+     *
+     * @param url - The callback URL to be validated.
+     * @return boolean True when URL is valid False otherwise
+     */
+    public static boolean validateUrl(String url) {
+
+        if (TextUtils.isEmpty(url)) {
+            return false;
+        }
+
+        pattern = Pattern.compile(URL_PATTERN);
+        matcher = pattern.matcher(url);
+        if (matcher.matches()) {
+            return true;
+        }
+        return false;
     }
 }

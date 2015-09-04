@@ -570,6 +570,7 @@
     <string name="validation_message_no_deployment_title">Please provide a title for the custom web
         service
     </string>
+    <string name="custom_web_service_title_validation_message">Please enter at least four characters for the web service title</string>
     <string name="custom_web_service">Custom web service</string>
     <string name="manage_custom_web_services">Manage Web Services</string>
     <string name="add_web_service">Add web service</string>

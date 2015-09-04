@@ -53,7 +53,8 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
 /**
- * Fragment for updating a existing webService
+ * Fragment for updating a existing webService. This needs to be merged with {@link AddWebServiceFragment}
+ * as they share so much code
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
@@ -81,25 +82,25 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     @Bind(R.id.sync_data_format)
     Spinner mSpinnerDataFormats;
 
-    @Bind(R.id.sync_kSecret)
+    @Bind(R.id.sync_k_secret)
     EditText mKeySecret;
 
-    @Bind(R.id.sync_kFrom)
+    @Bind(R.id.sync_k_from)
     EditText mKeyFrom;
 
-    @Bind(R.id.sync_kMessage)
+    @Bind(R.id.sync_k_message)
     EditText mKeyMessage;
 
-    @Bind(R.id.sync_kSentTimestamp)
+    @Bind(R.id.sync_k_sent_timestamp)
     EditText mKeySentTimeStamp;
 
-    @Bind(R.id.sync_kSentTo)
+    @Bind(R.id.sync_k_sent_to)
     EditText mKeySentTo;
 
-    @Bind(R.id.sync_kMessageID)
+    @Bind(R.id.sync_k_message_id)
     EditText mKeyMessageID;
 
-    @Bind(R.id.sync_kDeviceID)
+    @Bind(R.id.sync_k_device_id)
     EditText mKeyDeviceID;
 
     @Bind(R.id.add_custom_web_service_add)
