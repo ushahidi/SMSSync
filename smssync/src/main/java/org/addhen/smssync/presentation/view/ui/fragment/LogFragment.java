@@ -62,8 +62,7 @@ import butterknife.Bind;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
-        implements
-        ListLogView {
+        implements ListLogView {
 
     @Bind(android.R.id.list)
     BloatedRecyclerView mLogRecyclerView;
@@ -247,7 +246,6 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
                     // TODO: Perform deletion
-                    //mDeleteWebServicePresenter.deleteWebService(mRemovedWebServiceModel._id);
                 }
             }
         });

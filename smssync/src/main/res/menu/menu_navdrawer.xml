@@ -42,11 +42,7 @@
     </group>
     <group android:id="@+id/group_device_info">
         <item android:title="Ushahidi Phone 1234"
-              android:id="@+id/nav_device_name">
-            <menu>
-                <item android:title="Edit Device Info"
-                      android:id="@+id/nav_edit_device_name"/>
-            </menu>
-        </item>
+              android:visible="false"
+              android:id="@+id/nav_device_name"/>
     </group>
 </menu>

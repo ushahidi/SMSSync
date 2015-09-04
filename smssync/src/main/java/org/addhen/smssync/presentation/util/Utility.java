@@ -237,4 +237,14 @@ public class Utility {
 
     }
 
+    /**
+     * Capitalize any String given to it.
+     *
+     * @param text - The string to be capitalized.
+     * @return String
+     */
+    public static String capitalizeFirstLetter(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
+    }
+
 }

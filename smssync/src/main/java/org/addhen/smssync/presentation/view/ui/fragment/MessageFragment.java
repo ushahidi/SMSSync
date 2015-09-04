@@ -153,7 +153,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private void initRecyclerView() {
         mPendingDeletedMessages = new ArrayList<>();
-        mMessageAdapter = new MessageAdapter(getActivity(), mEmptyView);
+        mMessageAdapter = new MessageAdapter(getActivity());
         mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessageRecyclerView.setFocusable(true);
         mMessageRecyclerView.setFocusableInTouchMode(true);
@@ -332,8 +332,8 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     private void showUndoSnackbar(int count) {
-        Snackbar snackbar = Snackbar
-                .make(mFab, getString(R.string.item_deleted, count), Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(mFab, getString(R.string.item_deleted, count),
+                Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.undo, v -> {
             // Restore item
             mMessageAdapter.addItem(mRemovedMessage, mRemovedItemPosition);

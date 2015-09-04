@@ -83,6 +83,7 @@ public class WebServiceModel extends Model implements Parcelable {
     @Override
     public String toString() {
         return "SyncUrl{" +
+                "id=" + _id +
                 "title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", secret='" + secret + '\'' +

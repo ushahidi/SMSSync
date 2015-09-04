@@ -149,7 +149,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     private void initRecyclerView() {
         mPendingDeletedMessages = new ArrayList<>();
-        mMessageAdapter = new MessageAdapter(getActivity(), mEmptyView);
+        mMessageAdapter = new MessageAdapter(getActivity());
         mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessageRecyclerView.setFocusable(true);
         mMessageRecyclerView.setFocusableInTouchMode(true);

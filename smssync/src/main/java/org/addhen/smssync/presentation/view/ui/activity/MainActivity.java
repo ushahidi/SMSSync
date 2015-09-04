@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.di.HasComponent;
 import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.AppActivityComponent;
 import org.addhen.smssync.presentation.di.component.AppComponent;
@@ -31,6 +32,7 @@ import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
 import org.addhen.smssync.presentation.di.component.FilterComponent;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
+import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 
 import android.app.SearchManager;
@@ -149,7 +151,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             versionName = getPackageManager().getPackageInfo(
                     this.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return versionName;
@@ -279,6 +280,14 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
+        PrefsFactory prefs = getAppComponent().prefsFactory();
+        MenuItem phoneName = navigationView.getMenu().findItem(R.id.nav_device_name);
+        if (phoneName != null && !TextUtils.isEmpty(prefs.uniqueName().get())) {
+            phoneName.setVisible(true);
+            phoneName.setTitle(
+                    Utility.capitalizeFirstLetter(prefs.uniqueName().get()) + " - " + prefs
+                            .uniqueId().get());
+        }
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
                     mCurrentMenu = menuItem.getItemId();
@@ -291,7 +300,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 });
     }
 
-    public void onNavigationItemSelected(NavigationView navigationView, final MenuItem menuItem) {
+    private void onNavigationItemSelected(NavigationView navigationView, final MenuItem menuItem) {
         final int groupId = menuItem.getGroupId();
         navigationView.getMenu()
                 .setGroupCheckable(R.id.group_messages, (groupId == R.id.group_messages), true);
