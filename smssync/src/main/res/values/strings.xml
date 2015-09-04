@@ -598,4 +598,11 @@
     <string name="failed_to_test_web_service">Web service doesn\'t seem to have the right endpoint
     </string>
     <string name="valid_web_service">A valid SMSsync web service</string>
+    <string name="valid_sync_scheme_enter_key_for_secret">Please \'secret\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_from">Please \'from\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_message_id">Please \'message_id\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_message">Please \'message\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_sent_timestamp">Please \'sent_timestamp\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_sent_to">Please \'sent_to\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_device_id">Please \'device_id\' is a required field</string>
 </resources>

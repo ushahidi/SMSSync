@@ -320,6 +320,45 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
             mUrlTextInputLayout.setError(getString(R.string.validation_message_invalid_url));
             return false;
         }
+
+        mKDeviceIdTextInputLayout.setError(null);
+        if (TextUtils.isEmpty(mKeyDeviceID.getText().toString())) {
+            mKDeviceIdTextInputLayout
+                    .setError(getString(R.string.valid_sync_scheme_enter_key_for_device_id));
+            return false;
+        }
+
+        mKFromTextInputLayout.setError(null);
+        if (TextUtils.isEmpty(mKeyFrom.getText().toString())) {
+            mKFromTextInputLayout
+                    .setError(getString(R.string.valid_sync_scheme_enter_key_for_from));
+            return false;
+        }
+        mKMessageIdTextInputLayout.setError(null);
+        if (TextUtils.isEmpty(mKeyMessageID.getText().toString().toString())) {
+            mKMessageIdTextInputLayout
+                    .setError(getString(R.string.valid_sync_scheme_enter_key_for_message_id));
+            return false;
+        }
+
+        mKMessageTextInputLayout.setError(null);
+        if (TextUtils.isEmpty(mKeyMessage.getText().toString())) {
+            mKSentTimestampTextInputLayout
+                    .setError(getString(R.string.valid_sync_scheme_enter_key_for_sent_timestamp));
+            return false;
+        }
+        mKSentToTextInputLayout.setError(null);
+        if (TextUtils.isEmpty(mKeySentTo.getText().toString())) {
+            mKSentToTextInputLayout
+                    .setError(getString(R.string.valid_sync_scheme_enter_key_for_sent_to));
+            return false;
+        }
+        mKSecretTextIputLayout.setError(null);
+        if (TextUtils.isEmpty(mKeySecret.getText().toString())) {
+            mKSecretTextIputLayout
+                    .setError(getString(R.string.valid_sync_scheme_enter_key_for_secret));
+            return false;
+        }
         return true;
     }
 
