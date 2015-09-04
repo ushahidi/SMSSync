@@ -19,6 +19,7 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
+import com.addhen.android.raiburari.presentation.ui.widget.DividerItemDecoration;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -154,7 +155,9 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         mMessageRecyclerView.setFocusableInTouchMode(true);
         mMessageAdapter.setHasStableIds(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
-        mMessageRecyclerView.addItemDividerDecoration(getActivity());
+        mMessageRecyclerView.addItemDecoration(
+                new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
+        ;
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageRecyclerView.enableDefaultSwipeRefresh(false);
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));

@@ -438,7 +438,9 @@
         expected JSON response
     </string>
     <string name="auto_sync_message_no">Automatically syncing message $1$s to %2$s failed</string>
-    <string name="no_logs">No logs.</string>
+    <string name="no_logs">There are no log messages to be shown. Enable logs to start receiving
+        them.
+    </string>
     <string name="smssync_service_running">SMSsync service is running...</string>
     <string name="sync_started">Sync started</string>
     <string name="not_syncing">Not syncing %1$s</string>
@@ -570,7 +572,9 @@
     <string name="validation_message_no_deployment_title">Please provide a title for the custom web
         service
     </string>
-    <string name="custom_web_service_title_validation_message">Please enter at least four characters for the web service title</string>
+    <string name="custom_web_service_title_validation_message">Please enter at least four characters
+        for the web service title
+    </string>
     <string name="custom_web_service">Custom web service</string>
     <string name="manage_custom_web_services">Manage Web Services</string>
     <string name="add_web_service">Add web service</string>
@@ -598,11 +602,20 @@
     <string name="failed_to_test_web_service">Web service doesn\'t seem to have the right endpoint
     </string>
     <string name="valid_web_service">A valid SMSsync web service</string>
-    <string name="valid_sync_scheme_enter_key_for_secret">Please \'secret\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_secret">Please \'secret\' is a required field
+    </string>
     <string name="valid_sync_scheme_enter_key_for_from">Please \'from\' is a required field</string>
-    <string name="valid_sync_scheme_enter_key_for_message_id">Please \'message_id\' is a required field</string>
-    <string name="valid_sync_scheme_enter_key_for_message">Please \'message\' is a required field</string>
-    <string name="valid_sync_scheme_enter_key_for_sent_timestamp">Please \'sent_timestamp\' is a required field</string>
-    <string name="valid_sync_scheme_enter_key_for_sent_to">Please \'sent_to\' is a required field</string>
-    <string name="valid_sync_scheme_enter_key_for_device_id">Please \'device_id\' is a required field</string>
+    <string name="valid_sync_scheme_enter_key_for_message_id">Please \'message_id\' is a required
+        field
+    </string>
+    <string name="valid_sync_scheme_enter_key_for_message">Please \'message\' is a required field
+    </string>
+    <string name="valid_sync_scheme_enter_key_for_sent_timestamp">Please \'sent_timestamp\' is a
+        required field
+    </string>
+    <string name="valid_sync_scheme_enter_key_for_sent_to">Please \'sent_to\' is a required field
+    </string>
+    <string name="valid_sync_scheme_enter_key_for_device_id">Please \'device_id\' is a required
+        field
+    </string>
 </resources>
