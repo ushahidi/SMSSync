@@ -15,36 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.module;
+package org.addhen.smssync.presentation.view.log;
 
-import com.addhen.android.raiburari.domain.usecase.Usecase;
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
-
-import org.addhen.smssync.domain.usecase.log.DeleteLogUsecase;
-import org.addhen.smssync.domain.usecase.log.ListLogUsecase;
-
-import javax.inject.Named;
-
-import dagger.Module;
-import dagger.Provides;
+import com.addhen.android.raiburari.presentation.ui.view.UiView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@Module
-public class LogModule {
+public interface DeleteLogView extends UiView {
 
-    @Provides
-    @ActivityScope
-    @Named("logList")
-    Usecase provideListLogUseCase(ListLogUsecase listLogUsecase) {
-        return listLogUsecase;
-    }
-
-    @Provides
-    @ActivityScope
-    @Named("logDelete")
-    Usecase provideDeleteLogUseCase(DeleteLogUsecase deleteLogUsecase) {
-        return deleteLogUsecase;
-    }
+    void onDeleted(Long row);
 }

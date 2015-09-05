@@ -24,14 +24,11 @@ import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
-import org.addhen.smssync.domain.entity.LogEntity;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.mapper.LogModelDataMapper;
-import org.addhen.smssync.presentation.view.log.ListLogView;
+import org.addhen.smssync.presentation.view.log.DeleteLogView;
 
 import android.support.annotation.NonNull;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,24 +37,24 @@ import javax.inject.Named;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @ActivityScope
-public class ListLogPresenter implements Presenter {
+public class DeleteLogPresenter implements Presenter {
 
-    private final Usecase mListLogUsecase;
+    private final Usecase mDeleteLogUsecase;
 
     private final LogModelDataMapper mLogModelDataMapper;
 
-    private ListLogView mListLogView;
+    private DeleteLogView mDeleteLogView;
 
     @Inject
-    public ListLogPresenter(@Named("logList") Usecase listLogUsecase,
+    public DeleteLogPresenter(@Named("logDelete") Usecase deleteLogUsecase,
             LogModelDataMapper logModelDataMapper) {
-        mListLogUsecase = listLogUsecase;
+        mDeleteLogUsecase = deleteLogUsecase;
         mLogModelDataMapper = logModelDataMapper;
     }
 
     @Override
     public void resume() {
-        loadLogs();
+        // Do nothing
     }
 
     @Override
@@ -67,44 +64,31 @@ public class ListLogPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        mListLogUsecase.unsubscribe();
+        mDeleteLogUsecase.unsubscribe();
     }
 
-    public void setView(@NonNull ListLogView listLogView) {
-        mListLogView = listLogView;
+    public void setView(@NonNull DeleteLogView deleteLogView) {
+        mDeleteLogView = deleteLogView;
     }
 
-    public void loadLogs() {
-        mListLogUsecase.execute(new DefaultSubscriber<List<LogEntity>>() {
-            @Override
-            public void onStart() {
-                mListLogView.hideRetry();
-                mListLogView.showLoading();
-            }
+    public void deleteLogs() {
+        mDeleteLogUsecase.execute(new DefaultSubscriber<Long>() {
 
             @Override
-            public void onCompleted() {
-                mListLogView.hideLoading();
-            }
-
-            @Override
-            public void onNext(List<LogEntity> logList) {
-                mListLogView.hideLoading();
-                mListLogView.showLogs(mLogModelDataMapper.map(logList));
+            public void onNext(Long row) {
+                mDeleteLogView.onDeleted(row);
             }
 
             @Override
             public void onError(Throwable e) {
-                mListLogView.hideLoading();
                 showErrorMessage(new DefaultErrorHandler((Exception) e));
-                mListLogView.showRetry();
             }
         });
     }
 
     private void showErrorMessage(ErrorHandler errorHandler) {
-        String errorMessage = ErrorMessageFactory.create(mListLogView.getAppContext(),
+        String errorMessage = ErrorMessageFactory.create(mDeleteLogView.getAppContext(),
                 errorHandler.getException());
-        mListLogView.showError(errorMessage);
+        mDeleteLogView.showError(errorMessage);
     }
 }

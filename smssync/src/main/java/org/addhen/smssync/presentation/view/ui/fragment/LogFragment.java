@@ -18,18 +18,18 @@
 package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
-import com.addhen.android.raiburari.presentation.ui.listener.SwipeToDismissTouchListener;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 import com.addhen.android.raiburari.presentation.ui.widget.DividerItemDecoration;
-import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.model.LogModel;
 import org.addhen.smssync.presentation.model.PhoneStatusInfoModel;
+import org.addhen.smssync.presentation.presenter.DeleteLogPresenter;
 import org.addhen.smssync.presentation.presenter.ListLogPresenter;
 import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.log.DeleteLogView;
 import org.addhen.smssync.presentation.view.log.ListLogView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.LogAdapter;
@@ -38,17 +38,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -88,6 +88,9 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     ListLogPresenter mListLogPresenter;
 
     @Inject
+    DeleteLogPresenter mDeleteLogPresenter;
+
+    @Inject
     PrefsFactory mPrefsFactory;
 
     private LogAdapter mLogAdapter;
@@ -99,7 +102,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     private LogModel mRemovedLog;
 
     public LogFragment() {
-        super(LogAdapter.class, R.layout.fragment_list_log, 0);
+        super(LogAdapter.class, R.layout.fragment_list_log, R.menu.log_menu);
     }
 
     public static LogFragment newInstance() {
@@ -135,9 +138,39 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         mListLogPresenter.destroy();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        MenuItem actionItem = menu.findItem(R.id.share_menu);
+        ShareActionProvider actionProvider = (ShareActionProvider) MenuItemCompat
+                .getActionProvider(actionItem);
+        actionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+        actionProvider.setShareIntent(createShareIntent());
+
+    }
+
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.log_entries));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, makeShareableMessage());
+        return shareIntent;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.delete_log_menu) {
+            mDeleteLogPresenter.deleteLogs();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initialize() {
         getLogComponent(LogComponent.class).inject(this);
         mListLogPresenter.setView(this);
+        initializeDeleteUseCase();
         initRecyclerView();
     }
 
@@ -153,109 +186,26 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         mLogRecyclerView.enableDefaultSwipeRefresh(false);
         mLogRecyclerView.addItemDecoration(
                 new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
-        mLogRecyclerView.setSwipeToDismissCallback(
-                new SwipeToDismissTouchListener.DismissCallbacks() {
-                    @Override
-                    public SwipeToDismissTouchListener.SwipeDirection canDismiss(int position) {
-                        return SwipeToDismissTouchListener.SwipeDirection.BOTH;
-                    }
-
-                    @Override
-                    public void onDismiss(RecyclerView view,
-                            List<SwipeToDismissTouchListener.PendingDismissData> dismissData) {
-                        // Implement swipe to delete
-                    }
-                });
         mStartCheckBox.setChecked(mPrefsFactory.enableLog().get());
     }
 
-    private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            // Fade out the view as it is swiped out of the parent's bounds
-            final float alpha = 1.0f - Math.abs(dX) / (float) itemView.getWidth();
-            ViewHelper.setAlpha(itemView, alpha);
-            ViewHelper.setTranslationX(itemView, dX);
-            Drawable d;
-            // Swiping right
-            if (dX > 0) {
-                d = ContextCompat
-                        .getDrawable(getAppContext(),
-                                R.drawable.swipe_right_publish_list_item_background);
-                d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
-            } else { // Swiping left
-                d = ContextCompat
-                        .getDrawable(getAppContext(),
-                                R.drawable.swipe_left_publish_list_item_background);
-                d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
-                        itemView.getBottom());
-            }
-            d.draw(c);
-        }
-    }
-
-    private void remove(int position) {
-        mRemovedItemPosition = position;
-        mRemovedLog = mLogAdapter.getItem(position);
-        mLogAdapter.removeItem(mRemovedLog);
-        showUndoSnackbar(1);
-    }
-
-    private void enableSwipeToPerformAction() {
-        // Swiping doesn't work well on API 11 and below because the android support lib ships
-        // with buggy APIs that makes it hard to implement on older devices.
-        // See http://b.android/181858
-        ItemTouchHelper.SimpleCallback swipeToDismiss = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+    private void initializeDeleteUseCase() {
+        mDeleteLogPresenter.setView(new DeleteLogView() {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                    RecyclerView.ViewHolder target) {
-                return false;
+            public void onDeleted(Long row) {
+                mListLogPresenter.loadLogs();
             }
 
             @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                remove(viewHolder.getAdapterPosition());
+            public void showError(String s) {
+                showSnabackar(getView(), s);
             }
 
             @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView,
-                    RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState,
-                    boolean isCurrentlyActive) {
-                drawSwipeListItemBackground(c, (int) dX, viewHolder.itemView, actionState);
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState,
-                        isCurrentlyActive);
-            }
-
-            @Override
-            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                super.clearView(recyclerView, viewHolder);
-                ViewHelper.setAlpha(viewHolder.itemView, 1.0f);
-                viewHolder.itemView.setBackgroundColor(0);
-            }
-
-        };
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDismiss);
-        itemTouchHelper.attachToRecyclerView(mLogRecyclerView.recyclerView);
-    }
-
-    private void showUndoSnackbar(int count) {
-        Snackbar snackbar = Snackbar
-                .make(getView(), getString(R.string.item_deleted, count), Snackbar.LENGTH_LONG);
-        snackbar.setAction(R.string.undo, v -> {
-            // Restore item
-            mLogAdapter.addItem(mRemovedLog, mRemovedItemPosition);
-        });
-        snackbar.setCallback(new Snackbar.Callback() {
-            @Override
-            public void onDismissed(Snackbar snackbar, int event) {
-                super.onDismissed(snackbar, event);
-                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    // TODO: Perform deletion
-                }
+            public Context getAppContext() {
+                return getActivity().getApplicationContext();
             }
         });
-        snackbar.show();
     }
 
     @Override

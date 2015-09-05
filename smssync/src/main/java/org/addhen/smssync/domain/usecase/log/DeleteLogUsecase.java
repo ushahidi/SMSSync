@@ -44,7 +44,7 @@ public class DeleteLogUsecase extends Usecase {
     }
 
     @Override
-    protected Observable buildUseCaseObservable() {
+    protected Observable<Long> buildUseCaseObservable() {
         return mLogRepository.deleteLog();
     }
 }
