@@ -145,6 +145,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         mLogRecyclerView.setAdapter(mLogAdapter);
         mLogRecyclerView.addItemDividerDecoration(getActivity());
         mLogRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mLogRecyclerView.enableDefaultSwipeRefresh(false);
         mLogRecyclerView.addItemDecoration(
                 new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
         mLogRecyclerView.setSwipeToDismissCallback(
@@ -160,7 +161,6 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
                         // Implement swipe to delete
                     }
                 });
-        mLogRecyclerView.enableDefaultSwipeRefresh(true);
     }
 
     private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {
@@ -254,7 +254,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
 
     @Override
     public void showLogs(List<LogModel> logModelList) {
-        if (Utility.isEmpty(logModelList)) {
+        if (!Utility.isEmpty(logModelList)) {
             mLogAdapter.setItems(logModelList);
         }
     }

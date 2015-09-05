@@ -23,7 +23,6 @@ import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
-import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
@@ -70,8 +69,8 @@ public class AppModule {
 
     @Provides
     @Singleton
-    FileManager provideFileManager(Context context) {
-        return new FileManager(context);
+    FileManager provideFileManager(Context context, PrefsFactory prefsFactory) {
+        return new FileManager(context, prefsFactory);
     }
 
     @Provides

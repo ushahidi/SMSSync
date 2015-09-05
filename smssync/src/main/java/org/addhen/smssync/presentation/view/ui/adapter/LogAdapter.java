@@ -41,7 +41,7 @@ public class LogAdapter extends BaseRecyclerViewAdapter<LogModel> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
         return new Widgets(LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.list_message_item, viewGroup, false));
+                R.layout.list_log_item, viewGroup, false));
     }
 
     @Override

@@ -75,9 +75,13 @@ public class ListLogPresenter implements Presenter {
     }
 
     public void loadMessages() {
-        mListLogView.hideRetry();
-        mListLogView.showLoading();
         mListLogUsecase.execute(new DefaultSubscriber<List<LogEntity>>() {
+            @Override
+            public void onStart() {
+                mListLogView.hideRetry();
+                mListLogView.showLoading();
+            }
+
             @Override
             public void onCompleted() {
                 mListLogView.hideLoading();

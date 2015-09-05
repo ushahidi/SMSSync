@@ -52,7 +52,7 @@ public class LogDataRepository implements LogRepository {
     @Override
     public Observable<List<LogEntity>> getLogs() {
         mLogDataSource = mLogDataSourceFactory.createLogDataSource();
-        return mLogDataSource.getLogs().map(logList -> mLogDataMapper.map(logList));
+        return mLogDataSource.getLogs().map(mLogDataMapper::map);
     }
 
     @Override

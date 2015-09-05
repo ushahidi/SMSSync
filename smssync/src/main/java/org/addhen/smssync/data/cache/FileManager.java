@@ -1,5 +1,6 @@
 package org.addhen.smssync.data.cache;
 
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.entity.Log;
 import org.addhen.smssync.data.exception.LogNotFoundException;
 import org.addhen.smssync.data.util.Logger;
@@ -42,10 +43,12 @@ public class FileManager {
 
     private String mName;
 
-    @Inject
-    public FileManager(Context context) {
+    PrefsFactory mPrefsFactory;
 
+    @Inject
+    public FileManager(Context context, PrefsFactory prefsFactory) {
         this(LOG_NAME, DateFormat.getDateFormatOrder(context));
+        mPrefsFactory = prefsFactory;
     }
 
     public FileManager(String name, char[] format) {
@@ -245,8 +248,10 @@ public class FileManager {
      * @param line The line to append to the file.
      */
     public void appendAndClose(String line) {
-        append(line);
-        close();
+        if (mPrefsFactory.enableLog().get()) {
+            append(line);
+            close();
+        }
     }
 
     /**
@@ -260,13 +265,12 @@ public class FileManager {
     }
 
     public Observable<List<Log>> getLogs() {
-        return Observable.create(subscriber -> {
+        return Observable.defer(() -> {
             final List<Log> logs = readLogFile(getFile(mName));
             if (logs != null) {
-                subscriber.onNext(logs);
-                subscriber.onCompleted();
+                return Observable.just(logs);
             } else {
-                subscriber.onError(new LogNotFoundException());
+                return Observable.error(new LogNotFoundException());
             }
         });
     }

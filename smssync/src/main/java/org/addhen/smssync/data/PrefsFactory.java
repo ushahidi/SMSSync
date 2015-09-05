@@ -153,4 +153,8 @@ public class PrefsFactory {
     public BooleanPreference messageResultsAPIEnable() {
         return new BooleanPreference(mSharedPreferences, "MessageResultsAPIEnable", false);
     }
+
+    public BooleanPreference isFirstTimeLaunched() {
+        return new BooleanPreference(mSharedPreferences, "AppFirstLaunched", true);
+    }
 }
