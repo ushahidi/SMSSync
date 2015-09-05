@@ -248,7 +248,12 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
-
+        // Launch getting started screen only when app is launch for the first time
+        PrefsFactory prefsFactory = getAppComponent().prefsFactory();
+        if (prefsFactory.isFirstTimeLaunched().get()) {
+            prefsFactory.isFirstTimeLaunched().set(false);
+            mAppComponent.launcher().launchGettingStarted();
+        }
         mMessageComponent = DaggerMessageComponent.builder()
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
@@ -263,7 +268,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
-        //mAppComponent.launcher().launchGettingStarted();
     }
 
     @Override
