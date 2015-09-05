@@ -85,6 +85,18 @@ public class MessageDataMapper {
         return messageEntityList;
     }
 
+    public List<Message> unmap(List<MessageEntity> messageList) {
+        List<Message> messages = new ArrayList<>();
+        Message message;
+        for (MessageEntity messageEntity : messageList) {
+            message = map(messageEntity);
+            if (message != null) {
+                messages.add(message);
+            }
+        }
+        return messages;
+    }
+
     public Message.Status map(MessageEntity.Status status) {
         return Message.Status.valueOf(status.name());
     }

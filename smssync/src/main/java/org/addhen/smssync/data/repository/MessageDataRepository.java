@@ -81,8 +81,9 @@ public class MessageDataRepository implements MessageRepository {
     }
 
     @Override
-    public Observable<Boolean> publishMessage(MessageEntity messageEntity) {
-        boolean status = mProcessMessage.postMessage(mMessageDataMapper.map(messageEntity), null);
+    public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
+        boolean status = mProcessMessage
+                .postMessage(mMessageDataMapper.unmap(messageEntities), null);
         return Observable.defer(() -> {
             return Observable.just(status);
         });

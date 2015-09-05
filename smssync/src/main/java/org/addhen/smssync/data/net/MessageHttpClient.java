@@ -66,7 +66,7 @@ public class MessageHttpClient extends BaseHttpClient {
 
     private void initRequest(WebService webService, Message message, String toNumber,
             String deviceId) {
-
+        setUrl(webService.getUrl());
         SyncScheme syncScheme = webService.getSyncScheme();
         SyncScheme.SyncMethod method = syncScheme.getMethod();
         SyncScheme.SyncDataFormat format = syncScheme.getDataFormat();

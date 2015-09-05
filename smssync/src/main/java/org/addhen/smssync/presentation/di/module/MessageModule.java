@@ -22,6 +22,7 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.ListPublishedMessageUsecase;
+import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
 
 import javax.inject.Named;
 
@@ -47,5 +48,13 @@ public class MessageModule {
     ListPublishedMessageUsecase provideListPublishedMessageUsecase(
             ListPublishedMessageUsecase listPublishedMessageUsecase) {
         return listPublishedMessageUsecase;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("publishMessage")
+    PublishMessageUsecase providePublishedMessageUsecase(
+            PublishMessageUsecase publishMessageUsecase) {
+        return publishMessageUsecase;
     }
 }

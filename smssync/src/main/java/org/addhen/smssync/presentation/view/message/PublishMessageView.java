@@ -15,27 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.presenter;
+package org.addhen.smssync.presentation.view.message;
 
-import com.addhen.android.raiburari.presentation.presenter.Presenter;
+import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class ProcessMessagePresenter implements Presenter {
+public interface PublishMessageView extends LoadDataView {
 
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void destroy() {
-
-    }
+    void successfullyPublished(boolean status);
 }

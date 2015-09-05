@@ -26,6 +26,8 @@ import org.addhen.smssync.domain.repository.MessageRepository;
 
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -40,7 +42,7 @@ public class PublishMessageUsecase extends Usecase {
 
     private final MessageRepository mMessageRepository;
 
-    public MessageEntity mMessageEntity;
+    public List<MessageEntity> mMessageEntities;
 
     @Inject
     protected PublishMessageUsecase(@NonNull MessageRepository messageRepository,
@@ -50,15 +52,17 @@ public class PublishMessageUsecase extends Usecase {
         mMessageRepository = messageRepository;
     }
 
-    public void setMessageEntity(MessageEntity messageEntity) {
-        mMessageEntity = messageEntity;
+    public void setMessageEntity(List<MessageEntity> messageEntities) {
+        mMessageEntities = messageEntities;
     }
+
     @Override
     protected Observable buildUseCaseObservable() {
-        if(mMessageEntity == null) {
-            throw new RuntimeException("MessageEntity is null. You must call setMessageEntity(...)");
+        if (mMessageEntities == null) {
+            throw new RuntimeException(
+                    "MessageEntities is null. You must call setMessageEntity(...)");
         }
-        return mMessageRepository.publishMessage(mMessageEntity);
+        return mMessageRepository.publishMessage(mMessageEntities);
     }
 
 }

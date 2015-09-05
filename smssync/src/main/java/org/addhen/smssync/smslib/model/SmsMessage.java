@@ -36,6 +36,8 @@ public class SmsMessage implements Parcelable {
 
     public String body;
 
+    public String uuid;
+
     public SmsMessage() {
 
     }

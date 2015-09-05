@@ -26,8 +26,10 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.ListMessagePresenter;
+import org.addhen.smssync.presentation.presenter.PublishMessagesPresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
+import org.addhen.smssync.presentation.view.message.PublishMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
 
@@ -82,6 +84,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Inject
     ListMessagePresenter mListMessagePresenter;
+
+    @Inject
+    PublishMessagesPresenter mPublishMessagesPresenter;
 
     /** List of items pending to to be deleted **/
     public List<PendingDeletedMessage> mPendingDeletedMessages;
@@ -143,12 +148,53 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     public void onDestroy() {
         super.onDestroy();
         mListMessagePresenter.destroy();
+        mPublishMessagesPresenter.destroy();
     }
 
     private void initialize() {
         getMessageComponent(MessageComponent.class).inject(this);
         mListMessagePresenter.setView(this);
+        initializePublishPresenter();
         initRecyclerView();
+    }
+
+    private void initializePublishPresenter() {
+        mPublishMessagesPresenter.setView(new PublishMessageView() {
+            @Override
+            public void successfullyPublished(boolean status) {
+                // Do nothing
+            }
+
+            @Override
+            public void showLoading() {
+                mMessageRecyclerView.setRefreshing(true);
+            }
+
+            @Override
+            public void hideLoading() {
+                mMessageRecyclerView.setRefreshing(false);
+            }
+
+            @Override
+            public void showRetry() {
+
+            }
+
+            @Override
+            public void hideRetry() {
+
+            }
+
+            @Override
+            public void showError(String s) {
+                showSnabackar(getView(), s);
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getActivity().getApplicationContext();
+            }
+        });
     }
 
     private void initRecyclerView() {
@@ -272,9 +318,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @OnClick(R.id.messages_fab)
     void syncItems() {
-        // TODO: Perform message sync. For now reload the messages list
-        mMessageRecyclerView.setRefreshing(true);
-        mListMessagePresenter.loadMessages();
+        mPublishMessagesPresenter.publishMessage(mMessageAdapter.getItems());
     }
 
     @OnClick(android.R.id.empty)
