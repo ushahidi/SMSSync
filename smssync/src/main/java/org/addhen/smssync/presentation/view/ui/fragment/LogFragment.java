@@ -50,6 +50,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
@@ -57,6 +58,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnCheckedChanged;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -79,11 +81,14 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     @Bind(R.id.log_location)
     TextView mLogLocation;
 
+    @Bind(R.id.start_logs)
+    CheckBox mStartCheckBox;
+
     @Inject
     ListLogPresenter mListLogPresenter;
 
     @Inject
-    PrefsFactory mPrefs;
+    PrefsFactory mPrefsFactory;
 
     private LogAdapter mLogAdapter;
 
@@ -161,6 +166,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
                         // Implement swipe to delete
                     }
                 });
+        mStartCheckBox.setChecked(mPrefsFactory.enableLog().get());
     }
 
     private void drawSwipeListItemBackground(Canvas c, int dX, View itemView, int actionState) {
@@ -288,6 +294,17 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         snackbar.show();
     }
 
+    @OnCheckedChanged(R.id.start_logs)
+    void onChecked(boolean checked) {
+        if (checked) {
+            mPrefsFactory.enableLog().set(true);
+            mLogLocation.setVisibility(View.VISIBLE);
+        } else {
+            mPrefsFactory.enableLog().set(false);
+            mLogLocation.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public Context getAppContext() {
         return getActivity().getApplicationContext();
@@ -303,17 +320,17 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
 
         final String newLine = "\n";
 
-        if ((Utility.getPhoneNumber(getActivity(), mPrefs) != null) && (!TextUtils
-                .isEmpty(Utility.getPhoneNumber(getActivity(), mPrefs)))) {
+        if ((Utility.getPhoneNumber(getActivity(), mPrefsFactory) != null) && (!TextUtils
+                .isEmpty(Utility.getPhoneNumber(getActivity(), mPrefsFactory)))) {
             build.append(getString(R.string.log_message_from,
-                    Utility.getPhoneNumber(getActivity(), mPrefs)));
+                    Utility.getPhoneNumber(getActivity(), mPrefsFactory)));
             build.append(newLine);
         }
 
         build.append(getString(R.string.phone_status));
         build.append(newLine);
         build.append(getString(R.string.battery_level));
-        build.append(getString(R.string.battery_level_status, mPrefs.batteryLevel().get()));
+        build.append(getString(R.string.battery_level_status, mPrefsFactory.batteryLevel().get()));
         build.append(newLine);
         build.append(getString(R.string.data_connection));
         build.append(getString(R.string.data_connection_status,
@@ -337,7 +354,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     private void setPhoneStatus(PhoneStatusInfoModel info) {
         // Save this in prefs for later retrieval
         // Not elegant but works
-        mPrefs.batteryLevel().set(info.getBatteryLevel());
+        mPrefsFactory.batteryLevel().set(info.getBatteryLevel());
         mBatteryLevelStatus
                 .setText(getString(R.string.battery_level_status, info.getBatteryLevel() + "%"));
         final String status = info.isDataConnection() ? getString(R.string.confirm_yes)
@@ -375,7 +392,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
             final PhoneStatusInfoModel info = new PhoneStatusInfoModel();
             info.setBatteryLevel(level);
             info.setDataConnection(Utility.isConnected(getActivity()));
-            info.setPhoneNumber(Utility.getPhoneNumber(getActivity(), mPrefs));
+            info.setPhoneNumber(Utility.getPhoneNumber(getActivity(), mPrefsFactory));
             setPhoneStatus(info);
         }
     };
