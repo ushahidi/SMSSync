@@ -15,30 +15,18 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.presentation.view.message;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
+import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
-import org.addhen.smssync.domain.entity.MessageEntity;
+import org.addhen.smssync.presentation.model.MessageModel;
 
 import java.util.List;
-
-import rx.Observable;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface MessageRepository extends Repository<MessageEntity> {
+public interface ImportMessageView extends LoadDataView {
 
-    Observable<Integer> deleteByUuid(String uuid);
-
-    Observable<Integer> deleteAll();
-
-    Observable<List<MessageEntity>> fetchByType(MessageEntity.Type type);
-
-    Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status);
-
-    Observable<Boolean> publishMessage(List<MessageEntity> messageEntities);
-
-    Observable<List<MessageEntity>> importMessage();
+    void showMessages(List<MessageModel> messageModelList);
 }

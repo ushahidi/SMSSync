@@ -17,13 +17,17 @@
 
 package org.addhen.smssync.data.repository;
 
+import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
 import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
+import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -82,10 +86,23 @@ public class MessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
-        boolean status = mProcessMessage
-                .postMessage(mMessageDataMapper.unmap(messageEntities), null);
         return Observable.defer(() -> {
+            boolean status = mProcessMessage
+                    .postMessage(mMessageDataMapper.unmap(messageEntities), null);
             return Observable.just(status);
+        });
+    }
+
+    @Override
+    public Observable<List<MessageEntity>> importMessage() {
+        return Observable.defer(() -> {
+            ProcessSms processSms = mProcessMessage.getProcessSms();
+            List<SmsMessage> smsMessages = processSms.importMessages();
+            List<Message> messages = new ArrayList<>();
+            for (SmsMessage smsMessage : smsMessages) {
+                messages.add(mProcessMessage.map(smsMessage));
+            }
+            return Observable.just(mMessageDataMapper.map(messages));
         });
     }
 

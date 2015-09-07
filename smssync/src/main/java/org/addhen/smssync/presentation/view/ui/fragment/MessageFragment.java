@@ -26,10 +26,12 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
+import org.addhen.smssync.presentation.presenter.message.ImportMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ListMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.PublishMessagesPresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.DeleteMessageView;
+import org.addhen.smssync.presentation.view.message.ImportMessageView;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.message.PublishMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
@@ -90,6 +92,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Inject
     DeleteMessagePresenter mDeleteMessagePresenter;
+
+    @Inject
+    ImportMessagePresenter mImportMessagePresenter;
 
     /** List of items pending to to be deleted **/
     public List<PendingMessage> mPendingMessages;
@@ -159,6 +164,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mListMessagePresenter.setView(this);
         initializePublishPresenter();
         initializeDeletePresenter();
+        initializeImportPresenter();
         initRecyclerView();
     }
 
@@ -205,27 +211,27 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mDeleteMessagePresenter.setView(new DeleteMessageView() {
             @Override
             public void onMessageDeleted() {
-
+                // Do nothing
             }
 
             @Override
             public void showLoading() {
-                mMessageRecyclerView.setRefreshing(true);
+                // Do nothing
             }
 
             @Override
             public void hideLoading() {
-
+                // Do nothing
             }
 
             @Override
             public void showRetry() {
-
+                // Do nothing
             }
 
             @Override
             public void hideRetry() {
-
+                // Do nothing
             }
 
             @Override
@@ -235,7 +241,51 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public Context getAppContext() {
-                return null;
+                return getContext().getApplicationContext();
+            }
+        });
+    }
+
+    private void initializeImportPresenter() {
+        mImportMessagePresenter.setView(new ImportMessageView() {
+            @Override
+            public void showMessages(List<MessageModel> messageModelList) {
+                if (!Utility.isEmpty(messageModelList)) {
+                    mMessageAdapter.setItems(messageModelList);
+                    mFab.setVisibility(View.VISIBLE);
+                    return;
+                }
+                mFab.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void showLoading() {
+                mMessageRecyclerView.setRefreshing(true);
+            }
+
+            @Override
+            public void hideLoading() {
+                mMessageRecyclerView.setRefreshing(false);
+            }
+
+            @Override
+            public void showRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void hideRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void showError(String s) {
+                showSnabackar(getView(), s);
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getContext().getApplicationContext();
             }
         });
     }
@@ -366,8 +416,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @OnClick(android.R.id.empty)
     void importItems() {
-        // TODO: perform SMS import
-        showSnabackar(mFab, "Empty view was clicked");
+        mImportMessagePresenter.importMessages();
     }
 
     @Override

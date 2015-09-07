@@ -224,7 +224,7 @@ public class ProcessMessage {
         }
     }
 
-    private SmsMessage map(Message message) {
+    public SmsMessage map(Message message) {
         SmsMessage smsMessage = new SmsMessage();
         smsMessage.id = message._id;
         smsMessage.uuid = message.messageUuid;
@@ -234,8 +234,22 @@ public class ProcessMessage {
         return smsMessage;
     }
 
+    public Message map(SmsMessage smsMessage) {
+        Message message = new Message();
+        message._id = smsMessage.id;
+        message.messageUuid = smsMessage.uuid;
+        message.messageBody = smsMessage.body;
+        message.messageFrom = smsMessage.phone;
+        message.messageDate = new Date(smsMessage.timestamp);
+        return message;
+    }
+
     private void deleteMessage(Message message) {
         Logger.log(TAG, " message ID " + message.messageUuid);
         mMessageDatabaseHelper.deleteByUuid(message.messageUuid);
+    }
+
+    public ProcessSms getProcessSms() {
+        return mProcessSms;
     }
 }
