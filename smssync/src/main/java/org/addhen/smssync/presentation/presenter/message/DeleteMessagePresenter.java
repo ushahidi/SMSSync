@@ -15,22 +15,19 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.presenter;
+package org.addhen.smssync.presentation.presenter.message;
 
 import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
 import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
-import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
+import org.addhen.smssync.domain.usecase.message.DeleteMessageUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
-import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
-import org.addhen.smssync.presentation.view.message.PublishMessageView;
+import org.addhen.smssync.presentation.view.message.DeleteMessageView;
 
 import android.support.annotation.NonNull;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,76 +35,73 @@ import javax.inject.Named;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class PublishMessagesPresenter implements Presenter {
+public class DeleteMessagePresenter implements Presenter {
 
-    private final PublishMessageUsecase mPublishMessageUsecase;
+    private final DeleteMessageUsecase mDeleteMessageUsecase;
 
-    private final MessageModelDataMapper mMessageModelDataMapper;
-
-    private PublishMessageView mPublishMessageView;
+    private DeleteMessageView mDeleteMessageView;
 
     @Inject
-    public PublishMessagesPresenter(
-            @Named("publishMessage") PublishMessageUsecase publishMessageUsecase,
+    public DeleteMessagePresenter(
+            @Named("deleteMessage") DeleteMessageUsecase deleteMessageUsecase,
             MessageModelDataMapper messageModelDataMapper) {
-        mPublishMessageUsecase = publishMessageUsecase;
-        mMessageModelDataMapper = messageModelDataMapper;
+        mDeleteMessageUsecase = deleteMessageUsecase;
     }
 
-    public void setView(@NonNull PublishMessageView publishMessageView) {
-        mPublishMessageView = publishMessageView;
+    public void setView(@NonNull DeleteMessageView deleteMessageView) {
+        mDeleteMessageView = deleteMessageView;
     }
 
     @Override
     public void resume() {
-
+        // Do nothing
     }
 
     @Override
     public void pause() {
-
+        // Do nothing
     }
 
     @Override
     public void destroy() {
-        mPublishMessageUsecase.unsubscribe();
+        mDeleteMessageUsecase.unsubscribe();
     }
 
-    public void publishMessage(List<MessageModel> messageModels) {
-        mPublishMessageUsecase.setMessageEntity(mMessageModelDataMapper.unmap(messageModels));
-        mPublishMessageUsecase.execute(new PublishMessageSubscriber());
+    public void deleteMessage(Long messageId) {
+        mDeleteMessageUsecase.setMessageId(messageId);
+        mDeleteMessageUsecase.execute(new DeleteMessageSubscriber());
     }
 
     private void showErrorMessage(ErrorHandler errorHandler) {
-        String errorMessage = ErrorMessageFactory.create(mPublishMessageView.getAppContext(),
+        String errorMessage = ErrorMessageFactory.create(mDeleteMessageView.getAppContext(),
                 errorHandler.getException());
-        mPublishMessageView.showError(errorMessage);
+        mDeleteMessageView.showError(errorMessage);
     }
 
-    private class PublishMessageSubscriber extends DefaultSubscriber<Boolean> {
+    private class DeleteMessageSubscriber extends DefaultSubscriber<Long> {
 
         @Override
         public void onStart() {
-            mPublishMessageView.hideRetry();
-            mPublishMessageView.showLoading();
+            mDeleteMessageView.hideRetry();
+            mDeleteMessageView.showLoading();
         }
 
         @Override
         public void onCompleted() {
-            mPublishMessageView.hideLoading();
+            mDeleteMessageView.hideLoading();
         }
 
         @Override
-        public void onNext(Boolean status) {
-            mPublishMessageView.hideLoading();
-            mPublishMessageView.successfullyPublished(status);
+        public void onNext(Long row) {
+            mDeleteMessageView.hideLoading();
+            mDeleteMessageView.onMessageDeleted();
         }
 
         @Override
         public void onError(Throwable e) {
-            mPublishMessageView.hideLoading();
+            mDeleteMessageView.hideLoading();
             showErrorMessage(new DefaultErrorHandler((Exception) e));
-            mPublishMessageView.showRetry();
+            mDeleteMessageView.showRetry();
         }
     }
 }

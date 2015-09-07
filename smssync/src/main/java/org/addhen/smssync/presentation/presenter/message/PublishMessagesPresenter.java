@@ -10,24 +10,23 @@
  * packaging of this file. Please review the following information to
  * ensure the GNU Lesser General Public License version 3 requirements
  * will be met: http://www.gnu.org/licenses/lgpl.html.
- *  
+ *
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.presenter;
+package org.addhen.smssync.presentation.presenter.message;
 
 import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
 import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
-import org.addhen.smssync.domain.entity.MessageEntity;
-import org.addhen.smssync.domain.usecase.message.ListPublishedMessageUsecase;
+import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
+import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
-import org.addhen.smssync.presentation.view.message.ListMessageView;
+import org.addhen.smssync.presentation.view.message.PublishMessageView;
 
 import android.support.annotation.NonNull;
 
@@ -39,27 +38,29 @@ import javax.inject.Named;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@ActivityScope
-public class ListPublishedMessagePresenter implements Presenter {
+public class PublishMessagesPresenter implements Presenter {
 
-    private final ListPublishedMessageUsecase mListPublishedMessageUsecase;
+    private final PublishMessageUsecase mPublishMessageUsecase;
 
     private final MessageModelDataMapper mMessageModelDataMapper;
 
-    private ListMessageView mListMessageView;
-
+    private PublishMessageView mPublishMessageView;
 
     @Inject
-    public ListPublishedMessagePresenter(
-            @Named("publishedMessageList") ListPublishedMessageUsecase listPublishedMessageUsecase,
+    public PublishMessagesPresenter(
+            @Named("publishMessage") PublishMessageUsecase publishMessageUsecase,
             MessageModelDataMapper messageModelDataMapper) {
-        mListPublishedMessageUsecase = listPublishedMessageUsecase;
+        mPublishMessageUsecase = publishMessageUsecase;
         mMessageModelDataMapper = messageModelDataMapper;
+    }
+
+    public void setView(@NonNull PublishMessageView publishMessageView) {
+        mPublishMessageView = publishMessageView;
     }
 
     @Override
     public void resume() {
-        loadMessages();
+        // Do nothing
     }
 
     @Override
@@ -69,49 +70,44 @@ public class ListPublishedMessagePresenter implements Presenter {
 
     @Override
     public void destroy() {
-        mListPublishedMessageUsecase.unsubscribe();
+        mPublishMessageUsecase.unsubscribe();
     }
 
-    public void setView(@NonNull ListMessageView listMessageView) {
-        mListMessageView = listMessageView;
-    }
-
-    public void loadMessages() {
-        mListMessageView.hideRetry();
-        mListMessageView.showLoading();
-        mListPublishedMessageUsecase.execute(new PublishedMessageSubscriber());
+    public void publishMessage(List<MessageModel> messageModels) {
+        mPublishMessageUsecase.setMessageEntity(mMessageModelDataMapper.unmap(messageModels));
+        mPublishMessageUsecase.execute(new PublishMessageSubscriber());
     }
 
     private void showErrorMessage(ErrorHandler errorHandler) {
-        String errorMessage = ErrorMessageFactory.create(mListMessageView.getAppContext(),
+        String errorMessage = ErrorMessageFactory.create(mPublishMessageView.getAppContext(),
                 errorHandler.getException());
-        mListMessageView.showError(errorMessage);
+        mPublishMessageView.showError(errorMessage);
     }
 
-    private class PublishedMessageSubscriber extends DefaultSubscriber<List<MessageEntity>> {
+    private class PublishMessageSubscriber extends DefaultSubscriber<Boolean> {
 
         @Override
         public void onStart() {
-            mListMessageView.hideRetry();
-            mListMessageView.showLoading();
+            mPublishMessageView.hideRetry();
+            mPublishMessageView.showLoading();
         }
 
         @Override
         public void onCompleted() {
-            mListMessageView.hideLoading();
+            mPublishMessageView.hideLoading();
         }
 
         @Override
-        public void onNext(List<MessageEntity> filterList) {
-            mListMessageView.hideLoading();
-            mListMessageView.showMessages(mMessageModelDataMapper.map(filterList));
+        public void onNext(Boolean status) {
+            mPublishMessageView.hideLoading();
+            mPublishMessageView.successfullyPublished(status);
         }
 
         @Override
         public void onError(Throwable e) {
-            mListMessageView.hideLoading();
+            mPublishMessageView.hideLoading();
             showErrorMessage(new DefaultErrorHandler((Exception) e));
-            mListMessageView.showRetry();
+            mPublishMessageView.showRetry();
         }
     }
 }

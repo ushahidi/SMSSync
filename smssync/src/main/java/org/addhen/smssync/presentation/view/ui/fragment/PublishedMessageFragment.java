@@ -26,7 +26,7 @@ import com.nineoldandroids.view.ViewHelper;
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
-import org.addhen.smssync.presentation.presenter.ListPublishedMessagePresenter;
+import org.addhen.smssync.presentation.presenter.message.ListPublishedMessagePresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;

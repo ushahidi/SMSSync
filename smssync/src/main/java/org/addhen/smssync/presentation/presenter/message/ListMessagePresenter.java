@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.presenter;
+package org.addhen.smssync.presentation.presenter.message;
 
 import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
 import com.addhen.android.raiburari.domain.exception.ErrorHandler;
