@@ -24,6 +24,7 @@ import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
+import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
@@ -61,6 +62,8 @@ public interface AppComponent extends ApplicationComponent {
     AppHttpClient appHttpClient();
 
     MessageHttpClient messageHttpClient();
+
+    ProcessMessage processMessage();
 
     final class Initializer {
 

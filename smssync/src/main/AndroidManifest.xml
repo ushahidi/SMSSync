@@ -203,5 +203,7 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".presentation.view.ui.activity.SettingsActivity"/>
         </activity>
+        <!-- Services -->
+        <service android:name="org.addhen.smssync.presentation.services.SmsReceiverService"/>
     </application>
 </manifest>

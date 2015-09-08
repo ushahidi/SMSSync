@@ -21,14 +21,19 @@ import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.database.FilterDatabaseHelper;
+import org.addhen.smssync.data.database.MessageDatabaseHelper;
+import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
+import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.Prefs;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -102,5 +107,18 @@ public class AppModule {
     @Singleton
     AppHttpClient provideAppHttpClient(Context context) {
         return new AppHttpClient(context);
+    }
+
+    @Provides
+    @Singleton
+    ProcessMessage provideProcessMessage(Context context, PrefsFactory prefsFactory,
+            MessageHttpClient messageHttpClient,
+            MessageDatabaseHelper messageDatabaseHelper,
+            WebServiceDatabaseHelper webServiceDatabaseHelper,
+            FilterDatabaseHelper filterDatabaseHelper,
+            ProcessSms processSms,
+            FileManager fileManager) {
+        return new ProcessMessage(context, prefsFactory, messageHttpClient, messageDatabaseHelper,
+                webServiceDatabaseHelper, filterDatabaseHelper, processSms, fileManager);
     }
 }

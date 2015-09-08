@@ -159,6 +159,16 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mPublishMessagesPresenter.destroy();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int id = item.getItemId();
+        if (id == R.id.import_sms) {
+            mImportMessagePresenter.importMessages();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initialize() {
         getMessageComponent(MessageComponent.class).inject(this);
         mListMessagePresenter.setView(this);
@@ -250,8 +260,12 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mImportMessagePresenter.setView(new ImportMessageView() {
             @Override
             public void showMessages(List<MessageModel> messageModelList) {
+                // Append the imported messages to the adapter list
                 if (!Utility.isEmpty(messageModelList)) {
-                    mMessageAdapter.setItems(messageModelList);
+                    int size = mMessageAdapter.getAdapterItemCount();
+                    for (int i = 0; i < messageModelList.size(); i++) {
+                        mMessageAdapter.addItem(messageModelList.get(i), size++);
+                    }
                     mFab.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -426,6 +440,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             mFab.setVisibility(View.VISIBLE);
             return;
         }
+        mMessageAdapter.setItems(new ArrayList<>());
         mFab.setVisibility(View.GONE);
     }
 
