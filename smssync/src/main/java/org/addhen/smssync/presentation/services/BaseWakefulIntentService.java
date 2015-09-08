@@ -23,6 +23,7 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.di.component.AppComponent;
 import org.addhen.smssync.presentation.di.component.AppServiceComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppServiceComponent;
 import org.addhen.smssync.presentation.di.module.ServiceModule;
@@ -106,12 +107,16 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
         super(name);
     }
 
-    public ApplicationComponent getApplicationComponent() {
+    protected ApplicationComponent getApplicationComponent() {
         return ((App) getApplication()).getApplicationComponent();
     }
 
     @Override
     public AppServiceComponent getComponent() {
         return mAppServiceComponent;
+    }
+
+    protected AppComponent getAppComponent() {
+        return ((App) getApplication()).getAppComponent();
     }
 }
