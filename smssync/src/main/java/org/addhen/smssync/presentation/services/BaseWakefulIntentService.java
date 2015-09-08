@@ -17,9 +17,15 @@
 
 package org.addhen.smssync.presentation.services;
 
+import com.addhen.android.raiburari.presentation.di.HasComponent;
+import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 import com.commonsware.cwac.wakeful.WakefulIntentService;
 
 import org.addhen.smssync.data.util.Logger;
+import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.di.component.AppServiceComponent;
+import org.addhen.smssync.presentation.di.component.DaggerAppServiceComponent;
+import org.addhen.smssync.presentation.di.module.ServiceModule;
 import org.addhen.smssync.presentation.receivers.ConnectivityChangedReceiver;
 import org.addhen.smssync.presentation.util.Utility;
 
@@ -30,7 +36,10 @@ import android.content.pm.PackageManager;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public abstract class BaseWakefulIntentService extends WakefulIntentService {
+public abstract class BaseWakefulIntentService extends WakefulIntentService implements
+        HasComponent<AppServiceComponent> {
+
+    AppServiceComponent mAppServiceComponent;
 
     /*
      * Subclasses must implement this method so it executes any tasks
@@ -68,6 +77,13 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService {
         // load setting. Just in case someone changes a setting
     }
 
+    private void injector() {
+        mAppServiceComponent = DaggerAppServiceComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .serviceModule(new ServiceModule(this))
+                .build();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -88,5 +104,14 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService {
 
     public BaseWakefulIntentService(String name) {
         super(name);
+    }
+
+    public ApplicationComponent getApplicationComponent() {
+        return ((App) getApplication()).getApplicationComponent();
+    }
+
+    @Override
+    public AppServiceComponent getComponent() {
+        return mAppServiceComponent;
     }
 }
