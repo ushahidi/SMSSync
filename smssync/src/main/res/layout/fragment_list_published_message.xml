@@ -16,16 +16,12 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
-            android:id="@id/android:list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:cacheColorHint="@android:color/transparent"
-            app:recyclerviewEmptyView="@layout/messages_empty_list_view"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</LinearLayout>
+
+<com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:cacheColorHint="@android:color/transparent"
+        app:recyclerviewEmptyView="@layout/messages_empty_list_view"/>
