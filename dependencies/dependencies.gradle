@@ -31,7 +31,7 @@ ext {
     //Libraries
     daggerVersion = '2.0.1'
     javaxAnnotationVersion = '10.0-b28'
-    raiburariVersion = '2.6.0'
+    raiburariVersion = '2.6.1'
     rxAndroidVersion = '1.0.1'
     rxLifecycleVersion = '0.2.0'
     rxLifecycleComponentsVersion = '0.2.0'
@@ -40,7 +40,7 @@ ext {
     ottoVersion = '1.3.5'
     wakefulVersion = '1.0.5'
     okHttpVersion = '2.5.0'
-    twitter4jCoreVersion = '4.0.2'
+    twitter4jCoreVersion = '4.0.4'
     nineOldAndroidsVersion = '2.4.0'
     preferencefragmentVersion = '0.1.1'
     preferenceSwitchCompatVersion = '1.0.0'

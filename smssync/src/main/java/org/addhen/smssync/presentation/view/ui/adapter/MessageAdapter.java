@@ -200,44 +200,50 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final MessageModel messageModel = getItem(position);
-        // Initialize view with content
-        Widgets widgets = ((Widgets) holder);
-        widgets.messageFrom.setText(messageModel.messageFrom);
-        if (messageModel.messageDate != null) {
-            widgets.messageDate.setText(Utility.formatDate(messageModel.messageDate));
-        }
-        widgets.message.setText(messageModel.messageBody);
-        // Pending messages
-        if (messageModel.messageType == MessageModel.Type.PENDING) {
-            widgets.messageType.setText(widgets.itemView.getContext().getString(
-                    R.string.sms).toUpperCase(Locale.getDefault()));
-        } else if (messageModel.messageType == MessageModel.Type.TASK) {
-            // Task messages
+        if (position < getItemCount() && (customHeaderView != null ? position <= getItems().size()
+                : position < getItems().size()) && (customHeaderView != null ? position > 0
+                : true)) {
+
+            final MessageModel messageModel = getItem(position);
+            // Initialize view with content
+            Widgets widgets = ((Widgets) holder);
+            widgets.messageFrom.setText(messageModel.messageFrom);
+            if (messageModel.messageDate != null) {
+                widgets.messageDate.setText(Utility.formatDate(messageModel.messageDate));
+            }
+            widgets.message.setText(messageModel.messageBody);
+            // Pending messages
+            if (messageModel.messageType == MessageModel.Type.PENDING) {
+                widgets.messageType.setText(widgets.itemView.getContext().getString(
+                        R.string.sms).toUpperCase(Locale.getDefault()));
+            } else if (messageModel.messageType == MessageModel.Type.TASK) {
+                // Task messages
+                widgets.messageType
+                        .setText(widgets.itemView.getContext().getString(R.string.task).toUpperCase(
+                                Locale.getDefault()));
+            }
             widgets.messageType
-                    .setText(widgets.itemView.getContext().getString(R.string.task).toUpperCase(
-                            Locale.getDefault()));
+                    .setTextColor(
+                            widgets.itemView.getContext().getResources().getColor(R.color.red));
+
+            widgets.imageView.setOnClickListener(v -> {
+
+                if (mOnCheckedListener != null) {
+                    mOnCheckedListener.onChecked(position);
+                }
+                widgets.imageView.clearAnimation();
+                widgets.imageView.setAnimation(flipOut);
+                widgets.imageView.startAnimation(flipOut);
+                setFlipAnimation(widgets, position);
+            });
+
+            updateCheckedState(widgets, position);
+            widgets.statusIndicator.setOnClickListener(v -> {
+                if (mOnMoreActionListener != null) {
+                    mOnMoreActionListener.onMoreActionTap(position);
+                }
+            });
         }
-        widgets.messageType
-                .setTextColor(widgets.itemView.getContext().getResources().getColor(R.color.red));
-
-        widgets.imageView.setOnClickListener(v -> {
-
-            if (mOnCheckedListener != null) {
-                mOnCheckedListener.onChecked(position);
-            }
-            widgets.imageView.clearAnimation();
-            widgets.imageView.setAnimation(flipOut);
-            widgets.imageView.startAnimation(flipOut);
-            setFlipAnimation(widgets, position);
-        });
-
-        updateCheckedState(widgets, position);
-        widgets.statusIndicator.setOnClickListener(v -> {
-            if (mOnMoreActionListener != null) {
-                mOnMoreActionListener.onMoreActionTap(position);
-            }
-        });
     }
 
     public class Widgets extends RecyclerView.ViewHolder {

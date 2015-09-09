@@ -262,10 +262,8 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             public void showMessages(List<MessageModel> messageModelList) {
                 // Append the imported messages to the adapter list
                 if (!Utility.isEmpty(messageModelList)) {
-                    int size = mMessageAdapter.getAdapterItemCount();
-                    for (int i = 0; i < messageModelList.size(); i++) {
-                        mMessageAdapter.addItem(messageModelList.get(i), size++);
-                    }
+                    messageModelList.addAll(mMessageAdapter.getItems());
+                    mMessageAdapter.setItems(messageModelList);
                     mFab.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -310,13 +308,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessageRecyclerView.setFocusable(true);
         mMessageRecyclerView.setFocusableInTouchMode(true);
-        mMessageAdapter.setHasStableIds(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
         mMessageRecyclerView.addItemDividerDecoration(getActivity());
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mMessageRecyclerView.enableDefaultSwipeRefresh(true);
-        mMessageRecyclerView
-                .setDefaultOnRefreshListener(() -> mListMessagePresenter.loadMessages());
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageAdapter.setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())

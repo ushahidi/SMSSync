@@ -247,4 +247,26 @@ public class Utility {
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
+    /**
+     * Gets the first character of a name
+     *
+     * @param name The name to get its first letter
+     * @return The first character
+     */
+    public static char getFirstCharacter(String name) {
+        final char firstChar = name.charAt(0);
+        if (isEnglishLetterOrDigit(firstChar)) {
+            return Character.toUpperCase(firstChar);
+        }
+        return 0;
+    }
+
+    /**
+     * @param c The char to check
+     * @return True if <code>c</code> is in the English alphabet or is a digit,
+     * false otherwise
+     */
+    private static boolean isEnglishLetterOrDigit(char c) {
+        return 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z' || '0' <= c && c <= '9';
+    }
 }

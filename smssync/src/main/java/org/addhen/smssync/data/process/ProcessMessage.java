@@ -245,7 +245,9 @@ public class ProcessMessage {
 
     public SmsMessage map(Message message) {
         SmsMessage smsMessage = new SmsMessage();
-        smsMessage.id = message._id;
+        if (message._id != null) {
+            smsMessage.id = message._id;
+        }
         smsMessage.uuid = message.messageUuid;
         smsMessage.body = message.messageBody;
         smsMessage.phone = message.messageFrom;
@@ -260,6 +262,8 @@ public class ProcessMessage {
         message.messageBody = smsMessage.body;
         message.messageFrom = smsMessage.phone;
         message.messageDate = new Date(smsMessage.timestamp);
+        message.messageType = Message.Type.PENDING;
+        message.status = Message.Status.FAILED;
         return message;
     }
 
