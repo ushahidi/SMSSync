@@ -25,6 +25,9 @@ import org.addhen.smssync.data.database.MessageDatabaseHelper;
 import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
+import org.addhen.smssync.data.entity.MessagesUUIDSResponse;
+import org.addhen.smssync.data.entity.QueuedMessages;
+import org.addhen.smssync.data.entity.SmssyncResponse;
 import org.addhen.smssync.data.entity.WebService;
 import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.data.util.Logger;
@@ -33,8 +36,10 @@ import org.addhen.smssync.smslib.model.SmsMessage;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -69,6 +74,8 @@ public class ProcessMessage {
 
     private Context mContext;
 
+    private ProcessMessageResult mProcessMessageResult;
+
     @Inject
     public ProcessMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
@@ -76,7 +83,8 @@ public class ProcessMessage {
             WebServiceDatabaseHelper webServiceDatabaseHelper,
             FilterDatabaseHelper filterDatabaseHelper,
             ProcessSms processSms,
-            FileManager fileManager) {
+            FileManager fileManager,
+            ProcessMessageResult processMessageResult) {
         mPrefsFactory = prefsFactory;
         mMessageHttpClient = messageHttpClient;
         mMessageDatabaseHelper = messageDatabaseHelper;
@@ -85,13 +93,118 @@ public class ProcessMessage {
         mProcessSms = processSms;
         mFileManager = fileManager;
         mContext = context;
+        mProcessMessageResult = processMessageResult;
+    }
+
+    /**
+     * Processes the incoming SMS to figure out how to exactly route the message. If it fails to be
+     * synced online, cache it and queue it up for the scheduler to process it.
+     *
+     * @param message The sms to be routed
+     * @return boolean
+     */
+    public boolean routeSms(Message message, List<String> keywords) {
+        Logger.log(TAG, "routeSms uuid: " + message.toString());
+        // Double check if SMSsync service is running
+        if (!mPrefsFactory.serviceEnabled().get()) {
+            return false;
+        }
+
+        // Send auto response from phone not server
+        if (mPrefsFactory.enableReply().get()) {
+            // send auto response as SMS to user's phone
+            logActivities(R.string.auto_response_sent);
+            Message msg = new Message();
+            msg.messageBody = mPrefsFactory.reply().get();
+            msg.messageFrom = message.messageFrom;
+            msg.messageType = message.messageType;
+            mProcessSms.sendSms(map(msg), false);
+        }
+        if (Utility.isConnected(mContext)) {
+            List<WebService> webServiceList = mWebServiceDatabaseHelper.listWebServices();
+            List<Filter> filters = mFilterDatabaseHelper.getFilters();
+            for (WebService webService : webServiceList) {
+                // Process if white-listing is enabled
+                if (mPrefsFactory.enableWhitelist().get()) {
+                    for (Filter filter : filters) {
+                        if (filter.phoneNumber.equals(message.messageFrom)) {
+                            if (postMessage(message, webService, keywords)) {
+                                deleteFromSmsInbox(message);
+                            } else {
+                                savePendingMessage(message);
+                            }
+                        }
+                    }
+                }
+
+                // Process blacklist
+                if (mPrefsFactory.enableBlacklist().get()) {
+                    for (Filter filter : filters) {
+
+                        if (filter.phoneNumber.equals(message.messageFrom)) {
+                            Logger.log("message",
+                                    " from:" + message.messageFrom + " filter:"
+                                            + filter.phoneNumber);
+                            return false;
+                        } else {
+                            if (postMessage(message, webService, keywords)) {
+                                deleteFromSmsInbox(message);
+                            } else {
+                                savePendingMessage(message);
+                            }
+                        }
+
+                    }
+                } else {
+                    if (postMessage(message, webService, keywords)) {
+                        deleteFromSmsInbox(message);
+                    } else {
+                        savePendingMessage(message);
+                    }
+                }
+            }
+            return true;
+        }
+
+        // There is no internet save message
+        savePendingMessage(message);
+        return false;
+    }
+
+    /**
+     * Sync pending messages to the configured sync URL.
+     *
+     * @param uuid The message uuid
+     */
+    public boolean syncPendingMessages(final String uuid) {
+        Logger.log(TAG, "syncPendingMessages: push pending messages to the Sync URL" + uuid);
+        boolean status = false;
+        // check if it should sync by id
+        if (!TextUtils.isEmpty(uuid)) {
+            final Message message = mMessageDatabaseHelper.fetchMessageByUuid(uuid);
+            List<Message> messages = new ArrayList<Message>();
+            messages.add(message);
+            status = postMessage(messages, null);
+        } else {
+            final List<Message> messages = mMessageDatabaseHelper
+                    .fetchMessage(Message.Type.PENDING);
+            if (messages != null && messages.size() > 0) {
+                for (Message message : messages) {
+                    status = postMessage(messages, null);
+                }
+            }
+        }
+
+        return status;
     }
 
     public boolean postMessage(List<Message> messages, List<String> keywords) {
+        Logger.log(TAG, "postMessages");
+
         List<WebService> webServiceList = mWebServiceDatabaseHelper.listWebServices();
         List<Filter> filters = mFilterDatabaseHelper.getFilters();
         for (WebService webService : webServiceList) {
-            // Process if whitelisting is enabled
+            // Process if white-listing is enabled
             if (mPrefsFactory.enableWhitelist().get()) {
                 for (Filter filter : filters) {
                     for (Message message : messages) {
@@ -106,23 +219,23 @@ public class ProcessMessage {
 
             if (mPrefsFactory.enableBlacklist().get()) {
                 for (Filter filter : filters) {
-                    for (Message message : messages) {
-                        if (filter.phoneNumber.equals(message.messageFrom)) {
+                    for (Message msg : messages) {
+                        if (filter.phoneNumber.equals(msg.messageFrom)) {
                             Logger.log("message",
-                                    " from:" + message.messageFrom + " filter:"
+                                    " from:" + msg.messageFrom + " filter:"
                                             + filter.phoneNumber);
                             return false;
                         } else {
-                            if (postMessage(message, webService, keywords)) {
-                                postToSentBox(message);
+                            if (postMessage(msg, webService, keywords)) {
+                                postToSentBox(msg);
                             }
                         }
                     }
                 }
             } else {
-                for (Message message : messages) {
-                    if (postMessage(message, webService, keywords)) {
-                        postToSentBox(message);
+                for (Message messg : messages) {
+                    if (postMessage(messg, webService, keywords)) {
+                        postToSentBox(messg);
                     }
                 }
             }
@@ -130,26 +243,109 @@ public class ProcessMessage {
         return true;
     }
 
+    public SmsMessage map(Message message) {
+        SmsMessage smsMessage = new SmsMessage();
+        smsMessage.id = message._id;
+        smsMessage.uuid = message.messageUuid;
+        smsMessage.body = message.messageBody;
+        smsMessage.phone = message.messageFrom;
+        smsMessage.timestamp = message.messageDate.getTime();
+        return smsMessage;
+    }
+
+    public Message map(SmsMessage smsMessage) {
+        Message message = new Message();
+        message._id = smsMessage.id;
+        message.messageUuid = smsMessage.uuid;
+        message.messageBody = smsMessage.body;
+        message.messageFrom = smsMessage.phone;
+        message.messageDate = new Date(smsMessage.timestamp);
+        return message;
+    }
+
+    private void sendSMSWithMessageResultsAPIEnabled(WebService syncUrl,
+            List<Message> msgs) {
+        QueuedMessages messagesUUIDs = new QueuedMessages();
+        for (Message msg : msgs) {
+            msg.messageType = Message.Type.TASK;
+            messagesUUIDs.getQueuedMessages().add(msg.messageUuid);
+        }
+
+        MessagesUUIDSResponse response =
+                mProcessMessageResult.sendQueuedMessagesPOSTRequest(syncUrl, messagesUUIDs);
+        if (null != response && response.isSuccess() && response.hasUUIDs()) {
+            for (Message msg : msgs) {
+                msg.messageType = Message.Type.TASK;
+                if (response.getUuids().contains(msg.messageUuid)) {
+                    sendTaskSms(msg);
+                    mFileManager.appendAndClose(mContext.getString(R.string.processed_task,
+                            msg.messageBody));
+                }
+            }
+        }
+    }
+
+    private void sendSMSWithMessageResultsAPIDisabled(List<Message> msgs) {
+        for (Message msg : msgs) {
+            msg.messageType = Message.Type.TASK;
+            sendTaskSms(msg);
+        }
+    }
+
+    /**
+     * Send the response received from the server as SMS
+     *
+     * @param response The JSON string response from the server.
+     */
+    private void smsServerResponse(SmssyncResponse response) {
+        Logger.log(TAG, "performResponseFromServer(): " + " response:"
+                + response);
+        if (!mPrefsFactory.enableReplyFrmServer().get()) {
+            return;
+        }
+
+        if (response != null && response.getPayload() != null
+                && response.getPayload().getMessages().size() > 0) {
+            for (Message msg : response.getPayload().getMessages()) {
+                sendTaskSms(msg);
+            }
+        }
+    }
+
     private boolean postMessage(Message message, WebService webService, List<String> keywords) {
         // Process filter text (keyword or RegEx)
         if (!Utility.isEmpty(keywords)) {
             if (filterByKeywords(message.messageBody, keywords) || filterByRegex(
                     message.messageBody, keywords)) {
-                return post(message, webService);
+                return postToWebService(message, webService);
             }
         } else {
-            return post(message, webService);
+            return postToWebService(message, webService);
         }
         return false;
     }
 
-    private boolean post(Message message, WebService webService) {
+    private boolean postToWebService(Message message, WebService webService) {
+        boolean posted;
         if (message.messageType == Message.Type.PENDING) {
             Logger.log(TAG, "Process message with keyword filtering enabled " + message);
-            return mMessageHttpClient.postSmsToWebService(webService, message, "",
-                    mPrefsFactory.uniqueId().get());
+            posted = mMessageHttpClient.postSmsToWebService(webService, message,
+                    message.messageFrom, mPrefsFactory.uniqueId().get());
+
+        } else {
+            posted = sendTaskSms(message);
         }
-        // TODO: sendTasks
+        if (!posted) {
+            if (message.retries > mPrefsFactory.retries().get()) {
+                // Delete from db
+                deleteMessage(message);
+            } else {
+                // Increase message's number of tries for future comparison to know when to delete it.
+                int retries = message.retries + 1;
+                message.retries = retries;
+                mMessageDatabaseHelper.put(message);
+            }
+        }
         return false;
     }
 
@@ -191,7 +387,8 @@ public class ProcessMessage {
      * @param message the message
      */
     private boolean postToSentBox(Message message) {
-        Logger.log(TAG, "postToSentBox(): post message to sentbox " + message.toString());
+        Logger.log(TAG,
+                "postToSentBox(): postToWebService message to sent box " + message.toString());
         // Change the status to SENT
         message.status = Message.Status.SENT;
         mMessageDatabaseHelper.putMessage(message);
@@ -217,36 +414,27 @@ public class ProcessMessage {
 
     private void deleteFromSmsInbox(Message message) {
         if (mPrefsFactory.autoDelete().get()) {
-
             mProcessSms.delSmsFromInbox(map(message));
             mFileManager.appendAndClose(
                     mContext.getString(R.string.auto_message_deleted, message.messageBody));
         }
     }
 
-    public SmsMessage map(Message message) {
-        SmsMessage smsMessage = new SmsMessage();
-        smsMessage.id = message._id;
-        smsMessage.uuid = message.messageUuid;
-        smsMessage.body = message.messageBody;
-        smsMessage.phone = message.messageFrom;
-        smsMessage.timestamp = message.messageDate.getTime();
-        return smsMessage;
-    }
-
-    public Message map(SmsMessage smsMessage) {
-        Message message = new Message();
-        message._id = smsMessage.id;
-        message.messageUuid = smsMessage.uuid;
-        message.messageBody = smsMessage.body;
-        message.messageFrom = smsMessage.phone;
-        message.messageDate = new Date(smsMessage.timestamp);
-        return message;
+    private void savePendingMessage(Message message) {
+        //only save to pending when the number is not blacklisted
+        if (!mPrefsFactory.enableBlacklist().get()) {
+            message.status = Message.Status.FAILED;
+            mMessageDatabaseHelper.put(message);
+        }
     }
 
     private void deleteMessage(Message message) {
         Logger.log(TAG, " message ID " + message.messageUuid);
         mMessageDatabaseHelper.deleteByUuid(message.messageUuid);
+    }
+
+    private void logActivities(@StringRes int id) {
+        mFileManager.appendAndClose(mContext.getString(id));
     }
 
     public ProcessSms getProcessSms() {

@@ -23,6 +23,7 @@ import org.addhen.smssync.data.exception.MessageNotFoundException;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -104,6 +105,32 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
                 subscriber.onError(new Exception());
             }
         });
+    }
+
+    public List<Message> fetchMessage(Message.Type type) {
+        List<Message> messages = new ArrayList<Message>();
+        final String whereClause = "message_type = ?";
+        try {
+            messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                    .withSelection(whereClause, type.name()).orderBy("messages_date DESC")
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return messages;
+    }
+
+    public Message fetchMessageByUuid(String uuid) {
+        Message message = new Message();
+        final String whereClause = "message_uuid = ?";
+        try {
+            message = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                    .withSelection(whereClause, uuid).orderBy("messages_date DESC")
+                    .get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return message;
     }
 
     public Observable<List<Message>> fetchMessageByStatus(Message.Status status) {

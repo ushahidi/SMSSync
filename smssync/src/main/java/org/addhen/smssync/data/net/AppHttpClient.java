@@ -48,35 +48,40 @@ public class AppHttpClient extends BaseHttpClient {
 
     public Observable<Boolean> makeRequest(String url) {
         return Observable.defer(() -> {
-            setUrl(url);
-            Boolean status = false;
-            try {
-                execute();
-            } catch (Exception e) {
-                log("Request failed", e);
-            }
-            Response response = getResponse();
-            if (response != null) {
-                int statusCode = response.code();
-
-                if (statusCode == 200) {
-                    final Gson gson = new Gson();
-                    SmssyncResponse smssyncResponses = null;
-                    try {
-                        smssyncResponses = gson.fromJson(response.body().charStream(),
-                                SmssyncResponse.class);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Observable.error(e);
-                    } catch (JsonSyntaxException e) {
-                        status = false;
-                    }
-                    if (smssyncResponses != null && smssyncResponses.getPayload() != null) {
-                        status = true;
-                    }
-                }
-            }
+            boolean status = request(url);
             return Observable.just(status);
         });
+    }
+
+    public Boolean request(String url) {
+        setUrl(url);
+        Boolean status = false;
+        try {
+            execute();
+        } catch (Exception e) {
+            log("Request failed", e);
+        }
+        Response response = getResponse();
+        if (response != null) {
+            int statusCode = response.code();
+
+            if (statusCode == 200) {
+                final Gson gson = new Gson();
+                SmssyncResponse smssyncResponses = null;
+                try {
+                    smssyncResponses = gson.fromJson(response.body().charStream(),
+                            SmssyncResponse.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    status = false;
+                } catch (JsonSyntaxException e) {
+                    status = false;
+                }
+                if (smssyncResponses != null && smssyncResponses.getPayload() != null) {
+                    status = true;
+                }
+            }
+        }
+        return status;
     }
 }

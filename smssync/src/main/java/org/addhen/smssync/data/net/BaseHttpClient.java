@@ -94,15 +94,15 @@ public class BaseHttpClient {
         mHttpClient.setReadTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
     }
 
-    protected void setUrl(String url) {
+    public void setUrl(String url) {
         mUrl = url;
     }
 
-    protected void setHeader(String name, String value) {
+    public void setHeader(String name, String value) {
         this.mHeader.put(name, value);
     }
 
-    protected void setHeaders(Headers mHeaders) {
+    public void setHeaders(Headers mHeaders) {
         this.mHeaders = mHeaders;
     }
 
@@ -147,7 +147,7 @@ public class BaseHttpClient {
         return mParams;
     }
 
-    protected void execute() throws Exception {
+    public void execute() throws Exception {
         prepareRequest();
         if (request != null) {
             final Response resp = mHttpClient.newCall(request).execute();
@@ -155,12 +155,12 @@ public class BaseHttpClient {
         }
     }
 
-    protected boolean isMethodSupported(HttpMethod method) {
+    public boolean isMethodSupported(HttpMethod method) {
         return (method.equals(HttpMethod.GET) || method.equals(HttpMethod.POST) || method
                 .equals(HttpMethod.PUT));
     }
 
-    protected void setMethod(HttpMethod method) throws Exception {
+    public void setMethod(HttpMethod method) throws Exception {
         if (!isMethodSupported(method)) {
             throw new Exception(
                     "Invalid method '" + method + "'."
@@ -170,11 +170,11 @@ public class BaseHttpClient {
         this.method = method;
     }
 
-    protected void setRequestBody(RequestBody requestBody) throws Exception {
+    public void setRequestBody(RequestBody requestBody) throws Exception {
         this.requestBody = requestBody;
     }
 
-    protected Request getRequest() {
+    public Request getRequest() {
         return request;
     }
 
@@ -225,11 +225,11 @@ public class BaseHttpClient {
         return combinedParams;
     }
 
-    protected Response getResponse() {
+    public Response getResponse() {
         return mResponse;
     }
 
-    protected void setResponse(Response response) {
+    public void setResponse(Response response) {
         mResponse = response;
     }
 

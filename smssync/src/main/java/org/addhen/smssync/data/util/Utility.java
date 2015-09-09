@@ -18,6 +18,10 @@
 package org.addhen.smssync.data.util;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import java.util.Collection;
 
 /**
@@ -27,5 +31,25 @@ public class Utility {
 
     public static boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
+    }
+
+    /**
+     * Checks if there is Internet connection or data connection on the device.
+     *
+     * @param context - The activity calling this method.
+     * @return boolean
+     */
+    public static boolean isConnected(Context context) {
+
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivity.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
+
     }
 }

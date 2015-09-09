@@ -27,6 +27,7 @@ import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.process.ProcessMessageResult;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
@@ -117,8 +118,10 @@ public class AppModule {
             WebServiceDatabaseHelper webServiceDatabaseHelper,
             FilterDatabaseHelper filterDatabaseHelper,
             ProcessSms processSms,
-            FileManager fileManager) {
+            FileManager fileManager,
+            ProcessMessageResult processMessageResult) {
         return new ProcessMessage(context, prefsFactory, messageHttpClient, messageDatabaseHelper,
-                webServiceDatabaseHelper, filterDatabaseHelper, processSms, fileManager);
+                webServiceDatabaseHelper, filterDatabaseHelper, processSms, fileManager,
+                processMessageResult);
     }
 }
