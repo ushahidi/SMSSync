@@ -23,7 +23,7 @@
               android:paddingStart="@dimen/view_spacing_large"
               android:paddingRight="@dimen/view_spacing_large"
               android:paddingEnd="@dimen/view_spacing_large"
-              android:orientation="vertical">
+              android:orientation="vertical" android:weightSum="1">
 
     <CheckBox
             android:id="@+id/start_checkbox"
@@ -43,17 +43,18 @@
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/view_spacing_xlarge"
             android:drawablePadding="@dimen/view_spacing_large"
-            android:drawableStart="@drawable/ic_twitter_blue_24dp"
-            android:drawableLeft="@drawable/ic_twitter_blue_24dp"/>
+            android:drawableStart="@drawable/ic_twitter_blue_36dp"
+            android:drawableLeft="@drawable/ic_twitter_blue_36dp"/>
 
     <TextView
             android:id="@+id/integration_web_service"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/custom_web_service"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/view_spacing_xlarge"
             android:drawablePadding="@dimen/view_spacing_large"
-            android:drawableStart="@drawable/ic_web_grey_900_24dp"
-            android:drawableLeft="@drawable/ic_web_grey_900_24dp"/>
+            android:drawableStart="@drawable/ic_web_grey_900_36dp"
+            android:drawableLeft="@drawable/ic_web_grey_900_36dp" android:layout_weight="0.01"/>
 </LinearLayout>

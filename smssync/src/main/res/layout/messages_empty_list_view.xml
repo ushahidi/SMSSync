@@ -25,7 +25,7 @@
             android:id="@+id/empty_view_logo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_done_grey_700_48dp"
+            android:src="@drawable/ic_empty_message_list_100dp"
             android:layout_above="@+id/empty_view_header"
             android:layout_centerHorizontal="true"/>
     <android.support.v7.widget.AppCompatTextView
