@@ -376,7 +376,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mRemovedItemPosition = position;
         mRemovedMessage = mMessageAdapter.getItem(position);
         mMessageAdapter.removeItem(mRemovedMessage);
-        showUndoSnackbar(getString(R.string.publish));
+        showUndoSnackbar(getString(R.string.published));
     }
 
     private void enableSwipeToPerformAction() {
