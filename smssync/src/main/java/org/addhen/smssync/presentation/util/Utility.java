@@ -19,7 +19,7 @@ package org.addhen.smssync.presentation.util;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
-import org.addhen.smssync.presentation.receivers.ConnectivityChangedReceiver;
+import org.addhen.smssync.presentation.receiver.ConnectivityChangedReceiver;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
 import android.app.NotificationManager;

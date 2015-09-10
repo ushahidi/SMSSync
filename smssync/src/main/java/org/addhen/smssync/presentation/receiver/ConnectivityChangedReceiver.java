@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.receivers;
+package org.addhen.smssync.presentation.receiver;
 
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.di.component.AppComponent;

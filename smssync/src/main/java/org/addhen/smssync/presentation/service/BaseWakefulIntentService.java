@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.services;
+package org.addhen.smssync.presentation.service;
 
 import com.addhen.android.raiburari.presentation.di.HasComponent;
 import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
@@ -27,7 +27,7 @@ import org.addhen.smssync.presentation.di.component.AppComponent;
 import org.addhen.smssync.presentation.di.component.AppServiceComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppServiceComponent;
 import org.addhen.smssync.presentation.di.module.ServiceModule;
-import org.addhen.smssync.presentation.receivers.ConnectivityChangedReceiver;
+import org.addhen.smssync.presentation.receiver.ConnectivityChangedReceiver;
 import org.addhen.smssync.presentation.util.Utility;
 
 import android.content.ComponentName;

@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.services;
+package org.addhen.smssync.presentation.service;
 
 import android.content.Intent;
 

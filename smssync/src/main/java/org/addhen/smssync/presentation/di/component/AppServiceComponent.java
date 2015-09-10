@@ -25,8 +25,8 @@ import com.addhen.android.raiburari.presentation.di.component.ApplicationCompone
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.ServiceModule;
-import org.addhen.smssync.presentation.services.BaseWakefulIntentService;
-import org.addhen.smssync.presentation.services.SmsReceiverService;
+import org.addhen.smssync.presentation.service.BaseWakefulIntentService;
+import org.addhen.smssync.presentation.service.SmsReceiverService;
 
 import dagger.Component;
 

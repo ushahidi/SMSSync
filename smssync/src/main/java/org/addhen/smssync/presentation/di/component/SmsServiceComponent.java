@@ -21,7 +21,7 @@ import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.MessageModule;
-import org.addhen.smssync.presentation.services.SmsReceiverService;
+import org.addhen.smssync.presentation.service.SmsReceiverService;
 
 import dagger.Component;
 

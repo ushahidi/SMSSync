@@ -15,24 +15,30 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.services;
+package org.addhen.smssync.presentation.service;
 
 import org.addhen.smssync.data.process.ProcessMessage;
 
 import android.content.Intent;
 
 /**
- * @author Henry Addo
+ * @author Ushahidi Team <team@ushahidi.com>
  */
-public class CheckTaskService extends BaseWakefulIntentService {
+public class AutoSyncScheduledService extends BaseWakefulIntentService {
 
-    private final static String CLASS_TAG = CheckTaskService.class
+    private static String CLASS_TAG = AutoSyncScheduledService.class
             .getSimpleName();
+
+    // holds the status of the sync and sends it to the pending messages
+    // activity to
+    // update the ui
+    private Intent statusIntent;
 
     private ProcessMessage mProcessMessage;
 
-    public CheckTaskService() {
+    public AutoSyncScheduledService() {
         super(CLASS_TAG);
+        statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
     }
 
     public void onCreate() {
@@ -40,14 +46,12 @@ public class CheckTaskService extends BaseWakefulIntentService {
         getComponent().inject(this);
     }
 
-    /**
-     * Starts the background service
-     *
-     * @return void
-     */
+    @Override
     protected void executeTask(Intent intent) {
-        log("checkTaskService: check if a task has been enabled.");
+        log(CLASS_TAG, "doWakefulWork() executing " + CLASS_TAG);
         mProcessMessage = getAppComponent().processMessage();
-        // TODO: Perform task import
+        // TODO: Process pending messages
+        statusIntent.putExtra("status", "error message");
+        sendBroadcast(statusIntent);
     }
 }
