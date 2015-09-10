@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.presentation.util;
 
+import com.addhen.android.raiburari.presentation.util.Utils;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.receiver.ConnectivityChangedReceiver;
@@ -30,6 +32,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.v7.app.NotificationCompat;
 import android.telephony.TelephonyManager;
@@ -268,5 +271,33 @@ public class Utility {
      */
     private static boolean isEnglishLetterOrDigit(char c) {
         return 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z' || '0' <= c && c <= '9';
+    }
+
+    public static void makeDefaultSmsApp(Context context) {
+
+        if (!isDefaultSmsApp(context)) {
+            final Intent changeDefaultIntent = new Intent(
+                    Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+            changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
+                    context.getPackageName());
+            context.startActivity(changeDefaultIntent);
+
+        }
+
+    }
+
+    public static boolean isDefaultSmsApp(Context context) {
+        if (Utils.isKitKatOrHigher()) {
+            return context.getPackageName().equals(Telephony.Sms.getDefaultSmsPackage(context));
+        }
+        return true;
+    }
+
+    public static int calculateBatteryLevel(int level, int scale) {
+        if (level >= 0 && scale > 0) {
+            return (level * 100) / scale;
+        }
+
+        return -1;
     }
 }
