@@ -27,6 +27,8 @@ import static org.addhen.smssync.presentation.task.state.SyncState.INITIAL;
 import static org.addhen.smssync.presentation.task.state.SyncState.SYNC;
 
 /**
+ * Defines the different states when synchronizing pending message
+ *
  * @author Henry Addo
  */
 public class SyncPendingMessagesState extends State {
@@ -41,10 +43,8 @@ public class SyncPendingMessagesState extends State {
 
     public final SyncType syncType;
 
-    public SyncPendingMessagesState(SyncState state, int currentSyncedItems,
-            int currentFailedItems,
-            int currentProgress,
-            int itemsToSync, SyncType syncType, Exception exception) {
+    public SyncPendingMessagesState(SyncState state, int currentSyncedItems, int currentFailedItems,
+            int currentProgress, int itemsToSync, SyncType syncType, Exception exception) {
         super(state, exception);
         this.currentSyncedItems = currentSyncedItems;
         this.currentFailedItems = currentFailedItems;

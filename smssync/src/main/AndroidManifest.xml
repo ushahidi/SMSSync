@@ -205,5 +205,25 @@
         </activity>
         <!-- Services -->
         <service android:name="org.addhen.smssync.presentation.service.SmsReceiverService"/>
+
+        <!-- Receivers -->
+        <!-- Receiver for pre kitkat. This is disabled when it's kitkat and above -->
+        <receiver
+                android:name="org.addhen.smssync.presentation.receiver.SmsReceiver"
+                android:enabled="@bool/is_pre_kitkat">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Receiver for kitkat. This is disabled when it's pre-kitkat releases -->
+        <receiver
+                android:name="org.addhen.smssync.presentation.receiver.SmsReceiverKitKat"
+                android:enabled="@bool/is_kitkat"
+                android:permission="android.permission.BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_DELIVER"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
