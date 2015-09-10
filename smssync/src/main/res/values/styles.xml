@@ -70,4 +70,15 @@
         <item name="android:paddingBottom">@dimen/view_spacing_normal</item>
         <item name="android:paddingTop">0dp</item>
     </style>
+    <style name="Fab">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+        <item name="android:layout_gravity">bottom|right</item>
+        <item name="android:gravity">bottom|right</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_marginRight">@dimen/fab_margin</item>
+        <item name="android:layout_marginBottom">@dimen/fab_margin</item>
+    </style>
 </resources>
