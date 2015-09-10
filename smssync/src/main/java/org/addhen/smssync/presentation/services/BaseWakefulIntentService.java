@@ -72,12 +72,6 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
         }
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        // load setting. Just in case someone changes a setting
-    }
-
     private void injector() {
         mAppServiceComponent = DaggerAppServiceComponent.builder()
                 .applicationComponent(getApplicationComponent())

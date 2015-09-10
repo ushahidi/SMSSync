@@ -166,7 +166,7 @@ public class Utility {
      * @param intent   The pending intent
      * @param ongoing  True if you don't want the user to clear the notification
      */
-    private static void buildNotification(Context context, int drawable,
+    public static void buildNotification(Context context, int drawable,
             String message, String title, PendingIntent intent, boolean ongoing) {
 
         NotificationManager notificationManager = (NotificationManager) context
