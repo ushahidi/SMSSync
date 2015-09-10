@@ -40,7 +40,7 @@ import android.content.pm.PackageManager;
 public abstract class BaseWakefulIntentService extends WakefulIntentService implements
         HasComponent<AppServiceComponent> {
 
-    AppServiceComponent mAppServiceComponent;
+    private AppServiceComponent mAppServiceComponent;
 
     /*
      * Subclasses must implement this method so it executes any tasks
@@ -80,7 +80,14 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        App.bus.register(this);
+    }
+
+    @Override
     public void onDestroy() {
+        App.bus.unregister(this);
         super.onDestroy();
     }
 

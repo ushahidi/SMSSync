@@ -205,6 +205,10 @@
         </activity>
         <!-- Services -->
         <service android:name="org.addhen.smssync.presentation.service.SmsReceiverService"/>
+        <service android:name="org.addhen.smssync.presentation.service.AutoSyncScheduledService"/>
+        <service android:name="org.addhen.smssync.presentation.service.CheckTaskService"/>
+        <service android:name="org.addhen.smssync.presentation.service.SyncPendingMessagesService"/>
+        <service android:name="org.addhen.smssync.presentation.service.MessageResultsService"/>
 
         <!-- Receivers -->
         <!-- Receiver for pre kitkat. This is disabled when it's kitkat and above -->

@@ -25,8 +25,7 @@ import android.content.Intent;
 
 /**
  * This Receiver class is used to listen for Broadcast Intents from the Alarm manager so it
- * executes
- * all task that exist.
+ * executes all task that exist.
  *
  * @author Henry Addo
  */
