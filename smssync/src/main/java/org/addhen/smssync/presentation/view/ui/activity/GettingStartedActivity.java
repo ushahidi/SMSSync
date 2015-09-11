@@ -123,8 +123,7 @@ public class GettingStartedActivity extends BaseActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), viewPager);
-        mPagerAdapter.addFragment(GettingStartedWelcomeFragment.newInstance(
-                R.layout.fragment_getting_started_welcome));
+        mPagerAdapter.addFragment(GettingStartedWelcomeFragment.newInstance());
         mPagerAdapter.addFragment(GettingStartedIntegrationFragment.newInstance());
         mNumOfPages = mPagerAdapter.getCount();
         viewPager.setAdapter(mPagerAdapter);
