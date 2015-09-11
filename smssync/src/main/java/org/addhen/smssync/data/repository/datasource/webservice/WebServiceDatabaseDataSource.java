@@ -57,7 +57,7 @@ public class WebServiceDatabaseDataSource implements WebServiceDataSource {
     }
 
     @Override
-    public Observable<WebService> getByStatus(WebService.Status status) {
+    public Observable<List<WebService>> getByStatus(WebService.Status status) {
         return mWebServiceDatabaseHelper.getByStatus(status);
     }
 

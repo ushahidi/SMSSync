@@ -21,15 +21,36 @@ import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.di.component.IntegrationComponent;
+import org.addhen.smssync.presentation.presenter.integration.IntegrationPresenter;
+import org.addhen.smssync.presentation.receiver.SmsReceiver;
+import org.addhen.smssync.presentation.view.integration.IntegrationView;
+import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.os.Bundle;
+import android.widget.CheckBox;
+
+import javax.inject.Inject;
+
+import butterknife.Bind;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class IntegrationFragment extends BaseFragment {
+public class IntegrationFragment extends BaseFragment implements IntegrationView {
+
+    @Bind(R.id.start_service_checkbox)
+    CheckBox mStartServiceCheckBox;
+
+    @Inject
+    IntegrationPresenter mIntegrationPresenter;
 
     private static IntegrationFragment mIntegrationFragment;
 
@@ -59,8 +80,72 @@ public class IntegrationFragment extends BaseFragment {
                 TwitterProfileFragment.newInstance(), "twitter_profile");
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initialize();
+    }
+
+    private void initialize() {
+        getIntegrationComponent(IntegrationComponent.class).inject(this);
+        mIntegrationPresenter.setIntegrationView(this);
+        mIntegrationPresenter.setPackageManager(getActivity().getPackageManager());
+        mIntegrationPresenter.setSmsReceiverComponent(new ComponentName(
+                getActivity(), SmsReceiver.class));
+        mStartServiceCheckBox
+                .setChecked(mIntegrationPresenter.getPrefsFactory().serviceEnabled().get());
+    }
+
     @OnClick(R.id.integration_web_service)
     void onCustomWebServiceClicked() {
         getActivity().startActivity(ListWebServiceActivity.getIntent(getActivity()));
+    }
+
+    @Override
+    public void totalActiveWebService(int total) {
+        if (total > 0) {
+            startService();
+            return;
+        }
+        showSnabackar(getView(), R.string.no_enabled_sync_url);
+        mIntegrationPresenter.getPrefsFactory().serviceEnabled().set(false);
+        mStartServiceCheckBox.setChecked(false);
+    }
+
+    @OnCheckedChanged(R.id.start_service_checkbox)
+    void onChecked(boolean checked) {
+        if (checked) {
+            //disableCheckbox();
+            mIntegrationPresenter.loadActiveWebService();
+            return;
+        }
+        mIntegrationPresenter.stopSyncServices();
+    }
+
+    @Override
+    public void showError(String message) {
+        showSnabackar(getView(), message);
+    }
+
+    @Override
+    public Context getAppContext() {
+        return getActivity().getApplicationContext();
+    }
+
+    @Override
+    public Activity getActivityContext() {
+        return getActivity();
+    }
+
+    public void startService() {
+        mIntegrationPresenter.startSyncServices();
+    }
+
+    public CheckBox getStartServiceCheckBox() {
+        return mStartServiceCheckBox;
+    }
+
+    protected <C> C getIntegrationComponent(Class<C> componentType) {
+        return componentType.cast(((IntegrationActivity) getActivity()).getComponent());
     }
 }

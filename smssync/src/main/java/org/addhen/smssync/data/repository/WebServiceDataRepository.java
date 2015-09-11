@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.data.repository;
 
+import org.addhen.smssync.data.entity.WebService;
 import org.addhen.smssync.data.entity.mapper.WebServiceDataMapper;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSource;
@@ -61,7 +62,7 @@ public class WebServiceDataRepository implements WebServiceRepository {
     }
 
     @Override
-    public Observable<WebServiceEntity> getByStatus(WebServiceEntity.Status status) {
+    public Observable<List<WebServiceEntity>> getByStatus(WebServiceEntity.Status status) {
         final WebServiceDataSource webserviceDataSource = mWebServiceDataStoreFactory
                 .createDatabaseDataSource();
         return webserviceDataSource.getByStatus(mWebServiceEntityDataMapper.map(status))

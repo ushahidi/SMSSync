@@ -229,5 +229,88 @@
                 <action android:name="android.provider.Telephony.SMS_DELIVER"/>
             </intent-filter>
         </receiver>
+
+        <!-- Add these to allow SMSSync to be set as default SMS app on Android 4.4+ -->
+        <!-- BroadcastReceiver that listens for incoming MMS messages -->
+        <receiver
+                android:name=".MmsReceiver"
+                android:enabled="@bool/is_kitkat"
+                android:permission="android.permission.BROADCAST_WAP_PUSH">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER"/>
+                <data android:mimeType="application/vnd.wap.mms-message"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- Activity that allows the user to send new SMS/MMS messages -->
+        <activity android:name=".ComposeSmsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <action android:name="android.intent.action.SENDTO"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="sms"/>
+                <data android:scheme="smsto"/>
+                <data android:scheme="mms"/>
+                <data android:scheme="mmsto"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Service that delivers messages from the phone "quick response" -->
+        <service
+                android:name=".HeadlessSmsSendService"
+                android:exported="true"
+                android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:scheme="sms"/>
+                <data android:scheme="smsto"/>
+                <data android:scheme="mms"/>
+                <data android:scheme="mmsto"/>
+            </intent-filter>
+        </service>
+        <!-- End Android 4.4+ support-->
+
+        <!-- connectivity changed -->
+        <receiver
+                android:name="org.addhen.smssync.presentation.receiver.ConnectivityChangedReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- power changed -->
+        <receiver android:name="org.addhen.smssync.presentation.receiver.PowerStateChangedReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
+                <action android:name="android.intent.action.BATTERY_OKAY"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- boot -->
+        <receiver android:name="org.addhen.smssync.presentation.receiver.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
+            </intent-filter>
+        </receiver>
+
+        <!-- task check scheduled -->
+        <receiver
+                android:name="org.addhen.smssync.presentation.receiver.CheckTaskScheduledReceiver"/>
+
+        <!-- auto sync scheduled -->
+        <receiver
+                android:name="org.addhen.smssync.presentation.receiver.AutoSyncScheduledReceiver"/>
+
+        <!-- message delivery scheduled -->
+        <receiver
+                android:name="org.addhen.smssync.presentation.receiver.MessageResultsScheduledReceiver"/>
+
+
     </application>
 </manifest>

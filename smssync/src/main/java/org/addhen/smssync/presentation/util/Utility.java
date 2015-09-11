@@ -24,6 +24,7 @@ import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.receiver.ConnectivityChangedReceiver;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -56,6 +57,8 @@ public class Utility {
     private static Pattern pattern;
 
     private static Matcher matcher;
+
+    public static final int SET_DEFAULT_SMS_REQUEST = 1;
 
     private static final int NOTIFY_RUNNING = 100;
 
@@ -273,17 +276,15 @@ public class Utility {
         return 'A' <= c && c <= 'Z' || 'a' <= c && c <= 'z' || '0' <= c && c <= '9';
     }
 
-    public static void makeDefaultSmsApp(Context context) {
+    public static void makeDefaultSmsApp(Activity activity) {
 
-        if (!isDefaultSmsApp(context)) {
+        if (!isDefaultSmsApp(activity)) {
             final Intent changeDefaultIntent = new Intent(
                     Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
             changeDefaultIntent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME,
-                    context.getPackageName());
-            context.startActivity(changeDefaultIntent);
-
+                    activity.getPackageName());
+            activity.startActivityForResult(changeDefaultIntent, SET_DEFAULT_SMS_REQUEST);
         }
-
     }
 
     public static boolean isDefaultSmsApp(Context context) {

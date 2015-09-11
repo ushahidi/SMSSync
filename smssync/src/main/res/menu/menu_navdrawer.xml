@@ -27,7 +27,7 @@
               android:title="@string/published"/>
         <item android:icon="@drawable/ic_add_black_24dp"
               android:id="@+id/nav_integration"
-              android:title="@string/add_integration"/>
+              android:title="@string/integrations"/>
         <item android:id="@+id/nav_filters"
               android:icon="@drawable/ic_filter_list_black_24dp"
               android:title="@string/filters"/>

@@ -15,30 +15,29 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.repository;
+package org.addhen.smssync.presentation.di.module;
 
-import com.addhen.android.raiburari.domain.repository.Repository;
+import com.addhen.android.raiburari.domain.usecase.Usecase;
+import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import org.addhen.smssync.domain.entity.WebServiceEntity;
+import org.addhen.smssync.domain.usecase.webservice.GetActiveWebServiceUsecase;
 
-import java.util.List;
+import javax.inject.Named;
 
-import rx.Observable;
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * Repository for manipulating {@link org.addhen.smssync.domain.entity.WebServiceEntity} data
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface WebServiceRepository extends Repository<WebServiceEntity> {
+@Module
+public class IntegrationModule {
 
-    /**
-     * Get an {@link WebServiceEntity} by its status.
-     *
-     * @param status The web service status to be used for retrieving web service data.
-     * @return The web service
-     */
-    Observable<List<WebServiceEntity>> getByStatus(WebServiceEntity.Status status);
-
-    Observable<Boolean> testWebService(String url);
+    @Provides
+    @ActivityScope
+    @Named("getActiveWebService")
+    Usecase provideGetActiveWebServiceUseCase(
+            GetActiveWebServiceUsecase getActiveWebServiceUsecase) {
+        return getActiveWebServiceUsecase;
+    }
 }
