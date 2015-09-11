@@ -44,3 +44,8 @@ allprojects {
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 }
+
+task wrapper(type: Wrapper) {
+    description 'Creates the gradle wrapper.'
+    gradleVersion '2.6'
+}
