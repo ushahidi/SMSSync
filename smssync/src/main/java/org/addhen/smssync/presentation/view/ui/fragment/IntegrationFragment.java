@@ -27,7 +27,7 @@ import org.addhen.smssync.presentation.receiver.SmsReceiver;
 import org.addhen.smssync.presentation.view.integration.IntegrationView;
 import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
-import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -52,6 +52,9 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
     @Inject
     IntegrationPresenter mIntegrationPresenter;
 
+    @Inject
+    Launcher mLauncher;
+
     private static IntegrationFragment mIntegrationFragment;
 
     public IntegrationFragment() {
@@ -75,9 +78,7 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
             App.getTwitterIntance().login(getActivity());
             return;
         }
-        // Show profile
-        ((MainActivity) getActivity()).replaceFragment(R.id.fragment_main_content,
-                TwitterProfileFragment.newInstance(), "twitter_profile");
+        mLauncher.launchTwitterProfile();
     }
 
     @Override
@@ -115,7 +116,6 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
     @OnCheckedChanged(R.id.start_service_checkbox)
     void onChecked(boolean checked) {
         if (checked) {
-            //disableCheckbox();
             mIntegrationPresenter.loadActiveWebService();
             return;
         }

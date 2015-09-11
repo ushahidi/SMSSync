@@ -22,7 +22,7 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 import org.addhen.smssync.BuildConfig;
-import org.addhen.smssync.data.twitter.Twitter;
+import org.addhen.smssync.data.twitter.TwitterApp;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 
@@ -33,18 +33,21 @@ public class App extends BaseApplication {
 
     private static AppComponent mAppComponent;
 
-    private static Twitter mTwitter;
+    private static TwitterApp mTwitter;
 
     private static App mApp;
 
     public static final AppBus bus = new AppBus(new Bus(ThreadEnforcer.ANY));
 
-    public static synchronized Twitter getTwitterIntance() {
+    public static synchronized TwitterApp getTwitterIntance() {
         if (mTwitter == null) {
             // TODO: Load consumer key and secret from build script
-            mTwitter = new TwitterBuilder().consumerKey(BuildConfig.TWITTER_CONSUMER_KEY)
-                    .consumerSecret(BuildConfig.TWITTER_CONSUMER_SECRET)
-                    .context(mApp).build();
+            mTwitter = new TwitterBuilder(mApp,
+                    BuildConfig.TWITTER_CONSUMER_KEY,
+                    BuildConfig.TWITTER_CONSUMER_SECRET)
+                    .accessToken("")
+                    .accessTokenSecret("")
+                    .build();
         }
         return mTwitter;
     }

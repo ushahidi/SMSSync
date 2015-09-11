@@ -518,7 +518,7 @@
     <string name="integrations">Integrations</string>
     <string name="twitter">Twitter</string>
     <string name="integration_text_to_tweet">Text-to-Tweet</string>
-    <string name="twitter_blurb">Publish incoming SMS messages on Twitter</string>
+    <string name="twitter_blurb">Publish all incoming SMS messages on Twitter</string>
     <string name="drive_tittle">Save to Google Drive</string>
     <string name="drive_blurb">Capture incoming SMS messages in a spreadsheet on Google Drive
     </string>

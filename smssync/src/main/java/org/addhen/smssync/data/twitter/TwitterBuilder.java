@@ -31,24 +31,30 @@ public class TwitterBuilder {
 
     private String mConsumerSecret;
 
+    private String mAccessToken;
+
+    private String mAccessTokenSecret;
+
     private Context mContext;
 
-    public TwitterBuilder consumerKey(@NonNull String consumerKey) {
-        mConsumerKey = consumerKey;
-        return this;
-    }
-
-    public TwitterBuilder consumerSecret(@NonNull String consumerSecret) {
-        mConsumerSecret = consumerSecret;
-        return this;
-    }
-
-    public TwitterBuilder context(Context context) {
+    public TwitterBuilder(Context context, @NonNull String consumerKey,
+            @NonNull String consumerSecret) {
         mContext = context;
+        mConsumerKey = consumerKey;
+        mConsumerSecret = consumerSecret;
+    }
+
+    public TwitterBuilder accessToken(@NonNull String accessToken) {
+        mAccessToken = accessToken;
         return this;
     }
 
-    public Twitter build() {
-        return new Twitter(mContext, new TwitterAuthConfig(mConsumerKey, mConsumerSecret));
+    public TwitterBuilder accessTokenSecret(@NonNull String accessTokenSecret) {
+        mAccessTokenSecret = accessTokenSecret;
+        return this;
+    }
+
+    public TwitterApp build() {
+        return new TwitterApp(mContext, new TwitterAuthConfig(mConsumerKey, mConsumerSecret));
     }
 }

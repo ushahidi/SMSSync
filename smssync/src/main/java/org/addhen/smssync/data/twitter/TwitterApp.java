@@ -23,11 +23,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import twitter4j.Status;
+import twitter4j.StatusUpdate;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class Twitter {
+public class TwitterApp {
 
     static final String PREF_KEY_ACTIVE_TWITTER_SESSION = "active_twittersession";
 
@@ -39,13 +49,24 @@ public class Twitter {
 
     private Context mContext;
 
-    public Twitter(Context context, TwitterAuthConfig config) {
+    private TwitterFactory mTwitterFactory;
+
+    public TwitterApp(Context context, TwitterAuthConfig config) {
         mContext = context;
         mAuthConfig = config;
         mTwitterSessionManager = new PersistedSessionManager<>(
                 PreferenceManager.getDefaultSharedPreferences(mContext),
                 new TwitterSession.Serializer(), PREF_KEY_ACTIVE_TWITTER_SESSION,
                 PREF_KEY_TWITTER_SESSION);
+        initTwitterFactory();
+    }
+
+    private void initTwitterFactory() {
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setOAuthConsumerKey(mAuthConfig.consumerKey);
+        builder.setOAuthConsumerSecret(mAuthConfig.consumerSecret);
+        mTwitterFactory = new TwitterFactory(builder.build());
+
     }
 
     /**
@@ -76,5 +97,21 @@ public class Twitter {
         if (sessionManager != null) {
             sessionManager.clearActiveSession();
         }
+    }
+
+    @Nullable
+    public Status tweet(@NonNull String update) {
+        if (mTwitterSessionManager != null) {
+            TwitterAuthToken authToken = mTwitterSessionManager.getActiveSession().getAuthToken();
+            AccessToken accessToken = new AccessToken(authToken.token, authToken.secret);
+            Twitter twitter = mTwitterFactory.getInstance(accessToken);
+            StatusUpdate latestStatus = new StatusUpdate(update);
+            try {
+                return twitter.updateStatus(latestStatus);
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

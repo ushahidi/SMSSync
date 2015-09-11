@@ -47,6 +47,10 @@ public class TwitterAuthConfig implements Parcelable {
 
     public final String consumerSecret;
 
+    public String accessToken;
+
+    public String accessTokenSecret;
+
     /**
      * @param consumerKey    The consumer key.
      * @param consumerSecret The consumer secret.
@@ -65,8 +69,17 @@ public class TwitterAuthConfig implements Parcelable {
     private TwitterAuthConfig(Parcel in) {
         consumerKey = in.readString();
         consumerSecret = in.readString();
+        accessToken = in.readString();
+        accessTokenSecret = in.readString();
     }
 
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setAccessTokenSecret(String accessTokenSecret) {
+        this.accessTokenSecret = accessTokenSecret;
+    }
 
     /**
      * @return The request code to use for Single Sign On. This code will
@@ -95,5 +108,7 @@ public class TwitterAuthConfig implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(consumerKey);
         out.writeString(consumerSecret);
+        out.writeString(accessToken);
+        out.writeString(accessTokenSecret);
     }
 }

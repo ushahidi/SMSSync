@@ -19,7 +19,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:padding="@dimen/view_spacing_large">
 
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/twitter_login_info"
@@ -31,22 +32,28 @@
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/twitter_logged_user"
             style="@style/TextView.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:drawableLeft="@drawable/ic_filter_list_black_24dp"
-            android:drawablePadding="@dimen/view_spacing_normal"
-            android:layout_below="@+id/twitter_login_info"
+            android:textSize="@dimen/text_size_large"
+            android:textColor="@color/black"
+            android:drawableLeft="@drawable/ic_twitter_blue_36dp"
+            android:drawablePadding="@dimen/view_spacing_xlarge"
+            android:text="eyedol"
             android:paddingBottom="0dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:paddingRight="0dp"
+            android:paddingLeft="@dimen/view_spacing_large"
+            android:layout_below="@+id/twitter_login_info" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="25dp"/>
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/twitter_logout"
             style="@style/TextView.Label"
+            android:layout_width="wrap_content"
+            android:padding="0dp"
             android:layout_gravity="center"
             android:textColor="@color/color_accent"
             android:text="@string/logout"
             android:layout_below="@+id/twitter_logged_user"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="33dp"
-            android:layout_marginStart="33dp"/>
+            android:layout_alignRight="@+id/twitter_logged_user"
+            android:layout_alignEnd="@+id/twitter_logged_user"/>
 </RelativeLayout>

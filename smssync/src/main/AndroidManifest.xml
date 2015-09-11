@@ -107,6 +107,17 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".presentation.view.ui.activity.MainActivity"/>
         </activity>
+
+        <activity
+                android:name=".presentation.view.ui.activity.TwitterProfileActivity"
+                android:label="@string/twitter"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.IntegrationActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.IntegrationActivity"/>
+        </activity>
         <activity
                 android:name=".presentation.view.ui.activity.ListWebServiceActivity"
                 android:label="@string/manage_custom_web_services"
@@ -310,7 +321,5 @@
         <!-- message delivery scheduled -->
         <receiver
                 android:name="org.addhen.smssync.presentation.receiver.MessageResultsScheduledReceiver"/>
-
-
     </application>
 </manifest>
