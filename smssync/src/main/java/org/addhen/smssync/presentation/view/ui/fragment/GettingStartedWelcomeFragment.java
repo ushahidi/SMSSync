@@ -29,6 +29,10 @@ public class GettingStartedWelcomeFragment extends BaseFragment {
 
     private static GettingStartedWelcomeFragment mGettingStartedWelcomeFragment;
 
+    public GettingStartedWelcomeFragment() {
+        super(0, 0);
+    }
+
     public GettingStartedWelcomeFragment(@LayoutRes int layout) {
         super(layout, 0);
     }
