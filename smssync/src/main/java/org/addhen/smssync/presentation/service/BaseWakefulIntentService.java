@@ -51,6 +51,7 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
     @Override
     public void doWakefulWork(final Intent intent) {
         log("onHandleIntent(): running service");
+
         boolean isConnected = Utility.isConnected(this);
 
         // check if we have internet
@@ -83,6 +84,7 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
     public void onCreate() {
         super.onCreate();
         App.bus.register(this);
+        injector();
     }
 
     @Override
@@ -118,6 +120,6 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
     }
 
     protected AppComponent getAppComponent() {
-        return ((App) getApplication()).getAppComponent();
+        return App.getComponent();
     }
 }

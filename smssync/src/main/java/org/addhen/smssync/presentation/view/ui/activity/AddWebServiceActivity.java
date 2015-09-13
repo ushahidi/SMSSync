@@ -93,6 +93,6 @@ public class AddWebServiceActivity extends BaseActivity
      * @return {@link com.addhen.android.raiburari.presentation.di.component.ApplicationComponent}
      */
     public AppComponent getAppComponent() {
-        return ((App) getApplication()).getAppComponent();
+        return App.getAppComponent();
     }
 }

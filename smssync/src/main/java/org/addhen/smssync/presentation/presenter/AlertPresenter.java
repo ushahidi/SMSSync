@@ -17,8 +17,6 @@
 
 package org.addhen.smssync.presentation.presenter;
 
-import com.addhen.android.raiburari.presentation.presenter.Presenter;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
@@ -42,13 +40,13 @@ import javax.inject.Inject;
  */
 public class AlertPresenter {
 
-    public static final String TASK_PARAM = "Task";
-
-    public static final String MESSAGE_PARAM = "message";
-
     public final static int MAX_DISCONNECT_TIME = 15000;
 
-    private Thread mLostConnectionThread;
+    public Thread lostConnectionThread;
+
+    private static final String TASK_PARAM = "Task";
+
+    private static final String MESSAGE_PARAM = "message";
 
     private PrefsFactory mPrefsFactory;
 

@@ -17,14 +17,18 @@
 
 package org.addhen.smssync.presentation.receiver;
 
-import org.addhen.smssync.data.PrefsFactory;
-import org.addhen.smssync.presentation.di.component.AppComponent;
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.util.Utility;
+import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.presenter.AlertPresenter;
+import org.addhen.smssync.presentation.service.CheckTaskService;
+import org.addhen.smssync.presentation.service.ServiceConstants;
+import org.addhen.smssync.presentation.service.SyncPendingMessagesService;
+import org.addhen.smssync.presentation.task.SyncType;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 
 /**
  * This Receiver class is designed to listen for changes in connectivity. When we receive
@@ -36,19 +40,43 @@ import android.content.pm.PackageManager;
  */
 public class ConnectivityChangedReceiver extends BroadcastReceiver {
 
-    AppComponent mAppComponent;
-
-    private boolean isConnected;
-
-    private PackageManager pm;
-
-    private ComponentName connectivityReceiver;
+    private AlertPresenter mAlertPresenter;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        mAlertPresenter = App.getComponent().alertPresenter();
+        if (Utility.isConnected(context)) {
+            Intent syncPendingMessagesServiceIntent = new Intent(context,
+                    SyncPendingMessagesService.class);
+            syncPendingMessagesServiceIntent.putExtra(ServiceConstants.MESSAGE_UUID, "");
+            syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA, SyncType.MANUAL.name());
+            context.startService(syncPendingMessagesServiceIntent);
+            CheckTaskService.sendWakefulWork(context, CheckTaskService.class);
 
-        // load current settings
-        PrefsFactory prefs = mAppComponent.prefsFactory();
-       
+            if (mAlertPresenter.lostConnectionThread != null
+                    && mAlertPresenter.lostConnectionThread.isAlive()) {
+                mAlertPresenter.lostConnectionThread.interrupt();
+            }
+
+            return;
+        }
+
+        if (mAlertPresenter.lostConnectionThread == null
+                || !mAlertPresenter.lostConnectionThread.isAlive()) {
+            mAlertPresenter.lostConnectionThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(AlertPresenter.MAX_DISCONNECT_TIME);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                    mAlertPresenter.dataConnectionLost();
+                }
+            });
+            mAlertPresenter.lostConnectionThread.start();
+        }
+        App.getComponent().fileManager()
+                .appendAndClose(context.getString(R.string.no_data_connection));
     }
 }

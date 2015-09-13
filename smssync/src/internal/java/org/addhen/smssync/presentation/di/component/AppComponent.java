@@ -33,6 +33,8 @@ import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.Prefs;
 import org.addhen.smssync.presentation.di.module.AppModule;
 import org.addhen.smssync.presentation.di.module.InternalAppModule;
+import org.addhen.smssync.presentation.presenter.AlertPresenter;
+import org.addhen.smssync.presentation.presenter.DebugPresenter;
 
 import javax.inject.Singleton;
 
@@ -64,6 +66,10 @@ public interface AppComponent extends ApplicationComponent {
     MessageHttpClient messageHttpClient();
 
     ProcessMessage processMessage();
+
+    DebugPresenter debugPresenter();
+
+    AlertPresenter alertPresenter();
 
     final class Initializer {
 

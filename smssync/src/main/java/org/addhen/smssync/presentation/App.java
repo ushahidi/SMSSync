@@ -41,12 +41,9 @@ public class App extends BaseApplication {
 
     public static synchronized TwitterApp getTwitterIntance() {
         if (mTwitter == null) {
-            // TODO: Load consumer key and secret from build script
             mTwitter = new TwitterBuilder(mApp,
                     BuildConfig.TWITTER_CONSUMER_KEY,
                     BuildConfig.TWITTER_CONSUMER_SECRET)
-                    .accessToken("")
-                    .accessTokenSecret("")
                     .build();
         }
         return mTwitter;
@@ -63,7 +60,7 @@ public class App extends BaseApplication {
         mAppComponent = AppComponent.Initializer.init(this);
     }
 
-    public AppComponent getAppComponent() {
+    public static AppComponent getAppComponent() {
         return mAppComponent;
     }
 

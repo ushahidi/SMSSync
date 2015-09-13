@@ -17,7 +17,12 @@
 
 package org.addhen.smssync.presentation.service;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.PrefsFactory;
+import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.util.Utility;
+import org.addhen.smssync.presentation.presenter.AlertPresenter;
 
 import android.content.Intent;
 
@@ -30,6 +35,12 @@ public class CheckTaskService extends BaseWakefulIntentService {
             .getSimpleName();
 
     private ProcessMessage mProcessMessage;
+
+    private PrefsFactory mPrefsFactory;
+
+    private FileManager mFileManager;
+
+    private AlertPresenter mAlertPresenter;
 
     public CheckTaskService() {
         super(CLASS_TAG);
@@ -47,7 +58,15 @@ public class CheckTaskService extends BaseWakefulIntentService {
      */
     protected void executeTask(Intent intent) {
         log("checkTaskService: check if a task has been enabled.");
-        mProcessMessage = getAppComponent().processMessage();
-        // TODO: Perform task import
+        mPrefsFactory = getAppComponent().prefsFactory();
+        mAlertPresenter = getAppComponent().alertPresenter();
+        if (Utility.isConnected(this)) {
+            if (mPrefsFactory.serviceEnabled().get() && mPrefsFactory.enableTaskCheck().get()) {
+                mProcessMessage = getAppComponent().processMessage();
+                // TODO: Perform task import
+            }
+            return;
+        }
+        mFileManager.appendAndClose(getString(R.string.no_data_connection));
     }
 }

@@ -388,7 +388,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
      * @return {@link com.addhen.android.raiburari.presentation.di.component.ApplicationComponent}
      */
     public AppComponent getAppComponent() {
-        return ((App) getApplication()).getAppComponent();
+        return App.getAppComponent();
     }
 
     public MessageComponent getMessageComponent() {
