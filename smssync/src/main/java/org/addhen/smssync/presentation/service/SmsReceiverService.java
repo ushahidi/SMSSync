@@ -76,13 +76,13 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     private String messagesUuid = "";
 
-    ProcessMessage mProcessMessage;
+    private ProcessMessage mProcessMessage;
 
     private SmsMessage sms;
 
     private Intent statusIntent;
 
-    AppServiceComponent mAppServiceComponent;
+    private AppServiceComponent mAppServiceComponent;
 
     FileManager mFileManager;
 
@@ -195,7 +195,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
-        //App.bus.register(this);
+        App.bus.register(this);
 
     }
 
@@ -225,7 +225,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     @Override
     public void onDestroy() {
         mServiceLooper.quit();
-        //App.bus.unregister(this);
+        App.bus.unregister(this);
         super.onDestroy();
     }
 
@@ -241,7 +241,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
         String body;
         Bundle bundle = intent.getExtras();
-        //TODO:: refactor to use a different name for this
         MessageModel msg = new MessageModel();
 
         log("handleSmsReceived() bundle " + bundle);

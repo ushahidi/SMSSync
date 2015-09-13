@@ -46,12 +46,20 @@ public interface WebServiceDataSource {
     Observable<WebService> getWebService(Long deploymentId);
 
     /**
-     * Get an {@link Observable} which will emit a {@link WebService} by its id.
+     * Gets an {@link Observable} which will emit a {@link WebService} by its status.
      *
      * @param status The deployment status to be used for retrieving a deployment
      * @return Observable that emits a list of {@link WebService}
      */
     Observable<List<WebService>> getByStatus(WebService.Status status);
+
+    /**
+     * Gets a list of {@link WebService} by its status.
+     *
+     * @param status The deployment status to be used for retrieving a deployment
+     * @return A list of {@link WebService}
+     */
+    List<WebService> syncGetByStatus(WebService.Status status);
 
     /**
      * Adds an {@link WebService} to storage and then returns an {@link Observable} for all

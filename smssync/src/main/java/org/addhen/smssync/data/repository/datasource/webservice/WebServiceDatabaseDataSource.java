@@ -62,6 +62,11 @@ public class WebServiceDatabaseDataSource implements WebServiceDataSource {
     }
 
     @Override
+    public List<WebService> syncGetByStatus(WebService.Status status) {
+        return mWebServiceDatabaseHelper.get(status);
+    }
+
+    @Override
     public Observable<Long> addWebService(WebService webService) {
         return mWebServiceDatabaseHelper.put(webService);
     }

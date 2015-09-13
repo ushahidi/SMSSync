@@ -158,7 +158,7 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
-    private List<WebService> get(final WebService.Status status) {
+    public List<WebService> get(final WebService.Status status) {
         final List<WebService> webServices = cupboard()
                 .withDatabase(getReadableDatabase()).query(WebService.class)
                 .withSelection("status = ?", status.name()).list();

@@ -53,6 +53,6 @@ public class MessageEntity extends Entity {
     }
 
     public enum Type {
-        TASK, PENDING
+        TASK, PENDING, ALERT
     }
 }

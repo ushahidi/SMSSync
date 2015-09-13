@@ -75,6 +75,8 @@ public class Message extends DataEntity implements Serializable {
         @SerializedName("task")
         TASK,
         @SerializedName("pending")
-        PENDING
+        PENDING,
+        @SerializedName("alert")
+        ALERT,
     }
 }

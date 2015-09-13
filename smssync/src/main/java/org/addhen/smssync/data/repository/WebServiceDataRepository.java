@@ -70,6 +70,11 @@ public class WebServiceDataRepository implements WebServiceRepository {
     }
 
     @Override
+    public List<WebServiceEntity> syncGetByStatus(WebServiceEntity.Status status) {
+        return null;
+    }
+
+    @Override
     public Observable<Boolean> testWebService(String url) {
         return mAppHttpClient.makeRequest(url);
     }
