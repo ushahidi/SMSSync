@@ -54,14 +54,14 @@ public class TwitterProfileFragment extends BaseFragment {
 
     public void onViewCreated(View view, Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
-        final String username = "@" + App.getTwitterIntance().getSessionManager()
+        final String username = "@" + App.getTwitterInstance().getSessionManager()
                 .getActiveSession().mUserName;
         mLoggedInUser.setText(username);
     }
 
     @OnClick(R.id.twitter_logout)
     void onTwitterClicked() {
-        App.getTwitterIntance().logout();
+        App.getTwitterInstance().logout();
         getActivity().finish();
     }
 }

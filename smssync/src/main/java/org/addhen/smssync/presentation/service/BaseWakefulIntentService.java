@@ -120,6 +120,6 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
     }
 
     protected AppComponent getAppComponent() {
-        return App.getComponent();
+        return App.getAppComponent();
     }
 }

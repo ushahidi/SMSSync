@@ -39,7 +39,7 @@ public class App extends BaseApplication {
 
     public static final AppBus bus = new AppBus(new Bus(ThreadEnforcer.ANY));
 
-    public static synchronized TwitterApp getTwitterIntance() {
+    public static synchronized TwitterApp getTwitterInstance() {
         if (mTwitter == null) {
             mTwitter = new TwitterBuilder(mApp,
                     BuildConfig.TWITTER_CONSUMER_KEY,

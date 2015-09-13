@@ -50,8 +50,8 @@ public class GettingStartedIntegrationFragment extends BaseFragment {
 
     @OnClick(R.id.twitter)
     void onTwitterClicked() {
-        if (App.getTwitterIntance().getSessionManager().getActiveSession() == null) {
-            App.getTwitterIntance().login(getActivity());
+        if (App.getTwitterInstance().getSessionManager().getActiveSession() == null) {
+            App.getTwitterInstance().login(getActivity());
             return;
         }
         // Show profile

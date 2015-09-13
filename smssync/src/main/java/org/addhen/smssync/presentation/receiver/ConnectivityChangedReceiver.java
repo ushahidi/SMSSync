@@ -44,7 +44,7 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        mAlertPresenter = App.getComponent().alertPresenter();
+        mAlertPresenter = App.getAppComponent().alertPresenter();
         if (Utility.isConnected(context)) {
             Intent syncPendingMessagesServiceIntent = new Intent(context,
                     SyncPendingMessagesService.class);
@@ -76,7 +76,7 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
             });
             mAlertPresenter.lostConnectionThread.start();
         }
-        App.getComponent().fileManager()
+        App.getAppComponent().fileManager()
                 .appendAndClose(context.getString(R.string.no_data_connection));
     }
 }

@@ -81,7 +81,7 @@ public class OauthActivity extends Activity implements TwitterOAuthView.Listener
         TwitterAuthToken authToken = new TwitterAuthToken(accessToken.getToken(),
                 accessToken.getTokenSecret());
         // Persist user session so we can perform actions on protected resources
-        App.getTwitterIntance().getSessionManager().setActiveSession(
+        App.getTwitterInstance().getSessionManager().setActiveSession(
                 new TwitterSession(authToken, accessToken.getUserId(),
                         accessToken.getScreenName()));
         finish();
