@@ -106,7 +106,7 @@ public class ProcessSms {
             deliveryIntents.add(deliveryIntent);
         }
         if (sendDeliveryReport) {
-            sms.sendMultipartTextMessage(message.body, null, parts, sentIntents, deliveryIntents);
+            sms.sendMultipartTextMessage(message.phone, null, parts, sentIntents, deliveryIntents);
             return;
         }
 

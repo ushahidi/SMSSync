@@ -22,6 +22,8 @@ import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.MessageModel;
@@ -46,12 +48,16 @@ public class PublishMessagesPresenter implements Presenter {
 
     private PublishMessageView mPublishMessageView;
 
+    private PrefsFactory mPrefsFactory;
+
     @Inject
     public PublishMessagesPresenter(
             @Named("publishMessage") PublishMessageUsecase publishMessageUsecase,
-            MessageModelDataMapper messageModelDataMapper) {
+            MessageModelDataMapper messageModelDataMapper,
+            PrefsFactory prefsFactory) {
         mPublishMessageUsecase = publishMessageUsecase;
         mMessageModelDataMapper = messageModelDataMapper;
+        mPrefsFactory = prefsFactory;
     }
 
     public void setView(@NonNull PublishMessageView publishMessageView) {
@@ -74,6 +80,11 @@ public class PublishMessagesPresenter implements Presenter {
     }
 
     public void publishMessage(List<MessageModel> messageModels) {
+        if (!mPrefsFactory.serviceEnabled().get()) {
+            mPublishMessageView.showError(
+                    mPublishMessageView.getAppContext().getString(R.string.smssync_not_enabled));
+            return;
+        }
         mPublishMessageUsecase.setMessageEntity(mMessageModelDataMapper.unmap(messageModels));
         mPublishMessageUsecase.execute(new PublishMessageSubscriber());
     }

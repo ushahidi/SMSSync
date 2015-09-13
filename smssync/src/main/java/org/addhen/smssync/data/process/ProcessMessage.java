@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.data.process;
 
+import com.google.gson.Gson;
+
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
@@ -39,6 +41,8 @@ import android.content.Context;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -376,7 +380,7 @@ public class ProcessMessage {
                 pattern = Pattern.compile(regText, Pattern.CASE_INSENSITIVE);
             } catch (PatternSyntaxException e) {
                 // Invalid RegEx
-                return true;
+                return false;
             }
             Matcher matcher = pattern.matcher(message);
 
@@ -399,6 +403,82 @@ public class ProcessMessage {
         return true;
     }
 
+    public void performTask(WebService syncUrl) {
+        Logger.log(TAG, "performTask(): perform a task");
+        logActivities(R.string.perform_task);
+        StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
+        final String urlSecret = syncUrl.getSecret();
+        uriBuilder.append("?task=send");
+
+        if (!TextUtils.isEmpty(urlSecret)) {
+            String urlSecretEncoded = urlSecret;
+            uriBuilder.append("&secret=");
+            try {
+                urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
+            } catch (java.io.UnsupportedEncodingException e) {
+                Logger.log(TAG, e.getMessage());
+            }
+            uriBuilder.append(urlSecretEncoded);
+        }
+
+        mMessageHttpClient.setUrl(uriBuilder.toString());
+        SmssyncResponse smssyncResponses = null;
+        Gson gson = null;
+        String errorMessage = null;
+        try {
+            mMessageHttpClient.execute();
+            gson = new Gson();
+            final String response = mMessageHttpClient.getResponse().body().string();
+            mFileManager.appendAndClose("HTTP Client Response: " + response);
+            smssyncResponses = gson.fromJson(response, SmssyncResponse.class);
+        } catch (Exception e) {
+            Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: "
+                    + mMessageHttpClient.getResponse());
+            try {
+                mFileManager.appendAndClose(
+                        "Task crashed: " + e.getMessage() + " response: " + mMessageHttpClient
+                                .getResponse().body().string());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+
+        if (smssyncResponses != null) {
+            Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
+            mFileManager.appendAndClose("TaskCheckResponse: " + smssyncResponses.toString());
+
+            if (smssyncResponses.getPayload() != null) {
+                String task = smssyncResponses.getPayload().getTask();
+                Logger.log(TAG, "Task " + task);
+                boolean secretOk = TextUtils.isEmpty(urlSecret) ||
+                        urlSecret.equals(smssyncResponses.getPayload().getSecret());
+                if (secretOk && task.equals("send")) {
+                    if (mPrefsFactory.messageResultsAPIEnable().get()) {
+                        sendSMSWithMessageResultsAPIEnabled(syncUrl,
+                                smssyncResponses.getPayload().getMessages());
+                    } else {
+                        //backwards compatibility
+                        sendSMSWithMessageResultsAPIDisabled(
+                                smssyncResponses.getPayload().getMessages());
+                    }
+
+                } else {
+                    Logger.log(TAG, mContext.getString(R.string.no_task));
+                    logActivities(R.string.no_task);
+                    errorMessage = mContext.getString(R.string.no_task);
+                }
+
+            } else { // 'payload' data may not be present in JSON
+                Logger.log(TAG, mContext.getString(R.string.no_task));
+                logActivities(R.string.no_task);
+                errorMessage = mContext.getString(R.string.no_task);
+            }
+        }
+
+        mFileManager.appendAndClose(
+                mContext.getString(R.string.finish_task_check) + " " + errorMessage);
+    }
+
     private boolean sendTaskSms(Message message) {
 
         if (message.messageDate == null || !TextUtils.isEmpty(message.messageUuid)) {
@@ -410,9 +490,9 @@ public class ProcessMessage {
         }
         message.messageType = Message.Type.TASK;
         if (mPrefsFactory.smsReportDelivery().get()) {
-            mProcessSms.sendSms(map(message), false);
+            mProcessSms.sendSms(map(message), true);
         }
-        mProcessSms.sendSms(map(message), true);
+        mProcessSms.sendSms(map(message), false);
         return true;
     }
 

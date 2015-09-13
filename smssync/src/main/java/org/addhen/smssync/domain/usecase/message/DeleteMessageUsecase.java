@@ -38,7 +38,7 @@ public class DeleteMessageUsecase extends Usecase {
 
     private final MessageRepository mMessageRepository;
 
-    private Long mMessageId;
+    private String mMessageUuid;
 
     /**
      * Default constructor
@@ -58,17 +58,17 @@ public class DeleteMessageUsecase extends Usecase {
     /**
      * Sets message Id
      *
-     * @param messageId The Id of the message
+     * @param messageUuid The Id of the message
      */
-    public void setMessageId(Long messageId) {
-        mMessageId = messageId;
+    public void setMessageUuid(String messageUuid) {
+        mMessageUuid = messageUuid;
     }
 
     @Override
-    protected Observable<Long> buildUseCaseObservable() {
-        if (mMessageId == null) {
-            throw new RuntimeException("MessageId is null. You must call setMessageId(...)");
+    protected Observable<Integer> buildUseCaseObservable() {
+        if (mMessageUuid == null) {
+            throw new RuntimeException("MessageId is null. You must call setMessageUuid(...)");
         }
-        return mMessageRepository.deleteEntity(mMessageId);
+        return mMessageRepository.deleteByUuid(mMessageUuid);
     }
 }

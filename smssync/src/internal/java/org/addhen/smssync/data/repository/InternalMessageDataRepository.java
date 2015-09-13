@@ -66,7 +66,9 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<Integer> deleteByUuid(String uuid) {
-        return null;
+        return Observable.defer(() -> {
+            return Observable.just(10);
+        });
     }
 
     @Override

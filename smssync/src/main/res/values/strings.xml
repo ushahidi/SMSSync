@@ -200,8 +200,7 @@
     <string name="task_check_settings">Task Settings</string>
     <string name="about_smssync">About Sync</string>
     <string name="please_wait">Please wait</string>
-    <string name="smssync_not_enabled">SMSsync is not enabled. Please enable it from the Settings
-        screen.
+    <string name="smssync_not_enabled">SMSsync is not enabled. Please enable it in order to perfom this action.
     </string>
     <string name="import_messages">Importing messages...</string>
     <string name="nothing_to_import">No messages to import. Make sure you have SMS messages in your

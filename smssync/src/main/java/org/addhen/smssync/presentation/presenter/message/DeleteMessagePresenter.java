@@ -67,8 +67,8 @@ public class DeleteMessagePresenter implements Presenter {
         mDeleteMessageUsecase.unsubscribe();
     }
 
-    public void deleteMessage(Long messageId) {
-        mDeleteMessageUsecase.setMessageId(messageId);
+    public void deleteMessage(String messageUuid) {
+        mDeleteMessageUsecase.setMessageUuid(messageUuid);
         mDeleteMessageUsecase.execute(new DeleteMessageSubscriber());
     }
 
@@ -78,7 +78,7 @@ public class DeleteMessagePresenter implements Presenter {
         mDeleteMessageView.showError(errorMessage);
     }
 
-    private class DeleteMessageSubscriber extends DefaultSubscriber<Long> {
+    private class DeleteMessageSubscriber extends DefaultSubscriber<Integer> {
 
         @Override
         public void onStart() {
@@ -92,7 +92,7 @@ public class DeleteMessagePresenter implements Presenter {
         }
 
         @Override
-        public void onNext(Long row) {
+        public void onNext(Integer row) {
             mDeleteMessageView.hideLoading();
             mDeleteMessageView.onMessageDeleted();
         }

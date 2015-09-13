@@ -182,7 +182,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mPublishMessagesPresenter.setView(new PublishMessageView() {
             @Override
             public void successfullyPublished(boolean status) {
-                // Do nothing
+                reloadMessages();
             }
 
             @Override
@@ -221,7 +221,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mDeleteMessagePresenter.setView(new DeleteMessageView() {
             @Override
             public void onMessageDeleted() {
-                // Do nothing
+                reloadMessages();
             }
 
             @Override
@@ -319,7 +319,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                     switch (which) {
                         case R.id.menu_messages_more_actions_delete:
                             mDeleteMessagePresenter
-                                    .deleteMessage(mMessageAdapter.getItem(position)._id);
+                                    .deleteMessage(mMessageAdapter.getItem(position).messageUuid);
                             break;
                         default:
                             List<MessageModel> messageModels = new ArrayList<MessageModel>();
@@ -550,7 +550,8 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                     if (mPendingMessages.size() > 0) {
                         for (PendingMessage pendingDeletedDeployment : mPendingMessages) {
                             mDeleteMessagePresenter
-                                    .deleteMessage(pendingDeletedDeployment.messageModel._id);
+                                    .deleteMessage(
+                                            pendingDeletedDeployment.messageModel.messageUuid);
                         }
                         clearItems();
                     }

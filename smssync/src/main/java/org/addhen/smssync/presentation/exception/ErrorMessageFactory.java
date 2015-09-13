@@ -48,8 +48,6 @@ public class ErrorMessageFactory {
             message = context.getString(R.string.exception_message_filter_not_found);
         } else if (exception instanceof MessageNotFoundException) {
             message = context.getString(R.string.exception_message_filter_not_found);
-        } else {
-            message = exception.getMessage();
         }
 
         // Only print stacktrace when running a debug build for debugging purposes

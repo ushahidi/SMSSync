@@ -42,6 +42,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import rx.Observable;
+
 import static com.squareup.okhttp.internal.Util.UTF_8;
 
 /**
@@ -62,6 +64,48 @@ public class MessageHttpClient extends BaseHttpClient {
     public MessageHttpClient(Context context, FileManager fileManager) {
         super(context);
         mFileManager = fileManager;
+    }
+
+    /**
+     * Post sms to the configured sync URL
+     *
+     * @return boolean
+     */
+    public boolean postSmsToWebService(WebService webService, Message message, String toNumber,
+            String deviceId) {
+        initRequest(webService, message, toNumber, deviceId);
+        final Gson gson = new Gson();
+        try {
+            execute();
+            Response response = getResponse();
+            int statusCode = response.code();
+            if (statusCode != 200 && statusCode != 201) {
+                setServerError("bad http return code", statusCode);
+                return false;
+            }
+            
+            SmssyncResponse smssyncResponses = gson.fromJson(response.body().string(),
+                    SmssyncResponse.class);
+            if (smssyncResponses.getPayload().isSuccess()) {
+                // auto response message is enabled to be received from the
+                // server.
+                setServerSuccessResp(smssyncResponses);
+                return true;
+            }
+
+            String payloadError = smssyncResponses.getPayload().getError();
+            if (!TextUtils.isEmpty(payloadError)) {
+                setServerError(payloadError, statusCode);
+            } else {
+                setServerError(response.body().string(), statusCode);
+            }
+        } catch (Exception e) {
+            Observable.error(e);
+            log("Request failed", e);
+            setClientError("Request failed. " + e.getMessage());
+        }
+        return false;
+
     }
 
     private void initRequest(WebService webService, Message message, String toNumber,
@@ -104,48 +148,6 @@ public class MessageHttpClient extends BaseHttpClient {
             log("failed to set request method.", e);
             setClientError("Failed to set request method.");
         }
-
-    }
-
-    /**
-     * Post sms to the configured sync URL
-     *
-     * @return boolean
-     */
-    public boolean postSmsToWebService(WebService webService, Message message, String toNumber,
-            String deviceId) {
-        initRequest(webService, message, toNumber, deviceId);
-        try {
-            execute();
-            Response response = getResponse();
-            int statusCode = response.code();
-
-            if (statusCode != 200 && statusCode != 201) {
-                setServerError("bad http return code", statusCode);
-                return false;
-            }
-            final Gson gson = new Gson();
-            SmssyncResponse smssyncResponses = gson
-                    .fromJson(response.body().charStream(), SmssyncResponse.class);
-            if (smssyncResponses.getPayload().isSuccess()) {
-                // auto response message is enabled to be received from the
-                // server.
-                setServerSuccessResp(smssyncResponses);
-                return true;
-            }
-
-            String payloadError = smssyncResponses.getPayload().getError();
-            if (!TextUtils.isEmpty(payloadError)) {
-                setServerError(payloadError, statusCode);
-            } else {
-                setServerError(response.body().string(), statusCode);
-            }
-        } catch (Exception e) {
-            log("Request failed", e);
-            setClientError("Request failed. " + e.getMessage());
-        }
-
-        return false;
 
     }
 
