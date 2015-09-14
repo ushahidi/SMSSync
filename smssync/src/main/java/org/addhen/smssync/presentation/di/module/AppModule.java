@@ -33,7 +33,6 @@ import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.presentation.App;
-import org.addhen.smssync.presentation.Prefs;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
@@ -54,7 +53,7 @@ public class AppModule {
 
     private static final String PREF_NAME = "SMS_SYNC_PREF";
 
-    App mApp;
+    private App mApp;
 
     public AppModule(App application) {
         mApp = application;
@@ -77,12 +76,6 @@ public class AppModule {
     @Singleton
     FileManager provideFileManager(Context context, PrefsFactory prefsFactory) {
         return new FileManager(context, prefsFactory);
-    }
-
-    @Provides
-    @Singleton
-    Prefs providePrefs(Context context) {
-        return new Prefs(context);
     }
 
     @Provides

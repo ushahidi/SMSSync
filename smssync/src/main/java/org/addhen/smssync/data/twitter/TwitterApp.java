@@ -26,6 +26,8 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import javax.inject.Inject;
+
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -51,6 +53,7 @@ public class TwitterApp {
 
     private TwitterFactory mTwitterFactory;
 
+    @Inject
     public TwitterApp(Context context, TwitterAuthConfig config) {
         mContext = context;
         mAuthConfig = config;
@@ -101,7 +104,7 @@ public class TwitterApp {
 
     @Nullable
     public Status tweet(@NonNull String update) {
-        if (mTwitterSessionManager != null) {
+        if (mTwitterSessionManager != null && mTwitterSessionManager.getActiveSession() != null) {
             TwitterAuthToken authToken = mTwitterSessionManager.getActiveSession().getAuthToken();
             AccessToken accessToken = new AccessToken(authToken.token, authToken.secret);
             Twitter twitter = mTwitterFactory.getInstance(accessToken);

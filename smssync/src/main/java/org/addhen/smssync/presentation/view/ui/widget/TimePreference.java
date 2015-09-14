@@ -18,8 +18,9 @@
 package org.addhen.smssync.presentation.view.ui.widget;
 
 
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.util.Logger;
-import org.addhen.smssync.presentation.Prefs;
+import org.addhen.smssync.presentation.App;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -44,11 +45,11 @@ public class TimePreference extends DialogPreference {
 
     private TimePicker picker = null;
 
-    private Prefs prefs;
+    private PrefsFactory prefs;
 
     public TimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        prefs = new Prefs(context);
+        prefs = App.getAppComponent().prefsFactory();
         setPositiveButtonText("Set");
         setNegativeButtonText("Cancel");
     }

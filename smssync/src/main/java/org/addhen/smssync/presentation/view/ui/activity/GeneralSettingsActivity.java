@@ -21,7 +21,6 @@ import com.cgollner.unclouded.preferences.SwitchPreferenceCompat;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
-import org.addhen.smssync.presentation.Prefs;
 import org.addhen.smssync.presentation.presenter.AddLogPresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.log.AddLogView;
