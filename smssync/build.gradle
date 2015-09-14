@@ -220,7 +220,7 @@ if (project.hasProperty('releaseKeyStore') &&
     android.signingConfigs.releaseSign.keyPassword = releaseKeyPassword
 } else {
     android.signingConfigs.releaseSign.keyAlias ""
-    android.signingConfigs.releaseSign.storeFile ""
+    android.signingConfigs.releaseSign.storeFile null
     android.signingConfigs.releaseSign.storePassword ""
     android.signingConfigs.releaseSign.keyPassword ""
 }
