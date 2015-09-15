@@ -22,7 +22,7 @@ import com.addhen.android.raiburari.presentation.di.component.ApplicationCompone
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
-import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.AppComponent;
@@ -58,7 +58,7 @@ import javax.inject.Inject;
 public class SmsReceiverService extends Service implements HasComponent<AppServiceComponent> {
 
     @Inject
-    ProcessMessage mProcessMessage;
+    PostMessage mProcessMessage;
 
     @Inject
     FileManager mFileManager;

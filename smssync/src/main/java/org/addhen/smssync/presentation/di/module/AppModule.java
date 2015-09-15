@@ -25,10 +25,10 @@ import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.database.FilterDatabaseHelper;
 import org.addhen.smssync.data.database.MessageDatabaseHelper;
 import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
-import org.addhen.smssync.data.process.ProcessMessage;
-import org.addhen.smssync.data.process.ProcessMessageResult;
+import org.addhen.smssync.data.message.ProcessMessageResult;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.data.twitter.TwitterApp;
@@ -117,7 +117,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    ProcessMessage provideProcessMessage(Context context, PrefsFactory prefsFactory,
+    PostMessage provideProcessMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
             MessageDatabaseHelper messageDatabaseHelper,
             WebServiceDatabaseHelper webServiceDatabaseHelper,
@@ -126,7 +126,7 @@ public class AppModule {
             FileManager fileManager,
             TwitterApp twitterApp,
             ProcessMessageResult processMessageResult) {
-        return new ProcessMessage(context, prefsFactory, messageHttpClient, messageDatabaseHelper,
+        return new PostMessage(context, prefsFactory, messageHttpClient, messageDatabaseHelper,
                 webServiceDatabaseHelper, filterDatabaseHelper, processSms, fileManager,
                 processMessageResult,twitterApp);
     }

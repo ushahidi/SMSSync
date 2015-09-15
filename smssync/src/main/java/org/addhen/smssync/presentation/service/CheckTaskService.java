@@ -20,7 +20,7 @@ package org.addhen.smssync.presentation.service;
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
-import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.util.Utility;
 import org.addhen.smssync.presentation.presenter.AlertPresenter;
 
@@ -34,7 +34,7 @@ public class CheckTaskService extends BaseWakefulIntentService {
     private final static String CLASS_TAG = CheckTaskService.class
             .getSimpleName();
 
-    private ProcessMessage mProcessMessage;
+    private PostMessage mProcessMessage;
 
     private PrefsFactory mPrefsFactory;
 

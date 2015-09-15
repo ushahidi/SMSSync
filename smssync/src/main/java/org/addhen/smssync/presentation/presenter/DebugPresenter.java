@@ -21,8 +21,8 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Message;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
-import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 import org.addhen.smssync.domain.repository.WebServiceRepository;
 import org.addhen.smssync.presentation.util.Utility;
@@ -47,7 +47,7 @@ public class DebugPresenter {
 
     private AppHttpClient mAppHttpClient;
 
-    private ProcessMessage mProcessMessage;
+    private PostMessage mProcessMessage;
 
     private WebServiceRepository mWebServiceRepository;
 
@@ -55,7 +55,7 @@ public class DebugPresenter {
 
     @Inject
     public DebugPresenter(PrefsFactory prefsFactory, AppHttpClient appHttpClient,
-            ProcessMessage processMessage, WebServiceRepository webServiceRepository,
+            PostMessage processMessage, WebServiceRepository webServiceRepository,
             FileManager fileManager) {
         mPrefsFactory = prefsFactory;
         mAppHttpClient = appHttpClient;

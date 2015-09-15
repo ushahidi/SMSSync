@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.data.process;
+package org.addhen.smssync.data.message;
 
 import com.google.gson.Gson;
 

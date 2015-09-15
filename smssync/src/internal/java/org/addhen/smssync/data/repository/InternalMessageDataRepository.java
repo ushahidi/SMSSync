@@ -24,7 +24,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
-import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.smslib.model.SmsMessage;
@@ -54,11 +54,11 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     private final MessageDataMapper mMessageDataMapper;
 
-    private ProcessMessage mProcessMessage;
+    private PostMessage mProcessMessage;
 
     @Inject
     public InternalMessageDataRepository(Context context, MessageDataMapper messageDataMapper,
-            ProcessMessage processMessage) {
+            PostMessage processMessage) {
         mContext = context;
         mMessageDataMapper = messageDataMapper;
         mProcessMessage = processMessage;

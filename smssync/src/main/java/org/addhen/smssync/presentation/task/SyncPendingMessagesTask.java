@@ -19,7 +19,7 @@ package org.addhen.smssync.presentation.task;
 
 import com.squareup.otto.Subscribe;
 
-import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.model.MessageModel;
@@ -49,7 +49,7 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
 
     private final SyncPendingMessagesService mService;
 
-    private ProcessMessage mProcessMessage;
+    private PostMessage mProcessMessage;
 
     private int itemsToSync;
 

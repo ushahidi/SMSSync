@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.data.process;
+package org.addhen.smssync.data.message;
 
 import com.google.gson.Gson;
 
@@ -32,77 +32,48 @@ import org.addhen.smssync.data.entity.QueuedMessages;
 import org.addhen.smssync.data.entity.SmssyncResponse;
 import org.addhen.smssync.data.entity.WebService;
 import org.addhen.smssync.data.net.MessageHttpClient;
-import org.addhen.smssync.data.twitter.TwitterApp;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.data.util.Utility;
-import org.addhen.smssync.smslib.model.SmsMessage;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 import android.text.TextUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
+ * Posts {@link Message} to a configured web service
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @Singleton
-public class ProcessMessage {
-
-    private static final String TAG = ProcessMessage.class
-            .getSimpleName();
+public class PostMessage extends ProcessMessage {
 
     private MessageHttpClient mMessageHttpClient;
 
-    private PrefsFactory mPrefsFactory;
-
-    private MessageDatabaseHelper mMessageDatabaseHelper;
-
-    private WebServiceDatabaseHelper mWebServiceDatabaseHelper;
-
-    private FilterDatabaseHelper mFilterDatabaseHelper;
-
-    private ProcessSms mProcessSms;
-
-    private FileManager mFileManager;
-
-    private Context mContext;
-
     private ProcessMessageResult mProcessMessageResult;
 
-    private TwitterApp mTwitterApp;
-
     @Inject
-    public ProcessMessage(Context context, PrefsFactory prefsFactory,
+    public PostMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
             MessageDatabaseHelper messageDatabaseHelper,
             WebServiceDatabaseHelper webServiceDatabaseHelper,
             FilterDatabaseHelper filterDatabaseHelper,
             ProcessSms processSms,
             FileManager fileManager,
-            ProcessMessageResult processMessageResult,
-            TwitterApp twitterApp) {
-        mPrefsFactory = prefsFactory;
+            ProcessMessageResult processMessageResult) {
+        //TODO find a better way of doing this
+        super(context, prefsFactory, messageDatabaseHelper, webServiceDatabaseHelper,
+                filterDatabaseHelper, processSms, fileManager);
+
         mMessageHttpClient = messageHttpClient;
-        mMessageDatabaseHelper = messageDatabaseHelper;
-        mWebServiceDatabaseHelper = webServiceDatabaseHelper;
-        mFilterDatabaseHelper = filterDatabaseHelper;
-        mProcessSms = processSms;
-        mFileManager = fileManager;
-        mContext = context;
         mProcessMessageResult = processMessageResult;
-        mTwitterApp = twitterApp;
     }
 
     /**
@@ -223,13 +194,18 @@ public class ProcessMessage {
                         }
                     }
                 }
-            } else if (mPrefsFactory.enableBlacklist().get()) {
+            }
+
+            if (mPrefsFactory.enableBlacklist().get()) {
                 for (Filter filter : filters) {
                     for (Message msg : messages) {
                         if (!filter.phoneNumber.equals(msg.messageFrom)) {
-                            if (postMessage(msg, webService, keywords)) {
-                                postToSentBox(msg);
-                            }
+                            Logger.log("message",
+                                    " from:" + msg.messageFrom + " filter:"
+                                            + filter.phoneNumber);
+                            return false;
+                        } else {
+
                         }
                     }
                 }
@@ -242,30 +218,6 @@ public class ProcessMessage {
             }
         }
         return true;
-    }
-
-    public SmsMessage map(Message message) {
-        SmsMessage smsMessage = new SmsMessage();
-        if (message._id != null) {
-            smsMessage.id = message._id;
-        }
-        smsMessage.uuid = message.messageUuid;
-        smsMessage.body = message.messageBody;
-        smsMessage.phone = message.messageFrom;
-        smsMessage.timestamp = message.messageDate.getTime();
-        return smsMessage;
-    }
-
-    public Message map(SmsMessage smsMessage) {
-        Message message = new Message();
-        message._id = smsMessage.id;
-        message.messageUuid = smsMessage.uuid;
-        message.messageBody = smsMessage.body;
-        message.messageFrom = smsMessage.phone;
-        message.messageDate = new Date(smsMessage.timestamp);
-        message.messageType = Message.Type.PENDING;
-        message.status = Message.Status.FAILED;
-        return message;
     }
 
     private void sendSMSWithMessageResultsAPIEnabled(WebService syncUrl,
@@ -336,9 +288,6 @@ public class ProcessMessage {
             Logger.log(TAG, "Process message with keyword filtering enabled " + message);
             posted = mMessageHttpClient.postSmsToWebService(webService, message,
                     message.messageFrom, mPrefsFactory.uniqueId().get());
-            // Post to Twitter as well.
-            mTwitterApp.tweet(message.messageBody);
-
         } else {
             posted = sendTaskSms(message);
         }
@@ -346,64 +295,6 @@ public class ProcessMessage {
             processRetries(message);
         }
         return false;
-    }
-
-    public void processRetries(Message message) {
-        if (message.retries > mPrefsFactory.retries().get()) {
-            // Delete from db
-            deleteMessage(message);
-        } else {
-            // Increase message's number of tries for future comparison to know when to delete it.
-            int retries = message.retries + 1;
-            message.retries = retries;
-            mMessageDatabaseHelper.put(message);
-        }
-    }
-
-    private boolean filterByKeywords(String message, List<String> keywords) {
-        for (String keyword : keywords) {
-            if (message.toLowerCase().contains(keyword.toLowerCase().trim())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Filter message string for RegEx match
-     *
-     * @param message   The message to be tested against the RegEx
-     * @param regxTexts A string representing the regular expression to test against.
-     * @return boolean
-     */
-    private boolean filterByRegex(String message, List<String> regxTexts) {
-        Pattern pattern = null;
-        for (String regText : regxTexts) {
-            try {
-                pattern = Pattern.compile(regText, Pattern.CASE_INSENSITIVE);
-            } catch (PatternSyntaxException e) {
-                // Invalid RegEx
-                return false;
-            }
-            Matcher matcher = pattern.matcher(message);
-
-            return (matcher.find());
-        }
-        return false;
-    }
-
-    /**
-     * Saves successfully sent messages into the db
-     *
-     * @param message the message
-     */
-    private boolean postToSentBox(Message message) {
-        Logger.log(TAG,
-                "postToSentBox(): postToWebService message to sent box " + message.toString());
-        // Change the status to SENT
-        message.status = Message.Status.SENT;
-        mMessageDatabaseHelper.putMessage(message);
-        return true;
     }
 
     public void performTask(WebService syncUrl) {
@@ -480,51 +371,5 @@ public class ProcessMessage {
 
         mFileManager.appendAndClose(
                 mContext.getString(R.string.finish_task_check) + " " + errorMessage);
-    }
-
-    private boolean sendTaskSms(Message message) {
-
-        if (message.messageDate == null || !TextUtils.isEmpty(message.messageUuid)) {
-            final Long timeMills = System.currentTimeMillis();
-            message.messageDate = new Date(timeMills);
-        }
-        if (message.messageUuid == null || TextUtils.isEmpty(message.messageUuid)) {
-            message.messageUuid = mProcessSms.getUuid();
-        }
-        message.messageType = Message.Type.TASK;
-        if (mPrefsFactory.smsReportDelivery().get()) {
-            mProcessSms.sendSms(map(message), true);
-        }
-        mProcessSms.sendSms(map(message), false);
-        return true;
-    }
-
-    private void deleteFromSmsInbox(Message message) {
-        if (mPrefsFactory.autoDelete().get()) {
-            mProcessSms.delSmsFromInbox(map(message));
-            mFileManager.appendAndClose(
-                    mContext.getString(R.string.auto_message_deleted, message.messageBody));
-        }
-    }
-
-    private void savePendingMessage(Message message) {
-        //only save to pending when the number is not blacklisted
-        if (!mPrefsFactory.enableBlacklist().get()) {
-            message.status = Message.Status.FAILED;
-            mMessageDatabaseHelper.put(message);
-        }
-    }
-
-    private void deleteMessage(Message message) {
-        Logger.log(TAG, " message ID " + message.messageUuid);
-        mMessageDatabaseHelper.deleteByUuid(message.messageUuid);
-    }
-
-    private void logActivities(@StringRes int id) {
-        mFileManager.appendAndClose(mContext.getString(id));
-    }
-
-    public ProcessSms getProcessSms() {
-        return mProcessSms;
     }
 }

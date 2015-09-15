@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.presentation.service;
 
-import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.message.PostMessage;
 
 import android.content.Intent;
 
@@ -34,7 +34,7 @@ public class AutoSyncScheduledService extends BaseWakefulIntentService {
     // update the ui
     private Intent statusIntent;
 
-    private ProcessMessage mProcessMessage;
+    private PostMessage mProcessMessage;
 
     public AutoSyncScheduledService() {
         super(CLASS_TAG);

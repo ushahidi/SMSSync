@@ -19,7 +19,7 @@ package org.addhen.smssync.data.repository;
 
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
-import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.domain.entity.MessageEntity;
@@ -47,12 +47,12 @@ public class MessageDataRepository implements MessageRepository {
 
     private MessageDataSource mMessageDataSource;
 
-    private ProcessMessage mProcessMessage;
+    private PostMessage mProcessMessage;
 
     @Inject
     public MessageDataRepository(MessageDataMapper messageDataMapper,
             MessageDataSourceFactory messageDataSourceFactory,
-            ProcessMessage processMessage) {
+            PostMessage processMessage) {
         mMessageDataMapper = messageDataMapper;
         mMessageDataSourceFactory = messageDataSourceFactory;
         mProcessMessage = processMessage;

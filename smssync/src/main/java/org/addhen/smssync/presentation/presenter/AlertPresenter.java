@@ -21,9 +21,9 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Message;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.BaseHttpClient;
-import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 import org.addhen.smssync.domain.repository.WebServiceRepository;
 import org.addhen.smssync.smslib.model.SmsMessage;
@@ -52,7 +52,7 @@ public class AlertPresenter {
 
     private AppHttpClient mAppHttpClient;
 
-    private ProcessMessage mProcessMessage;
+    private PostMessage mProcessMessage;
 
     private WebServiceRepository mWebServiceRepository;
 
@@ -62,7 +62,7 @@ public class AlertPresenter {
 
     @Inject
     public AlertPresenter(Context context, PrefsFactory prefsFactory, AppHttpClient appHttpClient,
-            ProcessMessage processMessage, WebServiceRepository webServiceRepository,
+            PostMessage processMessage, WebServiceRepository webServiceRepository,
             FileManager fileManager) {
         mContext = context;
         mPrefsFactory = prefsFactory;
