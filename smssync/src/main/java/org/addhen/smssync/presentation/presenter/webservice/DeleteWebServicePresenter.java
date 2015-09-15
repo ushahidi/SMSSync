@@ -71,17 +71,16 @@ public class DeleteWebServicePresenter implements Presenter {
     }
 
     /**
-     * Deletes a deployment model from storage
+     * Deletes a web service from db
      *
-     * @param deploymentId The deployment ID to be used for deletion
+     * @param webServiceId The deployment ID to be used for deletion
      */
-    public void deleteWebService(Long deploymentId) {
-        mDeleteWebServiceUsecase.setWebServiceEntityId(deploymentId);
+    public void deleteWebService(Long webServiceId) {
+        mDeleteWebServiceUsecase.setWebServiceEntityId(webServiceId);
         mDeleteWebServiceUsecase.execute(new DefaultSubscriber<Long>() {
             @Override
             public void onCompleted() {
                 mDeleteWebServiceView.hideLoading();
-                // TODO: Delete all saved items in the shared preferences
             }
 
             @Override

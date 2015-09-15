@@ -31,10 +31,6 @@ public class TwitterBuilder {
 
     private String mConsumerSecret;
 
-    private String mAccessToken;
-
-    private String mAccessTokenSecret;
-
     private Context mContext;
 
     public TwitterBuilder(Context context, @NonNull String consumerKey,
@@ -42,16 +38,6 @@ public class TwitterBuilder {
         mContext = context;
         mConsumerKey = consumerKey;
         mConsumerSecret = consumerSecret;
-    }
-
-    public TwitterBuilder accessToken(@NonNull String accessToken) {
-        mAccessToken = accessToken;
-        return this;
-    }
-
-    public TwitterBuilder accessTokenSecret(@NonNull String accessTokenSecret) {
-        mAccessTokenSecret = accessTokenSecret;
-        return this;
     }
 
     public TwitterApp build() {

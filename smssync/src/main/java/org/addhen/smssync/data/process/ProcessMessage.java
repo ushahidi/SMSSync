@@ -32,6 +32,7 @@ import org.addhen.smssync.data.entity.QueuedMessages;
 import org.addhen.smssync.data.entity.SmssyncResponse;
 import org.addhen.smssync.data.entity.WebService;
 import org.addhen.smssync.data.net.MessageHttpClient;
+import org.addhen.smssync.data.twitter.TwitterApp;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.data.util.Utility;
 import org.addhen.smssync.smslib.model.SmsMessage;
@@ -80,6 +81,8 @@ public class ProcessMessage {
 
     private ProcessMessageResult mProcessMessageResult;
 
+    private TwitterApp mTwitterApp;
+
     @Inject
     public ProcessMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
@@ -88,7 +91,8 @@ public class ProcessMessage {
             FilterDatabaseHelper filterDatabaseHelper,
             ProcessSms processSms,
             FileManager fileManager,
-            ProcessMessageResult processMessageResult) {
+            ProcessMessageResult processMessageResult,
+            TwitterApp twitterApp) {
         mPrefsFactory = prefsFactory;
         mMessageHttpClient = messageHttpClient;
         mMessageDatabaseHelper = messageDatabaseHelper;
@@ -98,6 +102,7 @@ public class ProcessMessage {
         mFileManager = fileManager;
         mContext = context;
         mProcessMessageResult = processMessageResult;
+        mTwitterApp = twitterApp;
     }
 
     /**
@@ -204,7 +209,6 @@ public class ProcessMessage {
 
     public boolean postMessage(List<Message> messages, List<String> keywords) {
         Logger.log(TAG, "postMessages");
-
         List<WebService> webServiceList = mWebServiceDatabaseHelper.listWebServices();
         List<Filter> filters = mFilterDatabaseHelper.getFilters();
         for (WebService webService : webServiceList) {
@@ -219,17 +223,10 @@ public class ProcessMessage {
                         }
                     }
                 }
-            }
-
-            if (mPrefsFactory.enableBlacklist().get()) {
+            } else if (mPrefsFactory.enableBlacklist().get()) {
                 for (Filter filter : filters) {
                     for (Message msg : messages) {
-                        if (filter.phoneNumber.equals(msg.messageFrom)) {
-                            Logger.log("message",
-                                    " from:" + msg.messageFrom + " filter:"
-                                            + filter.phoneNumber);
-                            return false;
-                        } else {
+                        if (!filter.phoneNumber.equals(msg.messageFrom)) {
                             if (postMessage(msg, webService, keywords)) {
                                 postToSentBox(msg);
                             }
@@ -339,22 +336,28 @@ public class ProcessMessage {
             Logger.log(TAG, "Process message with keyword filtering enabled " + message);
             posted = mMessageHttpClient.postSmsToWebService(webService, message,
                     message.messageFrom, mPrefsFactory.uniqueId().get());
+            // Post to Twitter as well.
+            mTwitterApp.tweet(message.messageBody);
 
         } else {
             posted = sendTaskSms(message);
         }
         if (!posted) {
-            if (message.retries > mPrefsFactory.retries().get()) {
-                // Delete from db
-                deleteMessage(message);
-            } else {
-                // Increase message's number of tries for future comparison to know when to delete it.
-                int retries = message.retries + 1;
-                message.retries = retries;
-                mMessageDatabaseHelper.put(message);
-            }
+            processRetries(message);
         }
         return false;
+    }
+
+    public void processRetries(Message message) {
+        if (message.retries > mPrefsFactory.retries().get()) {
+            // Delete from db
+            deleteMessage(message);
+        } else {
+            // Increase message's number of tries for future comparison to know when to delete it.
+            int retries = message.retries + 1;
+            message.retries = retries;
+            mMessageDatabaseHelper.put(message);
+        }
     }
 
     private boolean filterByKeywords(String message, List<String> keywords) {

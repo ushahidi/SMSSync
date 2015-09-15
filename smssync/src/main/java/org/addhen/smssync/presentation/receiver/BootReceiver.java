@@ -17,12 +17,28 @@
 
 package org.addhen.smssync.presentation.receiver;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.PrefsFactory;
+import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.service.CheckTaskService;
+import org.addhen.smssync.presentation.service.Scheduler;
+import org.addhen.smssync.presentation.service.ServiceConstants;
+import org.addhen.smssync.presentation.service.ServiceRunner;
+import org.addhen.smssync.presentation.service.SyncPendingMessagesService;
+import org.addhen.smssync.presentation.task.SyncType;
+import org.addhen.smssync.presentation.util.TimeFrequencyUtil;
+import org.addhen.smssync.presentation.util.Utility;
+
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 /**
- * This Receiver class listens for system boot. If smssync has been enabled run the app.
+ * This Receiver class listens for system boot. If SMSsync has been enabled run the app.
  *
  * @author Henry Addo
  */
@@ -32,12 +48,59 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         boolean rebooted = intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED);
         boolean shutdown = intent.getAction().equals(Intent.ACTION_SHUTDOWN);
+        FileManager fileManager = App.getAppComponent().fileManager();
+        PrefsFactory prefsFactory = App.getAppComponent().prefsFactory();
         if (shutdown) {
-            // TODO: log when it's rebooted
+            final long currentTime = System.currentTimeMillis();
+            final String time = Utility.formatTimestamp(context, currentTime);
+            fileManager.appendAndClose(context.getString(R.string.device_shutdown, time));
         }
 
         if (rebooted) {
-            // TODO: 9/10/15 activities if rebooted
+            fileManager.appendAndClose(context.getString(R.string.device_reboot));
+            // Is SMSsync enabled
+            if (prefsFactory.serviceEnabled().get()) {
+
+                // show notification
+                Utility.showNotification(context);
+
+                // Push any pending messages now that we have connectivity
+                if (prefsFactory.enableAutoSync().get()) {
+
+                    Intent syncPendingMessagesServiceIntent = new Intent(context,
+                            SyncPendingMessagesService.class);
+
+                    syncPendingMessagesServiceIntent.putStringArrayListExtra(
+                            ServiceConstants.MESSAGE_UUID, new ArrayList<String>());
+                    syncPendingMessagesServiceIntent.putExtra(SyncType.EXTRA,
+                            SyncType.MANUAL.name());
+                    context.startService(syncPendingMessagesServiceIntent);
+
+                    // start the scheduler for auto sync service
+                    long interval = TimeFrequencyUtil
+                            .calculateInterval(prefsFactory.autoTime().get());
+                    new Scheduler(context, new Intent(context, AutoSyncScheduledReceiver.class),
+                            ServiceConstants.AUTO_SYNC_SCHEDULED_SERVICE_REQUEST_CODE,
+                            PendingIntent.FLAG_UPDATE_CURRENT).updateScheduler(
+                            interval);
+                }
+
+                // Enable Task service
+                if (prefsFactory.enableTaskCheck().get()) {
+                    CheckTaskService.sendWakefulWork(context, CheckTaskService.class);
+
+                    // start the scheduler for 'task check' service
+                    long interval = TimeFrequencyUtil.calculateInterval(
+                            prefsFactory.taskCheckTime().get());
+                    new Scheduler(context, new Intent(context, CheckTaskScheduledReceiver.class),
+                            ServiceConstants.CHECK_TASK_SCHEDULED_SERVICE_REQUEST_CODE,
+                            PendingIntent.FLAG_UPDATE_CURRENT).updateScheduler(
+                            interval);
+                }
+
+                // Start the service message results api service
+                new ServiceRunner(context, prefsFactory, fileManager).runMessageResultsService();
+            }
         }
     }
 }

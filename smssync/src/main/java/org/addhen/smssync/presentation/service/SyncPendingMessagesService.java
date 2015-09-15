@@ -21,6 +21,7 @@ import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.task.SyncConfig;
@@ -53,6 +54,8 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
 
     private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
+    private FileManager mFileManager;
+
     public SyncPendingMessagesService() {
         super(CLASS_TAG);
     }
@@ -65,6 +68,7 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
     public void onCreate() {
         super.onCreate();
         mService = this;
+        mFileManager = App.getAppComponent().fileManager();
     }
 
     @Override
@@ -82,14 +86,22 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
+                    mFileManager.appendAndClose(getString(R.string.sync_started));
+                    // Log activity
+                    mFileManager.appendAndClose(getString(R.string.smssync_service_running));
                     mState = new SyncPendingMessagesState(INITIAL, 0, 0, 0, 0, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
                         new SyncPendingMessagesTask(this).execute(config);
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
+                        mFileManager
+                                .appendAndClose(getString(R.string.not_syncing, e.getMessage()));
                         App.bus.post(mState.transition(ERROR, e));
                     }
+                } else {
+                    log("Sync is running now.");
+                    App.bus.post(mState.transition(ERROR, null));
                 }
             } else {
                 log("Sync already running");
@@ -116,7 +128,8 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
             }
         } else {
             log(state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done));
-            // TODO: Log activity
+            mFileManager.appendAndClose(
+                    (state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done)));
             stopForeground(true);
             stopSelf();
         }

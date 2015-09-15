@@ -19,6 +19,7 @@ package org.addhen.smssync.presentation.di.module;
 
 import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
+import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.database.FilterDatabaseHelper;
@@ -30,6 +31,8 @@ import org.addhen.smssync.data.process.ProcessMessage;
 import org.addhen.smssync.data.process.ProcessMessageResult;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
+import org.addhen.smssync.data.twitter.TwitterApp;
+import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.presentation.App;
@@ -105,6 +108,15 @@ public class AppModule {
 
     @Provides
     @Singleton
+    TwitterApp provideTwitterApp() {
+        return new TwitterBuilder(mApp,
+                BuildConfig.TWITTER_CONSUMER_KEY,
+                BuildConfig.TWITTER_CONSUMER_SECRET)
+                .build();
+    }
+
+    @Provides
+    @Singleton
     ProcessMessage provideProcessMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
             MessageDatabaseHelper messageDatabaseHelper,
@@ -112,9 +124,10 @@ public class AppModule {
             FilterDatabaseHelper filterDatabaseHelper,
             ProcessSms processSms,
             FileManager fileManager,
+            TwitterApp twitterApp,
             ProcessMessageResult processMessageResult) {
         return new ProcessMessage(context, prefsFactory, messageHttpClient, messageDatabaseHelper,
                 webServiceDatabaseHelper, filterDatabaseHelper, processSms, fileManager,
-                processMessageResult);
+                processMessageResult,twitterApp);
     }
 }

@@ -17,6 +17,9 @@
 
 package org.addhen.smssync.presentation.receiver;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.service.ServiceConstants;
 
@@ -25,6 +28,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 /**
  * @author Henry Addo
@@ -37,14 +41,34 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
         Bundle extras = intent.getExtras();
         MessageModel message = (MessageModel) extras.getSerializable(
                 ServiceConstants.DELIVERED_SMS_BUNDLE);
-
+        FileManager fileManager = App.getAppComponent().fileManager();
+        String resultMessage = "";
         switch (result) {
             case Activity.RESULT_OK:
+                resultMessage = context.getResources().getString(R.string.sms_delivered);
+                Toast.makeText(context, context.getResources().getString(R.string.sms_delivered),
+                        Toast.LENGTH_LONG);
+                fileManager.appendAndClose(context.getResources().getString(
+                        R.string.sms_delivered));
                 break;
             case Activity.RESULT_CANCELED:
+                resultMessage = context.getResources().getString(R.string.sms_not_delivered);
+                Toast.makeText(context,
+                        context.getResources().getString(R.string.sms_not_delivered),
+                        Toast.LENGTH_LONG);
+                fileManager.appendAndClose(
+                        context.getResources().getString(R.string.sms_not_delivered));
                 break;
         }
 
-        // TODO: Update message status
+        if (message != null) {
+            message.deliveryResultMessage = resultMessage;
+            message.deliveryResultCode = result;
+            message.messageType = MessageModel.Type.TASK;
+            message.status = MessageModel.Status.SENT;
+
+            // TODO: Save this in the database.
+
+        }
     }
 }

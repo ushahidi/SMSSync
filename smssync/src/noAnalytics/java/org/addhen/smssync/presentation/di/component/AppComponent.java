@@ -25,6 +25,7 @@ import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.data.process.ProcessMessage;
+import org.addhen.smssync.data.twitter.TwitterApp;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
@@ -67,6 +68,8 @@ public interface AppComponent extends ApplicationComponent {
     DebugPresenter debugPresenter();
 
     AlertPresenter alertPresenter();
+
+    TwitterApp twitterApp();
 
     final class Initializer {
 

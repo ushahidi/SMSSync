@@ -38,8 +38,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -62,13 +62,38 @@ public class Utility {
 
     private static final int NOTIFY_RUNNING = 100;
 
+    private static final String TIME_FORMAT_12_HOUR = "h:mm a";
+
+    private static final String TIME_FORMAT_24_HOUR = "H:mm";
+
     public static String formatDate(Date messageDate) {
-        DateFormat formatter = new SimpleDateFormat("hh:mm a");
+        SimpleDateFormat formatter = new SimpleDateFormat();
+        formatter.applyLocalizedPattern("hh:mm a");
         return formatter.format(messageDate);
     }
 
     public static boolean isEmpty(Collection<?> collection) {
         return collection == null || collection.isEmpty();
+    }
+
+    /**
+     * Format an Unix timestamp to a string suitable for display to the user according to their
+     * system settings (12 or 24 hour time).
+     *
+     * @param context   - The context of the calling activity.
+     * @param timestamp - The human unfriendly timestamp.
+     * @return String
+     */
+    public static String formatTimestamp(Context context, long timestamp) {
+        final boolean is24Hr = DateFormat.is24HourFormat(context);
+
+        SimpleDateFormat mSDF = new SimpleDateFormat();
+        if (is24Hr) {
+            mSDF.applyLocalizedPattern(TIME_FORMAT_24_HOUR);
+        } else {
+            mSDF.applyLocalizedPattern(TIME_FORMAT_12_HOUR);
+        }
+        return mSDF.format(new Date(timestamp));
     }
 
     /**
