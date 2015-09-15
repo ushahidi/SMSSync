@@ -40,7 +40,7 @@ import android.content.pm.PackageManager;
 public abstract class BaseWakefulIntentService extends WakefulIntentService implements
         HasComponent<AppServiceComponent> {
 
-    private AppServiceComponent mAppServiceComponent;
+    protected AppServiceComponent mAppServiceComponent;
 
     /*
      * Subclasses must implement this method so it executes any tasks
@@ -75,7 +75,7 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
 
     private void injector() {
         mAppServiceComponent = DaggerAppServiceComponent.builder()
-                .applicationComponent(getApplicationComponent())
+                .appComponent(getAppComponent())
                 .serviceModule(new ServiceModule(this))
                 .build();
     }

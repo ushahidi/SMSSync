@@ -21,20 +21,23 @@ package org.addhen.smssync.presentation.di.component;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 
-import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.ServiceModule;
+import org.addhen.smssync.presentation.presenter.message.UpdateMessagePresenter;
 import org.addhen.smssync.presentation.service.BaseWakefulIntentService;
 import org.addhen.smssync.presentation.service.SmsReceiverService;
 
 import dagger.Component;
 
 @ActivityScope
-@Component(dependencies = ApplicationComponent.class, modules = {ServiceModule.class})
+@Component(dependencies = {AppComponent.class}, modules = {
+        ServiceModule.class})
 public interface AppServiceComponent {
 
     void inject(SmsReceiverService smsReceiverService);
 
     void inject(BaseWakefulIntentService baseWakefulIntentService);
+
+    UpdateMessagePresenter updateMessagePresenter();
 }

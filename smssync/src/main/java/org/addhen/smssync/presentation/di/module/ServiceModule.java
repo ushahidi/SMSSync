@@ -19,7 +19,11 @@ package org.addhen.smssync.presentation.di.module;
 
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
+import org.addhen.smssync.domain.usecase.message.UpdateMessageUsecase;
+
 import android.app.Service;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
@@ -43,5 +47,12 @@ public class ServiceModule {
     @ActivityScope
     Service service() {
         return mService;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("messageUpdate")
+    UpdateMessageUsecase provideUpdateMessageUsecase(UpdateMessageUsecase updateMessageUsecase) {
+        return updateMessageUsecase;
     }
 }

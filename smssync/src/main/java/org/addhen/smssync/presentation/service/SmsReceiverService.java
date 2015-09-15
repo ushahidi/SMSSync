@@ -50,10 +50,18 @@ import android.telephony.SmsMessage;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
+import javax.inject.Inject;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class SmsReceiverService extends Service implements HasComponent<AppServiceComponent> {
+
+    @Inject
+    ProcessMessage mProcessMessage;
+
+    @Inject
+    FileManager mFileManager;
 
     private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
 
@@ -76,15 +84,11 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     private String messagesUuid = "";
 
-    private ProcessMessage mProcessMessage;
-
     private SmsMessage sms;
 
     private Intent statusIntent;
 
     private AppServiceComponent mAppServiceComponent;
-
-    FileManager mFileManager;
 
     synchronized protected static WifiManager.WifiLock getWifiLock(
             Context context) {
@@ -201,12 +205,9 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     private void injector() {
         mAppServiceComponent = DaggerAppServiceComponent.builder()
-                .applicationComponent(getApplicationComponent())
+                .appComponent(getAppComponent())
                 .serviceModule(new ServiceModule(this))
                 .build();
-        mAppServiceComponent.inject(this);
-        mFileManager = getAppComponent().fileManager();
-        mProcessMessage = getAppComponent().processMessage();
     }
 
     private AppComponent getAppComponent() {

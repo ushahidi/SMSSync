@@ -49,8 +49,8 @@ public class DeleteMessageUsecase extends Usecase {
      */
     @Inject
     protected DeleteMessageUsecase(@NonNull MessageRepository messageRepository,
-            ThreadExecutor threadExecutor,
-            PostExecutionThread postExecutionThread) {
+            @NonNull ThreadExecutor threadExecutor,
+            @NonNull PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mMessageRepository = messageRepository;
     }

@@ -39,15 +39,15 @@ public class UpdateMessagePresenter implements Presenter {
     /**
      * Default use case.
      *
-     * @param updateMessageUsecase      The update deployment use case
-     * @param deploymentModelDataMapper The deployment model data mapper
+     * @param updateMessageUsecase   The update deployment use case
+     * @param messageModelDataMapper The deployment model data mapper
      */
     @Inject
     public UpdateMessagePresenter(
             @Named("messageUpdate") UpdateMessageUsecase updateMessageUsecase,
-            MessageModelDataMapper deploymentModelDataMapper) {
+            MessageModelDataMapper messageModelDataMapper) {
         mUpdateMessageUsecase = updateMessageUsecase;
-        mMessageModelDataMapper = deploymentModelDataMapper;
+        mMessageModelDataMapper = messageModelDataMapper;
     }
 
     @Override

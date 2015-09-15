@@ -25,6 +25,8 @@ import com.addhen.android.raiburari.domain.usecase.Usecase;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
 
+import android.support.annotation.NonNull;
+
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -46,8 +48,9 @@ public class UpdateMessageUsecase extends Usecase {
      * @param postExecutionThread The post execution thread
      */
     @Inject
-    protected UpdateMessageUsecase(MessageRepository messageRepository,
-            ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    protected UpdateMessageUsecase(@NonNull MessageRepository messageRepository,
+            @NonNull ThreadExecutor threadExecutor,
+            @NonNull PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mMessageRepository = messageRepository;
     }

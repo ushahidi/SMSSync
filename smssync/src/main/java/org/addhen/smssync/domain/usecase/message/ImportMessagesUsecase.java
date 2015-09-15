@@ -38,8 +38,8 @@ public class ImportMessagesUsecase extends Usecase {
 
     @Inject
     protected ImportMessagesUsecase(@NonNull MessageRepository messageRepository,
-            ThreadExecutor threadExecutor,
-            PostExecutionThread postExecutionThread) {
+            @NonNull ThreadExecutor threadExecutor,
+            @NonNull PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mMessageRepository = messageRepository;
     }

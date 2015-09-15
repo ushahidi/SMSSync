@@ -25,6 +25,7 @@ import org.addhen.smssync.domain.usecase.message.ImportMessagesUsecase;
 import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.ListPublishedMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
+import org.addhen.smssync.domain.usecase.message.UpdateMessageUsecase;
 
 import javax.inject.Named;
 
@@ -46,7 +47,7 @@ public class MessageModule {
 
     @Provides
     @ActivityScope
-    @Named("publishedMessageList")
+    @Named("messagePublishList")
     ListPublishedMessageUsecase provideListPublishedMessageUsecase(
             ListPublishedMessageUsecase listPublishedMessageUsecase) {
         return listPublishedMessageUsecase;
@@ -54,7 +55,7 @@ public class MessageModule {
 
     @Provides
     @ActivityScope
-    @Named("publishMessage")
+    @Named("messagePublish")
     PublishMessageUsecase providePublishedMessageUsecase(
             PublishMessageUsecase publishMessageUsecase) {
         return publishMessageUsecase;
@@ -62,15 +63,22 @@ public class MessageModule {
 
     @Provides
     @ActivityScope
-    @Named("deleteMessage")
+    @Named("messageDelete")
     DeleteMessageUsecase provideDeleteMessageUsecase(DeleteMessageUsecase deleteMessageUsecase) {
         return deleteMessageUsecase;
     }
 
     @Provides
     @ActivityScope
-    @Named("importMessage")
+    @Named("messageImport")
     Usecase provideImportMessageUsecase(ImportMessagesUsecase importMessageUsecase) {
         return importMessageUsecase;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("messageUpdate")
+    UpdateMessageUsecase provideUpdateMessageUsecase(UpdateMessageUsecase updateMessageUsecase) {
+        return updateMessageUsecase;
     }
 }

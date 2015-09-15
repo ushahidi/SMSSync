@@ -52,7 +52,7 @@ public class PublishMessagesPresenter implements Presenter {
 
     @Inject
     public PublishMessagesPresenter(
-            @Named("publishMessage") PublishMessageUsecase publishMessageUsecase,
+            @Named("messagePublish") PublishMessageUsecase publishMessageUsecase,
             MessageModelDataMapper messageModelDataMapper,
             PrefsFactory prefsFactory) {
         mPublishMessageUsecase = publishMessageUsecase;

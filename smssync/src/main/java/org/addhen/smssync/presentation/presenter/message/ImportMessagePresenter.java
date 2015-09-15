@@ -49,7 +49,7 @@ public class ImportMessagePresenter implements Presenter {
     private ImportMessageView mImportMessageView;
 
     @Inject
-    public ImportMessagePresenter(@Named("importMessage") Usecase importMessageUsecase,
+    public ImportMessagePresenter(@Named("messageImport") Usecase importMessageUsecase,
             MessageModelDataMapper messageModelDataMapper) {
         mImportMessageUsecase = importMessageUsecase;
         mMessageModelDataMapper = messageModelDataMapper;

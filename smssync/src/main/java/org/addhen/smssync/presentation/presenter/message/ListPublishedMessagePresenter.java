@@ -51,7 +51,7 @@ public class ListPublishedMessagePresenter implements Presenter {
 
     @Inject
     public ListPublishedMessagePresenter(
-            @Named("publishedMessageList") ListPublishedMessageUsecase listPublishedMessageUsecase,
+            @Named("messagePublishList") ListPublishedMessageUsecase listPublishedMessageUsecase,
             MessageModelDataMapper messageModelDataMapper) {
         mListPublishedMessageUsecase = listPublishedMessageUsecase;
         mMessageModelDataMapper = messageModelDataMapper;

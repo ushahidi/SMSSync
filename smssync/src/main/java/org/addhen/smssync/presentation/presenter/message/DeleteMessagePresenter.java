@@ -43,7 +43,7 @@ public class DeleteMessagePresenter implements Presenter {
 
     @Inject
     public DeleteMessagePresenter(
-            @Named("deleteMessage") DeleteMessageUsecase deleteMessageUsecase,
+            @Named("messageDelete") DeleteMessageUsecase deleteMessageUsecase,
             MessageModelDataMapper messageModelDataMapper) {
         mDeleteMessageUsecase = deleteMessageUsecase;
     }
