@@ -22,12 +22,12 @@ import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.service.ServiceConstants;
+import org.addhen.smssync.presentation.service.UpdateMessageService;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Toast;
 
 /**
@@ -38,8 +38,7 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         int result = getResultCode();
-        Bundle extras = intent.getExtras();
-        MessageModel message = (MessageModel) extras.getSerializable(
+        MessageModel message = (MessageModel) intent.getParcelableExtra(
                 ServiceConstants.DELIVERED_SMS_BUNDLE);
         FileManager fileManager = App.getAppComponent().fileManager();
         String resultMessage = "";
@@ -67,8 +66,10 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
             message.messageType = MessageModel.Type.TASK;
             message.status = MessageModel.Status.SENT;
 
-            // TODO: Save this in the database.
-
+            // Update this in a service to guarantee it will run
+            Intent updateService = new Intent(context, UpdateMessageService.class);
+            updateService.putExtra(ServiceConstants.UPDATE_MESSAGE, message);
+            context.startService(updateService);
         }
     }
 }

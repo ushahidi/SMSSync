@@ -17,12 +17,18 @@
 
 package org.addhen.smssync.presentation.presenter.message;
 
+import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
+import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
 import org.addhen.smssync.domain.usecase.message.UpdateMessageUsecase;
+import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
+import org.addhen.smssync.presentation.view.message.UpdateMessageView;
+
+import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,6 +42,8 @@ public class UpdateMessagePresenter implements Presenter {
 
     private final MessageModelDataMapper mMessageModelDataMapper;
 
+    private UpdateMessageView mUpdateMessageView;
+
     /**
      * Default use case.
      *
@@ -48,6 +56,10 @@ public class UpdateMessagePresenter implements Presenter {
             MessageModelDataMapper messageModelDataMapper) {
         mUpdateMessageUsecase = updateMessageUsecase;
         mMessageModelDataMapper = messageModelDataMapper;
+    }
+
+    public void setUpdateMessageView(@NonNull UpdateMessageView updateMessageView) {
+        mUpdateMessageView = updateMessageView;
     }
 
     @Override
@@ -68,27 +80,38 @@ public class UpdateMessagePresenter implements Presenter {
     /**
      * Updates {@link MessageModel}
      *
-     * @param deploymentModel The deployment model to be updated
+     * @param messageModel The deployment model to be updated
      */
-    public void updateMessage(MessageModel deploymentModel) {
+    public void updateMessage(MessageModel messageModel) {
         mUpdateMessageUsecase.setMessageEntity(
-                mMessageModelDataMapper.map(deploymentModel));
+                mMessageModelDataMapper.map(messageModel));
         mUpdateMessageUsecase.execute(new DefaultSubscriber<Long>() {
             @Override
             public void onCompleted() {
                 // Do nothing
+                mUpdateMessageView.showLoading();
             }
 
             @Override
             public void onError(Throwable e) {
                 // Do nothing
+                mUpdateMessageView.hideLoading();
+                showErrorMessage(new DefaultErrorHandler((Exception) e));
+                mUpdateMessageView.showRetry();
             }
 
             @Override
             public void onNext(Long row) {
                 // Do nothing
+                mUpdateMessageView.onMessageUpdated();
             }
         });
+    }
+
+    private void showErrorMessage(ErrorHandler errorHandler) {
+        String errorMessage = ErrorMessageFactory.create(mUpdateMessageView.getAppContext(),
+                errorHandler.getException());
+        mUpdateMessageView.showError(errorMessage);
     }
 
 }

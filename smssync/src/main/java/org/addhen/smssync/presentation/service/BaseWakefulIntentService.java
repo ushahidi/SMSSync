@@ -57,9 +57,7 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
         // check if we have internet
         if (!isConnected) {
             // Enable the Connectivity Changed Receiver to listen for
-            // connection
-            // to a network
-            // so we can execute pending messages.
+            // connection to a network so we can execute pending messages.
             PackageManager pm = getPackageManager();
             ComponentName connectivityReceiver = new ComponentName(this,
                     ConnectivityChangedReceiver.class);

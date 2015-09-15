@@ -23,13 +23,14 @@ import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.model.MessageModel;
+import org.addhen.smssync.presentation.service.DeleteMessageService;
 import org.addhen.smssync.presentation.service.ServiceConstants;
+import org.addhen.smssync.presentation.service.UpdateMessageService;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.widget.Toast;
 
@@ -42,11 +43,7 @@ public class SmsSentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        Bundle extras = intent.getExtras();
-
-        if (extras != null) {
-            messageModel = (MessageModel) extras.getSerializable(ServiceConstants.SENT_SMS_BUNDLE);
-        }
+        messageModel = (MessageModel) intent.getParcelableExtra(ServiceConstants.SENT_SMS_BUNDLE);
         final int result = getResultCode();
         boolean sentSuccess = false;
         log("smsSentReceiver onReceive result: " + result);
@@ -96,7 +93,10 @@ public class SmsSentReceiver extends BroadcastReceiver {
             if (sentSuccess) {
                 messageModel.status = MessageModel.Status.SENT;
                 // TODO: Update message model
-
+                // Update this in a service to guarantee it will run
+                Intent updateService = new Intent(context, UpdateMessageService.class);
+                updateService.putExtra(ServiceConstants.UPDATE_MESSAGE, messageModel);
+                context.startService(updateService);
             } else {
 
                 PrefsFactory prefsFactory = App.getAppComponent().prefsFactory();
@@ -104,14 +104,20 @@ public class SmsSentReceiver extends BroadcastReceiver {
                     if (messageModel.retries >= prefsFactory.retries().get()) {
                         Logger.log(SmsSentReceiver.class.getSimpleName(),
                                 "Delete failed messages " + messageModel);
-                        // TODO: Update message retries
+                        Intent deleteService = new Intent(context, DeleteMessageService.class);
+                        deleteService.putExtra(ServiceConstants.DELETE_MESSAGE,
+                                messageModel.messageUuid);
+                        context.startService(deleteService);
                     } else {
                         int retries = messageModel.retries + 1;
                         messageModel.retries = retries;
                         messageModel.status = MessageModel.Status.FAILED;
                         Logger.log(SmsSentReceiver.class.getSimpleName(),
-                                "update messages retries " + messageModel);
-                        // TODO: Update message retries
+                                "update message retries " + messageModel);
+                        // Update this in a service to guarantee it will run
+                        Intent updateService = new Intent(context, UpdateMessageService.class);
+                        updateService.putExtra(ServiceConstants.UPDATE_MESSAGE, messageModel);
+                        context.startService(updateService);
                     }
                 }
             }

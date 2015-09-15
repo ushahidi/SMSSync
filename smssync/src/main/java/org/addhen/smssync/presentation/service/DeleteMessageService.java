@@ -10,15 +10,15 @@
  * packaging of this file. Please review the following information to
  * ensure the GNU Lesser General Public License version 3 requirements
  * will be met: http://www.gnu.org/licenses/lgpl.html.
- *
+ *  
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
  */
 
 package org.addhen.smssync.presentation.service;
 
-import org.addhen.smssync.presentation.presenter.message.UpdateMessagePresenter;
-import org.addhen.smssync.presentation.view.message.UpdateMessageView;
+import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
+import org.addhen.smssync.presentation.view.message.DeleteMessageView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,9 +32,9 @@ import javax.inject.Inject;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class UpdateMessageService extends BaseWakefulIntentService implements UpdateMessageView {
+public class DeleteMessageService extends BaseWakefulIntentService implements DeleteMessageView {
 
-    private static final String TAG = UpdateMessageService.class.getSimpleName();
+    private static final String TAG = DeleteMessageService.class.getSimpleName();
 
     private DelayedStopHandler mDelayedStopHandler = new DelayedStopHandler(this);
 
@@ -43,9 +43,9 @@ public class UpdateMessageService extends BaseWakefulIntentService implements Up
     private boolean mServiceStarted;
 
     @Inject
-    UpdateMessagePresenter mUpdateMessagePresenter;
+    DeleteMessagePresenter mDeleteMessagePresenter;
 
-    public UpdateMessageService() {
+    public DeleteMessageService() {
         super(TAG);
     }
 
@@ -57,7 +57,7 @@ public class UpdateMessageService extends BaseWakefulIntentService implements Up
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mUpdateMessagePresenter.destroy();
+        mDeleteMessagePresenter.destroy();
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
         mDelayedStopHandler.removeCallbacksAndMessages(null);
@@ -69,12 +69,13 @@ public class UpdateMessageService extends BaseWakefulIntentService implements Up
     @Override
     protected void executeTask(Intent intent) {
         mServiceStarted = true;
-        mUpdateMessagePresenter.updateMessage(null);
+        String uuid = intent.getStringExtra(ServiceConstants.DELETE_MESSAGE);
+        mDeleteMessagePresenter.deleteMessage(uuid);
 
     }
 
     @Override
-    public void onMessageUpdated() {
+    public void onMessageDeleted() {
         stopSelf();
         mServiceStarted = false;
     }
@@ -117,15 +118,15 @@ public class UpdateMessageService extends BaseWakefulIntentService implements Up
      */
     private static class DelayedStopHandler extends Handler {
 
-        private final WeakReference<UpdateMessageService> mWeakReference;
+        private final WeakReference<DeleteMessageService> mWeakReference;
 
-        private DelayedStopHandler(UpdateMessageService service) {
+        private DelayedStopHandler(DeleteMessageService service) {
             mWeakReference = new WeakReference<>(service);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            UpdateMessageService service = mWeakReference.get();
+            DeleteMessageService service = mWeakReference.get();
             if (service != null) {
                 service.stopSelf();
                 service.mServiceStarted = false;

@@ -19,12 +19,15 @@ package org.addhen.smssync.presentation.model;
 
 import com.addhen.android.raiburari.presentation.model.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * @author Henry Addo
  */
-public class MessageModel extends Model {
+public class MessageModel extends Model implements Parcelable {
 
     public String messageBody;
 
@@ -55,4 +58,57 @@ public class MessageModel extends Model {
     public enum Type {
         TASK, PENDING
     }
+
+    public MessageModel() {
+        // Do nothing
+    }
+
+    protected MessageModel(Parcel in) {
+        messageBody = in.readString();
+        messageFrom = in.readString();
+        long tmpMessageDate = in.readLong();
+        messageDate = tmpMessageDate != -1 ? new Date(tmpMessageDate) : null;
+        messageUuid = in.readString();
+        messageType = (Type) in.readValue(Type.class.getClassLoader());
+        sentResultCode = in.readInt();
+        sentResultMessage = in.readString();
+        deliveryResultCode = in.readInt();
+        deliveryResultMessage = in.readString();
+        retries = in.readInt();
+        status = (Status) in.readValue(Status.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(messageBody);
+        dest.writeString(messageFrom);
+        dest.writeLong(messageDate != null ? messageDate.getTime() : -1L);
+        dest.writeString(messageUuid);
+        dest.writeValue(messageType);
+        dest.writeInt(sentResultCode);
+        dest.writeString(sentResultMessage);
+        dest.writeInt(deliveryResultCode);
+        dest.writeString(deliveryResultMessage);
+        dest.writeInt(retries);
+        dest.writeValue(status);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<MessageModel> CREATOR
+            = new Parcelable.Creator<MessageModel>() {
+        @Override
+        public MessageModel createFromParcel(Parcel in) {
+            return new MessageModel(in);
+        }
+
+        @Override
+        public MessageModel[] newArray(int size) {
+            return new MessageModel[size];
+        }
+    };
 }

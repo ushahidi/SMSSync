@@ -65,7 +65,7 @@ public class UpdateMessageUsecase extends Usecase {
     }
 
     @Override
-    protected Observable buildUseCaseObservable() {
+    protected Observable<Long> buildUseCaseObservable() {
         if (mMessageRepository == null) {
             throw new RuntimeException(
                     "MessageRepository is null. You must call setMessageService(...)");

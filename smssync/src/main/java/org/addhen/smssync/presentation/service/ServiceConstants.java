@@ -61,4 +61,8 @@ public class ServiceConstants {
     public static String SENT = "SMS_SENT";
 
     public static String DELIVERED = "SMS_DELIVERED";
+
+    public static String UPDATE_MESSAGE = "UPDATE_MESSAGE";
+
+    public static String DELETE_MESSAGE = "DELETE_MESSAGE";
 }
