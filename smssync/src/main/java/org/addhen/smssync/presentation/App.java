@@ -22,7 +22,7 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 import org.addhen.smssync.BuildConfig;
-import org.addhen.smssync.data.twitter.TwitterApp;
+import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 
@@ -33,13 +33,13 @@ public class App extends BaseApplication {
 
     private static AppComponent mAppComponent;
 
-    private static TwitterApp mTwitter;
+    private static TwitterClient mTwitter;
 
     private static App mApp;
 
     public static final AppBus bus = new AppBus(new Bus(ThreadEnforcer.ANY));
 
-    public static synchronized TwitterApp getTwitterInstance() {
+    public static synchronized TwitterClient getTwitterInstance() {
         if (mTwitter == null) {
             mTwitter = new TwitterBuilder(mApp,
                     BuildConfig.TWITTER_CONSUMER_KEY,

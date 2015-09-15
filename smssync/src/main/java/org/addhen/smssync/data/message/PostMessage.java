@@ -68,7 +68,6 @@ public class PostMessage extends ProcessMessage {
             ProcessSms processSms,
             FileManager fileManager,
             ProcessMessageResult processMessageResult) {
-        //TODO find a better way of doing this
         super(context, prefsFactory, messageDatabaseHelper, webServiceDatabaseHelper,
                 filterDatabaseHelper, processSms, fileManager);
 
@@ -371,5 +370,80 @@ public class PostMessage extends ProcessMessage {
 
         mFileManager.appendAndClose(
                 mContext.getString(R.string.finish_task_check) + " " + errorMessage);
+    }
+
+    public static class Builder {
+
+        private Context mContext;
+
+        private PrefsFactory mPrefsFactory;
+
+        private MessageHttpClient mMessageHttpClient;
+
+        private MessageDatabaseHelper mMessageDatabaseHelper;
+
+        private WebServiceDatabaseHelper mWebServiceDatabaseHelper;
+
+        private FilterDatabaseHelper mFilterDatabaseHelper;
+
+        private ProcessSms mProcessSms;
+
+        private FileManager mFileManager;
+
+        private ProcessMessageResult mProcessMessageResult;
+
+        public Builder setContext(Context context) {
+            mContext = context;
+            return this;
+        }
+
+        public Builder setPrefsFactory(PrefsFactory prefsFactory) {
+            mPrefsFactory = prefsFactory;
+            return this;
+        }
+
+        public Builder setMessageHttpClient(MessageHttpClient messageHttpClient) {
+            mMessageHttpClient = messageHttpClient;
+            return this;
+        }
+
+        public Builder setMessageDatabaseHelper(
+                MessageDatabaseHelper messageDatabaseHelper) {
+            mMessageDatabaseHelper = messageDatabaseHelper;
+            return this;
+        }
+
+        public Builder setWebServiceDatabaseHelper(
+                WebServiceDatabaseHelper webServiceDatabaseHelper) {
+            mWebServiceDatabaseHelper = webServiceDatabaseHelper;
+            return this;
+        }
+
+        public Builder setFilterDatabaseHelper(FilterDatabaseHelper filterDatabaseHelper) {
+            mFilterDatabaseHelper = filterDatabaseHelper;
+            return this;
+        }
+
+        public Builder setProcessSms(ProcessSms processSms) {
+            mProcessSms = processSms;
+            return this;
+        }
+
+        public Builder setFileManager(FileManager fileManager) {
+            mFileManager = fileManager;
+            return this;
+        }
+
+        public Builder setProcessMessageResult(ProcessMessageResult processMessageResult) {
+            mProcessMessageResult = processMessageResult;
+            return this;
+        }
+
+        public PostMessage build() {
+            return new PostMessage(mContext, mPrefsFactory, mMessageHttpClient,
+                    mMessageDatabaseHelper,
+                    mWebServiceDatabaseHelper, mFilterDatabaseHelper, mProcessSms, mFileManager,
+                    mProcessMessageResult);
+        }
     }
 }

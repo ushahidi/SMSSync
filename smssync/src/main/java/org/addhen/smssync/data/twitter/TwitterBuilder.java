@@ -40,7 +40,7 @@ public class TwitterBuilder {
         mConsumerSecret = consumerSecret;
     }
 
-    public TwitterApp build() {
-        return new TwitterApp(mContext, new TwitterAuthConfig(mConsumerKey, mConsumerSecret));
+    public TwitterClient build() {
+        return new TwitterClient(mContext, new TwitterAuthConfig(mConsumerKey, mConsumerSecret));
     }
 }

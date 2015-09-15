@@ -26,7 +26,7 @@ import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.WebService;
-import org.addhen.smssync.data.twitter.TwitterApp;
+import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.data.util.Utility;
 import org.addhen.smssync.smslib.sms.ProcessSms;
@@ -51,11 +51,11 @@ public class TweetMessage extends ProcessMessage {
     private static final String TAG = TweetMessage.class
             .getSimpleName();
 
-    private TwitterApp mTwitterApp;
+    private TwitterClient mTwitterClient;
 
     @Inject
     public TweetMessage(Context context, PrefsFactory prefsFactory,
-            TwitterApp twitterApp,
+            TwitterClient twitterClient,
             MessageDatabaseHelper messageDatabaseHelper,
             WebServiceDatabaseHelper webServiceDatabaseHelper,
             FilterDatabaseHelper filterDatabaseHelper,
@@ -64,7 +64,7 @@ public class TweetMessage extends ProcessMessage {
     ) {
         super(context, prefsFactory, messageDatabaseHelper, webServiceDatabaseHelper,
                 filterDatabaseHelper, processSms, fileManager);
-        mTwitterApp = twitterApp;
+        mTwitterClient = twitterClient;
     }
 
     /**
@@ -153,7 +153,7 @@ public class TweetMessage extends ProcessMessage {
             final Message message = mMessageDatabaseHelper.fetchMessageByUuid(uuid);
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
-            // TODO: Get the message filter
+            // TODO: Get the message keyword
             status = tweetMessage(messages, null);
         } else {
             final List<Message> messages = mMessageDatabaseHelper
@@ -225,7 +225,7 @@ public class TweetMessage extends ProcessMessage {
         if (message.messageType == Message.Type.PENDING) {
             Logger.log(TAG, "Process message with keyword filtering enabled " + message);
             // Post to Twitter as well.
-            Status status = mTwitterApp.tweet(message.messageBody);
+            Status status = mTwitterClient.tweet(message.messageBody);
             posted = status != null;
 
         } else {
@@ -235,5 +235,71 @@ public class TweetMessage extends ProcessMessage {
             processRetries(message);
         }
         return false;
+    }
+
+    public static class Builder {
+
+        private Context mContext;
+
+        private PrefsFactory mPrefsFactory;
+
+        private TwitterClient mTwitterApp;
+
+        private MessageDatabaseHelper mMessageDatabaseHelper;
+
+        private WebServiceDatabaseHelper mWebServiceDatabaseHelper;
+
+        private FilterDatabaseHelper mFilterDatabaseHelper;
+
+        private ProcessSms mProcessSms;
+
+        private FileManager mFileManager;
+
+        public Builder setContext(Context context) {
+            mContext = context;
+            return this;
+        }
+
+        public Builder setPrefsFactory(PrefsFactory prefsFactory) {
+            mPrefsFactory = prefsFactory;
+            return this;
+        }
+
+        public Builder setTwitterApp(TwitterClient twitterApp) {
+            mTwitterApp = twitterApp;
+            return this;
+        }
+
+        public Builder setMessageDatabaseHelper(
+                MessageDatabaseHelper messageDatabaseHelper) {
+            mMessageDatabaseHelper = messageDatabaseHelper;
+            return this;
+        }
+
+        public Builder setWebServiceDatabaseHelper(
+                WebServiceDatabaseHelper webServiceDatabaseHelper) {
+            mWebServiceDatabaseHelper = webServiceDatabaseHelper;
+            return this;
+        }
+
+        public Builder setFilterDatabaseHelper(FilterDatabaseHelper filterDatabaseHelper) {
+            mFilterDatabaseHelper = filterDatabaseHelper;
+            return this;
+        }
+
+        public Builder setProcessSms(ProcessSms processSms) {
+            mProcessSms = processSms;
+            return this;
+        }
+
+        public Builder setFileManager(FileManager fileManager) {
+            mFileManager = fileManager;
+            return this;
+        }
+
+        public TweetMessage build() {
+            return new TweetMessage(mContext, mPrefsFactory, mTwitterApp, mMessageDatabaseHelper,
+                    mWebServiceDatabaseHelper, mFilterDatabaseHelper, mProcessSms, mFileManager);
+        }
     }
 }

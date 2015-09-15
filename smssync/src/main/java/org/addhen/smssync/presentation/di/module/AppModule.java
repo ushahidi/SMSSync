@@ -26,12 +26,13 @@ import org.addhen.smssync.data.database.FilterDatabaseHelper;
 import org.addhen.smssync.data.database.MessageDatabaseHelper;
 import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.ProcessMessageResult;
+import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
-import org.addhen.smssync.data.message.ProcessMessageResult;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
-import org.addhen.smssync.data.twitter.TwitterApp;
+import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
@@ -108,7 +109,7 @@ public class AppModule {
 
     @Provides
     @Singleton
-    TwitterApp provideTwitterApp() {
+    TwitterClient provideTwitterApp() {
         return new TwitterBuilder(mApp,
                 BuildConfig.TWITTER_CONSUMER_KEY,
                 BuildConfig.TWITTER_CONSUMER_SECRET)
@@ -124,10 +125,41 @@ public class AppModule {
             FilterDatabaseHelper filterDatabaseHelper,
             ProcessSms processSms,
             FileManager fileManager,
-            TwitterApp twitterApp,
+            TwitterClient twitterApp,
             ProcessMessageResult processMessageResult) {
-        return new PostMessage(context, prefsFactory, messageHttpClient, messageDatabaseHelper,
-                webServiceDatabaseHelper, filterDatabaseHelper, processSms, fileManager,
-                processMessageResult,twitterApp);
+        return new PostMessage.Builder()
+                .setContext(context)
+                .setPrefsFactory(prefsFactory)
+                .setMessageHttpClient(messageHttpClient)
+                .setMessageDatabaseHelper(messageDatabaseHelper)
+                .setWebServiceDatabaseHelper(webServiceDatabaseHelper)
+                .setFilterDatabaseHelper(filterDatabaseHelper)
+                .setProcessSms(processSms)
+                .setFileManager(fileManager)
+                .setProcessMessageResult(processMessageResult)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    TweetMessage provideTweetMessage(Context context, PrefsFactory prefsFactory,
+            MessageHttpClient messageHttpClient,
+            MessageDatabaseHelper messageDatabaseHelper,
+            WebServiceDatabaseHelper webServiceDatabaseHelper,
+            FilterDatabaseHelper filterDatabaseHelper,
+            ProcessSms processSms,
+            FileManager fileManager,
+            TwitterClient twitterApp,
+            ProcessMessageResult processMessageResult) {
+        return new TweetMessage.Builder()
+                .setContext(context)
+                .setPrefsFactory(prefsFactory)
+                .setTwitterApp(twitterApp)
+                .setMessageDatabaseHelper(messageDatabaseHelper)
+                .setWebServiceDatabaseHelper(webServiceDatabaseHelper)
+                .setFilterDatabaseHelper(filterDatabaseHelper)
+                .setProcessSms(processSms)
+                .setFileManager(fileManager)
+                .build();
     }
 }

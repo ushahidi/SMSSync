@@ -23,9 +23,9 @@ import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
-import org.addhen.smssync.data.net.MessageHttpClient;
-import org.addhen.smssync.data.twitter.TwitterApp;
+import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
@@ -61,15 +61,15 @@ public interface AppComponent extends ApplicationComponent {
 
     AppHttpClient appHttpClient();
 
-    MessageHttpClient messageHttpClient();
+    TwitterClient twitterClient();
 
     PostMessage processMessage();
+
+    TweetMessage tweetMessage();
 
     DebugPresenter debugPresenter();
 
     AlertPresenter alertPresenter();
-
-    TwitterApp twitterApp();
 
     final class Initializer {
 

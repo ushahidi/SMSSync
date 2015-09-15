@@ -39,7 +39,7 @@ import twitter4j.conf.ConfigurationBuilder;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class TwitterApp {
+public class TwitterClient {
 
     static final String PREF_KEY_ACTIVE_TWITTER_SESSION = "active_twittersession";
 
@@ -54,7 +54,7 @@ public class TwitterApp {
     private TwitterFactory mTwitterFactory;
 
     @Inject
-    public TwitterApp(Context context, TwitterAuthConfig config) {
+    public TwitterClient(Context context, TwitterAuthConfig config) {
         mContext = context;
         mAuthConfig = config;
         mTwitterSessionManager = new PersistedSessionManager<>(
