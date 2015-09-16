@@ -107,7 +107,6 @@ public class AboutSettingsActivity extends BasePreferenceActivity {
             versionName = getPackageManager().getPackageInfo(
                     this.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         mVersionLabel.append(versionName);
