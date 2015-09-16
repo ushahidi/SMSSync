@@ -20,6 +20,7 @@ package org.addhen.smssync.data.repository;
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
 import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.domain.entity.MessageEntity;
@@ -47,15 +48,19 @@ public class MessageDataRepository implements MessageRepository {
 
     private MessageDataSource mMessageDataSource;
 
-    private PostMessage mProcessMessage;
+    private PostMessage mPostMessage;
+
+    private TweetMessage mTweetMessage;
 
     @Inject
     public MessageDataRepository(MessageDataMapper messageDataMapper,
             MessageDataSourceFactory messageDataSourceFactory,
-            PostMessage processMessage) {
+            PostMessage postMessage,
+            TweetMessage tweetMessage) {
         mMessageDataMapper = messageDataMapper;
         mMessageDataSourceFactory = messageDataSourceFactory;
-        mProcessMessage = processMessage;
+        mPostMessage = postMessage;
+        mTweetMessage = tweetMessage;
     }
 
     @Override
@@ -87,7 +92,10 @@ public class MessageDataRepository implements MessageRepository {
     @Override
     public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
         return Observable.defer(() -> {
-            boolean status = mProcessMessage
+            // TODO: Send keywords
+            boolean status = true;
+            mTweetMessage.tweetMessage(mMessageDataMapper.unmap(messageEntities), null);
+            status = mPostMessage
                     .postMessage(mMessageDataMapper.unmap(messageEntities), null);
             return Observable.just(status);
         });
@@ -96,11 +104,11 @@ public class MessageDataRepository implements MessageRepository {
     @Override
     public Observable<List<MessageEntity>> importMessage() {
         return Observable.defer(() -> {
-            ProcessSms processSms = mProcessMessage.getProcessSms();
+            ProcessSms processSms = mPostMessage.getProcessSms();
             List<SmsMessage> smsMessages = processSms.importMessages();
             List<Message> messages = new ArrayList<>();
             for (SmsMessage smsMessage : smsMessages) {
-                messages.add(mProcessMessage.map(smsMessage));
+                messages.add(mPostMessage.map(smsMessage));
             }
             return Observable.just(mMessageDataMapper.map(messages));
         });
