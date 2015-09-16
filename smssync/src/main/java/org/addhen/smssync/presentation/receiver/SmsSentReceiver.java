@@ -92,7 +92,6 @@ public class SmsSentReceiver extends BroadcastReceiver {
             Logger.log("Sent", "message sent " + messageModel);
             if (sentSuccess) {
                 messageModel.status = MessageModel.Status.SENT;
-                // TODO: Update message model
                 // Update this in a service to guarantee it will run
                 Intent updateService = new Intent(context, UpdateMessageService.class);
                 updateService.putExtra(ServiceConstants.UPDATE_MESSAGE, messageModel);

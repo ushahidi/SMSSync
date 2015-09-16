@@ -59,6 +59,8 @@ public class PostMessage extends ProcessMessage {
 
     private ProcessMessageResult mProcessMessageResult;
 
+    private String mErrorMessage;
+
     @Inject
     public PostMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
@@ -100,7 +102,8 @@ public class PostMessage extends ProcessMessage {
             mProcessSms.sendSms(map(msg), false);
         }
         if (Utility.isConnected(mContext)) {
-            List<WebService> webServiceList = mWebServiceDatabaseHelper.listWebServices();
+            List<WebService> webServiceList = mWebServiceDatabaseHelper
+                    .get(WebService.Status.ENABLED);
             List<Filter> filters = mFilterDatabaseHelper.getFilters();
             for (WebService webService : webServiceList) {
                 // Process if white-listing is enabled
@@ -296,80 +299,91 @@ public class PostMessage extends ProcessMessage {
         return false;
     }
 
-    public void performTask(WebService syncUrl) {
+    public void performTask() {
+        if ((!mPrefsFactory.serviceEnabled().get()) || (!mPrefsFactory.enableTaskCheck().get())) {
+            // Don't continue
+            return;
+        }
         Logger.log(TAG, "performTask(): perform a task");
         logActivities(R.string.perform_task);
-        StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
-        final String urlSecret = syncUrl.getSecret();
-        uriBuilder.append("?task=send");
+        List<WebService> webServices = mWebServiceDatabaseHelper.get(WebService.Status.ENABLED);
+        for (WebService webService : webServices) {
+            StringBuilder uriBuilder = new StringBuilder(webService.getUrl());
+            final String urlSecret = webService.getSecret();
+            uriBuilder.append("?task=send");
 
-        if (!TextUtils.isEmpty(urlSecret)) {
-            String urlSecretEncoded = urlSecret;
-            uriBuilder.append("&secret=");
-            try {
-                urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
-            } catch (java.io.UnsupportedEncodingException e) {
-                Logger.log(TAG, e.getMessage());
+            if (!TextUtils.isEmpty(urlSecret)) {
+                String urlSecretEncoded = urlSecret;
+                uriBuilder.append("&secret=");
+                try {
+                    urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
+                } catch (java.io.UnsupportedEncodingException e) {
+                    Logger.log(TAG, e.getMessage());
+                }
+                uriBuilder.append(urlSecretEncoded);
             }
-            uriBuilder.append(urlSecretEncoded);
-        }
 
-        mMessageHttpClient.setUrl(uriBuilder.toString());
-        SmssyncResponse smssyncResponses = null;
-        Gson gson = null;
-        String errorMessage = null;
-        try {
-            mMessageHttpClient.execute();
-            gson = new Gson();
-            final String response = mMessageHttpClient.getResponse().body().string();
-            mFileManager.appendAndClose("HTTP Client Response: " + response);
-            smssyncResponses = gson.fromJson(response, SmssyncResponse.class);
-        } catch (Exception e) {
-            Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: "
-                    + mMessageHttpClient.getResponse());
+            mMessageHttpClient.setUrl(uriBuilder.toString());
+            SmssyncResponse smssyncResponses = null;
+            Gson gson = null;
             try {
-                mFileManager.appendAndClose(
-                        "Task crashed: " + e.getMessage() + " response: " + mMessageHttpClient
-                                .getResponse().body().string());
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                mMessageHttpClient.execute();
+                gson = new Gson();
+                final String response = mMessageHttpClient.getResponse().body().string();
+                mFileManager.appendAndClose("HTTP Client Response: " + response);
+                smssyncResponses = gson.fromJson(response, SmssyncResponse.class);
+            } catch (Exception e) {
+                Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: "
+                        + mMessageHttpClient.getResponse());
+                try {
+                    mFileManager.appendAndClose(
+                            "Task crashed: " + e.getMessage() + " response: " + mMessageHttpClient
+                                    .getResponse().body().string());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
-        }
 
-        if (smssyncResponses != null) {
-            Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
-            mFileManager.appendAndClose("TaskCheckResponse: " + smssyncResponses.toString());
+            if (smssyncResponses != null) {
+                Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
+                mFileManager.appendAndClose("TaskCheckResponse: " + smssyncResponses.toString());
 
-            if (smssyncResponses.getPayload() != null) {
-                String task = smssyncResponses.getPayload().getTask();
-                Logger.log(TAG, "Task " + task);
-                boolean secretOk = TextUtils.isEmpty(urlSecret) ||
-                        urlSecret.equals(smssyncResponses.getPayload().getSecret());
-                if (secretOk && task.equals("send")) {
-                    if (mPrefsFactory.messageResultsAPIEnable().get()) {
-                        sendSMSWithMessageResultsAPIEnabled(syncUrl,
-                                smssyncResponses.getPayload().getMessages());
+                if (smssyncResponses.getPayload() != null) {
+                    String task = smssyncResponses.getPayload().getTask();
+                    Logger.log(TAG, "Task " + task);
+                    boolean secretOk = TextUtils.isEmpty(urlSecret) ||
+                            urlSecret.equals(smssyncResponses.getPayload().getSecret());
+                    if (secretOk && task.equals("send")) {
+                        if (mPrefsFactory.messageResultsAPIEnable().get()) {
+                            sendSMSWithMessageResultsAPIEnabled(webService,
+                                    smssyncResponses.getPayload().getMessages());
+                        } else {
+                            //backwards compatibility
+                            sendSMSWithMessageResultsAPIDisabled(
+                                    smssyncResponses.getPayload().getMessages());
+                        }
+
                     } else {
-                        //backwards compatibility
-                        sendSMSWithMessageResultsAPIDisabled(
-                                smssyncResponses.getPayload().getMessages());
+                        Logger.log(TAG, mContext.getString(R.string.no_task));
+                        logActivities(R.string.no_task);
+                        mErrorMessage = mContext.getString(R.string.no_task);
                     }
 
-                } else {
+                } else { // 'payload' data may not be present in JSON
                     Logger.log(TAG, mContext.getString(R.string.no_task));
                     logActivities(R.string.no_task);
-                    errorMessage = mContext.getString(R.string.no_task);
+                    mErrorMessage = mContext.getString(R.string.no_task);
                 }
-
-            } else { // 'payload' data may not be present in JSON
-                Logger.log(TAG, mContext.getString(R.string.no_task));
-                logActivities(R.string.no_task);
-                errorMessage = mContext.getString(R.string.no_task);
             }
-        }
 
-        mFileManager.appendAndClose(
-                mContext.getString(R.string.finish_task_check) + " " + errorMessage);
+            mFileManager.appendAndClose(
+                    mContext.getString(R.string.finish_task_check) + " " + mErrorMessage + " for "
+                            + webService.getUrl());
+        }
+    }
+
+    public String getErrorMessage() {
+        return mErrorMessage;
     }
 
     public static class Builder {

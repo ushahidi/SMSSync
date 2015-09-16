@@ -33,6 +33,7 @@ public class MessageModel extends Model implements Parcelable {
 
     public String messageFrom;
 
+    // This holds the sent/received timestamp depending on the context used for retrieval or setting
     public Date messageDate;
 
     public String messageUuid;
@@ -46,6 +47,8 @@ public class MessageModel extends Model implements Parcelable {
     public int deliveryResultCode;
 
     public String deliveryResultMessage;
+
+    public Date deliveredMessageDate;
 
     public int retries;
 
@@ -74,6 +77,8 @@ public class MessageModel extends Model implements Parcelable {
         sentResultMessage = in.readString();
         deliveryResultCode = in.readInt();
         deliveryResultMessage = in.readString();
+        long tmpDeliveredDate = in.readLong();
+        deliveredMessageDate = tmpDeliveredDate != -1 ? new Date(tmpDeliveredDate) : null;
         retries = in.readInt();
         status = (Status) in.readValue(Status.class.getClassLoader());
     }
@@ -94,6 +99,7 @@ public class MessageModel extends Model implements Parcelable {
         dest.writeString(sentResultMessage);
         dest.writeInt(deliveryResultCode);
         dest.writeString(deliveryResultMessage);
+        dest.writeLong(deliveredMessageDate != null ? deliveredMessageDate.getTime() : -1L);
         dest.writeInt(retries);
         dest.writeValue(status);
     }

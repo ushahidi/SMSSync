@@ -17,7 +17,12 @@
 
 package org.addhen.smssync.presentation.service;
 
+import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.message.ProcessMessageResult;
+
 import android.content.Intent;
+
+import javax.inject.Inject;
 
 /**
  * @author Henry Addo
@@ -25,6 +30,12 @@ import android.content.Intent;
 public class MessageResultsService extends BaseWakefulIntentService {
 
     private static final String CLASS_TAG = MessageResultsService.class.getSimpleName();
+
+    @Inject
+    ProcessMessageResult mProcessMessageResult;
+
+    @Inject
+    FileManager mFileManager;
 
     public MessageResultsService() {
         super(CLASS_TAG);
@@ -38,6 +49,8 @@ public class MessageResultsService extends BaseWakefulIntentService {
     @Override
     public void executeTask(Intent intent) {
         log("checking scheduled message result services");
-        // TODO: Execute message results
+        // TODO: Move the hard coded string to a string resource
+        mFileManager.appendAndClose("Checking scheduled message result services");
+        mProcessMessageResult.processMessageResult();
     }
 }

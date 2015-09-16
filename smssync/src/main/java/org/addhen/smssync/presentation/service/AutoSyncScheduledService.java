@@ -21,6 +21,8 @@ import org.addhen.smssync.data.message.PostMessage;
 
 import android.content.Intent;
 
+import javax.inject.Inject;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
@@ -34,7 +36,8 @@ public class AutoSyncScheduledService extends BaseWakefulIntentService {
     // update the ui
     private Intent statusIntent;
 
-    private PostMessage mProcessMessage;
+    @Inject
+    PostMessage mProcessMessage;
 
     public AutoSyncScheduledService() {
         super(CLASS_TAG);
@@ -49,9 +52,8 @@ public class AutoSyncScheduledService extends BaseWakefulIntentService {
     @Override
     protected void executeTask(Intent intent) {
         log(CLASS_TAG, "doWakefulWork() executing " + CLASS_TAG);
-        mProcessMessage = getAppComponent().processMessage();
-        // TODO: Process pending messages
-        statusIntent.putExtra("status", "error message");
+        mProcessMessage.syncPendingMessages("");
+        statusIntent.putExtra("status", mProcessMessage.getErrorMessage());
         sendBroadcast(statusIntent);
     }
 }

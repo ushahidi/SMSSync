@@ -58,6 +58,9 @@ public class Message extends DataEntity implements Serializable {
     @SerializedName("delivered_result_message")
     public String deliveryResultMessage;
 
+    @SerializedName("delivered_timestamp")
+    public Date deliveredDate;
+
     public int retries;
 
     public Status status;

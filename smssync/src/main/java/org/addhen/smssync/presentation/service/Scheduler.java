@@ -17,6 +17,8 @@
 
 package org.addhen.smssync.presentation.service;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.util.Logger;
 
 import android.app.AlarmManager;
@@ -41,10 +43,12 @@ public class Scheduler {
 
     private Context mContext;
 
-    // TODO: Add changes in scheduler to the logs. Eg. When the service is started or stopped
+    private FileManager mFileManager;
 
-    public Scheduler(Context context, Intent intent, int requestCode, int flags) {
+    public Scheduler(Context context, FileManager fileManager, Intent intent, int requestCode,
+            int flags) {
         mContext = context.getApplicationContext();
+        mFileManager = fileManager;
         Logger.log(CLASS_TAG, "ScheduleServices() executing scheduled services ");
         mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         mPendingIntent = PendingIntent.getBroadcast(mContext, requestCode, intent, flags);
@@ -57,6 +61,7 @@ public class Scheduler {
     public void stopScheduler() {
         if (mAlarmManager != null && mPendingIntent != null) {
             Logger.log(CLASS_TAG, "Stop scheduler");
+            mFileManager.appendAndClose(mContext.getString(R.string.stopping_scheduler));
             mAlarmManager.cancel(mPendingIntent);
         }
     }
@@ -70,6 +75,7 @@ public class Scheduler {
         Logger.log(CLASS_TAG, "updating scheduler");
         if (mAlarmManager != null && mPendingIntent != null) {
             Logger.log(CLASS_TAG, "Update scheduler to " + interval);
+            mFileManager.appendAndClose(mContext.getString(R.string.scheduler_updated_to));
             mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + 60000, interval, mPendingIntent);
         }

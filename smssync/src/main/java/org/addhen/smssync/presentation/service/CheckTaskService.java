@@ -26,6 +26,8 @@ import org.addhen.smssync.presentation.presenter.AlertPresenter;
 
 import android.content.Intent;
 
+import javax.inject.Inject;
+
 /**
  * @author Henry Addo
  */
@@ -34,13 +36,17 @@ public class CheckTaskService extends BaseWakefulIntentService {
     private final static String CLASS_TAG = CheckTaskService.class
             .getSimpleName();
 
-    private PostMessage mProcessMessage;
+    @Inject
+    PostMessage mProcessMessage;
 
-    private PrefsFactory mPrefsFactory;
+    @Inject
+    PrefsFactory mPrefsFactory;
 
-    private FileManager mFileManager;
+    @Inject
+    FileManager mFileManager;
 
-    private AlertPresenter mAlertPresenter;
+    @Inject
+    AlertPresenter mAlertPresenter;
 
     public CheckTaskService() {
         super(CLASS_TAG);
@@ -58,12 +64,10 @@ public class CheckTaskService extends BaseWakefulIntentService {
      */
     protected void executeTask(Intent intent) {
         log("checkTaskService: check if a task has been enabled.");
-        mPrefsFactory = getAppComponent().prefsFactory();
-        mAlertPresenter = getAppComponent().alertPresenter();
         if (Utility.isConnected(this)) {
             if (mPrefsFactory.serviceEnabled().get() && mPrefsFactory.enableTaskCheck().get()) {
                 mProcessMessage = getAppComponent().processMessage();
-                // TODO: Perform task import
+                mProcessMessage.performTask();
             }
             return;
         }

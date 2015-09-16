@@ -147,7 +147,7 @@ public class ServiceRunner {
             // Start pushing pending messages
             // do we have data network?
             if (isConnected()) {
-                SchedulerInstance.INSTANCE.getScheduler(mContext, intent, requestCode)
+                SchedulerInstance.INSTANCE.getScheduler(mContext, mFileManager, intent, requestCode)
                         .updateScheduler(interval);
             }
         }
@@ -162,7 +162,8 @@ public class ServiceRunner {
      */
     public void stopServices(Intent intent, int requestCode) {
         Logger.log(CLASS_TAG, "Stopping services");
-        SchedulerInstance.INSTANCE.getScheduler(mContext, intent, requestCode).stopScheduler();
+        SchedulerInstance.INSTANCE.getScheduler(mContext, mFileManager, intent, requestCode)
+                .stopScheduler();
     }
 
     /**
@@ -196,8 +197,9 @@ public class ServiceRunner {
     public enum SchedulerInstance {
         INSTANCE;
 
-        private Scheduler getScheduler(Context context, Intent intent, int requestCode) {
-            return new Scheduler(context, intent, requestCode,
+        private Scheduler getScheduler(Context context, FileManager fileManager, Intent intent,
+                int requestCode) {
+            return new Scheduler(context, fileManager, intent, requestCode,
                     PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }

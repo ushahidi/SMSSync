@@ -23,6 +23,9 @@ import com.squareup.okhttp.RequestBody;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.database.MessageDatabaseHelper;
+import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
+import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.MessageResult;
 import org.addhen.smssync.data.entity.MessagesUUIDSResponse;
 import org.addhen.smssync.data.entity.QueuedMessages;
@@ -37,6 +40,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -67,12 +71,40 @@ public class ProcessMessageResult {
 
     private FileManager mFileManager;
 
+    private WebServiceDatabaseHelper mWebServiceDatabaseHelper;
+
+    private MessageDatabaseHelper mMessageDatabaseHelper;
+
     @Inject
     public ProcessMessageResult(Context context, AppHttpClient appHttpClient,
-            FileManager fileManager) {
+            FileManager fileManager, WebServiceDatabaseHelper webServiceDatabaseHelper,
+            MessageDatabaseHelper messageDatabaseHelper) {
         mContext = context;
         mAppHttpClient = appHttpClient;
         mFileManager = fileManager;
+        mWebServiceDatabaseHelper = webServiceDatabaseHelper;
+        mMessageDatabaseHelper = messageDatabaseHelper;
+    }
+
+    public void processMessageResult() {
+        List<WebService> webServiceList = mWebServiceDatabaseHelper.get(WebService.Status.ENABLED);
+        for (WebService webService : webServiceList) {
+            MessagesUUIDSResponse response = sendMessageResultGETRequest(webService);
+            if ((response != null) && (response.isSuccess()) && (response.getUuids() != null)) {
+                final List<MessageResult> messageResults = new ArrayList<>();
+                for (String uuid : response.getUuids()) {
+                    Message message = mMessageDatabaseHelper.fetchMessageByUuid(uuid);
+                    if (message != null) {
+                        MessageResult messageResult = new MessageResult(message.messageUuid,
+                                message.sentResultCode, message.sentResultMessage,
+                                message.deliveryResultCode, message.deliveryResultMessage,
+                                message.messageDate, message.deliveredDate);
+                        messageResults.add(messageResult);
+                    }
+                }
+                sendMessageResultPOSTRequest(webService, messageResults);
+            }
+        }
     }
 
     /**
@@ -81,7 +113,7 @@ public class ProcessMessageResult {
      * @param syncUrl url to web server
      * @param results list of message result data
      */
-    public void sendMessageResultPOSTRequest(WebService syncUrl, List<MessageResult> results) {
+    private void sendMessageResultPOSTRequest(WebService syncUrl, List<MessageResult> results) {
         String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
 
         final String urlSecret = syncUrl.getSecret();

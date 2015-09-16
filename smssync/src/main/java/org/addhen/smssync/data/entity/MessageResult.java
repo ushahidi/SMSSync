@@ -20,6 +20,7 @@ package org.addhen.smssync.data.entity;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 16.04.14.
@@ -43,13 +44,38 @@ public class MessageResult implements Serializable {
     @SerializedName("delivered_result_message")
     private String deliveryResultMessage;
 
+    @SerializedName("sent_timestamp")
+    private Date sentTimeStamp;
+
+    @SerializedName("delivered_timestamp")
+    private Date deliveredTimeStamp;
+
+    public Date getDeliveredTimeStamp() {
+        return deliveredTimeStamp;
+    }
+
+    public void setDeliveredTimeStamp(Date deliveredTimeStamp) {
+        this.deliveredTimeStamp = deliveredTimeStamp;
+    }
+
+    public Date getSentTimeStamp() {
+        return sentTimeStamp;
+    }
+
+    public void setSentTimeStamp(Date sentTimeStamp) {
+        this.sentTimeStamp = sentTimeStamp;
+    }
+
     public MessageResult(String messageUUID, int sentResultCode, String sentResultMessage,
-            int deliveryResultCode, String deliveryResultMessage) {
+            int deliveryResultCode, String deliveryResultMessage, Date sentTimeStamp,
+            Date deliveredTimeStamp) {
         this.messageUUID = messageUUID;
         this.sentResultCode = sentResultCode;
         this.sentResultMessage = sentResultMessage;
         this.deliveryResultCode = deliveryResultCode;
         this.deliveryResultMessage = deliveryResultMessage;
+        this.sentTimeStamp = sentTimeStamp;
+        this.deliveredTimeStamp = deliveredTimeStamp;
     }
 
     public String getMessageUUID() {
@@ -92,4 +118,16 @@ public class MessageResult implements Serializable {
         this.deliveryResultMessage = deliveryResultMessage;
     }
 
+    @Override
+    public String toString() {
+        return "MessageResult{" +
+                "messageUUID='" + messageUUID + '\'' +
+                ", sentResultCode=" + sentResultCode +
+                ", sentResultMessage='" + sentResultMessage + '\'' +
+                ", deliveryResultCode=" + deliveryResultCode +
+                ", deliveryResultMessage='" + deliveryResultMessage + '\'' +
+                ", sentTimeStamp='" + sentTimeStamp + '\'' +
+                ", deliveredTimeStamp='" + deliveredTimeStamp + '\'' +
+                '}';
+    }
 }

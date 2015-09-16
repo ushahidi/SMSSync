@@ -40,6 +40,9 @@ import static org.addhen.smssync.presentation.task.state.SyncState.SYNC;
 
 
 /**
+ * TODO Revisit this to see if it's really needed for posting pending task this is now handled
+ * by {@link org.addhen.smssync.domain.usecase.message.PublishMessageUsecase}
+ *
  * @author Henry Addo
  */
 public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMessagesState,
