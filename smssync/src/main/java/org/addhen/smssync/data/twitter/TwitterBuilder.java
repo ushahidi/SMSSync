@@ -33,22 +33,14 @@ public class TwitterBuilder {
 
     private Context mContext;
 
-    public TwitterBuilder consumerKey(@NonNull String consumerKey) {
-        mConsumerKey = consumerKey;
-        return this;
-    }
-
-    public TwitterBuilder consumerSecret(@NonNull String consumerSecret) {
-        mConsumerSecret = consumerSecret;
-        return this;
-    }
-
-    public TwitterBuilder context(Context context) {
+    public TwitterBuilder(Context context, @NonNull String consumerKey,
+            @NonNull String consumerSecret) {
         mContext = context;
-        return this;
+        mConsumerKey = consumerKey;
+        mConsumerSecret = consumerSecret;
     }
 
-    public Twitter build() {
-        return new Twitter(mContext, new TwitterAuthConfig(mConsumerKey, mConsumerSecret));
+    public TwitterClient build() {
+        return new TwitterClient(mContext, new TwitterAuthConfig(mConsumerKey, mConsumerSecret));
     }
 }

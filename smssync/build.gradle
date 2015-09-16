@@ -242,11 +242,12 @@ dependencies {
     compile project(':libraries:survey-dialog')
     compile fileTree(dir: 'libs', include: '*.jar')
     compile appDependencies.raiburari
+    compile appDependencies.supportPreference
     compile appDependencies.cupboard
     compile appDependencies.otto
     compile appDependencies.wakeful
     compile appDependencies.qrCodeReaderView
-    compile appDependencies.volley
+    compile appDependencies.okHttp
     compile appDependencies.twitter4jCore
     compile appDependencies.nineOldAndroids
     compile appDependencies.preferencefragment

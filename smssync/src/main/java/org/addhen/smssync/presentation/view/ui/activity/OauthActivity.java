@@ -38,7 +38,7 @@ import twitter4j.auth.AccessToken;
  */
 public class OauthActivity extends Activity implements TwitterOAuthView.Listener {
 
-    private static final String CALLBACK_URL = "http://smssync.twitter.com";
+    private static final String CALLBACK_URL = "http://smssync.ushahidi.com";
 
     private static final boolean DUMMY_CALLBACK_URL = true;
 
@@ -81,9 +81,10 @@ public class OauthActivity extends Activity implements TwitterOAuthView.Listener
         TwitterAuthToken authToken = new TwitterAuthToken(accessToken.getToken(),
                 accessToken.getTokenSecret());
         // Persist user session so we can perform actions on protected resources
-        App.getTwitterIntance().getSessionManager().setActiveSession(
+        App.getTwitterInstance().getSessionManager().setActiveSession(
                 new TwitterSession(authToken, accessToken.getUserId(),
                         accessToken.getScreenName()));
+        finish();
     }
 
     @Override

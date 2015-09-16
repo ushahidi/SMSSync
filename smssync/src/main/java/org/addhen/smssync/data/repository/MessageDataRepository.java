@@ -17,12 +17,18 @@
 
 package org.addhen.smssync.data.repository;
 
+import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
+import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
+import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -42,12 +48,19 @@ public class MessageDataRepository implements MessageRepository {
 
     private MessageDataSource mMessageDataSource;
 
+    private PostMessage mPostMessage;
+
+    private TweetMessage mTweetMessage;
+
     @Inject
     public MessageDataRepository(MessageDataMapper messageDataMapper,
-            MessageDataSourceFactory messageDataSourceFactory) {
+            MessageDataSourceFactory messageDataSourceFactory,
+            PostMessage postMessage,
+            TweetMessage tweetMessage) {
         mMessageDataMapper = messageDataMapper;
         mMessageDataSourceFactory = messageDataSourceFactory;
-
+        mPostMessage = postMessage;
+        mTweetMessage = tweetMessage;
     }
 
     @Override
@@ -74,6 +87,31 @@ public class MessageDataRepository implements MessageRepository {
         mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
         return mMessageDataSource.fetchMessageByStatus(mMessageDataMapper.map(status))
                 .map((messageList -> mMessageDataMapper.map(messageList)));
+    }
+
+    @Override
+    public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
+        return Observable.defer(() -> {
+            // TODO: Send keywords
+            boolean status = true;
+            mTweetMessage.tweetMessage(mMessageDataMapper.unmap(messageEntities), null);
+            status = mPostMessage
+                    .postMessage(mMessageDataMapper.unmap(messageEntities), null);
+            return Observable.just(status);
+        });
+    }
+
+    @Override
+    public Observable<List<MessageEntity>> importMessage() {
+        return Observable.defer(() -> {
+            ProcessSms processSms = mPostMessage.getProcessSms();
+            List<SmsMessage> smsMessages = processSms.importMessages();
+            List<Message> messages = new ArrayList<>();
+            for (SmsMessage smsMessage : smsMessages) {
+                messages.add(mPostMessage.map(smsMessage));
+            }
+            return Observable.just(mMessageDataMapper.map(messages));
+        });
     }
 
     @Override

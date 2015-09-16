@@ -39,8 +39,8 @@ public class ListPublishedMessageUsecase extends Usecase {
 
     @Inject
     protected ListPublishedMessageUsecase(@NonNull MessageRepository messageRepository,
-            ThreadExecutor threadExecutor,
-            PostExecutionThread postExecutionThread) {
+            @NonNull ThreadExecutor threadExecutor,
+            @NonNull PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mMessageRepository = messageRepository;
     }

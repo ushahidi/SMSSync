@@ -25,6 +25,7 @@ import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
+import org.addhen.smssync.presentation.view.ui.activity.TwitterProfileActivity;
 import org.addhen.smssync.presentation.view.ui.activity.UpdateWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
@@ -95,5 +96,12 @@ public class Launcher {
     public void launchQrcodeReader() {
         mActivity.startActivityForResult(QrcodeReaderActivity.getIntent(mActivity),
                 QrcodeReaderActivity.QRCODE_READER_REQUEST_CODE);
+    }
+
+    /**
+     * Launches the barcode reader
+     */
+    public void launchTwitterProfile() {
+        mActivity.startActivity(TwitterProfileActivity.getIntent(mActivity));
     }
 }

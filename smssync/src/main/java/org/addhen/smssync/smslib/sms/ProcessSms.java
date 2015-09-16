@@ -34,12 +34,17 @@ import android.telephony.SmsManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 /**
  * Offers nifty utilities for processing SMS message.
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@Singleton
 public class ProcessSms {
 
     private static final String SMS_CONTENT_URI = "content://sms/conversations/";
@@ -58,6 +63,7 @@ public class ProcessSms {
 
     private Context mContext;
 
+    @Inject
     public ProcessSms(Context context) {
         mContext = context;
     }
@@ -100,7 +106,7 @@ public class ProcessSms {
             deliveryIntents.add(deliveryIntent);
         }
         if (sendDeliveryReport) {
-            sms.sendMultipartTextMessage(message.body, null, parts, sentIntents, deliveryIntents);
+            sms.sendMultipartTextMessage(message.phone, null, parts, sentIntents, deliveryIntents);
             return;
         }
 
@@ -162,6 +168,7 @@ public class ProcessSms {
                         message.timestamp = messageDate;
                         message.phone = c.getString(c.getColumnIndex("address"));
                         message.body = c.getString(c.getColumnIndex("body"));
+                        message.uuid = getUuid();
                         messages.add(message);
                     } while (c.moveToNext());
                 }
@@ -192,6 +199,7 @@ public class ProcessSms {
                         message.timestamp = messageDate;
                         message.phone = c.getString(c.getColumnIndex(Telephony.Sms.Inbox.ADDRESS));
                         message.body = c.getString(c.getColumnIndex(Telephony.Sms.Inbox.BODY));
+                        message.uuid = getUuid();
                         messages.add(message);
 
                     } while (c.moveToNext());
@@ -270,5 +278,9 @@ public class ProcessSms {
                 Telephony.Sms.Inbox.DATE,
         };
         String SORT_ORDER = Telephony.Sms.Inbox.DEFAULT_SORT_ORDER;
+    }
+
+    public String getUuid() {
+        return UUID.randomUUID().toString();
     }
 }

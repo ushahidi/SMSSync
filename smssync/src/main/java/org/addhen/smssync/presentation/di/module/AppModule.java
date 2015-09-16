@@ -19,15 +19,28 @@ package org.addhen.smssync.presentation.di.module;
 
 import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
+import org.addhen.smssync.BuildConfig;
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.database.FilterDatabaseHelper;
+import org.addhen.smssync.data.database.MessageDatabaseHelper;
+import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
+import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.ProcessMessageResult;
+import org.addhen.smssync.data.message.TweetMessage;
+import org.addhen.smssync.data.net.AppHttpClient;
+import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
+import org.addhen.smssync.data.twitter.TwitterClient;
+import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.presentation.App;
-import org.addhen.smssync.presentation.Prefs;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -42,7 +55,9 @@ import dagger.Provides;
 @Module(includes = ApplicationModule.class)
 public class AppModule {
 
-    App mApp;
+    private static final String PREF_NAME = "SMS_SYNC_PREF";
+
+    private App mApp;
 
     public AppModule(App application) {
         mApp = application;
@@ -63,13 +78,88 @@ public class AppModule {
 
     @Provides
     @Singleton
-    FileManager provideFileManager(Context context) {
-        return new FileManager(context);
+    FileManager provideFileManager(Context context, PrefsFactory prefsFactory) {
+        return new FileManager(context, prefsFactory);
     }
 
     @Provides
     @Singleton
-    Prefs providePrefs(Context context) {
-        return new Prefs(context);
+    SharedPreferences provideSharedPreference(Context context) {
+        return context.getApplicationContext()
+                .getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    @Singleton
+    PrefsFactory providePrefsFactory(Context context, SharedPreferences sharedPreferences) {
+        return new PrefsFactory(context, sharedPreferences);
+    }
+
+    @Provides
+    @Singleton
+    MessageHttpClient provideMessageHttpClient(Context context, FileManager fileManager) {
+        return new MessageHttpClient(context, fileManager);
+    }
+
+    @Provides
+    @Singleton
+    AppHttpClient provideAppHttpClient(Context context) {
+        return new AppHttpClient(context);
+    }
+
+    @Provides
+    @Singleton
+    TwitterClient provideTwitterApp() {
+        return new TwitterBuilder(mApp,
+                BuildConfig.TWITTER_CONSUMER_KEY,
+                BuildConfig.TWITTER_CONSUMER_SECRET)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    PostMessage provideProcessMessage(Context context, PrefsFactory prefsFactory,
+            MessageHttpClient messageHttpClient,
+            MessageDatabaseHelper messageDatabaseHelper,
+            WebServiceDatabaseHelper webServiceDatabaseHelper,
+            FilterDatabaseHelper filterDatabaseHelper,
+            ProcessSms processSms,
+            FileManager fileManager,
+            TwitterClient twitterApp,
+            ProcessMessageResult processMessageResult) {
+        return new PostMessage.Builder()
+                .setContext(context)
+                .setPrefsFactory(prefsFactory)
+                .setMessageHttpClient(messageHttpClient)
+                .setMessageDatabaseHelper(messageDatabaseHelper)
+                .setWebServiceDatabaseHelper(webServiceDatabaseHelper)
+                .setFilterDatabaseHelper(filterDatabaseHelper)
+                .setProcessSms(processSms)
+                .setFileManager(fileManager)
+                .setProcessMessageResult(processMessageResult)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    TweetMessage provideTweetMessage(Context context, PrefsFactory prefsFactory,
+            MessageHttpClient messageHttpClient,
+            MessageDatabaseHelper messageDatabaseHelper,
+            WebServiceDatabaseHelper webServiceDatabaseHelper,
+            FilterDatabaseHelper filterDatabaseHelper,
+            ProcessSms processSms,
+            FileManager fileManager,
+            TwitterClient twitterApp,
+            ProcessMessageResult processMessageResult) {
+        return new TweetMessage.Builder()
+                .setContext(context)
+                .setPrefsFactory(prefsFactory)
+                .setTwitterApp(twitterApp)
+                .setMessageDatabaseHelper(messageDatabaseHelper)
+                .setWebServiceDatabaseHelper(webServiceDatabaseHelper)
+                .setFilterDatabaseHelper(filterDatabaseHelper)
+                .setProcessSms(processSms)
+                .setFileManager(fileManager)
+                .build();
     }
 }

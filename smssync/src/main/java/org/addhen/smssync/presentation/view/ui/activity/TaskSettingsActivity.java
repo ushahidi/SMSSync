@@ -20,7 +20,7 @@ package org.addhen.smssync.presentation.view.ui.activity;
 import com.cgollner.unclouded.preferences.SwitchPreferenceCompat;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.presentation.Prefs;
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.presenter.AddLogPresenter;
 import org.addhen.smssync.presentation.view.log.AddLogView;
 import org.addhen.smssync.presentation.view.ui.widget.TimePreference;
@@ -54,7 +54,7 @@ public class TaskSettingsActivity extends BasePreferenceActivity implements
 
     private SwitchPreferenceCompat mEnableMessageResultsAPI;
 
-    private Prefs mPrefs;
+    private PrefsFactory mPrefs;
 
     private AddLogPresenter mAddLogPresenter;
 
@@ -63,7 +63,7 @@ public class TaskSettingsActivity extends BasePreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.task_preferences);
         setToolbarTitle(R.string.task);
-        mPrefs = getAppComponent().prefs();
+        mPrefs = getAppComponent().prefsFactory();
         mAddLogPresenter = mSettingsComponent.addLogPresenter();
 
         mTaskCheck = (SwitchPreferenceCompat) getPreferenceScreen().findPreference(TASK_CHECK);
@@ -129,7 +129,7 @@ public class TaskSettingsActivity extends BasePreferenceActivity implements
                 // Todo implement a utility for starting and stopping task service
                 mTaskCheckTimes.setEnabled(false);
                 if (mEnableMessageResultsAPI.isChecked()) {
-                    // Todo stop message result service; Use a utlity for this
+                    // Todo stop message result service; Use a utility for this
                     mEnableMessageResultsAPI.setChecked(false);
                     mEnableMessageResultsAPI.setEnabled(false);
                 }

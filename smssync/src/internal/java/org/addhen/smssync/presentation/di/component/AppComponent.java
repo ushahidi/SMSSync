@@ -20,15 +20,21 @@ package org.addhen.smssync.presentation.di.component;
 import com.addhen.android.raiburari.presentation.di.component.ApplicationComponent;
 import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.TweetMessage;
+import org.addhen.smssync.data.net.AppHttpClient;
+import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.domain.repository.WebServiceRepository;
 import org.addhen.smssync.presentation.App;
-import org.addhen.smssync.presentation.Prefs;
 import org.addhen.smssync.presentation.di.module.AppModule;
 import org.addhen.smssync.presentation.di.module.InternalAppModule;
+import org.addhen.smssync.presentation.presenter.AlertPresenter;
+import org.addhen.smssync.presentation.presenter.DebugPresenter;
 
 import javax.inject.Singleton;
 
@@ -51,7 +57,19 @@ public interface AppComponent extends ApplicationComponent {
 
     FileManager fileManager();
 
-    Prefs prefs();
+    PrefsFactory prefsFactory();
+
+    AppHttpClient appHttpClient();
+
+    TwitterClient twitterClient();
+
+    PostMessage processMessage();
+
+    TweetMessage tweetMessage();
+
+    DebugPresenter debugPresenter();
+
+    AlertPresenter alertPresenter();
 
     final class Initializer {
 

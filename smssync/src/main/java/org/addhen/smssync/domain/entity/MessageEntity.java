@@ -30,6 +30,7 @@ public class MessageEntity extends Entity {
 
     public String messageFrom;
 
+    // This holds the sent/received timestamp depending on the context used for retrieval or setting
     public Date messageDate;
 
     public String messageUuid;
@@ -44,6 +45,8 @@ public class MessageEntity extends Entity {
 
     public String deliveryResultMessage;
 
+    public Date deliveredMessageDate;
+
     public int retries;
 
     public Status status;
@@ -53,6 +56,6 @@ public class MessageEntity extends Entity {
     }
 
     public enum Type {
-        TASK, PENDING
+        TASK, PENDING, ALERT
     }
 }

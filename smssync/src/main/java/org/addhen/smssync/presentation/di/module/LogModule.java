@@ -20,6 +20,7 @@ package org.addhen.smssync.presentation.di.module;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
+import org.addhen.smssync.domain.usecase.log.DeleteLogUsecase;
 import org.addhen.smssync.domain.usecase.log.ListLogUsecase;
 
 import javax.inject.Named;
@@ -36,7 +37,14 @@ public class LogModule {
     @Provides
     @ActivityScope
     @Named("logList")
-    Usecase provideListFilterUseCase(ListLogUsecase listLogUsecase) {
+    Usecase provideListLogUseCase(ListLogUsecase listLogUsecase) {
         return listLogUsecase;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("logDelete")
+    Usecase provideDeleteLogUseCase(DeleteLogUsecase deleteLogUsecase) {
+        return deleteLogUsecase;
     }
 }

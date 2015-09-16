@@ -17,19 +17,19 @@
                   android:layout_marginRight="@dimen/view_spacing_large"
                   android:layout_marginLeft="@dimen/view_spacing_large">
         <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/header_app_name"
                 style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textSize="25sp"
                 android:layout_centerHorizontal="true"
-                android:paddingRight="@dimen/view_spacing_normal"
-                android:id="@+id/view"/>
+                android:paddingRight="@dimen/view_spacing_normal"/>
         <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/header_app_version"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Version 3.0.0"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textSize="18sp"

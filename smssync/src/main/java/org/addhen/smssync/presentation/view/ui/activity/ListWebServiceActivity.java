@@ -105,6 +105,6 @@ public class ListWebServiceActivity extends BaseActivity
 
     @Override
     public void onWebServiceClicked(WebServiceModel webServiceModel) {
-        // mListWebServiceComponent.launcher().launchUpdateWebService(webServiceModel);
+        mListWebServiceComponent.launcher().launchUpdateWebServices(webServiceModel);
     }
 }

@@ -25,7 +25,10 @@
               tools:context=".LogActivity">
 
     <include layout="@layout/phone_status"/>
-
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/dividerVertical"/>
     <CheckBox
             android:id="@+id/start_logs"
             android:layout_width="wrap_content"
@@ -34,21 +37,17 @@
             android:layout_gravity="center"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/enable_logs"/>
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
-        <com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
-                android:id="@id/android:list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:cacheColorHint="@android:color/transparent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    <TextView
+            android:id="@+id/log_location"
+            style="@style/TextView.Title"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
 
-        <TextView
-                android:id="@+id/empty_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/no_logs"
-                android:visibility="gone"
-                android:gravity="center"/>
-    </RelativeLayout>
-
+    <com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
+            android:id="@id/android:list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@android:color/transparent"
+            app:recyclerviewEmptyView="@layout/log_empty_list_view"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </LinearLayout>

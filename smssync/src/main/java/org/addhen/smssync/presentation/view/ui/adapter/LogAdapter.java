@@ -30,25 +30,18 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class LogAdapter extends BaseRecyclerViewAdapter<LogModel> {
 
-    private View mEmptyView;
-
-    public LogAdapter(final View emptyView) {
-        mEmptyView = emptyView;
-        onDataSetChanged();
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup) {
         return new Widgets(LayoutInflater.from(viewGroup.getContext()).inflate(
-                R.layout.list_message_item, viewGroup, false));
+                R.layout.list_log_item, viewGroup, false));
     }
 
     @Override
@@ -59,15 +52,6 @@ public class LogAdapter extends BaseRecyclerViewAdapter<LogModel> {
     @Override
     public void setItems(List<LogModel> items) {
         super.setItems(items);
-        onDataSetChanged();
-    }
-
-    /**
-     * Sets an empty view when the adapter's data item gets to zero
-     */
-    private void onDataSetChanged() {
-        notifyDataSetChanged();
-        mEmptyView.setVisibility(getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override

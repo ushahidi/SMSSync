@@ -17,95 +17,71 @@
 
 package org.addhen.smssync.data.net;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Network;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import com.squareup.okhttp.Response;
+
+import org.addhen.smssync.data.entity.SmssyncResponse;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 
-import java.io.File;
+import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import rx.Observable;
 
 /**
- * A Singleton class for accessing RequestQueue instance. It instantiates the
- * RequestQueue using the application context. This way possible memory leaks
- * are avoided in case user passes in an Activity's context.
+ * Basic HTTP client for making a request to URL pass to it
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class AppHttpClient {
+@Singleton
+public class AppHttpClient extends BaseHttpClient {
 
-    private Context mContext;
-
-    private RequestQueue mRequestQueue;
-
-    private static AppHttpClient mAppHttpClient;
-
-    /** Default on-disk cache directory. */
-    private static final String DEFAULT_CACHE_DIR = "smssync-volley";
-
-    private AppHttpClient(Context context) {
-        mContext = context;
-        mRequestQueue = getRequestQueue();
+    @Inject
+    public AppHttpClient(Context context) {
+        super(context);
     }
 
-    public static synchronized AppHttpClient getInstance(Context context) {
-        if (mAppHttpClient == null) {
-            mAppHttpClient = new AppHttpClient(context);
-        }
-        return mAppHttpClient;
+    public Observable<Boolean> makeRequest(String url) {
+        return Observable.defer(() -> {
+            boolean status = request(url);
+            return Observable.just(status);
+        });
     }
 
-    /**
-     * Creates an instance of the worker pool and calls {@link RequestQueue#start()} on it.
-     *
-     * @return A started {@link RequestQueue} instance.
-     */
-    @SuppressWarnings("deprecation")
-    public RequestQueue getRequestQueue() {
-        File cacheDir = new File(mContext.getCacheDir(), DEFAULT_CACHE_DIR);
-        if (mRequestQueue == null) {
-            Network network = new BasicNetwork(new HurlStack());
-            // getApplicationContext() is key, it keeps the app from leaking the
-            // Activity or BroadcastReceiver if someone should pass one in.
-            mRequestQueue = new RequestQueue(new DiskBasedCache(cacheDir), network);
-            mRequestQueue.start();
-        }
-        return mRequestQueue;
-    }
-
-    private String getUserAgent() {
-        StringBuilder userAgent = new StringBuilder("SMSSync-Android/");
-        userAgent.append("v");
+    public Boolean request(String url) {
+        setUrl(url);
+        Boolean status = false;
         try {
-            // Add version name to user agent
-            String packageName = mContext.getPackageName();
-            PackageInfo packageInfo = mContext.getPackageManager()
-                    .getPackageInfo(packageName, 0);
-            userAgent.append(packageInfo.versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            // Ignore exception for now
+            execute();
+        } catch (Exception e) {
+            log("Request failed", e);
         }
-        return userAgent.toString();
-    }
+        Response response = getResponse();
+        if (response != null) {
+            int statusCode = response.code();
 
-    /**
-     * Make a Typed base request. Regular string and Json requests
-     *
-     * @param req The request type
-     * @param <T> The Typed request
-     */
-    public <T> void addToRequestQueue(Request<T> req) {
-        try {
-            req.getHeaders().put("User-Agent", getUserAgent());
-        } catch (AuthFailureError authFailureError) {
-            authFailureError.printStackTrace();
+            if (statusCode == 200) {
+                final Gson gson = new Gson();
+                SmssyncResponse smssyncResponses = null;
+                try {
+                    smssyncResponses = gson.fromJson(response.body().charStream(),
+                            SmssyncResponse.class);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    status = false;
+                } catch (JsonSyntaxException e) {
+                    status = false;
+                }
+                if (smssyncResponses != null && smssyncResponses.getPayload() != null) {
+                    status = true;
+                }
+            }
         }
-        getRequestQueue().add(req);
+        return status;
     }
 }

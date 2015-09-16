@@ -21,6 +21,8 @@ import com.addhen.android.raiburari.domain.repository.Repository;
 
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -36,5 +38,21 @@ public interface WebServiceRepository extends Repository<WebServiceEntity> {
      * @param status The web service status to be used for retrieving web service data.
      * @return The web service
      */
-    Observable<WebServiceEntity> getByStatus(WebServiceEntity.Status status);
+    Observable<List<WebServiceEntity>> getByStatus(WebServiceEntity.Status status);
+
+    /**
+     * Synchronously fetches a web service by its status
+     *
+     * @param status The status of the web service
+     * @return A list of {@link WebServiceEntity}
+     */
+    List<WebServiceEntity> syncGetByStatus(WebServiceEntity.Status status);
+
+    /**
+     * Use to test web services. Does not return an Observable
+     *
+     * @param url The URL to test it's connection
+     * @return The status of the connection test. True if it was successful, False otherwise.
+     */
+    Observable<Boolean> testWebService(String url);
 }

@@ -24,8 +24,11 @@ import com.google.gson.reflect.TypeToken;
 
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
+import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
+import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
 
@@ -51,15 +54,21 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     private final MessageDataMapper mMessageDataMapper;
 
+    private PostMessage mProcessMessage;
+
     @Inject
-    public InternalMessageDataRepository(Context context, MessageDataMapper messageDataMapper) {
+    public InternalMessageDataRepository(Context context, MessageDataMapper messageDataMapper,
+            PostMessage processMessage) {
         mContext = context;
         mMessageDataMapper = messageDataMapper;
+        mProcessMessage = processMessage;
     }
 
     @Override
     public Observable<Integer> deleteByUuid(String uuid) {
-        return null;
+        return Observable.defer(() -> {
+            return Observable.just(10);
+        });
     }
 
     @Override
@@ -78,6 +87,28 @@ public class InternalMessageDataRepository implements MessageRepository {
             List<Message> messageEntityList = new ArrayList<>();
             List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
             return Observable.just(messages);
+        });
+    }
+
+    @Override
+    public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
+        return Observable.defer(() -> {
+            boolean status = mProcessMessage
+                    .postMessage(mMessageDataMapper.unmap(messageEntities), null);
+            return Observable.just(status);
+        });
+    }
+
+    @Override
+    public Observable<List<MessageEntity>> importMessage() {
+        return Observable.defer(() -> {
+            ProcessSms processSms = mProcessMessage.getProcessSms();
+            List<SmsMessage> smsMessages = processSms.importMessages();
+            List<Message> messages = new ArrayList<>();
+            for (SmsMessage smsMessage : smsMessages) {
+                messages.add(mProcessMessage.map(smsMessage));
+            }
+            return Observable.just(mMessageDataMapper.map(messages));
         });
     }
 

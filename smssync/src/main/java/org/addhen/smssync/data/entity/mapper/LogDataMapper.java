@@ -37,7 +37,7 @@ public class LogDataMapper {
 
     public LogEntity map(Log log) {
         LogEntity logEntity = null;
-        if (logEntity != null) {
+        if (log != null) {
             logEntity = new LogEntity();
             logEntity._id = log._id;
             logEntity.message = log.message;

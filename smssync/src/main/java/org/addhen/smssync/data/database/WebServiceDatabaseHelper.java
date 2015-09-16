@@ -54,9 +54,9 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
      * @param status The status to use to query for the webService
      * @return An Observable that emits a {@link WebService}
      */
-    public Observable<WebService> getByStatus(final WebService.Status status) {
+    public Observable<List<WebService>> getByStatus(final WebService.Status status) {
         return Observable.create((subscriber) -> {
-            final WebService webServiceEntity = get(status);
+            final List<WebService> webServiceEntity = get(status);
             if (webServiceEntity != null) {
                 subscriber.onNext(webServiceEntity);
                 subscriber.onCompleted();
@@ -82,6 +82,11 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
                 subscriber.onError(new WebServiceNotFoundException());
             }
         });
+    }
+
+    public List<WebService> listWebServices() {
+        return cupboard()
+                .withDatabase(getReadableDatabase()).query(WebService.class).list();
     }
 
     /**
@@ -153,10 +158,10 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
-    private WebService get(final WebService.Status status) {
-        final WebService webService = cupboard()
+    public List<WebService> get(final WebService.Status status) {
+        final List<WebService> webServices = cupboard()
                 .withDatabase(getReadableDatabase()).query(WebService.class)
-                .withSelection("mStatus = ?", status.name()).get();
-        return webService;
+                .withSelection("status = ?", status.name()).list();
+        return webServices;
     }
 }

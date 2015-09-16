@@ -20,7 +20,7 @@ package org.addhen.smssync.presentation.view.ui.activity;
 import com.cgollner.unclouded.preferences.SwitchPreferenceCompat;
 
 import org.addhen.smssync.R;
-import org.addhen.smssync.presentation.Prefs;
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.presenter.AddLogPresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.log.AddLogView;
@@ -57,7 +57,7 @@ public class GeneralSettingsActivity extends BasePreferenceActivity implements
 
     private SwitchPreferenceCompat enableSmsReportDelivery;
 
-    Prefs mPrefs;
+    PrefsFactory mPrefs;
 
     AddLogPresenter mAddLogPresenter;
 
@@ -66,7 +66,7 @@ public class GeneralSettingsActivity extends BasePreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.general_preferences);
         setToolbarTitle(R.string.general_settings);
-        mPrefs = getAppComponent().prefs();
+        mPrefs = getAppComponent().prefsFactory();
         mAddLogPresenter = mSettingsComponent.addLogPresenter();
         uniqueId = (EditTextPreference) getPreferenceScreen().findPreference(KEY_UNIQUE_ID);
         uniqueName = (EditTextPreference) getPreferenceScreen().findPreference(KEY_UNIQUE_NAME);

@@ -67,6 +67,10 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
         }));
     }
 
+    public List<Filter> getFilters() {
+        return cupboard().withDatabase(getReadableDatabase()).query(Filter.class).list();
+    }
+
     public Observable<Filter> getFilter(@NonNull Long id) {
         return Observable.create((subscriber -> {
             if (!isClosed()) {

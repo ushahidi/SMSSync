@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.di.HasComponent;
 import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
 
 import org.addhen.smssync.R;
+import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.AppActivityComponent;
 import org.addhen.smssync.presentation.di.component.AppComponent;
@@ -31,11 +32,13 @@ import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
 import org.addhen.smssync.presentation.di.component.FilterComponent;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
+import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -45,6 +48,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -67,6 +71,9 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
     @Bind((R.id.nav_view))
     NavigationView mNavigationView;
+
+    @Bind(R.id.header_app_version)
+    AppCompatTextView mAppCompatTextView;
 
     private static final String BUNDLE_STATE_PARAM_CURRENT_MENU
             = "org.addhen.smssync.presentation.view.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
@@ -124,6 +131,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 R.string.app_name);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mAppCompatTextView.setText(getAppVersionName());
         if (mNavigationView != null) {
             setupDrawerContent(mNavigationView);
         }
@@ -135,6 +143,17 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private void findMessageFragment() {
         mMessageFragment = (MessageFragment) getSupportFragmentManager()
                 .findFragmentByTag(INCOMING_FAG_TAG);
+    }
+
+    private String getAppVersionName() {
+        String versionName = null;
+        try {
+            versionName = getPackageManager().getPackageInfo(
+                    this.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return versionName;
     }
 
     @Override
@@ -229,7 +248,12 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
-
+        // Launch getting started screen only when app is launch for the first time
+        PrefsFactory prefsFactory = getAppComponent().prefsFactory();
+        if (prefsFactory.isFirstTimeLaunched().get()) {
+            prefsFactory.isFirstTimeLaunched().set(false);
+            mAppComponent.launcher().launchGettingStarted();
+        }
         mMessageComponent = DaggerMessageComponent.builder()
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
@@ -244,7 +268,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
-        //mAppComponent.launcher().launchGettingStarted();
     }
 
     @Override
@@ -261,6 +284,14 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
+        PrefsFactory prefs = getAppComponent().prefsFactory();
+        MenuItem phoneName = navigationView.getMenu().findItem(R.id.nav_device_name);
+        if (phoneName != null && !TextUtils.isEmpty(prefs.uniqueName().get())) {
+            phoneName.setVisible(true);
+            phoneName.setTitle(
+                    Utility.capitalizeFirstLetter(prefs.uniqueName().get()) + " - " + prefs
+                            .uniqueId().get());
+        }
         navigationView.setNavigationItemSelectedListener(
                 menuItem -> {
                     mCurrentMenu = menuItem.getItemId();
@@ -273,7 +304,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 });
     }
 
-    public void onNavigationItemSelected(NavigationView navigationView, final MenuItem menuItem) {
+    private void onNavigationItemSelected(NavigationView navigationView, final MenuItem menuItem) {
         final int groupId = menuItem.getGroupId();
         navigationView.getMenu()
                 .setGroupCheckable(R.id.group_messages, (groupId == R.id.group_messages), true);
@@ -357,7 +388,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
      * @return {@link com.addhen.android.raiburari.presentation.di.component.ApplicationComponent}
      */
     public AppComponent getAppComponent() {
-        return ((App) getApplication()).getAppComponent();
+        return App.getAppComponent();
     }
 
     public MessageComponent getMessageComponent() {

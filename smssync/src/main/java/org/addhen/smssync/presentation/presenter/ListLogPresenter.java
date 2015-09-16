@@ -57,7 +57,7 @@ public class ListLogPresenter implements Presenter {
 
     @Override
     public void resume() {
-        loadMessages();
+        loadLogs();
     }
 
     @Override
@@ -74,10 +74,14 @@ public class ListLogPresenter implements Presenter {
         mListLogView = listLogView;
     }
 
-    public void loadMessages() {
-        mListLogView.hideRetry();
-        mListLogView.showLoading();
+    public void loadLogs() {
         mListLogUsecase.execute(new DefaultSubscriber<List<LogEntity>>() {
+            @Override
+            public void onStart() {
+                mListLogView.hideRetry();
+                mListLogView.showLoading();
+            }
+
             @Override
             public void onCompleted() {
                 mListLogView.hideLoading();

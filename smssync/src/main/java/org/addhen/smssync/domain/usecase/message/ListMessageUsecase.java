@@ -38,8 +38,8 @@ public class ListMessageUsecase extends Usecase {
 
     @Inject
     protected ListMessageUsecase(@NonNull MessageRepository messageRepository,
-            ThreadExecutor threadExecutor,
-            PostExecutionThread postExecutionThread) {
+            @NonNull ThreadExecutor threadExecutor,
+            @NonNull PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mMessageRepository = messageRepository;
     }

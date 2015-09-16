@@ -18,6 +18,7 @@
 package org.addhen.smssync.presentation.view.ui.adapter;
 
 import com.addhen.android.raiburari.presentation.ui.adapter.BaseRecyclerViewAdapter;
+import com.addhen.android.raiburari.presentation.ui.widget.CapitalizedTextView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.WebServiceModel;
@@ -45,6 +46,8 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     private SparseBooleanArray mSelectedItems;
 
+    private OnItemCheckedListener mOnItemCheckedListener;
+
     /**
      * Default constructor
      */
@@ -54,9 +57,21 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        final WebServiceModel webServiceModel = getItem(position);
         ((Widgets) viewHolder).title.setText(getItem(position).getTitle());
         ((Widgets) viewHolder).url.setText(getItem(position).getUrl());
-        ((Widgets) viewHolder).listCheckBox.setChecked(mSelectedItems.get(position, false));
+        CheckedTextView checkedTextView = ((Widgets) viewHolder).listCheckBox;
+        if (webServiceModel.getStatus() == WebServiceModel.Status.ENABLED) {
+            checkedTextView.setChecked(true);
+        } else {
+            checkedTextView.setChecked(false);
+        }
+        checkedTextView.setOnClickListener(v -> {
+            if (mOnItemCheckedListener != null) {
+                mOnItemCheckedListener
+                        .onItemChecked(position, checkedTextView.isChecked(), checkedTextView);
+            }
+        });
     }
 
     @Override
@@ -114,13 +129,17 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
         return items;
     }
 
+    public void setOnItemCheckedListener(OnItemCheckedListener onItemCheckedListener) {
+        mOnItemCheckedListener = onItemCheckedListener;
+    }
+
     /**
      * View holder
      */
     public class Widgets extends RecyclerView.ViewHolder {
 
         @Bind(R.id.web_service_title)
-        TextView title;
+        CapitalizedTextView title;
 
         @Bind(R.id.web_service_description)
         TextView url;
@@ -138,5 +157,10 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
             ButterKnife.bind(this, view);
         }
 
+    }
+
+    public interface OnItemCheckedListener {
+
+        void onItemChecked(int position, boolean status, CheckedTextView checkedTextView);
     }
 }

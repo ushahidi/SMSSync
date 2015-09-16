@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.LogModule;
+import org.addhen.smssync.presentation.presenter.DeleteLogPresenter;
 import org.addhen.smssync.presentation.presenter.ListLogPresenter;
 import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 
@@ -36,4 +37,6 @@ public interface LogComponent extends AppActivityComponent {
     void inject(LogFragment logFragment);
 
     ListLogPresenter listLogPresenter();
+
+    DeleteLogPresenter deleteLogPresenter();
 }

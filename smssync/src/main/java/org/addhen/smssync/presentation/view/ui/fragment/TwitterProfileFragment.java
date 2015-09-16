@@ -42,7 +42,7 @@ public class TwitterProfileFragment extends BaseFragment {
     AppCompatTextView mLoggedInUser;
 
     public TwitterProfileFragment() {
-        super(R.layout.fragment_getting_started_add_integration, 0);
+        super(R.layout.fragment_twitter_profile, 0);
     }
 
     public static TwitterProfileFragment newInstance() {
@@ -54,13 +54,14 @@ public class TwitterProfileFragment extends BaseFragment {
 
     public void onViewCreated(View view, Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
-        final String username = "@" + App.getTwitterIntance().getSessionManager()
+        final String username = "@" + App.getTwitterInstance().getSessionManager()
                 .getActiveSession().mUserName;
         mLoggedInUser.setText(username);
     }
 
     @OnClick(R.id.twitter_logout)
     void onTwitterClicked() {
-        App.getTwitterIntance().logout();
+        App.getTwitterInstance().logout();
+        getActivity().finish();
     }
 }

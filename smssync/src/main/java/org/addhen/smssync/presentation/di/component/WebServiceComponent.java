@@ -100,7 +100,6 @@ public interface WebServiceComponent extends AppActivityComponent {
      */
     ListWebServicePresenter listWebServicePresenter();
 
-
     /**
      * Provides {@link DeleteWebServicePresenter}
      *

@@ -19,13 +19,14 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
+import com.addhen.android.raiburari.presentation.ui.widget.DividerItemDecoration;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
-import org.addhen.smssync.presentation.presenter.ListPublishedMessagePresenter;
+import org.addhen.smssync.presentation.presenter.message.ListPublishedMessagePresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
@@ -148,13 +149,15 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     private void initRecyclerView() {
         mPendingDeletedMessages = new ArrayList<>();
-        mMessageAdapter = new MessageAdapter(getActivity(), mEmptyView);
+        mMessageAdapter = new MessageAdapter(getActivity());
         mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessageRecyclerView.setFocusable(true);
         mMessageRecyclerView.setFocusableInTouchMode(true);
         mMessageAdapter.setHasStableIds(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
-        mMessageRecyclerView.addItemDividerDecoration(getActivity());
+        mMessageRecyclerView.addItemDecoration(
+                new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
+        ;
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageRecyclerView.enableDefaultSwipeRefresh(false);
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));

@@ -19,8 +19,9 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
+import org.addhen.smssync.R;
+
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -29,13 +30,13 @@ public class GettingStartedWelcomeFragment extends BaseFragment {
 
     private static GettingStartedWelcomeFragment mGettingStartedWelcomeFragment;
 
-    public GettingStartedWelcomeFragment(@LayoutRes int layout) {
-        super(layout, 0);
+    public GettingStartedWelcomeFragment() {
+        super(R.layout.fragment_getting_started_welcome, 0);
     }
 
-    public static GettingStartedWelcomeFragment newInstance(@LayoutRes int layoutResId) {
+    public static GettingStartedWelcomeFragment newInstance() {
         if (mGettingStartedWelcomeFragment == null) {
-            mGettingStartedWelcomeFragment = new GettingStartedWelcomeFragment(layoutResId);
+            mGettingStartedWelcomeFragment = new GettingStartedWelcomeFragment();
         }
         return mGettingStartedWelcomeFragment;
     }

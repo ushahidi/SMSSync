@@ -21,10 +21,12 @@ import com.addhen.android.raiburari.presentation.ui.fragment.BaseFragment;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.WebServiceComponent;
+import org.addhen.smssync.presentation.model.SyncSchemeModel;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.validator.UrlValidator;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
+import org.addhen.smssync.presentation.view.webservice.TestWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
 
 import android.app.Activity;
@@ -32,19 +34,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
 /**
- * Fragment for updating a existing webService
+ * Fragment for updating a existing webService. This needs to be merged with {@link AddWebServiceFragment}
+ * as they share so much code
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
@@ -53,11 +63,51 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     private static final String ARGUMENT_KEY_WEB_SERVICE_MODEL
             = "org.addhen.smssync.ARGUMENT_WEB_SERVICE_MODEL";
 
+    private static final String BUNDLE_STATE_WEB_SERVICE_MODEL
+            = "org.addhen.smssync.BUNDLE_STATE_WEB_SERVICE_MODEL";
+
     @Bind(R.id.add_custom_web_service_title)
-    EditText title;
+    EditText mEditTextTitle;
 
     @Bind(R.id.add_custom_web_service_url)
-    EditText url;
+    EditText mEditTextUrl;
+
+    @Bind(R.id.add_custom_web_service_secret)
+    EditText mEditTextSecret;
+
+
+    @Bind(R.id.sync_method)
+    Spinner mSpinnerMethods;
+
+    @Bind(R.id.sync_data_format)
+    Spinner mSpinnerDataFormats;
+
+    @Bind(R.id.sync_k_secret)
+    EditText mKeySecret;
+
+    @Bind(R.id.sync_k_from)
+    EditText mKeyFrom;
+
+    @Bind(R.id.sync_k_message)
+    EditText mKeyMessage;
+
+    @Bind(R.id.sync_k_sent_timestamp)
+    EditText mKeySentTimeStamp;
+
+    @Bind(R.id.sync_k_sent_to)
+    EditText mKeySentTo;
+
+    @Bind(R.id.sync_k_message_id)
+    EditText mKeyMessageID;
+
+    @Bind(R.id.sync_k_device_id)
+    EditText mKeyDeviceID;
+
+    @Bind(R.id.add_custom_web_service_add)
+    Button mButton;
+
+    @Bind(R.id.test_progress_bar)
+    ProgressBar mProgressBar;
 
     @Inject
     UpdateWebServicePresenter mUpdateWebServicePresenter;
@@ -96,12 +146,21 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initialize();
-        url.setOnTouchListener((view, event) -> setHttpProtocol());
+        mEditTextUrl.setOnTouchListener((view, event) -> setHttpProtocol());
+        if (savedInstanceState != null) {
+            mWebServiceModel = savedInstanceState.getParcelable(BUNDLE_STATE_WEB_SERVICE_MODEL);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putParcelable(BUNDLE_STATE_WEB_SERVICE_MODEL, mWebServiceModel);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     private boolean setHttpProtocol() {
-        if (TextUtils.isEmpty(url.getText().toString())) {
-            url.setText("http://");
+        if (TextUtils.isEmpty(mEditTextUrl.getText().toString())) {
+            mEditTextUrl.setText("http://");
         }
         return false;
     }
@@ -109,6 +168,7 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     @Override
     public void onResume() {
         super.onResume();
+        showWebService(mWebServiceModel);
         mUpdateWebServicePresenter.resume();
     }
 
@@ -132,7 +192,48 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     private void initialize() {
         getComponent(WebServiceComponent.class).inject(this);
+        mUpdateWebServicePresenter.setTestWebServiceView(new TestWebServiceView() {
+            @Override
+            public void webServiceTested(boolean status) {
+                if (status) {
+                    showSnabackar(getView(), R.string.valid_web_service);
+                } else {
+                    showSnabackar(getView(), R.string.failed_to_test_web_service);
+                }
+            }
+
+            @Override
+            public void showLoading() {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void hideLoading() {
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void showRetry() {
+
+            }
+
+            @Override
+            public void hideRetry() {
+
+            }
+
+            @Override
+            public void showError(String s) {
+                showSnabackar(getView(), s);
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getActivity();
+            }
+        });
         mUpdateWebServicePresenter.setView(this);
+        mButton.setText(R.string.update_btn);
     }
 
     @Override
@@ -152,6 +253,17 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
         }
     }
 
+    @OnCheckedChanged(R.id.add_custom_web_service_show_password)
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            mEditTextSecret.setInputType(
+                    InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            return;
+        }
+        mEditTextSecret
+                .setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+    }
+
     @Override
     public void onWebServiceSuccessfullyUpdated(Long row) {
         if (mActionListener != null) {
@@ -162,8 +274,24 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     @Override
     public void showWebService(@NonNull WebServiceModel webServiceModel) {
         mWebServiceModel = webServiceModel;
-        title.setText(webServiceModel.getTitle());
-        url.setText(webServiceModel.getUrl());
+        if (webServiceModel != null) {
+            mEditTextTitle.setText(webServiceModel.getTitle());
+            mEditTextUrl.setText(webServiceModel.getUrl());
+            mEditTextSecret.setText(webServiceModel.getSecret());
+
+            SyncSchemeModel syncSchemeModel = webServiceModel.getSyncScheme();
+            mKeyMessage.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.MESSAGE));
+            mKeyMessageID.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.MESSAGE_ID));
+            mKeyFrom.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.FROM));
+            mKeySecret.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.SECRET));
+            mKeySentTimeStamp
+                    .setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.SENT_TIMESTAMP));
+            mKeySentTo.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.SENT_TO));
+            mKeyDeviceID.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.DEVICE_ID));
+            mSpinnerMethods.setSelection(syncSchemeModel.getMethod().ordinal());
+            mSpinnerDataFormats.setSelection(syncSchemeModel.getDataFormat().ordinal());
+        }
+
     }
 
     @OnClick(R.id.add_custom_web_service_add)
@@ -173,7 +301,7 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @OnEditorAction(R.id.add_custom_web_service_url)
     boolean onEditorAction(TextView textView, int actionId) {
-        if (textView == url) {
+        if (textView == mEditTextUrl) {
             switch (actionId) {
                 case EditorInfo.IME_ACTION_DONE:
                     submit();
@@ -186,17 +314,31 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     }
 
     private void submit() {
-        url.setError(null);
-        if (TextUtils.isEmpty(title.getText().toString())) {
-            title.setError(getString(R.string.validation_message_no_deployment_title));
+        mEditTextUrl.setError(null);
+        if (TextUtils.isEmpty(mEditTextTitle.getText().toString())) {
+            mEditTextTitle.setError(getString(R.string.validation_message_no_deployment_title));
             return;
         }
-        if (!(new UrlValidator().isValid(url.getText().toString()))) {
-            url.setError(getString(R.string.validation_message_invalid_url));
+        if (!(new UrlValidator().isValid(mEditTextUrl.getText().toString()))) {
+            mEditTextUrl.setError(getString(R.string.validation_message_invalid_url));
             return;
         }
-        mWebServiceModel.setTitle(title.getText().toString());
-        mWebServiceModel.setUrl(url.getText().toString());
+
+        SyncSchemeModel syncSchemeModel = new SyncSchemeModel();
+        SyncSchemeModel.SyncMethod syncMethod = SyncSchemeModel.SyncMethod
+                .valueOf(mSpinnerMethods.getSelectedItem().toString());
+        SyncSchemeModel.SyncDataFormat dataFormat = SyncSchemeModel.SyncDataFormat
+                .valueOf(mSpinnerDataFormats.getSelectedItem().toString());
+        syncSchemeModel.init(syncMethod, dataFormat,
+                mKeySecret.getText().toString(), mKeyFrom.getText().toString(),
+                mKeyMessage.getText().toString(), mKeyMessageID.getText().toString(),
+                mKeySentTimeStamp.getText().toString(), mKeySentTo.getText().toString(),
+                mKeyDeviceID.getText().toString());
+
+        mWebServiceModel.setTitle(mEditTextTitle.getText().toString());
+        mWebServiceModel.setUrl(mEditTextUrl.getText().toString());
+        mWebServiceModel.setSecret(mEditTextSecret.getText().toString());
+        mWebServiceModel.setSyncScheme(syncSchemeModel);
         mUpdateWebServicePresenter.updateWebService(mWebServiceModel);
     }
 
@@ -205,14 +347,22 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
         mLauncher.launchQrcodeReader();
     }
 
+    @OnClick(R.id.test_integration)
+    public void testIntegration() {
+        final String url = mEditTextUrl.getText().toString();
+        if (!TextUtils.isEmpty(url)) {
+            mUpdateWebServicePresenter.testWebService(url);
+        }
+    }
+
     @Override
     public void showLoading() {
-        // Do nothing
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-        // Do nothing
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
