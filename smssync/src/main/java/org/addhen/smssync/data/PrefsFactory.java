@@ -157,4 +157,12 @@ public class PrefsFactory {
     public BooleanPreference isFirstTimeLaunched() {
         return new BooleanPreference(mSharedPreferences, "AppFirstLaunched", true);
     }
+
+    public StringPreference twitterKeywords() {
+        return new StringPreference(mSharedPreferences, "TwitterKeyword", "");
+    }
+
+    public BooleanPreference enableTwitterKeywords() {
+        return new BooleanPreference(mSharedPreferences, "EnableTwitterKeyword", false);
+    }
 }

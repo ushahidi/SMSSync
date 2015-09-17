@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+<android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/view_spacing_large"
+                android:paddingRight="@dimen/view_spacing_large"
+                android:paddingTop="@dimen/view_spacing_large"
+                android:paddingBottom="@dimen/view_spacing_xlarge"
+                android:text="@string/phone_filter_description"/>
+        <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/view_spacing_large"
+                android:text="@string/blacklist"/>
+        <org.addhen.smssync.presentation.view.ui.widget.KeywordView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center|center_horizontal"
+                android:padding="@dimen/view_spacing_large"
+                android:orientation="vertical"
+                android:id="@+id/filter_white_list_container"/>
+        <android.support.v7.widget.AppCompatButton
+                android:id="@+id/add_white_list_numbers_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_phone_numbers"
+                android:padding="@dimen/view_spacing_large"
+                style="?attr/buttonBarButtonStyle"/>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:id="@+id/view"/>
+        <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/view_spacing_large"
+                android:text="@string/whitelist"/>
+        <org.addhen.smssync.presentation.view.ui.widget.KeywordView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center|center_horizontal"
+                android:padding="@dimen/view_spacing_large"
+                android:id="@+id/filter_black_list_container"/>
+        <android.support.v7.widget.AppCompatButton
+                android:id="@+id/add_black_list_numbers_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_phone_numbers"
+                android:padding="@dimen/view_spacing_large"
+                style="?attr/buttonBarButtonStyle"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

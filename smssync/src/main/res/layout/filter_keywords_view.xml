@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+    <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/custom_web_service_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/view_spacing_large"
+            android:drawablePadding="@dimen/view_spacing_large"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:drawableStart="@drawable/ic_web_grey_900_24dp"
+            android:drawableLeft="@drawable/ic_web_grey_900_24dp"/>
+    <android.support.v7.widget.SwitchCompat android:id="@+id/custom_filter_keyword_custom_switch"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:padding="@dimen/view_spacing_xlarge"
+                                            android:layout_gravity="right"
+                                            android:layout_alignBottom="@+id/custom_web_service_filter"
+                                            android:layout_alignParentRight="true"
+                                            android:layout_alignParentEnd="true"/>
+    <RelativeLayout android:id="@+id/filter_keywords_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/custom_filter_keyword_custom_switch">
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/filter_keyword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/keywords"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:drawablePadding="@dimen/view_spacing_xlarge"
+                android:drawableStart="@drawable/ic_format_color_text_grey_900_24dp"
+                android:drawableLeft="@drawable/ic_format_color_text_grey_900_24dp"
+                android:layout_marginLeft="55dp"
+                android:layout_marginStart="55dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+        <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/filter_keyword_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="0"
+                android:drawablePadding="@dimen/view_spacing_large"
+                android:drawableEnd="@drawable/ic_chevron_right_grey_900_24dp"
+                android:drawableRight="@drawable/ic_chevron_right_grey_900_24dp"
+                android:layout_weight="0.01"
+                android:layout_alignTop="@+id/filter_keyword"
+                android:paddingRight="@dimen/view_spacing_large"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+</RelativeLayout>
+

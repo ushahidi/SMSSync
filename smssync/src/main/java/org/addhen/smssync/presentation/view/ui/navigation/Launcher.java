@@ -17,18 +17,20 @@
 
 package org.addhen.smssync.presentation.view.ui.navigation;
 
-import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.model.WebServiceModel;
+import org.addhen.smssync.presentation.view.ui.activity.AddKeywordsActivity;
+import org.addhen.smssync.presentation.view.ui.activity.AddPhoneNumberActivity;
+import org.addhen.smssync.presentation.view.ui.activity.AddTwitterKeywordsActivity;
 import org.addhen.smssync.presentation.view.ui.activity.AddWebServiceActivity;
+import org.addhen.smssync.presentation.view.ui.activity.FilterActivity;
 import org.addhen.smssync.presentation.view.ui.activity.GettingStartedActivity;
 import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
+import org.addhen.smssync.presentation.view.ui.activity.LogActivity;
 import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
 import org.addhen.smssync.presentation.view.ui.activity.TwitterProfileActivity;
 import org.addhen.smssync.presentation.view.ui.activity.UpdateWebServiceActivity;
-import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
-import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
 
@@ -58,16 +60,12 @@ public class Launcher {
         return MessageFragment.newInstance();
     }
 
-    public LogFragment launchLogs() {
-        return LogFragment.newInstance();
+    public void launchLogs() {
+        mActivity.startActivity(LogActivity.getIntent(mActivity));
     }
 
     public void launchIntegrations() {
         mActivity.startActivity(IntegrationActivity.getIntent(mActivity));
-    }
-
-    public FilterFragment launchFilters() {
-        return FilterFragment.newInstance(FilterModel.Status.WHITELIST);
     }
 
     public PublishedMessageFragment launchPublishedMessages() {
@@ -90,6 +88,10 @@ public class Launcher {
         mActivity.startActivity(UpdateWebServiceActivity.getIntent(mActivity, webServiceModel));
     }
 
+    public void launchFilters() {
+        mActivity.startActivity(FilterActivity.getIntent(mActivity));
+    }
+
     /**
      * Launches the barcode reader
      */
@@ -103,5 +105,26 @@ public class Launcher {
      */
     public void launchTwitterProfile() {
         mActivity.startActivity(TwitterProfileActivity.getIntent(mActivity));
+    }
+
+    /**
+     * Launches activity for adding a new phone number
+     */
+    public void launchAddPhoneNumber() {
+        mActivity.startActivity(AddPhoneNumberActivity.getIntent(mActivity));
+    }
+
+    /**
+     * Launches activity for adding a new keyword
+     */
+    public void launchAddKeyword(WebServiceModel webServiceModel) {
+        mActivity.startActivity(AddKeywordsActivity.getIntent(mActivity, webServiceModel));
+    }
+
+    /**
+     * Launches activity for adding a new keyword for twitter service
+     */
+    public void launchAddTwitterKeyword() {
+        mActivity.startActivity(AddTwitterKeywordsActivity.getIntent(mActivity));
     }
 }

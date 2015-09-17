@@ -119,8 +119,59 @@
                     android:value=".presentation.view.ui.activity.IntegrationActivity"/>
         </activity>
         <activity
+                android:name=".presentation.view.ui.activity.AddPhoneNumberActivity"
+                android:label="@string/add_phone_numbers"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.FilterActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.FilterActivity"/>
+        </activity>
+        <activity
+                android:name=".presentation.view.ui.activity.AddKeywordsActivity"
+                android:label="@string/add_keyword"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.MainActivity"/>
+        </activity>
+
+        <activity
+                android:name=".presentation.view.ui.activity.AddTwitterKeywordsActivity"
+                android:label="@string/add_keyword"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.MainActivity"/>
+        </activity>
+        <activity
                 android:name=".presentation.view.ui.activity.ListWebServiceActivity"
                 android:label="@string/manage_custom_web_services"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".presentation.view.ui.activity.FilterActivity"
+                android:label="@string/filters"
+                android:exported="false"
+                android:launchMode="singleTask"
+                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".presentation.view.ui.activity.MainActivity"/>
+        </activity>
+        <activity
+                android:name=".presentation.view.ui.activity.LogActivity"
+                android:label="@string/logs"
                 android:exported="false"
                 android:launchMode="singleTask"
                 android:parentActivityName=".presentation.view.ui.activity.MainActivity">

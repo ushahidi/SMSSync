@@ -43,4 +43,6 @@ public interface FilterDataSource {
     Observable<Long> updateEntity(Filter filterEntity);
 
     Observable<Long> deleteEntity(Long id);
+
+    List<Filter> getFilters();
 }

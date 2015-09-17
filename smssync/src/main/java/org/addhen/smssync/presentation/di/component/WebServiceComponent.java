@@ -24,10 +24,12 @@ import org.addhen.smssync.presentation.di.module.WebServiceModule;
 import org.addhen.smssync.presentation.presenter.webservice.AddWebServicePresenter;
 import org.addhen.smssync.presentation.presenter.webservice.DeleteWebServicePresenter;
 import org.addhen.smssync.presentation.presenter.webservice.ListWebServicePresenter;
+import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServiceKeywordsPresenter;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.view.ui.activity.AddWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.UpdateWebServiceActivity;
+import org.addhen.smssync.presentation.view.ui.fragment.AddKeywordFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.AddWebServiceFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.ListWebServiceFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.UpdateWebServiceFragment;
@@ -65,18 +67,19 @@ public interface WebServiceComponent extends AppActivityComponent {
     void inject(ListWebServiceActivity listWebServiceActivity);
 
     /**
-     * Injects {@link ListWebServiceFragment}
-     *
-     * @param listWebServiceFragment The list webService fragment
-     */
-    void inject(ListWebServiceFragment listWebServiceFragment);
-
-    /**
      * Injects {@link UpdateWebServiceActivity}
      *
      * @param updateWebServiceActivity The update webService activity
      */
     void inject(UpdateWebServiceActivity updateWebServiceActivity);
+
+
+    /**
+     * Injects {@link ListWebServiceFragment}
+     *
+     * @param listWebServiceFragment The list webService fragment
+     */
+    void inject(ListWebServiceFragment listWebServiceFragment);
 
     /**
      * Injects {@link UpdateWebServiceFragment}
@@ -85,12 +88,27 @@ public interface WebServiceComponent extends AppActivityComponent {
      */
     void inject(UpdateWebServiceFragment updateWebServiceFragment);
 
+
+    /**
+     * Injects {@link AddKeywordFragment}
+     *
+     * @param addKeywordFragment The fragment for adding keyword
+     */
+    void inject(AddKeywordFragment addKeywordFragment);
+
     /**
      * Provides {@link UpdateWebServicePresenter} to the sub-graph
      *
      * @return The update webService presenter
      */
     UpdateWebServicePresenter updateWebServicePresenter();
+
+    /**
+     * Provides {@link UpdateWebServiceKeywordsPresenter} to the sub-graph
+     *
+     * @return The update webService presenter
+     */
+    UpdateWebServiceKeywordsPresenter updateWebServiceKeywordsPresenter();
 
 
     /**

@@ -26,11 +26,7 @@ import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.AppActivityComponent;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppActivityComponent;
-import org.addhen.smssync.presentation.di.component.DaggerFilterComponent;
-import org.addhen.smssync.presentation.di.component.DaggerLogComponent;
 import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
-import org.addhen.smssync.presentation.di.component.FilterComponent;
-import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
@@ -83,10 +79,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private AppActivityComponent mAppComponent;
 
     private MessageComponent mMessageComponent;
-
-    private LogComponent mLogComponent;
-
-    private FilterComponent mFilterComponent;
 
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -258,16 +250,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
-
-        mLogComponent = DaggerLogComponent.builder()
-                .appComponent(getAppComponent())
-                .activityModule(getActivityModule())
-                .build();
-
-        mFilterComponent = DaggerFilterComponent.builder()
-                .appComponent(getAppComponent())
-                .activityModule(getActivityModule())
-                .build();
     }
 
     @Override
@@ -322,12 +304,10 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                         mAppComponent.launcher().launchPublishedMessages(), "published_messages");
                 break;
             case R.id.nav_filters:
-                replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchFilters(), "filters");
+                mAppComponent.launcher().launchFilters();
                 break;
             case R.id.nav_reports:
-                replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchLogs(), "reports");
+                mAppComponent.launcher().launchLogs();
                 break;
             case R.id.nav_integration:
                 mAppComponent.launcher().launchIntegrations();
@@ -393,13 +373,5 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
     public MessageComponent getMessageComponent() {
         return mMessageComponent;
-    }
-
-    public LogComponent getLogComponent() {
-        return mLogComponent;
-    }
-
-    public FilterComponent getFilterComponent() {
-        return mFilterComponent;
     }
 }

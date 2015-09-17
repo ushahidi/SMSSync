@@ -56,5 +56,6 @@
             android:layout_marginTop="@dimen/view_spacing_xlarge"
             android:drawablePadding="@dimen/view_spacing_large"
             android:drawableStart="@drawable/ic_web_grey_900_36dp"
-            android:drawableLeft="@drawable/ic_web_grey_900_36dp" android:layout_weight="0.01"/>
+            android:drawableLeft="@drawable/ic_web_grey_900_36dp"
+            android:layout_weight="0.01"/>
 </LinearLayout>

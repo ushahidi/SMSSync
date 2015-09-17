@@ -37,6 +37,10 @@ public class WebServiceModel extends Model implements Parcelable {
 
     private Status mStatus;
 
+    private KeywordStatus mKeywordStatus;
+
+    private String mKeywords;
+
     public WebServiceModel() {
     }
 
@@ -80,6 +84,23 @@ public class WebServiceModel extends Model implements Parcelable {
         mStatus = status;
     }
 
+    public void setKeywords(String keywords) {
+        mKeywords = keywords;
+    }
+
+    public String getKeywords() {
+        return mKeywords;
+    }
+
+    public KeywordStatus getKeywordStatus() {
+        return mKeywordStatus;
+    }
+
+    public void setKeywordStatus(
+            KeywordStatus keywordStatus) {
+        mKeywordStatus = keywordStatus;
+    }
+
     @Override
     public String toString() {
         return "SyncUrl{" +
@@ -88,11 +109,17 @@ public class WebServiceModel extends Model implements Parcelable {
                 ", url='" + mUrl + '\'' +
                 ", secret='" + mSecret + '\'' +
                 ", syncScheme=" + mSyncScheme +
+                ", keywords=" + mKeywords +
+                ", mKeywordStatus=" + mKeywordStatus +
                 ", status=" + mStatus +
                 '}';
     }
 
     public enum Status {
+        ENABLED, DISABLED
+    }
+
+    public enum KeywordStatus {
         ENABLED, DISABLED
     }
 
@@ -103,6 +130,8 @@ public class WebServiceModel extends Model implements Parcelable {
         mSecret = in.readString();
         mSyncScheme = in.readString();
         mStatus = (Status) in.readValue(Status.class.getClassLoader());
+        mKeywords = in.readString();
+        mKeywordStatus = (KeywordStatus) in.readValue(KeywordStatus.class.getClassLoader());
     }
 
     @Override
@@ -118,6 +147,8 @@ public class WebServiceModel extends Model implements Parcelable {
         dest.writeString(mSecret);
         dest.writeString(mSyncScheme);
         dest.writeValue(mStatus);
+        dest.writeString(mKeywords);
+        dest.writeValue(mKeywordStatus);
     }
 
     @SuppressWarnings("unused")

@@ -90,4 +90,8 @@ public interface WebServiceDataSource {
      * @return The row affected
      */
     Observable<Long> deleteWebService(Long deploymentId);
+
+    List<WebService> get(final WebService.Status status);
+
+    List<WebService> listWebServices();
 }

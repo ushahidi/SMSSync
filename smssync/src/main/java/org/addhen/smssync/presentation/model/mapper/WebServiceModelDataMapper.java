@@ -45,8 +45,10 @@ public class WebServiceModelDataMapper {
             webServiceEntity.setTitle(webService.getTitle());
             webServiceEntity.setUrl(webService.getUrl());
             webServiceEntity.setSecret(webService.getSecret());
+            webServiceEntity.setKeywords(webService.getKeywords());
             webServiceEntity
-                    .setStatus(WebServiceEntity.Status.valueOf(webService.getStatus().name()));
+                    .setStatus(map(webService.getStatus()));
+            webServiceEntity.setKeywordStatus(map(webService.getKeywordStatus()));
             webServiceEntity
                     .setSyncScheme(new SyncSchemeEntity(webService.getSyncScheme().toJSONString()));
         }
@@ -61,11 +63,12 @@ public class WebServiceModelDataMapper {
             webService.setSecret(webServiceEntity.getSecret());
             webService.setTitle(webServiceEntity.getTitle());
             webService.setUrl(webServiceEntity.getUrl());
-            webService
-                    .setStatus(WebServiceModel.Status.valueOf(webServiceEntity.getStatus().name()));
-            webService
-                    .setSyncScheme(
-                            new SyncSchemeModel(webServiceEntity.getSyncScheme().toJSONString()));
+            webService.setKeywords(webServiceEntity.getKeywords());
+            webService.setStatus(
+                    WebServiceModel.Status.valueOf(webServiceEntity.getStatus().name()));
+            webService.setKeywordStatus(map(webServiceEntity.getKeywordStatus()));
+            webService.setSyncScheme(
+                    new SyncSchemeModel(webServiceEntity.getSyncScheme().toJSONString()));
         }
         return webService;
     }
@@ -80,5 +83,33 @@ public class WebServiceModelDataMapper {
             }
         }
         return webServiceEntities;
+    }
+
+    public WebServiceModel.Status map(WebServiceEntity.Status status) {
+        if (status != null) {
+            return WebServiceModel.Status.valueOf(status.name());
+        }
+        return WebServiceModel.Status.DISABLED;
+    }
+
+    public WebServiceEntity.Status map(WebServiceModel.Status status) {
+        if (status != null) {
+            return WebServiceEntity.Status.valueOf(status.name());
+        }
+        return WebServiceEntity.Status.DISABLED;
+    }
+
+    public WebServiceModel.KeywordStatus map(WebServiceEntity.KeywordStatus keywordStatus) {
+        if (keywordStatus != null) {
+            return WebServiceModel.KeywordStatus.valueOf(keywordStatus.name());
+        }
+        return WebServiceModel.KeywordStatus.DISABLED;
+    }
+
+    public WebServiceEntity.KeywordStatus map(WebServiceModel.KeywordStatus keywordStatus) {
+        if (keywordStatus != null) {
+            return WebServiceEntity.KeywordStatus.valueOf(keywordStatus.name());
+        }
+        return WebServiceEntity.KeywordStatus.DISABLED;
     }
 }

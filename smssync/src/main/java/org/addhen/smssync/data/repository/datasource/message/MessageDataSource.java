@@ -43,4 +43,12 @@ public interface MessageDataSource {
     Observable<Long> put(Message message);
 
     Observable<Long> deleteEntity(Long id);
+
+    List<Message> fetchMessage(Message.Type type);
+
+    Message fetchMessageByUuid(String uuid);
+
+    void putMessage(Message message);
+
+    Integer deleteWithUuid(String uuid);
 }

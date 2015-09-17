@@ -200,7 +200,8 @@
     <string name="task_check_settings">Task Settings</string>
     <string name="about_smssync">About Sync</string>
     <string name="please_wait">Please wait</string>
-    <string name="smssync_not_enabled">SMSsync is not enabled. Please enable it in order to perfom this action.
+    <string name="smssync_not_enabled">SMSsync is not enabled. Please enable it in order to perfom
+        this action.
     </string>
     <string name="import_messages">Importing messages...</string>
     <string name="nothing_to_import">No messages to import. Make sure you have SMS messages in your
@@ -616,5 +617,18 @@
     </string>
     <string name="valid_sync_scheme_enter_key_for_device_id">Please \'device_id\' is a required
         field
+    </string>
+    <string name="filter_prompt">Require that messages match filters before they can be published
+        to:
+    </string>
+    <string name="apply_unique_filters">Apply unique filters to each integration</string>
+    <string name="apply_filters_to_all">Apply the same filters to all integrations</string>
+    <string name="keywords">Keywords</string>
+    <string name="phone_numbers">Phone numbers</string>
+    <string name="add_keyword">Add Keyword</string>
+    <string name="add_phone_numbers">Add Phone numbers</string>
+    <string name="black_list_description">Don\'t publish messages from these numbers</string>
+    <string name="white_list_description">Publish messages from only these numbers</string>
+    <string name="phone_filter_description">Publish messages based on configured phone numbers
     </string>
 </resources>

@@ -76,4 +76,9 @@ public class FilterDatabaseSource implements FilterDataSource {
     public Observable<Long> deleteEntity(Long id) {
         return mFilterDatabaseHelper.deleteById(id);
     }
+
+    @Override
+    public List<Filter> getFilters() {
+        return mFilterDatabaseHelper.getFilters();
+    }
 }

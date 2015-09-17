@@ -15,31 +15,48 @@
   ~ If you have questions regarding the use of this file, please contact
   ~ Ushahidi developers at team@ushahidi.com.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-    <CheckBox
-            android:id="@+id/enable_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="@string/enable_whitelist"/>
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="5dp">
-
-        <com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
-                android:id="@id/android:list"
-                app:recyclerviewClipToPadding="true"
-                app:recyclerviewScrollbars="vertical"
+<android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+        <android.support.v7.widget.AppCompatTextView android:layout_width="match_parent"
+                                                     android:layout_height="wrap_content"
+                                                     android:padding="@dimen/view_spacing_large"
+                                                     android:text="@string/filter_prompt"/>
+        <LinearLayout
+                android:id="@+id/custom_integration_filter_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:recyclerviewEmptyView="@layout/list_empty_view"
-                />
-    </RelativeLayout>
-</LinearLayout>
+                android:orientation="vertical"/>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/view_spacing_large"
+                android:layout_marginBottom="@dimen/view_spacing_large"
+                android:background="@android:color/darker_gray"/>
+
+        <org.addhen.smssync.presentation.view.ui.widget.FilterKeywordsView
+                android:id="@+id/white_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:filterTitleText="@string/whitelist"
+                app:filterTitleIcon="@drawable/ic_call_grey_900_24dp"
+                app:filterKeywordIcon="@drawable/ic_phone_in_talk_grey_900_24dp"
+                app:filterKeywordText="@string/phone_numbers"
+                android:orientation="vertical"/>
+
+        <org.addhen.smssync.presentation.view.ui.widget.FilterKeywordsView
+                android:id="@+id/black_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:filterTitleText="@string/blacklist"
+                app:filterTitleIcon="@drawable/ic_call_grey_900_24dp"
+                app:filterKeywordIcon="@drawable/ic_phone_locked_grey_900_24dp"
+                app:filterKeywordText="@string/phone_numbers"
+                android:orientation="vertical"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -20,9 +20,13 @@ package org.addhen.smssync.presentation.di.component;
 import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
+import org.addhen.smssync.domain.usecase.filter.DeleteFilterUsecase;
 import org.addhen.smssync.presentation.di.module.FilterModule;
-import org.addhen.smssync.presentation.presenter.ListFilterPresenter;
-import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.presenter.filter.AddFilterPresenter;
+import org.addhen.smssync.presentation.presenter.filter.ListFilterPresenter;
+import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServiceKeywordsPresenter;
+import org.addhen.smssync.presentation.view.ui.activity.FilterActivity;
+import org.addhen.smssync.presentation.view.ui.fragment.AddPhoneNumberFilterFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
 
 import dagger.Component;
@@ -34,9 +38,17 @@ import dagger.Component;
 @Component(dependencies = AppComponent.class, modules = {ActivityModule.class, FilterModule.class})
 public interface FilterComponent extends AppActivityComponent {
 
-    void inject(MainActivity mainActivity);
+    void inject(FilterActivity filterActivity);
 
-    void inject(FilterFragment filterFragment);
+    void inject(FilterFragment filterFragments);
+
+    void inject(AddPhoneNumberFilterFragment filterFragment);
 
     ListFilterPresenter listFilterPresenter();
+
+    AddFilterPresenter addFilterPresenter();
+
+    DeleteFilterUsecase deleteFilterPresenter();
+
+    UpdateWebServiceKeywordsPresenter updateWebServiceKeywordsPrestenter();
 }

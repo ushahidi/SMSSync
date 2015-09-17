@@ -65,26 +65,26 @@ public class MessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<Integer> deleteByUuid(String uuid) {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.deleteByUuid(uuid);
     }
 
     @Override
     public Observable<Integer> deleteAll() {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.deleteAll();
     }
 
     @Override
     public Observable<List<MessageEntity>> fetchByType(MessageEntity.Type type) {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.fetchMessageByType(mMessageDataMapper.map(type))
                 .map((messageList -> mMessageDataMapper.map(messageList)));
     }
 
     @Override
     public Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status) {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.fetchMessageByStatus(mMessageDataMapper.map(status))
                 .map((messageList -> mMessageDataMapper.map(messageList)));
     }
@@ -96,7 +96,7 @@ public class MessageDataRepository implements MessageRepository {
             boolean status = true;
             mTweetMessage.tweetMessage(mMessageDataMapper.unmap(messageEntities), null);
             status = mPostMessage
-                    .postMessage(mMessageDataMapper.unmap(messageEntities), null);
+                    .postMessage(mMessageDataMapper.unmap(messageEntities));
             return Observable.just(status);
         });
     }
@@ -116,32 +116,32 @@ public class MessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<List<MessageEntity>> getEntities() {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.getMessages()
                 .map((messageList -> mMessageDataMapper.map(messageList)));
     }
 
     @Override
     public Observable<MessageEntity> getEntity(Long id) {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.getMessage(id).map(message -> mMessageDataMapper.map(message));
     }
 
     @Override
     public Observable<Long> addEntity(MessageEntity messageEntity) {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.put(mMessageDataMapper.map(messageEntity));
     }
 
     @Override
     public Observable<Long> updateEntity(MessageEntity messageEntity) {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.put(mMessageDataMapper.map(messageEntity));
     }
 
     @Override
     public Observable<Long> deleteEntity(Long id) {
-        mMessageDataSource = mMessageDataSourceFactory.createMessageDataSource();
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.deleteEntity(id);
     }
 }

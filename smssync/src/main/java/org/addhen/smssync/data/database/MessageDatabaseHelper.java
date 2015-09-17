@@ -200,6 +200,22 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    public Observable<Long> deleteEntity(Long id) {
+        return Observable.create(subscriber -> {
+            if (!isClosed()) {
+                try {
+                    cupboard().withDatabase(getWritableDatabase()).delete(Message.class, id);
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+                subscriber.onNext(1l);
+                subscriber.onCompleted();
+            } else {
+                subscriber.onError(new Exception());
+            }
+        });
+    }
+
     public Observable<Long> put(Message message) {
         return Observable.create(subscriber -> {
             if (!isClosed()) {
@@ -225,19 +241,20 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
         }
     }
 
-    public Observable<Long> deleteEntity(Long id) {
-        return Observable.create(subscriber -> {
-            if (!isClosed()) {
-                try {
-                    cupboard().withDatabase(getWritableDatabase()).delete(Message.class, id);
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
-                subscriber.onNext(1l);
-                subscriber.onCompleted();
-            } else {
-                subscriber.onError(new Exception());
+    public Integer deleteWithUuid(String uuid) {
+        Integer row = 0;
+        if (!isClosed()) {
+            final String whereClause = "message_uuid = ?";
+            final String whereArgs[] = {uuid};
+            try {
+                row = cupboard().withDatabase(getWritableDatabase())
+                        .delete(Message.class, whereClause, whereArgs);
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }
+        return row;
+
     }
 }
