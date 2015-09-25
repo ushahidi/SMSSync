@@ -94,7 +94,7 @@ public class InternalMessageDataRepository implements MessageRepository {
     public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
         return Observable.defer(() -> {
             boolean status = mProcessMessage
-                    .postMessage(mMessageDataMapper.unmap(messageEntities), null);
+                    .postMessage(mMessageDataMapper.unmap(messageEntities));
             return Observable.just(status);
         });
     }

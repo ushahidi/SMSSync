@@ -34,6 +34,10 @@ public class WebServiceEntity extends Entity {
 
     private Status status;
 
+    private KeywordStatus mKeywordStatus;
+
+    private String keywords;
+
     public String getTitle() {
         return title;
     }
@@ -58,6 +62,14 @@ public class WebServiceEntity extends Entity {
         this.secret = secret;
     }
 
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
     public SyncSchemeEntity getSyncScheme() {
         return new SyncSchemeEntity(syncScheme);
     }
@@ -76,17 +88,31 @@ public class WebServiceEntity extends Entity {
 
     @Override
     public String toString() {
-        return "SyncUrl{" +
-                "id=" + _id +
+        return "WebServiceEntity{" +
                 "title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", secret='" + secret + '\'' +
-                ", syncScheme=" + syncScheme +
+                ", syncScheme='" + syncScheme + '\'' +
                 ", status=" + status +
+                ", mKeywordStatus=" + mKeywordStatus +
+                ", keywords='" + keywords + '\'' +
                 '}';
     }
 
+    public KeywordStatus getKeywordStatus() {
+        return mKeywordStatus;
+    }
+
+    public void setKeywordStatus(
+            KeywordStatus keywordStatus) {
+        mKeywordStatus = keywordStatus;
+    }
+
     public enum Status {
+        ENABLED, DISABLED
+    }
+
+    public enum KeywordStatus {
         ENABLED, DISABLED
     }
 }

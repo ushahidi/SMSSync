@@ -22,9 +22,6 @@ import com.google.gson.Gson;
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
-import org.addhen.smssync.data.database.FilterDatabaseHelper;
-import org.addhen.smssync.data.database.MessageDatabaseHelper;
-import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.MessagesUUIDSResponse;
@@ -32,6 +29,9 @@ import org.addhen.smssync.data.entity.QueuedMessages;
 import org.addhen.smssync.data.entity.SmssyncResponse;
 import org.addhen.smssync.data.entity.WebService;
 import org.addhen.smssync.data.net.MessageHttpClient;
+import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.data.util.Utility;
 import org.addhen.smssync.smslib.sms.ProcessSms;
@@ -42,6 +42,7 @@ import android.text.TextUtils;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -64,14 +65,14 @@ public class PostMessage extends ProcessMessage {
     @Inject
     public PostMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
-            MessageDatabaseHelper messageDatabaseHelper,
-            WebServiceDatabaseHelper webServiceDatabaseHelper,
-            FilterDatabaseHelper filterDatabaseHelper,
+            MessageDataSourceFactory messageDataSourceFactory,
+            WebServiceDataSourceFactory webServiceDataSourceFactory,
+            FilterDataSourceFactory filterDataSourceFactory,
             ProcessSms processSms,
             FileManager fileManager,
             ProcessMessageResult processMessageResult) {
-        super(context, prefsFactory, messageDatabaseHelper, webServiceDatabaseHelper,
-                filterDatabaseHelper, processSms, fileManager);
+        super(context, prefsFactory, messageDataSourceFactory, webServiceDataSourceFactory,
+                filterDataSourceFactory, processSms, fileManager);
 
         mMessageHttpClient = messageHttpClient;
         mProcessMessageResult = processMessageResult;
@@ -84,7 +85,7 @@ public class PostMessage extends ProcessMessage {
      * @param message The sms to be routed
      * @return boolean
      */
-    public boolean routeSms(Message message, List<String> keywords) {
+    public boolean routeSms(Message message) {
         Logger.log(TAG, "routeSms uuid: " + message.toString());
         // Double check if SMSsync service is running
         if (!mPrefsFactory.serviceEnabled().get()) {
@@ -102,15 +103,15 @@ public class PostMessage extends ProcessMessage {
             mProcessSms.sendSms(map(msg), false);
         }
         if (Utility.isConnected(mContext)) {
-            List<WebService> webServiceList = mWebServiceDatabaseHelper
+            List<WebService> webServiceList = mWebServiceDataSource
                     .get(WebService.Status.ENABLED);
-            List<Filter> filters = mFilterDatabaseHelper.getFilters();
+            List<Filter> filters = mFilterDataSource.getFilters();
             for (WebService webService : webServiceList) {
                 // Process if white-listing is enabled
                 if (mPrefsFactory.enableWhitelist().get()) {
                     for (Filter filter : filters) {
                         if (filter.phoneNumber.equals(message.messageFrom)) {
-                            if (postMessage(message, webService, keywords)) {
+                            if (postMessage(message, webService)) {
                                 deleteFromSmsInbox(message);
                             } else {
                                 savePendingMessage(message);
@@ -129,7 +130,7 @@ public class PostMessage extends ProcessMessage {
                                             + filter.phoneNumber);
                             return false;
                         } else {
-                            if (postMessage(message, webService, keywords)) {
+                            if (postMessage(message, webService)) {
                                 deleteFromSmsInbox(message);
                             } else {
                                 savePendingMessage(message);
@@ -138,7 +139,7 @@ public class PostMessage extends ProcessMessage {
 
                     }
                 } else {
-                    if (postMessage(message, webService, keywords)) {
+                    if (postMessage(message, webService)) {
                         deleteFromSmsInbox(message);
                     } else {
                         savePendingMessage(message);
@@ -163,16 +164,15 @@ public class PostMessage extends ProcessMessage {
         boolean status = false;
         // check if it should sync by id
         if (!TextUtils.isEmpty(uuid)) {
-            final Message message = mMessageDatabaseHelper.fetchMessageByUuid(uuid);
+            final Message message = mMessageDataSource.fetchMessageByUuid(uuid);
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
-            status = postMessage(messages, null);
+            status = postMessage(messages);
         } else {
-            final List<Message> messages = mMessageDatabaseHelper
-                    .fetchMessage(Message.Type.PENDING);
+            final List<Message> messages = mMessageDataSource.fetchMessage(Message.Type.PENDING);
             if (messages != null && messages.size() > 0) {
                 for (Message message : messages) {
-                    status = postMessage(messages, null);
+                    status = postMessage(messages);
                 }
             }
         }
@@ -180,17 +180,17 @@ public class PostMessage extends ProcessMessage {
         return status;
     }
 
-    public boolean postMessage(List<Message> messages, List<String> keywords) {
+    public boolean postMessage(List<Message> messages) {
         Logger.log(TAG, "postMessages");
-        List<WebService> webServiceList = mWebServiceDatabaseHelper.listWebServices();
-        List<Filter> filters = mFilterDatabaseHelper.getFilters();
+        List<WebService> webServiceList = mWebServiceDataSource.listWebServices();
+        List<Filter> filters = mFilterDataSource.getFilters();
         for (WebService webService : webServiceList) {
             // Process if white-listing is enabled
             if (mPrefsFactory.enableWhitelist().get()) {
                 for (Filter filter : filters) {
                     for (Message message : messages) {
                         if (filter.phoneNumber.equals(message.messageFrom)) {
-                            if (postMessage(message, webService, keywords)) {
+                            if (postMessage(message, webService)) {
                                 postToSentBox(message);
                             }
                         }
@@ -213,7 +213,7 @@ public class PostMessage extends ProcessMessage {
                 }
             } else {
                 for (Message messg : messages) {
-                    if (postMessage(messg, webService, keywords)) {
+                    if (postMessage(messg, webService)) {
                         postToSentBox(messg);
                     }
                 }
@@ -222,8 +222,7 @@ public class PostMessage extends ProcessMessage {
         return true;
     }
 
-    private void sendSMSWithMessageResultsAPIEnabled(WebService syncUrl,
-            List<Message> msgs) {
+    private void sendSMSWithMessageResultsAPIEnabled(WebService syncUrl, List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         for (Message msg : msgs) {
             msg.messageType = Message.Type.TASK;
@@ -271,9 +270,12 @@ public class PostMessage extends ProcessMessage {
         }
     }
 
-    private boolean postMessage(Message message, WebService webService, List<String> keywords) {
+    private boolean postMessage(Message message, WebService webService) {
         // Process filter text (keyword or RegEx)
-        if (!Utility.isEmpty(keywords)) {
+        if (!TextUtils.isEmpty(webService.getKeywords())
+                && webService.getKeywordStatus() == WebService.KeywordStatus.ENABLED) {
+            List<String> keywords = new ArrayList<>(
+                    Arrays.asList(webService.getKeywords().split(",")));
             if (filterByKeywords(message.messageBody, keywords) || filterByRegex(
                     message.messageBody, keywords)) {
                 return postToWebService(message, webService);
@@ -306,7 +308,7 @@ public class PostMessage extends ProcessMessage {
         }
         Logger.log(TAG, "performTask(): perform a task");
         logActivities(R.string.perform_task);
-        List<WebService> webServices = mWebServiceDatabaseHelper.get(WebService.Status.ENABLED);
+        List<WebService> webServices = mWebServiceDataSource.get(WebService.Status.ENABLED);
         for (WebService webService : webServices) {
             StringBuilder uriBuilder = new StringBuilder(webService.getUrl());
             final String urlSecret = webService.getSecret();
@@ -394,11 +396,11 @@ public class PostMessage extends ProcessMessage {
 
         private MessageHttpClient mMessageHttpClient;
 
-        private MessageDatabaseHelper mMessageDatabaseHelper;
+        private MessageDataSourceFactory mMessageDataSourceFactory;
 
-        private WebServiceDatabaseHelper mWebServiceDatabaseHelper;
+        private WebServiceDataSourceFactory mWebServiceDataSourceFactory;
 
-        private FilterDatabaseHelper mFilterDatabaseHelper;
+        private FilterDataSourceFactory mFilterDataSourceFactory;
 
         private ProcessSms mProcessSms;
 
@@ -421,20 +423,20 @@ public class PostMessage extends ProcessMessage {
             return this;
         }
 
-        public Builder setMessageDatabaseHelper(
-                MessageDatabaseHelper messageDatabaseHelper) {
-            mMessageDatabaseHelper = messageDatabaseHelper;
+        public Builder setMessageDataSourceFactory(
+                MessageDataSourceFactory messageDataSourceFactory) {
+            mMessageDataSourceFactory = messageDataSourceFactory;
             return this;
         }
 
-        public Builder setWebServiceDatabaseHelper(
-                WebServiceDatabaseHelper webServiceDatabaseHelper) {
-            mWebServiceDatabaseHelper = webServiceDatabaseHelper;
+        public Builder setWebServiceDataSourceFactory(
+                WebServiceDataSourceFactory webServiceDataSourceFactory) {
+            mWebServiceDataSourceFactory = webServiceDataSourceFactory;
             return this;
         }
 
-        public Builder setFilterDatabaseHelper(FilterDatabaseHelper filterDatabaseHelper) {
-            mFilterDatabaseHelper = filterDatabaseHelper;
+        public Builder setFilterDataSourceFactory(FilterDataSourceFactory filterDataSourceFactory) {
+            mFilterDataSourceFactory = filterDataSourceFactory;
             return this;
         }
 
@@ -455,9 +457,9 @@ public class PostMessage extends ProcessMessage {
 
         public PostMessage build() {
             return new PostMessage(mContext, mPrefsFactory, mMessageHttpClient,
-                    mMessageDatabaseHelper,
-                    mWebServiceDatabaseHelper, mFilterDatabaseHelper, mProcessSms, mFileManager,
-                    mProcessMessageResult);
+                    mMessageDataSourceFactory, mWebServiceDataSourceFactory,
+                    mFilterDataSourceFactory,
+                    mProcessSms, mFileManager, mProcessMessageResult);
         }
     }
 }

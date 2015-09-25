@@ -80,4 +80,15 @@ public class WebServiceDatabaseDataSource implements WebServiceDataSource {
     public Observable<Long> deleteWebService(Long webServiceId) {
         return mWebServiceDatabaseHelper.deleteWebService(webServiceId);
     }
+
+    @Override
+    public List<WebService> get(WebService.Status status) {
+        return mWebServiceDatabaseHelper.get(status);
+    }
+
+    @Override
+    public List<WebService> listWebServices() {
+        return mWebServiceDatabaseHelper.listWebServices();
+    }
+
 }

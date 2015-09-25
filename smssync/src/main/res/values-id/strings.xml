@@ -20,30 +20,40 @@
     <!--preferences-->
     <!--sync URL-->
     <string name="edittxt_website_pref">Masukkan Sinkronisasi URL</string>
-  <string name="edittxt_website_pref_summary">Ini adalah website yang akan menerima teks
-        pesan.</string>
+    <string name="edittxt_website_pref_summary">Ini adalah website yang akan menerima teks
+        pesan.
+    </string>
     <!--secret-->
     <string name="edittxt_api_key_pref">Masukkan Kunci Rahasia</string>
-  <string name="edittxt_api_key_pref_summary">Jika rahasia/kunci telah ditetapkan di situs web,
-        itu akan diperlukan.</string>
+    <string name="edittxt_api_key_pref_summary">Jika rahasia/kunci telah ditetapkan di situs web,
+        itu akan diperlukan.
+    </string>
     <!--filter by keywords-->
     <string name="edittxt_keyword_pref">Masukkan Kata kunci - opsional</string>
-  <string name="editxt_keyword_pref_summary">Tentukan kata kunci yang digunakan untuk menyaring masukan
-        pesan.</string>
+    <string name="editxt_keyword_pref_summary">Tentukan kata kunci yang digunakan untuk menyaring
+        masukan
+        pesan.
+    </string>
     <string name="edittxt_keyword_hint">kebarakan, kriminal, bantuan, laporan, atau RegEx.</string>
     <!--filter by phone numbers-->
     <string name="edittxt_filter_by_from_pref">Masukkan Nomor Telepon - opsional</string>
-  <string name="edittxt_filter_by_from_pref_summary">Tentukan nomor telepon daftar putih digunakan untuk menyaring
-        pesan masuk.</string>
+    <string name="edittxt_filter_by_from_pref_summary">Tentukan nomor telepon daftar putih digunakan
+        untuk menyaring
+        pesan masuk.
+    </string>
     <string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
     <!--unique id-->
     <string name="edittxt_unique_id_pref">Masukkan ID Unik</string>
-  <string name="edittxt_unique_id_pref_summary">Tentukan ID unik untuk perangkat ini. Digunakan oleh
-        server untuk mengidentifikasi perangkat yang mengirimnya pesan.</string>
+    <string name="edittxt_unique_id_pref_summary">Tentukan ID unik untuk perangkat ini. Digunakan
+        oleh
+        server untuk mengidentifikasi perangkat yang mengirimnya pesan.
+    </string>
     <string name="edittxt_unique_id_hint">01234</string>
     <!--alert phone-->
     <string name="edittxt_alert_phone_pref">Masukkan nomor telepon siaga</string>
-    <string name="edittxt_alert_phone_pref_summary">Tentukan nomor telepon untuk mengirim peringatan.</string>
+    <string name="edittxt_alert_phone_pref_summary">Tentukan nomor telepon untuk mengirim
+        peringatan.
+    </string>
     <!--response message-->
     <string name="edittxt_reply">Masukkan Sebuah Pesan Respon</string>
     <string name="edittxt_reply_title">Pesan Respon</string>
@@ -59,18 +69,25 @@
     <!--reply from server-->
     <string name="reply_settings">Pengaturan Balas Pesan</string>
     <string name="chk_enable_reply">Balas Pesan</string>
-    <string name="chk_reply_hint">Secara otomatis menanggapi setiap pesan yang datang ke SMSsync.</string>
+    <string name="chk_reply_hint">Secara otomatis menanggapi setiap pesan yang datang ke SMSsync.
+    </string>
     <!--auto delete messages-->
     <string name="chk_enable_auto_delete">Otomatis Hapus Pesan</string>
-  <string name="chk_auto_delete_hint">Secara otomatis menghapus pesan dari kotak masuk app Pesan
-        untuk menghemat ruang di telepon.</string>
+    <string name="chk_auto_delete_hint">Secara otomatis menghapus pesan dari kotak masuk app Pesan
+        untuk menghemat ruang di telepon.
+    </string>
     <!--auto delete pending messages-->
-    <string name="chk_enable_auto_delete_pending_messages">Otomatis Hapus Pesan-Pesan yang Ditunda</string>
-  <string name="chk_enable_auto_delete_pending_messages_hint">Hapus otomatis pesan yang ditunda
-yang gagal dikirim.</string>
-    <string name="select_number_of_retries">Jumlah yang mencoba kembali untuk pesan tertunda</string>
-    <string name="select_number_of_retries_hint">Mengatur jumlah yang mencoba kembali sebelum aplikasi secara otomatis menghapus pesan yang tertunda.</string>
-    <string name="one_try">Percobaan ke satu </string>
+    <string name="chk_enable_auto_delete_pending_messages">Otomatis Hapus Pesan-Pesan yang Ditunda
+    </string>
+    <string name="chk_enable_auto_delete_pending_messages_hint">Hapus otomatis pesan yang ditunda
+        yang gagal dikirim.
+    </string>
+    <string name="select_number_of_retries">Jumlah yang mencoba kembali untuk pesan tertunda
+    </string>
+    <string name="select_number_of_retries_hint">Mengatur jumlah yang mencoba kembali sebelum
+        aplikasi secara otomatis menghapus pesan yang tertunda.
+    </string>
+    <string name="one_try">Percobaan ke satu</string>
     <string name="two_tries">Percobaan ke dua</string>
     <string name="three_tries">Percobaan ke tiga</string>
     <string name="four_tries">Percobaan ke empat</string>
@@ -82,26 +99,39 @@ yang gagal dikirim.</string>
     <string name="five">5</string>
     <!--enable sms delivery report-->
     <string name="chk_enable_sms_delivery_report">SMS Pengiriman Laporan</string>
-    <string name="chk_sms_delivery_report_hint">Aktifkan jika Anda ingin laporan status pengiriman SMS yang akan dikirim ke aplikasi. Catatan: Beberapa penyedia jaringan mengenakan biaya untuk ini.</string>
+    <string name="chk_sms_delivery_report_hint">Aktifkan jika Anda ingin laporan status pengiriman
+        SMS yang akan dikirim ke aplikasi. Catatan: Beberapa penyedia jaringan mengenakan biaya
+        untuk ini.
+    </string>
     <!--enable auto sync-->
     <string name="chk_enable_auto_sync">Aktifkan Otomatis Sinkronisasi</string>
-    <string name="chk_enable_auto_sync_hint">Ijinkan SMSsync secara berkala melakukan sinkronisasi pesan tertunda.</string>
+    <string name="chk_enable_auto_sync_hint">Ijinkan SMSsync secara berkala melakukan sinkronisasi
+        pesan tertunda.
+    </string>
     <!--auto sync delay-->
     <string name="txt_auto_sync_delay">Otomatis sinkronisasi frekuensi</string>
-  <string name="auto_sync_delay_hint">Atur seberapa sering SMSsync sinkronisasi dengan
-URL panggilan balik dikonfigurasi.</string>
+    <string name="auto_sync_delay_hint">Atur seberapa sering SMSsync sinkronisasi dengan
+        URL panggilan balik dikonfigurasi.
+    </string>
     <!--enable SMS Portals-->
     <string name="sms_portals_settings">Pengaturan Portal SMS</string>
     <string name="chk_enable_sms_portals">Aktifkan Portal SMS</string>
-    <string name="chk_enable_sms_portals_hint">Gunakan Portal SMS saat mengirim pesan SMS, secara efektif meningkatkan standar batas Android (100 SMS/jam).</string>
+    <string name="chk_enable_sms_portals_hint">Gunakan Portal SMS saat mengirim pesan SMS, secara
+        efektif meningkatkan standar batas Android (100 SMS/jam).
+    </string>
     <!--enable task check-->
     <string name="chk_enable_task_check">Aktifkan Tugas Memeriksa</string>
-  <string name="chk_enable_task_check_hint">Ijinkan SMSsync untuk secara berkala memeriksa tugas-tugas diaktifkan
-pada URL panggilan balik. SMSsync kemudian mengeksekusi tugas. Misalnya. SMSsync mengirimkan SMS</string>
+    <string name="chk_enable_task_check_hint">Ijinkan SMSsync untuk secara berkala memeriksa
+        tugas-tugas diaktifkan
+        pada URL panggilan balik. SMSsync kemudian mengeksekusi tugas. Misalnya. SMSsync mengirimkan
+        SMS
+    </string>
     <!--task check delay-->
     <string name="txt_task_check_delay">Frekuensi</string>
-  <string name="txt_task_check_delay_hint">Atur seberapa sering SMSsync memeriksa tugas untuk menjadi
-dieksekusi.</string>
+    <string name="txt_task_check_delay_hint">Atur seberapa sering SMSsync memeriksa tugas untuk
+        menjadi
+        dieksekusi.
+    </string>
     <string name="app_name">SMSsync</string>
     <string name="outbox">SMSsync Pesan Ditunda</string>
     <string name="version_status">Beta</string>
@@ -110,12 +140,14 @@ dieksekusi.</string>
     <string name="notification_summary">Gateway SMSsync berjalan</string>
     <string name="sending_failed">SMSsync gagal mengirim pesan ke server.</string>
     <string name="sending_failed_http_code">Status kode server HTTP adalah %1$d.</string>
-    <string name="sending_failed_custom_error">Mengirim pesan ke server gagal. Server eror: %1$s</string>
+    <string name="sending_failed_custom_error">Mengirim pesan ke server gagal. Server eror: %1$s
+    </string>
     <string name="sending_succeeded">SMSsync Pesan Terkirim.</string>
     <string name="no_messages_to_sync">Tidak ada pesan untuk dikirim.</string>
     <string name="no_messages_to_delete">Tidak ada pesan untuk dihapus.</string>
-  <string name="sync_failed">SMSsync pengiriman pesan gagal. Silakan periksa koneksi internet Anda
-dan konfigurasi URL sync.</string>
+    <string name="sync_failed">SMSsync pengiriman pesan gagal. Silakan periksa koneksi internet Anda
+        dan konfigurasi URL sync.
+    </string>
     <string name="powered">Didukung</string>
     <string name="powered_by">Dibuat oleh Ushahidi</string>
     <string name="menu_delete_all">Hapus Semua</string>
@@ -134,32 +166,49 @@ dan konfigurasi URL sync.</string>
     <string name="invalid_url">URL sinkronisasi yang dimasukkan tidak valid.</string>
     <string name="no_configured_url">Service SMSsync tidak berjalan</string>
     <string name="no_connection">Tidak bisa membuat sambungan ke URL Sinkronisasi.</string>
-    <string name="no_task">Tidak ada tugas diaktifkan pada konfigurasi URL sinkronisasi. </string>
+    <string name="no_task">Tidak ada tugas diaktifkan pada konfigurasi URL sinkronisasi.</string>
     <string name="auto_sync_settings">Pengaturan Otomatis Sinkronisasi</string>
     <string name="task_check_settings">Pengaturan Tugas</string>
     <string name="about_smssync">Tentang Sinkronisasi</string>
     <string name="please_wait">Mohon ditunggu</string>
-  <string name="smssync_not_enabled">SMSsync tidak diaktifkan. Aktifkan dari Pengaturan
-layar.</string>
+    <string name="smssync_not_enabled">SMSsync tidak diaktifkan. Aktifkan dari Pengaturan
+        layar.
+    </string>
     <string name="import_messages">Mengimpor pesan...</string>
-  <string name="nothing_to_import">Tidak ada pesan untuk mengimpor. Pastikan Anda memiliki pesan SMS dalam
-        kotak SMS Anda.</string>
+    <string name="nothing_to_import">Tidak ada pesan untuk mengimpor. Pastikan Anda memiliki pesan
+        SMS dalam
+        kotak SMS Anda.
+    </string>
     <string name="chk_enable_reply_frm_server">Dapatkan Balas dari Server</string>
-  <string name="chk_reply_frm_server_hint">Langsung mengirim pesan seperti menerima dari server sebagai
-        SMS tanpa menunggu penjadwal.</string>
+    <string name="chk_reply_frm_server_hint">Langsung mengirim pesan seperti menerima dari server
+        sebagai
+        SMS tanpa menunggu penjadwal.
+    </string>
     <string name="filter_messages">Saring pesan</string>
-    <string name="validate_sms_delivery_report_status">Pesan Hasil API tergantung pada Laporan Pengiriman SMS. Aktifkan terlebih dahulu.</string>
-    <string name="validate_message_result_api">Pesan Hasil API tergantung padanya. Nonaktifkan terlebih dahulu.</string>
+    <string name="validate_sms_delivery_report_status">Pesan Hasil API tergantung pada Laporan
+        Pengiriman SMS. Aktifkan terlebih dahulu.
+    </string>
+    <string name="validate_message_result_api">Pesan Hasil API tergantung padanya. Nonaktifkan
+        terlebih dahulu.
+    </string>
     <!--SMS delivery status-->
-  <string name="sms_delivery_status_failed">Gagal mengirim SMS - waktu siaran mungkin cukup pada
-        telepon.</string>
-    <string name="sms_delivery_status_no_service">Gagal mengirim SMS karena layanan saat ini tidak tersedia</string>
-    <string name="sms_delivery_status_radio_off">Gagal mengirim SMS karena radio secara eksplisit dimatikan</string>
-    <string name="sms_delivery_status_null_pdu">Gagal mengirim SMS karena tidak ada penyedia pdu</string>
+    <string name="sms_delivery_status_failed">Gagal mengirim SMS - waktu siaran mungkin cukup pada
+        telepon.
+    </string>
+    <string name="sms_delivery_status_no_service">Gagal mengirim SMS karena layanan saat ini tidak
+        tersedia
+    </string>
+    <string name="sms_delivery_status_radio_off">Gagal mengirim SMS karena radio secara eksplisit
+        dimatikan
+    </string>
+    <string name="sms_delivery_status_null_pdu">Gagal mengirim SMS karena tidak ada penyedia pdu
+    </string>
     <string name="sms_delivered">SMS tersampaikan</string>
     <string name="sms_not_delivered">SMS tidak tersampaikan</string>
-    <string name="sms_not_delivered_htc_device_retry">Perangkat sedang mencoba mengirim sms.</string>
-    <string name="sms_not_delivered_unknown_error">Kesalahan tidak diketahui saat mengirim sms.</string>
+    <string name="sms_not_delivered_htc_device_retry">Perangkat sedang mencoba mengirim sms.
+    </string>
+    <string name="sms_not_delivered_unknown_error">Kesalahan tidak diketahui saat mengirim sms.
+    </string>
     <!--Pending and failed messages Tab-->
     <string name="sms">SMS</string>
     <string name="pending_messages">Tunda</string>
@@ -180,7 +229,9 @@ layar.</string>
     <string name="unique_id_numeric_error">ID unik hanya menerima nomor</string>
     <string name="loading">Memuat</string>
     <string name="sync_url">URL Sinkronisasi</string>
-    <string name="no_sync_url">Tidak ada sinkronisasi URL.\nGunakan \"+\" tombol di atas untuk menambahkan satu.</string>
+    <string name="no_sync_url">Tidak ada sinkronisasi URL.\nGunakan \"+\" tombol di atas untuk
+        menambahkan satu.
+    </string>
     <string name="edit">Edit</string>
     <string name="enter_sync_title">Masukkan Judul untuk URL Sinkronisasi</string>
     <string name="edittxt_keyword">Masukkan Katakunci misalnya Api, Kriminal atau RegEx</string>
@@ -191,22 +242,34 @@ layar.</string>
     <string name="failed_to_update_sync_url">Gagal memperbarui URL sinkronisasi</string>
     <string name="sync_url_deleted">URL sinkronisasi berhasil dihapus.</string>
     <string name="sync_url_deleted_failed">URL sinkronisasi tidak bisa dihapus.</string>
-  <string name="disable_to_delete_syncurl">Anda tidak dapat menghapus URL sinkronisasi ini karena diaktifkan.
-        Nonaktifkan sebelum dihapus.</string>
-  <string name="disable_to_delete_all_syncurl">Ada URL sinkronisasi diaktifkan sehingga Anda tidak dapat menghapus
-        semuanya. Nonaktifkan semua URL sinkronisasi, kemudian mencoba tindakan ini lagi.</string>
-    <string name="no_enabled_sync_url">Aktifkan setidaknya satu URL sinkronisasi sebelum memulai layanan.</string>
-  <string name="disable_smssync_service">Layanan SMSsync berjalan. Anda tidak dapat melakukan penghapusan
-sampai layanan dihentikan. Menghentikan layanan kemudian mencoba tindakan ini lagi.</string>
-  <string name="disable_last_sync_url">Anda tidak dapat menonaktifkan Sync URL terakhir karena 
-service SMSsync berjalan.</string>
-    <string name="no_sync_url_added">Tambahkan setidaknya satu Sync URL untuk memulai layanan SMSsync.</string>
+    <string name="disable_to_delete_syncurl">Anda tidak dapat menghapus URL sinkronisasi ini karena
+        diaktifkan.
+        Nonaktifkan sebelum dihapus.
+    </string>
+    <string name="disable_to_delete_all_syncurl">Ada URL sinkronisasi diaktifkan sehingga Anda tidak
+        dapat menghapus
+        semuanya. Nonaktifkan semua URL sinkronisasi, kemudian mencoba tindakan ini lagi.
+    </string>
+    <string name="no_enabled_sync_url">Aktifkan setidaknya satu URL sinkronisasi sebelum memulai
+        layanan.
+    </string>
+    <string name="disable_smssync_service">Layanan SMSsync berjalan. Anda tidak dapat melakukan
+        penghapusan
+        sampai layanan dihentikan. Menghentikan layanan kemudian mencoba tindakan ini lagi.
+    </string>
+    <string name="disable_last_sync_url">Anda tidak dapat menonaktifkan Sync URL terakhir karena
+        service SMSsync berjalan.
+    </string>
+    <string name="no_sync_url_added">Tambahkan setidaknya satu Sync URL untuk memulai layanan
+        SMSsync.
+    </string>
     <string name="no_sync_url_to_delete">Tidak ada URL sinkronisasi untuk dihapus.</string>
     <string name="empty_sync_url_title">Silakan masukkan judul untuk URL sinkronisasi</string>
     <string name="valid_sync_url">Silakan masukkan URL yang valid</string>
     <string name="task">Tugas</string>
-  <string name="confirm_sms_import">Akan mengimpor semua SMS di kotak pesan. Mungkin memakan
-        waktu sampai selesai.</string>
+    <string name="confirm_sms_import">Akan mengimpor semua SMS di kotak pesan. Mungkin memakan
+        waktu sampai selesai.
+    </string>
     <string name="incoming">masuk</string>
     <string name="schedule">jadwal</string>
     <string name="manual">manual</string>
@@ -220,13 +283,21 @@ service SMSsync berjalan.</string>
     <string name="working">Bekerja</string>
     <string name="canceled">Dibatalkan</string>
     <string name="sync_canceled_details">%1$d/%2$d item berhasil syncd.</string>
-    <string name="sync_error_details">Kesalahan saat sinkronisasi:\n&lt;xliff:g id="error_description"&gt;%1$s&lt;/xliff:g&gt;</string>
+    <string name="sync_error_details">Kesalahan saat sinkronisasi:\n&lt;xliff:g
+        id="error_description"&gt;%1$s&lt;/xliff:g&gt;</string>
     <plurals name="sync_done_details">
-        <item quantity="other">Berhasil diproses&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;            item.</item>
+        <item quantity="other">Berhasil diproses&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;
+            item.
+        </item>
     </plurals>
-    <string name="sync_status_done">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt;        syncd ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt;        gagal</string>
+    <string name="sync_status_done">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; syncd ,&lt;xliff:g
+        id="failed_items"&gt;%2$d&lt;/xliff:g&gt; gagal
+    </string>
     <string name="stopping">Berhenti</string>
-    <string name="status_sync_details">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt;        syncd ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt;        gagal /&lt;xliff:g id="total_items"&gt;%3$d&lt;/xliff:g&gt;        items\u2026</string>
+    <string name="status_sync_details">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; syncd
+        ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt; gagal /&lt;xliff:g id="total_items"&gt;%3$d&lt;/xliff:g&gt;
+        items\u2026
+    </string>
     <string name="open">Buka</string>
     <string name="close">Tutup</string>
     <string name="unknown_issue">Isu tidak diketahui</string>
@@ -249,20 +320,34 @@ service SMSsync berjalan.</string>
     <string name="filter">Saring</string>
     <string name="enable_whitelist">Aktifkan Daftar Putih</string>
     <string name="enable_blacklist">Aktifkan Daftar Hitam</string>
-  <string name="no_whitelist">Tidak ada daftar putih nomor telepon. \nGunakan \"+\" tombol di atas untuk menambahkan
-        satu.</string>
-  <string name="no_blacklist">Tidak ada nomor telepon daftar hitam. \nGunakan \"+\" tombol di atas untuk menambahkan
-        satu.</string>
+    <string name="no_whitelist">Tidak ada daftar putih nomor telepon. \nGunakan \"+\" tombol di atas
+        untuk menambahkan
+        satu.
+    </string>
+    <string name="no_blacklist">Tidak ada nomor telepon daftar hitam. \nGunakan \"+\" tombol di atas
+        untuk menambahkan
+        satu.
+    </string>
     <string name="enter_phone_number">Masukkan nomor telepon</string>
     <string name="add_phone_number">Tambah nomor telepon</string>
     <string name="add_phone_number_list">Tambahkan nomor telepon ke daftar</string>
-    <string name="no_phone_number_to_enable_whitelist">Tambahkan setidaknya satu nomor telepon untuk mengaktifkan fitur daftar putih.</string>
-    <string name="no_phone_number_to_enable_blacklist">Tambahkan setidaknya satu nomor telepon untuk mengaktifkan fitur daftar hitam.</string>
+    <string name="no_phone_number_to_enable_whitelist">Tambahkan setidaknya satu nomor telepon untuk
+        mengaktifkan fitur daftar putih.
+    </string>
+    <string name="no_phone_number_to_enable_blacklist">Tambahkan setidaknya satu nomor telepon untuk
+        mengaktifkan fitur daftar hitam.
+    </string>
     <string name="no_phone_number_to_delete">Tidak ada nomor telepon untuk dihapus.</string>
     <string name="phone_number_deleted">Nomor telepon berhasil dihapus.</string>
     <string name="deleting_phone_number_failed">Nomor telepon tidak bisa dihapus.</string>
-    <string name="disable_whitelist">Daftar putih masih aktif. Anda tidak dapat melakukan penghapusan sampai fitur daftar putih dinonaktifkan. Nonaktifkan daftar putih kemudian mencoba tindakan ini lagi.</string>
-    <string name="disable_blacklist">Daftar hitam masih aktif. Anda tidak dapat melakukan penghapusan sampai fitur daftar hitam dinonaktifkan. Nonaktifkan daftar hitam kemudian mencoba tindakan ini lagi.</string>
+    <string name="disable_whitelist">Daftar putih masih aktif. Anda tidak dapat melakukan
+        penghapusan sampai fitur daftar putih dinonaktifkan. Nonaktifkan daftar putih kemudian
+        mencoba tindakan ini lagi.
+    </string>
+    <string name="disable_blacklist">Daftar hitam masih aktif. Anda tidak dapat melakukan
+        penghapusan sampai fitur daftar hitam dinonaktifkan. Nonaktifkan daftar hitam kemudian
+        mencoba tindakan ini lagi.
+    </string>
     <string name="failed_to_add_phone_number">Gagal menambahkan nomot telepon</string>
     <string name="failed_to_update_phone_number">Gagal memperbarui nomor telepon</string>
     <!--sync scheme-->
@@ -293,7 +378,8 @@ service SMSsync berjalan.</string>
     <string name="lost_connection_message">Tidak ada sambungan data pada perangkat</string>
     <string name="reception_ok_message">Penerimaan sel ok</string>
     <string name="server_respond_message">Server %1$s merespon dengan %2$d kode status \n</string>
-    <string name="unsuccessful_server_connection_message">Tidak dapat menjangkau server %1$s \n</string>
+    <string name="unsuccessful_server_connection_message">Tidak dapat menjangkau server %1$s \n
+    </string>
     <!--Logs-->
     <string name="malformed_url">URL salah: %1$s</string>
     <string name="logs">Log</string>
@@ -304,10 +390,13 @@ service SMSsync berjalan.</string>
     <string name="battery_level">Level baterai</string>
     <string name="data_connection_status">[ %1$s ]</string>
     <string name="battery_level_status">[ %1$s ]</string>
-    <string name="can_ping_server_yes"> Bisa ping server %1$s  -- Ya</string>
-    <string name="can_ping_server_no">Tidak bisa ping server %1$s </string>
-    <string name="server_properly_configured_yes"> Server %1$s dikonfigurasi dengan benar -- Ya</string>
-    <string name="server_properly_configured_no">Server %1s$s tidak dikonfigurasi dengan benar. Tidak mendapatkan respon JSON yang diharapkan</string>
+    <string name="can_ping_server_yes">Bisa ping server %1$s -- Ya</string>
+    <string name="can_ping_server_no">Tidak bisa ping server %1$s</string>
+    <string name="server_properly_configured_yes">Server %1$s dikonfigurasi dengan benar -- Ya
+    </string>
+    <string name="server_properly_configured_no">Server %1s$s tidak dikonfigurasi dengan benar.
+        Tidak mendapatkan respon JSON yang diharapkan
+    </string>
     <string name="auto_sync_message_no">Sinkronisasi pesan otomatis $1$s ke %2$s gagal</string>
     <string name="no_logs">Tidak ada log.</string>
     <string name="smssync_service_running">Service SMSsync berjalan...</string>
@@ -326,8 +415,9 @@ service SMSsync berjalan.</string>
     <string name="log_message_from">Log pesan dari nomor telepon %1$s</string>
     <string name="log_entries">SMSsync masukan log</string>
     <string name="log_saved_at">Log tersimpan pada kartu SD di %1$s</string>
-    <string name="auto_response_sent">Mengirim pesan respon otomatis dikonfigurasi sebagai SMS</string>
-    <string name="auto_message_deleted"> %1$s otomatis dihapus</string>
+    <string name="auto_response_sent">Mengirim pesan respon otomatis dikonfigurasi sebagai SMS
+    </string>
+    <string name="auto_message_deleted">%1$s otomatis dihapus</string>
     <string name="sms_sent_to_webserivce">SMS [ %1$s ] berhasil dikirim ke [ %2$s ]</string>
     <string name="processed_task">Tugas diproses mengirim pesan - [ %1$s ] sebagai SMS</string>
     <string name="received_msg">SMS diterima - [ %1$s ] dari [ %2$s ]</string>
@@ -339,7 +429,9 @@ service SMSsync berjalan.</string>
     <string name="device_shutdown">Perangkat telah dimatikan</string>
     <string name="battery_low">Baterai perangkat mau habis</string>
     <string name="battery_okay">Baterai perangkat masih penuh</string>
-    <string name="settings_changed">Pengaturan SMSsync - [ %1$s ] telah diubah dari [ %2$s ] ke [ %3$s ]</string>
+    <string name="settings_changed">Pengaturan SMSsync - [ %1$s ] telah diubah dari [ %2$s ] ke [
+        %3$s ]
+    </string>
     <string name="enabled">diaktifkan</string>
     <string name="disabled">Dinonaktifkan</string>
     <string name="invalid_data_format">Format data tidak valid</string>
@@ -348,14 +440,22 @@ service SMSsync berjalan.</string>
     <string name="message_processed_success">SMSsync telah selesai memproses pesan ini.</string>
     <string name="message_processed_failed">SMSsync telah gagal memproses pesan ini.</string>
     <string name="message_processed_json_failed">SMSsync telah gagal membuat JSON respon.</string>
-    <string name="queued_messages_request_status">Pesan antri POST permintaan kembali statusnya %1$s\n dan tubuh %2$s</string>
-    <string name="messages_result_request_status">Hasil pesan permintaan GET kembali statusnya %1$s\n dan tubuh %2$s</string>
+    <string name="queued_messages_request_status">Pesan antri POST permintaan kembali statusnya
+        %1$s\n dan tubuh %2$s
+    </string>
+    <string name="messages_result_request_status">Hasil pesan permintaan GET kembali statusnya
+        %1$s\n dan tubuh %2$s
+    </string>
     <!--enable message results api-->
     <string name="chk_enable_message_results_api">Aktifkan Hasil Pesan API\"</string>
-    <string name="chk_enable_message_results_api_hint">Ijinkan SMSsync mengirim informasi tentang pesan yang dikirim ke server.</string>
+    <string name="chk_enable_message_results_api_hint">Ijinkan SMSsync mengirim informasi tentang
+        pesan yang dikirim ke server.
+    </string>
     <string name="message_results_api_setting">Pengaturan Hasil Pesan API\"</string>
     <!--Survey Dialog-->
     <string name="in_valid_email_address">Alamat surel tidak valid</string>
     <string name="email_label">Masukkan alamat surel Anda untuk mempelajari lebih lanjut.</string>
-    <string name="rate_dialog_message">Apakah Anda tertarik untuk menerima dukungan teknis atau kustomisasi untuk integrasi SMSsync Anda?</string>
+    <string name="rate_dialog_message">Apakah Anda tertarik untuk menerima dukungan teknis atau
+        kustomisasi untuk integrasi SMSsync Anda?
+    </string>
 </resources>

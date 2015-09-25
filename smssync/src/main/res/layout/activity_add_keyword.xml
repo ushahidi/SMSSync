@@ -15,25 +15,8 @@
   ~ If you have questions regarding the use of this file, please contact
   ~ Ushahidi developers at team@ushahidi.com.
   -->
-
-<RelativeLayout
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/add_keyword_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:background="?attr/selectableItemBackground"
-        android:padding="10dp">
-
-    <TextView
-            android:id="@+id/filter_phone_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:clickable="false"
-            android:ellipsize="end"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:lines="1"
-            android:paddingLeft="3dp"
-            android:textStyle="bold"/>
-</RelativeLayout>
+        android:layout_height="match_parent"/>

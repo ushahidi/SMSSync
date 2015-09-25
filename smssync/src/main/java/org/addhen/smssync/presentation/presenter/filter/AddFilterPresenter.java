@@ -10,12 +10,12 @@
  * packaging of this file. Please review the following information to
  * ensure the GNU Lesser General Public License version 3 requirements
  * will be met: http://www.gnu.org/licenses/lgpl.html.
- *
+ *  
  * If you have questions regarding the use of this file, please contact
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.presenter;
+package org.addhen.smssync.presentation.presenter.filter;
 
 import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
 import com.addhen.android.raiburari.domain.exception.ErrorHandler;
@@ -23,16 +23,11 @@ import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
-import org.addhen.smssync.domain.entity.FilterEntity;
-import org.addhen.smssync.domain.usecase.filter.ListFilterUsecase;
+import org.addhen.smssync.domain.usecase.filter.AddFilterUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
 import org.addhen.smssync.presentation.model.FilterModel;
 import org.addhen.smssync.presentation.model.mapper.FilterModelDataMapper;
-import org.addhen.smssync.presentation.view.filters.ListFilterView;
-
-import android.support.annotation.NonNull;
-
-import java.util.List;
+import org.addhen.smssync.presentation.view.filter.AddFilterView;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -41,23 +36,28 @@ import javax.inject.Named;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 @ActivityScope
-public class ListFilterPresenter implements Presenter {
+public class AddFilterPresenter implements Presenter {
 
-    private final ListFilterUsecase mListFiltersUsecase;
+    private final AddFilterUsecase mAddFilterUsecase;
 
     private final FilterModelDataMapper mFilterModelDataMapper;
 
-    private ListFilterView mListFilterView;
+    private AddFilterView mAddFilterView;
 
     @Inject
-    public ListFilterPresenter(@Named("filterList") ListFilterUsecase listUsecase,
+    public AddFilterPresenter(@Named("filterAdd") AddFilterUsecase addFilterUsecase,
             FilterModelDataMapper filterModelDataMapper) {
-        mListFiltersUsecase = listUsecase;
+        mAddFilterUsecase = addFilterUsecase;
         mFilterModelDataMapper = filterModelDataMapper;
+    }
+
+    public void setView(AddFilterView addFilterView) {
+        mAddFilterView = addFilterView;
     }
 
     @Override
     public void resume() {
+        // Do nothing
     }
 
     @Override
@@ -67,41 +67,33 @@ public class ListFilterPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        mListFiltersUsecase.unsubscribe();
+        mAddFilterUsecase.unsubscribe();
     }
 
-    public void setView(@NonNull ListFilterView listFilterView) {
-        mListFilterView = listFilterView;
-    }
 
-    public void loadFilters(FilterModel.Status status) {
-        mListFilterView.hideRetry();
-        mListFilterView.showLoading();
-        mListFiltersUsecase.setStatus(mFilterModelDataMapper.map(status));
-        mListFiltersUsecase.execute(new DefaultSubscriber<List<FilterEntity>>() {
+    public void addFilter(FilterModel filterModel) {
+        mAddFilterUsecase.setFilter(mFilterModelDataMapper.map(filterModel));
+        mAddFilterUsecase.execute(new DefaultSubscriber<Long>() {
             @Override
             public void onCompleted() {
-                mListFilterView.hideLoading();
+                // Do nothing
             }
 
             @Override
-            public void onNext(List<FilterEntity> filterList) {
-                mListFilterView.hideLoading();
-                mListFilterView.showFilters(mFilterModelDataMapper.map(filterList));
+            public void onNext(Long row) {
+                mAddFilterView.onAdded(row);
             }
 
             @Override
             public void onError(Throwable e) {
-                mListFilterView.hideLoading();
                 showErrorMessage(new DefaultErrorHandler((Exception) e));
-                mListFilterView.showRetry();
             }
         });
     }
 
     private void showErrorMessage(ErrorHandler errorHandler) {
-        String errorMessage = ErrorMessageFactory.create(mListFilterView.getAppContext(),
+        String errorMessage = ErrorMessageFactory.create(mAddFilterView.getAppContext(),
                 errorHandler.getException());
-        mListFilterView.showError(errorMessage);
+        mAddFilterView.showError(errorMessage);
     }
 }

@@ -21,9 +21,13 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.database.FilterDatabaseHelper;
-import org.addhen.smssync.data.database.MessageDatabaseHelper;
-import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.entity.Message;
+import org.addhen.smssync.data.repository.datasource.filter.FilterDataSource;
+import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
+import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSource;
+import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.smslib.model.SmsMessage;
 import org.addhen.smssync.smslib.sms.ProcessSms;
@@ -50,11 +54,11 @@ public abstract class ProcessMessage {
 
     protected PrefsFactory mPrefsFactory;
 
-    protected MessageDatabaseHelper mMessageDatabaseHelper;
+    protected MessageDataSource mMessageDataSource;
 
-    protected WebServiceDatabaseHelper mWebServiceDatabaseHelper;
+    protected WebServiceDataSource mWebServiceDataSource;
 
-    protected FilterDatabaseHelper mFilterDatabaseHelper;
+    protected FilterDataSource mFilterDataSource;
 
     protected ProcessSms mProcessSms;
 
@@ -63,18 +67,19 @@ public abstract class ProcessMessage {
     protected Context mContext;
 
     public ProcessMessage(Context context, PrefsFactory prefsFactory,
-            MessageDatabaseHelper messageDatabaseHelper,
-            WebServiceDatabaseHelper webServiceDatabaseHelper,
-            FilterDatabaseHelper filterDatabaseHelper,
+            MessageDataSourceFactory messageDataSourceFactory,
+            WebServiceDataSourceFactory webServiceDataSourceFactory,
+            FilterDataSourceFactory filterDataSourceFactory,
             ProcessSms processSms,
             FileManager fileManager) {
         mPrefsFactory = prefsFactory;
-        mMessageDatabaseHelper = messageDatabaseHelper;
-        mWebServiceDatabaseHelper = webServiceDatabaseHelper;
-        mFilterDatabaseHelper = filterDatabaseHelper;
+        mWebServiceDataSource = webServiceDataSourceFactory.createDatabaseDataSource();
+        mMessageDataSource = messageDataSourceFactory.createMessageDatabaseSource();
+        mFilterDataSource = filterDataSourceFactory.createFilterDataSource();
         mProcessSms = processSms;
         mFileManager = fileManager;
         mContext = context;
+
     }
 
     public ProcessSms getProcessSms() {
@@ -113,7 +118,7 @@ public abstract class ProcessMessage {
             // Increase message's number of tries for future comparison to know when to delete it.
             int retries = message.retries + 1;
             message.retries = retries;
-            mMessageDatabaseHelper.put(message);
+            mMessageDataSource.putMessage(message);
         }
     }
 
@@ -159,7 +164,7 @@ public abstract class ProcessMessage {
                 "postToSentBox(): postToWebService message to sent box " + message.toString());
         // Change the status to SENT
         message.status = Message.Status.SENT;
-        mMessageDatabaseHelper.putMessage(message);
+        mMessageDataSource.putMessage(message);
         return true;
     }
 
@@ -167,13 +172,13 @@ public abstract class ProcessMessage {
         //only save to pending when the number is not blacklisted
         if (!mPrefsFactory.enableBlacklist().get()) {
             message.status = Message.Status.FAILED;
-            mMessageDatabaseHelper.put(message);
+            mMessageDataSource.putMessage(message);
         }
     }
 
     protected void deleteMessage(Message message) {
         Logger.log(TAG, " message ID " + message.messageUuid);
-        mMessageDatabaseHelper.deleteByUuid(message.messageUuid);
+        mMessageDataSource.deleteByUuid(message.messageUuid);
     }
 
     protected void logActivities(@StringRes int id) {
@@ -189,7 +194,6 @@ public abstract class ProcessMessage {
     }
 
     protected boolean sendTaskSms(Message message) {
-
         if (message.messageDate == null || !TextUtils.isEmpty(message.messageUuid)) {
             final Long timeMills = System.currentTimeMillis();
             message.messageDate = new Date(timeMills);

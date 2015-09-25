@@ -76,4 +76,24 @@ public class MessageDatabaseSource implements MessageDataSource {
     public Observable<Long> deleteEntity(Long id) {
         return mMessageDatabaseHelper.deleteEntity(id);
     }
+
+    @Override
+    public List<Message> fetchMessage(Message.Type type) {
+        return mMessageDatabaseHelper.fetchMessage(type);
+    }
+
+    @Override
+    public Message fetchMessageByUuid(String uuid) {
+        return mMessageDatabaseHelper.fetchMessageByUuid(uuid);
+    }
+
+    @Override
+    public void putMessage(Message message) {
+        mMessageDatabaseHelper.putMessage(message);
+    }
+
+    @Override
+    public Integer deleteWithUuid(String uuid) {
+        return mMessageDatabaseHelper.deleteWithUuid(uuid);
+    }
 }

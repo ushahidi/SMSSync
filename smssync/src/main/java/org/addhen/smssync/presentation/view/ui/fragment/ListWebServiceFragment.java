@@ -131,7 +131,7 @@ public class ListWebServiceFragment
 
             @Override
             public void showError(String s) {
-
+                showSnabackar(getView(), s);
             }
 
             @Override
@@ -200,7 +200,7 @@ public class ListWebServiceFragment
 
             @Override
             public void showError(String s) {
-
+                showSnabackar(getView(), s);
             }
 
             @Override

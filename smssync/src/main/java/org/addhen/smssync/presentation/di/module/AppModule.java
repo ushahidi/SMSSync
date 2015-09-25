@@ -22,9 +22,6 @@ import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
-import org.addhen.smssync.data.database.FilterDatabaseHelper;
-import org.addhen.smssync.data.database.MessageDatabaseHelper;
-import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
 import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.message.ProcessMessageResult;
 import org.addhen.smssync.data.message.TweetMessage;
@@ -32,8 +29,11 @@ import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.data.repository.FilterDataRepository;
 import org.addhen.smssync.data.repository.LogDataRepository;
-import org.addhen.smssync.data.twitter.TwitterClient;
+import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
+import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.presentation.App;
@@ -120,9 +120,9 @@ public class AppModule {
     @Singleton
     PostMessage provideProcessMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
-            MessageDatabaseHelper messageDatabaseHelper,
-            WebServiceDatabaseHelper webServiceDatabaseHelper,
-            FilterDatabaseHelper filterDatabaseHelper,
+            MessageDataSourceFactory messageDataSourceFactory,
+            WebServiceDataSourceFactory webServiceDataSourceFactory,
+            FilterDataSourceFactory filterDataSourceFactory,
             ProcessSms processSms,
             FileManager fileManager,
             TwitterClient twitterApp,
@@ -131,9 +131,9 @@ public class AppModule {
                 .setContext(context)
                 .setPrefsFactory(prefsFactory)
                 .setMessageHttpClient(messageHttpClient)
-                .setMessageDatabaseHelper(messageDatabaseHelper)
-                .setWebServiceDatabaseHelper(webServiceDatabaseHelper)
-                .setFilterDatabaseHelper(filterDatabaseHelper)
+                .setMessageDataSourceFactory(messageDataSourceFactory)
+                .setWebServiceDataSourceFactory(webServiceDataSourceFactory)
+                .setFilterDataSourceFactory(filterDataSourceFactory)
                 .setProcessSms(processSms)
                 .setFileManager(fileManager)
                 .setProcessMessageResult(processMessageResult)
@@ -144,9 +144,9 @@ public class AppModule {
     @Singleton
     TweetMessage provideTweetMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
-            MessageDatabaseHelper messageDatabaseHelper,
-            WebServiceDatabaseHelper webServiceDatabaseHelper,
-            FilterDatabaseHelper filterDatabaseHelper,
+            MessageDataSourceFactory messageDataSourceFactory,
+            WebServiceDataSourceFactory webServiceDataSourceFactory,
+            FilterDataSourceFactory filterDataSourceFactory,
             ProcessSms processSms,
             FileManager fileManager,
             TwitterClient twitterApp,
@@ -155,9 +155,9 @@ public class AppModule {
                 .setContext(context)
                 .setPrefsFactory(prefsFactory)
                 .setTwitterApp(twitterApp)
-                .setMessageDatabaseHelper(messageDatabaseHelper)
-                .setWebServiceDatabaseHelper(webServiceDatabaseHelper)
-                .setFilterDatabaseHelper(filterDatabaseHelper)
+                .setMessageDataSourceFactory(messageDataSourceFactory)
+                .setWebServiceDataSourceFactory(webServiceDataSourceFactory)
+                .setFilterDataSourceFactory(filterDataSourceFactory)
                 .setProcessSms(processSms)
                 .setFileManager(fileManager)
                 .build();

@@ -20,10 +20,11 @@ package org.addhen.smssync.presentation.di.module;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
-import org.addhen.smssync.data.repository.FilterDataRepository;
-import org.addhen.smssync.domain.repository.FilterRepository;
 import org.addhen.smssync.domain.usecase.filter.AddFilterUsecase;
+import org.addhen.smssync.domain.usecase.filter.DeleteFilterUsecase;
 import org.addhen.smssync.domain.usecase.filter.ListFilterUsecase;
+import org.addhen.smssync.domain.usecase.webservice.GetActiveWebServiceUsecase;
+import org.addhen.smssync.domain.usecase.webservice.UpdateWebServiceUsecase;
 
 import javax.inject.Named;
 
@@ -39,14 +40,44 @@ public class FilterModule {
     @Provides
     @ActivityScope
     @Named("filterList")
-    ListFilterUsecase provideListFilterUseCase(ListFilterUsecase listFilterUsecase) {
+    Usecase provideListFilterUseCase(ListFilterUsecase listFilterUsecase) {
         return listFilterUsecase;
     }
 
     @Provides
     @ActivityScope
     @Named("filterAdd")
-    Usecase provideAddFilterUseCase(AddFilterUsecase addFilterUsecase) {
+    AddFilterUsecase provideAddFilterUseCase(AddFilterUsecase addFilterUsecase) {
         return addFilterUsecase;
     }
+
+    @Provides
+    @ActivityScope
+    @Named("getActiveWebService")
+    Usecase provideGetActiveWebServiceUseCase(
+            GetActiveWebServiceUsecase getActiveWebServiceUsecase) {
+        return getActiveWebServiceUsecase;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("filterDelete")
+    DeleteFilterUsecase provideDeleteFilterUsecase(DeleteFilterUsecase deleteFilterUsecase) {
+        return deleteFilterUsecase;
+    }
+
+    /**
+     * Provides {@link UpdateWebServiceUsecase} object
+     *
+     * @param updateWebServiceUsecase The update webService use case
+     * @return The update webService use case
+     */
+    @Provides
+    @ActivityScope
+    @Named("webServiceUpdate")
+    UpdateWebServiceUsecase provideUpdateWebServiceUseCase(
+            UpdateWebServiceUsecase updateWebServiceUsecase) {
+        return updateWebServiceUsecase;
+    }
+
 }

@@ -26,6 +26,7 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import org.addhen.smssync.presentation.di.module.ServiceModule;
 import org.addhen.smssync.presentation.presenter.message.UpdateMessagePresenter;
 import org.addhen.smssync.presentation.service.BaseWakefulIntentService;
+import org.addhen.smssync.presentation.service.CheckTaskService;
 import org.addhen.smssync.presentation.service.SmsReceiverService;
 
 import dagger.Component;
@@ -38,6 +39,8 @@ public interface AppServiceComponent {
     void inject(SmsReceiverService smsReceiverService);
 
     void inject(BaseWakefulIntentService baseWakefulIntentService);
+
+    void inject(CheckTaskService baseWakefulIntentService);
 
     UpdateMessagePresenter updateMessagePresenter();
 }

@@ -19,79 +19,86 @@
 <resources>
     <!--preferences-->
     <!--sync URL-->
-  <string name="edittxt_website_pref">
-		Sync URLを入力
-  </string>
-  <string name="edittxt_website_pref_summary">これはテキストメッセージをを受信する
-ウェブサイトです。</string>
+    <string name="edittxt_website_pref">
+        Sync URLを入力
+    </string>
+    <string name="edittxt_website_pref_summary">これはテキストメッセージをを受信する
+        ウェブサイトです。
+    </string>
     <!--secret-->
     <string name="edittxt_api_key_pref">秘密鍵を入力してください</string>
-  <string name="edittxt_api_key_pref_summary">秘密/鍵がWebサイトで指定されている場合、
-必要になります。</string>
+    <string name="edittxt_api_key_pref_summary">秘密/鍵がWebサイトで指定されている場合、
+        必要になります。
+    </string>
     <!--filter by keywords-->
-  <string name="edittxt_keyword_pref">
-		キーワードを入力
-  </string>
-  <string name="editxt_keyword_pref_summary">届いたメッセージをフィルターするための
-キーワードを指定してください。</string>
-  <string name="edittxt_keyword_hint">
-		火災、犯罪、救助、レポート、その他
-  </string>
+    <string name="edittxt_keyword_pref">
+        キーワードを入力
+    </string>
+    <string name="editxt_keyword_pref_summary">届いたメッセージをフィルターするための
+        キーワードを指定してください。
+    </string>
+    <string name="edittxt_keyword_hint">
+        火災、犯罪、救助、レポート、その他
+    </string>
     <!--filter by phone numbers-->
     <string name="edittxt_filter_by_from_pref">電話番号を入力してください - オプション</string>
-  <string name="edittxt_filter_by_from_pref_summary">届いたメッセージをフィルターするために使用する
-電話番号のホワイトリストを指定してください。</string>
+    <string name="edittxt_filter_by_from_pref_summary">届いたメッセージをフィルターするために使用する
+        電話番号のホワイトリストを指定してください。
+    </string>
     <string name="edittxt_filter_by_from_hint">+233713849796,+254243581806</string>
     <!--unique id-->
     <string name="edittxt_unique_id_pref">固有の ID を入力してください</string>
-  <string name="edittxt_unique_id_pref_summary">このデバイスに固有のIDを指定します。サーバーが
-メッセージを送信しているデバイスを識別するために使用します。</string>
+    <string name="edittxt_unique_id_pref_summary">このデバイスに固有のIDを指定します。サーバーが
+        メッセージを送信しているデバイスを識別するために使用します。
+    </string>
     <string name="edittxt_unique_id_hint">01234</string>
     <!--alert phone-->
     <string name="edittxt_alert_phone_pref">警告する電話番号を入力</string>
     <string name="edittxt_alert_phone_pref_summary">警告の送信先の電話番号を指定します。</string>
     <!--response message-->
-  <string name="edittxt_reply">
-		返答メッセージを入力
-  </string>
-  <string name="edittxt_reply_title">
-		返答メッセージ
-  </string>
-  <string name="edittxt_reply_summary">
-		ユーザーにメッセージが送信されました
-  </string>
-  <string name="edittxt_reply_default">
-		あなたのメッセージが受信されました。ありがとうございます。
-  </string>
+    <string name="edittxt_reply">
+        返答メッセージを入力
+    </string>
+    <string name="edittxt_reply_title">
+        返答メッセージ
+    </string>
+    <string name="edittxt_reply_summary">
+        ユーザーにメッセージが送信されました
+    </string>
+    <string name="edittxt_reply_default">
+        あなたのメッセージが受信されました。ありがとうございます。
+    </string>
     <!--enable/disable smssync-->
     <string name="sms_sync_enabled">SMSsync は有効です</string>
     <string name="sms_sync_disabled">SMSsync は無効になりました</string>
     <!--general settings-->
-  <string name="general_settings">
-		一般設定
-  </string>
+    <string name="general_settings">
+        一般設定
+    </string>
     <string name="chk_enable_sms_sync">SMSsync サービスを開始</string>
-  <string name="chk_sms_sync_hint">
-		SMS gatewayの開始と停止
-  </string>
+    <string name="chk_sms_sync_hint">
+        SMS gatewayの開始と停止
+    </string>
     <!--reply from server-->
-  <string name="reply_settings">
-		返信メッセージ設定
-  </string>
-  <string name="chk_enable_reply">
-		返信メッセージ
-  </string>
+    <string name="reply_settings">
+        返信メッセージ設定
+    </string>
+    <string name="chk_enable_reply">
+        返信メッセージ
+    </string>
     <string name="chk_reply_hint">自動的に SMSsync に届くすべてのメッセージに応答します。</string>
     <!--auto delete messages-->
-  <string name="chk_enable_auto_delete">
-		メッセージ時動削除
-  </string>
-  <string name="chk_auto_delete_hint">自動的にメッセージ アプリの受信トレイからメッセージを削除して、
-電話のスペースを節約します。</string>
+    <string name="chk_enable_auto_delete">
+        メッセージ時動削除
+    </string>
+    <string name="chk_auto_delete_hint">自動的にメッセージ アプリの受信トレイからメッセージを削除して、
+        電話のスペースを節約します。
+    </string>
     <!--auto delete pending messages-->
     <string name="chk_enable_auto_delete_pending_messages">保留メッセージを自動削除</string>
-  <string name="chk_enable_auto_delete_pending_messages_hint">送信に失敗した保留メッセージを
-自動削除します</string>
+    <string name="chk_enable_auto_delete_pending_messages_hint">送信に失敗した保留メッセージを
+        自動削除します
+    </string>
     <string name="select_number_of_retries">保留メッセージのリトライ回数</string>
     <string name="select_number_of_retries_hint">保留メッセージを自動削除するまでのリトライ回数を設定します</string>
     <string name="one_try">1 回</string>
@@ -106,32 +113,38 @@
     <string name="five">5</string>
     <!--enable sms delivery report-->
     <string name="chk_enable_sms_delivery_report">SMS 配信レポート</string>
-    <string name="chk_sms_delivery_report_hint">アプリケーションに SMS 配信ステータスレポートを送信する場合に有効にします。注: 一部のネットワークプロバイダでは料金がかかることがあります。</string>
+    <string name="chk_sms_delivery_report_hint">アプリケーションに SMS 配信ステータスレポートを送信する場合に有効にします。注:
+        一部のネットワークプロバイダでは料金がかかることがあります。
+    </string>
     <!--enable auto sync-->
-  <string name="chk_enable_auto_sync">
-		Auto Syncを有効にする
-  </string>
+    <string name="chk_enable_auto_sync">
+        Auto Syncを有効にする
+    </string>
     <string name="chk_enable_auto_sync_hint">SMSsync が保留中のメッセージを定期的に同期できるようにします。</string>
     <!--auto sync delay-->
-  <string name="txt_auto_sync_delay">
-		Auto Sync頻度
-  </string>
-  <string name="auto_sync_delay_hint">SMSsync が設定されたコールバック URL と
-同期する頻度を設定します。</string>
+    <string name="txt_auto_sync_delay">
+        Auto Sync頻度
+    </string>
+    <string name="auto_sync_delay_hint">SMSsync が設定されたコールバック URL と
+        同期する頻度を設定します。
+    </string>
     <!--enable SMS Portals-->
     <string name="sms_portals_settings">SMS ポータル設定</string>
     <string name="chk_enable_sms_portals">SMS ポータルを有効にする</string>
-    <string name="chk_enable_sms_portals_hint">SMS メッセージの送信時に、効果的にデフォルトの Android の制限 (100 SMS/時間) を増加させて、SMS ポータルを使用します。</string>
+    <string name="chk_enable_sms_portals_hint">SMS メッセージの送信時に、効果的にデフォルトの Android の制限 (100 SMS/時間)
+        を増加させて、SMS ポータルを使用します。
+    </string>
     <!--enable task check-->
-  <string name="chk_enable_task_check">
-		タスクチェッキングを有効にする
-  </string>
-  <string name="chk_enable_task_check_hint">SMSsync が有効なコールバックURLに、定期的にタスクを
-チェックすることを許可します。そしてSMSsyncはタスクを実行します。例えば、SMSsyncはSMSを送信します</string>
+    <string name="chk_enable_task_check">
+        タスクチェッキングを有効にする
+    </string>
+    <string name="chk_enable_task_check_hint">SMSsync が有効なコールバックURLに、定期的にタスクを
+        チェックすることを許可します。そしてSMSsyncはタスクを実行します。例えば、SMSsyncはSMSを送信します
+    </string>
     <!--task check delay-->
-  <string name="txt_task_check_delay">
-		頻度
-  </string>
+    <string name="txt_task_check_delay">
+        頻度
+    </string>
     <string name="txt_task_check_delay_hint">SMSsync が実行されるタスクをチェックする頻度を設定します。</string>
     <string name="app_name">SMSsync</string>
     <string name="outbox">SMSsync 保留メッセージ</string>
@@ -143,83 +156,89 @@
     <string name="sending_failed_http_code">サーバーが HTTP ステータスコード %1$d を返しました。</string>
     <string name="sending_failed_custom_error">サーバーにメッセージの送信ができませんでした。サーバーエラー: %1$s</string>
     <string name="sending_succeeded">SMSsync メッセージを送信しました。</string>
-  <string name="no_messages_to_sync">
-		送信するメッセージがありません
-  </string>
-  <string name="no_messages_to_delete">
-		削除するメッセージがありません
-  </string>
-  <string name="sync_failed">SMSsync がメッセージの送信に失敗しました。インターネット接続と
-同期 URL 設定をご確認ください。</string>
+    <string name="no_messages_to_sync">
+        送信するメッセージがありません
+    </string>
+    <string name="no_messages_to_delete">
+        削除するメッセージがありません
+    </string>
+    <string name="sync_failed">SMSsync がメッセージの送信に失敗しました。インターネット接続と
+        同期 URL 設定をご確認ください。
+    </string>
     <string name="powered">Powered</string>
     <string name="powered_by">作成者 Ushahidi</string>
-  <string name="menu_delete_all">
-		すべて消去
-  </string>
-  <string name="menu_sync_all">
-		すべて同期
-  </string>
-  <string name="menu_delete">
-		消去
-  </string>
-  <string name="menu_sync">
-		同期
-  </string>
+    <string name="menu_delete_all">
+        すべて消去
+    </string>
+    <string name="menu_sync_all">
+        すべて同期
+    </string>
+    <string name="menu_delete">
+        消去
+    </string>
+    <string name="menu_sync">
+        同期
+    </string>
     <string name="menu_import">SMS をインポート</string>
-  <string name="menu_settings">
-		設定
-  </string>
-  <string name="messages_deleted">
-		メッセージを消去しました
-  </string>
-  <string name="messages_deleted_failed">
-		メッセージを消去できません
-  </string>
-  <string name="status">
-		ステータス
-  </string>
+    <string name="menu_settings">
+        設定
+    </string>
+    <string name="messages_deleted">
+        メッセージを消去しました
+    </string>
+    <string name="messages_deleted_failed">
+        メッセージを消去できません
+    </string>
+    <string name="status">
+        ステータス
+    </string>
     <string name="empty_list">保留中のメッセージはありません</string>
     <string name="http_text">http://</string>
-  <string name="sms_failed">
-		SMS失敗
-  </string>
+    <string name="sms_failed">
+        SMS失敗
+    </string>
     <!--URL validation-->
-  <string name="invalid_url">
-		入力されたURLは無効です
-  </string>
+    <string name="invalid_url">
+        入力されたURLは無効です
+    </string>
     <string name="no_configured_url">SMSsync サービスは実行していません。</string>
-  <string name="no_connection">
-		URLに接続できませんでした
-  </string>
+    <string name="no_connection">
+        URLに接続できませんでした
+    </string>
     <string name="no_task">設定された同期 URL で有効にされたタスクはありません。</string>
-  <string name="auto_sync_settings">
-		Auto Sync設定
-  </string>
-  <string name="task_check_settings">
-		タスク設定
-  </string>
-  <string name="about_smssync">
-		Syncについて
-  </string>
-  <string name="please_wait">
-		お待ちください
-  </string>
-  <string name="smssync_not_enabled">SMSsync が有効になっていません。 設定画面で有効にしてください
-。</string>
-  <string name="import_messages">
-		メッセージをインポート中...
-  </string>
-  <string name="nothing_to_import">インポートするメッセージはありません。SMS の受信トレイに
-SMS メッセージがあるかご確認ください。</string>
+    <string name="auto_sync_settings">
+        Auto Sync設定
+    </string>
+    <string name="task_check_settings">
+        タスク設定
+    </string>
+    <string name="about_smssync">
+        Syncについて
+    </string>
+    <string name="please_wait">
+        お待ちください
+    </string>
+    <string name="smssync_not_enabled">SMSsync が有効になっていません。 設定画面で有効にしてください
+        。
+    </string>
+    <string name="import_messages">
+        メッセージをインポート中...
+    </string>
+    <string name="nothing_to_import">インポートするメッセージはありません。SMS の受信トレイに
+        SMS メッセージがあるかご確認ください。
+    </string>
     <string name="chk_enable_reply_frm_server">サーバーから応答を取得</string>
-  <string name="chk_reply_frm_server_hint">スケジューラーを待たずに、サーバーから SMS を受け取った
-として即座にメッセージを送信します。</string>
+    <string name="chk_reply_frm_server_hint">スケジューラーを待たずに、サーバーから SMS を受け取った
+        として即座にメッセージを送信します。
+    </string>
     <string name="filter_messages">メッセージをフィルター</string>
-    <string name="validate_sms_delivery_report_status">メッセージ結果 API は、SMS 配信レポートに依存します。先に有効にしてください。</string>
+    <string name="validate_sms_delivery_report_status">メッセージ結果 API は、SMS 配信レポートに依存します。先に有効にしてください。
+    </string>
     <string name="validate_message_result_api">メッセージ結果 API はそれに依存します。先に無効にしてください。</string>
     <!--SMS delivery status-->
-  <string name="sms_delivery_status_failed">SMS を送信できませんでした - 電話の通信時間が
-不足していたようです。</string>
+    <string name="sms_delivery_status_failed">SMS を送信できませんでした - 電話の通信時間が
+        不足していたようです。
+    </string>
     <string name="sms_delivery_status_no_service">SMSを送信できませんでした。現在サービスが使用できません</string>
     <string name="sms_delivery_status_radio_off">SMS を送信できませんでした。通信が明示的にオフになっていました</string>
     <string name="sms_delivery_status_null_pdu">SMSを送信できませんでした。提供される PDU がありません</string>
@@ -258,22 +277,27 @@ SMS メッセージがあるかご確認ください。</string>
     <string name="failed_to_update_sync_url">同期 URL を更新できませんでした</string>
     <string name="sync_url_deleted">同期 URL を正常に削除しました。</string>
     <string name="sync_url_deleted_failed">同期 URL を削除できませんでした。</string>
-  <string name="disable_to_delete_syncurl">この同期 URL は有効になっているため、削除できません。
-削除する前に無効にしてください。</string>
-  <string name="disable_to_delete_all_syncurl">同期 URL が有効になっているため、これはすべて削除できません。、
-すべての有効な同期 URL を無効にして、再度この操作を行ってください。</string>
+    <string name="disable_to_delete_syncurl">この同期 URL は有効になっているため、削除できません。
+        削除する前に無効にしてください。
+    </string>
+    <string name="disable_to_delete_all_syncurl">同期 URL が有効になっているため、これはすべて削除できません。、
+        すべての有効な同期 URL を無効にして、再度この操作を行ってください。
+    </string>
     <string name="no_enabled_sync_url">サービスを開始する前に、少なくとも 1 つ同期 URL を有効にしてください。</string>
-  <string name="disable_smssync_service">SMSsync サービスは実行中です。サービスが停止されるまで
-削除を実行することはできません。サービスを停止して、再度この操作を行ってください。</string>
-  <string name="disable_last_sync_url">SMSsync サービスが実行中のため、この最新の同期 URL を
-無効にすることはできません。</string>
+    <string name="disable_smssync_service">SMSsync サービスは実行中です。サービスが停止されるまで
+        削除を実行することはできません。サービスを停止して、再度この操作を行ってください。
+    </string>
+    <string name="disable_last_sync_url">SMSsync サービスが実行中のため、この最新の同期 URL を
+        無効にすることはできません。
+    </string>
     <string name="no_sync_url_added">SMSsync サービスを開始するには、少なくとも 1 つ同期 URLを追加してください。</string>
     <string name="no_sync_url_to_delete">削除する同期 URL はありません。</string>
     <string name="empty_sync_url_title">同期 URL のタイトルを入力してください</string>
     <string name="valid_sync_url">正しい URL を入力してください</string>
     <string name="task">タスク</string>
-  <string name="confirm_sms_import">メッセージングの受信トレイに、すべてのSMSをインポートします。
-これはしばらく時間がかかります。</string>
+    <string name="confirm_sms_import">メッセージングの受信トレイに、すべてのSMSをインポートします。
+        これはしばらく時間がかかります。
+    </string>
     <string name="incoming">到着</string>
     <string name="schedule">スケジュール</string>
     <string name="manual">手動</string>
@@ -283,17 +307,25 @@ SMS メッセージがあるかご確認ください。</string>
     <string name="error">エラー</string>
     <string name="done">完了</string>
     <string name="never">なし</string>
-    <string name="idle_details">最新の同期: &lt;xliff:g id="last_sync_date"&gt; %1$s&lt;/xliff:g&gt;</string>
+    <string name="idle_details">最新の同期: &lt;xliff:g id="last_sync_date"&gt;
+        %1$s&lt;/xliff:g&gt;</string>
     <string name="working">作業中</string>
     <string name="canceled">キャンセルしました</string>
     <string name="sync_canceled_details">%1$d/%2$d アイテムが正常に同期されました。</string>
     <string name="sync_error_details">同期中にエラー:\n&lt;xliff:g id="error_description"&gt;%1$s&lt;/xliff:g&gt;</string>
     <plurals name="sync_done_details">
-        <item quantity="other">正常に処理しました&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;            アイテム.</item>
+        <item quantity="other">正常に処理しました&lt;xliff:g id=\"total_items\"&gt;%1$d&lt;/xliff:g&gt;
+            アイテム.
+        </item>
     </plurals>
-    <string name="sync_status_done">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt;        同期 ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt;        失敗</string>
+    <string name="sync_status_done">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; 同期 ,&lt;xliff:g
+        id="failed_items"&gt;%2$d&lt;/xliff:g&gt; 失敗
+    </string>
     <string name="stopping">停止中</string>
-    <string name="status_sync_details">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt;        同期 ,&lt;xliff:g id="failed_items"&gt;%2$d&lt;/xliff:g&gt;        失敗 /&lt;xliff:g id="total_items"&gt;%3$d&lt;/xliff:g&gt;        アイテム\u2026</string>
+    <string name="status_sync_details">&lt;xliff:g id="syncd_up_items"&gt;%1$d&lt;/xliff:g&gt; 同期 ,&lt;xliff:g
+        id="failed_items"&gt;%2$d&lt;/xliff:g&gt; 失敗 /&lt;xliff:g id="total_items"&gt;%3$d&lt;/xliff:g&gt;
+        アイテム\u2026
+    </string>
     <string name="open">開く</string>
     <string name="close">閉じる</string>
     <string name="unknown_issue">不明な問題</string>
@@ -317,20 +349,28 @@ SMS メッセージがあるかご確認ください。</string>
     <string name="filter">フィルター</string>
     <string name="enable_whitelist">ホワイトリストを有効にする</string>
     <string name="enable_blacklist">ブラックリストを有効にする</string>
-  <string name="no_whitelist">ホワイトリストに登録された電話番号はありません。\n上の \"+\"  ボタンを
-使用して追加してください。</string>
-  <string name="no_blacklist">ブラックリストに登録された電話番号はありません。\n上の \"+\"  ボタンを
-使用して追加してください。</string>
+    <string name="no_whitelist">ホワイトリストに登録された電話番号はありません。\n上の \"+\" ボタンを
+        使用して追加してください。
+    </string>
+    <string name="no_blacklist">ブラックリストに登録された電話番号はありません。\n上の \"+\" ボタンを
+        使用して追加してください。
+    </string>
     <string name="enter_phone_number">電話番号を入力してください</string>
     <string name="add_phone_number">電話番号を追加</string>
     <string name="add_phone_number_list">リストに電話番号を追加</string>
-    <string name="no_phone_number_to_enable_whitelist">ホワイトリスト機能を有効にするには、少なくとも 1 つ電話番号を追加します。</string>
-    <string name="no_phone_number_to_enable_blacklist">ブラックリスト機能を有効にするには、少なくとも 1 つ電話番号を追加します。</string>
+    <string name="no_phone_number_to_enable_whitelist">ホワイトリスト機能を有効にするには、少なくとも 1 つ電話番号を追加します。
+    </string>
+    <string name="no_phone_number_to_enable_blacklist">ブラックリスト機能を有効にするには、少なくとも 1 つ電話番号を追加します。
+    </string>
     <string name="no_phone_number_to_delete">削除する電話番号はありません。</string>
     <string name="phone_number_deleted">電話番号が正常に削除されました。</string>
     <string name="deleting_phone_number_failed">電話番号が削除できませんでした。</string>
-    <string name="disable_whitelist">ホワイトリストが有効になっています。ホワイトリスト機能を無効にするまで、削除を実行することはできません。ホワイトリストを無効にして、再度この操作を行ってください。</string>
-    <string name="disable_blacklist">ブラックリストが有効になっています。ブラックリスト機能を無効にするまで、削除を実行することはできません。ブラックリストを無効にして、再度この操作を行ってください。</string>
+    <string name="disable_whitelist">
+        ホワイトリストが有効になっています。ホワイトリスト機能を無効にするまで、削除を実行することはできません。ホワイトリストを無効にして、再度この操作を行ってください。
+    </string>
+    <string name="disable_blacklist">
+        ブラックリストが有効になっています。ブラックリスト機能を無効にするまで、削除を実行することはできません。ブラックリストを無効にして、再度この操作を行ってください。
+    </string>
     <string name="failed_to_add_phone_number">電話番号の追加に失敗しました</string>
     <string name="failed_to_update_phone_number">電話番号の更新に失敗しました</string>
     <!--sync scheme-->
@@ -373,9 +413,11 @@ SMS メッセージがあるかご確認ください。</string>
     <string name="data_connection_status">[ %1$s ]</string>
     <string name="battery_level_status">[ %1$s ]</string>
     <string name="can_ping_server_yes">サーバー %1$s に ping できます -- はい</string>
-    <string name="can_ping_server_no">サーバー %1$s に ping できません </string>
+    <string name="can_ping_server_no">サーバー %1$s に ping できません</string>
     <string name="server_properly_configured_yes">サーバー %1$s が正しく設定されていますか -- はい</string>
-    <string name="server_properly_configured_no">サーバー %1s$s が正しく設定されていません。期待する JSON レスポンスを取得できませんでした</string>
+    <string name="server_properly_configured_no">サーバー %1s$s が正しく設定されていません。期待する JSON
+        レスポンスを取得できませんでした
+    </string>
     <string name="auto_sync_message_no">$1$s から %2$s への自動同期メッセージに失敗しました</string>
     <string name="no_logs">ログがありません。</string>
     <string name="smssync_service_running">SMSsync サービスは実行中...</string>
@@ -395,7 +437,7 @@ SMS メッセージがあるかご確認ください。</string>
     <string name="log_entries">SMSsync ログエントリー</string>
     <string name="log_saved_at">SD カードにログを保存しました %1$s</string>
     <string name="auto_response_sent">SMS の設定された自動応答メッセージを送信中</string>
-    <string name="auto_message_deleted"> %1$s は自動削除されました</string>
+    <string name="auto_message_deleted">%1$s は自動削除されました</string>
     <string name="sms_sent_to_webserivce">SMS [ %1$s ] は [ %2$s ] に正常に送信しました</string>
     <string name="processed_task">メッセージを送信するタスクを処理しました - SMS の [ %1$s ]</string>
     <string name="received_msg">SMS を受信しました - [ %1$s ] [ %2$s ] から</string>
@@ -416,11 +458,16 @@ SMS メッセージがあるかご確認ください。</string>
     <string name="message_processed_success">SMSsync はこのメッセージを正常に処理しました。</string>
     <string name="message_processed_failed">SMSsync はこのメッセージの処理を失敗しました。</string>
     <string name="message_processed_json_failed">SMSsync は JSON レスポンスの作成に失敗しました。</string>
-    <string name="queued_messages_request_status">キューに入れられた、メッセージ POST リクエストがステータス %1$s\nおよびボディ %2$s を返しました</string>
-    <string name="messages_result_request_status">メッセージ結果 GET リクエストがステータス %1$s\nおよびボディ %2$s を返しました</string>
+    <string name="queued_messages_request_status">キューに入れられた、メッセージ POST リクエストがステータス %1$s\nおよびボディ %2$s
+        を返しました
+    </string>
+    <string name="messages_result_request_status">メッセージ結果 GET リクエストがステータス %1$s\nおよびボディ %2$s を返しました
+    </string>
     <!--enable message results api-->
     <string name="chk_enable_message_results_api">メッセージ結果 API を有効にする</string>
-    <string name="chk_enable_message_results_api_hint">サーバーに送信されたメッセージに関する情報を、SMSsyncが送信することを許可します。</string>
+    <string name="chk_enable_message_results_api_hint">
+        サーバーに送信されたメッセージに関する情報を、SMSsyncが送信することを許可します。
+    </string>
     <string name="message_results_api_setting">メッセージ結果 API 設定</string>
     <!--Survey Dialog-->
     <string name="in_valid_email_address">メールアドレスが正しくありません</string>

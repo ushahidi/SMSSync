@@ -31,7 +31,7 @@ import org.addhen.smssync.presentation.presenter.ListLogPresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.log.DeleteLogView;
 import org.addhen.smssync.presentation.view.log.ListLogView;
-import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
+import org.addhen.smssync.presentation.view.ui.activity.LogActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.LogAdapter;
 
 import android.content.BroadcastReceiver;
@@ -261,7 +261,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     }
 
     protected <C> C getLogComponent(Class<C> componentType) {
-        return componentType.cast(((MainActivity) getActivity()).getLogComponent());
+        return componentType.cast(((LogActivity) getActivity()).getComponent());
     }
 
     private String makeShareableMessage() {

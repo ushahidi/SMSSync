@@ -67,10 +67,6 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
         }));
     }
 
-    public List<Filter> getFilters() {
-        return cupboard().withDatabase(getReadableDatabase()).query(Filter.class).list();
-    }
-
     public Observable<Filter> getFilter(@NonNull Long id) {
         return Observable.create((subscriber -> {
             if (!isClosed()) {
@@ -196,5 +192,9 @@ public class FilterDatabaseHelper extends BaseDatabaseHelper {
                 subscriber.onError(new Exception());
             }
         }));
+    }
+
+    public List<Filter> getFilters() {
+        return cupboard().withDatabase(getReadableDatabase()).query(Filter.class).list();
     }
 }

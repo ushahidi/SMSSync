@@ -15,18 +15,14 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.filters;
+package org.addhen.smssync.presentation.view.filter;
 
-import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
-
-import org.addhen.smssync.presentation.model.FilterModel;
-
-import java.util.List;
+import com.addhen.android.raiburari.presentation.ui.view.UiView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public interface ListFilterView extends LoadDataView {
+public interface DeleteFilterView extends UiView {
 
-    void showFilters(List<FilterModel> filterModelList);
+    void onDeleted(Long row);
 }

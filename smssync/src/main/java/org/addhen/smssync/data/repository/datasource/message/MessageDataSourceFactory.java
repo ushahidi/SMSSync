@@ -37,7 +37,7 @@ public class MessageDataSourceFactory {
         mMessageDatabaseHelper = messageDatabaseHelper;
     }
 
-    public MessageDataSource createMessageDataSource() {
+    public MessageDataSource createMessageDatabaseSource() {
         return new MessageDatabaseSource(mMessageDatabaseHelper);
     }
 }

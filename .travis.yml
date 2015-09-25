@@ -11,7 +11,7 @@ android:
   - extra-android-support
   - extra-android-m2repository
     
-script: ./gradlew build -x validateReleaseSignSigning
+script: ./gradlew clean build -x validateReleaseSignSigning
 notifications:
   hipchat:
     template: '<a href="%{build_url}">%{repository}#%{build_number}</a> (%{branch} - <a href="%{compare_url}">%{commit}</a> : %{author}): %{message}'
