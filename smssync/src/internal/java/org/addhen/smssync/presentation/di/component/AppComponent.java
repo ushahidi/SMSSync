@@ -23,6 +23,7 @@ import com.addhen.android.raiburari.presentation.di.module.ApplicationModule;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.ProcessMessageResult;
 import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.twitter.TwitterClient;
@@ -64,6 +65,8 @@ public interface AppComponent extends ApplicationComponent {
     TwitterClient twitterClient();
 
     PostMessage processMessage();
+
+    ProcessMessageResult processMessageResult();
 
     TweetMessage tweetMessage();
 

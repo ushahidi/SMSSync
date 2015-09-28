@@ -250,8 +250,6 @@ dependencies {
     compile appDependencies.okHttp
     compile appDependencies.twitter4jCore
     compile appDependencies.nineOldAndroids
-    compile appDependencies.preferencefragment
-    compile appDependencies.preferenceSwitchCompat
     compile appDependencies.bottomSheet
     compile appDependencies.qrCodeReaderView
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors

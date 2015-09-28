@@ -21,19 +21,23 @@ package org.addhen.smssync.presentation.di.component;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
-
 import org.addhen.smssync.presentation.di.module.ServiceModule;
+import org.addhen.smssync.presentation.di.qualifier.ServiceScope;
+import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.UpdateMessagePresenter;
+import org.addhen.smssync.presentation.service.AutoSyncScheduledService;
 import org.addhen.smssync.presentation.service.BaseWakefulIntentService;
 import org.addhen.smssync.presentation.service.CheckTaskService;
+import org.addhen.smssync.presentation.service.DeleteMessageService;
+import org.addhen.smssync.presentation.service.MessageResultsService;
 import org.addhen.smssync.presentation.service.SmsReceiverService;
+import org.addhen.smssync.presentation.service.SyncPendingMessagesService;
+import org.addhen.smssync.presentation.service.UpdateMessageService;
 
 import dagger.Component;
 
-@ActivityScope
-@Component(dependencies = {AppComponent.class}, modules = {
-        ServiceModule.class})
+@ServiceScope
+@Component(dependencies = {AppComponent.class}, modules = {ServiceModule.class})
 public interface AppServiceComponent {
 
     void inject(SmsReceiverService smsReceiverService);
@@ -42,5 +46,17 @@ public interface AppServiceComponent {
 
     void inject(CheckTaskService baseWakefulIntentService);
 
+    void inject(DeleteMessageService deleteMessageService);
+
+    void inject(MessageResultsService messageResultsService);
+
+    void inject(UpdateMessageService updateMessageService);
+
+    void inject(SyncPendingMessagesService syncPendingMessagesService);
+
+    void inject(AutoSyncScheduledService autoSyncScheduledService);
+
     UpdateMessagePresenter updateMessagePresenter();
+
+    DeleteMessagePresenter deleteMessagePresenter();
 }

@@ -16,24 +16,17 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
             android:key="task_check_preference"
             android:summary="@string/chk_enable_task_check_hint"
             android:title="@string/chk_enable_task_check"/>
-    <ListPreference
-            android:dependency="task_check_preference"
-            android:entries="@array/sync_frequencies"
-            android:entryValues="@array/sync_frequency_values"
-            android:key="task_frequency_list_preference"
-            android:summary="@string/select_sync_frequency_hint"
-            android:title="@string/select_sync_frequency"/>
     <org.addhen.smssync.presentation.view.ui.widget.TimePreference
             android:dependency="task_check_preference"
             android:dialogTitle="@string/txt_task_check_delay"
             android:key="task_check_times"
             android:summary="@string/txt_task_check_delay_hint"
             android:title="@string/txt_task_check_delay"/>
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
             android:dependency="task_check_preference"
             android:key="message_results_api_preference"
             android:summary="@string/chk_enable_message_results_api_hint"

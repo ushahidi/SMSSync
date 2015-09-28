@@ -17,7 +17,6 @@
 
 package org.addhen.smssync.presentation.view.ui.activity;
 
-import com.cgollner.unclouded.preferences.SwitchPreferenceCompat;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
@@ -29,6 +28,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.support.v7.preference.SwitchPreferenceCompat;
 
 /**
  * Settings activity related to tasks
@@ -66,10 +66,10 @@ public class TaskSettingsActivity extends BasePreferenceActivity implements
         mPrefs = getAppComponent().prefsFactory();
         mAddLogPresenter = mSettingsComponent.addLogPresenter();
 
-        mTaskCheck = (SwitchPreferenceCompat) getPreferenceScreen().findPreference(TASK_CHECK);
-        mEnableMessageResultsAPI = (SwitchPreferenceCompat) getPreferenceScreen().findPreference(
-                MESSAGE_RESULTS_API);
-        mTaskCheckTimes = (TimePreference) getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
+        //mTaskCheck = (SwitchPreferenceCompat) getPreferenceScreen().findPreference(TASK_CHECK);
+        // mEnableMessageResultsAPI = (SwitchPreferenceCompat) getPreferenceScreen().findPreference(
+        //       MESSAGE_RESULTS_API);
+        //mTaskCheckTimes = (TimePreference) getPreferenceScreen().findPreference(TASK_CHECK_TIMES);
         mTaskFrequencyList = (ListPreference) getPreferenceScreen().findPreference(
                 TASK_FREQUENCY_LIST);
         savePreferences();

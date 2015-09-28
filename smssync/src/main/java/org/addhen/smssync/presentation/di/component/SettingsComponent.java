@@ -23,6 +23,7 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import org.addhen.smssync.presentation.di.module.SettingsModule;
 import org.addhen.smssync.presentation.presenter.AddLogPresenter;
 import org.addhen.smssync.presentation.view.ui.activity.BasePreferenceActivity;
+import org.addhen.smssync.presentation.view.ui.fragment.BasePreferenceFragmentCompat;
 
 import dagger.Component;
 
@@ -35,6 +36,8 @@ import dagger.Component;
 public interface SettingsComponent extends AppActivityComponent {
 
     void inject(BasePreferenceActivity generalSettingsActivity);
+
+    void inject(BasePreferenceFragmentCompat basePreferenceFragmentCompat);
 
     AddLogPresenter addLogPresenter();
 }

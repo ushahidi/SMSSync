@@ -15,22 +15,27 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.di.component;
+package org.addhen.smssync.presentation.view.ui.fragment;
 
-import com.addhen.android.raiburari.presentation.di.module.ActivityModule;
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
+import org.addhen.smssync.R;
 
-import org.addhen.smssync.presentation.di.module.MessageModule;
-import org.addhen.smssync.presentation.service.SmsReceiverService;
-
-import dagger.Component;
+import android.os.Bundle;
 
 /**
+ * Settings Fragment.
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@ActivityScope
-@Component(dependencies = AppComponent.class, modules = {ActivityModule.class, MessageModule.class})
-public interface SmsServiceComponent extends AppServiceComponent {
+public class SettingsFragment extends BasePreferenceFragmentCompat {
 
-    void inject(SmsReceiverService smsReceiverService);
+    public static final String SETTINGS_FRAGMENT_TAG = "settings_fragment_tag";
+
+    public SettingsFragment() {
+        // Do nothing
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle bundle, String key) {
+        setPreferencesFromResource(R.xml.preference_headers_legacy, key);
+    }
 }

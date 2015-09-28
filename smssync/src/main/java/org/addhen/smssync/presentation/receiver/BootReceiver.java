@@ -24,7 +24,7 @@ import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.service.CheckTaskService;
 import org.addhen.smssync.presentation.service.Scheduler;
 import org.addhen.smssync.presentation.service.ServiceConstants;
-import org.addhen.smssync.presentation.service.ServiceRunner;
+import org.addhen.smssync.presentation.service.ServiceControl;
 import org.addhen.smssync.presentation.service.SyncPendingMessagesService;
 import org.addhen.smssync.presentation.task.SyncType;
 import org.addhen.smssync.presentation.util.TimeFrequencyUtil;
@@ -101,7 +101,7 @@ public class BootReceiver extends BroadcastReceiver {
                 }
 
                 // Start the service message results api service
-                new ServiceRunner(context, prefsFactory, fileManager).runMessageResultsService();
+                new ServiceControl(prefsFactory, context, fileManager).runMessageResultsService();
             }
         }
     }

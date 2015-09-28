@@ -42,8 +42,6 @@ ext {
     okHttpVersion = '2.5.0'
     twitter4jCoreVersion = '4.0.4'
     nineOldAndroidsVersion = '2.4.0'
-    preferencefragmentVersion = '0.1.1'
-    preferenceSwitchCompatVersion = '1.0.0'
     bottomsheetVersion = '1.1.1'
     qrCodeReaderViewVersion = '1.0.0'
     supportPreferenceVersion = '23.0.0'
@@ -58,25 +56,23 @@ ext {
     truthVersion = '0.26'
 
     appDependencies = [
-            daggerCompiler        : "com.google.dagger:dagger-compiler:${daggerVersion}",
-            dagger                : "com.google.dagger:dagger:${daggerVersion}",
-            javaxAnnotation       : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
-            raiburari             : "com.addhen.android:raiburari:${raiburariVersion}",
-            cupboard              : "nl.qbusict:cupboard:${cupboardVersion}",
-            qrCodeReaderView      : "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
-            otto                  : "com.squareup:otto:${ottoVersion}",
-            wakeful               : "com.commonsware.cwac:wakeful:${wakefulVersion}",
-            okHttp                : "com.squareup.okhttp:okhttp:${okHttpVersion}",
-            twitter4jCore         : "org.twitter4j:twitter4j-core:${twitter4jCoreVersion}",
-            nineOldAndroids       : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
-            preferencefragment    : "com.github.machinarius:preferencefragment:${preferencefragmentVersion}",
-            preferenceSwitchCompat: "com.infstory:switch-preference-compat:${preferenceSwitchCompatVersion}",
-            bottomSheet           : "com.cocosw:bottomsheet:${bottomsheetVersion}",
-            qrCodeReaderView      : "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
-            rxAndroid             : "io.reactivex:rxandroid:${rxAndroidVersion}",
-            rxLifecycle           : "com.trello:rxlifecycle:${rxLifecycleVersion}",
-            rxLifecycleComponent  : "com.trello:rxlifecycle-components:${rxLifecycleComponentsVersion}",
-            supportPreference     : "com.android.support:preference-v7:${supportPreferenceVersion}",
+            daggerCompiler      : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger              : "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation     : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            raiburari           : "com.addhen.android:raiburari:${raiburariVersion}",
+            cupboard            : "nl.qbusict:cupboard:${cupboardVersion}",
+            qrCodeReaderView    : "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
+            otto                : "com.squareup:otto:${ottoVersion}",
+            wakeful             : "com.commonsware.cwac:wakeful:${wakefulVersion}",
+            okHttp              : "com.squareup.okhttp:okhttp:${okHttpVersion}",
+            twitter4jCore       : "org.twitter4j:twitter4j-core:${twitter4jCoreVersion}",
+            nineOldAndroids     : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
+            bottomSheet         : "com.cocosw:bottomsheet:${bottomsheetVersion}",
+            qrCodeReaderView    : "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
+            rxAndroid           : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            rxLifecycle         : "com.trello:rxlifecycle:${rxLifecycleVersion}",
+            rxLifecycleComponent: "com.trello:rxlifecycle-components:${rxLifecycleComponentsVersion}",
+            supportPreference   : "com.android.support:preference-v7:${supportPreferenceVersion}",
 
     ]
 

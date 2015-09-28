@@ -15,11 +15,11 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
             android:key="enable_reply_frm_server_preference"
             android:summary="@string/chk_reply_frm_server_hint"
             android:title="@string/chk_enable_reply_frm_server"/>
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
             android:key="enable_reply_preference"
             android:summary="@string/chk_reply_hint"
             android:title="@string/chk_enable_reply"/>

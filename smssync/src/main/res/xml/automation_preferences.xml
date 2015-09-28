@@ -21,12 +21,12 @@
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
             android:key="auto_delete_preference"
             android:summary="@string/chk_auto_delete_hint"
             android:title="@string/chk_enable_auto_delete"/>
 
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
             android:key="auto_delete_pending_messages_preference"
             android:summary="@string/chk_enable_auto_delete_pending_messages_hint"
             android:title="@string/chk_enable_auto_delete_pending_messages"/>
@@ -38,17 +38,10 @@
             android:summary="@string/select_number_of_retries_hint"
             android:title="@string/select_number_of_retries"/>
 
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
             android:key="auto_sync_preference"
             android:summary="@string/chk_enable_auto_sync_hint"
             android:title="@string/chk_enable_auto_sync"/>
-    <ListPreference
-            android:dependency="auto_sync_preference"
-            android:entries="@array/sync_frequencies"
-            android:entryValues="@array/sync_frequency_values"
-            android:key="auto_sync_frequency_list_preference"
-            android:summary="@string/select_sync_frequency_hint"
-            android:title="@string/select_sync_frequency"/>
     <org.addhen.smssync.presentation.view.ui.widget.TimePreference
             android:dependency="auto_sync_preference"
             android:dialogTitle="@string/txt_auto_sync_delay"

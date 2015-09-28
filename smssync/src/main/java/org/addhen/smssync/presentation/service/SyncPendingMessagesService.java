@@ -36,6 +36,8 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import static org.addhen.smssync.presentation.task.SyncType.MANUAL;
 import static org.addhen.smssync.presentation.task.state.SyncState.ERROR;
 import static org.addhen.smssync.presentation.task.state.SyncState.INITIAL;
@@ -54,7 +56,8 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
 
     private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
-    private FileManager mFileManager;
+    @Inject
+    FileManager mFileManager;
 
     public SyncPendingMessagesService() {
         super(CLASS_TAG);
@@ -68,7 +71,7 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
     public void onCreate() {
         super.onCreate();
         mService = this;
-        mFileManager = App.getAppComponent().fileManager();
+        getComponent().inject(this);
     }
 
     @Override

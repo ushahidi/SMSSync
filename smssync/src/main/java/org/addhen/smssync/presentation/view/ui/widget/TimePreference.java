@@ -21,12 +21,15 @@ package org.addhen.smssync.presentation.view.ui.widget;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.util.TimeFrequencyUtil;
+import org.addhen.smssync.presentation.view.ui.fragment.AutomationSettingsFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.GeneralSettingsFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.TaskSettingsFragment;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.preference.DialogPreference;
+import android.support.v7.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TimePicker;
 
 /**
@@ -65,36 +68,8 @@ public class TimePreference extends DialogPreference {
     }
 
     @Override
-    protected View onCreateDialogView() {
-        picker = new TimePicker(getContext());
-
-        return (picker);
-    }
-
-    @Override
-    protected void onBindDialogView(View v) {
-        super.onBindDialogView(v);
-        picker.setIs24HourView(true);
-        picker.setCurrentHour(lastHour);
-        picker.setCurrentMinute(lastMinute);
-    }
-
-    @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
         return a.getString(index);
-    }
-
-    @Override
-    protected void onDialogClosed(boolean positiveResult) {
-        super.onDialogClosed(positiveResult);
-        if (positiveResult) {
-            lastHour = picker.getCurrentHour();
-            lastMinute = picker.getCurrentMinute();
-            if (callChangeListener(getTimeValueAsString())) {
-                persistString(getTimeValueAsString());
-                saveTimeFrequency();
-            }
-        }
     }
 
     @Override
@@ -140,23 +115,27 @@ public class TimePreference extends DialogPreference {
         return sb.append(time).toString();
     }
 
-    private void saveTimeFrequency() {
-        /*if (Settings.TASK_CHECK_TIMES.equals(this.getKey())) {
+    public void persistStringValue(String value) {
+        persistString(value);
+    }
+
+    public void saveTimeFrequency() {
+        if (TaskSettingsFragment.TASK_CHECK_TIMES.equals(this.getKey())) {
             prefs.taskCheckTime().set(getTimeValueAsString());
-        } else if (Settings.AUTO_SYNC_TIMES.equals(this.getKey())) {
+        } else if (AutomationSettingsFragment.AUTO_SYNC_TIMES.equals(this.getKey())) {
             prefs.autoTime().set(getTimeValueAsString());
-        }*/
+        }
     }
 
     private String loadTimeFrequency() {
         String time = null;
-        /*if (Settings.TASK_CHECK_TIMES.equals(this.getKey())) {
+        if (TaskSettingsFragment.TASK_CHECK_TIMES.equals(this.getKey())) {
             time = prefs.taskCheckTime().get();
-        } else if (Settings.AUTO_SYNC_TIMES.equals(this.getKey())) {
+        } else if (AutomationSettingsFragment.AUTO_SYNC_TIMES.equals(this.getKey())) {
             time = prefs.autoTime().get();
         } else {
             time = TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY;
-        }*/
+        }
 
         Logger.log("TimePreferences", "Save time " + time);
         return time;

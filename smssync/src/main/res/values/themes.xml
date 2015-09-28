@@ -28,5 +28,6 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="actionModeBackground">@android:color/background_dark</item>
         <item name="android:actionModeStyle">@style/AppTheme.SmsSync.ActionMode</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 </resources>

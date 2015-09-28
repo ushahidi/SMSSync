@@ -51,6 +51,7 @@ public class DeleteMessageService extends BaseWakefulIntentService implements De
 
     public void onCreate() {
         super.onCreate();
+        getComponent().inject(this);
     }
 
 
