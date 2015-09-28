@@ -17,12 +17,8 @@
 
 package org.addhen.smssync.presentation.di.module;
 
-import org.addhen.smssync.data.repository.InternalFilterDataRepository;
-import org.addhen.smssync.data.repository.InternalLogDataRepository;
 import org.addhen.smssync.data.repository.InternalMessageDataRepository;
-import org.addhen.smssync.data.repository.InternalWebServiceDataRepository;
-import org.addhen.smssync.domain.repository.FilterRepository;
-import org.addhen.smssync.domain.repository.LogRepository;
+import org.addhen.smssync.data.repository.WebServiceDataRepository;
 import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.domain.repository.WebServiceRepository;
 
@@ -47,21 +43,7 @@ public class InternalAppModule {
     @Provides
     @Singleton
     WebServiceRepository providesInternalWebServiceRepository(
-            InternalWebServiceDataRepository webServiceRepository) {
+            WebServiceDataRepository webServiceRepository) {
         return webServiceRepository;
-    }
-
-    @Provides
-    @Singleton
-    LogRepository providesInternalLogRepository(
-            InternalLogDataRepository logRepository) {
-        return logRepository;
-    }
-
-    @Provides
-    @Singleton
-    FilterRepository providesInternalFilterRepository(
-            InternalFilterDataRepository filterRepository) {
-        return filterRepository;
     }
 }
