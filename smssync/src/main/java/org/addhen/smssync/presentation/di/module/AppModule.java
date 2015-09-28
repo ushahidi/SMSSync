@@ -27,15 +27,11 @@ import org.addhen.smssync.data.message.ProcessMessageResult;
 import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.MessageHttpClient;
-import org.addhen.smssync.data.repository.FilterDataRepository;
-import org.addhen.smssync.data.repository.LogDataRepository;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.data.twitter.TwitterClient;
-import org.addhen.smssync.domain.repository.FilterRepository;
-import org.addhen.smssync.domain.repository.LogRepository;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
@@ -61,19 +57,6 @@ public class AppModule {
 
     public AppModule(App application) {
         mApp = application;
-    }
-
-    @Provides
-    @Singleton
-    FilterRepository provideFilterRepository(
-            FilterDataRepository filterDataRepository) {
-        return filterDataRepository;
-    }
-
-    @Provides
-    @Singleton
-    LogRepository provideLogRepository(LogDataRepository logDataRepository) {
-        return logDataRepository;
     }
 
     @Provides
