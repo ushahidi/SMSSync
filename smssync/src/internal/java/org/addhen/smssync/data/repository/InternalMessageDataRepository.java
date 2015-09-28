@@ -31,6 +31,7 @@ import org.addhen.smssync.smslib.model.SmsMessage;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,35 +57,96 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     private PostMessage mProcessMessage;
 
+    private Gson mGson;
+
     @Inject
     public InternalMessageDataRepository(Context context, MessageDataMapper messageDataMapper,
             PostMessage processMessage) {
         mContext = context;
         mMessageDataMapper = messageDataMapper;
         mProcessMessage = processMessage;
+        mGson = getGson();
     }
 
     @Override
     public Observable<Integer> deleteByUuid(String uuid) {
+        return Observable.defer(() -> {
+            return Observable.just(1);
+        });
+    }
+
+    @Override
+    public Observable<Integer> deleteAll() {
         return Observable.defer(() -> {
             return Observable.just(10);
         });
     }
 
     @Override
-    public Observable<Integer> deleteAll() {
-        return null;
-    }
-
-    @Override
     public Observable<List<MessageEntity>> fetchByType(MessageEntity.Type type) {
-        return null;
+        if (type.equals(MessageEntity.Type.PENDING)) {
+            return Observable.defer(() -> {
+                Type messageList = new TypeToken<List<Message>>() {
+                }.getType();
+                String json = loadPendingMessages();
+                List<Message> messageEntityList = null;
+                try {
+                    messageEntityList = mGson.fromJson(json, messageList);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return Observable.error(e);
+                }
+                List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
+                return Observable.just(messages);
+            });
+        }
+
+        return Observable.defer(() -> {
+            Type messageList = new TypeToken<List<Message>>() {
+            }.getType();
+            String json = loadSentMessages();
+            List<Message> messageEntityList = null;
+            try {
+                messageEntityList = mGson.fromJson(json, messageList);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Observable.error(e);
+            }
+            List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
+            return Observable.just(messages);
+        });
     }
 
     @Override
     public Observable<List<MessageEntity>> fetchByStatus(MessageEntity.Status status) {
+        if (status.equals(MessageEntity.Status.SENT)) {
+            return Observable.defer(() -> {
+                Type messageList = new TypeToken<List<Message>>() {
+                }.getType();
+                String json = loadSentMessages();
+                List<Message> messageEntityList = null;
+                try {
+                    messageEntityList = mGson.fromJson(json, messageList);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return Observable.error(e);
+                }
+                List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
+                return Observable.just(messages);
+            });
+        }
+
         return Observable.defer(() -> {
-            List<Message> messageEntityList = new ArrayList<>();
+            Type messageList = new TypeToken<List<Message>>() {
+            }.getType();
+            String json = loadFailedMessages();
+            List<Message> messageEntityList = null;
+            try {
+                messageEntityList = mGson.fromJson(json, messageList);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Observable.error(e);
+            }
             List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
             return Observable.just(messages);
         });
@@ -114,60 +176,94 @@ public class InternalMessageDataRepository implements MessageRepository {
 
     @Override
     public Observable<List<MessageEntity>> getEntities() {
-        return Observable.create(subscriber -> {
-            JsonDeserializer<Date> date = (json, typeOfT, context) ->
-                    json == null ? null : new Date(json.getAsLong());
-            final Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, date)
-                    .setDateFormat("h:mm a").create();
+        return Observable.defer(() -> {
             Type messageList = new TypeToken<List<Message>>() {
             }.getType();
-            String json = loadJSONFromAsset();
+            String json = loadMessages();
             List<Message> messageEntityList = null;
             try {
-                messageEntityList = gson.fromJson(json, messageList);
+                messageEntityList = mGson.fromJson(json, messageList);
             } catch (Exception e) {
                 e.printStackTrace();
-                subscriber.onError(e);
+                return Observable.error(e);
             }
             List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
-            subscriber.onNext(messages);
-            subscriber.onCompleted();
+            return Observable.just(messages);
         });
+    }
+
+    @NonNull
+    private Gson getGson() {
+        JsonDeserializer<Date> date = (json, typeOfT, context) ->
+                json == null ? null : new Date(json.getAsLong());
+        return new GsonBuilder().registerTypeAdapter(Date.class, date)
+                .setDateFormat("h:mm a").create();
     }
 
     @Override
     public Observable<MessageEntity> getEntity(Long aLong) {
-        return null;
+        return Observable.defer(() -> {
+            Type typeMessage = new TypeToken<Message>() {
+            }.getType();
+            String json = loadMessage();
+            Message message = new Message();
+            try {
+                message = mGson.fromJson(json, typeMessage);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Observable.error(e);
+            }
+            return Observable.just(mMessageDataMapper.map(message));
+        });
     }
 
     @Override
     public Observable<Long> addEntity(MessageEntity messageEntity) {
-        return null;
+        return Observable.defer(() -> {
+            return Observable.just(1l);
+        });
     }
 
     @Override
     public Observable<Long> updateEntity(MessageEntity messageEntity) {
-        return null;
+        return Observable.defer(() -> {
+            return Observable.just(1l);
+        });
     }
 
     @Override
     public Observable<Long> deleteEntity(Long aLong) {
-        return null;
+        return Observable.defer(() -> {
+            return Observable.just(1l);
+        });
     }
 
-    private String loadJSONFromAsset() {
-        String json;
-        try {
-            InputStream is = mContext.getAssets().open("json/messages.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
+    private String loadFailedMessages() {
+        return loadJSONFromAsset("failed_messages.json");
     }
+
+    private String loadSentMessages() {
+        return loadJSONFromAsset("sent_messages.json");
+    }
+
+    private String loadPendingMessages() {
+        return loadJSONFromAsset("pending_messages.json");
+    }
+
+    private String loadTaskMessages() {
+        return loadJSONFromAsset("task_messages.json");
+    }
+
+    private String loadMessage() {
+        return loadJSONFromAsset("message.json");
+    }
+
+    private String loadMessages() {
+        return loadJSONFromAsset("messages.json");
+    }
+
+    private String loadJSONFromAsset(final String jsonFileName) {
+        return DataHelper.loadJSONFromAsset(mContext, "messages/" + jsonFileName);
+    }
+
 }

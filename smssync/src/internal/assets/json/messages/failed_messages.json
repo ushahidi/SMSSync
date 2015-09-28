@@ -22,7 +22,7 @@
     "delivered_result_code": 0,
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
-    "status": "sent",
+    "status": "failed",
     "type": "task"
   },
   {
@@ -36,7 +36,7 @@
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
     "status": "failed",
-    "type": "pending"
+    "type": "task"
   },
   {
     "to": "+000-000-0000",
@@ -48,8 +48,8 @@
     "delivered_result_code": 0,
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
-    "status": "sent",
-    "type": "pending"
+    "status": "failed",
+    "type": "task"
   },
   {
     "to": "+000-000-0000",
@@ -61,7 +61,7 @@
     "delivered_result_code": 0,
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
-    "status": "sent",
+    "status": "failed",
     "type": "pending"
   },
   {
@@ -87,7 +87,7 @@
     "delivered_result_code": 0,
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
-    "status": "sent",
+    "status": "failed",
     "type": "pending"
   },
   {
@@ -100,7 +100,7 @@
     "delivered_result_code": 0,
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
-    "status": "sent",
+    "status": "failed",
     "type": "pending"
   },
   {
@@ -113,8 +113,8 @@
     "delivered_result_code": 0,
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
-    "status": "sent",
-    "type": "pending"
+    "status": "failed",
+    "type": "task"
   },
   {
     "to": "+000-000-0000",
@@ -126,7 +126,7 @@
     "delivered_result_code": 0,
     "delivered_result_message": "SMS Delivered",
     "retries": 0,
-    "status": "sent",
+    "status": "failed",
     "type": "pending"
   }
 ]
