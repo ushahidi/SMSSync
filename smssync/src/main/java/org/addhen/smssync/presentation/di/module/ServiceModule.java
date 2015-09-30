@@ -19,7 +19,9 @@ package org.addhen.smssync.presentation.di.module;
 
 import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
+import org.addhen.smssync.domain.usecase.message.DeleteMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.UpdateMessageUsecase;
+import org.addhen.smssync.presentation.di.qualifier.ServiceScope;
 
 import android.app.Service;
 
@@ -44,15 +46,22 @@ public class ServiceModule {
      * Expose the activity to dependents in the graph.
      */
     @Provides
-    @ActivityScope
+    @ServiceScope
     Service service() {
         return mService;
     }
 
     @Provides
-    @ActivityScope
+    @ServiceScope
     @Named("messageUpdate")
     UpdateMessageUsecase provideUpdateMessageUsecase(UpdateMessageUsecase updateMessageUsecase) {
         return updateMessageUsecase;
+    }
+
+    @Provides
+    @ServiceScope
+    @Named("messageDelete")
+    DeleteMessageUsecase providesDeleteMessageUsecase(DeleteMessageUsecase deleteMessageUsecase) {
+        return deleteMessageUsecase;
     }
 }

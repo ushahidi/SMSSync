@@ -28,6 +28,8 @@ import android.os.Bundle;
  */
 public class AutomationSettingsActivity extends BasePreferenceActivity {
 
+    public static final String AUTO_SYNC_TIMES = "auto_sync_times";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

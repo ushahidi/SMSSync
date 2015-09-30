@@ -29,12 +29,12 @@
                 android:summary="@string/edittxt_unique_id_pref_summary"
                 android:title="@string/edittxt_unique_id_pref"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="auto_delete_preference"
                 android:summary="@string/chk_auto_delete_hint"
                 android:title="@string/chk_enable_auto_delete"/>
 
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="auto_delete_pending_messages_preference"
                 android:summary="@string/chk_enable_auto_delete_pending_messages_hint"
                 android:title="@string/chk_enable_auto_delete_pending_messages"/>
@@ -45,7 +45,7 @@
                 android:key="auto_delete_pending_messages_retries_preference"
                 android:summary="@string/select_number_of_retries_hint"
                 android:title="@string/select_number_of_retries"/>
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="enable_sms_report_delivery_preference"
                 android:summary="@string/chk_sms_delivery_report_hint"
                 android:title="@string/chk_enable_sms_delivery_report"/>
@@ -58,11 +58,11 @@
                 android:title="@string/edittxt_alert_phone_pref"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/reply_settings">
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="enable_reply_frm_server_preference"
                 android:summary="@string/chk_reply_frm_server_hint"
                 android:title="@string/chk_enable_reply_frm_server"/>
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="enable_reply_preference"
                 android:summary="@string/chk_reply_hint"
                 android:title="@string/chk_enable_reply"/>
@@ -75,7 +75,7 @@
                 android:title="@string/edittxt_reply_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/auto_sync_settings">
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="auto_sync_preference"
                 android:summary="@string/chk_enable_auto_sync_hint"
                 android:title="@string/chk_enable_auto_sync"/>
@@ -87,7 +87,7 @@
                 android:title="@string/txt_auto_sync_delay"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/task_check_settings">
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="task_check_preference"
                 android:summary="@string/chk_enable_task_check_hint"
                 android:title="@string/chk_enable_task_check"/>
@@ -99,7 +99,7 @@
                 android:title="@string/txt_task_check_delay"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/message_results_api_setting">
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="message_results_api_preference"
                 android:summary="@string/chk_enable_message_results_api_hint"
                 android:title="@string/chk_enable_message_results_api"/>
@@ -107,7 +107,7 @@
     <!--
     TODO: Test this properly and enable it in future release
     <PreferenceCategory android:title="@string/sms_portals_settings" >
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
                 android:key="enable_sms_portals"
                 android:summary="@string/chk_enable_sms_portals_hint"
                 android:title="@string/chk_enable_sms_portals" />

@@ -15,25 +15,19 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.ui.activity;
+package org.addhen.smssync.presentation.di.qualifier;
 
-import com.cgollner.unclouded.preferences.SwitchPreferenceCompat;
+import java.lang.annotation.Retention;
 
-import org.addhen.smssync.R;
+import javax.inject.Scope;
 
-import android.os.Bundle;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Settings related to messages
- *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class MessageSettingsActivity extends BasePreferenceActivity {
-    private SwitchPreferenceCompat mEnableReplyFrmServer;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.messages_preferences);
-        setToolbarTitle(R.string.title_bar_text);
-    }
+@Scope
+@Retention(RUNTIME)
+public @interface ServiceScope {
+
 }

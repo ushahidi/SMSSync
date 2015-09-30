@@ -32,9 +32,12 @@
             android:key="unique_name_preference"
             android:summary="@string/edittxt_unique_name_pref_summary"
             android:title="@string/edittxt_unique_name_pref"/>
-    <com.cgollner.unclouded.preferences.SwitchPreferenceCompat
+    <android.support.v7.preference.SwitchPreferenceCompat
+            android:id="@+id/check_enable_sms_delivery_report"
             android:key="enable_sms_report_delivery_preference"
             android:summary="@string/chk_sms_delivery_report_hint"
+            android:summaryOff="@string/chk_sms_delivery_report_hint"
+            android:summaryOn="@string/chk_sms_delivery_report_hint"
             android:title="@string/chk_enable_sms_delivery_report"
             android:defaultValue="false"/>
 

@@ -232,39 +232,6 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".presentation.view.ui.activity.SettingsActivity"/>
         </activity>
-        <activity
-                android:name=".presentation.view.ui.activity.MessageSettingsActivity"
-                android:label="@string/action_settings"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:parentActivityName=".presentation.view.ui.activity.SettingsActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".presentation.view.ui.activity.SettingsActivity"/>
-        </activity>
-        <activity
-                android:name=".presentation.view.ui.activity.GeneralSettingsActivity"
-                android:label="@string/action_settings"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:parentActivityName=".presentation.view.ui.activity.SettingsActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".presentation.view.ui.activity.SettingsActivity"/>
-        </activity>
-        <activity
-                android:name=".presentation.view.ui.activity.AboutSettingsActivity"
-                android:label="@string/action_settings"
-                android:exported="true"
-                android:launchMode="singleTask"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:parentActivityName=".presentation.view.ui.activity.SettingsActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".presentation.view.ui.activity.SettingsActivity"/>
-        </activity>
         <!-- Services -->
         <service android:name="org.addhen.smssync.presentation.service.SmsReceiverService"/>
         <service android:name="org.addhen.smssync.presentation.service.AutoSyncScheduledService"/>

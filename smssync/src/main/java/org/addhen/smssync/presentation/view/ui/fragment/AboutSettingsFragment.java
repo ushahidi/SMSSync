@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.view.ui.activity;
+package org.addhen.smssync.presentation.view.ui.fragment;
 
 import org.addhen.smssync.R;
 
@@ -23,12 +23,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.Preference;
+import android.support.v7.preference.Preference;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class AboutSettingsActivity extends BasePreferenceActivity {
+public class AboutSettingsFragment extends BasePreferenceFragmentCompat {
+
+    public static String ABOUT_SETTINGS_FRAGMENT = "about_settings_fragment";
 
     private static final String KEY_ABOUT = "about_preference";
 
@@ -51,11 +53,13 @@ public class AboutSettingsActivity extends BasePreferenceActivity {
 
     private Preference mAboutPreference;
 
+    public AboutSettingsFragment() {
+
+    }
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.about_preferences);
-        setToolbarTitle(R.string.about);
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
         // Get app's version name
         getVersionNumber();
         mAboutPreference = findPreference(KEY_ABOUT);
@@ -65,6 +69,11 @@ public class AboutSettingsActivity extends BasePreferenceActivity {
         launchTransifex();
         launchForums();
         launchGooglePlus();
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle bundle, String key) {
+        addPreferencesFromResource(R.xml.about_preferences);
     }
 
     private void launchSMSsyncWebsite() {
@@ -104,8 +113,8 @@ public class AboutSettingsActivity extends BasePreferenceActivity {
         mVersionLabel.append("v");
         String versionName = null;
         try {
-            versionName = getPackageManager().getPackageInfo(
-                    this.getPackageName(), 0).versionName;
+            versionName = getContext().getPackageManager()
+                    .getPackageInfo(getContext().getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -113,9 +122,7 @@ public class AboutSettingsActivity extends BasePreferenceActivity {
     }
 
     private void openUrl(String url) {
-        final Intent i = new Intent(
-                android.content.Intent.ACTION_VIEW, Uri
-                .parse(url));
+        final Intent i = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(i);
     }
 }

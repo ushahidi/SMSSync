@@ -101,6 +101,16 @@ public class AppModule {
 
     @Provides
     @Singleton
+    ProcessMessageResult provideProcessMessageResult(Context context, AppHttpClient appHttpClient,
+            FileManager fileManager, WebServiceDataSourceFactory webServiceDataSourceFactory,
+            MessageDataSourceFactory messageDataSourceFactory) {
+        return new ProcessMessageResult(context, appHttpClient, fileManager,
+                webServiceDataSourceFactory.createDatabaseDataSource(),
+                messageDataSourceFactory.createMessageDatabaseSource());
+    }
+
+    @Provides
+    @Singleton
     PostMessage provideProcessMessage(Context context, PrefsFactory prefsFactory,
             MessageHttpClient messageHttpClient,
             MessageDataSourceFactory messageDataSourceFactory,

@@ -275,7 +275,7 @@ public class TweetMessage extends ProcessMessage {
 
         public Builder setMessageDataSourceFactory(
                 MessageDataSourceFactory messageDataSourceFactory) {
-            mMessageDataSourceFactory = mMessageDataSourceFactory;
+            mMessageDataSourceFactory = messageDataSourceFactory;
             return this;
         }
 
