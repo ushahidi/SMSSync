@@ -20,7 +20,6 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.listener.RecyclerViewItemTouchListenerAdapter;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
-import com.addhen.android.raiburari.presentation.ui.widget.DividerItemDecoration;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
@@ -33,6 +32,7 @@ import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePres
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.adapter.WebServiceAdapter;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
+import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
 import org.addhen.smssync.presentation.view.webservice.DeleteWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.ListWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
@@ -213,7 +213,7 @@ public class ListWebServiceFragment
 
     private void initRecyclerView() {
         mWebServiceAdapter = new WebServiceAdapter();
-        mWebServiceAdapter.setOnItemCheckedListener((position, status, checkTextView) -> {
+        mWebServiceAdapter.setOnItemCheckedListener((position, status) -> {
             final WebServiceModel webServiceModel = mWebServiceAdapter.getItem(position);
             if (status) {
                 if (mWebServiceAdapter.getItemCount() == 1 && mPrefs.serviceEnabled().get()) {
@@ -221,12 +221,10 @@ public class ListWebServiceFragment
                 } else {
                     webServiceModel.setStatus(WebServiceModel.Status.DISABLED);
                     mUpdateWebServicePresenter.updateWebService(webServiceModel);
-                    checkTextView.setChecked(false);
                 }
             } else {
                 webServiceModel.setStatus(WebServiceModel.Status.ENABLED);
                 mUpdateWebServicePresenter.updateWebService(webServiceModel);
-                checkTextView.setChecked(true);
             }
         });
         if (mFab != null) {
@@ -239,7 +237,7 @@ public class ListWebServiceFragment
         mWebServiceRecyclerView.setHasFixedSize(true);
         mWebServiceRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mWebServiceRecyclerView.addItemDecoration(
-                new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
+                new DividerItemDecoration(getActivity(), null));
 
         RecyclerViewItemTouchListenerAdapter recyclerViewItemTouchListenerAdapter
                 = new RecyclerViewItemTouchListenerAdapter(mWebServiceRecyclerView.recyclerView,

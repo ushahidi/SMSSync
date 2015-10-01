@@ -25,15 +25,15 @@ import org.addhen.smssync.presentation.di.component.IntegrationComponent;
 import org.addhen.smssync.presentation.presenter.integration.IntegrationPresenter;
 import org.addhen.smssync.presentation.receiver.SmsReceiver;
 import org.addhen.smssync.presentation.view.integration.IntegrationView;
-import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.CheckBox;
+import android.support.v7.widget.SwitchCompat;
 
 import javax.inject.Inject;
 
@@ -47,7 +47,7 @@ import butterknife.OnClick;
 public class IntegrationFragment extends BaseFragment implements IntegrationView {
 
     @Bind(R.id.start_service_checkbox)
-    CheckBox mStartServiceCheckBox;
+    SwitchCompat mStartServiceCheckBox;
 
     @Inject
     IntegrationPresenter mIntegrationPresenter;
@@ -55,21 +55,23 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
     @Inject
     Launcher mLauncher;
 
-    private static IntegrationFragment mIntegrationFragment;
-
     public IntegrationFragment() {
         super(R.layout.fragment_integration, 0);
     }
 
     public static IntegrationFragment newInstance() {
-        if (mIntegrationFragment == null) {
-            mIntegrationFragment = new IntegrationFragment();
-        }
-        return mIntegrationFragment;
+        return new IntegrationFragment();
     }
 
     public void onResume() {
         super.onResume();
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        if (mIntegrationPresenter != null) {
+            mIntegrationPresenter.destroy();
+        }
     }
 
     @OnClick(R.id.integration_twitter)
@@ -141,11 +143,7 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
         mIntegrationPresenter.startSyncServices();
     }
 
-    public CheckBox getStartServiceCheckBox() {
-        return mStartServiceCheckBox;
-    }
-
     protected <C> C getIntegrationComponent(Class<C> componentType) {
-        return componentType.cast(((IntegrationActivity) getActivity()).getComponent());
+        return componentType.cast(((MainActivity) getActivity()).getIntegrationComponent());
     }
 }

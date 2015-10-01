@@ -53,8 +53,6 @@ import butterknife.OnClick;
  */
 public class AddKeywordFragment extends BaseFragment implements UpdateWebServiceKeywordsView {
 
-    private static AddKeywordFragment mAddKeywordFragment;
-
     private static final String ARGUMENT_KEY_WEBSERVICE_MODE
             = "org.addhen.smssync.ARGUMENT_WEBSERVICE_MODEL";
 
@@ -79,13 +77,11 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
     }
 
     public static AddKeywordFragment newInstance(@NonNull WebServiceModel webServiceModel) {
-        if (mAddKeywordFragment == null) {
-            mAddKeywordFragment = new AddKeywordFragment();
-        }
+        AddKeywordFragment addKeywordFragment = new AddKeywordFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARGUMENT_KEY_WEBSERVICE_MODE, webServiceModel);
-        mAddKeywordFragment.setArguments(bundle);
-        return mAddKeywordFragment;
+        addKeywordFragment.setArguments(bundle);
+        return addKeywordFragment;
     }
 
     @Override

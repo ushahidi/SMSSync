@@ -22,8 +22,8 @@ import com.squareup.otto.Bus;
 import com.squareup.otto.ThreadEnforcer;
 
 import org.addhen.smssync.BuildConfig;
-import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
+import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 
 /**

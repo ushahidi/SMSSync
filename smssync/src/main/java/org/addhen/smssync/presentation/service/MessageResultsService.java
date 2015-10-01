@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.presentation.service;
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.message.ProcessMessageResult;
 
@@ -48,9 +49,8 @@ public class MessageResultsService extends BaseWakefulIntentService {
 
     @Override
     public void executeTask(Intent intent) {
-        log("checking scheduled message result services");
-        // TODO: Move the hard coded string to a string resource
-        mFileManager.appendAndClose("Checking scheduled message result services");
+        log(getString(R.string.checking_scheduled_message));
+        mFileManager.appendAndClose(getString(R.string.checking_scheduled_message));
         mProcessMessageResult.processMessageResult();
     }
 }

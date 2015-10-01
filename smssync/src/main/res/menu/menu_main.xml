@@ -23,7 +23,7 @@
             android:id="@+id/menu_search_message"
             android:icon="@drawable/ic_search_white_24dp"
             android:title="@string/search"
-            android:orderInCategory="1"
+            android:orderInCategory="0"
             app:actionViewClass="android.support.v7.widget.SearchView"
             app:showAsAction="collapseActionView|always"/>
     <item

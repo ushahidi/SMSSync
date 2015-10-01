@@ -21,48 +21,38 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/view_spacing_normal"
                 android:background="?attr/selectableItemBackground"
-                android:paddingStart="@dimen/view_spacing_large"
-                android:paddingEnd="@dimen/view_spacing_large"
-                android:paddingLeft="@dimen/view_spacing_large"
                 android:paddingRight="@dimen/view_spacing_large"
-                android:paddingBottom="@dimen/view_spacing_large"
-                android:clickable="true">
+                android:paddingEnd="@dimen/view_spacing_large"
+                android:clickable="false">
 
-    <CheckedTextView
+    <android.support.v7.widget.SwitchCompat
             android:id="@+id/web_service_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:checkMark="?android:attr/listChoiceIndicatorMultiple"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:layout_alignParentTop="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:divider="?android:dividerHorizontal"
-            android:showDividers="end"
-            android:layout_alignTop="@+id/web_service_selected"
-            android:layout_toRightOf="@+id/web_service_selected"
-            android:layout_toEndOf="@+id/web_service_selected">
 
-        <com.addhen.android.raiburari.presentation.ui.widget.CapitalizedTextView
-                android:id="@+id/web_service_title"
-                style="@style/TextView.Title"
-                android:text="Demo deployment"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:paddingRight="@dimen/view_spacing_large"/>
+    <com.addhen.android.raiburari.presentation.ui.widget.CapitalizedTextView
+            android:id="@+id/web_service_title"
+            style="@style/TextView.Title"
+            android:text="Demo deployment"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:layout_toLeftOf="@+id/web_service_selected"
+            android:layout_toStartOf="@+id/web_service_selected"/>
 
-        <TextView
-                android:id="@+id/web_service_description"
-                style="@style/TextView.Description"
-                android:text="Hello there"
-                android:paddingTop="0dp"
-                android:paddingRight="@dimen/view_spacing_large"
-                android:paddingBottom="@dimen/view_spacing_large"/>
-    </LinearLayout>
+    <TextView
+            android:id="@+id/web_service_description"
+            style="@style/TextView.Description"
+            android:text="Hello there"
+            android:paddingTop="@dimen/view_spacing_normal"
+            android:layout_below="@+id/web_service_title"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@+id/web_service_selected"
+            android:layout_toStartOf="@+id/web_service_selected"/>
+
 </RelativeLayout>

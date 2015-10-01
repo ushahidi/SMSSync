@@ -17,6 +17,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:paddingLeft="@dimen/view_spacing_large"
@@ -25,13 +26,17 @@
               android:paddingEnd="@dimen/view_spacing_large"
               android:orientation="vertical" android:weightSum="1">
 
-    <CheckBox
+    <android.support.v7.widget.SwitchCompat
             android:id="@+id/start_service_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/view_spacing_xlarge"
+            app:switchTextAppearance="@android:style/TextAppearance.Medium"
+            app:showText="false"
+            app:switchPadding="@dimen/view_spacing_xlarge"
+            android:textStyle="bold"
             android:gravity="center_vertical|center_horizontal"
             android:text="@string/chk_enable_sms_sync"/>
     <TextView

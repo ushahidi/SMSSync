@@ -24,11 +24,11 @@ import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,16 +60,16 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
         final WebServiceModel webServiceModel = getItem(position);
         ((Widgets) viewHolder).title.setText(getItem(position).getTitle());
         ((Widgets) viewHolder).url.setText(getItem(position).getUrl());
-        CheckedTextView checkedTextView = ((Widgets) viewHolder).listCheckBox;
+        SwitchCompat toggleCustomWebService = ((Widgets) viewHolder).listCheckBox;
         if (webServiceModel.getStatus() == WebServiceModel.Status.ENABLED) {
-            checkedTextView.setChecked(true);
+            toggleCustomWebService.setChecked(true);
         } else {
-            checkedTextView.setChecked(false);
+            toggleCustomWebService.setChecked(false);
         }
-        checkedTextView.setOnClickListener(v -> {
+        toggleCustomWebService.setOnClickListener(v -> {
             if (mOnItemCheckedListener != null) {
                 mOnItemCheckedListener
-                        .onItemChecked(position, checkedTextView.isChecked(), checkedTextView);
+                        .onItemChecked(position, toggleCustomWebService.isChecked());
             }
         });
     }
@@ -145,7 +145,7 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
         TextView url;
 
         @Bind(R.id.web_service_selected)
-        CheckedTextView listCheckBox;
+        SwitchCompat listCheckBox;
 
         /**
          * Default constructor
@@ -161,6 +161,6 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
 
     public interface OnItemCheckedListener {
 
-        void onItemChecked(int position, boolean status, CheckedTextView checkedTextView);
+        void onItemChecked(int position, boolean status);
     }
 }

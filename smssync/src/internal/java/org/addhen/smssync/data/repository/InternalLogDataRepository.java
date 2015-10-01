@@ -20,7 +20,6 @@ package org.addhen.smssync.data.repository;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.domain.entity.LogEntity;
 import org.addhen.smssync.domain.repository.LogRepository;
 
@@ -51,7 +50,7 @@ public class InternalLogDataRepository implements LogRepository {
     @Override
     public Observable<List<LogEntity>> getLogs() {
         return Observable.defer(() -> {
-            Type logList = new TypeToken<List<Message>>() {
+            Type logList = new TypeToken<List<LogEntity>>() {
             }.getType();
             String json = loadJSONFromAsset("logs.json");
             List<LogEntity> logEntities = new ArrayList<>();
@@ -82,7 +81,7 @@ public class InternalLogDataRepository implements LogRepository {
     @Override
     public Observable<LogEntity> getLog() {
         return Observable.defer(() -> {
-            Type logList = new TypeToken<List<Message>>() {
+            Type logList = new TypeToken<List<LogEntity>>() {
             }.getType();
             String json = loadJSONFromAsset("log.json");
             LogEntity logEntity = new LogEntity();

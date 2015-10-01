@@ -205,9 +205,9 @@ public class PostMessage extends ProcessMessage {
                             Logger.log("message",
                                     " from:" + msg.messageFrom + " filter:"
                                             + filter.phoneNumber);
-                            return false;
-                        } else {
-
+                            if (postMessage(msg, webService)) {
+                                postToSentBox(msg);
+                            }
                         }
                     }
                 }

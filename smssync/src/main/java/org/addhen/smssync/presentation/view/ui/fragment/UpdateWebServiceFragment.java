@@ -25,6 +25,7 @@ import org.addhen.smssync.presentation.model.SyncSchemeModel;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.validator.UrlValidator;
+import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 import org.addhen.smssync.presentation.view.webservice.TestWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
@@ -53,7 +54,8 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
 /**
- * Fragment for updating a existing webService. This needs to be merged with {@link AddWebServiceFragment}
+ * Fragment for updating a existing webService. This needs to be merged with {@link
+ * AddWebServiceFragment}
  * as they share so much code
  *
  * @author Ushahidi Team <team@ushahidi.com>
@@ -181,7 +183,9 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mUpdateWebServicePresenter.destroy();
+        if (mUpdateWebServicePresenter != null) {
+            mUpdateWebServicePresenter.destroy();
+        }
     }
 
     @Override
@@ -238,7 +242,7 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @Override
     public Context getAppContext() {
-        return getActivity().getApplication();
+        return getActivity();
     }
 
     @Override
@@ -377,7 +381,15 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO: Implement QR code activity
+        if (requestCode == QrcodeReaderActivity.QRCODE_READER_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                final WebServiceModel webServiceModel = (WebServiceModel) data.getParcelableExtra(
+                        QrcodeReaderActivity.INTENT_EXTRA_PARAM_BARCODE_WEB_SERVICE_MODEL);
+                showWebService(webServiceModel);
+                return;
+            }
+            showToast(getString(R.string.invalid_qr_code_string));
+        }
     }
 
     /**

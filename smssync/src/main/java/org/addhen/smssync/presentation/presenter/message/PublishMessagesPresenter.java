@@ -81,7 +81,7 @@ public class PublishMessagesPresenter implements Presenter {
 
     public void publishMessage(List<MessageModel> messageModels) {
         if (!mPrefsFactory.serviceEnabled().get()) {
-            mPublishMessageView.showError(
+            mPublishMessageView.showEnableServiceMessage(
                     mPublishMessageView.getAppContext().getString(R.string.smssync_not_enabled));
             return;
         }

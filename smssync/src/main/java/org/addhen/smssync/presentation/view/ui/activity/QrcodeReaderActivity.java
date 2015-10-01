@@ -31,6 +31,7 @@ import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import butterknife.Bind;
 
@@ -42,7 +43,7 @@ public class QrcodeReaderActivity extends BaseActivity
 
     /** Intent extra's name to be used to retrieved the shared {@link WebServiceModel} */
     public static final String INTENT_EXTRA_PARAM_BARCODE_WEB_SERVICE_MODEL
-            = "org.addhen.smssync.INTENT_PARAM_BARCODE_DEPLOYMENT_MODEL";
+            = "org.addhen.smssync.INTENT_PARAM_BARCODE_WEB_SERVICE_MODEL";
 
     /** The request code number to determine if the result was sent by this activity */
     public static final int QRCODE_READER_REQUEST_CODE = 1;
@@ -78,7 +79,8 @@ public class QrcodeReaderActivity extends BaseActivity
             try {
                 webServiceModel = gson.fromJson(text, WebServiceModel.class);
             } catch (JsonSyntaxException e) {
-                // Do nothing
+                Toast.makeText(this, getString(R.string.invalid_qr_code_string), Toast.LENGTH_LONG)
+                        .show();
             }
 
             Intent returnIntent = new Intent();

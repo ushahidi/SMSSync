@@ -25,4 +25,6 @@ import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 public interface PublishMessageView extends LoadDataView {
 
     void successfullyPublished(boolean status);
+
+    void showEnableServiceMessage(String s);
 }

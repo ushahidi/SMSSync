@@ -64,6 +64,8 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
 
     private Filter mFilter = null;
 
+    List<MessageModel> msgs = new ArrayList<>();
+
     public MessageAdapter(Context context) {
         mSelectedItems = new SparseBooleanArray();
         flipIn = AnimationUtils.loadAnimation(context, R.anim.flip_front);
@@ -291,12 +293,16 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
             constraint = constraint.toString().toLowerCase();
-            results.values = getItems();
-            results.count = getItems().size();
+            if (msgs.isEmpty()) {
+                msgs.addAll(getItems());
+            }
+            results.values = msgs;
+            results.count = msgs.size();
             if (constraint != null && constraint.toString().length() > 0) {
                 ArrayList<MessageModel> filteredItems = new ArrayList<>();
-                for (MessageModel message : getItems()) {
-                    if (message.messageBody.toLowerCase().contains(constraint.toString())) {
+                for (MessageModel message : msgs) {
+                    if (message.messageBody.toLowerCase()
+                            .contains(constraint.toString().toLowerCase())) {
                         filteredItems.add(message);
                     }
                 }

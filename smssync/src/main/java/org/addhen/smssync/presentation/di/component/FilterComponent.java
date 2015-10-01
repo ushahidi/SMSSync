@@ -25,7 +25,6 @@ import org.addhen.smssync.presentation.di.module.FilterModule;
 import org.addhen.smssync.presentation.presenter.filter.AddFilterPresenter;
 import org.addhen.smssync.presentation.presenter.filter.ListFilterPresenter;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServiceKeywordsPresenter;
-import org.addhen.smssync.presentation.view.ui.activity.FilterActivity;
 import org.addhen.smssync.presentation.view.ui.fragment.AddPhoneNumberFilterFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
 
@@ -37,8 +36,6 @@ import dagger.Component;
 @ActivityScope
 @Component(dependencies = AppComponent.class, modules = {ActivityModule.class, FilterModule.class})
 public interface FilterComponent extends AppActivityComponent {
-
-    void inject(FilterActivity filterActivity);
 
     void inject(FilterFragment filterFragments);
 
