@@ -30,7 +30,7 @@ ext {
 
     //Libraries
     daggerVersion = '2.0.1'
-    javaxAnnotationVersion = '10.0-b28'
+    javaxAnnotationVersion = '1.0'
     raiburariVersion = '2.6.1'
     rxAndroidVersion = '1.0.1'
     rxLifecycleVersion = '0.2.0'
@@ -58,7 +58,7 @@ ext {
     appDependencies = [
             daggerCompiler      : "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger              : "com.google.dagger:dagger:${daggerVersion}",
-            javaxAnnotation     : "org.glassfish:javax.annotation:${javaxAnnotationVersion}",
+            javaxAnnotation     : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             raiburari           : "com.addhen.android:raiburari:${raiburariVersion}",
             cupboard            : "nl.qbusict:cupboard:${cupboardVersion}",
             qrCodeReaderView    : "com.dlazaro66.qrcodereaderview:qrcodereaderview:${qrCodeReaderViewVersion}",
