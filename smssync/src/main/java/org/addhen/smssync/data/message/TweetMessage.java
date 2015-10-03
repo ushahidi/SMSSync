@@ -32,6 +32,7 @@ import org.addhen.smssync.data.util.Utility;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -111,12 +112,7 @@ public class TweetMessage extends ProcessMessage {
             if (mPrefsFactory.enableBlacklist().get()) {
                 for (Filter filter : filters) {
 
-                    if (filter.phoneNumber.equals(message.messageFrom)) {
-                        Logger.log("message",
-                                " from:" + message.messageFrom + " filter:"
-                                        + filter.phoneNumber);
-                        return false;
-                    } else {
+                    if (!filter.phoneNumber.equals(message.messageFrom)) {
                         if (tweetMessage(message)) {
                             deleteFromSmsInbox(message);
                         } else {
@@ -154,13 +150,13 @@ public class TweetMessage extends ProcessMessage {
             final Message message = mMessageDataSource.fetchMessageByUuid(uuid);
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
-            // TODO: Get the message keyword
-            status = tweetMessage(messages, null);
+            List<String> keywords = getKeywords();
+            status = tweetMessages(messages);
         } else {
             final List<Message> messages = mMessageDataSource.fetchMessage(Message.Type.PENDING);
             if (messages != null && messages.size() > 0) {
                 for (Message message : messages) {
-                    status = tweetMessage(messages, null);
+                    status = tweetMessages(messages);
                 }
             }
         }
@@ -168,7 +164,12 @@ public class TweetMessage extends ProcessMessage {
         return status;
     }
 
-    public boolean tweetMessage(List<Message> messages, List<String> keywords) {
+    @NonNull
+    private List<String> getKeywords() {
+        return Arrays.asList(mPrefsFactory.twitterKeywords().get().split(","));
+    }
+
+    public boolean tweetMessages(List<Message> messages) {
         Logger.log(TAG, "tweetMessages");
         List<WebService> webServiceList = mWebServiceDataSource.listWebServices();
         List<Filter> filters = mFilterDataSource.getFilters();

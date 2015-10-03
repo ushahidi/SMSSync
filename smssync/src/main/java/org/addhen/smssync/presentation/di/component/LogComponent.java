@@ -23,7 +23,6 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import org.addhen.smssync.presentation.di.module.LogModule;
 import org.addhen.smssync.presentation.presenter.DeleteLogPresenter;
 import org.addhen.smssync.presentation.presenter.ListLogPresenter;
-import org.addhen.smssync.presentation.view.ui.activity.LogActivity;
 import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 
 import dagger.Component;
@@ -34,8 +33,6 @@ import dagger.Component;
 @ActivityScope
 @Component(dependencies = AppComponent.class, modules = {ActivityModule.class, LogModule.class})
 public interface LogComponent extends AppActivityComponent {
-
-    void inject(LogActivity logActivity);
 
     void inject(LogFragment logFragment);
 

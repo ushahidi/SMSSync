@@ -55,8 +55,6 @@ import butterknife.OnClick;
 public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFilterView,
         DeleteFilterView, ListFilterView {
 
-    private static AddPhoneNumberFilterFragment mAddPhoneNumberFilterFragment;
-
     @Inject
     ListFilterPresenter mListFilterPresenter;
 
@@ -82,10 +80,7 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     }
 
     public static AddPhoneNumberFilterFragment newInstance() {
-        if (mAddPhoneNumberFilterFragment == null) {
-            mAddPhoneNumberFilterFragment = new AddPhoneNumberFilterFragment();
-        }
-        return mAddPhoneNumberFilterFragment;
+        return new AddPhoneNumberFilterFragment();
     }
 
     @Override

@@ -19,7 +19,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:paddingTop="@dimen/view_spacing_normal"
+              android:paddingBottom="@dimen/view_spacing_normal"
+              android:paddingRight="@dimen/view_spacing_large"
+              android:paddingEnd="@dimen/view_spacing_large"
+              android:paddingLeft="@dimen/view_spacing_large"
+              android:paddingStart="@dimen/view_spacing_large">
     <android.support.v7.widget.AppCompatTextView
             android:id="@+id/log_message"
             android:layout_width="wrap_content"

@@ -52,4 +52,8 @@ android {
             applicationId "com.smssync.portal.six"
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }

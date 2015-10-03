@@ -29,7 +29,7 @@ import org.addhen.smssync.presentation.presenter.filter.ListFilterPresenter;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServiceKeywordsPresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.filter.ListFilterView;
-import org.addhen.smssync.presentation.view.ui.activity.FilterActivity;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 import org.addhen.smssync.presentation.view.ui.widget.FilterKeywordsView;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceKeywordsView;
@@ -80,17 +80,12 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     @Bind(R.id.white_list)
     FilterKeywordsView mWhiteListFilterKeywordsView;
 
-    private static FilterFragment mFilterFragment;
-
     public FilterFragment() {
         super(R.layout.fragment_filter_list, 0);
     }
 
     public static FilterFragment newInstance() {
-        if (mFilterFragment == null) {
-            mFilterFragment = new FilterFragment();
-        }
-        return mFilterFragment;
+        return new FilterFragment();
     }
 
     @Override
@@ -118,8 +113,12 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mListFilterPresenter.destroy();
-        mUpdateWebServiceKeywordsPresenter.destroy();
+        if (mListFilterPresenter != null) {
+            mListFilterPresenter.destroy();
+        }
+        if (mUpdateWebServiceKeywordsPresenter != null) {
+            mUpdateWebServiceKeywordsPresenter.destroy();
+        }
     }
 
     private void initialize() {
@@ -171,13 +170,12 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     }
 
     protected <C> C getFilterComponent(Class<C> componentType) {
-        return componentType.cast(((FilterActivity) getActivity()).getComponent());
+        return componentType.cast(((MainActivity) getActivity()).getFilterComponent());
     }
 
     private void initTwitterView() {
         if ((mTwitterClient != null) && (mTwitterClient.getSessionManager().getActiveSession()
                 != null)) {
-            //// TODO: Look into moving this into a reusable method
             FilterKeywordsView filterKeywordsView = new FilterKeywordsView(
                     getContext());
 

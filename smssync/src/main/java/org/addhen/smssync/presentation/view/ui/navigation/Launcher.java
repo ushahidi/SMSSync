@@ -22,17 +22,12 @@ import org.addhen.smssync.presentation.view.ui.activity.AddKeywordsActivity;
 import org.addhen.smssync.presentation.view.ui.activity.AddPhoneNumberActivity;
 import org.addhen.smssync.presentation.view.ui.activity.AddTwitterKeywordsActivity;
 import org.addhen.smssync.presentation.view.ui.activity.AddWebServiceActivity;
-import org.addhen.smssync.presentation.view.ui.activity.FilterActivity;
 import org.addhen.smssync.presentation.view.ui.activity.GettingStartedActivity;
-import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
-import org.addhen.smssync.presentation.view.ui.activity.LogActivity;
 import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
 import org.addhen.smssync.presentation.view.ui.activity.TwitterProfileActivity;
 import org.addhen.smssync.presentation.view.ui.activity.UpdateWebServiceActivity;
-import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
-import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -56,22 +51,6 @@ public class Launcher {
         mActivity.startActivity(intent);
     }
 
-    public MessageFragment launchMessages() {
-        return MessageFragment.newInstance();
-    }
-
-    public void launchLogs() {
-        mActivity.startActivity(LogActivity.getIntent(mActivity));
-    }
-
-    public void launchIntegrations() {
-        mActivity.startActivity(IntegrationActivity.getIntent(mActivity));
-    }
-
-    public PublishedMessageFragment launchPublishedMessages() {
-        return PublishedMessageFragment.newInstance();
-    }
-
     public void launchGettingStarted() {
         mActivity.startActivity(GettingStartedActivity.getIntent(mActivity));
     }
@@ -86,10 +65,6 @@ public class Launcher {
 
     public void launchUpdateWebServices(WebServiceModel webServiceModel) {
         mActivity.startActivity(UpdateWebServiceActivity.getIntent(mActivity, webServiceModel));
-    }
-
-    public void launchFilters() {
-        mActivity.startActivity(FilterActivity.getIntent(mActivity));
     }
 
     /**

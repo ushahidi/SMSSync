@@ -25,6 +25,7 @@ import org.addhen.smssync.presentation.model.SyncSchemeModel;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.AddWebServicePresenter;
 import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 import org.addhen.smssync.presentation.view.webservice.AddWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.TestWebServiceView;
@@ -227,7 +228,7 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
 
     @Override
     public Context getAppContext() {
-        return getActivity().getApplication();
+        return getActivity();
     }
 
     @Override
@@ -363,8 +364,23 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     }
 
     public void setWebService(@NonNull WebServiceModel webServiceModel) {
-        mEditTextTitle.setText(webServiceModel.getTitle());
-        mEditTextUrl.setText(webServiceModel.getUrl());
+        if (webServiceModel != null) {
+            mEditTextTitle.setText(webServiceModel.getTitle());
+            mEditTextUrl.setText(webServiceModel.getUrl());
+            mEditTextSecret.setText(webServiceModel.getSecret());
+
+            SyncSchemeModel syncSchemeModel = webServiceModel.getSyncScheme();
+            mKeyMessage.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.MESSAGE));
+            mKeyMessageID.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.MESSAGE_ID));
+            mKeyFrom.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.FROM));
+            mKeySecret.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.SECRET));
+            mKeySentTimeStamp
+                    .setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.SENT_TIMESTAMP));
+            mKeySentTo.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.SENT_TO));
+            mKeyDeviceID.setText(syncSchemeModel.getKey(SyncSchemeModel.SyncDataKey.DEVICE_ID));
+            mSpinnerMethods.setSelection(syncSchemeModel.getMethod().ordinal());
+            mSpinnerDataFormats.setSelection(syncSchemeModel.getDataFormat().ordinal());
+        }
     }
 
     @Override
@@ -394,6 +410,14 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO: Implement QR code activity
+        if (requestCode == QrcodeReaderActivity.QRCODE_READER_REQUEST_CODE) {
+            if (resultCode == getActivity().RESULT_OK) {
+                final WebServiceModel webServiceModel = (WebServiceModel) data.getParcelableExtra(
+                        QrcodeReaderActivity.INTENT_EXTRA_PARAM_BARCODE_WEB_SERVICE_MODEL);
+                setWebService(webServiceModel);
+                return;
+            }
+            showToast(getString(R.string.invalid_qr_code_string));
+        }
     }
 }

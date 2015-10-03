@@ -21,9 +21,12 @@ import com.addhen.android.raiburari.domain.executor.PostExecutionThread;
 import com.addhen.android.raiburari.domain.executor.ThreadExecutor;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 
+import org.addhen.smssync.domain.entity.LogEntity;
 import org.addhen.smssync.domain.repository.LogRepository;
 
 import android.support.annotation.NonNull;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -44,7 +47,7 @@ public class ListLogUsecase extends Usecase {
     }
 
     @Override
-    protected Observable buildUseCaseObservable() {
+    protected Observable<List<LogEntity>> buildUseCaseObservable() {
         return mLogRepository.getLogs();
     }
 }

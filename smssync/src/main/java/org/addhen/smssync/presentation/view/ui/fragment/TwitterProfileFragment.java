@@ -36,8 +36,6 @@ import butterknife.OnClick;
  */
 public class TwitterProfileFragment extends BaseFragment {
 
-    private static TwitterProfileFragment mTwitterProfileFragment;
-
     @Bind(R.id.twitter_logged_user)
     AppCompatTextView mLoggedInUser;
 
@@ -46,10 +44,7 @@ public class TwitterProfileFragment extends BaseFragment {
     }
 
     public static TwitterProfileFragment newInstance() {
-        if (mTwitterProfileFragment == null) {
-            mTwitterProfileFragment = new TwitterProfileFragment();
-        }
-        return mTwitterProfileFragment;
+        return new TwitterProfileFragment();
     }
 
     public void onViewCreated(View view, Bundle savedInstance) {

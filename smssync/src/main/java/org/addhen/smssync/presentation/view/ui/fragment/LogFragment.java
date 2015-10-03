@@ -19,10 +19,10 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
-import com.addhen.android.raiburari.presentation.ui.widget.DividerItemDecoration;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
+import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.model.LogModel;
 import org.addhen.smssync.presentation.model.PhoneStatusInfoModel;
@@ -31,8 +31,9 @@ import org.addhen.smssync.presentation.presenter.ListLogPresenter;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.log.DeleteLogView;
 import org.addhen.smssync.presentation.view.log.ListLogView;
-import org.addhen.smssync.presentation.view.ui.activity.LogActivity;
+import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.LogAdapter;
+import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -45,12 +46,12 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
@@ -82,7 +83,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     TextView mLogLocation;
 
     @Bind(R.id.start_logs)
-    CheckBox mStartCheckBox;
+    SwitchCompat mStartCheckBox;
 
     @Inject
     ListLogPresenter mListLogPresenter;
@@ -106,10 +107,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     }
 
     public static LogFragment newInstance() {
-        if (mLogFragment == null) {
-            mLogFragment = new LogFragment();
-        }
-        return mLogFragment;
+        return new LogFragment();
     }
 
     @Override
@@ -135,7 +133,9 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mListLogPresenter.destroy();
+        if (mListLogPresenter != null) {
+            mListLogPresenter.destroy();
+        }
     }
 
     @Override
@@ -147,7 +147,6 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
                 .getActionProvider(actionItem);
         actionProvider.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
         actionProvider.setShareIntent(createShareIntent());
-
     }
 
     private Intent createShareIntent() {
@@ -179,13 +178,11 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         mLogRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mLogRecyclerView.setFocusable(true);
         mLogRecyclerView.setFocusableInTouchMode(true);
-        mLogAdapter.setHasStableIds(true);
         mLogRecyclerView.setAdapter(mLogAdapter);
         mLogRecyclerView.addItemDividerDecoration(getActivity());
         mLogRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mLogRecyclerView.enableDefaultSwipeRefresh(false);
-        mLogRecyclerView.addItemDecoration(
-                new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
+        mLogRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         mStartCheckBox.setChecked(mPrefsFactory.enableLog().get());
     }
 
@@ -257,11 +254,11 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
 
     @Override
     public Context getAppContext() {
-        return getActivity().getApplicationContext();
+        return getActivity();
     }
 
     protected <C> C getLogComponent(Class<C> componentType) {
-        return componentType.cast(((LogActivity) getActivity()).getComponent());
+        return componentType.cast(((MainActivity) getActivity()).getLogComponent());
     }
 
     private String makeShareableMessage() {

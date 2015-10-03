@@ -97,16 +97,6 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".presentation.view.ui.activity.MainActivity"/>
         </activity>
-        <activity
-                android:name=".presentation.view.ui.activity.IntegrationActivity"
-                android:label="@string/integrations"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".presentation.view.ui.activity.MainActivity"/>
-        </activity>
 
         <activity
                 android:name=".presentation.view.ui.activity.TwitterProfileActivity"
@@ -160,26 +150,6 @@
                     android:value=".presentation.view.ui.activity.MainActivity"/>
         </activity>
         <activity
-                android:name=".presentation.view.ui.activity.FilterActivity"
-                android:label="@string/filters"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".presentation.view.ui.activity.MainActivity"/>
-        </activity>
-        <activity
-                android:name=".presentation.view.ui.activity.LogActivity"
-                android:label="@string/logs"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:parentActivityName=".presentation.view.ui.activity.MainActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".presentation.view.ui.activity.MainActivity"/>
-        </activity>
-        <activity
                 android:name=".presentation.view.ui.activity.AddWebServiceActivity"
                 android:label="@string/add_web_service"
                 android:exported="false"
@@ -209,17 +179,6 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-        </activity>
-        <activity
-                android:name=".presentation.view.ui.activity.TaskSettingsActivity"
-                android:label="@string/action_settings"
-                android:exported="false"
-                android:launchMode="singleTask"
-                android:theme="@style/AppTheme.NoActionBar"
-                android:parentActivityName=".presentation.view.ui.activity.SettingsActivity">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".presentation.view.ui.activity.SettingsActivity"/>
         </activity>
         <activity
                 android:name=".presentation.view.ui.activity.AutomationSettingsActivity"

@@ -92,9 +92,8 @@ public class MessageDataRepository implements MessageRepository {
     @Override
     public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
         return Observable.defer(() -> {
-            // TODO: Send keywords
             boolean status = true;
-            mTweetMessage.tweetMessage(mMessageDataMapper.unmap(messageEntities), null);
+            mTweetMessage.tweetMessages(mMessageDataMapper.unmap(messageEntities));
             status = mPostMessage
                     .postMessage(mMessageDataMapper.unmap(messageEntities));
             return Observable.just(status);

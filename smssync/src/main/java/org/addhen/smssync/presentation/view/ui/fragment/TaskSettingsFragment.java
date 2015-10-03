@@ -172,9 +172,6 @@ public class TaskSettingsFragment extends BasePreferenceFragmentCompat implement
 
         if (!mPrefs.serviceEnabled().get()) {
             showError(getString(R.string.no_configured_url));
-            if (mEnableMessageResultsAPI.isChecked()) {
-                mEnableMessageResultsAPI.setChecked(false);
-            }
         } else {
             // start the scheduler for task checking service
             mServiceControl.runCheckTaskService();

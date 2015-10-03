@@ -36,6 +36,7 @@ import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.message.PublishMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
+import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -101,8 +102,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private MessageAdapter mMessageAdapter;
 
-    private static MessageFragment mMessageFragment;
-
     private int mRemovedItemPosition = 0;
 
     private MessageModel mRemovedMessage;
@@ -116,10 +115,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     public static MessageFragment newInstance() {
-        if (mMessageFragment == null) {
-            mMessageFragment = new MessageFragment();
-        }
-        return mMessageFragment;
+        return new MessageFragment();
     }
 
     @Override
@@ -155,8 +151,12 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mListMessagePresenter.destroy();
-        mPublishMessagesPresenter.destroy();
+        if (mListMessagePresenter != null) {
+            mListMessagePresenter.destroy();
+        }
+        if (mPublishMessagesPresenter != null) {
+            mPublishMessagesPresenter.destroy();
+        }
     }
 
     @Override
@@ -207,12 +207,20 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnabackar(mFab, s);
+            }
+
+            @Override
+            public void showEnableServiceMessage(String s) {
+                Snackbar snackbar = Snackbar.make(mFab, s, Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.enable, e -> {
+                    ((MainActivity) getActivity()).launchIntegration();
+                }).show();
             }
 
             @Override
             public Context getAppContext() {
-                return getActivity().getApplicationContext();
+                return getActivity();
             }
         });
     }
@@ -246,7 +254,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnabackar(mFab, s);
             }
 
             @Override
@@ -309,7 +317,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.setFocusable(true);
         mMessageRecyclerView.setFocusableInTouchMode(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
-        mMessageRecyclerView.addItemDividerDecoration(getActivity());
+        mMessageRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -440,7 +448,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Override
     public void showLoading() {
-        // Do nothing
+        mMessageRecyclerView.setRefreshing(true);
     }
 
     @Override

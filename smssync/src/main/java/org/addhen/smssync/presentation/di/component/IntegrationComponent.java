@@ -22,7 +22,6 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 
 import org.addhen.smssync.presentation.di.module.IntegrationModule;
 import org.addhen.smssync.presentation.presenter.integration.IntegrationPresenter;
-import org.addhen.smssync.presentation.view.ui.activity.IntegrationActivity;
 import org.addhen.smssync.presentation.view.ui.fragment.IntegrationFragment;
 
 import dagger.Component;
@@ -34,8 +33,6 @@ import dagger.Component;
 @Component(dependencies = AppComponent.class, modules = {ActivityModule.class,
         IntegrationModule.class})
 public interface IntegrationComponent extends AppActivityComponent {
-
-    void inject(IntegrationActivity integrationActivity);
 
     void inject(IntegrationFragment integrationFragment);
 

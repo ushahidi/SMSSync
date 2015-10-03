@@ -83,7 +83,7 @@ public class MessageHttpClient extends BaseHttpClient {
                 setServerError("bad http return code", statusCode);
                 return false;
             }
-            
+
             SmssyncResponse smssyncResponses = gson.fromJson(response.body().string(),
                     SmssyncResponse.class);
             if (smssyncResponses.getPayload().isSuccess()) {
@@ -163,7 +163,6 @@ public class MessageHttpClient extends BaseHttpClient {
                 mFileManager.appendAndClose("setHttpEntity format JSON");
                 break;
             case XML:
-                //TODO: Make parent node URL specific as well
                 body = RequestBody.create(XML,
                         DataFormatUtil.makeXMLString(getParams(), "payload", UTF_8.name()));
                 log("setHttpEntity format XML");

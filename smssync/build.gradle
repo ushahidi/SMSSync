@@ -167,7 +167,7 @@ android {
         }
 
         internal {
-            applicationId 'org.addhen.smssync'
+            applicationId 'org.addhen.smssync.internal'
         }
     }
 

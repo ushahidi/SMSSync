@@ -29,19 +29,28 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?attr/dividerVertical"/>
-    <CheckBox
+    <android.support.v7.widget.SwitchCompat
             android:id="@+id/start_logs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:gravity="center_vertical|center_horizontal"
+            app:switchTextAppearance="@android:style/TextAppearance.Medium"
+            app:showText="false"
+            app:switchPadding="@dimen/view_spacing_xlarge"
+            android:textStyle="bold"
             android:text="@string/enable_logs"/>
     <TextView
             android:id="@+id/log_location"
             style="@style/TextView.Title"
             android:layout_gravity="center_horizontal"
             android:visibility="gone"/>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/dividerVertical"/>
 
     <com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
             android:id="@id/android:list"

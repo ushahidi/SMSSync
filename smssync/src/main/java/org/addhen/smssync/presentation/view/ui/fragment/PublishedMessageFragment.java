@@ -19,18 +19,20 @@ package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
 import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
-import com.addhen.android.raiburari.presentation.ui.widget.DividerItemDecoration;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.nineoldandroids.view.ViewHelper;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
+import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ListPublishedMessagePresenter;
 import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.message.DeleteMessageView;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
+import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -38,7 +40,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.view.ActionMode;
@@ -79,9 +80,11 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     @Inject
     ListPublishedMessagePresenter mListMessagePresenter;
 
+    @Inject
+    DeleteMessagePresenter mDeleteMessagePresenter;
+
     private MessageAdapter mMessageAdapter;
 
-    private static PublishedMessageFragment mMessageFragment;
 
     private int mRemovedItemPosition = 0;
 
@@ -99,10 +102,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     }
 
     public static PublishedMessageFragment newInstance() {
-        if (mMessageFragment == null) {
-            mMessageFragment = new PublishedMessageFragment();
-        }
-        return mMessageFragment;
+        return new PublishedMessageFragment();
     }
 
     @Override
@@ -138,12 +138,15 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mListMessagePresenter.destroy();
+        if (mListMessagePresenter != null) {
+            mListMessagePresenter.destroy();
+        }
     }
 
     private void initialize() {
         getMessageComponent(MessageComponent.class).inject(this);
         mListMessagePresenter.setView(this);
+        initializeDeletePresenter();
         initRecyclerView();
     }
 
@@ -155,9 +158,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         mMessageRecyclerView.setFocusableInTouchMode(true);
         mMessageAdapter.setHasStableIds(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
-        mMessageRecyclerView.addItemDecoration(
-                new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
-        ;
+        mMessageRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageRecyclerView.enableDefaultSwipeRefresh(false);
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
@@ -205,6 +206,45 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         mRemovedMessage = mMessageAdapter.getItem(position);
         mMessageAdapter.removeItem(mRemovedMessage);
         showUndoSnackbar(1);
+    }
+
+    private void initializeDeletePresenter() {
+        mDeleteMessagePresenter.setView(new DeleteMessageView() {
+            @Override
+            public void onMessageDeleted() {
+                mListMessagePresenter.loadMessages();
+            }
+
+            @Override
+            public void showLoading() {
+                // Do nothing
+            }
+
+            @Override
+            public void hideLoading() {
+                // Do nothing
+            }
+
+            @Override
+            public void showRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void hideRetry() {
+                // Do nothing
+            }
+
+            @Override
+            public void showError(String s) {
+                showSnabackar(getView(), s);
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getContext();
+            }
+        });
     }
 
     @TargetApi(11)
@@ -360,21 +400,23 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         View view = snackbar.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
         tv.setTextColor(getAppContext().getResources().getColor(R.color.red));
-        snackbar.show();
-        // Handler to time the dismissal of the snackbar so users can
-        // undo soft deletion or hard delete deployments
-        // Hack: to complement Snackbar's limitation
-        // See; http://stackoverflow.com/questions/30639470/snackbar-in-support-library-doesnt-include-ondismisslistener
-        new Handler(getActivity().getMainLooper()).postDelayed(() -> {
-            if (mIsPermanentlyDeleted) {
-                if (mPendingDeletedMessages.size() > 0) {
-                    for (PendingDeletedMessage pendingDeletedDeployment : mPendingDeletedMessages) {
-                        // TODO: implement item deletions
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                    if (mPendingDeletedMessages.size() > 0) {
+                        for (PendingDeletedMessage pendingDeletedDeployment : mPendingDeletedMessages) {
+                            mDeleteMessagePresenter
+                                    .deleteMessage(
+                                            pendingDeletedDeployment.messageModel.messageUuid);
+                        }
+                        clearItems();
                     }
-                    clearItems();
                 }
             }
-        }, 3500);
+        });
+        snackbar.show();
     }
 
     public static class PendingDeletedMessage implements Comparable<PendingDeletedMessage> {
@@ -406,7 +448,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            actionMode.getMenuInflater().inflate(R.menu.context_menu_messages, menu);
+            actionMode.getMenuInflater().inflate(R.menu.context_menu_publish_messages, menu);
             return true;
         }
 
@@ -418,12 +460,9 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
 
-            if (menuItem.getItemId() == R.id.context_menu_delete) {
+            if (menuItem.getItemId() == R.id.context_menu_delete_published_messages) {
                 deleteItems();
                 isDeleted = true;
-            } else if (menuItem.getItemId() == R.id.context_menu_import_sms) {
-                // TODO: Implement multiple upload. Remove snackbar prompt when implemented
-                showUndoSnackbar(2);
             }
 
             if (mActionMode != null) {

@@ -631,4 +631,9 @@
     <string name="white_list_description">Publish messages from only these numbers</string>
     <string name="phone_filter_description">Publish messages based on configured phone numbers
     </string>
+    <string name="enable">Enable</string>
+    <string name="checking_scheduled_message">Checking scheduled message result services</string>
+    <string name="invalid_qr_code_string">The QR code doesn\'t appear to return a valid JSON
+        string
+    </string>
 </resources>

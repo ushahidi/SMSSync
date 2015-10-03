@@ -26,10 +26,20 @@ import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.AppActivityComponent;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppActivityComponent;
+import org.addhen.smssync.presentation.di.component.DaggerFilterComponent;
+import org.addhen.smssync.presentation.di.component.DaggerIntegrationComponent;
+import org.addhen.smssync.presentation.di.component.DaggerLogComponent;
 import org.addhen.smssync.presentation.di.component.DaggerMessageComponent;
+import org.addhen.smssync.presentation.di.component.FilterComponent;
+import org.addhen.smssync.presentation.di.component.IntegrationComponent;
+import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.ui.fragment.FilterFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.IntegrationFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.LogFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
+import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -50,6 +60,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -58,6 +69,22 @@ import butterknife.OnClick;
  * @author Henry Addo
  */
 public class MainActivity extends BaseActivity implements HasComponent<AppActivityComponent> {
+
+    public static final String INTEGRATION_TAG = "integration";
+
+    public static final String LOGS_TAG = "logs";
+
+    public static final String FILTERS_TAG = "filters";
+
+    private static final String PUBLISHED_MESSAGES_TAG = "published_messages";
+
+    private static final String BUNDLE_STATE_PARAM_CURRENT_MENU
+            = "org.addhen.smssync.presentation.view.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
+
+    private static final String BUNDLE_STATE_PARAM_CURRENT_MENU_TITLE
+            = "org.addhen.smssync.presentation.view.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU_TITLE";
+
+    private static final String INCOMING_FAG_TAG = "incoming_messages";
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -71,20 +98,25 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     @Bind(R.id.header_app_version)
     AppCompatTextView mAppCompatTextView;
 
-    private static final String BUNDLE_STATE_PARAM_CURRENT_MENU
-            = "org.addhen.smssync.presentation.view.ui.activity.BUNDLE_STATE_PARAM_CURRENT_MENU";
-
-    private static final String INCOMING_FAG_TAG = "incoming_messages";
-
     private AppActivityComponent mAppComponent;
 
     private MessageComponent mMessageComponent;
 
+    private LogComponent mLogComponent;
+
+    private FilterComponent mFilterComponent;
+
+    private IntegrationComponent mIntegrationComponent;
+
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private int mCurrentMenu;
+    private int mCurrentMenu = R.id.nav_incoming_messages;
+
+    private String mCurrentMenuTitle;
 
     private SearchView mSearchView = null;
+
+    private MenuItem mSearchItem;
 
     private String mQuery = "";
 
@@ -97,24 +129,33 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            mCurrentMenu = R.id.nav_incoming_messages;
+        if (savedInstanceState != null) {
+            mCurrentMenu = savedInstanceState.getInt(BUNDLE_STATE_PARAM_CURRENT_MENU, mCurrentMenu);
+            mCurrentMenuTitle = savedInstanceState.getString(BUNDLE_STATE_PARAM_CURRENT_MENU_TITLE);
         } else {
-            mCurrentMenu = savedInstanceState.getInt(BUNDLE_STATE_PARAM_CURRENT_MENU,
-                    R.id.nav_incoming_messages);
+            mCurrentMenuTitle = getString(R.string.nav_menu_incoming);
         }
         injector();
         initViews();
+        setupFragment(mNavigationView.getMenu().findItem(mCurrentMenu));
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         savedInstanceState.putInt(BUNDLE_STATE_PARAM_CURRENT_MENU, mCurrentMenu);
+        savedInstanceState.putString(BUNDLE_STATE_PARAM_CURRENT_MENU_TITLE, mCurrentMenuTitle);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     public void onResume() {
         super.onResume();
+        setToolbarTitle(mNavigationView.getMenu().findItem(mCurrentMenu));
+    }
+
+
+    public void onDestroy() {
+        super.onDestroy();
+        mMessageFragment = null;
     }
 
     private void initViews() {
@@ -125,9 +166,9 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mAppCompatTextView.setText(getAppVersionName());
         if (mNavigationView != null) {
-            setupDrawerContent(mNavigationView);
+            setupDrawerContent();
         }
-        setupFragment(mCurrentMenu);
+        setupFragment(mNavigationView.getMenu().findItem(mCurrentMenu));
         findMessageFragment();
         handleSearchIntent(getIntent());
     }
@@ -169,20 +210,30 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        MenuItem searchItem = menu.findItem(R.id.menu_search_message);
-        if (searchItem != null) {
-            mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchItem = menu.findItem(R.id.menu_search_message);
+        if (mSearchItem != null) {
+            mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
             initSearchView();
         }
         return true;
     }
 
-    private void initSearchView() {
-        final SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Only show search icon for incoming messages fragment
+        if (mNavigationView.getMenu().findItem(R.id.nav_incoming_messages).isChecked()) {
+            mSearchItem.setVisible(true);
+            mSearchView.setVisibility(View.GONE);
+        } else {
+            mSearchItem.setVisible(false);
+            mSearchView.setVisibility(View.INVISIBLE);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-        mSearchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
+    private void initSearchView() {
+        final SearchManager searchManager = (SearchManager) getSystemService(
+                Context.SEARCH_SERVICE);
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         mSearchView.clearFocus();
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -250,6 +301,21 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 .appComponent(getAppComponent())
                 .activityModule(getActivityModule())
                 .build();
+
+        mLogComponent = DaggerLogComponent.builder()
+                .appComponent(getAppComponent())
+                .activityModule(getActivityModule())
+                .build();
+
+        mFilterComponent = DaggerFilterComponent.builder()
+                .appComponent(getAppComponent())
+                .activityModule(getActivityModule())
+                .build();
+
+        mIntegrationComponent = DaggerIntegrationComponent.builder()
+                .appComponent(getAppComponent())
+                .activityModule(getActivityModule())
+                .build();
     }
 
     @Override
@@ -265,54 +331,73 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void setupDrawerContent() {
         PrefsFactory prefs = getAppComponent().prefsFactory();
-        MenuItem phoneName = navigationView.getMenu().findItem(R.id.nav_device_name);
+        MenuItem phoneName = mNavigationView.getMenu().findItem(R.id.nav_device_name);
         if (phoneName != null && !TextUtils.isEmpty(prefs.uniqueName().get())) {
             phoneName.setVisible(true);
             phoneName.setTitle(
                     Utility.capitalizeFirstLetter(prefs.uniqueName().get()) + " - " + prefs
                             .uniqueId().get());
         }
-        navigationView.setNavigationItemSelectedListener(
+        mNavigationView.setNavigationItemSelectedListener(
                 menuItem -> {
-                    mCurrentMenu = menuItem.getItemId();
-                    setupFragment(mCurrentMenu);
-                    findMessageFragment();
-                    onNavigationItemSelected(navigationView, menuItem);
-                    mToolbar.setTitle(menuItem.getTitle());
+                    setupFragment(menuItem);
                     mDrawerLayout.closeDrawers();
                     return true;
                 });
     }
 
-    private void onNavigationItemSelected(NavigationView navigationView, final MenuItem menuItem) {
+    private void setToolbarTitle(MenuItem menuItem) {
+        mCurrentMenu = menuItem.getItemId();
+        mCurrentMenuTitle = menuItem.getTitle().toString();
+        mToolbar.setTitle(mCurrentMenuTitle);
+        onNavigationItemSelected(menuItem);
+    }
+
+    private void onNavigationItemSelected(final MenuItem menuItem) {
         final int groupId = menuItem.getGroupId();
-        navigationView.getMenu()
+        mNavigationView.getMenu()
                 .setGroupCheckable(R.id.group_messages, (groupId == R.id.group_messages), true);
         menuItem.setChecked(true);
     }
 
-    private void setupFragment(int menuItem) {
-        switch (menuItem) {
+    public void launchIntegration() {
+        final MenuItem menuItem = mNavigationView.getMenu().findItem(R.id.nav_integration);
+        menuItem.setChecked(true);
+        setToolbarTitle(menuItem);
+        replaceFragment(R.id.fragment_main_content, IntegrationFragment.newInstance(),
+                INTEGRATION_TAG);
+    }
+
+    private void setupFragment(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_incoming_messages:
-                replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchMessages(), INCOMING_FAG_TAG);
+                replaceFragment(R.id.fragment_main_content, MessageFragment.newInstance(),
+                        INCOMING_FAG_TAG);
+                setToolbarTitle(menuItem);
                 break;
             case R.id.nav_published_messages:
                 replaceFragment(R.id.fragment_main_content,
-                        mAppComponent.launcher().launchPublishedMessages(), "published_messages");
+                        PublishedMessageFragment.newInstance(), PUBLISHED_MESSAGES_TAG);
+                setToolbarTitle(menuItem);
                 break;
             case R.id.nav_filters:
-                mAppComponent.launcher().launchFilters();
+                replaceFragment(R.id.fragment_main_content,
+                        FilterFragment.newInstance(), FILTERS_TAG);
+                setToolbarTitle(menuItem);
                 break;
             case R.id.nav_reports:
-                mAppComponent.launcher().launchLogs();
+                replaceFragment(R.id.fragment_main_content, LogFragment.newInstance(), LOGS_TAG);
+                setToolbarTitle(menuItem);
                 break;
             case R.id.nav_integration:
-                mAppComponent.launcher().launchIntegrations();
+                replaceFragment(R.id.fragment_main_content, IntegrationFragment.newInstance(),
+                        INTEGRATION_TAG);
+                setToolbarTitle(menuItem);
                 break;
             case R.id.nav_settings:
+                menuItem.setChecked(false);
                 mAppComponent.launcher().launchSettings();
                 break;
             default:
@@ -345,7 +430,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
             finish();
         }
     }
@@ -373,5 +457,17 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
     public MessageComponent getMessageComponent() {
         return mMessageComponent;
+    }
+
+    public LogComponent getLogComponent() {
+        return mLogComponent;
+    }
+
+    public FilterComponent getFilterComponent() {
+        return mFilterComponent;
+    }
+
+    public IntegrationComponent getIntegrationComponent() {
+        return mIntegrationComponent;
     }
 }

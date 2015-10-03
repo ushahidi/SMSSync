@@ -90,9 +90,9 @@ public class MessagesSettingsFragment extends BasePreferenceFragmentCompat
         // log reply changes.
         if (!mPrefs.reply().get().equals(mReplyPref.getText().toString())) {
             // Log old value and new value.
-            mAddLogPresenter.addLog(
-                    getString(R.string.settings_changed, mReplyPref.getDialogTitle().toString(),
-                            mPrefs.reply().get(), mReplyPref.getText().toString()));
+            mAddLogPresenter.addLog(getString(R.string.settings_changed,
+                    mReplyPref.getDialogTitle().toString(),
+                    mPrefs.reply().get(), mReplyPref.getText().toString()));
         }
         mPrefs.reply().set(mReplyPref.getText().toString());
 
