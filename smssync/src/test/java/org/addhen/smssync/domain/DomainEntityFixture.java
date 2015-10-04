@@ -31,8 +31,6 @@ public final class DomainEntityFixture {
 
     public static final Long ID = 2l;
 
-    private static LogEntity mLogEntity;
-
     private static MessageEntity mMessageEntity;
 
     private static SyncSchemeEntity mSyncSchemeEntity;
@@ -50,5 +48,12 @@ public final class DomainEntityFixture {
 
     public static HttpNameValuePair getHttpNameValuePair() {
         return new HttpNameValuePair("key", "value");
+    }
+
+    public static LogEntity getLogEntity() {
+        LogEntity logEntity = new LogEntity();
+        logEntity._id = ID;
+        logEntity.message = "Log message";
+        return logEntity;
     }
 }
