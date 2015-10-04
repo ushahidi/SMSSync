@@ -53,5 +53,6 @@ public class WebServiceEntityTest extends BaseRobolectricTestCase {
                 .isEqualTo(DomainEntityFixture.getWebServiceEntity().getTitle());
         assertThat(mWebServiceEntity.getUrl())
                 .isEqualTo(DomainEntityFixture.getWebServiceEntity().getUrl());
+        assertThat(mWebServiceEntity.getSyncScheme()).isNotNull();
     }
 }
