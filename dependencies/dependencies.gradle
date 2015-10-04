@@ -48,12 +48,12 @@ ext {
 
     //Testing
     jUnitVersion = '4.12'
-    mockitoVersion = '1.9.5'
-    dexmakerVersion = '1.0'
-    espressoVersion = '2.0'
+    mockitoVersion = '1.10.19'
+    dexmakerVersion = '1.2'
+    espressoVersion = '2.2.1'
     testingSupportLibVersion = '0.1'
     robolectricVersion = '3.0'
-    truthVersion = '0.26'
+    truthVersion = '0.27'
 
     appDependencies = [
             daggerCompiler      : "com.google.dagger:dagger-compiler:${daggerVersion}",
