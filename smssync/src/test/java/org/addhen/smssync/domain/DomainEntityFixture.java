@@ -33,10 +33,6 @@ public final class DomainEntityFixture {
 
     public static final Long ID = 2l;
 
-    private static SyncSchemeEntity mSyncSchemeEntity;
-
-    private static WebServiceEntity mWebServiceEntity;
-
     private static Date mDate = new Date();
 
     public static FilterEntity getFilterEntity() {
@@ -73,5 +69,16 @@ public final class DomainEntityFixture {
         messageEntity.status = MessageEntity.Status.SENT;
         messageEntity.retries = 3;
         return messageEntity;
+    }
+
+    public static WebServiceEntity getWebServiceEntity() {
+        WebServiceEntity webServiceEntity = new WebServiceEntity();
+        webServiceEntity._id = ID;
+        webServiceEntity.setSecret("secret");
+        webServiceEntity.setKeywords("keywords");
+        webServiceEntity.setTitle("title");
+        webServiceEntity.setSyncScheme(new SyncSchemeEntity());
+        webServiceEntity.setUrl("url");
+        return webServiceEntity;
     }
 }
