@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * @author Henry Addo
+ * @author Ushahidi Team <team@ushahidi.com>
  */
 public class MessageResultsScheduledReceiver extends BroadcastReceiver {
 

@@ -17,6 +17,13 @@
 
 package org.addhen.smssync.presentation.receiver;
 
+import org.addhen.smssync.R;
+import org.addhen.smssync.data.PrefsFactory;
+import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.presentation.App;
+import org.addhen.smssync.presentation.presenter.AlertPresenter;
+import org.addhen.smssync.presentation.service.AutoSyncScheduledService;
+import org.addhen.smssync.presentation.service.CheckTaskService;
 import org.addhen.smssync.presentation.util.Utility;
 
 import android.content.BroadcastReceiver;
@@ -25,7 +32,12 @@ import android.content.Intent;
 import android.os.BatteryManager;
 
 /**
- * @author Henry Addo
+ * The manifest Receiver is used to detect changes in battery state. When the system broadcasts a
+ * "Battery Low" warning we turn off and stop all enabled services. When the system broadcasts
+ * "Battery OK" to indicate the battery has returned to an okay state, we start all enabled
+ * services
+ *
+ * @author Ushahidi Team <team@ushahidi.com>
  */
 public class PowerStateChangedReceiver extends BroadcastReceiver {
 
@@ -44,8 +56,57 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
         int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
         final int percentage = Utility.calculateBatteryLevel(level, scale);
+        PrefsFactory prefsFactory = App.getAppComponent().prefsFactory();
+        FileManager fileManager = App.getAppComponent().fileManager();
+        AlertPresenter alertPresenter = App.getAppComponent().alertPresenter();
         if (mBatteryLow) {
+            // is smssync service enabled
+            fileManager.appendAndClose(context.getString(R.string.battery_low));
+            if (prefsFactory.serviceEnabled().get()) {
+                Utility.clearAll(context);
+                // Stop the service that pushes pending messages
+                if (prefsFactory.enableAutoSync().get()) {
+                    mSmsSyncAutoSyncServiceIntent = new Intent(context,
+                            AutoSyncScheduledService.class);
+                    context.stopService(mSmsSyncAutoSyncServiceIntent);
+                }
+                // Stop the service that checks for tasks
+                if (prefsFactory.enableTaskCheck().get()) {
+                    mSmsSyncTaskCheckServiceIntent = new Intent(context, CheckTaskService.class);
+                    context.stopService(mSmsSyncTaskCheckServiceIntent);
+                }
+            }
 
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    alertPresenter.lowBatteryLevelRequest(percentage);
+                }
+            }).start();
+        }
+
+        if (batteryOkay) {
+            fileManager.appendAndClose(context.getString(R.string.battery_okay));
+            // is smssync enabled
+            if (prefsFactory.serviceEnabled().get()) {
+
+                // clear all notifications
+                Utility.clearNotify(context);
+
+                // Stop the service that pushes pending messages
+                if (prefsFactory.enableAutoSync().get()) {
+                    mSmsSyncAutoSyncServiceIntent = new Intent(context,
+                            AutoSyncScheduledService.class);
+                    AutoSyncScheduledService
+                            .sendWakefulWork(context, mSmsSyncAutoSyncServiceIntent);
+                }
+
+                // Stop the service that checks for tasks
+                if (prefsFactory.enableTaskCheck().get()) {
+                    mSmsSyncTaskCheckServiceIntent = new Intent(context, CheckTaskService.class);
+                    CheckTaskService.sendWakefulWork(context, mSmsSyncTaskCheckServiceIntent);
+                }
+            }
         }
     }
 }
