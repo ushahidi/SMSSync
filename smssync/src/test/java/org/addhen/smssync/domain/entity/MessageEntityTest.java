@@ -15,10 +15,9 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain;
+package org.addhen.smssync.domain.entity;
 
 import org.addhen.smssync.BaseRobolectricTestCase;
-import org.addhen.smssync.domain.entity.MessageEntity;
 import org.junit.Before;
 import org.junit.Test;
 

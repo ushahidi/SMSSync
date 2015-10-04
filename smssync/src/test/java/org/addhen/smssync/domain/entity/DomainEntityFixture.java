@@ -15,7 +15,7 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain;
+package org.addhen.smssync.domain.entity;
 
 import org.addhen.smssync.domain.entity.FilterEntity;
 import org.addhen.smssync.domain.entity.HttpNameValuePair;

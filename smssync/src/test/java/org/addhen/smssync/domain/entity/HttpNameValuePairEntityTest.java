@@ -15,10 +15,9 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain;
+package org.addhen.smssync.domain.entity;
 
 import org.addhen.smssync.BaseRobolectricTestCase;
-import org.addhen.smssync.domain.entity.LogEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,20 +26,21 @@ import static com.google.common.truth.Truth.assertThat;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class LogEntityTest extends BaseRobolectricTestCase {
+public class HttpNameValuePairEntityTest extends BaseRobolectricTestCase {
 
-    private LogEntity mLogEntity;
+    private HttpNameValuePair mHttpNameValuePair;
 
     @Before
     public void setUp() {
-        mLogEntity = DomainEntityFixture.getLogEntity();
+        mHttpNameValuePair = DomainEntityFixture.getHttpNameValuePair();
     }
 
     @Test
-    public void shouldSetLogEntity() {
-        assertThat(mLogEntity).isNotNull();
-        assertThat(mLogEntity._id).isNotNull();
-        assertThat(mLogEntity._id).isEqualTo(DomainEntityFixture.getLogEntity()._id);
-        assertThat(mLogEntity.message).isEqualTo(DomainEntityFixture.getLogEntity().message);
+    public void shouldSetFilterEntity() {
+        assertThat(mHttpNameValuePair).isNotNull();
+        assertThat(mHttpNameValuePair.getName()).isEqualTo(
+                DomainEntityFixture.getHttpNameValuePair().getName());
+        assertThat(mHttpNameValuePair.getValue())
+                .isEqualTo(DomainEntityFixture.getHttpNameValuePair().getValue());
     }
 }

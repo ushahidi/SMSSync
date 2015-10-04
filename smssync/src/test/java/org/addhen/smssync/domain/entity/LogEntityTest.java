@@ -15,10 +15,9 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain;
+package org.addhen.smssync.domain.entity;
 
 import org.addhen.smssync.BaseRobolectricTestCase;
-import org.addhen.smssync.domain.entity.FilterEntity;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,23 +26,20 @@ import static com.google.common.truth.Truth.assertThat;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class FilterEntityTest extends BaseRobolectricTestCase {
+public class LogEntityTest extends BaseRobolectricTestCase {
 
-    private FilterEntity mFilterEntity;
+    private LogEntity mLogEntity;
 
     @Before
     public void setUp() {
-        mFilterEntity = DomainEntityFixture.getFilterEntity();
+        mLogEntity = DomainEntityFixture.getLogEntity();
     }
 
     @Test
-    public void shouldSetFilterEntity() {
-        assertThat(mFilterEntity).isNotNull();
-        assertThat(mFilterEntity).isInstanceOf(FilterEntity.class);
-        assertThat(mFilterEntity._id).isNotNull();
-        assertThat(mFilterEntity._id).isEqualTo(DomainEntityFixture.ID);
-        assertThat(mFilterEntity.status).isEqualTo(FilterEntity.Status.WHITELIST);
-        assertThat(mFilterEntity.phoneNumber)
-                .isEqualTo(DomainEntityFixture.getFilterEntity().phoneNumber);
+    public void shouldSetLogEntity() {
+        assertThat(mLogEntity).isNotNull();
+        assertThat(mLogEntity._id).isNotNull();
+        assertThat(mLogEntity._id).isEqualTo(DomainEntityFixture.getLogEntity()._id);
+        assertThat(mLogEntity.message).isEqualTo(DomainEntityFixture.getLogEntity().message);
     }
 }

@@ -15,10 +15,9 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain;
+package org.addhen.smssync.domain.entity;
 
 import org.addhen.smssync.BaseRobolectricTestCase;
-import org.addhen.smssync.domain.entity.HttpNameValuePair;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,21 +26,23 @@ import static com.google.common.truth.Truth.assertThat;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class HttpNameValuePairEntityTest extends BaseRobolectricTestCase {
+public class FilterEntityTest extends BaseRobolectricTestCase {
 
-    private HttpNameValuePair mHttpNameValuePair;
+    private FilterEntity mFilterEntity;
 
     @Before
     public void setUp() {
-        mHttpNameValuePair = DomainEntityFixture.getHttpNameValuePair();
+        mFilterEntity = DomainEntityFixture.getFilterEntity();
     }
 
     @Test
     public void shouldSetFilterEntity() {
-        assertThat(mHttpNameValuePair).isNotNull();
-        assertThat(mHttpNameValuePair.getName()).isEqualTo(
-                DomainEntityFixture.getHttpNameValuePair().getName());
-        assertThat(mHttpNameValuePair.getValue())
-                .isEqualTo(DomainEntityFixture.getHttpNameValuePair().getValue());
+        assertThat(mFilterEntity).isNotNull();
+        assertThat(mFilterEntity).isInstanceOf(FilterEntity.class);
+        assertThat(mFilterEntity._id).isNotNull();
+        assertThat(mFilterEntity._id).isEqualTo(DomainEntityFixture.ID);
+        assertThat(mFilterEntity.status).isEqualTo(FilterEntity.Status.WHITELIST);
+        assertThat(mFilterEntity.phoneNumber)
+                .isEqualTo(DomainEntityFixture.getFilterEntity().phoneNumber);
     }
 }
