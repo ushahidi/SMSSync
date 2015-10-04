@@ -39,7 +39,6 @@ public final class DomainEntityFixture {
 
     private static WebServiceEntity mWebServiceEntity;
 
-    private static HttpNameValuePair mHttpNameValuePair;
 
     public static FilterEntity getFilterEntity() {
         FilterEntity filterEntity = new FilterEntity();
@@ -47,5 +46,9 @@ public final class DomainEntityFixture {
         filterEntity.phoneNumber = "000000000";
         filterEntity.status = FilterEntity.Status.WHITELIST;
         return filterEntity;
+    }
+
+    public static HttpNameValuePair getHttpNameValuePair() {
+        return new HttpNameValuePair("key", "value");
     }
 }
