@@ -24,6 +24,8 @@ import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.entity.SyncSchemeEntity;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 
+import java.util.Date;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
@@ -31,12 +33,11 @@ public final class DomainEntityFixture {
 
     public static final Long ID = 2l;
 
-    private static MessageEntity mMessageEntity;
-
     private static SyncSchemeEntity mSyncSchemeEntity;
 
     private static WebServiceEntity mWebServiceEntity;
 
+    private static Date mDate = new Date();
 
     public static FilterEntity getFilterEntity() {
         FilterEntity filterEntity = new FilterEntity();
@@ -55,5 +56,22 @@ public final class DomainEntityFixture {
         logEntity._id = ID;
         logEntity.message = "Log message";
         return logEntity;
+    }
+
+    public static MessageEntity getMessageEntity() {
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity._id = ID;
+        messageEntity.deliveredMessageDate = mDate;
+        messageEntity.deliveryResultCode = 1;
+        messageEntity.deliveryResultMessage = "delivered";
+        messageEntity.messageBody = "Message body";
+        messageEntity.messageDate = mDate;
+        messageEntity.messageType = MessageEntity.Type.PENDING;
+        messageEntity.messageFrom = "000000000";
+        messageEntity.messageUuid = "uuid0123456";
+        messageEntity.sentResultCode = 1;
+        messageEntity.status = MessageEntity.Status.SENT;
+        messageEntity.retries = 3;
+        return messageEntity;
     }
 }
