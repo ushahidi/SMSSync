@@ -169,13 +169,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             setupDrawerContent();
         }
         setupFragment(mNavigationView.getMenu().findItem(mCurrentMenu));
-        findMessageFragment();
         handleSearchIntent(getIntent());
-    }
-
-    private void findMessageFragment() {
-        mMessageFragment = (MessageFragment) getSupportFragmentManager()
-                .findFragmentByTag(INCOMING_FAG_TAG);
     }
 
     private String getAppVersionName() {
@@ -222,10 +216,10 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         // Only show search icon for incoming messages fragment
         if (mNavigationView.getMenu().findItem(R.id.nav_incoming_messages).isChecked()) {
             mSearchItem.setVisible(true);
-            mSearchView.setVisibility(View.GONE);
+            mSearchView.setVisibility(View.VISIBLE);
         } else {
             mSearchItem.setVisible(false);
-            mSearchView.setVisibility(View.INVISIBLE);
+            mSearchView.setVisibility(View.GONE);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -245,12 +239,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if (TextUtils.isEmpty(s)) {
-                    reloadMessages();
-                } else {
-                    performQuery(s);
-                }
-
+                performQuery(s);
                 return true;
             }
         });
@@ -373,7 +362,8 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     private void setupFragment(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_incoming_messages:
-                replaceFragment(R.id.fragment_main_content, MessageFragment.newInstance(),
+                mMessageFragment = MessageFragment.newInstance();
+                replaceFragment(R.id.fragment_main_content, mMessageFragment,
                         INCOMING_FAG_TAG);
                 setToolbarTitle(menuItem);
                 break;
@@ -409,7 +399,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         FragmentTransaction fragmentTransaction = this.getSupportFragmentManager()
                 .beginTransaction();
         fragmentTransaction.replace(containerViewId, fragment, tag);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
