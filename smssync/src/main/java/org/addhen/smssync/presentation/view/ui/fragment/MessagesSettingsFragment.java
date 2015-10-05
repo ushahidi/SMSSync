@@ -64,8 +64,7 @@ public class MessagesSettingsFragment extends BasePreferenceFragmentCompat
     public void onResume() {
         super.onResume();
         // Set up a listener whenever a key changes
-        getPreferenceScreen().getSharedPreferences()
-                .registerOnSharedPreferenceChangeListener(this);
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
 
     }
 

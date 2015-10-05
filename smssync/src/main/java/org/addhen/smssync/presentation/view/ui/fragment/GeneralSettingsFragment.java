@@ -75,6 +75,7 @@ public class GeneralSettingsFragment extends BasePreferenceFragmentCompat implem
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initialize();
     }
 
     @Override
