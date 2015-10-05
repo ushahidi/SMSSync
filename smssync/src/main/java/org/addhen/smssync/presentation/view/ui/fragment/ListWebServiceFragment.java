@@ -249,7 +249,7 @@ public class ListWebServiceFragment
 
     private void enableSwipeToPerformAction() {
         ItemTouchHelper.SimpleCallback swipeToDismiss = new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT) {
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                     RecyclerView.ViewHolder target) {
@@ -324,11 +324,20 @@ public class ListWebServiceFragment
             ViewHelper.setAlpha(itemView, alpha);
             ViewHelper.setTranslationX(itemView, dX);
 
-            final Drawable d = ContextCompat
-                    .getDrawable(getAppContext(),
-                            R.drawable.swipe_left_publish_list_item_background);
-            d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
-                    itemView.getBottom());
+            Drawable d;
+            // Swiping right
+            if (dX > 0) {
+                d = ContextCompat
+                        .getDrawable(getAppContext(),
+                                R.drawable.swipe_right_publish_list_item_background);
+                d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
+            } else { // Swiping left
+                d = ContextCompat
+                        .getDrawable(getAppContext(),
+                                R.drawable.swipe_left_publish_list_item_background);
+                d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
+                        itemView.getBottom());
+            }
             d.draw(c);
         }
     }
