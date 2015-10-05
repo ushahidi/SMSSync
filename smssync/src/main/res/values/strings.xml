@@ -636,4 +636,5 @@
     <string name="invalid_qr_code_string">The QR code doesn\'t appear to return a valid JSON
         string
     </string>
+    <string name="no_published_messages">There are no more published messages</string>
 </resources>

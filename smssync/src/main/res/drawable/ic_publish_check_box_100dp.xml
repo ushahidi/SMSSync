@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   ~ Copyright (c) 2010 - 2015 Ushahidi Inc
   ~ All rights reserved
@@ -16,12 +16,9 @@
   ~ Ushahidi developers at team@ushahidi.com.
   -->
 
-
-<com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@id/android:list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:cacheColorHint="@android:color/transparent"
-        app:recyclerviewEmptyView="@layout/publish_messages_empty_list_view"/>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="100dp"
+        android:viewportHeight="24.0" android:viewportWidth="24.0"
+        android:width="100dp">
+    <path android:fillColor="@color/grey_light"
+          android:pathData="M19,3H5c-1.11,0 -2,0.9 -2,2v14c0,1.1 0.89,2 2,2h14c1.11,0 2,-0.9 2,-2V5c0,-1.1 -0.89,-2 -2,-2zm-9,14l-5,-5 1.41,-1.41L10,14.17l7.59,-7.59L19,8l-9,9z"/>
+</vector>
