@@ -25,7 +25,7 @@
             android:title="@string/chk_enable_reply"/>
 
     <EditTextPreference
-            android:dependency="enable_reply_frm_server_preference"
+            android:dependency="enable_reply_preference"
             android:defaultValue="@string/edittxt_reply_default"
             android:dialogTitle="@string/edittxt_reply"
             android:key="reply_preference"
