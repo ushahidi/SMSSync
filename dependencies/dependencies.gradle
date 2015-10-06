@@ -25,7 +25,7 @@ ext {
     //Android
     androidBuildToolsVersion = "23.0.1"
     androidMinSdkVersion = 8
-    androidTargetSdkVersion = 23
+    androidTargetSdkVersion = 22
     androidCompileSdkVersion = 23
 
     //Libraries
