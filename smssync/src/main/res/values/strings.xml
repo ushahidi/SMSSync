@@ -560,7 +560,7 @@
     <string name="publish">Publish</string>
 
     <string name="custom_web_service_description">All incoming messages will be published to the
-        following web service:
+        following custom web service:
     </string>
     <string name="custom_web_service_title_hint">Enter a title for the custom service</string>
     <string name="custom_web_service_url_hint">Enter the url</string>
@@ -573,13 +573,13 @@
         service
     </string>
     <string name="custom_web_service_title_validation_message">Please enter at least four characters
-        for the web service title
+        for the custom web service title
     </string>
     <string name="custom_web_service">Custom web service</string>
-    <string name="manage_custom_web_services">Manage Web Services</string>
-    <string name="add_web_service">Add web service</string>
-    <string name="update_web_service">Update web service</string>
-    <string name="empty_view_web_service_header">No web service added</string>
+    <string name="manage_custom_web_services">Manage Custom Web Services</string>
+    <string name="add_web_service">Add custom web service</string>
+    <string name="update_web_service">Update custom web service</string>
+    <string name="empty_view_web_service_header">No custom web service added</string>
     <string name="empty_view_web_service_subheader">Tap the button below to add one</string>
     <string name="scan_qr_code">Scan QR code</string>
     <string name="test_integration">Test Integration</string>
@@ -597,11 +597,12 @@
             Web Services successfully deleted
         </item>
     </plurals>
-    <string name="delete_enabled_webservice">Could not disable web service because it is enabled
+    <string name="delete_enabled_webservice">Could not disable this custom web service because it is
+        enabled
     </string>
     <string name="failed_to_test_web_service">Web service doesn\'t seem to have the right endpoint
     </string>
-    <string name="valid_web_service">A valid SMSsync web service</string>
+    <string name="valid_web_service">A valid SMSsync custom web service</string>
     <string name="valid_sync_scheme_enter_key_for_secret">Please \'secret\' is a required field
     </string>
     <string name="valid_sync_scheme_enter_key_for_from">Please \'from\' is a required field</string>
