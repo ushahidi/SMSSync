@@ -37,6 +37,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/integration_header"
                 android:textColor="@android:color/black"
+                android:layout_marginTop="@dimen/view_spacing_large"
+                android:layout_marginBottom="@dimen/view_spacing_large"
                 android:textStyle="bold"
                 android:textSize="20sp"/>
 
@@ -46,6 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="5dp"
+                app:cardPreventCornerOverlap="false"
                 android:layout_marginBottom="@dimen/view_spacing_normal"
                 android:background="?attr/selectableItemBackground">
             <RelativeLayout
@@ -76,6 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
+                        android:paddingTop="@dimen/view_spacing_large"
                         android:layout_toEndOf="@+id/twitter_icon_container"
                         android:layout_toRightOf="@+id/twitter_icon_container"/>
                 <android.support.v7.widget.AppCompatTextView
@@ -85,6 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/twitter_blurb"
+                        android:paddingBottom="@dimen/view_spacing_large"
                         android:layout_centerVertical="true"
                         android:layout_below="@+id/twitter_title"
                         android:layout_toRightOf="@+id/twitter_icon_container"
