@@ -25,10 +25,6 @@
               tools:context=".LogActivity">
 
     <include layout="@layout/phone_status"/>
-    <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?attr/dividerVertical"/>
     <android.support.v7.widget.SwitchCompat
             android:id="@+id/start_logs"
             android:layout_width="wrap_content"
