@@ -17,75 +17,39 @@
       <guid>http://localhost:1313/screenshots/</guid>
       <description>&lt;div class=&#34;row&#34;&gt;
     &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/auto_reply.png&#34; title=&#34;Auto Reply&#34;&gt;&lt;img alt=&#34;Auto Reply&#34; src=&#34;http://localhost:1313/images/screenshots/auto_reply.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/splash-screen.png&#34; title=&#34;Splash Screen&#34;&gt;&lt;img alt=&#34;Splash Screen&#34; src=&#34;http://localhost:1313/images/screenshots/splash-screen.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
         &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Auto Reply&lt;/h5&gt;
+            &lt;h5&gt;Splash Screen&lt;/h5&gt;
         &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sync_url.png&#34; title=&#34;Manage Sync URL&#34;&gt;&lt;img alt=&#34;Manage Sync URL&#34; src=&#34;http://localhost:1313/images/screenshots/sync_url.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/integrations-screen.png&#34; title=&#34;Integration Screen&#34;&gt;&lt;img alt=&#34;Integrations&#34; src=&#34;http://localhost:1313/images/screenshots/integrations-screen.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
         &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Manage Sync URLs&lt;/h5&gt;
+            &lt;h5&gt;Integrations&lt;/h5&gt;
         &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/add_sync_url.png&#34; title=&#34;Add Sync URL&#34;&gt;&lt;img alt=&#34;Add Sync URL&#34; src=&#34;http://localhost:1313/images/screenshots/add_sync_url.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/list-custom-web-service.png&#34; title=&#34;List Custom Web Services&#34;&gt;&lt;img alt=&#34;List Custom Web Services&#34; src=&#34;http://localhost:1313/images/screenshots/list-custom-web-service.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
         &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Add Sync URL&lt;/h5&gt;
+            &lt;h5&gt;List Custom Web Services&lt;/h5&gt;
         &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sent_messages.png&#34; title=&#34;Sent Messages&#34;&gt;&lt;img alt=&#34;Sent Messages&#34; src=&#34;http://localhost:1313/images/screenshots/sent_messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/list-incoming-messages.png&#34; title=&#34;List Incoming Messages&#34;&gt;&lt;img alt=&#34;List Incoming Messages&#34; src=&#34;http://localhost:1313/images/screenshots/list-incoming-messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
         &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Sent Messages&lt;/h5&gt;
+            &lt;h5&gt;List Incoming Messages&lt;/h5&gt;
         &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/pending_messages.png&#34; title=&#34;Pending Messages&#34;&gt;&lt;img alt=&#34;Pending Messages&#34; src=&#34;http://localhost:1313/images/screenshots/pending_messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/empty-published-messages.png&#34; title=&#34;Empty Published Messages&#34;&gt;&lt;img alt=&#34;Empty Published Messages&#34; src=&#34;http://localhost:1313/images/screenshots/empty-published-messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
         &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Pending Messages&lt;/h5&gt;
+            &lt;h5&gt;Empty Published Messages&lt;/h5&gt;
         &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/settings.png&#34; title=&#34;Settings&#34;&gt;&lt;img alt=&#34;Settings&#34; src=&#34;http://localhost:1313/images/screenshots/settings.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/phone-numbers-filters.png&#34; title=&#34;Phone Numbers Filters&#34;&gt;&lt;img alt=&#34;Phone Numbers Filters&#34; src=&#34;http://localhost:1313/images/screenshots/phone-numbers-filters.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
         &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Settings&lt;/h5&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/log.png&#34; title=&#34;Logs&#34;&gt;&lt;img alt=&#34;Logs&#34; src=&#34;http://localhost:1313/images/screenshots/log.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
-        &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Logs&lt;/h5&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/whitelist.png&#34; title=&#34;Whitelist&#34;&gt;&lt;img alt=&#34;Whitelist&#34; src=&#34;http://localhost:1313/images/screenshots/whitelist.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
-        &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Whitelist&lt;/h5&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/blacklist.png&#34; title=&#34;Blacklist&#34;&gt;&lt;img alt=&#34;Blacklist&#34; src=&#34;http://localhost:1313/images/screenshots/blacklist.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
-        &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Empty Whitelist&lt;/h5&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/multi-select.png&#34; title=&#34;Multi select items&#34;&gt;&lt;img alt=&#34;Multi select items&#34; src=&#34;http://localhost:1313/images/screenshots/multi-select.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
-        &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Notification&lt;/h5&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/sync-scheme.png&#34; title=&#34;Configure a sync scheme&#34;&gt;&lt;img alt=&#34;configure a sync scheme&#34; src=&#34;http://localhost:1313/images/screenshots/sync-scheme.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
-        &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Configure a Sync URL&lt;/h5&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
-        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://localhost:1313/images/screenshots/add_sync_url_http_auth.png&#34; title=&#34;Add Sync URL with HTTP basic authentication&lt;&#34;&gt;&lt;img alt=&#34;configure a sync scheme&#34; src=&#34;http://localhost:1313/images/screenshots/add_sync_url_http_auth.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
-        &lt;div class=&#34;caption&#34;&gt;
-            &lt;h5&gt;Making SMSsync the default SMS app&lt;/h5&gt;
+            &lt;h5&gt;Phone Numbers Filters&lt;/h5&gt;
         &lt;/div&gt;
     &lt;/div&gt;
 &lt;/div&gt;
@@ -1067,44 +1031,51 @@ else
       <guid>http://localhost:1313/download/</guid>
       <description>&lt;div class=&#34;row&#34;&gt;
     &lt;div class=&#34;col-lg-4&#34;&gt;
-        &lt;h2&gt;QR Code&lt;/h2&gt;
-
-        &lt;p&gt;&lt;strong&gt;Scan the QR below to install SMSsync on your Android powered phone&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;div class=&#34;thumbnails&#34;&gt;
-            &lt;img class=&#34;thumbnail&#34; width=&#34;200&#34;
-                 src=&#34;http://qr.kaywa.com/?s=8&amp;d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync&#34;
-                 alt=&#34;Scan to download SMSsync&#34; title=&#34;Scan to download SMSsync&#34;/&gt;
+        &lt;div class=&#34;panel panel-primary&#34;&gt;
+            &lt;div class=&#34;panel-heading&#34;&gt;
+                &lt;h3 class=&#34;panel-title&#34;&gt;QR Code&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;panel-body&#34;&gt;
+                &lt;p&gt;&lt;strong&gt;Scan the QR below to install SMSsync on your Android powered phone&lt;/strong&gt;&lt;/p&gt;
+                &lt;div class=&#34;thumbnails&#34;&gt;
+                    &lt;img class=&#34;thumbnail&#34; width=&#34;200&#34;
+                        src=&#34;http://qr.kaywa.com/?s=8&amp;d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync&#34;
+                        alt=&#34;Scan to download SMSsync&#34; title=&#34;Scan to download SMSsync&#34;/&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
         &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&#34;col-lg-4&#34;&gt;
-        &lt;h2&gt;Android market&lt;/h2&gt;
-
-        &lt;p&gt;&lt;strong&gt;The app is available today on the Android market. You can download it on your
+        &lt;div class=&#34;panel panel-primary&#34;&gt;
+            &lt;div class=&#34;panel-heading&#34;&gt;
+                &lt;h3 class=&#34;panel-title&#34;&gt;Google Playstore&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;panel-body&#34;&gt;
+                &lt;p&gt;&lt;strong&gt;The app is available today on the Android market. You can download it on your
             phone by clicking on the image on the below or scanning the QR code on the left.
             Enjoy!&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;div class=&#34;thumbnails&#34;&gt;
             &lt;a href=&#34;https://play.google.com/store/apps/details?id=org.addhen.smssync&#34;&gt;&lt;img
-                    class=&#34;thumbnail&#34; title=&#34;Android market&#34;
-                    src=&#34;http://blog.ushahidi.com/wp-content/uploads/2011/07/ushahidi_android_on_the_market-150x150.png&#34;
-                    alt=&#34;Android market&#34; width=&#34;200&#34; height=&#34;200&#34;/&gt;&lt;/a&gt;
+ title=&#34;Android market&#34;
+                    src=&#34;https://raw.githubusercontent.com/ushahidi/SMSSync/master/art/playstore-badge.png&#34;
+                    alt=&#34;SMSsync on the Google Playstore&#34;/&gt;&lt;/a&gt;
+            &lt;/div&gt;
         &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&#34;col-lg-4&#34;&gt;
-        &lt;h2&gt;F-Droid&lt;/h2&gt;
-
-        &lt;p&gt;&lt;strong&gt;The app is available today on the F-Droid market. You can download it on your
+        &lt;div class=&#34;panel panel-primary&#34;&gt;
+            &lt;div class=&#34;panel-heading&#34;&gt;
+                &lt;h3 class=&#34;panel-title&#34;&gt;F-Droid&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class=&#34;panel-body&#34;&gt;
+                &lt;p&gt;&lt;strong&gt;The app is available today on the F-Droid market. You can download it on your
             phone by clicking on the image on the below.
             Enjoy!&lt;/strong&gt;&lt;/p&gt;
-
-        &lt;div class=&#34;thumbnails&#34;&gt;
-            &lt;a href=&#34;https://f-droid.org/repository/browse/?fdfilter=smssync&amp;fdid=org.addhen.smssync&#34;&gt;&lt;img
-                    class=&#34;thumbnail&#34; title=&#34;SMSsync on F-Droid market&#34;
-                    src=&#34;http://localhost:1313/images/f-droid.png&#34;
-                    alt=&#34;F-Droid&#34; width=&#34;200&#34; height=&#34;67&#34;/&gt;&lt;/a&gt;
+            &lt;a href=&#34;https://f-droid.org/repository/browse/?fdfilter=smssync&amp;fdid=org.addhen.smssync&#34;&gt;
+                &lt;img title=&#34;SMSsync on F-Droid market&#34; src=&#34;https://raw.githubusercontent.com/ushahidi/SMSSync/master/art/f-droid-badge.png&#34; alt=&#34;F-Droid&#34;/&gt;
+            &lt;/a&gt;
+            &lt;/div&gt;
         &lt;/div&gt;
-    &lt;/div&gt;  
+    &lt;/div&gt;
 &lt;/div&gt;
 </description>
     </item>
@@ -1115,6 +1086,15 @@ else
       <pubDate>Fri, 01 May 2015 10:07:05 +0900</pubDate>
       
       <guid>http://localhost:1313/releases/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Generate QR Code</title>
+      <link>http://localhost:1313/tool/</link>
+      <pubDate>Fri, 01 May 2015 10:07:05 +0900</pubDate>
+      
+      <guid>http://localhost:1313/tool/</guid>
       <description></description>
     </item>
     

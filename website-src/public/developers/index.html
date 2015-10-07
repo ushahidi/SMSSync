@@ -4,7 +4,6 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>SMSsync - Developers</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="SMSsync The free and open source SMS gateway for Android devices">
@@ -23,9 +22,20 @@
         
         <link href="" rel="alternate" type="application/rss+xml" title="SMSsync" />
 
+<title>SMSsync - Developers</title>
 <link href='/css/google_prettify/sons-of-obsidian.css' type='text/css' rel='stylesheet' media='all'/>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SMSsync</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="/css/hugo-bootswatch.css">
+  </head>
+  <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
         <a href="https://github.com/ushahidi/SMSSync"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
         <div class="container">
@@ -77,6 +87,10 @@
                               </li>
                             
                               <li >
+                                  <a href="/tool/">Generate QR Code</a>
+                              </li>
+                            
+                              <li >
                                   <a href="https://forums.ushahidi.com/category/smssync">Support</a>
                               </li>
                             
@@ -86,16 +100,11 @@
         </div>  
     </div> 
 
-    <div class="container">
-        <div class="jumbotron">
-            <h2>The free and open source SMS gateway for Android</h2>
-      </div>
-      
-    <div class="container">
+  
+  <div class="container">
       <div class="page-header">
             <h1>Developers Documentation <small>This shows how to integrate SMSsync into your project.</small> </h1>
       </div>
-    </div>
     
     <div class="container">
         <div class="row">
@@ -784,11 +793,9 @@ else
     </div>
 
 
-     </div>
-     
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+</div>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/bootswatch.js"></script>
 
 
 
@@ -812,8 +819,5 @@ else
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
-    <script>document.write('<script src="http://'
-        + (location.host || 'localhost').split(':')[0]
-		+ ':1313/livereload.js?mindelay=10"></'
-        + 'script>')</script></body>
+    </body>
 </html>

@@ -1,0 +1,7 @@
+project_path = '../static'
+css_dir = 'css'
+sass_dir = 'sass'
+scss_dir = 'sass'
+javascript_dir = 'js'
+images_dir = 'images'
+require 'bootstrap-sass'

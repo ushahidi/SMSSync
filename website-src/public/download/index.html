@@ -4,7 +4,6 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>SMSsync - Downloads</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="SMSsync The free and open source SMS gateway for Android devices">
@@ -23,6 +22,7 @@
         
         <link href="" rel="alternate" type="application/rss+xml" title="SMSsync" />
 
+<title>SMSsync - Downloads</title>
     </head>
     <body>
     <div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
@@ -76,6 +76,10 @@
                               </li>
                             
                               <li >
+                                  <a href="/tool/">Generate QR Code</a>
+                              </li>
+                            
+                              <li >
                                   <a href="https://forums.ushahidi.com/category/smssync">Support</a>
                               </li>
                             
@@ -85,62 +89,67 @@
         </div>  
     </div> 
 
+<div class="container">
+    
     <div class="container">
-        <div class="jumbotron">
-            <h2>The free and open source SMS gateway for Android</h2>
-      </div>
-      
-    <div class="container">
-      <div class="page-header">
+        <div class="page-header">
             <h1>Downloads <small>Where to download the app.</small></h1>
-      </div>
+        </div>
     </div>
     
     <div class="container">
         <div class="row">
     <div class="col-lg-4">
-        <h2>QR Code</h2>
-
-        <p><strong>Scan the QR below to install SMSsync on your Android powered phone</strong></p>
-
-        <div class="thumbnails">
-            <img class="thumbnail" width="200"
-                 src="http://qr.kaywa.com/?s=8&d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync"
-                 alt="Scan to download SMSsync" title="Scan to download SMSsync"/>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">QR Code</h3>
+            </div>
+            <div class="panel-body">
+                <p><strong>Scan the QR below to install SMSsync on your Android powered phone</strong></p>
+                <div class="thumbnails">
+                    <img class="thumbnail" width="200"
+                        src="http://qr.kaywa.com/?s=8&d=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dorg.addhen.smssync"
+                        alt="Scan to download SMSsync" title="Scan to download SMSsync"/>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-lg-4">
-        <h2>Android market</h2>
-
-        <p><strong>The app is available today on the Android market. You can download it on your
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Google Playstore</h3>
+            </div>
+            <div class="panel-body">
+                <p><strong>The app is available today on the Android market. You can download it on your
             phone by clicking on the image on the below or scanning the QR code on the left.
             Enjoy!</strong></p>
-
-        <div class="thumbnails">
             <a href="https://play.google.com/store/apps/details?id=org.addhen.smssync"><img
-                    class="thumbnail" title="Android market"
-                    src="http://blog.ushahidi.com/wp-content/uploads/2011/07/ushahidi_android_on_the_market-150x150.png"
-                    alt="Android market" width="200" height="200"/></a>
+ title="Android market"
+                    src="https://raw.githubusercontent.com/ushahidi/SMSSync/master/art/playstore-badge.png"
+                    alt="SMSsync on the Google Playstore"/></a>
+            </div>
         </div>
     </div>
     <div class="col-lg-4">
-        <h2>F-Droid</h2>
-
-        <p><strong>The app is available today on the F-Droid market. You can download it on your
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">F-Droid</h3>
+            </div>
+            <div class="panel-body">
+                <p><strong>The app is available today on the F-Droid market. You can download it on your
             phone by clicking on the image on the below.
             Enjoy!</strong></p>
-
-        <div class="thumbnails">
-            <a href="https://f-droid.org/repository/browse/?fdfilter=smssync&fdid=org.addhen.smssync"><img
-                    class="thumbnail" title="SMSsync on F-Droid market"
-                    src="/images/f-droid.png"
-                    alt="F-Droid" width="200" height="67"/></a>
+            <a href="https://f-droid.org/repository/browse/?fdfilter=smssync&fdid=org.addhen.smssync">
+                <img title="SMSsync on F-Droid market" src="https://raw.githubusercontent.com/ushahidi/SMSSync/master/art/f-droid-badge.png" alt="F-Droid"/>
+            </a>
+            </div>
         </div>
-    </div>  
+    </div>
 </div>
 
-    </div> 
-            <div class="container">
+    </div>
+    
+        <div class="container">
       <footer class="footer bs-footer">
       <div class="row">
         <div class="col-lg-4">
@@ -159,11 +168,9 @@
     </div>
 
 
-     </div>
-     
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+</div>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/bootswatch.js"></script>
 
 
     
@@ -177,8 +184,5 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
-    <script>document.write('<script src="http://'
-        + (location.host || 'localhost').split(':')[0]
-		+ ':1313/livereload.js?mindelay=10"></'
-        + 'script>')</script></body>
+    </body>
 </html>

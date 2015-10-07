@@ -19,23 +19,17 @@
 <link href='/css/google_prettify/sons-of-obsidian.css' type='text/css' rel='stylesheet' media='all'/>
 {{ partial "header.html" . }}
 {{ partial "menu.html" . }}
-    <div class="container">
-        <div class="jumbotron">
-            <h2>{{ .Site.Params.tagline }}</h2>
-      </div>
-      <!-- header ends -->
-    <div class="container">
+  <!-- header ends -->
+  <div class="container">
       <div class="page-header">
-            {{ .Params.header | safeHtml }}
+            {{ .Params.header | safeHTML }}
       </div>
-    </div>
     <!-- body starts -->
     <div class="container">
         {{ .Content }}
     </div> <!-- body ends -->
         {{ partial "container-footer.html" . }}
-     </div>
-     
+</div>
 {{ partial "footer-scripts.html" . }}
 <!-- Google Prettify -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>

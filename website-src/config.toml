@@ -49,7 +49,12 @@ baseurl = "http://smssync.ushahidi.com"
     url = "/screenshots/"
     weight = 8
 [[menu.main]]
+    name = "Generate QR Code"
+    identifier = "tool"
+    url = "/tool/"
+    weight = 9
+[[menu.main]]
   name = "Support"
   identifier = "support"
   url = "https://forums.ushahidi.com/category/smssync"
-  weight = 9
+  weight = 10

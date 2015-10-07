@@ -21,3 +21,4 @@ gradle.properties
 Gemfile.lock
 *~
 public
+.sass-cache

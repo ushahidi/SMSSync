@@ -1,5 +1,5 @@
 
-var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D%22https%3A%2F%2Fraw.githubusercontent.com%2Fushahidi%2FSMSSync%2Fdevelop%2Fcontributors.json%3F_out%3Djson%22%20&format=json";
+var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D%22https%3A%2F%2Fraw.githubusercontent.com%2Fushahidi%2FSMSSync%2Fmaster%2Fcontributors.json%3F_out%3Djson%22%20&format=json";
 $.ajax({
     url: url,
     cache : false,
