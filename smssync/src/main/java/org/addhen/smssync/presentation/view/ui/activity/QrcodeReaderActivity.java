@@ -19,27 +19,33 @@ package org.addhen.smssync.presentation.view.ui.activity;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.Result;
 
 import com.addhen.android.raiburari.presentation.ui.activity.BaseActivity;
-import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.presentation.model.WebServiceModel;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PointF;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import butterknife.Bind;
+import java.util.ArrayList;
+import java.util.List;
+
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class QrcodeReaderActivity extends BaseActivity
-        implements QRCodeReaderView.OnQRCodeReadListener {
+        implements ZXingScannerView.ResultHandler {
 
     /** Intent extra's name to be used to retrieved the shared {@link WebServiceModel} */
     public static final String INTENT_EXTRA_PARAM_BARCODE_WEB_SERVICE_MODEL
@@ -48,11 +54,10 @@ public class QrcodeReaderActivity extends BaseActivity
     /** The request code number to determine if the result was sent by this activity */
     public static final int QRCODE_READER_REQUEST_CODE = 1;
 
-    @Bind(R.id.qrdecoderview)
-    QRCodeReaderView mQRCodeReaderView;
+    ZXingScannerView mScannerView;
 
     public QrcodeReaderActivity() {
-        super(R.layout.activity_barcode_reader, 0);
+        super(0, 0);
     }
 
     /**
@@ -68,16 +73,42 @@ public class QrcodeReaderActivity extends BaseActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQRCodeReaderView.setOnQRCodeReadListener(this);
+        mScannerView = new ZXingScannerView(this);
+        setupFormats();
+        setContentView(mScannerView);
     }
 
     @Override
-    public void onQRCodeRead(String text, PointF[] points) {
-        if (!TextUtils.isEmpty(text)) {
+    public void onResume() {
+        super.onResume();
+        mScannerView.setResultHandler(this);
+        int cameraId = -1;
+        mScannerView.startCamera();
+        mScannerView.setFlash(false);
+        mScannerView.setAutoFocus(true);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mScannerView.stopCamera();
+    }
+
+    @Override
+    public void handleResult(Result result) {
+        try {
+            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+            r.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!TextUtils.isEmpty(result.getText())) {
             Gson gson = new Gson();
             WebServiceModel webServiceModel = null;
             try {
-                webServiceModel = gson.fromJson(text, WebServiceModel.class);
+                webServiceModel = gson.fromJson(result.getText(), WebServiceModel.class);
             } catch (JsonSyntaxException e) {
                 Toast.makeText(this, getString(R.string.invalid_qr_code_string), Toast.LENGTH_LONG)
                         .show();
@@ -93,28 +124,14 @@ public class QrcodeReaderActivity extends BaseActivity
             }
         }
         finish();
+        mScannerView.startCamera();
     }
 
-    // Called when your device have no camera
-    @Override
-    public void cameraNotFound() {
-        finish();
-    }
-
-    // Called when there's no QR codes in the camera preview image
-    @Override
-    public void QRCodeNotFoundOnCamImage() {
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mQRCodeReaderView.getCameraManager().startPreview();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mQRCodeReaderView.getCameraManager().stopPreview();
+    public void setupFormats() {
+        if (mScannerView != null) {
+            List<BarcodeFormat> scannerFormats = new ArrayList<>();
+            scannerFormats.add(BarcodeFormat.QR_CODE);
+            mScannerView.setFormats(scannerFormats);
+        }
     }
 }
