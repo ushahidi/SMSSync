@@ -21,13 +21,10 @@
 {{ partial "header.html" . }}
 {{ partial "menu.html" . }}
 <div class="container">
-    <div class="jumbotron">
-        <h2>{{ .Site.Params.tagline }}</h2>
-    </div>
     <!-- header ends -->
     <div class="container">
         <div class="page-header">
-            {{ .Params.header | safeHtml }}
+            {{ .Params.header | safeHTML }}
         </div>
     </div>
     <!-- body starts -->
@@ -41,4 +38,4 @@
 <script src='http://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.pack.js'></script>
 <script src="/js/screenshots.js"></script>
 {{ partial "google-analytics.html" . }}
-{{ partial "footer.html" . }}
+{{ partial "footer-end-tags.html" . }}

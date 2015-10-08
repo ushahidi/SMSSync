@@ -36,6 +36,7 @@
             app:showText="false"
             app:switchPadding="@dimen/view_spacing_xlarge"
             android:textStyle="bold"
+            android:paddingBottom="@dimen/view_spacing_large"
             android:text="@string/enable_logs"/>
     <TextView
             android:id="@+id/log_location"

@@ -1,0 +1,74 @@
+{{/*<!--
+  ~ Copyright (c) 2010 - 2015 Ushahidi Inc
+  ~ All rights reserved
+  ~ Contact: team@ushahidi.com
+  ~ Website: http://www.ushahidi.com
+  ~ GNU Lesser General Public License Usage
+  ~ This file may be used under the terms of the GNU Lesser
+  ~ General Public License version 3 as published by the Free Software
+  ~ Foundation and appearing in the file LICENSE.LGPL included in the
+  ~ packaging of this file. Please review the following information to
+  ~ ensure the GNU Lesser General Public License version 3 requirements
+  ~ will be met: http://www.gnu.org/licenses/lgpl.html.
+  ~
+  ~ If you have questions regarding the use of this file, please contact
+  ~ Ushahidi developers at team@ushahidi.com.
+  -->*/}}
+{{ partial "header-media-links.html" . }}
+<title>{{ .Site.Title }} - {{ .Title }}</title>
+{{ partial "header-end-tags.html" . }}
+{{ partial "menu.html" . }}
+  <div class="container">
+      <!-- header ends -->
+    <div class="container">
+      <div class="page-header">
+            {{ .Params.header | safeHTML }}
+      </div>
+    </div>
+    <!-- body starts -->
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="well">
+              <form class="form-horizontal" id="qr-code-generator" method="post">
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-lg-2 control-label">Title</label>
+                    <div class="col-lg-10">
+                      <input class="form-control" name="title" id="inputTitle" placeholder="Enter the title for your custom web service" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputUrl" class="col-lg-2 control-label">URL</label>
+                    <div class="col-lg-10">
+                      <input class="form-control" name="url" id="inputUrl" placeholder="Enter the URL for your custom web service" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputSecret" class="col-lg-2 control-label">Secret</label>
+                    <div class="col-lg-10">
+                      <input class="form-control" name="secret" id="inputSecret" placeholder="Enter the secret key for your custom web service" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+              </form>
+            </div>
+          </div>
+        <div class="col-lg-4 col-lg-offset-1">
+          <div class="row" id="qr-code" style="display:none;"></div>
+            <div class="thumbnail" id="qr-code-result" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+    </div> <!-- body ends -->
+        {{ partial "container-footer.html" . }}
+  </div>
+{{ partial "footer-scripts.html" . }}
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script src="/js/jquery.qrcode.min.js"></script>
+<script src="/js/tool.js"></script>
+{{ partial "google-analytics.html" . }}
+{{ partial "footer-end-tags.html" . }}

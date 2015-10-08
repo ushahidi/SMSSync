@@ -29,14 +29,11 @@
       href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css"/><![endif]-->
 {{ partial "header-end-tags.html" . }}
 {{ partial "menu.html" . }}
-    <div class="container">
-        <div class="jumbotron">
-            <h2>{{ .Site.Params.tagline }}</h2>
-      </div>
+  <div class="container">
       <!-- header ends -->
     <div class="container">
       <div class="page-header">
-            {{ .Params.header | safeHtml }}
+            {{ .Params.header | safeHTML }}
       </div>
     </div>
     <!-- body starts -->
@@ -44,8 +41,7 @@
         {{ .Content }}
     </div> <!-- body ends -->
         {{ partial "container-footer.html" . }}
-     </div>
-     
+  </div>
 {{ partial "footer-scripts.html" . }}
 <script src="https://api.tiles.mapbox.com/mapbox.js/v1.4.0/mapbox.js"></script>
 <script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster.js"></script>

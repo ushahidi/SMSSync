@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <div id="logo">
-                    <a href="{{.Site.BaseUrl}}" class="navbar-brand">{{ .Site.Title }}</a>
+                    <a href="{{.Site.BaseURL}}" class="navbar-brand">{{ .Site.Title }}</a>
                 </div>
             </div>
             <div class="navbar-collapse collapse">
@@ -17,7 +17,7 @@
                         {{ $currentNode := . }} 
                              {{ range .Site.Menus.main }}
                               <li {{if $currentNode.IsMenuCurrent "main" . }} active{{end}}>
-                                  <a href="{{.Url}}">{{ .Name }}</a>
+                                  <a href="{{.URL}}">{{ .Name }}</a>
                               </li>
                             {{ end }}
                       </ul>
