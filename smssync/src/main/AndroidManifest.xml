@@ -153,7 +153,6 @@
                 android:name=".presentation.view.ui.activity.AddWebServiceActivity"
                 android:label="@string/add_web_service"
                 android:exported="false"
-                android:launchMode="singleTask"
                 android:windowSoftInputMode="stateVisible|adjustResize"
                 android:parentActivityName=".presentation.view.ui.activity.ListWebServiceActivity">
             <meta-data

@@ -24,7 +24,6 @@ import org.addhen.smssync.presentation.view.ui.activity.AddTwitterKeywordsActivi
 import org.addhen.smssync.presentation.view.ui.activity.AddWebServiceActivity;
 import org.addhen.smssync.presentation.view.ui.activity.GettingStartedActivity;
 import org.addhen.smssync.presentation.view.ui.activity.ListWebServiceActivity;
-import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
 import org.addhen.smssync.presentation.view.ui.activity.SettingsActivity;
 import org.addhen.smssync.presentation.view.ui.activity.TwitterProfileActivity;
 import org.addhen.smssync.presentation.view.ui.activity.UpdateWebServiceActivity;
@@ -65,14 +64,6 @@ public class Launcher {
 
     public void launchUpdateWebServices(WebServiceModel webServiceModel) {
         mActivity.startActivity(UpdateWebServiceActivity.getIntent(mActivity, webServiceModel));
-    }
-
-    /**
-     * Launches the barcode reader
-     */
-    public void launchQrcodeReader() {
-        mActivity.startActivityForResult(QrcodeReaderActivity.getIntent(mActivity),
-                QrcodeReaderActivity.QRCODE_READER_REQUEST_CODE);
     }
 
     /**

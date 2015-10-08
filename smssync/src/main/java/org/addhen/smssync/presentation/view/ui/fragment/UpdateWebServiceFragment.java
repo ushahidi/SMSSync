@@ -26,7 +26,6 @@ import org.addhen.smssync.presentation.model.WebServiceModel;
 import org.addhen.smssync.presentation.presenter.webservice.UpdateWebServicePresenter;
 import org.addhen.smssync.presentation.validator.UrlValidator;
 import org.addhen.smssync.presentation.view.ui.activity.QrcodeReaderActivity;
-import org.addhen.smssync.presentation.view.ui.navigation.Launcher;
 import org.addhen.smssync.presentation.view.webservice.TestWebServiceView;
 import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceView;
 
@@ -113,9 +112,6 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @Inject
     UpdateWebServicePresenter mUpdateWebServicePresenter;
-
-    @Inject
-    Launcher mLauncher;
 
     private UpdateWebServiceListener mActionListener;
 
@@ -348,7 +344,10 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @OnClick(R.id.qr_code_scanner)
     public void onQrCodeScannerClick() {
-        mLauncher.launchQrcodeReader();
+        // Use this fragment to start the QR code scanner so the fragment's
+        // onActivityResult method would be called
+        startActivityForResult(QrcodeReaderActivity.getIntent(getActivity()),
+                QrcodeReaderActivity.QRCODE_READER_REQUEST_CODE);
     }
 
     @OnClick(R.id.test_integration)
