@@ -27,91 +27,91 @@ import android.os.Parcelable;
  */
 public class WebServiceModel extends Model implements Parcelable {
 
-    private String mTitle;
+    private String title;
 
-    private String mUrl;
+    private String url;
 
-    private String mSecret;
+    private String secret;
 
-    private String mSyncScheme;
+    private String syncScheme;
 
-    private Status mStatus;
+    private Status status;
 
-    private KeywordStatus mKeywordStatus;
+    private KeywordStatus keywordStatus;
 
-    private String mKeywords;
+    private String keywords;
 
     public WebServiceModel() {
     }
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     public void setTitle(String title) {
-        mTitle = title;
+        this.title = title;
     }
 
     public String getUrl() {
-        return mUrl;
+        return url;
     }
 
     public void setUrl(String url) {
-        mUrl = url;
+        this.url = url;
     }
 
     public String getSecret() {
-        return mSecret;
+        return secret;
     }
 
     public void setSecret(String secret) {
-        mSecret = secret;
+        this.secret = secret;
     }
 
     public SyncSchemeModel getSyncScheme() {
-        return new SyncSchemeModel(mSyncScheme);
+        return new SyncSchemeModel(syncScheme);
     }
 
     public void setSyncScheme(SyncSchemeModel syncScheme) {
-        mSyncScheme = syncScheme.toJSONString();
+        this.syncScheme = syncScheme.toJSONString();
     }
 
     public Status getStatus() {
-        return mStatus;
+        return status;
     }
 
     public void setStatus(Status status) {
-        mStatus = status;
+        this.status = status;
     }
 
     public void setKeywords(String keywords) {
-        mKeywords = keywords;
+        this.keywords = keywords;
     }
 
     public String getKeywords() {
-        return mKeywords;
+        return keywords;
     }
 
     public KeywordStatus getKeywordStatus() {
-        return mKeywordStatus;
+        return keywordStatus;
     }
 
     public void setKeywordStatus(
             KeywordStatus keywordStatus) {
-        mKeywordStatus = keywordStatus;
+        this.keywordStatus = keywordStatus;
     }
 
     @Override
     public String toString() {
         return "SyncUrl{" +
                 "id=" + _id +
-                "title='" + mTitle + '\'' +
-                ", url='" + mUrl + '\'' +
-                ", secret='" + mSecret + '\'' +
-                ", syncScheme=" + mSyncScheme +
-                ", keywords=" + mKeywords +
-                ", mKeywordStatus=" + mKeywordStatus +
-                ", status=" + mStatus +
+                "title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", secret='" + secret + '\'' +
+                ", syncScheme=" + syncScheme +
+                ", keywords=" + keywords +
+                ", keywordStatus=" + keywordStatus +
+                ", status=" + status +
                 '}';
     }
 
@@ -125,13 +125,13 @@ public class WebServiceModel extends Model implements Parcelable {
 
     protected WebServiceModel(Parcel in) {
         _id = in.readLong();
-        mTitle = in.readString();
-        mUrl = in.readString();
-        mSecret = in.readString();
-        mSyncScheme = in.readString();
-        mStatus = (Status) in.readValue(Status.class.getClassLoader());
-        mKeywords = in.readString();
-        mKeywordStatus = (KeywordStatus) in.readValue(KeywordStatus.class.getClassLoader());
+        title = in.readString();
+        url = in.readString();
+        secret = in.readString();
+        syncScheme = in.readString();
+        status = (Status) in.readValue(Status.class.getClassLoader());
+        keywords = in.readString();
+        keywordStatus = (KeywordStatus) in.readValue(KeywordStatus.class.getClassLoader());
     }
 
     @Override
@@ -142,13 +142,13 @@ public class WebServiceModel extends Model implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(_id);
-        dest.writeString(mTitle);
-        dest.writeString(mUrl);
-        dest.writeString(mSecret);
-        dest.writeString(mSyncScheme);
-        dest.writeValue(mStatus);
-        dest.writeString(mKeywords);
-        dest.writeValue(mKeywordStatus);
+        dest.writeString(title);
+        dest.writeString(url);
+        dest.writeString(secret);
+        dest.writeString(syncScheme);
+        dest.writeValue(status);
+        dest.writeString(keywords);
+        dest.writeValue(keywordStatus);
     }
 
     @SuppressWarnings("unused")
