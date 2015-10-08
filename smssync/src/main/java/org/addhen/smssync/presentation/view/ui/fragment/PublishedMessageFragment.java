@@ -247,7 +247,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         });
     }
 
-    @TargetApi(11)
+    @TargetApi(HONEYCOMB)
     private void enableSwipeToPerformAction() {
         // Swiping doesn't work well on API 11 and below because the android support lib ships
         // with buggy APIs that makes it hard to implement on older devices.

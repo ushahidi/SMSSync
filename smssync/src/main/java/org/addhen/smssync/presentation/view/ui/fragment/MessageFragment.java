@@ -38,9 +38,11 @@ import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -76,6 +78,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private static final int HONEYCOMB = 11;
 
+    /** List of items pending to to be deleted **/
+    public List<PendingMessage> mPendingMessages;
+
     @Bind(R.id.messages_fab)
     FloatingActionButton mFab;
 
@@ -96,9 +101,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Inject
     ImportMessagePresenter mImportMessagePresenter;
-
-    /** List of items pending to to be deleted **/
-    public List<PendingMessage> mPendingMessages;
 
     private MessageAdapter mMessageAdapter;
 
@@ -335,7 +337,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                             mPublishMessagesPresenter.publishMessage(messageModels);
                     }
                 }).show());
-        enableSwipeToPerformAction();
+        if (Build.VERSION.SDK_INT >= HONEYCOMB) {
+            enableSwipeToPerformAction();
+        }
     }
 
 
@@ -387,6 +391,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         showUndoSnackbar(getString(R.string.published));
     }
 
+    @TargetApi(HONEYCOMB)
     private void enableSwipeToPerformAction() {
         // Swiping doesn't work well on API 11 and below because the android support lib ships
         // with buggy APIs that makes it hard to implement on older devices.
