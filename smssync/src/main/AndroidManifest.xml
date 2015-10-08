@@ -172,8 +172,7 @@
         </activity>
         <activity
                 android:name=".presentation.view.ui.activity.QrcodeReaderActivity"
-                android:label="@string/scan_qr_code"
-                android:screenOrientation="portrait">
+                android:label="@string/scan_qr_code">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
