@@ -67,6 +67,7 @@ public class MessageModel extends Model implements Parcelable {
     }
 
     protected MessageModel(Parcel in) {
+        _id = in.readByte() == 0x00 ? null : in.readLong();
         messageBody = in.readString();
         messageFrom = in.readString();
         long tmpMessageDate = in.readLong();
@@ -90,6 +91,12 @@ public class MessageModel extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        if (_id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(_id);
+        }
         dest.writeString(messageBody);
         dest.writeString(messageFrom);
         dest.writeLong(messageDate != null ? messageDate.getTime() : -1L);

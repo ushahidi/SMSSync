@@ -23,6 +23,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * WebService Model
+ *
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class WebServiceModel extends Model implements Parcelable {
@@ -124,7 +126,7 @@ public class WebServiceModel extends Model implements Parcelable {
     }
 
     protected WebServiceModel(Parcel in) {
-        _id = in.readLong();
+        _id = in.readByte() == 0x00 ? null : in.readLong();
         title = in.readString();
         url = in.readString();
         secret = in.readString();
@@ -141,7 +143,12 @@ public class WebServiceModel extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(_id);
+        if (_id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeLong(_id);
+        }
         dest.writeString(title);
         dest.writeString(url);
         dest.writeString(secret);
