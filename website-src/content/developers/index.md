@@ -506,7 +506,7 @@ function send_instant_message($to)
             "secret" => "123456",
             "messages"=>array_values($reply)]
         ]);
-    send_response($response);09048370465
+    send_response($response);
 }
 
 function send_response($response)
