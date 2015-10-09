@@ -101,6 +101,7 @@ public abstract class BaseDatabaseHelper extends SQLiteOpenHelper {
             cupboard().withDatabase(db).dropAllTables();
             onCreate(db);
         } else {
+            Log.d(TAG, "Upgrading Old Version: " + oldVersion);
             // This will upgrade tables, adding columns and new tables.
             // Note that existing columns will not be converted
             cupboard().withDatabase(db).upgradeTables();
