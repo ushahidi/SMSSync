@@ -14,7 +14,8 @@
       "Added a product that when app is launched for the first time",
       "Switched to using OkHttp as the HTTP client",
       "Add ability to swipe on a list item to perform a corresponding action. Eg. Delete an item",
-      "Add ability to add a name for the device in addition to its ID"
+      "Add ability to add a name for the device in addition to its ID",
+      "Drop support for minSDK 8. App works on minSDK 9 and above"
     ],
     "bugs": [
       "Lots of bug fixes"
