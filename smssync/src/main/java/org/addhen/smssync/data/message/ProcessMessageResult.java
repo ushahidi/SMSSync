@@ -27,7 +27,7 @@ import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.MessageResult;
 import org.addhen.smssync.data.entity.MessagesUUIDSResponse;
 import org.addhen.smssync.data.entity.QueuedMessages;
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.BaseHttpClient;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
@@ -88,9 +88,9 @@ public class ProcessMessageResult {
     }
 
     public void processMessageResult() {
-        List<WebService> webServiceList = mWebServiceDataSource.get(WebService.Status.ENABLED);
-        for (WebService webService : webServiceList) {
-            MessagesUUIDSResponse response = sendMessageResultGETRequest(webService);
+        List<SyncUrl> syncUrlList = mWebServiceDataSource.get(SyncUrl.Status.ENABLED);
+        for (SyncUrl syncUrl : syncUrlList) {
+            MessagesUUIDSResponse response = sendMessageResultGETRequest(syncUrl);
             if ((response != null) && (response.isSuccess()) && (response.getUuids() != null)) {
                 final List<MessageResult> messageResults = new ArrayList<>();
                 for (String uuid : response.getUuids()) {
@@ -103,7 +103,7 @@ public class ProcessMessageResult {
                         messageResults.add(messageResult);
                     }
                 }
-                sendMessageResultPOSTRequest(webService, messageResults);
+                sendMessageResultPOSTRequest(syncUrl, messageResults);
             }
         }
     }
@@ -114,7 +114,7 @@ public class ProcessMessageResult {
      * @param syncUrl url to web server
      * @param results list of message result data
      */
-    private void sendMessageResultPOSTRequest(WebService syncUrl, List<MessageResult> results) {
+    private void sendMessageResultPOSTRequest(SyncUrl syncUrl, List<MessageResult> results) {
         String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
 
         final String urlSecret = syncUrl.getSecret();
@@ -153,7 +153,7 @@ public class ProcessMessageResult {
      * @return parsed server response whit information about request success or failure and list of
      * message uuids
      */
-    public MessagesUUIDSResponse sendQueuedMessagesPOSTRequest(WebService syncUrl,
+    public MessagesUUIDSResponse sendQueuedMessagesPOSTRequest(SyncUrl syncUrl,
             QueuedMessages messages) {
         MessagesUUIDSResponse response = null;
         if (null != messages && !messages.getQueuedMessages().isEmpty()) {
@@ -202,7 +202,7 @@ public class ProcessMessageResult {
      * @return MessagesUUIDSResponse parsed server response whit information about request success
      * or failure and list of message uuids
      */
-    public MessagesUUIDSResponse sendMessageResultGETRequest(WebService syncUrl) {
+    public MessagesUUIDSResponse sendMessageResultGETRequest(SyncUrl syncUrl) {
         MessagesUUIDSResponse response;
         String newEndPointURL = syncUrl.getUrl().concat(TASK_RESULT_URL_PARAM);
 

@@ -28,7 +28,7 @@ import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.SmssyncResponse;
 import org.addhen.smssync.data.entity.SyncScheme;
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.domain.entity.HttpNameValuePair;
 import org.addhen.smssync.domain.util.DataFormatUtil;
 
@@ -71,9 +71,9 @@ public class MessageHttpClient extends BaseHttpClient {
      *
      * @return boolean
      */
-    public boolean postSmsToWebService(WebService webService, Message message, String toNumber,
+    public boolean postSmsToWebService(SyncUrl syncUrl, Message message, String toNumber,
             String deviceId) {
-        initRequest(webService, message, toNumber, deviceId);
+        initRequest(syncUrl, message, toNumber, deviceId);
         final Gson gson = new Gson();
         try {
             execute();
@@ -108,15 +108,15 @@ public class MessageHttpClient extends BaseHttpClient {
 
     }
 
-    private void initRequest(WebService webService, Message message, String toNumber,
+    private void initRequest(SyncUrl syncUrl, Message message, String toNumber,
             String deviceId) {
-        setUrl(webService.getUrl());
-        SyncScheme syncScheme = webService.getSyncScheme();
+        setUrl(syncUrl.getUrl());
+        SyncScheme syncScheme = syncUrl.getSyncScheme();
         SyncScheme.SyncMethod method = syncScheme.getMethod();
         SyncScheme.SyncDataFormat format = syncScheme.getDataFormat();
 
         setHeader("Content-Type", syncScheme.getContentType());
-        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.SECRET), webService.getSecret());
+        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.FROM), message.messageFrom);
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.MESSAGE), message.messageBody);
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.SENT_TIMESTAMP),

@@ -18,7 +18,7 @@
 package org.addhen.smssync.data.entity.mapper;
 
 import org.addhen.smssync.data.entity.SyncScheme;
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.domain.entity.SyncSchemeEntity;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 
@@ -37,45 +37,45 @@ public class WebServiceDataMapper {
         // Do nothing
     }
 
-    public WebServiceEntity map(WebService webService) {
+    public WebServiceEntity map(SyncUrl syncUrl) {
         WebServiceEntity webServiceEntity = null;
-        if (webService != null) {
+        if (syncUrl != null) {
             webServiceEntity = new WebServiceEntity();
-            webServiceEntity._id = webService._id;
-            webServiceEntity.setSecret(webService.getSecret());
-            webServiceEntity.setTitle(webService.getTitle());
-            webServiceEntity.setUrl(webService.getUrl());
-            webServiceEntity.setKeywords(webService.getKeywords());
-            webServiceEntity.setStatus(map(webService.getStatus()));
-            webServiceEntity.setKeywordStatus(map(webService.getKeywordStatus()));
+            webServiceEntity._id = syncUrl._id;
+            webServiceEntity.setSecret(syncUrl.getSecret());
+            webServiceEntity.setTitle(syncUrl.getTitle());
+            webServiceEntity.setUrl(syncUrl.getUrl());
+            webServiceEntity.setKeywords(syncUrl.getKeywords());
+            webServiceEntity.setStatus(map(syncUrl.getStatus()));
+            webServiceEntity.setKeywordStatus(map(syncUrl.getKeywordStatus()));
             webServiceEntity.setSyncScheme(
-                    new SyncSchemeEntity(webService.getSyncScheme().toJSONString()));
+                    new SyncSchemeEntity(syncUrl.getSyncScheme().toJSONString()));
         }
         return webServiceEntity;
     }
 
-    public WebService map(WebServiceEntity webServiceEntity) {
-        WebService webService = null;
+    public SyncUrl map(WebServiceEntity webServiceEntity) {
+        SyncUrl syncUrl = null;
         if (webServiceEntity != null) {
-            webService = new WebService();
-            webService._id = webServiceEntity._id;
-            webService.setSecret(webServiceEntity.getSecret());
-            webService.setTitle(webServiceEntity.getTitle());
-            webService.setUrl(webServiceEntity.getUrl());
-            webService.setKeywords(webServiceEntity.getKeywords());
-            webService.setStatus(map(webServiceEntity.getStatus()));
-            webService
+            syncUrl = new SyncUrl();
+            syncUrl._id = webServiceEntity._id;
+            syncUrl.setSecret(webServiceEntity.getSecret());
+            syncUrl.setTitle(webServiceEntity.getTitle());
+            syncUrl.setUrl(webServiceEntity.getUrl());
+            syncUrl.setKeywords(webServiceEntity.getKeywords());
+            syncUrl.setStatus(map(webServiceEntity.getStatus()));
+            syncUrl
                     .setSyncScheme(new SyncScheme(webServiceEntity.getSyncScheme().toJSONString()));
-            webService.setKeywordStatus(map(webServiceEntity.getKeywordStatus()));
+            syncUrl.setKeywordStatus(map(webServiceEntity.getKeywordStatus()));
         }
-        return webService;
+        return syncUrl;
     }
 
-    public List<WebServiceEntity> map(List<WebService> webServices) {
+    public List<WebServiceEntity> map(List<SyncUrl> syncUrls) {
         List<WebServiceEntity> webServiceEntities = new ArrayList<>();
         WebServiceEntity webServiceEntity;
-        for (WebService webService : webServices) {
-            webServiceEntity = map(webService);
+        for (SyncUrl syncUrl : syncUrls) {
+            webServiceEntity = map(syncUrl);
             if (webServiceEntity != null) {
                 webServiceEntities.add(webServiceEntity);
             }
@@ -83,28 +83,28 @@ public class WebServiceDataMapper {
         return webServiceEntities;
     }
 
-    public WebService.Status map(WebServiceEntity.Status status) {
+    public SyncUrl.Status map(WebServiceEntity.Status status) {
         if (status != null) {
-            return WebService.Status.valueOf(status.name());
+            return SyncUrl.Status.valueOf(status.name());
         }
-        return WebService.Status.DISABLED;
+        return SyncUrl.Status.DISABLED;
     }
 
-    public WebServiceEntity.Status map(WebService.Status status) {
+    public WebServiceEntity.Status map(SyncUrl.Status status) {
         if (status != null) {
             return WebServiceEntity.Status.valueOf(status.name());
         }
         return WebServiceEntity.Status.DISABLED;
     }
 
-    public WebService.KeywordStatus map(WebServiceEntity.KeywordStatus keywordStatus) {
+    public SyncUrl.KeywordStatus map(WebServiceEntity.KeywordStatus keywordStatus) {
         if (keywordStatus != null) {
-            return WebService.KeywordStatus.valueOf(keywordStatus.name());
+            return SyncUrl.KeywordStatus.valueOf(keywordStatus.name());
         }
-        return WebService.KeywordStatus.DISABLED;
+        return SyncUrl.KeywordStatus.DISABLED;
     }
 
-    public WebServiceEntity.KeywordStatus map(WebService.KeywordStatus keywordStatus) {
+    public WebServiceEntity.KeywordStatus map(SyncUrl.KeywordStatus keywordStatus) {
         if (keywordStatus != null) {
             return WebServiceEntity.KeywordStatus.valueOf(keywordStatus.name());
         }

@@ -22,7 +22,7 @@ import org.addhen.smssync.data.database.converter.EnumEntityFieldConverter;
 import org.addhen.smssync.data.database.converter.WebServiceConverter;
 import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -50,7 +50,7 @@ public abstract class BaseDatabaseHelper extends SQLiteOpenHelper {
     private static final int LAST_DATABASE_NUKE_VERSION = 6;
 
     private static final Class[] ENTITIES = new Class[]{Message.class,
-            Filter.class, WebService.class};
+            Filter.class, SyncUrl.class};
 
     private static String TAG = BaseDatabaseHelper.class.getSimpleName();
 
@@ -62,7 +62,7 @@ public abstract class BaseDatabaseHelper extends SQLiteOpenHelper {
 
             @Override
             public <T> EntityConverter<T> create(Cupboard cupboard, Class<T> type) {
-                if (type == WebService.class) {
+                if (type == SyncUrl.class) {
                     return (EntityConverter<T>) new WebServiceConverter(cupboard);
                 }
                 return null;

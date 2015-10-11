@@ -19,7 +19,7 @@ package org.addhen.smssync.data.repository.datasource.webservice;
 
 
 import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 
 import android.support.annotation.NonNull;
 
@@ -47,33 +47,33 @@ public class WebServiceDatabaseDataSource implements WebServiceDataSource {
     }
 
     @Override
-    public Observable<List<WebService>> getWebServiceList() {
+    public Observable<List<SyncUrl>> getWebServiceList() {
         return mWebServiceDatabaseHelper.getWebServices();
     }
 
     @Override
-    public Observable<WebService> getWebService(Long webServiceId) {
+    public Observable<SyncUrl> getWebService(Long webServiceId) {
         return mWebServiceDatabaseHelper.getWebService(webServiceId);
     }
 
     @Override
-    public Observable<List<WebService>> getByStatus(WebService.Status status) {
+    public Observable<List<SyncUrl>> getByStatus(SyncUrl.Status status) {
         return mWebServiceDatabaseHelper.getByStatus(status);
     }
 
     @Override
-    public List<WebService> syncGetByStatus(WebService.Status status) {
+    public List<SyncUrl> syncGetByStatus(SyncUrl.Status status) {
         return mWebServiceDatabaseHelper.get(status);
     }
 
     @Override
-    public Observable<Long> addWebService(WebService webService) {
-        return mWebServiceDatabaseHelper.put(webService);
+    public Observable<Long> addWebService(SyncUrl syncUrl) {
+        return mWebServiceDatabaseHelper.put(syncUrl);
     }
 
     @Override
-    public Observable<Long> updateWebService(WebService webService) {
-        return mWebServiceDatabaseHelper.put(webService);
+    public Observable<Long> updateWebService(SyncUrl syncUrl) {
+        return mWebServiceDatabaseHelper.put(syncUrl);
     }
 
     @Override
@@ -82,12 +82,12 @@ public class WebServiceDatabaseDataSource implements WebServiceDataSource {
     }
 
     @Override
-    public List<WebService> get(WebService.Status status) {
+    public List<SyncUrl> get(SyncUrl.Status status) {
         return mWebServiceDatabaseHelper.get(status);
     }
 
     @Override
-    public List<WebService> listWebServices() {
+    public List<SyncUrl> listWebServices() {
         return mWebServiceDatabaseHelper.listWebServices();
     }
 

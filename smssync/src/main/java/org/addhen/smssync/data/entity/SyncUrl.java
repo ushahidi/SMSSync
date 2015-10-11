@@ -22,7 +22,9 @@ import com.addhen.android.raiburari.data.entity.DataEntity;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class WebService extends DataEntity {
+// TODO: Rename this web service to match the new nomenclature for sync url
+// TODO: Update database to match the name
+public class SyncUrl extends DataEntity {
 
     private String title;
 

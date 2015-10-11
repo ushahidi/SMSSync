@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.data.repository.datasource.webservice;
 
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 
 import java.util.List;
 
@@ -31,58 +31,58 @@ import rx.Observable;
 public interface WebServiceDataSource {
 
     /**
-     * Get an {@link Observable} which will emit a List of {@link WebService}.
+     * Get an {@link Observable} which will emit a List of {@link SyncUrl}.
      *
-     * @return Observable that emits list of {@link WebService}
+     * @return Observable that emits list of {@link SyncUrl}
      */
-    Observable<List<WebService>> getWebServiceList();
+    Observable<List<SyncUrl>> getWebServiceList();
 
     /**
-     * Get an {@link Observable} which will emit a {@link WebService} by its id.
+     * Get an {@link Observable} which will emit a {@link SyncUrl} by its id.
      *
      * @param deploymentId The id to retrieve user data.
-     * @return Observable that emits a {@link WebService}
+     * @return Observable that emits a {@link SyncUrl}
      */
-    Observable<WebService> getWebService(Long deploymentId);
+    Observable<SyncUrl> getWebService(Long deploymentId);
 
     /**
-     * Gets an {@link Observable} which will emit a {@link WebService} by its status.
+     * Gets an {@link Observable} which will emit a {@link SyncUrl} by its status.
      *
      * @param status The deployment status to be used for retrieving a deployment
-     * @return Observable that emits a list of {@link WebService}
+     * @return Observable that emits a list of {@link SyncUrl}
      */
-    Observable<List<WebService>> getByStatus(WebService.Status status);
+    Observable<List<SyncUrl>> getByStatus(SyncUrl.Status status);
 
     /**
-     * Gets a list of {@link WebService} by its status.
+     * Gets a list of {@link SyncUrl} by its status.
      *
      * @param status The deployment status to be used for retrieving a deployment
-     * @return A list of {@link WebService}
+     * @return A list of {@link SyncUrl}
      */
-    List<WebService> syncGetByStatus(WebService.Status status);
+    List<SyncUrl> syncGetByStatus(SyncUrl.Status status);
 
     /**
-     * Adds an {@link WebService} to storage and then returns an {@link Observable} for all
+     * Adds an {@link SyncUrl} to storage and then returns an {@link Observable} for all
      * subscribers
      * to react to it.
      *
      * @param deployment The deployment to be added
      * @return The row affected
      */
-    Observable<Long> addWebService(WebService deployment);
+    Observable<Long> addWebService(SyncUrl deployment);
 
     /**
-     * Adds an {@link WebService} to storage and then returns an {@link Observable} for all
+     * Adds an {@link SyncUrl} to storage and then returns an {@link Observable} for all
      * subscribers
      * to react to it.
      *
      * @param deployment The deployment to be added
      * @return The row affected
      */
-    Observable<Long> updateWebService(WebService deployment);
+    Observable<Long> updateWebService(SyncUrl deployment);
 
     /**
-     * Deletes an {@link WebService} from storage and then returns an {@link Observable} for
+     * Deletes an {@link SyncUrl} from storage and then returns an {@link Observable} for
      * all
      * subscribers to react to it.
      *
@@ -91,7 +91,7 @@ public interface WebServiceDataSource {
      */
     Observable<Long> deleteWebService(Long deploymentId);
 
-    List<WebService> get(final WebService.Status status);
+    List<SyncUrl> get(final SyncUrl.Status status);
 
-    List<WebService> listWebServices();
+    List<SyncUrl> listWebServices();
 }

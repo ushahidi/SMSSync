@@ -17,7 +17,7 @@
 
 package org.addhen.smssync.data.database;
 
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.data.exception.WebServiceNotFoundException;
 
 import android.content.Context;
@@ -52,13 +52,13 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
      * Gets webServices by it's status
      *
      * @param status The status to use to query for the webService
-     * @return An Observable that emits a {@link WebService}
+     * @return An Observable that emits a {@link SyncUrl}
      */
-    public Observable<List<WebService>> getByStatus(final WebService.Status status) {
+    public Observable<List<SyncUrl>> getByStatus(final SyncUrl.Status status) {
         return Observable.create((subscriber) -> {
-            final List<WebService> webServiceEntity = get(status);
-            if (webServiceEntity != null) {
-                subscriber.onNext(webServiceEntity);
+            final List<SyncUrl> syncUrlEntity = get(status);
+            if (syncUrlEntity != null) {
+                subscriber.onNext(syncUrlEntity);
                 subscriber.onCompleted();
             } else {
                 subscriber.onError(new WebServiceNotFoundException());
@@ -69,14 +69,14 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
     /**
      * Gets webService lists
      *
-     * @return An Observable that emits a list of {@link WebService}
+     * @return An Observable that emits a list of {@link SyncUrl}
      */
-    public Observable<List<WebService>> getWebServices() {
+    public Observable<List<SyncUrl>> getWebServices() {
         return Observable.create(subscriber -> {
-            final List<WebService> webServices = cupboard()
-                    .withDatabase(getReadableDatabase()).query(WebService.class).list();
-            if (webServices != null) {
-                subscriber.onNext(webServices);
+            final List<SyncUrl> syncUrls = cupboard()
+                    .withDatabase(getReadableDatabase()).query(SyncUrl.class).list();
+            if (syncUrls != null) {
+                subscriber.onNext(syncUrls);
                 subscriber.onCompleted();
             } else {
                 subscriber.onError(new WebServiceNotFoundException());
@@ -88,15 +88,15 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
      * Gets a webService
      *
      * @param id The ID of the webService to retrieve
-     * @return An Observable that emits a {@link WebService}
+     * @return An Observable that emits a {@link SyncUrl}
      */
-    public Observable<WebService> getWebService(Long id) {
+    public Observable<SyncUrl> getWebService(Long id) {
         return Observable.create(subscriber -> {
-            final WebService webServiceEntity = cupboard().withDatabase(getReadableDatabase())
-                    .query(WebService.class)
+            final SyncUrl syncUrlEntity = cupboard().withDatabase(getReadableDatabase())
+                    .query(SyncUrl.class)
                     .byId(id).get();
-            if (webServiceEntity != null) {
-                subscriber.onNext(webServiceEntity);
+            if (syncUrlEntity != null) {
+                subscriber.onNext(syncUrlEntity);
                 subscriber.onCompleted();
             } else {
                 subscriber.onError(new WebServiceNotFoundException());
@@ -105,17 +105,17 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
     }
 
     /**
-     * Saves a {@link WebService} into the db
+     * Saves a {@link SyncUrl} into the db
      *
-     * @param webServiceEntity The webService to save to the db
+     * @param syncUrlEntity The webService to save to the db
      * @return The row affected
      */
-    public Observable<Long> put(WebService webServiceEntity) {
+    public Observable<Long> put(SyncUrl syncUrlEntity) {
         return Observable.create(subscriber -> {
             if (!isClosed()) {
                 Long row = null;
                 try {
-                    row = cupboard().withDatabase(getWritableDatabase()).put(webServiceEntity);
+                    row = cupboard().withDatabase(getWritableDatabase()).put(syncUrlEntity);
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
@@ -127,7 +127,7 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
     }
 
     /**
-     * Deletes a {@link WebService} from the db
+     * Deletes a {@link SyncUrl} from the db
      *
      * @param webServiceId The webService to be deleted from the db
      * @return The row affected. One means successful otherwise it triggers an error
@@ -138,7 +138,7 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
                 boolean deleted = false;
                 try {
                     deleted = cupboard().withDatabase(getWritableDatabase())
-                            .delete(WebService.class, webServiceId);
+                            .delete(SyncUrl.class, webServiceId);
                 } catch (Exception e) {
                     subscriber.onError(e);
                 }
@@ -153,14 +153,14 @@ public class WebServiceDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
-    public List<WebService> get(final WebService.Status status) {
-        final List<WebService> webServices = cupboard()
-                .withDatabase(getReadableDatabase()).query(WebService.class)
+    public List<SyncUrl> get(final SyncUrl.Status status) {
+        final List<SyncUrl> syncUrls = cupboard()
+                .withDatabase(getReadableDatabase()).query(SyncUrl.class)
                 .withSelection("status = ?", status.name()).list();
-        return webServices;
+        return syncUrls;
     }
 
-    public List<WebService> listWebServices() {
-        return cupboard().withDatabase(getReadableDatabase()).query(WebService.class).list();
+    public List<SyncUrl> listWebServices() {
+        return cupboard().withDatabase(getReadableDatabase()).query(SyncUrl.class).list();
     }
 }

@@ -18,6 +18,7 @@
 package org.addhen.smssync.data.repository.datasource.webservice;
 
 import org.addhen.smssync.data.database.WebServiceDatabaseHelper;
+import org.addhen.smssync.data.entity.SyncUrl;
 
 import android.support.annotation.NonNull;
 
@@ -25,7 +26,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * A factory class for creating the different datasource for {@link org.addhen.smssync.data.entity.WebService}
+ * A factory class for creating the different datasource for {@link SyncUrl}
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */

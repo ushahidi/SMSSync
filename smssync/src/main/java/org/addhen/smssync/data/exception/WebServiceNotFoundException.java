@@ -17,9 +17,11 @@
 
 package org.addhen.smssync.data.exception;
 
+import org.addhen.smssync.data.entity.SyncUrl;
+
 /**
  * Exception thrown by {@link org.addhen.smssync.data.database.WebServiceDatabaseHelper} when a
- * {@link org.addhen.smssync.data.entity.WebService} can't be found from the database.
+ * {@link SyncUrl} can't be found from the database.
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */

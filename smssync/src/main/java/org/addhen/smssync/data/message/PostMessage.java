@@ -27,7 +27,7 @@ import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.MessagesUUIDSResponse;
 import org.addhen.smssync.data.entity.QueuedMessages;
 import org.addhen.smssync.data.entity.SmssyncResponse;
-import org.addhen.smssync.data.entity.WebService;
+import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.data.net.MessageHttpClient;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
@@ -103,15 +103,15 @@ public class PostMessage extends ProcessMessage {
             mProcessSms.sendSms(map(msg), false);
         }
         if (Utility.isConnected(mContext)) {
-            List<WebService> webServiceList = mWebServiceDataSource
-                    .get(WebService.Status.ENABLED);
+            List<SyncUrl> syncUrlList = mWebServiceDataSource
+                    .get(SyncUrl.Status.ENABLED);
             List<Filter> filters = mFilterDataSource.getFilters();
-            for (WebService webService : webServiceList) {
+            for (SyncUrl syncUrl : syncUrlList) {
                 // Process if white-listing is enabled
                 if (mPrefsFactory.enableWhitelist().get()) {
                     for (Filter filter : filters) {
                         if (filter.phoneNumber.equals(message.messageFrom)) {
-                            if (postMessage(message, webService)) {
+                            if (postMessage(message, syncUrl)) {
                                 deleteFromSmsInbox(message);
                             } else {
                                 savePendingMessage(message);
@@ -130,7 +130,7 @@ public class PostMessage extends ProcessMessage {
                                             + filter.phoneNumber);
                             return false;
                         } else {
-                            if (postMessage(message, webService)) {
+                            if (postMessage(message, syncUrl)) {
                                 deleteFromSmsInbox(message);
                             } else {
                                 savePendingMessage(message);
@@ -139,7 +139,7 @@ public class PostMessage extends ProcessMessage {
 
                     }
                 } else {
-                    if (postMessage(message, webService)) {
+                    if (postMessage(message, syncUrl)) {
                         deleteFromSmsInbox(message);
                     } else {
                         savePendingMessage(message);
@@ -182,15 +182,15 @@ public class PostMessage extends ProcessMessage {
 
     public boolean postMessage(List<Message> messages) {
         Logger.log(TAG, "postMessages");
-        List<WebService> webServiceList = mWebServiceDataSource.listWebServices();
+        List<SyncUrl> syncUrlList = mWebServiceDataSource.listWebServices();
         List<Filter> filters = mFilterDataSource.getFilters();
-        for (WebService webService : webServiceList) {
+        for (SyncUrl syncUrl : syncUrlList) {
             // Process if white-listing is enabled
             if (mPrefsFactory.enableWhitelist().get()) {
                 for (Filter filter : filters) {
                     for (Message message : messages) {
                         if (filter.phoneNumber.equals(message.messageFrom)) {
-                            if (postMessage(message, webService)) {
+                            if (postMessage(message, syncUrl)) {
                                 postToSentBox(message);
                             }
                         }
@@ -205,7 +205,7 @@ public class PostMessage extends ProcessMessage {
                             Logger.log("message",
                                     " from:" + msg.messageFrom + " filter:"
                                             + filter.phoneNumber);
-                            if (postMessage(msg, webService)) {
+                            if (postMessage(msg, syncUrl)) {
                                 postToSentBox(msg);
                             }
                         }
@@ -213,7 +213,7 @@ public class PostMessage extends ProcessMessage {
                 }
             } else {
                 for (Message messg : messages) {
-                    if (postMessage(messg, webService)) {
+                    if (postMessage(messg, syncUrl)) {
                         postToSentBox(messg);
                     }
                 }
@@ -222,7 +222,7 @@ public class PostMessage extends ProcessMessage {
         return true;
     }
 
-    private void sendSMSWithMessageResultsAPIEnabled(WebService syncUrl, List<Message> msgs) {
+    private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl, List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         for (Message msg : msgs) {
             msg.messageType = Message.Type.TASK;
@@ -270,27 +270,27 @@ public class PostMessage extends ProcessMessage {
         }
     }
 
-    private boolean postMessage(Message message, WebService webService) {
+    private boolean postMessage(Message message, SyncUrl syncUrl) {
         // Process filter text (keyword or RegEx)
-        if (!TextUtils.isEmpty(webService.getKeywords())
-                && webService.getKeywordStatus() == WebService.KeywordStatus.ENABLED) {
+        if (!TextUtils.isEmpty(syncUrl.getKeywords())
+                && syncUrl.getKeywordStatus() == SyncUrl.KeywordStatus.ENABLED) {
             List<String> keywords = new ArrayList<>(
-                    Arrays.asList(webService.getKeywords().split(",")));
+                    Arrays.asList(syncUrl.getKeywords().split(",")));
             if (filterByKeywords(message.messageBody, keywords) || filterByRegex(
                     message.messageBody, keywords)) {
-                return postToWebService(message, webService);
+                return postToWebService(message, syncUrl);
             }
         } else {
-            return postToWebService(message, webService);
+            return postToWebService(message, syncUrl);
         }
         return false;
     }
 
-    private boolean postToWebService(Message message, WebService webService) {
+    private boolean postToWebService(Message message, SyncUrl syncUrl) {
         boolean posted;
         if (message.messageType == Message.Type.PENDING) {
             Logger.log(TAG, "Process message with keyword filtering enabled " + message);
-            posted = mMessageHttpClient.postSmsToWebService(webService, message,
+            posted = mMessageHttpClient.postSmsToWebService(syncUrl, message,
                     message.messageFrom, mPrefsFactory.uniqueId().get());
         } else {
             posted = sendTaskSms(message);
@@ -308,10 +308,10 @@ public class PostMessage extends ProcessMessage {
         }
         Logger.log(TAG, "performTask(): perform a task");
         logActivities(R.string.perform_task);
-        List<WebService> webServices = mWebServiceDataSource.get(WebService.Status.ENABLED);
-        for (WebService webService : webServices) {
-            StringBuilder uriBuilder = new StringBuilder(webService.getUrl());
-            final String urlSecret = webService.getSecret();
+        List<SyncUrl> syncUrls = mWebServiceDataSource.get(SyncUrl.Status.ENABLED);
+        for (SyncUrl syncUrl : syncUrls) {
+            StringBuilder uriBuilder = new StringBuilder(syncUrl.getUrl());
+            final String urlSecret = syncUrl.getSecret();
             uriBuilder.append("?task=send");
 
             if (!TextUtils.isEmpty(urlSecret)) {
@@ -357,7 +357,7 @@ public class PostMessage extends ProcessMessage {
                             urlSecret.equals(smssyncResponses.getPayload().getSecret());
                     if (secretOk && task.equals("send")) {
                         if (mPrefsFactory.messageResultsAPIEnable().get()) {
-                            sendSMSWithMessageResultsAPIEnabled(webService,
+                            sendSMSWithMessageResultsAPIEnabled(syncUrl,
                                     smssyncResponses.getPayload().getMessages());
                         } else {
                             //backwards compatibility
@@ -380,7 +380,7 @@ public class PostMessage extends ProcessMessage {
 
             mFileManager.appendAndClose(
                     mContext.getString(R.string.finish_task_check) + " " + mErrorMessage + " for "
-                            + webService.getUrl());
+                            + syncUrl.getUrl());
         }
     }
 

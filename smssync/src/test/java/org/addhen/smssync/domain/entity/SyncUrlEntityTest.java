@@ -26,7 +26,7 @@ import static com.google.common.truth.Truth.assertThat;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class WebServiceEntityTest extends BaseRobolectricTestCase {
+public class SyncUrlEntityTest extends BaseRobolectricTestCase {
 
     private WebServiceEntity mWebServiceEntity;
 
