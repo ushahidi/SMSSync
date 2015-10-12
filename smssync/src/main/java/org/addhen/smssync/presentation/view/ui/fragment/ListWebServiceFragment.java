@@ -406,11 +406,15 @@ public class ListWebServiceFragment
 
     @Override
     public void onItemClick(RecyclerView recyclerView, View view, int position) {
-        // Do nothing
+        updateWebService(position);
     }
 
     @Override
     public void onItemLongClick(RecyclerView recyclerView, View view, int position) {
+        updateWebService(position);
+    }
+
+    private void updateWebService(int position) {
         if (mWebServiceAdapter.getItemCount() > 0) {
             WebServiceModel webServiceModel = mWebServiceAdapter.getItem(position);
             if (mWebServiceListListener != null) {
