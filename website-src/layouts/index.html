@@ -22,7 +22,8 @@
             </div>
         </div>
         <div class="col-lg-2">
-            <br /><br />
+            <br/><br/>
+
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="item active">
@@ -34,7 +35,8 @@
                              title="Log Messages"/>
                     </div>
                     <div class="item">
-                        <img src="{{$urls.images}}/promo/navigation-drawer-support.png" alt="navigation"
+                        <img src="{{$urls.images}}/promo/navigation-drawer-support.png"
+                             alt="navigation"
                              title="Navigation Drawer Support"/>
                     </div>
                 </div>
@@ -123,16 +125,10 @@
                     </ul>
                     [[/latest]]
                 </div>
-                <strong>Stable branch:</strong>
+                <strong>Master branch:</strong>
                 <ul>
                     <li>
-                        <a href="https://github.com/ushahidi/SMSsync/tree/master">master branch</a>
-                    </li>
-                </ul>
-                <strong>Development branch:</strong>
-                <ul>
-                    <li>
-                        <a href="https://github.com/ushahidi/SMSsync">develop branch</a> open for
+                        <a href="https://github.com/ushahidi/SMSsync">master branch</a> open for
                         commit/contributions for next version of SMSsync
                     </li>
                 </ul>
@@ -177,4 +173,4 @@
 {{ partial "footer-scripts.html" . }}
 {{ partial "changelog-mustache-scripts.html"}}
 {{ partial "google-analytics.html" . }}
-{{ partial "footer.html" . }}
+{{ partial "footer-end-tags.html" . }}
