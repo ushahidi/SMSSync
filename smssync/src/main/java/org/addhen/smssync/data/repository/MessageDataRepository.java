@@ -90,6 +90,13 @@ public class MessageDataRepository implements MessageRepository {
     }
 
     @Override
+    public Observable<List<MessageEntity>> fetchPending() {
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
+        return mMessageDataSource.fetchPending()
+                .map((messageList -> mMessageDataMapper.map(messageList)));
+    }
+
+    @Override
     public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
         return Observable.defer(() -> {
             boolean status = true;

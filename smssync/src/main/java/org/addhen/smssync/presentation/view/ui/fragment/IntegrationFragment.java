@@ -106,7 +106,7 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
 
     @Override
     public void totalActiveWebService(int total) {
-        if (total > 0) {
+        if (total > 0 || App.getTwitterInstance().getSessionManager().getActiveSession() != null) {
             startService();
             return;
         }

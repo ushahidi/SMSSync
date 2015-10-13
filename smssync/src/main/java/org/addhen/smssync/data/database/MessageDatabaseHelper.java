@@ -157,6 +157,30 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    public Observable<List<Message>> fetchPending() {
+        return Observable.create(subscriber -> {
+            if (!isClosed()) {
+                final String whereClause = "status != ?";
+                List<Message> messages = null;
+                try {
+                    messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                            .withSelection(whereClause, Message.Status.SENT.name()).orderBy(
+                                    "messages_date DESC").list();
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+                if (messages != null) {
+                    subscriber.onNext(messages);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new MessageNotFoundException());
+                }
+            } else {
+                subscriber.onError(new Exception());
+            }
+        });
+    }
+
     public Observable<List<Message>> getMessages() {
         return Observable.create(subscriber -> {
             if (!isClosed()) {

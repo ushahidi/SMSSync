@@ -46,6 +46,6 @@ public class ListMessageUsecase extends Usecase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return mMessageRepository.getEntities();
+        return mMessageRepository.fetchPending();
     }
 }

@@ -24,6 +24,8 @@ import com.addhen.android.raiburari.data.entity.DataEntity;
 import java.io.Serializable;
 import java.util.Date;
 
+import nl.qbusict.cupboard.annotation.Column;
+
 /**
  * @author Henry Addo
  */
@@ -32,37 +34,49 @@ public class Message extends DataEntity implements Serializable {
     private static final long serialVersionUID = 1094372288105228610L;
 
     @SerializedName("message")
+    @Column("messages_body")
     public String messageBody;
 
     @SerializedName("to")
+    @Column("messages_from")
     public String messageFrom;
 
     @SerializedName("timestamp")
+    @Column("messages_date")
     public Date messageDate;
 
     @SerializedName("uuid")
+    @Column("message_uuid")
     public String messageUuid;
 
     @SerializedName("type")
+    @Column("message_type")
     public Type messageType;
 
     @SerializedName("sent_result_code")
+    @Column("sent_result_code")
     public int sentResultCode;
 
     @SerializedName("sent_result_message")
+    @Column("sent_result_message")
     public String sentResultMessage;
 
     @SerializedName("delivery_result_code")
+    @Column("delivery_result_code")
     public int deliveryResultCode;
 
     @SerializedName("delivered_result_message")
+    @Column("delivery_result_message")
     public String deliveryResultMessage;
 
     @SerializedName("delivered_timestamp")
+    @Column("delivered_timestamp")
     public Date deliveredDate;
 
+    @Column("retries")
     public int retries;
 
+    @Column("status")
     public Status status;
 
     public enum Status {

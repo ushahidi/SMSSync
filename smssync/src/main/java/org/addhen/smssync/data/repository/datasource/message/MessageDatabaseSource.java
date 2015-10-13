@@ -58,6 +58,11 @@ public class MessageDatabaseSource implements MessageDataSource {
     }
 
     @Override
+    public Observable<List<Message>> fetchPending() {
+        return mMessageDatabaseHelper.fetchPending();
+    }
+
+    @Override
     public Observable<List<Message>> getMessages() {
         return mMessageDatabaseHelper.getMessages();
     }

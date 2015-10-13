@@ -36,6 +36,8 @@ public interface MessageDataSource {
 
     Observable<List<Message>> fetchMessageByStatus(Message.Status status);
 
+    Observable<List<Message>> fetchPending();
+
     Observable<List<Message>> getMessages();
 
     Observable<Message> getMessage(Long id);

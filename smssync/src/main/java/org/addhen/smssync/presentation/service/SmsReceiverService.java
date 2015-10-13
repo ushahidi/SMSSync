@@ -22,17 +22,16 @@ import com.addhen.android.raiburari.presentation.di.component.ApplicationCompone
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 import org.addhen.smssync.presentation.di.component.AppServiceComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppServiceComponent;
 import org.addhen.smssync.presentation.di.module.ServiceModule;
-import org.addhen.smssync.presentation.model.MessageModel;
-import org.addhen.smssync.presentation.presenter.message.PublishMessagesPresenter;
 import org.addhen.smssync.presentation.util.Utility;
-import org.addhen.smssync.presentation.view.message.PublishMessageView;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.app.Service;
@@ -44,13 +43,11 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Message;
 import android.os.PowerManager;
 import android.os.Process;
 import android.telephony.SmsMessage;
 
 import java.lang.ref.WeakReference;
-import java.util.Arrays;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -67,7 +64,10 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     FileManager mFileManager;
 
     @Inject
-    PublishMessagesPresenter mPublishMessagesPresenter;
+    PostMessage mPostMessage;
+
+    @Inject
+    TweetMessage mTweetMessage;
 
     private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
 
@@ -205,7 +205,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
-        initPresenter();
         App.bus.register(this);
 
     }
@@ -215,63 +214,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 .appComponent(getAppComponent())
                 .serviceModule(new ServiceModule(this))
                 .build();
-    }
-
-    private void initPresenter() {
-        mPublishMessagesPresenter.setView(new PublishMessageView() {
-            @Override
-            public void successfullyPublished(boolean status) {
-                if (!status) {
-                    Utility.showFailNotification(getAppContext(), messagesBody,
-                            getString(R.string.sending_failed));
-
-                    statusIntent = new Intent(ServiceConstants.FAILED_ACTION);
-                    statusIntent.putExtra("failed", 0);
-                    sendBroadcast(statusIntent);
-                } else {
-                    Utility.showFailNotification(getAppContext(), messagesBody,
-                            getString(R.string.sending_succeeded));
-                    mFileManager.appendAndClose(getString(R.string.sending_succeeded));
-                    statusIntent.putExtra("sentstatus", 0);
-                    sendBroadcast(statusIntent);
-                }
-            }
-
-            @Override
-            public void showEnableServiceMessage(String s) {
-
-            }
-
-            @Override
-            public void showLoading() {
-
-            }
-
-            @Override
-            public void hideLoading() {
-
-            }
-
-            @Override
-            public void showRetry() {
-
-            }
-
-            @Override
-            public void hideRetry() {
-
-            }
-
-            @Override
-            public void showError(String message) {
-
-            }
-
-            @Override
-            public Context getAppContext() {
-                return SmsReceiverService.this;
-            }
-        });
+        mAppServiceComponent.inject(this);
     }
 
     private AppComponent getAppComponent() {
@@ -280,7 +223,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     @Override
     public void onStart(Intent intent, int startId) {
-        Message msg = mServiceHandler.obtainMessage();
+        android.os.Message msg = mServiceHandler.obtainMessage();
         msg.arg1 = startId;
         msg.obj = intent;
         mServiceHandler.sendMessage(msg);
@@ -291,7 +234,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     public void onDestroy() {
         mServiceLooper.quit();
         App.bus.unregister(this);
-        mPublishMessagesPresenter.destroy();
         super.onDestroy();
     }
 
@@ -307,7 +249,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
         String body;
         Bundle bundle = intent.getExtras();
-        MessageModel msg = new MessageModel();
+        Message msg = new Message();
 
         log("handleSmsReceived() bundle " + bundle);
 
@@ -332,7 +274,8 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 }
                 msg.messageBody = body;
                 msg.messageUuid = new ProcessSms(mContext).getUuid();
-                msg.messageType = MessageModel.Type.PENDING;
+                msg.messageType = Message.Type.PENDING;
+                msg.status = Message.Status.UNCONFIRMED;
             }
         }
 
@@ -342,8 +285,30 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 getString(R.string.received_msg, msg.messageBody, msg.messageFrom));
 
         // Route the SMS
-        mPublishMessagesPresenter.publishMessage(Arrays.asList(msg));
+        if (App.getTwitterInstance().getSessionManager().getActiveSession() != null) {
+            boolean status = mTweetMessage.routeSms(msg);
+            showNotification(status);
+        }
 
+        boolean status = mPostMessage.routeSms(msg);
+        showNotification(status);
+    }
+
+    private void showNotification(boolean status) {
+        if (!status) {
+            Utility.showFailNotification(this, messagesBody,
+                    getString(R.string.sending_failed));
+
+            statusIntent = new Intent(ServiceConstants.FAILED_ACTION);
+            statusIntent.putExtra("failed", 0);
+            sendBroadcast(statusIntent);
+        } else {
+            Utility.showFailNotification(this, messagesBody,
+                    getString(R.string.sending_succeeded));
+            mFileManager.appendAndClose(getString(R.string.sending_succeeded));
+            statusIntent.putExtra("sentstatus", 0);
+            sendBroadcast(statusIntent);
+        }
     }
 
     public ApplicationComponent getApplicationComponent() {
@@ -380,7 +345,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         }
 
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(android.os.Message msg) {
             SmsReceiverService smsReceiverService = mSmsReceiverService.get();
             if (smsReceiverService != null) {
                 int serviceId = msg.arg1;

@@ -22,7 +22,6 @@ import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
-import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
@@ -171,9 +170,8 @@ public class TweetMessage extends ProcessMessage {
 
     public boolean tweetMessages(List<Message> messages) {
         Logger.log(TAG, "tweetMessages");
-        List<SyncUrl> syncUrlList = mWebServiceDataSource.listWebServices();
         List<Filter> filters = mFilterDataSource.getFilters();
-        for (SyncUrl syncUrl : syncUrlList) {
+        if (mTwitterClient.getSessionManager().getActiveSession() != null) {
             // Process if white-listing is enabled
             if (mPrefsFactory.enableWhitelist().get()) {
                 for (Filter filter : filters) {

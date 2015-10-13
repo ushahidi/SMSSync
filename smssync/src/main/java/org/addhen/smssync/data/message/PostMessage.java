@@ -112,6 +112,7 @@ public class PostMessage extends ProcessMessage {
                     for (Filter filter : filters) {
                         if (filter.phoneNumber.equals(message.messageFrom)) {
                             if (postMessage(message, syncUrl)) {
+                                postToSentBox(message);
                                 deleteFromSmsInbox(message);
                             } else {
                                 savePendingMessage(message);
@@ -131,6 +132,7 @@ public class PostMessage extends ProcessMessage {
                             return false;
                         } else {
                             if (postMessage(message, syncUrl)) {
+                                postToSentBox(message);
                                 deleteFromSmsInbox(message);
                             } else {
                                 savePendingMessage(message);
@@ -140,6 +142,7 @@ public class PostMessage extends ProcessMessage {
                     }
                 } else {
                     if (postMessage(message, syncUrl)) {
+                        postToSentBox(message);
                         deleteFromSmsInbox(message);
                     } else {
                         savePendingMessage(message);
@@ -280,10 +283,8 @@ public class PostMessage extends ProcessMessage {
                     message.messageBody, keywords)) {
                 return postToWebService(message, syncUrl);
             }
-        } else {
-            return postToWebService(message, syncUrl);
         }
-        return false;
+        return postToWebService(message, syncUrl);
     }
 
     private boolean postToWebService(Message message, SyncUrl syncUrl) {
@@ -298,7 +299,7 @@ public class PostMessage extends ProcessMessage {
         if (!posted) {
             processRetries(message);
         }
-        return false;
+        return posted;
     }
 
     public void performTask() {
