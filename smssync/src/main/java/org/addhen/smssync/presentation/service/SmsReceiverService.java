@@ -30,7 +30,9 @@ import org.addhen.smssync.presentation.di.component.AppServiceComponent;
 import org.addhen.smssync.presentation.di.component.DaggerAppServiceComponent;
 import org.addhen.smssync.presentation.di.module.ServiceModule;
 import org.addhen.smssync.presentation.model.MessageModel;
+import org.addhen.smssync.presentation.presenter.message.PublishMessagesPresenter;
 import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.presentation.view.message.PublishMessageView;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.app.Service;
@@ -48,6 +50,7 @@ import android.os.Process;
 import android.telephony.SmsMessage;
 
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -62,6 +65,9 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     @Inject
     FileManager mFileManager;
+
+    @Inject
+    PublishMessagesPresenter mPublishMessagesPresenter;
 
     private static final String ACTION_SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
 
@@ -199,6 +205,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
+        initPresenter();
         App.bus.register(this);
 
     }
@@ -208,6 +215,63 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 .appComponent(getAppComponent())
                 .serviceModule(new ServiceModule(this))
                 .build();
+    }
+
+    private void initPresenter() {
+        mPublishMessagesPresenter.setView(new PublishMessageView() {
+            @Override
+            public void successfullyPublished(boolean status) {
+                if (!status) {
+                    Utility.showFailNotification(getAppContext(), messagesBody,
+                            getString(R.string.sending_failed));
+
+                    statusIntent = new Intent(ServiceConstants.FAILED_ACTION);
+                    statusIntent.putExtra("failed", 0);
+                    sendBroadcast(statusIntent);
+                } else {
+                    Utility.showFailNotification(getAppContext(), messagesBody,
+                            getString(R.string.sending_succeeded));
+                    mFileManager.appendAndClose(getString(R.string.sending_succeeded));
+                    statusIntent.putExtra("sentstatus", 0);
+                    sendBroadcast(statusIntent);
+                }
+            }
+
+            @Override
+            public void showEnableServiceMessage(String s) {
+
+            }
+
+            @Override
+            public void showLoading() {
+
+            }
+
+            @Override
+            public void hideLoading() {
+
+            }
+
+            @Override
+            public void showRetry() {
+
+            }
+
+            @Override
+            public void hideRetry() {
+
+            }
+
+            @Override
+            public void showError(String message) {
+
+            }
+
+            @Override
+            public Context getAppContext() {
+                return SmsReceiverService.this;
+            }
+        });
     }
 
     private AppComponent getAppComponent() {
@@ -227,6 +291,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     public void onDestroy() {
         mServiceLooper.quit();
         App.bus.unregister(this);
+        mPublishMessagesPresenter.destroy();
         super.onDestroy();
     }
 
@@ -277,21 +342,8 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 getString(R.string.received_msg, msg.messageBody, msg.messageFrom));
 
         // Route the SMS
-        boolean sent = false;
-        if (!sent) {
-            Utility.showFailNotification(this, messagesBody,
-                    getString(R.string.sending_failed));
+        mPublishMessagesPresenter.publishMessage(Arrays.asList(msg));
 
-            statusIntent = new Intent(ServiceConstants.FAILED_ACTION);
-            statusIntent.putExtra("failed", 0);
-            sendBroadcast(statusIntent);
-        } else {
-            Utility.showFailNotification(this, messagesBody,
-                    getString(R.string.sending_succeeded));
-            mFileManager.appendAndClose(getString(R.string.sending_succeeded));
-            statusIntent.putExtra("sentstatus", 0);
-            sendBroadcast(statusIntent);
-        }
     }
 
     public ApplicationComponent getApplicationComponent() {

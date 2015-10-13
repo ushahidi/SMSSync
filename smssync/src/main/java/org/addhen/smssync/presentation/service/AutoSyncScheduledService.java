@@ -32,8 +32,7 @@ public class AutoSyncScheduledService extends BaseWakefulIntentService {
             .getSimpleName();
 
     // holds the status of the sync and sends it to the pending messages
-    // activity to
-    // update the ui
+    // activity to update the ui
     private Intent statusIntent;
 
     @Inject

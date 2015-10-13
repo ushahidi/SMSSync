@@ -17,9 +17,8 @@
 
 package org.addhen.smssync.presentation.di.module;
 
-import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
-
 import org.addhen.smssync.domain.usecase.message.DeleteMessageUsecase;
+import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.UpdateMessageUsecase;
 import org.addhen.smssync.presentation.di.qualifier.ServiceScope;
 
@@ -63,5 +62,13 @@ public class ServiceModule {
     @Named("messageDelete")
     DeleteMessageUsecase providesDeleteMessageUsecase(DeleteMessageUsecase deleteMessageUsecase) {
         return deleteMessageUsecase;
+    }
+
+    @Provides
+    @ServiceScope
+    @Named("messagePublish")
+    PublishMessageUsecase providePublishedMessageUsecase(
+            PublishMessageUsecase publishMessageUsecase) {
+        return publishMessageUsecase;
     }
 }
