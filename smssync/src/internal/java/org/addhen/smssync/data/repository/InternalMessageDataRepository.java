@@ -33,8 +33,6 @@ import org.addhen.smssync.smslib.sms.ProcessSms;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,6 +151,24 @@ public class InternalMessageDataRepository implements MessageRepository {
     }
 
     @Override
+    public Observable<List<MessageEntity>> fetchPending() {
+        return Observable.defer(() -> {
+            Type messageList = new TypeToken<List<Message>>() {
+            }.getType();
+            String json = loadPendingMessages();
+            List<Message> messageEntityList = null;
+            try {
+                messageEntityList = mGson.fromJson(json, messageList);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Observable.error(e);
+            }
+            List<MessageEntity> messages = mMessageDataMapper.map(messageEntityList);
+            return Observable.just(messages);
+        });
+    }
+
+    @Override
     public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
         return Observable.defer(() -> {
             boolean status = mProcessMessage
@@ -172,6 +188,34 @@ public class InternalMessageDataRepository implements MessageRepository {
             }
             return Observable.just(mMessageDataMapper.map(messages));
         });
+    }
+
+    @Override
+    public MessageEntity syncFetchByUuid(String uuid) {
+        Type typeMessage = new TypeToken<Message>() {
+        }.getType();
+        String json = loadMessage();
+        Message message = new Message();
+        try {
+            message = mGson.fromJson(json, typeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mMessageDataMapper.map(message);
+    }
+
+    @Override
+    public List<MessageEntity> syncFetchPending() {
+        Type messageList = new TypeToken<List<Message>>() {
+        }.getType();
+        String json = loadPendingMessages();
+        List<Message> messageEntityList = null;
+        try {
+            messageEntityList = mGson.fromJson(json, messageList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mMessageDataMapper.map(messageEntityList);
     }
 
     @Override
