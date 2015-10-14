@@ -27,6 +27,7 @@ import org.addhen.smssync.presentation.di.component.MessageComponent;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ListPublishedMessagePresenter;
+import org.addhen.smssync.presentation.service.ServiceConstants;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.DeleteMessageView;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
@@ -35,7 +36,10 @@ import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -120,12 +124,15 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     @Override
     public void onResume() {
         super.onResume();
+        getActivity().registerReceiver(broadcastReceiver,
+                new IntentFilter(ServiceConstants.AUTO_SYNC_ACTION));
         mListMessagePresenter.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        getActivity().unregisterReceiver(broadcastReceiver);
         mListMessagePresenter.pause();
     }
 
@@ -441,6 +448,15 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
             return mPosition;
         }
     }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                mListMessagePresenter.loadMessages();
+            }
+        }
+    };
 
     private class ActionBarModeCallback implements ActionMode.Callback {
 

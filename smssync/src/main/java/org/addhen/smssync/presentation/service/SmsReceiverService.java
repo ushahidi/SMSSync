@@ -298,17 +298,13 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         if (!status) {
             Utility.showFailNotification(this, messagesBody,
                     getString(R.string.sending_failed));
-
-            statusIntent = new Intent(ServiceConstants.FAILED_ACTION);
-            statusIntent.putExtra("failed", 0);
-            sendBroadcast(statusIntent);
         } else {
             Utility.showFailNotification(this, messagesBody,
                     getString(R.string.sending_succeeded));
             mFileManager.appendAndClose(getString(R.string.sending_succeeded));
-            statusIntent.putExtra("sentstatus", 0);
-            sendBroadcast(statusIntent);
         }
+        statusIntent.putExtra("sentstatus", 0);
+        sendBroadcast(statusIntent);
     }
 
     public ApplicationComponent getApplicationComponent() {
