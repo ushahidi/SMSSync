@@ -335,13 +335,10 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                 .listener((dialog, which) -> {
                     switch (which) {
                         case R.id.menu_messages_more_actions_delete:
-                            mDeleteMessagePresenter
-                                    .deleteMessage(mMessageAdapter.getItem(position).messageUuid);
+                            deleteItem(position);
                             break;
                         default:
-                            List<MessageModel> messageModels = new ArrayList<MessageModel>();
-                            messageModels.add(mMessageAdapter.getItem(position));
-                            mPublishMessagesPresenter.publishMessage(messageModels);
+                            publishItem(position);
                     }
                 }).show());
         if (Build.VERSION.SDK_INT >= HONEYCOMB) {
@@ -396,6 +393,14 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mRemovedMessage = mMessageAdapter.getItem(position);
         mMessageAdapter.removeItem(mRemovedMessage);
         showUndoSnackbar(getString(R.string.published));
+    }
+
+    private void removeItems() {
+        if (!Utility.isEmpty(mPendingMessages)) {
+            for (PendingMessage message : mPendingMessages) {
+                mMessageAdapter.removeItem(message.messageModel);
+            }
+        }
     }
 
     @TargetApi(HONEYCOMB)
@@ -502,6 +507,19 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             // Restore item
             mMessageAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
         });
+
+        View view = snackbar.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(getAppContext().getResources().getColor(R.color.red));
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.messageUuid);
+                }
+            }
+        });
         snackbar.show();
     }
 
@@ -547,6 +565,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         //Sort in ascending order for restoring deleted items
         Comparator cmp = Collections.reverseOrder();
         Collections.sort(mPendingMessages, cmp);
+        removeItems();
         Snackbar snackbar = Snackbar.make(mFab, getActivity()
                         .getString(R.string.item_deleted, mPendingMessages.size()),
                 Snackbar.LENGTH_LONG);
@@ -585,6 +604,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         //Sort in ascending order for restoring deleted items
         Comparator cmp = Collections.reverseOrder();
         Collections.sort(mPendingMessages, cmp);
+        removeItems();
         Snackbar snackbar = Snackbar.make(mFab, getActivity()
                         .getString(R.string.item_deleted, mPendingMessages.size()),
                 Snackbar.LENGTH_LONG);
@@ -613,6 +633,60 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                         mPublishMessagesPresenter.publishMessage(messageModels);
                         clearItems();
                     }
+                }
+            }
+        });
+        snackbar.show();
+    }
+
+    private void publishItem(int position) {
+        //Sort in ascending order for restoring deleted items
+        Snackbar snackbar = Snackbar.make(mFab, getActivity()
+                        .getString(R.string.item_deleted, mPendingMessages.size()),
+                Snackbar.LENGTH_LONG);
+        mRemovedMessage = mMessageAdapter.getItem(position);
+        mMessageAdapter.removeItem(mRemovedMessage);
+        snackbar.setAction(R.string.undo, e -> {
+            // Restore items
+            mMessageAdapter.addItem(mRemovedMessage, position);
+        });
+        View view = snackbar.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(getAppContext().getResources().getColor(R.color.red));
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                    List<MessageModel> messageModels = new ArrayList<MessageModel>();
+                    messageModels.add(mRemovedMessage);
+                    mPublishMessagesPresenter.publishMessage(messageModels);
+                }
+            }
+        });
+        snackbar.show();
+    }
+
+    private void deleteItem(int position) {
+        //Sort in ascending order for restoring deleted items
+        Snackbar snackbar = Snackbar.make(mFab, getActivity()
+                        .getString(R.string.item_deleted, mPendingMessages.size()),
+                Snackbar.LENGTH_LONG);
+        mRemovedMessage = mMessageAdapter.getItem(position);
+        mMessageAdapter.removeItem(mRemovedMessage);
+        snackbar.setAction(R.string.undo, e -> {
+            // Restore items
+            mMessageAdapter.addItem(mRemovedMessage, position);
+        });
+        View view = snackbar.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(getAppContext().getResources().getColor(R.color.red));
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.messageUuid);
                 }
             }
         });

@@ -101,4 +101,14 @@ public class MessageDatabaseSource implements MessageDataSource {
     public Integer deleteWithUuid(String uuid) {
         return mMessageDatabaseHelper.deleteWithUuid(uuid);
     }
+
+    @Override
+    public Message fetchByUuid(String uuid) {
+        return mMessageDatabaseHelper.fetchMessageByUuid(uuid);
+    }
+
+    @Override
+    public List<Message> syncFetchPending() {
+        return mMessageDatabaseHelper.syncFetchPending();
+    }
 }

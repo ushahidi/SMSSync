@@ -22,7 +22,11 @@ import com.squareup.otto.Subscribe;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
+import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.util.Logger;
+import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.task.SyncConfig;
 import org.addhen.smssync.presentation.task.SyncPendingMessagesTask;
@@ -58,6 +62,18 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
 
     @Inject
     FileManager mFileManager;
+
+    @Inject
+    PostMessage mPostMessage;
+
+    @Inject
+    TweetMessage mTweetMessage;
+
+    @Inject
+    MessageRepository mMessageRepository;
+
+    @Inject
+    MessageDataMapper mMessageDataMapper;
 
     public SyncPendingMessagesService() {
         super(CLASS_TAG);
@@ -95,7 +111,8 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
                     mState = new SyncPendingMessagesState(INITIAL, 0, 0, 0, 0, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
-                        new SyncPendingMessagesTask(this).execute(config);
+                        new SyncPendingMessagesTask(this, mPostMessage, mTweetMessage,
+                                mMessageRepository, mMessageDataMapper).execute(config);
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
                         mFileManager

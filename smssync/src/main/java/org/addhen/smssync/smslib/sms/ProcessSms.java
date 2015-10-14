@@ -238,6 +238,7 @@ public class ProcessSms {
                 c.close();
                 return threadId;
             }
+            c.close();
         }
         return 0;
     }
@@ -259,6 +260,7 @@ public class ProcessSms {
                 c.close();
                 return threadId;
             }
+            c.close();
         }
         return 0;
     }

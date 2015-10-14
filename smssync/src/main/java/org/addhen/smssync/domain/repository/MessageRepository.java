@@ -43,4 +43,8 @@ public interface MessageRepository extends Repository<MessageEntity> {
     Observable<Boolean> publishMessage(List<MessageEntity> messageEntities);
 
     Observable<List<MessageEntity>> importMessage();
+
+    MessageEntity syncFetchByUuid(String uuid);
+
+    List<MessageEntity> syncFetchPending();
 }

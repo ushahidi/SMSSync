@@ -181,6 +181,18 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
         });
     }
 
+    public List<Message> syncFetchPending() {
+        List<Message> messages = new ArrayList<>();
+        if (!isClosed()) {
+            final String whereClause = "status != ?";
+
+            messages = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                    .withSelection(whereClause, Message.Status.SENT.name())
+                    .orderBy("messages_date DESC").list();
+        }
+        return messages;
+    }
+
     public Observable<List<Message>> getMessages() {
         return Observable.create(subscriber -> {
             if (!isClosed()) {

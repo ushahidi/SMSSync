@@ -19,10 +19,13 @@ package org.addhen.smssync.presentation.task;
 
 import com.squareup.otto.Subscribe;
 
+import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
 import org.addhen.smssync.data.message.PostMessage;
+import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.util.Logger;
+import org.addhen.smssync.domain.entity.MessageEntity;
+import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.presentation.App;
-import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.service.SyncPendingMessagesService;
 import org.addhen.smssync.presentation.task.state.SyncPendingMessagesState;
 import org.addhen.smssync.presentation.task.state.SyncState;
@@ -54,6 +57,12 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
 
     private PostMessage mProcessMessage;
 
+    private TweetMessage mTweetMessage;
+
+    private MessageRepository mMessageRepository;
+
+    private MessageDataMapper mMessageDataMapper;
+
     private int itemsToSync;
 
     /**
@@ -61,8 +70,14 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
      *
      * @param service The sync service
      */
-    public SyncPendingMessagesTask(SyncPendingMessagesService service) {
+    public SyncPendingMessagesTask(SyncPendingMessagesService service, PostMessage postMessage,
+            TweetMessage tweetMessage, MessageRepository messageRepository,
+            MessageDataMapper messageDataMapper) {
         mService = service;
+        mProcessMessage = postMessage;
+        mTweetMessage = tweetMessage;
+        mMessageRepository = messageRepository;
+        mMessageDataMapper = messageDataMapper;
     }
 
     @Override
@@ -151,40 +166,57 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
         int failedItems = 0;
         int progress = 0;
         SyncStatus syncStatus = new SyncStatus();
-        List<MessageModel> listMessages = new ArrayList<>();
+        List<MessageEntity> listMessages = new ArrayList<>();
 
         // determine if syncing by message UUID
         if (config.messageUuids != null && config.messageUuids.size() > 0) {
             // TODO: get messages to sync
-
-            if (listMessages.size() > 0) {
-                itemsToSync = listMessages.size();
-                Logger.log(CLASS_TAG,
-                        String.format(Locale.ENGLISH, "Starting to sync (%d messages)",
-                                itemsToSync));
-
-                // keep the sync running as long as the service is not cancelled and
-                // the syncd items is less than
-                // the items to be syncd.
-
-                while (!isCancelled() && progress < itemsToSync) {
-
-                    // iterate through the loaded messages and push to the web
-                    // service
-                    for (MessageModel m : listMessages) {
-                        progress++;
-                        // route the message to the appropriate enabled sync URL
-                        // TODO: Update successfully sync'd items and failed ones
-
-                        // update the UI with progress of the sync progress
-                        publishProgress(new SyncPendingMessagesState(SYNC, syncdItems, failedItems,
-                                progress,
-                                itemsToSync,
-                                config.syncType, null));
-                    }
-                }
+            for (String messageUuid : config.messageUuids) {
+                MessageEntity msg = mMessageRepository.syncFetchByUuid(messageUuid);
+                listMessages.add(msg);
 
             }
+        } else {
+            // load all messages
+            listMessages = mMessageRepository.syncFetchPending();
+        }
+        if (listMessages.size() > 0) {
+            itemsToSync = listMessages.size();
+            Logger.log(CLASS_TAG,
+                    String.format(Locale.ENGLISH, "Starting to sync (%d messages)",
+                            itemsToSync));
+
+            // keep the sync running as long as the service is not cancelled and
+            // the syncd items is less than
+            // the items to be syncd.
+
+            while (!isCancelled() && progress < itemsToSync) {
+                // iterate through the loaded messages and push to the web
+                // service
+                for (MessageEntity m : listMessages) {
+                    progress++;
+                    // route the message to the appropriate enabled sync URL
+                    // route the message to the appropriate enabled sync URL
+                    mTweetMessage.tweetPendingMessage(mMessageDataMapper.map(m));
+                    if (mProcessMessage.routePendingMessage(mMessageDataMapper.map(m))) {
+                        // / if it successfully pushes message, purge the
+                        // message from the db
+                        // increment the number of syncd items
+                        syncdItems++;
+
+                    } else {
+                        failedItems++;
+
+                    }
+
+                    // update the UI with progress of the sync progress
+                    publishProgress(new SyncPendingMessagesState(SYNC, syncdItems, failedItems,
+                            progress,
+                            itemsToSync,
+                            config.syncType, null));
+                }
+            }
+
         }
 
         return syncStatus.setSuccessfulCount(syncdItems).setFailedCount(failedItems)

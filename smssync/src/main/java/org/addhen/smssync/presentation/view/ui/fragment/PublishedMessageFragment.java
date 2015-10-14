@@ -98,7 +98,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     private boolean mIsPermanentlyDeleted = true;
 
-    /** List of items pending to to be deleted **/
+    /** List of items pending to be deleted **/
     public List<PendingDeletedMessage> mPendingDeletedMessages;
 
     public PublishedMessageFragment() {
@@ -213,6 +213,14 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         mRemovedMessage = mMessageAdapter.getItem(position);
         mMessageAdapter.removeItem(mRemovedMessage);
         showUndoSnackbar(1);
+    }
+
+    private void removeItems() {
+        if (!Utility.isEmpty(mPendingDeletedMessages)) {
+            for (PendingDeletedMessage pendingDeletedMessage : mPendingDeletedMessages) {
+                mMessageAdapter.removeItem(pendingDeletedMessage.messageModel);
+            }
+        }
     }
 
     private void initializeDeletePresenter() {
@@ -346,6 +354,18 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
             // Restore item
             mMessageAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
         });
+        View view = snackbar.getView();
+        TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(getAppContext().getResources().getColor(R.color.red));
+        snackbar.setCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar snackbar, int event) {
+                super.onDismissed(snackbar, event);
+                if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.messageUuid);
+                }
+            }
+        });
         snackbar.show();
     }
 
@@ -388,9 +408,10 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     }
 
     private void deleteItems() {
-        //Sort in ascending order for restoring deleted items
+        //Sort in ascending order so deleted items can be easily restored
         Comparator cmp = Collections.reverseOrder();
         Collections.sort(mPendingDeletedMessages, cmp);
+        removeItems();
         Snackbar snackbar = Snackbar.make(getView(), getActivity()
                         .getString(R.string.item_deleted, mPendingDeletedMessages.size()),
                 Snackbar.LENGTH_LONG);

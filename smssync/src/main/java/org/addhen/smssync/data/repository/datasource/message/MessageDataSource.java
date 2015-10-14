@@ -53,4 +53,8 @@ public interface MessageDataSource {
     void putMessage(Message message);
 
     Integer deleteWithUuid(String uuid);
+
+    Message fetchByUuid(String uuid);
+
+    List<Message> syncFetchPending();
 }

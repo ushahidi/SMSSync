@@ -206,6 +206,43 @@ public class TweetMessage extends ProcessMessage {
         return true;
     }
 
+    public boolean tweetPendingMessage(Message message) {
+        Logger.log(TAG, "tweetMessages");
+        List<Filter> filters = mFilterDataSource.getFilters();
+        if (mTwitterClient.getSessionManager().getActiveSession() != null) {
+            // Process if white-listing is enabled
+            if (mPrefsFactory.enableWhitelist().get()) {
+                for (Filter filter : filters) {
+
+                    if (filter.phoneNumber.equals(message.messageFrom)) {
+                        if (tweetMessage(message)) {
+                            postToSentBox(message);
+                        }
+                    }
+
+                }
+            }
+
+            if (mPrefsFactory.enableBlacklist().get()) {
+                for (Filter filter : filters) {
+
+                    if (!filter.phoneNumber.equals(message.messageFrom)) {
+                        if (tweetMessage(message)) {
+                            postToSentBox(message);
+                        }
+                    }
+
+                }
+            } else {
+                if (tweetMessage(message)) {
+                    postToSentBox(message);
+                }
+
+            }
+        }
+        return true;
+    }
+
     private boolean tweetMessage(Message message) {
         // Process filter text (keyword or RegEx)
         if (!TextUtils.isEmpty(mPrefsFactory.twitterKeywords().get()) && mPrefsFactory

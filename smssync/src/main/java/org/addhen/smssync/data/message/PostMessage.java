@@ -225,6 +225,48 @@ public class PostMessage extends ProcessMessage {
         return true;
     }
 
+
+    public boolean routePendingMessage(Message message) {
+        Logger.log(TAG, "postMessages");
+        List<SyncUrl> syncUrlList = mWebServiceDataSource.listWebServices();
+        List<Filter> filters = mFilterDataSource.getFilters();
+        for (SyncUrl syncUrl : syncUrlList) {
+            // Process if white-listing is enabled
+            if (mPrefsFactory.enableWhitelist().get()) {
+                for (Filter filter : filters) {
+
+                    if (filter.phoneNumber.equals(message.messageFrom)) {
+                        if (postMessage(message, syncUrl)) {
+                            postToSentBox(message);
+                        }
+                    }
+
+                }
+            }
+
+            if (mPrefsFactory.enableBlacklist().get()) {
+                for (Filter filter : filters) {
+
+                    if (!filter.phoneNumber.equals(message.messageFrom)) {
+                        Logger.log("message",
+                                " from:" + message.messageFrom + " filter:"
+                                        + filter.phoneNumber);
+                        if (postMessage(message, syncUrl)) {
+                            postToSentBox(message);
+                        }
+                    }
+
+                }
+            } else {
+                if (postMessage(message, syncUrl)) {
+                    postToSentBox(message);
+                }
+
+            }
+        }
+        return true;
+    }
+
     private void sendSMSWithMessageResultsAPIEnabled(SyncUrl syncUrl, List<Message> msgs) {
         QueuedMessages messagesUUIDs = new QueuedMessages();
         for (Message msg : msgs) {

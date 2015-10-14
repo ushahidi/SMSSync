@@ -121,6 +121,19 @@ public class MessageDataRepository implements MessageRepository {
     }
 
     @Override
+    public MessageEntity syncFetchByUuid(String uuid) {
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
+        return mMessageDataMapper.map(mMessageDataSource.fetchMessageByUuid(uuid));
+    }
+
+
+    @Override
+    public List<MessageEntity> syncFetchPending() {
+        mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
+        return mMessageDataMapper.map(mMessageDataSource.syncFetchPending());
+    }
+
+    @Override
     public Observable<List<MessageEntity>> getEntities() {
         mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
         return mMessageDataSource.getMessages()
