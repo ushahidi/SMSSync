@@ -70,7 +70,10 @@ public class WebServiceDataRepository implements WebServiceRepository {
 
     @Override
     public List<WebServiceEntity> syncGetByStatus(WebServiceEntity.Status status) {
-        return null;
+        final WebServiceDataSource webserviceDataSource = mWebServiceDataStoreFactory
+                .createDatabaseDataSource();
+        return mWebServiceEntityDataMapper.map(
+                webserviceDataSource.syncGetByStatus(mWebServiceEntityDataMapper.map(status)));
     }
 
     @Override

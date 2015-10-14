@@ -26,6 +26,7 @@ import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.data.net.BaseHttpClient;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 import org.addhen.smssync.domain.repository.WebServiceRepository;
+import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.smslib.model.SmsMessage;
 
 import android.content.Context;
@@ -78,26 +79,29 @@ public class AlertPresenter {
     public void lowBatteryLevelRequest(int batteryLevel) {
         List<WebServiceEntity> webServiceEntities = mWebServiceRepository
                 .syncGetByStatus(WebServiceEntity.Status.ENABLED);
-        for (WebServiceEntity webServiceEntity : webServiceEntities) {
-            mAppHttpClient.addParam(TASK_PARAM, "alert");
-            mAppHttpClient.addParam(MESSAGE_PARAM, mContext.getResources()
-                    .getString(R.string.battery_level_message, batteryLevel));
-            try {
-                mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.POST);
-                mAppHttpClient.execute();
-            } catch (Exception e) {
-                mFileManager.appendAndClose(e.getMessage());
-            } finally {
-                if (200 == mAppHttpClient.getResponse().code()) {
-                    mFileManager.appendAndClose(
-                            mContext.getResources().getString(R.string.successful_alert_to_server));
+        if (!Utility.isEmpty(webServiceEntities)) {
+            for (WebServiceEntity webServiceEntity : webServiceEntities) {
+                mAppHttpClient.addParam(TASK_PARAM, "alert");
+                mAppHttpClient.addParam(MESSAGE_PARAM, mContext.getResources()
+                        .getString(R.string.battery_level_message, batteryLevel));
+                try {
+                    mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.POST);
+                    mAppHttpClient.execute();
+                } catch (Exception e) {
+                    mFileManager.appendAndClose(e.getMessage());
+                } finally {
+                    if (200 == mAppHttpClient.getResponse().code()) {
+                        mFileManager.appendAndClose(
+                                mContext.getResources()
+                                        .getString(R.string.successful_alert_to_server));
+                    }
                 }
             }
-        }
 
-        if (!mPrefsFactory.alertPhoneNumber().get().matches("")) {
-            sendSms(mContext.getResources().getString(R.string.battery_level_message,
-                    batteryLevel));
+            if (!mPrefsFactory.alertPhoneNumber().get().matches("")) {
+                sendSms(mContext.getResources().getString(R.string.battery_level_message,
+                        batteryLevel));
+            }
         }
     }
 
