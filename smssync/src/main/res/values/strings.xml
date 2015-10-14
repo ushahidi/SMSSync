@@ -531,7 +531,7 @@
         the logged in user below.
     </string>
     <string name="published">Published</string>
-    <string name="nav_menu_incoming">Pending</string>
+    <string name="nav_menu_incoming">Incoming</string>
     <string name="settings_title_format">
         <xliff:g id="setting">%1$s</xliff:g>
         -
@@ -567,7 +567,7 @@
     <string name="validation_message_invalid_url">Please provide a valid URL for your custom web
         service
     </string>
-    <string name="incoming_messages">Pending messages</string>
+    <string name="incoming_messages">Incoming messages</string>
     <string name="search_hint">Search message</string>
     <string name="validation_message_no_deployment_title">Please provide a title for the custom web
         service
