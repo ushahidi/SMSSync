@@ -42,6 +42,11 @@ ext {
     supportPreferenceVersion = '23.1.0'
 
     //Testing
+    jUnitVersion = '4.12'
+    mockitoVersion = '1.10.19'
+    dexmakerVersion = '1.2'
+    testingSupportRunnerVersion = '0.4'
+    robolectricVersion = '3.0'
     truthVersion = '0.27'
 
     appDependencies = [
@@ -60,6 +65,13 @@ ext {
     ]
 
     appTestDependencies = [
-            truth: "com.google.truth:truth:${truthVersion}",
+            mockito             : "org.mockito:mockito-core:${mockitoVersion}",
+            dexmaker            : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
+            dexmakerMockito     : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
+            testingSupportRunner: "com.android.support.test:runner:${testingSupportRunnerVersion}",
+            junit               : "junit:junit:${jUnitVersion}",
+            mockito             : "org.mockito:mockito-core:${mockitoVersion}",
+            robolectric         : "org.robolectric:robolectric:${robolectricVersion}",
+            truth               : "com.google.truth:truth:${truthVersion}",
     ]
 }
