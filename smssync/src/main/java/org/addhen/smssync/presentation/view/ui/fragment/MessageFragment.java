@@ -216,7 +216,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showError(String s) {
-                showSnabackar(mFab, s);
+                showSnackbar(mFab, s);
             }
 
             @Override
@@ -263,7 +263,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showError(String s) {
-                showSnabackar(mFab, s);
+                showSnackbar(mFab, s);
             }
 
             @Override
@@ -309,7 +309,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnackbar(getView(), s);
             }
 
             @Override

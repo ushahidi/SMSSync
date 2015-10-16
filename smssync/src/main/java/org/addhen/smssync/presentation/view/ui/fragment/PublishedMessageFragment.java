@@ -252,7 +252,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnackbar(getView(), s);
             }
 
             @Override

@@ -110,7 +110,7 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
             startService();
             return;
         }
-        showSnabackar(getView(), R.string.no_enabled_sync_url);
+        showSnackbar(getView(), R.string.no_enabled_sync_url);
         mIntegrationPresenter.getPrefsFactory().serviceEnabled().set(false);
         mStartServiceCheckBox.setChecked(false);
     }
@@ -126,7 +126,7 @@ public class IntegrationFragment extends BaseFragment implements IntegrationView
 
     @Override
     public void showError(String message) {
-        showSnabackar(getView(), message);
+        showSnackbar(getView(), message);
     }
 
     @Override

@@ -172,7 +172,7 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
 
     @Override
     public void showError(String message) {
-        showSnabackar(getView(), message);
+        showSnackbar(getView(), message);
     }
 
     @Override

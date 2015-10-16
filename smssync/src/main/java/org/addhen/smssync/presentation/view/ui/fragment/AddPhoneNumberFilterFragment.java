@@ -167,7 +167,7 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
 
     @Override
     public void showError(String message) {
-        showSnabackar(getView(), message);
+        showSnackbar(getView(), message);
     }
 
     @Override

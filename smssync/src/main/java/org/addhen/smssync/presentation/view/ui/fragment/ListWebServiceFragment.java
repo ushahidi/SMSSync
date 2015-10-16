@@ -131,7 +131,7 @@ public class ListWebServiceFragment
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnackbar(getView(), s);
             }
 
             @Override
@@ -200,7 +200,7 @@ public class ListWebServiceFragment
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnackbar(getView(), s);
             }
 
             @Override
@@ -217,7 +217,7 @@ public class ListWebServiceFragment
             final WebServiceModel webServiceModel = mWebServiceAdapter.getItem(position);
             if (status) {
                 if (mWebServiceAdapter.getItemCount() == 1 && mPrefs.serviceEnabled().get()) {
-                    showSnabackar(getView(), R.string.disable_last_sync_url);
+                    showSnackbar(getView(), R.string.disable_last_sync_url);
                 } else {
                     webServiceModel.setStatus(WebServiceModel.Status.DISABLED);
                     mUpdateWebServicePresenter.updateWebService(webServiceModel);
@@ -293,7 +293,7 @@ public class ListWebServiceFragment
         } else {
             // Restore item
             mWebServiceAdapter.addItem(mRemovedWebServiceModel, mRemovedItemPosition);
-            showSnabackar(mFab, getString(R.string.delete_enabled_webservice));
+            showSnackbar(mFab, getString(R.string.delete_enabled_webservice));
         }
     }
 

@@ -162,7 +162,7 @@ public class AddTwitterKeywordFragment extends BaseFragment implements
 
     @Override
     public void showError(String message) {
-        showSnabackar(getView(), message);
+        showSnackbar(getView(), message);
     }
 
     @Override

@@ -195,7 +195,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnackbar(getView(), s);
             }
 
             @Override

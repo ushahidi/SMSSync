@@ -161,7 +161,7 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
 
     @Override
     public void showError(String s) {
-        showSnabackar(getView(), s);
+        showSnackbar(getView(), s);
     }
 
     @Override

@@ -196,9 +196,9 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
             @Override
             public void webServiceTested(boolean status) {
                 if (status) {
-                    showSnabackar(getView(), R.string.valid_web_service);
+                    showSnackbar(getView(), R.string.valid_web_service);
                 } else {
-                    showSnabackar(getView(), R.string.failed_to_test_web_service);
+                    showSnackbar(getView(), R.string.failed_to_test_web_service);
                 }
             }
 
@@ -224,7 +224,7 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
             @Override
             public void showError(String s) {
-                showSnabackar(getView(), s);
+                showSnackbar(getView(), s);
             }
 
             @Override

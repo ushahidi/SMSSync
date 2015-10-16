@@ -243,26 +243,17 @@ dependencies {
     compile project(':libraries:survey-dialog')
     compile fileTree(dir: 'libs', include: '*.jar')
     compile appDependencies.raiburari
-    compile appDependencies.supportPreference
     compile appDependencies.cupboard
-    compile appDependencies.otto
     compile appDependencies.wakeful
     compile appDependencies.okHttp
     compile appDependencies.twitter4jCore
     compile appDependencies.nineOldAndroids
     compile appDependencies.bottomSheet
     compile appDependencies.zXingQRCode
+    compile appDependencies.supportPreference
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
-    testCompile appTestDependencies.junit
-    testCompile appTestDependencies.mockito
-    testCompile appTestDependencies.robolectric
+    // Test depedencies
     testCompile appTestDependencies.truth
-
-    androidTestCompile appTestDependencies.mockito
-    androidTestCompile appTestDependencies.dexmaker
-    androidTestCompile appTestDependencies.dexmakerMockito
-    androidTestCompile appTestDependencies.espresso
-    androidTestCompile appTestDependencies.testingSupportLib
     androidTestApt appDependencies.daggerCompiler
 }

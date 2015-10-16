@@ -31,59 +31,35 @@ ext {
     //Libraries
     daggerVersion = '2.0.1'
     javaxAnnotationVersion = '1.0'
-    raiburariVersion = '2.6.1'
-    rxAndroidVersion = '1.0.1'
-    rxLifecycleVersion = '0.2.0'
-    rxLifecycleComponentsVersion = '0.2.0'
+    raiburariVersion = '2.7.0'
     cupboardVersion = '2.1.3'
-    qrCodeReaderViewVersion = '1.0.0'
-    ottoVersion = '1.3.5'
     wakefulVersion = '1.0.5'
     okHttpVersion = '2.5.0'
     twitter4jCoreVersion = '4.0.4'
     nineOldAndroidsVersion = '2.4.0'
     bottomsheetVersion = '1.1.1'
     zXingQRCodeVersion = '1.8.3'
-    supportPreferenceVersion = '23.0.0'
+    supportPreferenceVersion = '23.1.0'
 
     //Testing
-    jUnitVersion = '4.12'
-    mockitoVersion = '1.10.19'
-    dexmakerVersion = '1.2'
-    espressoVersion = '2.2.1'
-    testingSupportLibVersion = '0.1'
-    robolectricVersion = '3.0'
     truthVersion = '0.27'
 
     appDependencies = [
-            daggerCompiler      : "com.google.dagger:dagger-compiler:${daggerVersion}",
-            dagger              : "com.google.dagger:dagger:${daggerVersion}",
-            javaxAnnotation     : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
-            raiburari           : "com.addhen.android:raiburari:${raiburariVersion}",
-            cupboard            : "nl.qbusict:cupboard:${cupboardVersion}",
-            otto                : "com.squareup:otto:${ottoVersion}",
-            wakeful             : "com.commonsware.cwac:wakeful:${wakefulVersion}",
-            okHttp              : "com.squareup.okhttp:okhttp:${okHttpVersion}",
-            twitter4jCore       : "org.twitter4j:twitter4j-core:${twitter4jCoreVersion}",
-            nineOldAndroids     : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
-            bottomSheet         : "com.cocosw:bottomsheet:${bottomsheetVersion}",
-            zXingQRCode         : "me.dm7.barcodescanner:zxing:${zXingQRCodeVersion}",
-            rxAndroid           : "io.reactivex:rxandroid:${rxAndroidVersion}",
-            rxLifecycle         : "com.trello:rxlifecycle:${rxLifecycleVersion}",
-            rxLifecycleComponent: "com.trello:rxlifecycle-components:${rxLifecycleComponentsVersion}",
-            supportPreference   : "com.android.support:preference-v7:${supportPreferenceVersion}",
-
+            daggerCompiler   : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger           : "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation  : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            raiburari        : "com.addhen.android:raiburari:${raiburariVersion}",
+            cupboard         : "nl.qbusict:cupboard:${cupboardVersion}",
+            wakeful          : "com.commonsware.cwac:wakeful:${wakefulVersion}",
+            okHttp           : "com.squareup.okhttp:okhttp:${okHttpVersion}",
+            twitter4jCore    : "org.twitter4j:twitter4j-core:${twitter4jCoreVersion}",
+            nineOldAndroids  : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
+            bottomSheet      : "com.cocosw:bottomsheet:${bottomsheetVersion}",
+            zXingQRCode      : "me.dm7.barcodescanner:zxing:${zXingQRCodeVersion}",
+            supportPreference: "com.android.support:preference-v7:${supportPreferenceVersion}",
     ]
 
     appTestDependencies = [
-            mockito          : "org.mockito:mockito-core:${mockitoVersion}",
-            dexmaker         : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
-            dexmakerMockito  : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
-            espresso         : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
-            testingSupportLib: "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
-            junit            : "junit:junit:${jUnitVersion}",
-            mockito          : "org.mockito:mockito-core:${mockitoVersion}",
-            robolectric      : "org.robolectric:robolectric:${robolectricVersion}",
-            truth            : "com.google.truth:truth:${truthVersion}",
+            truth: "com.google.truth:truth:${truthVersion}",
     ]
 }
