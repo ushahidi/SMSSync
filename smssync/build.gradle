@@ -262,6 +262,6 @@ dependencies {
     androidTestCompile appTestDependencies.mockito
     androidTestCompile appTestDependencies.dexmaker
     androidTestCompile appTestDependencies.dexmakerMockito
-    androidTestCompile appTestDependencies.testingSupportRunner
+    //androidTestCompile appTestDependencies.testingSupportRunner
     androidTestApt appDependencies.daggerCompiler
 }

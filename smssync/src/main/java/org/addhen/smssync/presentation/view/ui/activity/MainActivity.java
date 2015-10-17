@@ -61,9 +61,9 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
 /**
  * @author Henry Addo
@@ -95,8 +95,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
     @Bind((R.id.nav_view))
     NavigationView mNavigationView;
 
-    @Bind(R.id.header_app_version)
-    AppCompatTextView mAppCompatTextView;
+    private AppCompatTextView mAppCompatTextView;
 
     private AppActivityComponent mAppComponent;
 
@@ -164,8 +163,19 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
                 R.string.app_name);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mAppCompatTextView.setText(getAppVersionName());
         if (mNavigationView != null) {
+            View headerLayout = getLayoutInflater().inflate(R.layout.navdrawer_header, null);
+            mNavigationView.addHeaderView(headerLayout);
+            mAppCompatTextView = (AppCompatTextView) headerLayout
+                    .findViewById(R.id.header_app_version);
+            ViewGroup headerContainer = (ViewGroup) headerLayout.findViewById(
+                    R.id.nav_header_container);
+            headerContainer.setOnClickListener(v -> {
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                }
+            });
+            mAppCompatTextView.setText(getAppVersionName());
             setupDrawerContent();
         }
         setupFragment(mNavigationView.getMenu().findItem(mCurrentMenu));
@@ -180,7 +190,7 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return versionName;
+        return "v" + versionName;
     }
 
     @Override
@@ -420,13 +430,6 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {
             finish();
-        }
-    }
-
-    @OnClick(R.id.nav_header_container)
-    void headerClicked() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
         }
     }
 
