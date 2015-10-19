@@ -3,8 +3,7 @@
 - Added ability to test Web service configuration.
 - Added support for Twitter. Now you can tweet SMS.
 - Properly organized settings screen.
-- Moved legacy code into a more structured code base.
 - Put filters and keywords into their own screen.
 - Added a product tour that shows up when app is launched for the first time.
-- Added ability to swipe on a list item to perform a corresponding action. Eg. Delete an item.
+- Added ability to swipe on a list item to perform a corresponding action.
 - Lots of bug fixes
