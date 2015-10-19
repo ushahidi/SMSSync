@@ -1,5 +1,14 @@
 [
   {
+    "version": "v3.0.1",
+    "date": "19th October, 2015",
+    "features": [
+    ],
+    "bugs": [
+      "Fix Class not found exception due to compilation error"
+    ]
+  },
+  {
     "version": "v3.0.0",
     "date": "19th October, 2015",
     "features": [
