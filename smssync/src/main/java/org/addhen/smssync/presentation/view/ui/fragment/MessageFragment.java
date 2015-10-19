@@ -45,6 +45,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -327,7 +328,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mMessageRecyclerView.setFocusableInTouchMode(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
         mMessageRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
-        mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mMessageAdapter.setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
@@ -374,15 +374,20 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             ViewHelper.setTranslationX(itemView, dX);
             Drawable d;
             // Swiping right
+            Paint p = new Paint();
             if (dX > 0) {
                 d = ContextCompat
                         .getDrawable(getAppContext(), R.drawable.swipe_right_list_item_background);
                 d.setBounds(itemView.getLeft(), itemView.getTop(), dX, itemView.getBottom());
+                c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX,
+                        (float) itemView.getBottom(), p);
             } else { // Swiping left
                 d = ContextCompat
                         .getDrawable(getAppContext(), R.drawable.swipe_left_list_item_background);
                 d.setBounds(itemView.getRight() + dX, itemView.getTop(), itemView.getRight(),
                         itemView.getBottom());
+                c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(),
+                        (float) itemView.getRight(), (float) itemView.getBottom(), p);
             }
             d.draw(c);
         }
@@ -433,7 +438,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
                 ViewHelper.setAlpha(viewHolder.itemView, 1.0f);
-                viewHolder.itemView.setBackgroundColor(0);
             }
 
         };

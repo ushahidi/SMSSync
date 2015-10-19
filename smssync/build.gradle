@@ -242,7 +242,10 @@ dependencies {
     compile project(':libraries:pay-me')
     compile project(':libraries:survey-dialog')
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile appDependencies.raiburari
+    compile(appDependencies.raiburari) {
+        exclude module: 'recyclerview-v7'
+    }
+    compile 'com.android.support:recyclerview-v7:23.0.0'
     compile appDependencies.cupboard
     compile appDependencies.wakeful
     compile appDependencies.okHttp
@@ -250,7 +253,9 @@ dependencies {
     compile appDependencies.nineOldAndroids
     compile appDependencies.bottomSheet
     compile appDependencies.zXingQRCode
-    compile appDependencies.supportPreference
+    compile(appDependencies.supportPreference) {
+        exclude module: 'recyclerview-v7'
+    }
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     // Test depedencies
@@ -262,6 +267,8 @@ dependencies {
     androidTestCompile appTestDependencies.mockito
     androidTestCompile appTestDependencies.dexmaker
     androidTestCompile appTestDependencies.dexmakerMockito
-    //androidTestCompile appTestDependencies.testingSupportRunner
+    androidTestCompile(appTestDependencies.testingSupportRunner) {
+        exclude module: 'support-annotations'
+    }
     androidTestApt appDependencies.daggerCompiler
 }

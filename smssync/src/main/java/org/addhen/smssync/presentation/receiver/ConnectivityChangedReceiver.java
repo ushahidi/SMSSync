@@ -45,7 +45,8 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         mAlertPresenter = App.getAppComponent().alertPresenter();
-        if (Utility.isConnected(context)) {
+        if (Utility.isConnected(context) && App.getAppComponent().prefsFactory().serviceEnabled()
+                .get()) {
             Intent syncPendingMessagesServiceIntent = new Intent(context,
                     SyncPendingMessagesService.class);
             syncPendingMessagesServiceIntent.putExtra(ServiceConstants.MESSAGE_UUID, "");
