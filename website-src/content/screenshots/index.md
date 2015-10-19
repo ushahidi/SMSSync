@@ -5,9 +5,9 @@ header = "<h1>Screenshots <small>Some sample screenshots of the app.</small></h1
 +++
 <div class="row">
     <div class="col-sm-6 col-md-2">
-        <a class="thumbnail" rel="screenshots_group" href="/images/screenshots/splash-screen.png" title="Splash Screen"><img alt="Splash Screen" src="/images/screenshots/splash-screen.png" width="200" height="351" /></a>
+        <a class="thumbnail" rel="screenshots_group" href="/images/screenshots/product-tour.png" title="Splash Screen"><img alt="Product Tour" src="/images/screenshots/product-tour.png" width="200" height="351" /></a>
         <div class="caption">
-            <h5>Splash Screen</h5>
+            <h5>Product Tour</h5>
         </div>
     </div>
     <div class="col-sm-6 col-md-2">
