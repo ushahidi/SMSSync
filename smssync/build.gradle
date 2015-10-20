@@ -245,7 +245,7 @@ dependencies {
     compile(appDependencies.raiburari) {
         exclude module: 'recyclerview-v7'
     }
-    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:recyclerview-v7'
     compile appDependencies.cupboard
     compile appDependencies.wakeful
     compile appDependencies.okHttp
