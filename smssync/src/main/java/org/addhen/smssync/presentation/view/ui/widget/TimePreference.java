@@ -18,19 +18,18 @@
 package org.addhen.smssync.presentation.view.ui.widget;
 
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.util.TimeFrequencyUtil;
 import org.addhen.smssync.presentation.view.ui.fragment.AutomationSettingsFragment;
-import org.addhen.smssync.presentation.view.ui.fragment.GeneralSettingsFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.TaskSettingsFragment;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.widget.TimePicker;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 19.05.14.
@@ -41,20 +40,18 @@ import android.widget.TimePicker;
 public class TimePreference extends DialogPreference {
 
     //fist picker field
-    private int lastHour = 0;
+    private int mLastHour = 0;
 
     //second picker field
-    private int lastMinute = 0;
+    private int mLastMinute = 0;
 
-    private TimePicker picker = null;
-
-    private PrefsFactory prefs;
+    private PrefsFactory mPrefsFactory;
 
     public TimePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        prefs = App.getAppComponent().prefsFactory();
-        setPositiveButtonText("Set");
-        setNegativeButtonText("Cancel");
+        mPrefsFactory = App.getAppComponent().prefsFactory();
+        setPositiveButtonText(getContext().getString(R.string.ok));
+        setNegativeButtonText(getContext().getString(R.string.cancel));
     }
 
     private static int getHour(String time) {
@@ -75,7 +72,6 @@ public class TimePreference extends DialogPreference {
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         String time;
-
         if (restoreValue) {
             if (defaultValue == null) {
                 time = getPersistedString(loadTimeFrequency());
@@ -85,24 +81,19 @@ public class TimePreference extends DialogPreference {
         } else {
             time = defaultValue.toString();
         }
-
         //This is needed for backward compatible with versions pre 2.6
         //It adjusts format of input string from "mm" to "hh:mm"
         if (!time.contains(":")) {
             int minutes = Integer.parseInt(time);
             time = Integer.toString((minutes / 60)) + ":" + Integer.toString((minutes % 60));
         }
-
-        lastHour = getHour(time);
-        lastMinute = getMinute(time);
-
+        setLastHour(getHour(time));
+        setLastMinute(getMinute(time));
     }
 
     public String getTimeValueAsString() {
-
-        String h = String.valueOf(lastHour);
-        String m = String.valueOf(lastMinute);
-
+        String h = String.valueOf(getLastHour());
+        String m = String.valueOf(getLastMinute());
         String time = appendZeroAtBegin(h) + ":" + appendZeroAtBegin(m);
         return time;
     }
@@ -120,24 +111,43 @@ public class TimePreference extends DialogPreference {
     }
 
     public void saveTimeFrequency() {
+        final String timeFrequency = getTimeValueAsString();
         if (TaskSettingsFragment.TASK_CHECK_TIMES.equals(this.getKey())) {
-            prefs.taskCheckTime().set(getTimeValueAsString());
+            Logger.log("TimePreferences", "Save TASK time " + getTimeValueAsString());
+            mPrefsFactory.taskCheckTime().set(getTimeValueAsString());
         } else if (AutomationSettingsFragment.AUTO_SYNC_TIMES.equals(this.getKey())) {
-            prefs.autoTime().set(getTimeValueAsString());
+            Logger.log("TimePreferences", "Save AUTO time " + getTimeValueAsString());
+            mPrefsFactory.autoTime().set(getTimeValueAsString());
         }
     }
 
+    public void setLastHour(int lastHour) {
+        this.mLastHour = lastHour;
+    }
+
+    public void setLastMinute(int lastMinute) {
+        this.mLastMinute = lastMinute;
+    }
+
+    public int getLastHour() {
+        return this.mLastHour;
+    }
+
+    public int getLastMinute() {
+        return this.mLastMinute;
+    }
+
     private String loadTimeFrequency() {
+        // TODO: Figure out a way to load the saved frequency without knowing the keys
         String time = null;
         if (TaskSettingsFragment.TASK_CHECK_TIMES.equals(this.getKey())) {
-            time = prefs.taskCheckTime().get();
+            time = mPrefsFactory.taskCheckTime().get();
         } else if (AutomationSettingsFragment.AUTO_SYNC_TIMES.equals(this.getKey())) {
-            time = prefs.autoTime().get();
+            time = mPrefsFactory.autoTime().get();
         } else {
             time = TimeFrequencyUtil.DEFAULT_TIME_FREQUENCY;
         }
-
-        Logger.log("TimePreferences", "Save time " + time);
+        Logger.log("TimePreferences", "Loading saved time: " + time);
         return time;
     }
 }

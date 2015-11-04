@@ -22,7 +22,7 @@ package org.addhen.smssync.presentation.util;
  */
 public class TimeFrequencyUtil {
 
-    public static final String DEFAULT_TIME_FREQUENCY = "05:00";
+    public static final String DEFAULT_TIME_FREQUENCY = "00:05";
 
     private static final int ONE_HOUR = 3600000;
 
