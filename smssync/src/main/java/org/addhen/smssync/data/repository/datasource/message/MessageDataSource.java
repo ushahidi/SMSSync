@@ -52,6 +52,8 @@ public interface MessageDataSource {
 
     void putMessage(Message message);
 
+    void putMessages(List<Message> messages);
+
     Integer deleteWithUuid(String uuid);
 
     Message fetchByUuid(String uuid);

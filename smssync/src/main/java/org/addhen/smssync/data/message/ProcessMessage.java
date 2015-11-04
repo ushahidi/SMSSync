@@ -20,7 +20,6 @@ package org.addhen.smssync.data.message;
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
-import org.addhen.smssync.data.database.FilterDatabaseHelper;
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSource;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
@@ -100,7 +99,7 @@ public abstract class ProcessMessage {
 
     public Message map(SmsMessage smsMessage) {
         Message message = new Message();
-        message._id = smsMessage.id;
+        message._id = null;
         message.messageUuid = smsMessage.uuid;
         message.messageBody = smsMessage.body;
         message.messageFrom = smsMessage.phone;

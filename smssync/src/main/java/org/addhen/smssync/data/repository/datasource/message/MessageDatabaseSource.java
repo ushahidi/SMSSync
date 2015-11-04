@@ -98,6 +98,11 @@ public class MessageDatabaseSource implements MessageDataSource {
     }
 
     @Override
+    public void putMessages(List<Message> messages) {
+        mMessageDatabaseHelper.putMessages(messages);
+    }
+
+    @Override
     public Integer deleteWithUuid(String uuid) {
         return mMessageDatabaseHelper.deleteWithUuid(uuid);
     }

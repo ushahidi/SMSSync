@@ -278,9 +278,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         mImportMessagePresenter.setView(new ImportMessageView() {
             @Override
             public void showMessages(List<MessageModel> messageModelList) {
-                // Append the imported messages to the adapter list
                 if (!Utility.isEmpty(messageModelList)) {
-                    messageModelList.addAll(mMessageAdapter.getItems());
                     mMessageAdapter.setItems(messageModelList);
                     mFab.setVisibility(View.VISIBLE);
                     return;

@@ -113,10 +113,12 @@ public class MessageDataRepository implements MessageRepository {
             ProcessSms processSms = mPostMessage.getProcessSms();
             List<SmsMessage> smsMessages = processSms.importMessages();
             List<Message> messages = new ArrayList<>();
+            mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
             for (SmsMessage smsMessage : smsMessages) {
                 messages.add(mPostMessage.map(smsMessage));
             }
-            return Observable.just(mMessageDataMapper.map(messages));
+            mMessageDataSource.putMessages(messages);
+            return Observable.just(syncFetchPending());
         });
     }
 

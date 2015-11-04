@@ -277,6 +277,15 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
         }
     }
 
+    public void putMessages(List<Message> messages) {
+        if (!isClosed()) {
+            try {
+                cupboard().withDatabase(getWritableDatabase()).put(messages);
+            } catch (Exception e) {
+            }
+        }
+    }
+
     public Integer deleteWithUuid(String uuid) {
         Integer row = 0;
         if (!isClosed()) {
