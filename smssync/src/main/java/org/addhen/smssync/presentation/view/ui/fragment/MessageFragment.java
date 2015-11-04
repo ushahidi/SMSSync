@@ -89,7 +89,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @Bind(R.id.messages_fab)
     FloatingActionButton mFab;
 
-    @Bind(android.R.id.list)
+    @Bind(R.id.messages_list)
     BloatedRecyclerView mMessageRecyclerView;
 
     @Bind(android.R.id.empty)
