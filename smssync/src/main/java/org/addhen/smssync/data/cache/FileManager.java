@@ -37,9 +37,9 @@ public class FileManager {
 
     private final static String TAG = FileManager.class.getSimpleName();
 
-    private PrintWriter writer;
+    private PrintWriter mWriter;
 
-    private String dateFormat;
+    private String mDateFormat;
 
     private String mName;
 
@@ -47,24 +47,13 @@ public class FileManager {
 
     @Inject
     public FileManager(Context context, PrefsFactory prefsFactory) {
-        this(LOG_NAME, DateFormat.getDateFormatOrder(context));
+        this(LOG_NAME);
         mPrefsFactory = prefsFactory;
     }
 
-    public FileManager(String name, char[] format) {
+    public FileManager(String name) {
         mName = name;
-        for (char c : format) {
-            if (c == 'M') {
-                dateFormat = "MM-dd kk:mm";
-                break;
-            }
-
-            if (c == 'd') {
-                dateFormat = "dd-MM kk:mm";
-                break;
-            }
-        }
-
+        mDateFormat = "dd-MM kk:mm";
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             final File logFile = getFile(name);
             if (logFile.isFile() && logFile.exists()) {
@@ -72,7 +61,7 @@ public class FileManager {
             }
 
             try {
-                writer = new PrintWriter(new FileWriter(logFile, true));
+                mWriter = new PrintWriter(new FileWriter(logFile, true));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -229,15 +218,15 @@ public class FileManager {
     }
 
     public CharSequence format(Date d) {
-        return DateFormat.format(dateFormat, d);
+        return DateFormat.format(mDateFormat, d);
     }
 
     public void append(String s) {
-        if (writer != null) {
+        if (mWriter != null) {
             StringBuilder sb = new StringBuilder();
             sb.append(format(new Date()))
                     .append(" ").append(s);
-            writer.println(sb);
+            mWriter.println(sb);
             Logger.log(TAG, "Log " + sb);
         }
     }
@@ -259,8 +248,8 @@ public class FileManager {
      */
     public void close() {
         Logger.log(TAG, "CloseLog");
-        if (writer != null) {
-            writer.close();
+        if (mWriter != null) {
+            mWriter.close();
         }
     }
 
