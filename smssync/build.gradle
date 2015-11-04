@@ -245,7 +245,6 @@ dependencies {
     compile(appDependencies.raiburari) {
         exclude module: 'recyclerview-v7'
     }
-    compile 'com.android.support:recyclerview-v7'
     compile appDependencies.cupboard
     compile appDependencies.wakeful
     compile appDependencies.okHttp
@@ -253,9 +252,7 @@ dependencies {
     compile appDependencies.nineOldAndroids
     compile appDependencies.bottomSheet
     compile appDependencies.zXingQRCode
-    compile(appDependencies.supportPreference) {
-        exclude module: 'recyclerview-v7'
-    }
+    compile appDependencies.supportPreference
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     // Test depedencies

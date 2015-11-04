@@ -130,9 +130,7 @@ public class AutomationSettingsFragment extends BasePreferenceFragmentCompat imp
         if (mPrefs.enableAutoSync().get() != mEnableAutoSync.isChecked()) {
             boolean checked = mEnableAutoSync.isChecked() ? true : false;
             String check = getCheckedStatus(checked);
-
             String status = getCheckedStatus(mPrefs.enableAutoSync().get());
-
             mAddLogPresenter.addLog(getString(R.string.settings_changed,
                     mEnableAutoSync.getTitle().toString(), status, check));
         }
@@ -148,16 +146,12 @@ public class AutomationSettingsFragment extends BasePreferenceFragmentCompat imp
         // Enable or Disable Pending messages delete retries.
         if (mPrefs.enableRetry().get() != mEnableRetry.isChecked()) {
             boolean checked = mEnableRetry.isChecked() ? true : false;
-
             String check = getCheckedStatus(checked);
-
             String status = getCheckedStatus(mPrefs.enableRetry().get());
-
             mAddLogPresenter.addLog(getString(R.string.settings_changed,
                     mEnableRetry.getTitle().toString(), status, check));
         }
         mPrefs.enableRetry().set(mEnableRetry.isChecked());
-
         for (int i = 0; i < mRetryEntries.getEntryValues().length; i++) {
             if (mRetryEntries.getEntry() != null) {
                 if (mRetryEntries.getValue()
@@ -193,8 +187,10 @@ public class AutomationSettingsFragment extends BasePreferenceFragmentCompat imp
     public void autoSyncEnable() {
         if (!mPrefs.serviceEnabled().get()) {
             showError(getString(R.string.no_configured_url));
-        } else {
-            mServiceControl.runAutoSyncService();
+            mEnableAutoSync.setChecked(false);
+            return;
         }
+        mEnableAutoSync.setChecked(true);
+        mServiceControl.runAutoSyncService();
     }
 }

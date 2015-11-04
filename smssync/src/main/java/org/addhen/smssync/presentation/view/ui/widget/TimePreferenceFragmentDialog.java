@@ -17,11 +17,11 @@
 
 package org.addhen.smssync.presentation.view.ui.widget;
 
+import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.presentation.App;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.DialogPreference.TargetFragment;
@@ -67,7 +67,10 @@ public class TimePreferenceFragmentDialog extends PreferenceDialogFragmentCompat
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
         TimePreference preference = this.getTimePreference();
-        builder.setPositiveButton((CharSequence) null, (DialogInterface.OnClickListener) null);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            saveSelectedTime(preference);
+            dialog.dismiss();
+        });
     }
 
 
@@ -82,20 +85,25 @@ public class TimePreferenceFragmentDialog extends PreferenceDialogFragmentCompat
     protected void onBindDialogView(View v) {
         super.onBindDialogView(v);
         picker.setIs24HourView(true);
-        picker.setCurrentHour(lastHour);
-        picker.setCurrentMinute(lastMinute);
+        TimePreference timePreference = this.getTimePreference();
+        picker.setCurrentHour(timePreference.getLastHour());
+        picker.setCurrentMinute(timePreference.getLastMinute());
     }
 
     @Override
     public void onDialogClosed(boolean positiveResult) {
         TimePreference timePreference = this.getTimePreference();
         if (positiveResult) {
-            lastHour = picker.getCurrentHour();
-            lastMinute = picker.getCurrentMinute();
-            if (timePreference.callChangeListener(timePreference.getTimeValueAsString())) {
-                timePreference.persistStringValue(timePreference.getTimeValueAsString());
-                timePreference.saveTimeFrequency();
-            }
+            saveSelectedTime(timePreference);
+        }
+    }
+
+    private void saveSelectedTime(TimePreference timePreference) {
+        timePreference.setLastHour(picker.getCurrentHour());
+        timePreference.setLastMinute(picker.getCurrentMinute());
+        if (timePreference.callChangeListener(timePreference.getTimeValueAsString())) {
+            timePreference.persistStringValue(timePreference.getTimeValueAsString());
+            timePreference.saveTimeFrequency();
         }
     }
 
