@@ -124,12 +124,13 @@ public class AlertPresenter {
             } catch (Exception e) {
                 mFileManager.appendAndClose(e.getMessage());
             } finally {
-                if (200 == mAppHttpClient.getResponse().code()) {
-                    mFileManager.appendAndClose(mContext.getResources().getString(
-                            R.string.successful_alert_to_server));
+                if (mAppHttpClient.getResponse() != null) {
+                    if (200 == mAppHttpClient.getResponse().code()) {
+                        mFileManager.appendAndClose(mContext.getResources().getString(
+                                R.string.successful_alert_to_server));
+                    }
                 }
             }
-
         }
     }
 
@@ -137,6 +138,7 @@ public class AlertPresenter {
      * If data connection is lost for extended time (either WiFi, or GSM) send alert SMS to stored
      * phone number
      */
+
     public void dataConnectionLost() {
         if (!mPrefsFactory.alertPhoneNumber().get().matches("")) {
             sendSms(mContext.getResources().getString(R.string.lost_connection_message));

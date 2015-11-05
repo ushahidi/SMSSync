@@ -121,7 +121,6 @@ public class Utility {
      * @return boolean True when URL is valid False otherwise
      */
     public static boolean validateUrl(String url) {
-
         if (TextUtils.isEmpty(url)) {
             return false;
         }
