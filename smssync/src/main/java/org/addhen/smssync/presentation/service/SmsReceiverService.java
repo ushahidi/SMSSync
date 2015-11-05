@@ -277,21 +277,20 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 msg.messageType = Message.Type.PENDING;
                 msg.status = Message.Status.UNCONFIRMED;
             }
-        }
+            log("handleSmsReceived() messagesUuid: " + messagesUuid);
+            // Log received SMS
+            mFileManager.appendAndClose(
+                    getString(R.string.received_msg, msg.messageBody, msg.messageFrom));
 
-        log("handleSmsReceived() messagesUuid: " + messagesUuid);
-        // Log received SMS
-        mFileManager.appendAndClose(
-                getString(R.string.received_msg, msg.messageBody, msg.messageFrom));
+            // Route the SMS
+            if (App.getTwitterInstance().getSessionManager().getActiveSession() != null) {
+                boolean status = mTweetMessage.routeSms(msg);
+                showNotification(status);
+            }
 
-        // Route the SMS
-        if (App.getTwitterInstance().getSessionManager().getActiveSession() != null) {
-            boolean status = mTweetMessage.routeSms(msg);
+            boolean status = mPostMessage.routeSms(msg);
             showNotification(status);
         }
-
-        boolean status = mPostMessage.routeSms(msg);
-        showNotification(status);
     }
 
     private void showNotification(boolean status) {
