@@ -255,6 +255,12 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
         if (!validateFields()) {
             return;
         }
+        WebServiceModel webServiceModel = getWebServiceModel();
+        mAddWebServicePresenter.addWebService(webServiceModel);
+    }
+
+    @NonNull
+    private WebServiceModel getWebServiceModel() {
         SyncSchemeModel syncSchemeModel = new SyncSchemeModel();
         SyncSchemeModel.SyncMethod syncMethod = SyncSchemeModel.SyncMethod
                 .valueOf(mSpinnerMethods.getSelectedItem().toString());
@@ -271,7 +277,7 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
         webServiceModel.setSecret(mEditTextSecret.getText().toString());
         webServiceModel.setSyncScheme(syncSchemeModel);
         webServiceModel.setStatus(WebServiceModel.Status.ENABLED);
-        mAddWebServicePresenter.addWebService(webServiceModel);
+        return webServiceModel;
     }
 
     @OnClick(R.id.add_custom_web_service_cancel)
@@ -291,7 +297,8 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     public void testIntegration() {
         final String url = mEditTextUrl.getText().toString();
         if (!TextUtils.isEmpty(url)) {
-            mAddWebServicePresenter.testWebService(url);
+            WebServiceModel webServiceModel = getWebServiceModel();
+            mAddWebServicePresenter.testWebService(webServiceModel);
         }
     }
 

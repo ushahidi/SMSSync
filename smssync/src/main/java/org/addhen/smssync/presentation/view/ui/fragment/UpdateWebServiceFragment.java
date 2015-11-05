@@ -323,7 +323,11 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
             mEditTextUrl.setError(getString(R.string.validation_message_invalid_url));
             return;
         }
+        initWebServiceModel();
+        mUpdateWebServicePresenter.updateWebService(mWebServiceModel);
+    }
 
+    private void initWebServiceModel() {
         SyncSchemeModel syncSchemeModel = new SyncSchemeModel();
         SyncSchemeModel.SyncMethod syncMethod = SyncSchemeModel.SyncMethod
                 .valueOf(mSpinnerMethods.getSelectedItem().toString());
@@ -339,7 +343,6 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
         mWebServiceModel.setUrl(mEditTextUrl.getText().toString());
         mWebServiceModel.setSecret(mEditTextSecret.getText().toString());
         mWebServiceModel.setSyncScheme(syncSchemeModel);
-        mUpdateWebServicePresenter.updateWebService(mWebServiceModel);
     }
 
     @OnClick(R.id.qr_code_scanner)
@@ -354,7 +357,8 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     public void testIntegration() {
         final String url = mEditTextUrl.getText().toString();
         if (!TextUtils.isEmpty(url)) {
-            mUpdateWebServicePresenter.testWebService(url);
+            initWebServiceModel();
+            mUpdateWebServicePresenter.testWebService(mWebServiceModel);
         }
     }
 

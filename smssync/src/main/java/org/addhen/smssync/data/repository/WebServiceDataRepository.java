@@ -77,8 +77,8 @@ public class WebServiceDataRepository implements WebServiceRepository {
     }
 
     @Override
-    public Observable<Boolean> testWebService(String url) {
-        return mAppHttpClient.makeRequest(url);
+    public Observable<Boolean> testWebService(WebServiceEntity webServiceEntity) {
+        return mAppHttpClient.makeRequest(mWebServiceEntityDataMapper.map(webServiceEntity));
     }
 
     @Override

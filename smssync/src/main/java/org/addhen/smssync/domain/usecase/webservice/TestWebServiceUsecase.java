@@ -21,6 +21,7 @@ import com.addhen.android.raiburari.domain.executor.PostExecutionThread;
 import com.addhen.android.raiburari.domain.executor.ThreadExecutor;
 import com.addhen.android.raiburari.domain.usecase.Usecase;
 
+import org.addhen.smssync.domain.entity.WebServiceEntity;
 import org.addhen.smssync.domain.repository.WebServiceRepository;
 
 import javax.inject.Inject;
@@ -34,7 +35,7 @@ public class TestWebServiceUsecase extends Usecase {
 
     private final WebServiceRepository mWebServiceRepository;
 
-    private String mUrl;
+    private WebServiceEntity mWebServiceEntity;
 
     /**
      * Default constructor
@@ -53,17 +54,17 @@ public class TestWebServiceUsecase extends Usecase {
     /**
      * Sets the webservice url
      *
-     * @param url The webservice url to be tested
+     * @param webServiceEntity The webservice to be tested
      */
-    public void setWebServiceUrl(String url) {
-        mUrl = url;
+    public void setWebServiceEntity(WebServiceEntity webServiceEntity) {
+        mWebServiceEntity = webServiceEntity;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        if (mUrl == null) {
-            throw new RuntimeException("URL is null. You must call setWebServiceUrl(...)");
+        if (mWebServiceEntity == null) {
+            throw new RuntimeException("URL is null. You must call setWebServiceEntity(...)");
         }
-        return mWebServiceRepository.testWebService(mUrl);
+        return mWebServiceRepository.testWebService(mWebServiceEntity);
     }
 }
