@@ -23,7 +23,7 @@
                 android:background="?attr/selectableItemBackground"
                 android:paddingRight="@dimen/view_spacing_large"
                 android:paddingEnd="@dimen/view_spacing_large"
-                android:clickable="false">
+                android:clickable="true">
 
     <android.support.v7.widget.SwitchCompat
             android:id="@+id/web_service_selected"

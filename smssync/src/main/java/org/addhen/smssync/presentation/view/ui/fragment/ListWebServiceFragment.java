@@ -406,7 +406,7 @@ public class ListWebServiceFragment
 
     @Override
     public void onItemClick(RecyclerView recyclerView, View view, int position) {
-        updateWebService(position);
+        // Do nothing
     }
 
     @Override
