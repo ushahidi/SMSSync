@@ -85,7 +85,10 @@ public class AppHttpClient extends BaseHttpClient {
                     e.printStackTrace();
                 }
                 if (smssyncResponses != null && smssyncResponses.getPayload() != null) {
-                    status = true;
+                    if (smssyncResponses.getPayload().isSuccess() || !smssyncResponses.getPayload()
+                            .isSuccess()) {
+                        status = true;
+                    }
                 }
             }
         }
