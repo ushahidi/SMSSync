@@ -51,8 +51,8 @@ public interface WebServiceRepository extends Repository<WebServiceEntity> {
     /**
      * Use to test web services. Does not return an Observable
      *
-     * @param url The URL to test it's connection
+     * @param webServiceEntity The URL to test it's connection
      * @return The status of the connection test. True if it was successful, False otherwise.
      */
-    Observable<Boolean> testWebService(String url);
+    Observable<Boolean> testWebService(WebServiceEntity webServiceEntity);
 }

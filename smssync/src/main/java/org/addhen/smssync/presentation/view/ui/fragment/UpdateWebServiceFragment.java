@@ -37,6 +37,7 @@ import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -109,6 +110,9 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
     @Bind(R.id.test_progress_bar)
     ProgressBar mProgressBar;
+
+    @Bind(R.id.button_container)
+    ViewGroup mButtonViewGroup;
 
     @Inject
     UpdateWebServicePresenter mUpdateWebServicePresenter;
@@ -196,10 +200,10 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
             @Override
             public void webServiceTested(boolean status) {
                 if (status) {
-                    showSnackbar(getView(), R.string.valid_web_service);
-                } else {
-                    showSnackbar(getView(), R.string.failed_to_test_web_service);
+                    showSnackbar(mButtonViewGroup, R.string.valid_web_service);
+                    return;
                 }
+                showSnackbar(mButtonViewGroup, R.string.failed_to_test_web_service);
             }
 
             @Override
@@ -224,7 +228,7 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
 
             @Override
             public void showError(String s) {
-                showSnackbar(getView(), s);
+                showSnackbar(mButtonViewGroup, s);
             }
 
             @Override
@@ -323,7 +327,11 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
             mEditTextUrl.setError(getString(R.string.validation_message_invalid_url));
             return;
         }
+        initWebServiceModel();
+        mUpdateWebServicePresenter.updateWebService(mWebServiceModel);
+    }
 
+    private void initWebServiceModel() {
         SyncSchemeModel syncSchemeModel = new SyncSchemeModel();
         SyncSchemeModel.SyncMethod syncMethod = SyncSchemeModel.SyncMethod
                 .valueOf(mSpinnerMethods.getSelectedItem().toString());
@@ -339,7 +347,6 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
         mWebServiceModel.setUrl(mEditTextUrl.getText().toString());
         mWebServiceModel.setSecret(mEditTextSecret.getText().toString());
         mWebServiceModel.setSyncScheme(syncSchemeModel);
-        mUpdateWebServicePresenter.updateWebService(mWebServiceModel);
     }
 
     @OnClick(R.id.qr_code_scanner)
@@ -354,7 +361,8 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     public void testIntegration() {
         final String url = mEditTextUrl.getText().toString();
         if (!TextUtils.isEmpty(url)) {
-            mUpdateWebServicePresenter.testWebService(url);
+            initWebServiceModel();
+            mUpdateWebServicePresenter.testWebService(mWebServiceModel);
         }
     }
 

@@ -117,8 +117,8 @@ public class AddWebServicePresenter implements Presenter {
         });
     }
 
-    public void testWebService(String url) {
-        mTestWebServiceUsecase.setWebServiceUrl(url);
+    public void testWebService(WebServiceModel webServiceModel) {
+        mTestWebServiceUsecase.setWebServiceEntity(mWebServiceModelDataMapper.map(webServiceModel));
         mTestWebServiceUsecase.execute(new DefaultSubscriber<Boolean>() {
             @Override
             public void onStart() {

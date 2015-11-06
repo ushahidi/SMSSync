@@ -22,7 +22,6 @@ import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
-import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.model.LogModel;
 import org.addhen.smssync.presentation.model.PhoneStatusInfoModel;

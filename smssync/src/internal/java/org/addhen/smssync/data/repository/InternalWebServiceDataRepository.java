@@ -76,7 +76,7 @@ public class InternalWebServiceDataRepository implements WebServiceRepository {
     }
 
     @Override
-    public Observable<Boolean> testWebService(String url) {
+    public Observable<Boolean> testWebService(WebServiceEntity webServiceEntity) {
         return Observable.defer(() -> {
             return Observable.just(Boolean.TRUE);
         });
