@@ -252,7 +252,10 @@ dependencies {
     compile appDependencies.nineOldAndroids
     compile appDependencies.bottomSheet
     compile appDependencies.zXingQRCode
-    compile appDependencies.supportPreference
+    compile(appDependencies.supportPreference) {
+        exclude module: 'recyclerview-v7'
+    }
+    compile 'com.android.support:recyclerview-v7:23.0.1'
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     // Test depedencies
