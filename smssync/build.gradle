@@ -226,7 +226,7 @@ if (project.hasProperty('releaseKeyStore') &&
     android.signingConfigs.releaseSign.keyPassword ""
 }
 
-tasks.release.dependsOn(['build', 'publishApkWithAnalyticsRelease'])
+tasks.release.dependsOn(['publishApkWithAnalyticsRelease'])
 
 // Build and launch app from command line
 task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
@@ -239,8 +239,6 @@ dependencies {
     def appDependencies = rootProject.ext.appDependencies
     def appTestDependencies = rootProject.ext.appTestDependencies
     apt appDependencies.daggerCompiler // Needed for source code generation
-    compile project(':libraries:pay-me')
-    compile project(':libraries:survey-dialog')
     compile fileTree(dir: 'libs', include: '*.jar')
     compile(appDependencies.raiburari) {
         exclude module: 'recyclerview-v7'
