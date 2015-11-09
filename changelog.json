@@ -1,5 +1,20 @@
 [
   {
+    "version": "v3.0.4",
+    "date": "19th October, 2015",
+    "features": [
+      "Change delete icon from grey to white to make it more visible on the actionbar."
+    ],
+    "bugs": [
+      "Fix Class not found exception due to a bug in the build system.",
+      "Fixed a lot of crashes as reported on Google Playstore console.",
+      "Fixed so imported messages are persisted in the incoming list.",
+      "Fixed so time frequency set on settings screen can be okayed and saved.",
+      "Fixed so you can disable a custom web service so it can be deleted.",
+      "Fixed fork me badge on the website. Hide it on mobile."
+    ]
+  },
+  {
     "version": "v3.0.3",
     "date": "9th November, 2015",
     "features": [
