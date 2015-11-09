@@ -1,0 +1,221 @@
+/** Default colors */
+$primary: #00796B !default;
+$primary_dark: #00796B !default;
+$primary_light: #C8E6C9 !default;
+$accent: #00796B !default;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  /* For scrollyspy */
+  color: #222;
+  line-height: 22px;
+  letter-spacing: .1;
+  font-size: 12px;
+  font-family: Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  background-color: #F9F9F9;
+  padding-top: 75px;
+  padding-bottom: 20px;
+  > .navbar-brand:hover {
+    text-decoration: none;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 255, 255, 0.4);
+  }
+}
+
+#logo a {
+  font-family: 'Racing Sans One', cursive;
+  text-indent: 35px;
+  font-size: 25px;
+  background: transparent url(../images/logo.png) no-repeat 15px 15px;
+  display: block;
+  color: #000;
+  outline: none;
+}
+
+.bs-docs-section + .bs-docs-section {
+  padding-top: 0px;
+}
+
+.smssync {
+  font-family: 'Racing Sans One', cursive;
+}
+
+strong, em {
+  color: $primary;
+}
+
+.navbar-brand {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 30px rgba(255, 255, 255, 0.125);
+  -webkit-transition: all .2s linear;
+  -moz-transition: all .2s linear;
+  transition: all .2s linear;
+}
+
+.pull-right {
+  float: right;
+  font-size: 70%;
+  font-weight: bold;
+  margin: 0 20px 0 0;
+}
+
+.bs-highlight {
+  margin: 20px 0;
+  padding: 20px;
+  border-left: 3px solid #eee;
+}
+
+.bs-highlight-info {
+  background-color: #f4f8fa;
+  border-color: #bce8f1;
+}
+
+label.error {
+  float: right;
+  font-size: 10px;
+  padding: 5px 9px 6px 25px;
+  margin-left: 5px;
+  border: 1px solid #cbcba2;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.container .footer {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 10px;
+}
+
+.carousel-indicators {
+  li {
+    border: 1px solid $primary;
+    background-color: $primary;
+    background-color: rgb(0, 114, 0);
+  }
+  .active {
+    background-color: $primary;
+  }
+}
+
+li {
+  padding: 5px;
+}
+
+/*
+ * Side navigation
+ *
+ * Scrollspy and affixed enhanced navigation to highlight sections and secondary
+ * sections of docs content.
+ */
+
+/* By default it's not affixed in mobile views, so undo that */
+
+.bs-sidebar.affix {
+  position: static;
+}
+
+/* First level of nav */
+
+.bs-sidenav {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-shadow: 0 1px 0 #fff;
+  background-color: #eeeeee;
+  border-radius: 5px;
+}
+
+/* All levels of nav */
+
+.bs-sidebar .nav {
+  > {
+    li > a {
+      display: block;
+      color: #716b7a;
+      padding: 5px 20px;
+      &:hover, &:focus {
+        text-decoration: none;
+        background-color: #e5e3e9;
+        border-right: 1px solid #dbd8e0;
+      }
+    }
+    .active {
+      > a, &:hover > a, &:focus > a {
+        font-weight: bold;
+        color: $primary;
+        background-color: transparent;
+        border-right: 1px solid $primary;
+      }
+    }
+  }
+  .nav {
+    display: none;
+    /* Hide by default, but at >768px, show it */
+    margin-bottom: 8px;
+    > li > a {
+      padding-top: 3px;
+      padding-bottom: 3px;
+      padding-left: 30px;
+      font-size: 90%;
+    }
+  }
+}
+
+#forkme-badge {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  border: 0px;
+}
+
+@media (max-width: 980px) {
+  #forkme-badge { display: none; }
+}
+
+/* Nav: second level (shown on .active) */
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+  .bs-sidebar {
+    .nav > .active > ul {
+      display: block;
+    }
+    &.affix, &.affix-bottom {
+      width: 213px;
+    }
+    &.affix {
+      position: fixed;
+      /* Undo the static from mobile first approach */
+      top: 80px;
+    }
+    &.affix-bottom {
+      position: absolute;
+      /* Undo the static from mobile first approach */
+      .bs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+    &.affix .bs-sidenav {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  /* Widen the fixed sidebar */
+}
+
+@media (min-width: 1200px) {
+  /* Widen the fixed sidebar again */
+  .bs-sidebar {
+    &.affix-bottom, &.affix {
+      width: 263px;
+    }
+  }
+}

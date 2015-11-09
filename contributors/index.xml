@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Contributors on SMSsync</title>
+    <link>http://smssync.ushahidi.com/contributors/</link>
+    <description>Recent content in Contributors on SMSsync</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 May 2015 13:06:28 +0900</lastBuildDate>
+    <atom:link href="http://smssync.ushahidi.com/contributors/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Contributors</title>
+      <link>http://smssync.ushahidi.com/contributors/</link>
+      <pubDate>Fri, 01 May 2015 13:06:28 +0900</pubDate>
+      
+      <guid>http://smssync.ushahidi.com/contributors/</guid>
+      <description>&lt;div id=&#34;map&#34; class=&#34;thumbnail leaflet-container leaflet-fade-anim&#34; tabindex=&#34;0&#34; style=&#34;height:390px;&#34;&gt;&lt;/div&gt;
+&lt;div class=&#34;table-responsive&#34; id=&#34;contrib&#34;&gt;&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

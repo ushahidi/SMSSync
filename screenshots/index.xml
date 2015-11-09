@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Screenshots on SMSsync</title>
+    <link>http://smssync.ushahidi.com/screenshots/</link>
+    <description>Recent content in Screenshots on SMSsync</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 May 2015 16:42:24 +0900</lastBuildDate>
+    <atom:link href="http://smssync.ushahidi.com/screenshots/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Screenshots</title>
+      <link>http://smssync.ushahidi.com/screenshots/</link>
+      <pubDate>Fri, 01 May 2015 16:42:24 +0900</pubDate>
+      
+      <guid>http://smssync.ushahidi.com/screenshots/</guid>
+      <description>&lt;div class=&#34;row&#34;&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://smssync.ushahidi.com/images/screenshots/product-tour.png&#34; title=&#34;Splash Screen&#34;&gt;&lt;img alt=&#34;Product Tour&#34; src=&#34;http://smssync.ushahidi.com/images/screenshots/product-tour.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Product Tour&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://smssync.ushahidi.com/images/screenshots/integrations-screen.png&#34; title=&#34;Integration Screen&#34;&gt;&lt;img alt=&#34;Integrations&#34; src=&#34;http://smssync.ushahidi.com/images/screenshots/integrations-screen.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Integrations&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://smssync.ushahidi.com/images/screenshots/list-custom-web-service.png&#34; title=&#34;List Custom Web Services&#34;&gt;&lt;img alt=&#34;List Custom Web Services&#34; src=&#34;http://smssync.ushahidi.com/images/screenshots/list-custom-web-service.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;List Custom Web Services&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://smssync.ushahidi.com/images/screenshots/list-incoming-messages.png&#34; title=&#34;List Incoming Messages&#34;&gt;&lt;img alt=&#34;List Incoming Messages&#34; src=&#34;http://smssync.ushahidi.com/images/screenshots/list-incoming-messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;List Incoming Messages&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://smssync.ushahidi.com/images/screenshots/empty-published-messages.png&#34; title=&#34;Empty Published Messages&#34;&gt;&lt;img alt=&#34;Empty Published Messages&#34; src=&#34;http://smssync.ushahidi.com/images/screenshots/empty-published-messages.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Empty Published Messages&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&#34;col-sm-6 col-md-2&#34;&gt;
+        &lt;a class=&#34;thumbnail&#34; rel=&#34;screenshots_group&#34; href=&#34;http://smssync.ushahidi.com/images/screenshots/phone-numbers-filters.png&#34; title=&#34;Phone Numbers Filters&#34;&gt;&lt;img alt=&#34;Phone Numbers Filters&#34; src=&#34;http://smssync.ushahidi.com/images/screenshots/phone-numbers-filters.png&#34; width=&#34;200&#34; height=&#34;351&#34; /&gt;&lt;/a&gt;
+        &lt;div class=&#34;caption&#34;&gt;
+            &lt;h5&gt;Phone Numbers Filters&lt;/h5&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

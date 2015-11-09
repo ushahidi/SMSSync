@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="SMSsync The free and open source SMS gateway for Android devices">
+        <meta name="author" content="Ushahidi Inc">
+        
+        <link rel="stylesheet" href="/css/bootstrap.min.css" media="screen" />
+        <link rel="stylesheet" href="/css/hugo-bootswatch.css" media="all" />
+        <link href='/css/google_prettify/sons-of-obsidian.css' type='text/css' rel='stylesheet' media='all' />
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.css" media="all" />
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' type='text/css' rel='stylesheet' media='all' />
+        <link href='http://fonts.googleapis.com/css?family=Racing+Sans+One' type='text/css' rel='stylesheet' media='all' /> 
+
+        
+        <link rel="shortcut icon" href="http://smssync.ushahidi.com/images/favicon.ico" />
+
+        
+        <link href="" rel="alternate" type="application/rss+xml" title="SMSsync" />
+
+<title>SMSsync - Generate QR Code</title>
+    </head>
+    <body>
+    <div class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">
+        <a id="forkme-badge" href="https://github.com/ushahidi/SMSSync"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div id="logo">
+                    <a href="http://smssync.ushahidi.com" class="navbar-brand">SMSsync</a>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <nav class="navbar-collapse collapse" role="navigation">
+                      <ul class="nav navbar-nav">
+                         
+                             
+                              <li >
+                                  <a href="/">Home</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/releases/">Releases</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/download/">Download</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/contributors/">Contributors</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/configure/">Configure</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/developers/">Developers</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/features/">Features</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/screenshots/">Screenshots</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="/tool/">Generate QR Code</a>
+                              </li>
+                            
+                              <li >
+                                  <a href="https://forums.ushahidi.com/category/smssync">Support</a>
+                              </li>
+                            
+                      </ul>
+                </nav>
+            </div>
+        </div>  
+    </div> 
+
+  <div class="container">
+      
+    <div class="container">
+      <div class="page-header">
+            <h1>Tool <small>Use this tool to generate a QR code for your custom web service</small></h1>
+      </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="well">
+              <form class="form-horizontal" id="qr-code-generator" method="post">
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-lg-2 control-label">Title</label>
+                    <div class="col-lg-10">
+                      <input class="form-control" name="title" id="inputTitle" placeholder="Enter the title for your custom web service" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputUrl" class="col-lg-2 control-label">URL</label>
+                    <div class="col-lg-10">
+                      <input class="form-control" name="url" id="inputUrl" placeholder="Enter the URL for your custom web service" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputSecret" class="col-lg-2 control-label">Secret</label>
+                    <div class="col-lg-10">
+                      <input class="form-control" name="secret" id="inputSecret" placeholder="Enter the secret key for your custom web service" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </div>
+              </form>
+            </div>
+          </div>
+        <div class="col-lg-4 col-lg-offset-1">
+          <div class="row" id="qr-code" style="display:none;"></div>
+            <div class="thumbnail" id="qr-code-result" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+    </div> 
+            <div class="container">
+      <footer class="footer bs-footer">
+      <div class="row">
+        <div class="col-lg-4">
+          Last updated Fri, May 1, 2015
+        </div>
+        <div class="col-lg-4">
+              Copyright &copy; 2010 - 2015 <a href="http://www.ushahidi.com">Ushahidi.com</a>
+        </div>
+        <div class="col-lg-4">
+          <p class="pull-right">
+             <span class="smssync">SMSsync</span><span>&nbsp;</span>  powered by <a href="http://www.ushahidi.com"><img src="/images/ushahidi-logo.png"><span>Ushahidi</span></a>
+          </p>
+        </div>
+      </div>
+    </footer>
+    </div>
+
+
+  </div>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+
+
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
+<script src="/js/jquery.qrcode.min.js"></script>
+<script src="/js/tool.js"></script>
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-12063676-22']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    </body>
+</html>
