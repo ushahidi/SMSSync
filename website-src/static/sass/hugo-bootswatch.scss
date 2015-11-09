@@ -168,6 +168,17 @@ li {
   }
 }
 
+#forkme-badge {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  border: 0px;
+}
+
+@media (max-width: 980px) {
+  #forkme-badge { display: none; }
+}
+
 /* Nav: second level (shown on .active) */
 
 /* Show and affix the side nav when space allows it */
