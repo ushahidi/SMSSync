@@ -46,7 +46,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class BaseHttpClient {
+public abstract class BaseHttpClient {
 
     private static final int TIME_OUT_CONNECTION = 30;
 

@@ -58,5 +58,7 @@ public interface MessageDataSource {
 
     Message fetchByUuid(String uuid);
 
+    Message fetchPendingByUuid(String uuid);
+
     List<Message> syncFetchPending();
 }

@@ -79,6 +79,24 @@ public class Message extends DataEntity implements Serializable {
     @Column("status")
     public Status status;
 
+    @Override
+    public String toString() {
+        return "Message{"
+                + "messageBody='" + messageBody + '\''
+                + ", messageFrom='" + messageFrom + '\''
+                + ", messageDate=" + messageDate
+                + ", messageUuid='" + messageUuid + '\''
+                + ", messageType=" + messageType
+                + ", sentResultCode=" + sentResultCode
+                + ", sentResultMessage='" + sentResultMessage + '\''
+                + ", deliveryResultCode=" + deliveryResultCode
+                + ", deliveryResultMessage='" + deliveryResultMessage + '\''
+                + ", deliveredDate=" + deliveredDate
+                + ", retries=" + retries
+                + ", status=" + status
+                + '}';
+    }
+
     public enum Status {
         @SerializedName("unconfirmed")
         UNCONFIRMED,

@@ -125,7 +125,7 @@ public class MessageDataRepository implements MessageRepository {
     @Override
     public MessageEntity syncFetchByUuid(String uuid) {
         mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
-        return mMessageDataMapper.map(mMessageDataSource.fetchMessageByUuid(uuid));
+        return mMessageDataMapper.map(mMessageDataSource.fetchPendingByUuid(uuid));
     }
 
 

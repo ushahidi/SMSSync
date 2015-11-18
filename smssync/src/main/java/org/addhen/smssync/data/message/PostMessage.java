@@ -167,12 +167,12 @@ public class PostMessage extends ProcessMessage {
         boolean status = false;
         // check if it should sync by id
         if (!TextUtils.isEmpty(uuid)) {
-            final Message message = mMessageDataSource.fetchMessageByUuid(uuid);
+            final Message message = mMessageDataSource.fetchPendingByUuid(uuid);
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
             status = postMessage(messages);
         } else {
-            final List<Message> messages = mMessageDataSource.fetchMessage(Message.Type.PENDING);
+            final List<Message> messages = mMessageDataSource.syncFetchPending();
             if (messages != null && messages.size() > 0) {
                 for (Message message : messages) {
                     status = postMessage(messages);
