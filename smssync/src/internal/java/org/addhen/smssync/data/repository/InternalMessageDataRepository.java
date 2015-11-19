@@ -27,7 +27,7 @@ import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
 import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
-import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
@@ -181,9 +181,9 @@ public class InternalMessageDataRepository implements MessageRepository {
     public Observable<List<MessageEntity>> importMessage() {
         return Observable.defer(() -> {
             ProcessSms processSms = mProcessMessage.getProcessSms();
-            List<SmsMessage> smsMessages = processSms.importMessages();
+            List<MessageModel> smsMessages = processSms.importMessages();
             List<Message> messages = new ArrayList<>();
-            for (SmsMessage smsMessage : smsMessages) {
+            for (MessageModel smsMessage : smsMessages) {
                 messages.add(mProcessMessage.map(smsMessage));
             }
             return Observable.just(mMessageDataMapper.map(messages));
