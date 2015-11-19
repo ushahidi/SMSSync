@@ -28,7 +28,7 @@ import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFa
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSource;
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
 import org.addhen.smssync.data.util.Logger;
-import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
@@ -85,27 +85,39 @@ public abstract class ProcessMessage {
         return mProcessSms;
     }
 
-    public SmsMessage map(Message message) {
-        SmsMessage smsMessage = new SmsMessage();
-        if (message._id != null) {
-            smsMessage.id = message._id;
+    public MessageModel map(Message message) {
+        MessageModel messageModel = new MessageModel();
+        message._id = message._id;
+        messageModel.messageBody = message.messageBody;
+        messageModel.messageDate = message.messageDate;
+        messageModel.messageFrom = message.messageFrom;
+        messageModel.messageUuid = message.messageUuid;
+        messageModel.sentResultMessage = message.sentResultMessage;
+        messageModel.sentResultCode = message.sentResultCode;
+        messageModel.messageType = MessageModel.Type.valueOf(message.messageType.name());
+        if (message.status != null) {
+            messageModel.status = MessageModel.Status.valueOf(message.status.name());
+        } else {
+            messageModel.status = MessageModel.Status.UNCONFIRMED;
         }
-        smsMessage.uuid = message.messageUuid;
-        smsMessage.body = message.messageBody;
-        smsMessage.phone = message.messageFrom;
-        smsMessage.timestamp = message.messageDate.getTime();
-        return smsMessage;
+        messageModel.deliveryResultCode = messageModel.deliveryResultCode;
+        messageModel.deliveryResultMessage = messageModel.deliveryResultMessage;
+        return messageModel;
     }
 
-    public Message map(SmsMessage smsMessage) {
+    public Message map(MessageModel messageModel) {
         Message message = new Message();
-        message._id = null;
-        message.messageUuid = smsMessage.uuid;
-        message.messageBody = smsMessage.body;
-        message.messageFrom = smsMessage.phone;
-        message.messageDate = new Date(smsMessage.timestamp);
-        message.messageType = Message.Type.PENDING;
-        message.status = Message.Status.FAILED;
+        message._id = message._id;
+        message.messageBody = messageModel.messageBody;
+        message.messageDate = messageModel.messageDate;
+        message.messageFrom = messageModel.messageFrom;
+        message.messageUuid = messageModel.messageUuid;
+        message.sentResultMessage = messageModel.sentResultMessage;
+        message.sentResultCode = messageModel.sentResultCode;
+        message.messageType = Message.Type.valueOf(messageModel.messageType.name());
+        message.status = Message.Status.valueOf(messageModel.status.name());
+        message.deliveryResultCode = messageModel.deliveryResultCode;
+        message.deliveryResultMessage = messageModel.deliveryResultMessage;
         return message;
     }
 

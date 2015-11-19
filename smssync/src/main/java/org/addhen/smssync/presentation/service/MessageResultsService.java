@@ -44,7 +44,7 @@ public class MessageResultsService extends BaseWakefulIntentService {
 
     public void onCreate() {
         super.onCreate();
-        //getComponent().inject(this);
+        getComponent().inject(this);
     }
 
     @Override

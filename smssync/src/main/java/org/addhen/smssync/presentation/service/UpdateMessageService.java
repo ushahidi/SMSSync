@@ -52,6 +52,7 @@ public class UpdateMessageService extends BaseWakefulIntentService implements Up
     public void onCreate() {
         super.onCreate();
         getComponent().inject(this);
+        mUpdateMessagePresenter.setUpdateMessageView(this);
     }
 
 
