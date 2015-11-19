@@ -114,7 +114,8 @@ public class MessageHttpClient extends BaseHttpClient {
         SyncScheme syncScheme = syncUrl.getSyncScheme();
         SyncScheme.SyncMethod method = syncScheme.getMethod();
         SyncScheme.SyncDataFormat format = syncScheme.getDataFormat();
-
+        // Clear set params before adding new one to clear the previous one
+        getParams().clear();
         setHeader("Content-Type", syncScheme.getContentType());
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.SECRET), syncUrl.getSecret());
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.FROM), message.messageFrom);
