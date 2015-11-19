@@ -240,9 +240,7 @@ dependencies {
     def appTestDependencies = rootProject.ext.appTestDependencies
     apt appDependencies.daggerCompiler // Needed for source code generation
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile(appDependencies.raiburari) {
-        exclude module: 'recyclerview-v7'
-    }
+    compile appDependencies.raiburari
     compile appDependencies.cupboard
     compile appDependencies.wakeful
     compile appDependencies.okHttp
@@ -250,10 +248,7 @@ dependencies {
     compile appDependencies.nineOldAndroids
     compile appDependencies.bottomSheet
     compile appDependencies.zXingQRCode
-    compile(appDependencies.supportPreference) {
-        exclude module: 'recyclerview-v7'
-    }
-    compile 'com.android.support:recyclerview-v7:23.0.1'
+    compile appDependencies.supportPreference
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     // Test depedencies

@@ -133,6 +133,20 @@ public class MessageDatabaseHelper extends BaseDatabaseHelper {
         return message;
     }
 
+    public Message fetchPendingMessageByUuid(String uuid) {
+        Message message = new Message();
+        final String whereClause = "message_uuid = ? AND status != ?";
+        try {
+            message = cupboard().withDatabase(getReadableDatabase()).query(Message.class)
+                    .withSelection(whereClause, uuid, Message.Status.SENT.name())
+                    .orderBy("messages_date DESC")
+                    .get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
     public Observable<List<Message>> fetchMessageByStatus(Message.Status status) {
         return Observable.create(subscriber -> {
             if (!isClosed()) {

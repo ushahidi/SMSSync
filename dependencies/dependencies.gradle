@@ -31,7 +31,7 @@ ext {
     //Libraries
     daggerVersion = '2.0.1'
     javaxAnnotationVersion = '1.0'
-    raiburariVersion = '2.7.0'
+    raiburariVersion = '2.8.0'
     cupboardVersion = '2.1.3'
     wakefulVersion = '1.0.5'
     okHttpVersion = '2.5.0'

@@ -113,6 +113,11 @@ public class MessageDatabaseSource implements MessageDataSource {
     }
 
     @Override
+    public Message fetchPendingByUuid(String uuid) {
+        return mMessageDatabaseHelper.fetchPendingMessageByUuid(uuid);
+    }
+
+    @Override
     public List<Message> syncFetchPending() {
         return mMessageDatabaseHelper.syncFetchPending();
     }
