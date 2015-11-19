@@ -101,6 +101,16 @@ public class TaskSettingsFragment extends BasePreferenceFragmentCompat implement
     }
 
     private void savePreferences() {
+
+        if (mPrefs.enableTaskCheck().get() != mTaskCheck.isChecked()) {
+            boolean checked = mTaskCheck.isChecked() ? true : false;
+            String check = getCheckedStatus(checked);
+            String status = getCheckedStatus(mPrefs.enableTaskCheck().get());
+            mAddLogPresenter.addLog(getString(R.string.settings_changed,
+                    mTaskCheck.getTitle().toString(), status, check));
+        }
+        mPrefs.enableTaskCheck().set(mTaskCheck.isChecked());
+
         if (!mPrefs.taskCheckTime().get().equals(mTaskCheckTimes.getTimeValueAsString())) {
             mAddLogPresenter.addLog(getString(R.string.settings_changed,
                     mTaskCheckTimes.getTitle().toString(), mPrefs.taskCheckTime().get(),
