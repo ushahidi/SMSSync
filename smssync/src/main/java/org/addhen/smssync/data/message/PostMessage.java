@@ -335,6 +335,8 @@ public class PostMessage extends ProcessMessage {
             Logger.log(TAG, "Process message with keyword filtering enabled " + message);
             posted = mMessageHttpClient.postSmsToWebService(syncUrl, message,
                     message.messageFrom, mPrefsFactory.uniqueId().get());
+            // Process server side response so they are sent as SMS
+            smsServerResponse(mMessageHttpClient.getServerSuccessResp());
         } else {
             posted = sendTaskSms(message);
         }

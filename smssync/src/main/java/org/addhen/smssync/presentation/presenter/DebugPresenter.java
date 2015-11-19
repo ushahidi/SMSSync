@@ -25,6 +25,7 @@ import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.net.AppHttpClient;
 import org.addhen.smssync.domain.entity.WebServiceEntity;
 import org.addhen.smssync.domain.repository.WebServiceRepository;
+import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.smslib.model.SmsMessage;
 
@@ -172,7 +173,7 @@ public class DebugPresenter {
         message.messageFrom = mPrefsFactory.alertPhoneNumber().get();
         message.messageUuid = mProcessMessage.getProcessSms().getUuid();
         message.messageType = Message.Type.ALERT;
-        SmsMessage smsMessage = mProcessMessage.map(message);
+        MessageModel smsMessage = mProcessMessage.map(message);
         mProcessMessage.getProcessSms().sendSms(smsMessage, false);
     }
 

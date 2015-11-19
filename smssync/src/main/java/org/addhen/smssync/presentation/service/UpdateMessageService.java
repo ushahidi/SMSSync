@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.presentation.service;
 
+import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.message.UpdateMessagePresenter;
 import org.addhen.smssync.presentation.view.message.UpdateMessageView;
 
@@ -52,6 +53,7 @@ public class UpdateMessageService extends BaseWakefulIntentService implements Up
     public void onCreate() {
         super.onCreate();
         getComponent().inject(this);
+        mUpdateMessagePresenter.setUpdateMessageView(this);
     }
 
 
@@ -63,14 +65,14 @@ public class UpdateMessageService extends BaseWakefulIntentService implements Up
         mDelayedStopHandler.sendEmptyMessageDelayed(0, STOP_DELAY);
         mDelayedStopHandler.removeCallbacksAndMessages(null);
         mServiceStarted = false;
-
+        // Release resources
     }
-    // Release resources
 
     @Override
     protected void executeTask(Intent intent) {
         mServiceStarted = true;
-        mUpdateMessagePresenter.updateMessage(null);
+        MessageModel messageModel = (MessageModel) intent.getParcelableExtra(ServiceConstants.UPDATE_MESSAGE);
+        mUpdateMessagePresenter.updateMessage(messageModel);
 
     }
 

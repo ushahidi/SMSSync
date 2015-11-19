@@ -163,7 +163,6 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mMessageRecyclerView.setFocusable(true);
         mMessageRecyclerView.setFocusableInTouchMode(true);
-        mMessageAdapter.setHasStableIds(true);
         mMessageRecyclerView.setAdapter(mMessageAdapter);
         mMessageRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
         mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());

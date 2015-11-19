@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.smslib.sms;
 
+import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.smslib.model.SmsMessage;
 import org.addhen.smssync.smslib.util.LogUtil;
 import org.addhen.smssync.smslib.util.Util;
@@ -33,6 +34,7 @@ import android.provider.Telephony;
 import android.telephony.SmsManager;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,19 +78,19 @@ public class ProcessSms {
      * @param message            The message of the SMS
      * @param sendDeliveryReport Whether to send delivery report or not
      */
-    public void sendSms(SmsMessage message, boolean sendDeliveryReport) {
+    public void sendSms(MessageModel message, boolean sendDeliveryReport) {
         LogUtil.logInfo(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: %s message: %s",
-                message.phone,
-                message.body);
+                message.messageFrom,
+                message.messageBody);
         ArrayList<PendingIntent> sentIntents = new ArrayList<>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<>();
         SmsManager sms = SmsManager.getDefault();
-        ArrayList<String> parts = sms.divideMessage(message.body);
+        ArrayList<String> parts = sms.divideMessage(message.messageBody);
 
         for (int i = 0; i < parts.size(); i++) {
 
             Intent sentMessageIntent = new Intent(SENT);
-            sentMessageIntent.putExtra(SENT_SMS_BUNDLE, message.body);
+            sentMessageIntent.putExtra(SENT_SMS_BUNDLE, message);
 
             PendingIntent sentIntent = PendingIntent
                     .getBroadcast(mContext, (int) System.currentTimeMillis(), sentMessageIntent,
@@ -106,22 +108,23 @@ public class ProcessSms {
             deliveryIntents.add(deliveryIntent);
         }
         if (sendDeliveryReport) {
-            sms.sendMultipartTextMessage(message.phone, null, parts, sentIntents, deliveryIntents);
+            sms.sendMultipartTextMessage(message.messageFrom, null, parts, sentIntents,
+                    deliveryIntents);
             return;
         }
 
-        sms.sendMultipartTextMessage(message.phone, null, parts, sentIntents, null);
+        sms.sendMultipartTextMessage(message.messageFrom, null, parts, sentIntents, null);
     }
 
     /**
      * Delete SMS from the message app inbox
      *
-     * @param smsMessage The message to be deleted
+     * @param messageModel The message to be deleted
      * @return true if deleted otherwise false
      */
-    public boolean delSmsFromInbox(SmsMessage smsMessage) {
+    public boolean delSmsFromInbox(MessageModel messageModel) {
         LogUtil.logInfo(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
-        final long threadId = getThreadId(smsMessage);
+        final long threadId = getThreadId(messageModel);
         Uri smsUri = Util.isKitKatOrHigher() ? ContentUris
                 .withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
                         threadId)
@@ -144,7 +147,7 @@ public class ProcessSms {
      * @return An empty list of {@link SmsMessage} when know message is imported or the total number
      * of messages imported.
      */
-    public List<SmsMessage> importMessages() {
+    public List<MessageModel> importMessages() {
         LogUtil.logInfo(CLASS_TAG, "importMessages(): import messages from messages app");
         if (Util.isKitKatOrHigher()) {
             return importMessageKitKat();
@@ -157,18 +160,18 @@ public class ProcessSms {
 
         Cursor c = mContext.getContentResolver().query(uriSms, projection, null,
                 null, "date DESC");
-        List<SmsMessage> messages = new ArrayList<>();
+        List<MessageModel> messages = new ArrayList<>();
         if (c != null && c.getCount() > 0) {
             try {
                 if (c.moveToFirst()) {
                     do {
-                        SmsMessage message = new SmsMessage();
+                        MessageModel message = new MessageModel();
 
                         final long messageDate = c.getLong(c.getColumnIndex("date"));
-                        message.timestamp = messageDate;
-                        message.phone = c.getString(c.getColumnIndex("address"));
-                        message.body = c.getString(c.getColumnIndex("body"));
-                        message.uuid = getUuid();
+                        message.messageDate = new Date(messageDate);
+                        message.messageFrom = c.getString(c.getColumnIndex("address"));
+                        message.messageBody = c.getString(c.getColumnIndex("body"));
+                        message.messageUuid = getUuid();
                         messages.add(message);
                     } while (c.moveToNext());
                 }
@@ -181,25 +184,27 @@ public class ProcessSms {
         return messages;
     }
 
-    private List<SmsMessage> importMessageKitKat() {
+    private List<MessageModel> importMessageKitKat() {
         LogUtil.logInfo(CLASS_TAG, "importMessages(): import messages from messages app");
         Uri uriSms = SmsQuery.INBOX_CONTENT_URI;
         uriSms = uriSms.buildUpon().appendQueryParameter("LIMIT", "10").build();
         Cursor c = mContext.getContentResolver().query(uriSms, SmsQuery.PROJECTION, null,
                 null, Telephony.Sms.Inbox.DATE + " DESC");
-        List<SmsMessage> messages = new ArrayList<>();
+        List<MessageModel> messages = new ArrayList<>();
         if (c != null && c.getCount() > 0) {
             try {
                 if (c.moveToFirst()) {
                     do {
-                        SmsMessage message = new SmsMessage();
+                        MessageModel message = new MessageModel();
 
                         final long messageDate = c.getLong(c
                                 .getColumnIndex(Telephony.Sms.Inbox.DATE));
-                        message.timestamp = messageDate;
-                        message.phone = c.getString(c.getColumnIndex(Telephony.Sms.Inbox.ADDRESS));
-                        message.body = c.getString(c.getColumnIndex(Telephony.Sms.Inbox.BODY));
-                        message.uuid = getUuid();
+                        message.messageDate = new Date(messageDate);
+                        message.messageFrom = c
+                                .getString(c.getColumnIndex(Telephony.Sms.Inbox.ADDRESS));
+                        message.messageBody = c
+                                .getString(c.getColumnIndex(Telephony.Sms.Inbox.BODY));
+                        message.messageUuid = getUuid();
                         messages.add(message);
 
                     } while (c.moveToNext());
@@ -219,16 +224,16 @@ public class ProcessSms {
      *
      * @return the thread id
      */
-    private long getThreadId(SmsMessage smsMessage) {
+    private long getThreadId(MessageModel messageModel) {
         LogUtil.logInfo(CLASS_TAG, "getId(): thread id");
 
         if (Util.isKitKatOrHigher()) {
-            return getThreadIdKitKat(smsMessage);
+            return getThreadIdKitKat(messageModel);
         }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
         StringBuilder sb = new StringBuilder();
-        sb.append("address=" + DatabaseUtils.sqlEscapeString(smsMessage.phone) + " AND ");
-        sb.append("body=" + DatabaseUtils.sqlEscapeString(smsMessage.body));
+        sb.append("address=" + DatabaseUtils.sqlEscapeString(messageModel.messageFrom) + " AND ");
+        sb.append("body=" + DatabaseUtils.sqlEscapeString(messageModel.messageBody));
         Cursor c = mContext.getContentResolver().query(uriSms, null, sb.toString(), null,
                 "date DESC ");
         if (c != null) {
@@ -243,13 +248,15 @@ public class ProcessSms {
         return 0;
     }
 
-    private long getThreadIdKitKat(SmsMessage smsMessage) {
+    private long getThreadIdKitKat(MessageModel messageModel) {
         LogUtil.logInfo(CLASS_TAG, "getId(): thread id the kitkat way");
         StringBuilder sb = new StringBuilder();
         sb.append(
-                Telephony.Sms.Inbox.ADDRESS + "=" + DatabaseUtils.sqlEscapeString(smsMessage.phone)
+                Telephony.Sms.Inbox.ADDRESS + "=" + DatabaseUtils
+                        .sqlEscapeString(messageModel.messageFrom)
                         + " AND ");
-        sb.append(Telephony.Sms.Inbox.BODY + "=" + DatabaseUtils.sqlEscapeString(smsMessage.body));
+        sb.append(Telephony.Sms.Inbox.BODY + "=" + DatabaseUtils
+                .sqlEscapeString(messageModel.messageBody));
         Cursor c = mContext.getContentResolver()
                 .query(SmsQuery.INBOX_CONTENT_URI, SmsQuery.PROJECTION, sb.toString(), null,
                         SmsQuery.SORT_ORDER);

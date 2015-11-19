@@ -25,7 +25,7 @@ import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
-import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import java.util.ArrayList;
@@ -111,10 +111,10 @@ public class MessageDataRepository implements MessageRepository {
     public Observable<List<MessageEntity>> importMessage() {
         return Observable.defer(() -> {
             ProcessSms processSms = mPostMessage.getProcessSms();
-            List<SmsMessage> smsMessages = processSms.importMessages();
+            List<MessageModel> smsMessages = processSms.importMessages();
             List<Message> messages = new ArrayList<>();
             mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
-            for (SmsMessage smsMessage : smsMessages) {
+            for (MessageModel smsMessage : smsMessages) {
                 messages.add(mPostMessage.map(smsMessage));
             }
             mMessageDataSource.putMessages(messages);
