@@ -61,17 +61,18 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
         ((Widgets) viewHolder).title.setText(getItem(position).getTitle());
         ((Widgets) viewHolder).url.setText(getItem(position).getUrl());
         SwitchCompat toggleCustomWebService = ((Widgets) viewHolder).listCheckBox;
-        if (webServiceModel.getStatus() == WebServiceModel.Status.ENABLED) {
+        if (webServiceModel.getStatus().equals(WebServiceModel.Status.ENABLED)) {
             toggleCustomWebService.setChecked(true);
         } else {
             toggleCustomWebService.setChecked(false);
         }
-        toggleCustomWebService.setOnClickListener(v -> {
-            if (mOnItemCheckedListener != null) {
-                mOnItemCheckedListener
-                        .onItemChecked(position, toggleCustomWebService.isChecked());
-            }
-        });
+        toggleCustomWebService.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> {
+                    if (mOnItemCheckedListener != null) {
+                        mOnItemCheckedListener
+                                .onItemChecked(position, isChecked);
+                    }
+                });
     }
 
     @Override

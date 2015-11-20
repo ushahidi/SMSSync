@@ -142,7 +142,7 @@ public class TaskSettingsFragment extends BasePreferenceFragmentCompat implement
             } else {
 
                 mServiceControl.stopCheckTaskService();
-                if (mEnableMessageResultsAPI.isChecked()) {
+                if (sharedPreferences.getBoolean(MESSAGE_RESULTS_API, false)) {
                     mServiceControl.stopMessageResultsService();
                 }
             }

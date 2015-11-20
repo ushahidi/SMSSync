@@ -219,11 +219,11 @@ public class ListWebServiceFragment
                 if (mWebServiceAdapter.getItemCount() == 1 && mPrefs.serviceEnabled().get()) {
                     showSnackbar(getView(), R.string.disable_last_sync_url);
                 } else {
-                    webServiceModel.setStatus(WebServiceModel.Status.DISABLED);
+                    webServiceModel.setStatus(WebServiceModel.Status.ENABLED);
                     mUpdateWebServicePresenter.updateWebService(webServiceModel);
                 }
             } else {
-                webServiceModel.setStatus(WebServiceModel.Status.ENABLED);
+                webServiceModel.setStatus(WebServiceModel.Status.DISABLED);
                 mUpdateWebServicePresenter.updateWebService(webServiceModel);
             }
         });
