@@ -1,5 +1,16 @@
 [
   {
+    "version": "v3.0.4",
+    "date": "20th November, 2015",
+    "features": [
+    ],
+    "bugs": [
+      "Fixed app crashing on certain devices due to a bug in the support library.",
+      "Fixed regression with Reply From Server feature.",
+      "Fixed POST request variable being duplicated upon every request made."
+    ]
+  },
+  {
     "version": "v3.0.3",
     "date": "9th November, 2015",
     "features": [
