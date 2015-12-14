@@ -68,7 +68,7 @@ public class AddLogPresenter implements Presenter {
 
     public void addLog(String message) {
         LogEntity logEntity = new LogEntity();
-        logEntity.message = message;
+        logEntity.setMessage(message);
         mAddLogUsecase.setLog(logEntity);
         mAddLogUsecase.execute(new DefaultSubscriber<Long>() {
             @Override

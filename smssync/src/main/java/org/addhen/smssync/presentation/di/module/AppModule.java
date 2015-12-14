@@ -120,17 +120,17 @@ public class AppModule {
             FileManager fileManager,
             TwitterClient twitterApp,
             ProcessMessageResult processMessageResult) {
-        return new PostMessage.Builder()
-                .setContext(context)
-                .setPrefsFactory(prefsFactory)
-                .setMessageHttpClient(messageHttpClient)
-                .setMessageDataSourceFactory(messageDataSourceFactory)
-                .setWebServiceDataSourceFactory(webServiceDataSourceFactory)
-                .setFilterDataSourceFactory(filterDataSourceFactory)
-                .setProcessSms(processSms)
-                .setFileManager(fileManager)
-                .setProcessMessageResult(processMessageResult)
-                .build();
+        return new PostMessage(
+                context,
+                prefsFactory,
+                messageHttpClient,
+                messageDataSourceFactory.createMessageDatabaseSource(),
+                webServiceDataSourceFactory.createDatabaseDataSource(),
+                filterDataSourceFactory.createFilterDataSource(),
+                processSms,
+                fileManager,
+                processMessageResult
+        );
     }
 
     @Provides
@@ -144,15 +144,15 @@ public class AppModule {
             FileManager fileManager,
             TwitterClient twitterApp,
             ProcessMessageResult processMessageResult) {
-        return new TweetMessage.Builder()
-                .setContext(context)
-                .setPrefsFactory(prefsFactory)
-                .setTwitterApp(twitterApp)
-                .setMessageDataSourceFactory(messageDataSourceFactory)
-                .setWebServiceDataSourceFactory(webServiceDataSourceFactory)
-                .setFilterDataSourceFactory(filterDataSourceFactory)
-                .setProcessSms(processSms)
-                .setFileManager(fileManager)
-                .build();
+        return new TweetMessage(
+                context,
+                prefsFactory,
+                twitterApp,
+                messageDataSourceFactory.createMessageDatabaseSource(),
+                webServiceDataSourceFactory.createDatabaseDataSource(),
+                filterDataSourceFactory.createFilterDataSource(),
+                processSms,
+                fileManager
+        );
     }
 }

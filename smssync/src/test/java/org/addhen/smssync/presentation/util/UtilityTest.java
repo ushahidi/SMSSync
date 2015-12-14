@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * Copyright (c) 2010 - 2016 Ushahidi Inc
  * All rights reserved
  * Contact: team@ushahidi.com
  * Website: http://www.ushahidi.com
@@ -15,32 +15,27 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.domain.entity;
+package org.addhen.smssync.presentation.util;
 
 import org.addhen.smssync.BaseRobolectricTestCase;
-import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
 /**
- * @author Ushahidi Team <team@ushahidi.com>
+ * @author Henry Addo
  */
-public class LogEntityTest extends BaseRobolectricTestCase {
+public class UtilityTest extends BaseRobolectricTestCase {
 
-    private LogEntity mLogEntity;
-
-    @Before
-    public void setUp() {
-        mLogEntity = DomainEntityFixture.getLogEntity();
+    @Test
+    public void shouldCheckUrlIsValid() {
+        boolean actual = Utility.validateUrl("http://demo.ushahidi.com/smssync");
+        assertTrue("The provided URL is not a valid one", actual);
     }
 
     @Test
-    public void shouldSetLogEntity() {
-        assertNotNull(mLogEntity);
-        assertNotNull(mLogEntity._id);
-        assertEquals(DomainEntityFixture.getLogEntity().getId(), mLogEntity.getId());
-        assertEquals(DomainEntityFixture.getLogEntity().getMessage(), mLogEntity.getMessage());
+    public void shouldCheckForIPBasedUrlToBeValid() {
+        boolean actual = Utility.validateUrl("http://192.168.1.4:3000/");
+        assertTrue("The provided URL is not a valid one", actual);
     }
 }

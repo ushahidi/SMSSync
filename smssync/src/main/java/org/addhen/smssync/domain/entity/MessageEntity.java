@@ -26,30 +26,152 @@ import java.util.Date;
  */
 public class MessageEntity extends Entity {
 
-    public String messageBody;
+    private String messageBody;
 
-    public String messageFrom;
+    private String messageFrom;
 
     // This holds the sent/received timestamp depending on the context used for retrieval or setting
-    public Date messageDate;
+    private Date messageDate;
 
-    public String messageUuid;
+    private String messageUuid;
 
-    public Type messageType;
+    private Type messageType;
 
-    public int sentResultCode;
+    private int sentResultCode;
 
-    public String sentResultMessage;
+    private String sentResultMessage;
 
-    public int deliveryResultCode;
+    private int deliveryResultCode;
 
-    public String deliveryResultMessage;
+    private String deliveryResultMessage;
 
-    public Date deliveredMessageDate;
+    private Date deliveredMessageDate;
 
-    public int retries;
+    private int retries;
 
-    public Status status;
+    private Status status;
+
+    public Long getId() {
+        return _id;
+    }
+
+    public void setId(Long id) {
+        _id = id;
+    }
+
+    public String getMessageFrom() {
+        return messageFrom;
+    }
+
+    public void setMessageFrom(String messageFrom) {
+        this.messageFrom = messageFrom;
+    }
+
+    public String getMessageBody() {
+        return messageBody;
+    }
+
+    public void setMessageBody(String messageBody) {
+        this.messageBody = messageBody;
+    }
+
+    public Date getMessageDate() {
+        return messageDate;
+    }
+
+    public void setMessageDate(Date messageDate) {
+        this.messageDate = messageDate;
+    }
+
+    public String getMessageUuid() {
+        return messageUuid;
+    }
+
+    public void setMessageUuid(String messageUuid) {
+        this.messageUuid = messageUuid;
+    }
+
+    public Type getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(Type messageType) {
+        this.messageType = messageType;
+    }
+
+    public int getSentResultCode() {
+        return sentResultCode;
+    }
+
+    public void setSentResultCode(int sentResultCode) {
+        this.sentResultCode = sentResultCode;
+    }
+
+    public String getSentResultMessage() {
+        return sentResultMessage;
+    }
+
+    public void setSentResultMessage(String sentResultMessage) {
+        this.sentResultMessage = sentResultMessage;
+    }
+
+    public int getDeliveryResultCode() {
+        return deliveryResultCode;
+    }
+
+    public void setDeliveryResultCode(int deliveryResultCode) {
+        this.deliveryResultCode = deliveryResultCode;
+    }
+
+    public String getDeliveryResultMessage() {
+        return deliveryResultMessage;
+    }
+
+    public void setDeliveryResultMessage(String deliveryResultMessage) {
+        this.deliveryResultMessage = deliveryResultMessage;
+    }
+
+    public Date getDeliveredMessageDate() {
+        return deliveredMessageDate;
+    }
+
+    public void setDeliveredMessageDate(Date deliveredMessageDate) {
+        this.deliveredMessageDate = deliveredMessageDate;
+    }
+
+    public int getRetries() {
+        return retries;
+    }
+
+    public void setRetries(int retries) {
+        this.retries = retries;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "MessageEntity{"
+                + "messageBody='" + messageBody + '\''
+                + ", messageFrom='" + messageFrom + '\''
+                + ", messageDate=" + messageDate
+                + ", messageUuid='" + messageUuid + '\''
+                + ", messageType=" + messageType
+                + ", sentResultCode=" + sentResultCode
+                + ", sentResultMessage='" + sentResultMessage + '\''
+                + ", deliveryResultCode=" + deliveryResultCode
+                + ", deliveryResultMessage='" + deliveryResultMessage + '\''
+                + ", deliveredMessageDate=" + deliveredMessageDate
+                + ", retries=" + retries
+                + ", status=" + status
+                + '}';
+    }
 
     public enum Status {
         UNCONFIRMED, FAILED, SENT

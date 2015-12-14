@@ -179,14 +179,16 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
         mBlackListKeywordView.clearTags();
         mWhiteListKeywordView.clearTags();
         for (FilterModel filterModel : mFilterModels) {
-            if (filterModel.status == FilterModel.Status.WHITELIST) {
+            if (filterModel.getStatus().equals(FilterModel.Status.WHITELIST)) {
 
-                KeywordView.Tag tag = new KeywordView.Tag(filterModel._id, filterModel.phoneNumber,
+                KeywordView.Tag tag = new KeywordView.Tag(filterModel._id,
+                        filterModel.getPhoneNumber(),
                         org.addhen.smssync.presentation.util.Utility.keywordColor(),
                         org.addhen.smssync.presentation.util.Utility.keywordIcon());
                 mWhiteListKeywordView.add(tag);
             } else {
-                KeywordView.Tag tag = new KeywordView.Tag(filterModel._id, filterModel.phoneNumber,
+                KeywordView.Tag tag = new KeywordView.Tag(filterModel._id,
+                        filterModel.getPhoneNumber(),
                         org.addhen.smssync.presentation.util.Utility.keywordColor(),
                         org.addhen.smssync.presentation.util.Utility.keywordIcon());
                 mBlackListKeywordView.add(tag);
@@ -209,11 +211,11 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         final FilterModel filterModel = new FilterModel();
-                        filterModel.status = FilterModel.Status.BLACKLIST;
+                        filterModel.setStatus(FilterModel.Status.BLACKLIST);
                         if (isWhiteList) {
-                            filterModel.status = FilterModel.Status.WHITELIST;
+                            filterModel.setStatus(FilterModel.Status.WHITELIST);
                         }
-                        filterModel.phoneNumber = keywordEditText.getText().toString();
+                        filterModel.setPhoneNumber(keywordEditText.getText().toString());
                         mAddFilterPresenter.addFilter(filterModel);
                     }
                 })

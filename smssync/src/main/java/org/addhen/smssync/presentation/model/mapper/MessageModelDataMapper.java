@@ -39,17 +39,17 @@ public class MessageModelDataMapper {
         MessageEntity messageEntity = null;
         if (message != null) {
             messageEntity = new MessageEntity();
-            messageEntity._id = message._id;
-            messageEntity.messageBody = message.messageBody;
-            messageEntity.messageDate = message.messageDate;
-            messageEntity.messageFrom = message.messageFrom;
-            messageEntity.messageUuid = message.messageUuid;
-            messageEntity.sentResultMessage = message.sentResultMessage;
-            messageEntity.sentResultCode = message.sentResultCode;
-            messageEntity.messageType = map(message.messageType);
-            messageEntity.status = map(message.status);
-            messageEntity.deliveryResultCode = message.deliveryResultCode;
-            messageEntity.deliveryResultMessage = message.deliveryResultMessage;
+            messageEntity.setId(message.getId());
+            messageEntity.setMessageBody(message.getMessageBody());
+            messageEntity.setMessageDate(message.getMessageDate());
+            messageEntity.setMessageFrom(message.getMessageFrom());
+            messageEntity.setMessageUuid(message.getMessageUuid());
+            messageEntity.setSentResultMessage(message.getSentResultMessage());
+            messageEntity.setSentResultCode(message.getSentResultCode());
+            messageEntity.setMessageType(map(message.getMessageType()));
+            messageEntity.setStatus(map(message.getStatus()));
+            messageEntity.setDeliveryResultCode(message.getDeliveryResultCode());
+            messageEntity.setDeliveryResultMessage(message.getDeliveryResultMessage());
         }
         return messageEntity;
     }
@@ -58,17 +58,17 @@ public class MessageModelDataMapper {
         MessageModel message = null;
         if (messageEntity != null) {
             message = new MessageModel();
-            message._id = messageEntity._id;
-            message.messageBody = messageEntity.messageBody;
-            message.messageDate = messageEntity.messageDate;
-            message.messageFrom = messageEntity.messageFrom;
-            message.messageUuid = messageEntity.messageUuid;
-            message.sentResultMessage = messageEntity.sentResultMessage;
-            message.sentResultCode = messageEntity.sentResultCode;
-            message.messageType = map(messageEntity.messageType);
-            message.status = map(messageEntity.status);
-            message.deliveryResultCode = messageEntity.deliveryResultCode;
-            message.deliveryResultMessage = messageEntity.deliveryResultMessage;
+            message.setId(messageEntity.getId());
+            message.setMessageBody(messageEntity.getMessageBody());
+            message.setMessageDate(messageEntity.getMessageDate());
+            message.setMessageFrom(messageEntity.getMessageFrom());
+            message.setMessageUuid(messageEntity.getMessageUuid());
+            message.setSentResultMessage(messageEntity.getSentResultMessage());
+            message.setSentResultCode(messageEntity.getSentResultCode());
+            message.setMessageType(map(messageEntity.getMessageType()));
+            message.setStatus(map(messageEntity.getStatus()));
+            message.setDeliveryResultCode(messageEntity.getDeliveryResultCode());
+            message.setDeliveryResultMessage(messageEntity.getDeliveryResultMessage());
         }
         return message;
     }
@@ -98,18 +98,20 @@ public class MessageModelDataMapper {
     }
 
     public MessageEntity.Status map(MessageModel.Status status) {
-        return MessageEntity.Status.valueOf(status.name());
+        return status != null ? MessageEntity.Status.valueOf(status.name())
+                : MessageEntity.Status.FAILED;
     }
 
     public MessageModel.Status map(MessageEntity.Status status) {
-        return MessageModel.Status.valueOf(status.name());
+        return status != null ? MessageModel.Status.valueOf(status.name())
+                : MessageModel.Status.FAILED;
     }
 
     public MessageEntity.Type map(MessageModel.Type type) {
-        return MessageEntity.Type.valueOf(type.name());
+        return type != null ? MessageEntity.Type.valueOf(type.name()) : MessageEntity.Type.PENDING;
     }
 
     public MessageModel.Type map(MessageEntity.Type type) {
-        return MessageModel.Type.valueOf(type.name());
+        return type != null ? MessageModel.Type.valueOf(type.name()) : MessageModel.Type.PENDING;
     }
 }

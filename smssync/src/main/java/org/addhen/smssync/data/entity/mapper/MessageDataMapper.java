@@ -39,17 +39,18 @@ public class MessageDataMapper {
         MessageEntity messageEntity = null;
         if (message != null) {
             messageEntity = new MessageEntity();
-            messageEntity._id = message._id;
-            messageEntity.messageBody = message.messageBody;
-            messageEntity.messageDate = message.messageDate;
-            messageEntity.messageFrom = message.messageFrom;
-            messageEntity.messageUuid = message.messageUuid;
-            messageEntity.sentResultMessage = message.sentResultMessage;
-            messageEntity.sentResultCode = message.sentResultCode;
-            messageEntity.messageType = MessageEntity.Type.valueOf(message.messageType.name());
-            messageEntity.status = MessageEntity.Status.valueOf(message.status.name());
-            messageEntity.deliveryResultCode = message.deliveryResultCode;
-            messageEntity.deliveryResultMessage = message.deliveryResultMessage;
+            messageEntity.setId(message.getId());
+            messageEntity.setMessageBody(message.getMessageBody());
+            messageEntity.setMessageDate(message.getMessageDate());
+            messageEntity.setMessageFrom(message.getMessageFrom());
+            messageEntity.setMessageUuid(message.getMessageUuid());
+            messageEntity.setSentResultMessage(message.getSentResultMessage());
+            messageEntity.setSentResultCode(message.getSentResultCode());
+            messageEntity
+                    .setMessageType(MessageEntity.Type.valueOf(message.getMessageType().name()));
+            messageEntity.setStatus(MessageEntity.Status.valueOf(message.getStatus().name()));
+            messageEntity.setDeliveryResultCode(message.getDeliveryResultCode());
+            messageEntity.setDeliveryResultMessage(message.getDeliveryResultMessage());
         }
         return messageEntity;
     }
@@ -58,17 +59,17 @@ public class MessageDataMapper {
         Message message = null;
         if (messageEntity != null) {
             message = new Message();
-            message._id = messageEntity._id;
-            message.messageBody = messageEntity.messageBody;
-            message.messageDate = messageEntity.messageDate;
-            message.messageFrom = messageEntity.messageFrom;
-            message.messageUuid = messageEntity.messageUuid;
-            message.sentResultMessage = messageEntity.sentResultMessage;
-            message.sentResultCode = messageEntity.sentResultCode;
-            message.messageType = map(messageEntity.messageType);
-            message.status = map(messageEntity.status);
-            message.deliveryResultCode = messageEntity.deliveryResultCode;
-            message.deliveryResultMessage = messageEntity.deliveryResultMessage;
+            message.setId(messageEntity.getId());
+            message.setMessageBody(messageEntity.getMessageBody());
+            message.setMessageDate(messageEntity.getMessageDate());
+            message.setMessageFrom(messageEntity.getMessageFrom());
+            message.setMessageUuid(messageEntity.getMessageUuid());
+            message.setSentResultMessage(messageEntity.getSentResultMessage());
+            message.setSentResultCode(messageEntity.getSentResultCode());
+            message.setMessageType(map(messageEntity.getMessageType()));
+            message.setStatus(map(messageEntity.getStatus()));
+            message.setDeliveryResultCode(messageEntity.getDeliveryResultCode());
+            message.setDeliveryResultMessage(messageEntity.getDeliveryResultMessage());
         }
         return message;
     }
@@ -102,6 +103,6 @@ public class MessageDataMapper {
     }
 
     public Message.Type map(MessageEntity.Type type) {
-        return Message.Type.valueOf(type.name());
+        return type !=null ? Message.Type.valueOf(type.name()) : Message.Type.PENDING;
     }
 }

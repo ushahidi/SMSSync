@@ -21,7 +21,8 @@ import org.addhen.smssync.BaseRobolectricTestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertThat;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -37,10 +38,10 @@ public class HttpNameValuePairEntityTest extends BaseRobolectricTestCase {
 
     @Test
     public void shouldSetFilterEntity() {
-        assertThat(mHttpNameValuePair).isNotNull();
-        assertThat(mHttpNameValuePair.getName()).isEqualTo(
-                DomainEntityFixture.getHttpNameValuePair().getName());
-        assertThat(mHttpNameValuePair.getValue())
-                .isEqualTo(DomainEntityFixture.getHttpNameValuePair().getValue());
+        assertNotNull(mHttpNameValuePair);
+        assertEquals(DomainEntityFixture.getHttpNameValuePair().getName(),
+                mHttpNameValuePair.getName());
+        assertEquals(DomainEntityFixture.getHttpNameValuePair().getValue(),
+                mHttpNameValuePair.getValue());
     }
 }

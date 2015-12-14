@@ -38,6 +38,14 @@ public class WebServiceEntity extends Entity {
 
     private String keywords;
 
+    public Long getId() {
+        return _id;
+    }
+
+    public void setId(Long id) {
+        _id = id;
+    }
+
     public String getTitle() {
         return title;
     }

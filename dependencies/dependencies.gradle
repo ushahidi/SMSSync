@@ -34,7 +34,7 @@ ext {
     raiburariVersion = '2.8.0'
     cupboardVersion = '2.1.3'
     wakefulVersion = '1.0.5'
-    okHttpVersion = '2.5.0'
+    okHttpVersion = '2.7.0'
     twitter4jCoreVersion = '4.0.4'
     nineOldAndroidsVersion = '2.4.0'
     bottomsheetVersion = '1.1.1'
@@ -45,9 +45,7 @@ ext {
     jUnitVersion = '4.12'
     mockitoVersion = '1.10.19'
     dexmakerVersion = '1.2'
-    testingSupportRunnerVersion = '0.4'
-    robolectricVersion = '3.0'
-    truthVersion = '0.27'
+    mockWebServerVersion = '2.7.0'
 
     appDependencies = [
             daggerCompiler   : "com.google.dagger:dagger-compiler:${daggerVersion}",
@@ -65,13 +63,10 @@ ext {
     ]
 
     appTestDependencies = [
-            mockito             : "org.mockito:mockito-core:${mockitoVersion}",
-            dexmaker            : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
-            dexmakerMockito     : "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
-            testingSupportRunner: "com.android.support.test:runner:${testingSupportRunnerVersion}",
-            junit               : "junit:junit:${jUnitVersion}",
-            mockito             : "org.mockito:mockito-core:${mockitoVersion}",
-            robolectric         : "org.robolectric:robolectric:${robolectricVersion}",
-            truth               : "com.google.truth:truth:${truthVersion}",
+            dexmaker       : "com.google.dexmaker:dexmaker:${dexmakerVersion}",
+            dexmakerMockito: "com.google.dexmaker:dexmaker-mockito:${dexmakerVersion}",
+            junit          : "junit:junit:${jUnitVersion}",
+            mockito        : "org.mockito:mockito-core:${mockitoVersion}",
+            mockWebServer  : "com.squareup.okhttp:mockwebserver:${mockWebServerVersion}",
     ]
 }

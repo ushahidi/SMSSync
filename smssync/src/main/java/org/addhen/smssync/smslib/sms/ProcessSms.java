@@ -80,12 +80,12 @@ public class ProcessSms {
      */
     public void sendSms(MessageModel message, boolean sendDeliveryReport) {
         LogUtil.logInfo(CLASS_TAG, "sendSms(): Sends SMS to a number: sendTo: %s message: %s",
-                message.messageFrom,
-                message.messageBody);
+                message.getMessageFrom(),
+                message.getMessageBody());
         ArrayList<PendingIntent> sentIntents = new ArrayList<>();
         ArrayList<PendingIntent> deliveryIntents = new ArrayList<>();
         SmsManager sms = SmsManager.getDefault();
-        ArrayList<String> parts = sms.divideMessage(message.messageBody);
+        ArrayList<String> parts = sms.divideMessage(message.getMessageBody());
 
         for (int i = 0; i < parts.size(); i++) {
 
@@ -108,12 +108,12 @@ public class ProcessSms {
             deliveryIntents.add(deliveryIntent);
         }
         if (sendDeliveryReport) {
-            sms.sendMultipartTextMessage(message.messageFrom, null, parts, sentIntents,
+            sms.sendMultipartTextMessage(message.getMessageFrom(), null, parts, sentIntents,
                     deliveryIntents);
             return;
         }
 
-        sms.sendMultipartTextMessage(message.messageFrom, null, parts, sentIntents, null);
+        sms.sendMultipartTextMessage(message.getMessageFrom(), null, parts, sentIntents, null);
     }
 
     /**
@@ -168,10 +168,13 @@ public class ProcessSms {
                         MessageModel message = new MessageModel();
 
                         final long messageDate = c.getLong(c.getColumnIndex("date"));
-                        message.messageDate = new Date(messageDate);
-                        message.messageFrom = c.getString(c.getColumnIndex("address"));
-                        message.messageBody = c.getString(c.getColumnIndex("body"));
-                        message.messageUuid = getUuid();
+                        message.setMessageDate(new Date(messageDate));
+                        message.setMessageFrom(c.getString(c.getColumnIndex("address")));
+                        message.setMessageBody(c.getString(c.getColumnIndex("body")));
+                        message.setMessageUuid(getUuid());
+                        message.setMessageType(MessageModel.Type.PENDING);
+                        // Treat imported messages as failed
+                        message.setStatus(MessageModel.Status.FAILED);
                         messages.add(message);
                     } while (c.moveToNext());
                 }
@@ -199,12 +202,15 @@ public class ProcessSms {
 
                         final long messageDate = c.getLong(c
                                 .getColumnIndex(Telephony.Sms.Inbox.DATE));
-                        message.messageDate = new Date(messageDate);
-                        message.messageFrom = c
-                                .getString(c.getColumnIndex(Telephony.Sms.Inbox.ADDRESS));
-                        message.messageBody = c
-                                .getString(c.getColumnIndex(Telephony.Sms.Inbox.BODY));
-                        message.messageUuid = getUuid();
+                        message.setMessageDate(new Date(messageDate));
+                        message.setMessageFrom(c
+                                .getString(c.getColumnIndex(Telephony.Sms.Inbox.ADDRESS)));
+                        message.setMessageBody(c
+                                .getString(c.getColumnIndex(Telephony.Sms.Inbox.BODY)));
+
+                        message.setMessageType(MessageModel.Type.PENDING);
+                        // Treat imported messages as failed
+                        message.setStatus(MessageModel.Status.FAILED);
                         messages.add(message);
 
                     } while (c.moveToNext());
@@ -232,8 +238,9 @@ public class ProcessSms {
         }
         Uri uriSms = Uri.parse(SMS_CONTENT_INBOX);
         StringBuilder sb = new StringBuilder();
-        sb.append("address=" + DatabaseUtils.sqlEscapeString(messageModel.messageFrom) + " AND ");
-        sb.append("body=" + DatabaseUtils.sqlEscapeString(messageModel.messageBody));
+        sb.append("address=" + DatabaseUtils.sqlEscapeString(messageModel.getMessageFrom())
+                + " AND ");
+        sb.append("body=" + DatabaseUtils.sqlEscapeString(messageModel.getMessageBody()));
         Cursor c = mContext.getContentResolver().query(uriSms, null, sb.toString(), null,
                 "date DESC ");
         if (c != null) {
@@ -253,10 +260,10 @@ public class ProcessSms {
         StringBuilder sb = new StringBuilder();
         sb.append(
                 Telephony.Sms.Inbox.ADDRESS + "=" + DatabaseUtils
-                        .sqlEscapeString(messageModel.messageFrom)
+                        .sqlEscapeString(messageModel.getMessageFrom())
                         + " AND ");
         sb.append(Telephony.Sms.Inbox.BODY + "=" + DatabaseUtils
-                .sqlEscapeString(messageModel.messageBody));
+                .sqlEscapeString(messageModel.getMessageBody()));
         Cursor c = mContext.getContentResolver()
                 .query(SmsQuery.INBOX_CONTENT_URI, SmsQuery.PROJECTION, sb.toString(), null,
                         SmsQuery.SORT_ORDER);

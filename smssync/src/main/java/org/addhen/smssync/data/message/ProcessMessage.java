@@ -22,11 +22,8 @@ import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.repository.datasource.filter.FilterDataSource;
-import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
 import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
-import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
 import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSource;
-import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.smslib.sms.ProcessSms;
@@ -66,15 +63,15 @@ public abstract class ProcessMessage {
     protected Context mContext;
 
     public ProcessMessage(Context context, PrefsFactory prefsFactory,
-            MessageDataSourceFactory messageDataSourceFactory,
-            WebServiceDataSourceFactory webServiceDataSourceFactory,
-            FilterDataSourceFactory filterDataSourceFactory,
+            MessageDataSource messageDataSource,
+            WebServiceDataSource webServiceDataSource,
+            FilterDataSource filterDataSource,
             ProcessSms processSms,
             FileManager fileManager) {
         mPrefsFactory = prefsFactory;
-        mWebServiceDataSource = webServiceDataSourceFactory.createDatabaseDataSource();
-        mMessageDataSource = messageDataSourceFactory.createMessageDatabaseSource();
-        mFilterDataSource = filterDataSourceFactory.createFilterDataSource();
+        mWebServiceDataSource = webServiceDataSource;
+        mMessageDataSource = messageDataSource;
+        mFilterDataSource = filterDataSource;
         mProcessSms = processSms;
         mFileManager = fileManager;
         mContext = context;
@@ -87,48 +84,48 @@ public abstract class ProcessMessage {
 
     public MessageModel map(Message message) {
         MessageModel messageModel = new MessageModel();
-        message._id = message._id;
-        messageModel.messageBody = message.messageBody;
-        messageModel.messageDate = message.messageDate;
-        messageModel.messageFrom = message.messageFrom;
-        messageModel.messageUuid = message.messageUuid;
-        messageModel.sentResultMessage = message.sentResultMessage;
-        messageModel.sentResultCode = message.sentResultCode;
-        messageModel.messageType = MessageModel.Type.valueOf(message.messageType.name());
-        if (message.status != null) {
-            messageModel.status = MessageModel.Status.valueOf(message.status.name());
+        messageModel.setId(message.getId());
+        messageModel.setMessageBody(message.getMessageBody());
+        messageModel.setMessageDate(message.getMessageDate());
+        messageModel.setMessageFrom(message.getMessageFrom());
+        messageModel.setMessageUuid(message.getMessageUuid());
+        messageModel.setSentResultMessage(message.getSentResultMessage());
+        messageModel.setSentResultCode(message.getSentResultCode());
+        messageModel.setMessageType(map(message.getMessageType()));
+        if (message.getStatus() != null) {
+            messageModel.setStatus(map(message.getStatus()));
         } else {
-            messageModel.status = MessageModel.Status.UNCONFIRMED;
+            messageModel.setStatus(MessageModel.Status.UNCONFIRMED);
         }
-        messageModel.deliveryResultCode = messageModel.deliveryResultCode;
-        messageModel.deliveryResultMessage = messageModel.deliveryResultMessage;
+        messageModel.setDeliveryResultCode(messageModel.getDeliveryResultCode());
+        messageModel.setDeliveryResultMessage(messageModel.getDeliveryResultMessage());
         return messageModel;
     }
 
     public Message map(MessageModel messageModel) {
         Message message = new Message();
-        message._id = message._id;
-        message.messageBody = messageModel.messageBody;
-        message.messageDate = messageModel.messageDate;
-        message.messageFrom = messageModel.messageFrom;
-        message.messageUuid = messageModel.messageUuid;
-        message.sentResultMessage = messageModel.sentResultMessage;
-        message.sentResultCode = messageModel.sentResultCode;
-        message.messageType = Message.Type.valueOf(messageModel.messageType.name());
-        message.status = Message.Status.valueOf(messageModel.status.name());
-        message.deliveryResultCode = messageModel.deliveryResultCode;
-        message.deliveryResultMessage = messageModel.deliveryResultMessage;
+        message.setId(messageModel.getId());
+        message.setMessageBody(messageModel.getMessageBody());
+        message.setMessageDate(messageModel.getMessageDate());
+        message.setMessageFrom(messageModel.getMessageFrom());
+        message.setMessageUuid(messageModel.getMessageUuid());
+        message.setSentResultMessage(messageModel.getSentResultMessage());
+        message.setSentResultCode(messageModel.getSentResultCode());
+        message.setMessageType(map(messageModel.getMessageType()));
+        message.setStatus(map(messageModel.getStatus()));
+        message.setDeliveryResultCode(messageModel.getDeliveryResultCode());
+        message.setDeliveryResultMessage(messageModel.getDeliveryResultMessage());
         return message;
     }
 
     public void processRetries(Message message) {
-        if (message.retries > mPrefsFactory.retries().get()) {
+        if (message.getRetries() > mPrefsFactory.retries().get()) {
             // Delete from db
             deleteMessage(message);
         } else {
             // Increase message's number of tries for future comparison to know when to delete it.
-            int retries = message.retries + 1;
-            message.retries = retries;
+            int retries = message.getRetries() + 1;
+            message.setRetries(retries);
             mMessageDataSource.putMessage(message);
         }
     }
@@ -174,7 +171,7 @@ public abstract class ProcessMessage {
         Logger.log(TAG,
                 "postToSentBox(): postToWebService message to sent box " + message.toString());
         // Change the status to SENT
-        message.status = Message.Status.SENT;
+        message.setStatus(Message.Status.SENT);
         mMessageDataSource.putMessage(message);
         return true;
     }
@@ -182,14 +179,14 @@ public abstract class ProcessMessage {
     protected void savePendingMessage(Message message) {
         //only save to pending when the number is not blacklisted
         if (!mPrefsFactory.enableBlacklist().get()) {
-            message.status = Message.Status.FAILED;
+            message.setStatus(Message.Status.FAILED);
             mMessageDataSource.putMessage(message);
         }
     }
 
     protected void deleteMessage(Message message) {
-        Logger.log(TAG, " message ID " + message.messageUuid);
-        mMessageDataSource.deleteByUuid(message.messageUuid);
+        Logger.log(TAG, " message ID " + message.getMessageUuid());
+        mMessageDataSource.deleteByUuid(message.getMessageUuid());
     }
 
     protected void logActivities(@StringRes int id) {
@@ -200,23 +197,41 @@ public abstract class ProcessMessage {
         if (mPrefsFactory.autoDelete().get()) {
             mProcessSms.delSmsFromInbox(map(message));
             mFileManager.appendAndClose(
-                    mContext.getString(R.string.auto_message_deleted, message.messageBody));
+                    mContext.getString(R.string.auto_message_deleted, message.getMessageBody()));
         }
     }
 
     protected boolean sendTaskSms(Message message) {
-        if (message.messageDate == null || !TextUtils.isEmpty(message.messageUuid)) {
+        if (message.getMessageDate() == null || !TextUtils.isEmpty(message.getMessageUuid())) {
             final Long timeMills = System.currentTimeMillis();
-            message.messageDate = new Date(timeMills);
+            message.setMessageDate(new Date(timeMills));
         }
-        if (message.messageUuid == null || TextUtils.isEmpty(message.messageUuid)) {
-            message.messageUuid = mProcessSms.getUuid();
+        if (message.getMessageUuid() == null || TextUtils.isEmpty(message.getMessageUuid())) {
+            message.setMessageUuid(mProcessSms.getUuid());
         }
-        message.messageType = Message.Type.TASK;
+        message.setMessageType(Message.Type.TASK);
         if (mPrefsFactory.smsReportDelivery().get()) {
             mProcessSms.sendSms(map(message), true);
         }
         mProcessSms.sendSms(map(message), false);
         return true;
+    }
+
+    private Message.Status map(MessageModel.Status status) {
+        return status != null ? Message.Status.valueOf(status.name())
+                : Message.Status.FAILED;
+    }
+
+    private MessageModel.Status map(Message.Status status) {
+        return status != null ? MessageModel.Status.valueOf(status.name())
+                : MessageModel.Status.UNCONFIRMED;
+    }
+
+    private Message.Type map(MessageModel.Type type) {
+        return type != null ? Message.Type.valueOf(type.name()) : Message.Type.PENDING;
+    }
+
+    private MessageModel.Type map(Message.Type type) {
+        return type != null ? MessageModel.Type.valueOf(type.name()) : MessageModel.Type.PENDING;
     }
 }

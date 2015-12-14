@@ -58,7 +58,7 @@ public class LogAdapter extends BaseRecyclerViewAdapter<LogModel> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final LogModel logModel = getItem(position);
         // initialize view with content
-        ((Widgets) holder).logMessage.setText(logModel.message);
+        ((Widgets) holder).logMessage.setText(logModel.getMessage());
     }
 
     public class Widgets extends RecyclerView.ViewHolder {

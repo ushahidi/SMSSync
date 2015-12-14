@@ -28,8 +28,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -72,15 +71,10 @@ public class AddFilterUsecaseTest {
         verifyZeroInteractions(mMockThreadExecutor);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void shouldThrowRuntimeException() {
-        assertThat(mAddFilterUsecase).isNotNull();
+        assertNotNull(mAddFilterUsecase);
         mAddFilterUsecase.setFilter(null);
-        try {
-            mAddFilterUsecase.execute(null);
-            assert_().fail("Should have thrown RuntimeException");
-        } catch (RuntimeException e) {
-            assertThat(e).hasMessage("FilterEntity is null. You must call setFilter(...)");
-        }
+        mAddFilterUsecase.execute(null);
     }
 }

@@ -18,9 +18,13 @@
 package org.addhen.smssync.data.util;
 
 
+import org.addhen.smssync.data.PrefsFactory;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
+import android.telephony.TelephonyManager;
 
 import java.util.Collection;
 
@@ -50,6 +54,19 @@ public class Utility {
             return true;
         }
         return false;
+
+    }
+
+    public static String getPhoneNumber(@NonNull Context context, @NonNull PrefsFactory prefs) {
+
+        TelephonyManager mTelephonyMgr;
+        mTelephonyMgr = (TelephonyManager)
+                context.getSystemService(Context.TELEPHONY_SERVICE);
+        String number = mTelephonyMgr.getLine1Number();
+        if (number != null) {
+            return number;
+        }
+        return prefs.uniqueId().get();
 
     }
 }

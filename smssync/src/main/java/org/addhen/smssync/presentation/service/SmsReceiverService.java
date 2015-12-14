@@ -259,8 +259,8 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
             if (messages != null) {
 
                 // extract message details. phone number and the message body
-                msg.messageFrom = sms.getOriginatingAddress();
-                msg.messageDate = new Date(sms.getTimestampMillis());
+                msg.setMessageFrom(sms.getOriginatingAddress());
+                msg.setMessageDate(new Date(sms.getTimestampMillis()));
 
                 if (messages.length == 1 || sms.isReplace()) {
                     body = sms.getDisplayMessageBody();
@@ -272,15 +272,15 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                     }
                     body = bodyText.toString();
                 }
-                msg.messageBody = body;
-                msg.messageUuid = new ProcessSms(mContext).getUuid();
-                msg.messageType = Message.Type.PENDING;
-                msg.status = Message.Status.UNCONFIRMED;
+                msg.setMessageBody(body);
+                msg.setMessageUuid(new ProcessSms(mContext).getUuid());
+                msg.setMessageType(Message.Type.PENDING);
+                msg.setStatus(Message.Status.UNCONFIRMED);
             }
             log("handleSmsReceived() messagesUuid: " + messagesUuid);
             // Log received SMS
             mFileManager.appendAndClose(
-                    getString(R.string.received_msg, msg.messageBody, msg.messageFrom));
+                    getString(R.string.received_msg, msg.getMessageBody(), msg.getMessageFrom()));
 
             // Route the SMS
             if (App.getTwitterInstance().getSessionManager().getActiveSession() != null) {

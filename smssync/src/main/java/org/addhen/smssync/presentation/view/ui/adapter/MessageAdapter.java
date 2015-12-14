@@ -209,16 +209,16 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
             final MessageModel messageModel = getItem(position);
             // Initialize view with content
             Widgets widgets = ((Widgets) holder);
-            widgets.messageFrom.setText(messageModel.messageFrom);
-            if (messageModel.messageDate != null) {
-                widgets.messageDate.setText(Utility.formatDate(messageModel.messageDate));
+            widgets.messageFrom.setText(messageModel.getMessageFrom());
+            if (messageModel.getMessageDate() != null) {
+                widgets.messageDate.setText(Utility.formatDate(messageModel.getMessageDate()));
             }
-            widgets.message.setText(messageModel.messageBody);
+            widgets.message.setText(messageModel.getMessageBody());
             // Pending messages
-            if (messageModel.messageType == MessageModel.Type.PENDING) {
+            if (messageModel.getMessageType().equals(MessageModel.Type.PENDING)) {
                 widgets.messageType.setText(widgets.itemView.getContext().getString(
                         R.string.sms).toUpperCase(Locale.getDefault()));
-            } else if (messageModel.messageType == MessageModel.Type.TASK) {
+            } else if (messageModel.getMessageType().equals(MessageModel.Type.TASK)) {
                 // Task messages
                 widgets.messageType
                         .setText(widgets.itemView.getContext().getString(R.string.task).toUpperCase(
@@ -301,7 +301,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
             if (constraint != null && constraint.toString().length() > 0) {
                 ArrayList<MessageModel> filteredItems = new ArrayList<>();
                 for (MessageModel message : msgs) {
-                    if (message.messageBody.toLowerCase()
+                    if (message.getMessageBody().toLowerCase()
                             .contains(constraint.toString().toLowerCase())) {
                         filteredItems.add(message);
                     }

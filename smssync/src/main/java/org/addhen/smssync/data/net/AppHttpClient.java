@@ -50,6 +50,10 @@ import static com.squareup.okhttp.internal.Util.UTF_8;
 @Singleton
 public class AppHttpClient extends BaseHttpClient {
 
+    private static final String TEST_MESSAGE = "Test Message From SMSSync Integration";
+
+    private static final String TEST_FROM = "+000000000000";
+
     @Inject
     public AppHttpClient(Context context) {
         super(context);
@@ -103,6 +107,8 @@ public class AppHttpClient extends BaseHttpClient {
 
         setHeader("Content-Type", syncScheme.getContentType());
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.SECRET), syncUrl.getSecret());
+        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.FROM), TEST_FROM);
+        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.MESSAGE), TEST_MESSAGE);
         try {
             setHttpEntity(format);
         } catch (Exception e) {

@@ -24,9 +24,33 @@ import com.addhen.android.raiburari.presentation.model.Model;
  */
 public class FilterModel extends Model {
 
-    public String phoneNumber;
+    private String phoneNumber;
 
-    public Status status;
+    private Status status;
+
+    public Long getId() {
+        return _id;
+    }
+
+    public void setId(Long id) {
+        _id = id;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     /**
      * The status of the filtered phone number.

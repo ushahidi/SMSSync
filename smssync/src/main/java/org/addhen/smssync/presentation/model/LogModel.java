@@ -26,7 +26,23 @@ import com.addhen.android.raiburari.presentation.model.Model;
  */
 public class LogModel extends Model {
 
-    public String message;
+    private String message;
+
+    public Long getId() {
+        return _id;
+    }
+
+    public void setId(Long id) {
+        _id = id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     @Override
     public String toString() {
