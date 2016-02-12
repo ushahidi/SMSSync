@@ -28,8 +28,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assert_;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -71,15 +70,10 @@ public class DeleteFilterUsecaseTest {
         verifyZeroInteractions(mMockThreadExecutor);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void shouldThrowRuntimeException() {
-        assertThat(mDeleteFilterUsecase).isNotNull();
+        assertNotNull(mDeleteFilterUsecase);
         mDeleteFilterUsecase.setFilterId(null);
-        try {
-            mDeleteFilterUsecase.execute(null);
-            assert_().fail("Should have thrown RuntimeException");
-        } catch (RuntimeException e) {
-            assertThat(e).hasMessage("FilterId is null. You must call setFilterId(...)");
-        }
+        mDeleteFilterUsecase.execute(null);
     }
 }

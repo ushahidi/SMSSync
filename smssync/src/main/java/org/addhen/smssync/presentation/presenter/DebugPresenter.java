@@ -168,11 +168,11 @@ public class DebugPresenter {
     private void sendSms(String body) {
         final Long timeMills = System.currentTimeMillis();
         Message message = new Message();
-        message.messageBody = body;
-        message.messageDate = new Date(timeMills);
-        message.messageFrom = mPrefsFactory.alertPhoneNumber().get();
-        message.messageUuid = mProcessMessage.getProcessSms().getUuid();
-        message.messageType = Message.Type.ALERT;
+        message.setMessageBody(body);
+        message.setMessageDate(new Date(timeMills));
+        message.setMessageFrom(mPrefsFactory.alertPhoneNumber().get());
+        message.setMessageUuid(mProcessMessage.getProcessSms().getUuid());
+        message.setMessageType(Message.Type.ALERT);
         MessageModel smsMessage = mProcessMessage.map(message);
         mProcessMessage.getProcessSms().sendSms(smsMessage, false);
     }

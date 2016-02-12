@@ -134,7 +134,7 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
         int blackListCount = 0;
         if (!Utility.isEmpty(filterModelList)) {
             for (FilterModel filterModel : filterModelList) {
-                if (filterModel.status == FilterModel.Status.WHITELIST) {
+                if (filterModel.getStatus().equals(FilterModel.Status.WHITELIST)) {
                     whiteListCount += 1;
                 } else {
                     blackListCount += 1;

@@ -112,8 +112,8 @@ public class DeleteMessageService extends BaseWakefulIntentService implements De
     }
 
     /**
-     * Makes sense to offer some form of self stopping mechanism so when there is no music playing
-     * for a while the service self stops.
+     * Makes sense to offer some form of self stopping mechanism in case the service keeps running
+     * forever.
      *
      * Credits:https://goo.gl/9KZQon
      */

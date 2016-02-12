@@ -30,6 +30,14 @@ public class PhoneStatusInfoModel extends Model {
 
     private int mBatteryLevel;
 
+    public Long getId() {
+        return _id;
+    }
+
+    public void setId(Long id) {
+        _id = id;
+    }
+
     public int getBatteryLevel() {
         return mBatteryLevel;
     }

@@ -254,14 +254,11 @@ dependencies {
     // Test depedencies
     testCompile appTestDependencies.junit
     testCompile appTestDependencies.mockito
-    testCompile appTestDependencies.robolectric
-    testCompile appTestDependencies.truth
+    testCompile appTestDependencies.mockWebServer
+    testApt appDependencies.daggerCompiler
 
     androidTestCompile appTestDependencies.mockito
     androidTestCompile appTestDependencies.dexmaker
     androidTestCompile appTestDependencies.dexmakerMockito
-    androidTestCompile(appTestDependencies.testingSupportRunner) {
-        exclude module: 'support-annotations'
-    }
     androidTestApt appDependencies.daggerCompiler
 }

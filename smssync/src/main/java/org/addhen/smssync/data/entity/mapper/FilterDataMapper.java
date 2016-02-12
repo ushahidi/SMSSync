@@ -47,9 +47,9 @@ public class FilterDataMapper {
 
         if (filter != null) {
             filterEntity = new FilterEntity();
-            filterEntity._id = filter._id;
-            filterEntity.phoneNumber = filter.phoneNumber;
-            filterEntity.status = FilterEntity.Status.valueOf(filter.status.name());
+            filterEntity.setId(filter.getId());
+            filterEntity.setPhoneNumber(filter.getPhoneNumber());
+            filterEntity.setStatus(FilterEntity.Status.valueOf(filter.getStatus().name()));
         }
 
         return filterEntity;
@@ -60,9 +60,9 @@ public class FilterDataMapper {
 
         if (filterEntity != null) {
             filter = new Filter();
-            filter._id = filterEntity._id;
-            filter.phoneNumber = filterEntity.phoneNumber;
-            filter.status = Filter.Status.valueOf(filterEntity.status.name());
+            filter.setId(filterEntity.getId());
+            filter.setPhoneNumber(filterEntity.getPhoneNumber());
+            filter.setStatus(Filter.Status.valueOf(filterEntity.getStatus().name()));
         }
         return filter;
     }

@@ -115,25 +115,25 @@ public class InternalFilterDataRepository implements FilterRepository {
 
     private FilterEntity getFilterEntityOne() {
         FilterEntity filterEntity = new FilterEntity();
-        filterEntity._id = 1l;
-        filterEntity.phoneNumber = "090909392";
-        filterEntity.status = FilterEntity.Status.BLACKLIST;
+        filterEntity.setId(1l);
+        filterEntity.setPhoneNumber("090909392");
+        filterEntity.setStatus(FilterEntity.Status.BLACKLIST);
         return filterEntity;
     }
 
     private FilterEntity getFilterEntityTwo() {
         FilterEntity filterEntity = new FilterEntity();
-        filterEntity._id = 2l;
-        filterEntity.phoneNumber = "0909145895";
-        filterEntity.status = FilterEntity.Status.WHITELIST;
+        filterEntity.setId(2l);
+        filterEntity.setPhoneNumber("0909145895");
+        filterEntity.setStatus(FilterEntity.Status.WHITELIST);
         return filterEntity;
     }
 
     private FilterEntity getFilterEntityThree() {
         FilterEntity filterEntity = new FilterEntity();
         filterEntity._id = 3l;
-        filterEntity.phoneNumber = "0904632489";
-        filterEntity.status = FilterEntity.Status.WHITELIST;
+        filterEntity.setPhoneNumber("0904632489");
+        filterEntity.setStatus(FilterEntity.Status.WHITELIST);
         return filterEntity;
     }
 }

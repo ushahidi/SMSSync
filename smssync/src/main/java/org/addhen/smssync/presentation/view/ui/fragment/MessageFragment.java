@@ -61,7 +61,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -91,9 +90,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Bind(R.id.messages_list)
     BloatedRecyclerView mMessageRecyclerView;
-
-    @Bind(android.R.id.empty)
-    ViewGroup mEmptyView;
 
     @Inject
     ListMessagePresenter mListMessagePresenter;
@@ -393,9 +389,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private void remove(int position) {
         mRemovedItemPosition = position;
-        mRemovedMessage = mMessageAdapter.getItem(position);
-        mMessageAdapter.removeItem(mRemovedMessage);
-        showUndoSnackbar(getString(R.string.published));
+        publishItem(mRemovedItemPosition);
     }
 
     private void removeItems() {
@@ -518,7 +512,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.messageUuid);
+                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.getMessageUuid());
                 }
             }
         });
@@ -592,7 +586,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                         for (PendingMessage pendingDeletedDeployment : mPendingMessages) {
                             mDeleteMessagePresenter
                                     .deleteMessage(
-                                            pendingDeletedDeployment.messageModel.messageUuid);
+                                            pendingDeletedDeployment.messageModel.getMessageUuid());
                         }
                         clearItems();
                     }
@@ -643,8 +637,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private void publishItem(int position) {
         //Sort in ascending order for restoring deleted items
-        Snackbar snackbar = Snackbar.make(mFab, getActivity()
-                        .getString(R.string.item_deleted, mPendingMessages.size()),
+        Snackbar snackbar = Snackbar.make(mFab, getActivity().getString(R.string.published),
                 Snackbar.LENGTH_LONG);
         mRemovedMessage = mMessageAdapter.getItem(position);
         mMessageAdapter.removeItem(mRemovedMessage);
@@ -688,7 +681,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.messageUuid);
+                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.getMessageUuid());
                 }
             }
         });

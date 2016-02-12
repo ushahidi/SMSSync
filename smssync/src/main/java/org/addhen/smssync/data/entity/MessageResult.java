@@ -66,18 +66,6 @@ public class MessageResult implements Serializable {
         this.sentTimeStamp = sentTimeStamp;
     }
 
-    public MessageResult(String messageUUID, int sentResultCode, String sentResultMessage,
-            int deliveryResultCode, String deliveryResultMessage, Date sentTimeStamp,
-            Date deliveredTimeStamp) {
-        this.messageUUID = messageUUID;
-        this.sentResultCode = sentResultCode;
-        this.sentResultMessage = sentResultMessage;
-        this.deliveryResultCode = deliveryResultCode;
-        this.deliveryResultMessage = deliveryResultMessage;
-        this.sentTimeStamp = sentTimeStamp;
-        this.deliveredTimeStamp = deliveredTimeStamp;
-    }
-
     public String getMessageUUID() {
         return messageUUID;
     }

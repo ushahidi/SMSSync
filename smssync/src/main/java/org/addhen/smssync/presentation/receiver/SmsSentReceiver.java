@@ -87,11 +87,11 @@ public class SmsSentReceiver extends BroadcastReceiver {
         logActivities(resultMessage);
 
         if (messageModel != null) {
-            messageModel.sentResultMessage = resultMessage;
-            messageModel.sentResultCode = result;
+            messageModel.setSentResultMessage(resultMessage);
+            messageModel.setSentResultCode(result);
             Logger.log("Sent", "message sent " + messageModel);
             if (sentSuccess) {
-                messageModel.status = MessageModel.Status.SENT;
+                messageModel.setStatus(MessageModel.Status.SENT);
                 // Update this in a service to guarantee it will run
                 Intent updateService = new Intent(context, UpdateMessageService.class);
                 updateService.putExtra(ServiceConstants.UPDATE_MESSAGE, messageModel);
@@ -100,17 +100,17 @@ public class SmsSentReceiver extends BroadcastReceiver {
 
                 PrefsFactory prefsFactory = App.getAppComponent().prefsFactory();
                 if (prefsFactory.enableRetry().get()) {
-                    if (messageModel.retries >= prefsFactory.retries().get()) {
+                    if (messageModel.getRetries() >= prefsFactory.retries().get()) {
                         Logger.log(SmsSentReceiver.class.getSimpleName(),
                                 "Delete failed messages " + messageModel);
                         Intent deleteService = new Intent(context, DeleteMessageService.class);
                         deleteService.putExtra(ServiceConstants.DELETE_MESSAGE,
-                                messageModel.messageUuid);
+                                messageModel.getMessageUuid());
                         context.startService(deleteService);
                     } else {
-                        int retries = messageModel.retries + 1;
-                        messageModel.retries = retries;
-                        messageModel.status = MessageModel.Status.FAILED;
+                        int retries = messageModel.getRetries() + 1;
+                        messageModel.setRetries(retries);
+                        messageModel.setStatus(MessageModel.Status.FAILED);
                         Logger.log(SmsSentReceiver.class.getSimpleName(),
                                 "update message retries " + messageModel);
                         // Update this in a service to guarantee it will run

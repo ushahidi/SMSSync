@@ -61,10 +61,10 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
         }
 
         if (message != null) {
-            message.deliveryResultMessage = resultMessage;
-            message.deliveryResultCode = result;
-            message.messageType = MessageModel.Type.TASK;
-            message.status = MessageModel.Status.SENT;
+            message.setDeliveryResultMessage(resultMessage);
+            message.setDeliveryResultCode(result);
+            message.setMessageType(MessageModel.Type.TASK);
+            message.setStatus(MessageModel.Status.SENT);
 
             // Update this in a service to guarantee it will run
             Intent updateService = new Intent(context, UpdateMessageService.class);

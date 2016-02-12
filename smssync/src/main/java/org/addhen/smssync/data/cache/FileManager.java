@@ -138,7 +138,7 @@ public class FileManager {
                 String fileLine;
                 while ((fileLine = bufferedReader.readLine()) != null) {
                     Log log = new Log();
-                    log.message = fileLine;
+                    log.setMessage(fileLine);
                     logs.add(log);
                 }
             } catch (IOException e) {
@@ -266,7 +266,7 @@ public class FileManager {
 
     public Observable<Long> addLog(Log log) {
         return Observable.create(subscriber -> {
-            appendAndClose(log.message);
+            appendAndClose(log.getMessage());
             subscriber.onNext(1l);
             subscriber.onCompleted();
         });
@@ -285,7 +285,7 @@ public class FileManager {
             final String logString = readLogs(mName);
             if (logString != null) {
                 Log log = new Log();
-                log.message = logString;
+                log.setMessage(logString);
                 subscriber.onNext(log);
                 subscriber.onCompleted();
             } else {

@@ -361,7 +361,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.messageUuid);
+                    mDeleteMessagePresenter.deleteMessage(mRemovedMessage.getMessageUuid());
                 }
             }
         });
@@ -436,7 +436,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
                         for (PendingDeletedMessage pendingDeletedDeployment : mPendingDeletedMessages) {
                             mDeleteMessagePresenter
                                     .deleteMessage(
-                                            pendingDeletedDeployment.messageModel.messageUuid);
+                                            pendingDeletedDeployment.messageModel.getMessageUuid());
                         }
                         clearItems();
                     }

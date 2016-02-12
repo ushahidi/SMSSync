@@ -96,10 +96,13 @@ public class ProcessMessageResult {
                 for (String uuid : response.getUuids()) {
                     Message message = mMessageDataSource.fetchPendingByUuid(uuid);
                     if (message != null) {
-                        MessageResult messageResult = new MessageResult(message.messageUuid,
-                                message.sentResultCode, message.sentResultMessage,
-                                message.deliveryResultCode, message.deliveryResultMessage,
-                                message.messageDate, message.deliveredDate);
+                        MessageResult messageResult = new MessageResult();
+                        messageResult.setMessageUUID(message.getMessageUuid());
+                        messageResult.setSentResultMessage(message.getSentResultMessage());
+                        messageResult.setDeliveryResultCode(message.getDeliveryResultCode());
+                        messageResult.setSentTimeStamp(message.getMessageDate());
+                        messageResult.setDeliveredTimeStamp(message.getDeliveredDate());
+                        messageResult.setDeliveryResultCode(message.getDeliveryResultCode());
                         messageResults.add(messageResult);
                     }
                 }

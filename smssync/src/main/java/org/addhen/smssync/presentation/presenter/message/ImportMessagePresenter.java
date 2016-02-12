@@ -84,9 +84,9 @@ public class ImportMessagePresenter implements Presenter {
             }
 
             @Override
-            public void onNext(List<MessageEntity> filterList) {
+            public void onNext(List<MessageEntity> messageList) {
                 mImportMessageView.hideLoading();
-                mImportMessageView.showMessages(mMessageModelDataMapper.map(filterList));
+                mImportMessageView.showMessages(mMessageModelDataMapper.map(messageList));
             }
 
             @Override

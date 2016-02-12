@@ -39,8 +39,8 @@ public class LogDataMapper {
         LogEntity logEntity = null;
         if (log != null) {
             logEntity = new LogEntity();
-            logEntity._id = log._id;
-            logEntity.message = log.message;
+            logEntity.setId(log.getId());
+            logEntity.setMessage(log.getMessage());
         }
         return logEntity;
     }
@@ -50,7 +50,7 @@ public class LogDataMapper {
         if (logEntity != null) {
             log = new Log();
             log._id = logEntity._id;
-            log.message = logEntity.message;
+            log.setMessage(logEntity.getMessage());
         }
         return log;
     }

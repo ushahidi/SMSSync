@@ -18,16 +18,14 @@
 package org.addhen.smssync;
 
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.junit.runners.JUnit4;
 
 /**
- * Base class for Robolectric tests. Inherit from this class to create Robolectric base tests
+ * Base class all Unit Tests. This is to make it easier to annotate every class with @Runwith
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(sdk = DefaultConfig.EMULATE_SDK, constants = BuildConfig.class, application = ApplicationStub.class)
+@RunWith(JUnit4.class)
 public abstract class BaseRobolectricTestCase {
 
 }

@@ -22,9 +22,9 @@ import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
-import org.addhen.smssync.data.repository.datasource.filter.FilterDataSourceFactory;
-import org.addhen.smssync.data.repository.datasource.message.MessageDataSourceFactory;
-import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSourceFactory;
+import org.addhen.smssync.data.repository.datasource.filter.FilterDataSource;
+import org.addhen.smssync.data.repository.datasource.message.MessageDataSource;
+import org.addhen.smssync.data.repository.datasource.webservice.WebServiceDataSource;
 import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.data.util.Utility;
@@ -57,14 +57,14 @@ public class TweetMessage extends ProcessMessage {
     @Inject
     public TweetMessage(Context context, PrefsFactory prefsFactory,
             TwitterClient twitterClient,
-            MessageDataSourceFactory messageDataSourceFactory,
-            WebServiceDataSourceFactory webServiceDataSourceFactory,
-            FilterDataSourceFactory filterDataSourceFactory,
+            MessageDataSource messageDataSource,
+            WebServiceDataSource webServiceDataSource,
+            FilterDataSource filterDataSource,
             ProcessSms processSms,
             FileManager fileManager
     ) {
-        super(context, prefsFactory, messageDataSourceFactory, webServiceDataSourceFactory,
-                filterDataSourceFactory, processSms, fileManager);
+        super(context, prefsFactory, messageDataSource, webServiceDataSource,
+                filterDataSource, processSms, fileManager);
         mTwitterClient = twitterClient;
     }
 
@@ -87,9 +87,9 @@ public class TweetMessage extends ProcessMessage {
             // send auto response as SMS to user's phone
             logActivities(R.string.auto_response_sent);
             Message msg = new Message();
-            msg.messageBody = mPrefsFactory.reply().get();
-            msg.messageFrom = message.messageFrom;
-            msg.messageType = message.messageType;
+            msg.setMessageBody(mPrefsFactory.reply().get());
+            msg.setMessageFrom(message.getMessageFrom());
+            msg.setMessageType(message.getMessageType());
             mProcessSms.sendSms(map(msg), false);
         }
         if (Utility.isConnected(mContext)) {
@@ -97,7 +97,7 @@ public class TweetMessage extends ProcessMessage {
             // Process if white-listing is enabled
             if (mPrefsFactory.enableWhitelist().get()) {
                 for (Filter filter : filters) {
-                    if (filter.phoneNumber.equals(message.messageFrom)) {
+                    if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
                         if (tweetMessage(message)) {
                             deleteFromSmsInbox(message);
                         } else {
@@ -111,7 +111,7 @@ public class TweetMessage extends ProcessMessage {
             if (mPrefsFactory.enableBlacklist().get()) {
                 for (Filter filter : filters) {
 
-                    if (!filter.phoneNumber.equals(message.messageFrom)) {
+                    if (!filter.getPhoneNumber().equals(message.getMessageFrom())) {
                         if (tweetMessage(message)) {
                             deleteFromSmsInbox(message);
                         } else {
@@ -176,7 +176,7 @@ public class TweetMessage extends ProcessMessage {
             if (mPrefsFactory.enableWhitelist().get()) {
                 for (Filter filter : filters) {
                     for (Message message : messages) {
-                        if (filter.phoneNumber.equals(message.messageFrom)) {
+                        if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
                             if (tweetMessage(message)) {
                                 postToSentBox(message);
                             }
@@ -188,7 +188,7 @@ public class TweetMessage extends ProcessMessage {
             if (mPrefsFactory.enableBlacklist().get()) {
                 for (Filter filter : filters) {
                     for (Message msg : messages) {
-                        if (!filter.phoneNumber.equals(msg.messageFrom)) {
+                        if (!filter.getPhoneNumber().equals(msg.getMessageFrom())) {
                             if (tweetMessage(msg)) {
                                 postToSentBox(msg);
                             }
@@ -214,7 +214,7 @@ public class TweetMessage extends ProcessMessage {
             if (mPrefsFactory.enableWhitelist().get()) {
                 for (Filter filter : filters) {
 
-                    if (filter.phoneNumber.equals(message.messageFrom)) {
+                    if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
                         if (tweetMessage(message)) {
                             postToSentBox(message);
                         }
@@ -226,7 +226,7 @@ public class TweetMessage extends ProcessMessage {
             if (mPrefsFactory.enableBlacklist().get()) {
                 for (Filter filter : filters) {
 
-                    if (!filter.phoneNumber.equals(message.messageFrom)) {
+                    if (!filter.getPhoneNumber().equals(message.getMessageFrom())) {
                         if (tweetMessage(message)) {
                             postToSentBox(message);
                         }
@@ -249,8 +249,8 @@ public class TweetMessage extends ProcessMessage {
                 .enableTwitterKeywords().get()) {
             List<String> keywords = new ArrayList<>(
                     Arrays.asList(mPrefsFactory.twitterKeywords().get().split(",")));
-            if (filterByKeywords(message.messageBody, keywords) || filterByRegex(
-                    message.messageBody, keywords)) {
+            if (filterByKeywords(message.getMessageBody(), keywords) || filterByRegex(
+                    message.getMessageBody(), keywords)) {
                 return tweet(message);
             }
         } else {
@@ -261,10 +261,10 @@ public class TweetMessage extends ProcessMessage {
 
     private boolean tweet(Message message) {
         boolean posted = false;
-        if (message.messageType == Message.Type.PENDING) {
+        if (message.getMessageType().equals(Message.Type.PENDING)) {
             Logger.log(TAG, "Process message with keyword filtering enabled " + message);
             // Post to Twitter as well.
-            Status status = mTwitterClient.tweet(message.messageBody);
+            Status status = mTwitterClient.tweet(message.getMessageBody());
             posted = status != null;
 
         } else {
@@ -274,72 +274,5 @@ public class TweetMessage extends ProcessMessage {
             processRetries(message);
         }
         return false;
-    }
-
-    public static class Builder {
-
-        private Context mContext;
-
-        private PrefsFactory mPrefsFactory;
-
-        private TwitterClient mTwitterApp;
-
-        private MessageDataSourceFactory mMessageDataSourceFactory;
-
-        private WebServiceDataSourceFactory mWebServiceDataSourceFactory;
-
-        private FilterDataSourceFactory mFilterDataSourceFactory;
-
-        private ProcessSms mProcessSms;
-
-        private FileManager mFileManager;
-
-        public Builder setContext(Context context) {
-            mContext = context;
-            return this;
-        }
-
-        public Builder setPrefsFactory(PrefsFactory prefsFactory) {
-            mPrefsFactory = prefsFactory;
-            return this;
-        }
-
-        public Builder setTwitterApp(TwitterClient twitterApp) {
-            mTwitterApp = twitterApp;
-            return this;
-        }
-
-        public Builder setMessageDataSourceFactory(
-                MessageDataSourceFactory messageDataSourceFactory) {
-            mMessageDataSourceFactory = messageDataSourceFactory;
-            return this;
-        }
-
-        public Builder setWebServiceDataSourceFactory(
-                WebServiceDataSourceFactory webServiceDataSourceFactory) {
-            mWebServiceDataSourceFactory = webServiceDataSourceFactory;
-            return this;
-        }
-
-        public Builder setFilterDataSourceFactory(FilterDataSourceFactory filterDataSourceFactory) {
-            mFilterDataSourceFactory = filterDataSourceFactory;
-            return this;
-        }
-
-        public Builder setProcessSms(ProcessSms processSms) {
-            mProcessSms = processSms;
-            return this;
-        }
-
-        public Builder setFileManager(FileManager fileManager) {
-            mFileManager = fileManager;
-            return this;
-        }
-
-        public TweetMessage build() {
-            return new TweetMessage(mContext, mPrefsFactory, mTwitterApp, mMessageDataSourceFactory,
-                    mWebServiceDataSourceFactory, mFilterDataSourceFactory, mProcessSms,
-                    mFileManager);
-        }
     }
 }

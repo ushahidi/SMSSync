@@ -21,7 +21,8 @@ import org.addhen.smssync.BaseRobolectricTestCase;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.google.common.truth.Truth.assertThat;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -37,21 +38,21 @@ public class SyncUrlEntityTest extends BaseRobolectricTestCase {
 
     @Test
     public void shouldSetWebServiceEntity() {
-        assertThat(mWebServiceEntity).isNotNull();
-        assertThat(mWebServiceEntity._id).isEqualTo(DomainEntityFixture.ID);
-        assertThat(mWebServiceEntity.getKeywords()).isEqualTo(
-                DomainEntityFixture.getWebServiceEntity().getKeywords());
-        assertThat(mWebServiceEntity.getKeywordStatus())
-                .isEqualTo(DomainEntityFixture.getWebServiceEntity().getKeywordStatus());
-        assertThat(mWebServiceEntity.getStatus())
-                .isEqualTo(DomainEntityFixture.getWebServiceEntity().getStatus());
-        assertThat(mWebServiceEntity.getSecret())
-                .isEqualTo(DomainEntityFixture.getWebServiceEntity().getSecret());
-        assertThat(mWebServiceEntity.getSyncScheme()).isNotNull();
-        assertThat(mWebServiceEntity.getTitle())
-                .isEqualTo(DomainEntityFixture.getWebServiceEntity().getTitle());
-        assertThat(mWebServiceEntity.getUrl())
-                .isEqualTo(DomainEntityFixture.getWebServiceEntity().getUrl());
-        assertThat(mWebServiceEntity.getSyncScheme()).isNotNull();
+        assertNotNull(mWebServiceEntity);
+        assertEquals(DomainEntityFixture.ID, mWebServiceEntity.getId());
+        assertEquals(DomainEntityFixture.getWebServiceEntity().getKeywords(),
+                mWebServiceEntity.getKeywords());
+        assertEquals(DomainEntityFixture.getWebServiceEntity().getKeywordStatus(),
+                mWebServiceEntity.getKeywordStatus());
+        assertEquals(DomainEntityFixture.getWebServiceEntity().getStatus(),
+                mWebServiceEntity.getStatus());
+        assertEquals(DomainEntityFixture.getWebServiceEntity().getSecret(),
+                mWebServiceEntity.getSecret());
+        assertNotNull(mWebServiceEntity.getSyncScheme());
+        assertEquals(DomainEntityFixture.getWebServiceEntity().getTitle(),
+                mWebServiceEntity.getTitle());
+        assertEquals(DomainEntityFixture.getWebServiceEntity().getUrl(),
+                mWebServiceEntity.getUrl());
+        assertNotNull(mWebServiceEntity.getSyncScheme());
     }
 }

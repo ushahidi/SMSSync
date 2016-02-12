@@ -17,13 +17,6 @@
 
 package org.addhen.smssync.domain.entity;
 
-import org.addhen.smssync.domain.entity.FilterEntity;
-import org.addhen.smssync.domain.entity.HttpNameValuePair;
-import org.addhen.smssync.domain.entity.LogEntity;
-import org.addhen.smssync.domain.entity.MessageEntity;
-import org.addhen.smssync.domain.entity.SyncSchemeEntity;
-import org.addhen.smssync.domain.entity.WebServiceEntity;
-
 import java.util.Date;
 
 /**
@@ -38,8 +31,8 @@ public final class DomainEntityFixture {
     public static FilterEntity getFilterEntity() {
         FilterEntity filterEntity = new FilterEntity();
         filterEntity._id = ID;
-        filterEntity.phoneNumber = "000000000";
-        filterEntity.status = FilterEntity.Status.WHITELIST;
+        filterEntity.setPhoneNumber("000000000");
+        filterEntity.setStatus(FilterEntity.Status.WHITELIST);
         return filterEntity;
     }
 
@@ -50,30 +43,30 @@ public final class DomainEntityFixture {
     public static LogEntity getLogEntity() {
         LogEntity logEntity = new LogEntity();
         logEntity._id = ID;
-        logEntity.message = "Log message";
+        logEntity.setMessage("Log message");
         return logEntity;
     }
 
     public static MessageEntity getMessageEntity() {
         MessageEntity messageEntity = new MessageEntity();
-        messageEntity._id = ID;
-        messageEntity.deliveredMessageDate = mDate;
-        messageEntity.deliveryResultCode = 1;
-        messageEntity.deliveryResultMessage = "delivered";
-        messageEntity.messageBody = "Message body";
-        messageEntity.messageDate = mDate;
-        messageEntity.messageType = MessageEntity.Type.PENDING;
-        messageEntity.messageFrom = "000000000";
-        messageEntity.messageUuid = "uuid0123456";
-        messageEntity.sentResultCode = 1;
-        messageEntity.status = MessageEntity.Status.SENT;
-        messageEntity.retries = 3;
+        messageEntity.setId(ID);
+        messageEntity.setDeliveredMessageDate(mDate);
+        messageEntity.setDeliveryResultCode(1);
+        messageEntity.setDeliveryResultMessage("delivered");
+        messageEntity.setMessageBody("Message body");
+        messageEntity.setMessageDate(mDate);
+        messageEntity.setMessageType(MessageEntity.Type.PENDING);
+        messageEntity.setMessageFrom("000000000");
+        messageEntity.setMessageUuid("uuid0123456");
+        messageEntity.setSentResultCode(1);
+        messageEntity.setStatus(MessageEntity.Status.SENT);
+        messageEntity.setRetries(3);
         return messageEntity;
     }
 
     public static WebServiceEntity getWebServiceEntity() {
         WebServiceEntity webServiceEntity = new WebServiceEntity();
-        webServiceEntity._id = ID;
+        webServiceEntity.setId(ID);
         webServiceEntity.setSecret("secret");
         webServiceEntity.setKeywords("keywords");
         webServiceEntity.setTitle("title");

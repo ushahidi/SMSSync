@@ -35,49 +35,153 @@ public class Message extends DataEntity implements Serializable {
 
     @SerializedName("message")
     @Column("messages_body")
-    public String messageBody;
+    private String messageBody;
 
     @SerializedName("to")
     @Column("messages_from")
-    public String messageFrom;
+    private String messageFrom;
 
     @SerializedName("timestamp")
     @Column("messages_date")
-    public Date messageDate;
+    private Date messageDate;
 
     @SerializedName("uuid")
     @Column("message_uuid")
-    public String messageUuid;
+    private String messageUuid;
 
     @SerializedName("type")
     @Column("message_type")
-    public Type messageType;
+    private Type messageType;
 
     @SerializedName("sent_result_code")
     @Column("sent_result_code")
-    public int sentResultCode;
+    private int sentResultCode;
 
     @SerializedName("sent_result_message")
     @Column("sent_result_message")
-    public String sentResultMessage;
+    private String sentResultMessage;
 
     @SerializedName("delivery_result_code")
     @Column("delivery_result_code")
-    public int deliveryResultCode;
+    private int deliveryResultCode;
 
     @SerializedName("delivered_result_message")
     @Column("delivery_result_message")
-    public String deliveryResultMessage;
+    private String deliveryResultMessage;
 
     @SerializedName("delivered_timestamp")
     @Column("delivered_timestamp")
-    public Date deliveredDate;
+    private Date deliveredDate;
 
     @Column("retries")
-    public int retries;
+    private int retries;
 
     @Column("status")
-    public Status status;
+    private Status status;
+
+    public Long getId() {
+        return _id;
+    }
+
+    public void setId(Long id) {
+        _id = id;
+    }
+
+    public String getMessageBody() {
+        return messageBody;
+    }
+
+    public void setMessageBody(String messageBody) {
+        this.messageBody = messageBody;
+    }
+
+    public String getMessageFrom() {
+        return messageFrom;
+    }
+
+    public void setMessageFrom(String messageFrom) {
+        this.messageFrom = messageFrom;
+    }
+
+    public Date getMessageDate() {
+        return messageDate;
+    }
+
+    public void setMessageDate(Date messageDate) {
+        this.messageDate = messageDate;
+    }
+
+    public String getMessageUuid() {
+        return messageUuid;
+    }
+
+    public void setMessageUuid(String messageUuid) {
+        this.messageUuid = messageUuid;
+    }
+
+    public Type getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(Type messageType) {
+        this.messageType = messageType;
+    }
+
+    public int getSentResultCode() {
+        return sentResultCode;
+    }
+
+    public void setSentResultCode(int sentResultCode) {
+        this.sentResultCode = sentResultCode;
+    }
+
+    public String getSentResultMessage() {
+        return sentResultMessage;
+    }
+
+    public void setSentResultMessage(String sentResultMessage) {
+        this.sentResultMessage = sentResultMessage;
+    }
+
+    public int getDeliveryResultCode() {
+        return deliveryResultCode;
+    }
+
+    public void setDeliveryResultCode(int deliveryResultCode) {
+        this.deliveryResultCode = deliveryResultCode;
+    }
+
+    public String getDeliveryResultMessage() {
+        return deliveryResultMessage;
+    }
+
+    public void setDeliveryResultMessage(String deliveryResultMessage) {
+        this.deliveryResultMessage = deliveryResultMessage;
+    }
+
+    public Date getDeliveredDate() {
+        return deliveredDate;
+    }
+
+    public void setDeliveredDate(Date deliveredDate) {
+        this.deliveredDate = deliveredDate;
+    }
+
+    public int getRetries() {
+        return retries;
+    }
+
+    public void setRetries(int retries) {
+        this.retries = retries;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {
