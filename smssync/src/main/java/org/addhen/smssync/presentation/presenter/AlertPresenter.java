@@ -81,6 +81,7 @@ public class AlertPresenter {
                 .syncGetByStatus(WebServiceEntity.Status.ENABLED);
         if (!Utility.isEmpty(webServiceEntities)) {
             for (WebServiceEntity webServiceEntity : webServiceEntities) {
+                mAppHttpClient.setUrl(webServiceEntity.getUrl());
                 mAppHttpClient.addParam(TASK_PARAM, "alert");
                 mAppHttpClient.addParam(MESSAGE_PARAM, mContext.getResources()
                         .getString(R.string.battery_level_message, batteryLevel));
@@ -90,7 +91,8 @@ public class AlertPresenter {
                 } catch (Exception e) {
                     mFileManager.appendAndClose(e.getMessage());
                 } finally {
-                    if (200 == mAppHttpClient.getResponse().code()) {
+                    if ((mAppHttpClient.getResponse()) != null && (200 == mAppHttpClient
+                            .getResponse().code())) {
                         mFileManager.appendAndClose(
                                 mContext.getResources()
                                         .getString(R.string.successful_alert_to_server));
@@ -113,6 +115,7 @@ public class AlertPresenter {
         List<WebServiceEntity> webServiceEntities = mWebServiceRepository.syncGetByStatus(
                 WebServiceEntity.Status.ENABLED);
         for (WebServiceEntity webServiceEntity : webServiceEntities) {
+            mAppHttpClient.setUrl(webServiceEntity.getUrl());
             mAppHttpClient.addParam(TASK_PARAM, "alert");
             mAppHttpClient.addParam(MESSAGE_PARAM, resultMessage);
             if (!errorCode.matches("")) {
