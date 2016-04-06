@@ -154,9 +154,7 @@ public class TweetMessage extends ProcessMessage {
         } else {
             final List<Message> messages = mMessageDataSource.syncFetchPending();
             if (messages != null && messages.size() > 0) {
-                for (Message message : messages) {
-                    status = tweetMessages(messages);
-                }
+                status = tweetMessages(messages);
             }
         }
 
