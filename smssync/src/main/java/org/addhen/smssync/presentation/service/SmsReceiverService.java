@@ -256,27 +256,26 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         if (bundle != null) {
             SmsMessage[] messages = getMessagesFromIntent(intent);
             sms = messages[0];
-            if (messages != null) {
 
-                // extract message details. phone number and the message body
-                msg.setMessageFrom(sms.getOriginatingAddress());
-                msg.setMessageDate(new Date(sms.getTimestampMillis()));
+            // extract message details. phone number and the message body
+            msg.setMessageFrom(sms.getOriginatingAddress());
+            msg.setMessageDate(new Date(sms.getTimestampMillis()));
 
-                if (messages.length == 1 || sms.isReplace()) {
-                    body = sms.getDisplayMessageBody();
+            if (messages.length == 1 || sms.isReplace()) {
+                body = sms.getDisplayMessageBody();
 
-                } else {
-                    StringBuilder bodyText = new StringBuilder();
-                    for (int i = 0; i < messages.length; i++) {
-                        bodyText.append(messages[i].getMessageBody());
-                    }
-                    body = bodyText.toString();
+            } else {
+                StringBuilder bodyText = new StringBuilder();
+                for (int i = 0; i < messages.length; i++) {
+                    bodyText.append(messages[i].getMessageBody());
                 }
-                msg.setMessageBody(body);
-                msg.setMessageUuid(new ProcessSms(mContext).getUuid());
-                msg.setMessageType(Message.Type.PENDING);
-                msg.setStatus(Message.Status.UNCONFIRMED);
+                body = bodyText.toString();
             }
+            msg.setMessageBody(body);
+            msg.setMessageUuid(new ProcessSms(mContext).getUuid());
+            msg.setMessageType(Message.Type.PENDING);
+            msg.setStatus(Message.Status.UNCONFIRMED);
+
             log("handleSmsReceived() messagesUuid: " + messagesUuid);
             // Log received SMS
             mFileManager.appendAndClose(
