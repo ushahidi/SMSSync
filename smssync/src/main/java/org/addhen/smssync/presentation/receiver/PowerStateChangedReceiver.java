@@ -61,7 +61,7 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
         AlertPresenter alertPresenter = App.getAppComponent().alertPresenter();
         if (mBatteryLow) {
             // is smssync service enabled
-            fileManager.appendAndClose(context.getString(R.string.battery_low));
+            fileManager.append(context.getString(R.string.battery_low));
             if (prefsFactory.serviceEnabled().get()) {
                 Utility.clearAll(context);
                 // Stop the service that pushes pending messages
@@ -86,7 +86,7 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
         }
 
         if (batteryOkay) {
-            fileManager.appendAndClose(context.getString(R.string.battery_okay));
+            fileManager.append(context.getString(R.string.battery_okay));
             // is smssync enabled
             if (prefsFactory.serviceEnabled().get()) {
 

@@ -280,7 +280,7 @@ public class PostMessage extends ProcessMessage {
                 msg.setMessageType(Message.Type.TASK);
                 if (response.getUuids().contains(msg.getMessageUuid())) {
                     sendTaskSms(msg);
-                    mFileManager.appendAndClose(mContext.getString(R.string.processed_task,
+                    mFileManager.append(mContext.getString(R.string.processed_task,
                             msg.getMessageBody()));
                 }
             }
@@ -378,13 +378,13 @@ public class PostMessage extends ProcessMessage {
                 messageHttpClient.execute();
                 gson = new Gson();
                 final String response = messageHttpClient.getResponse().body().string();
-                mFileManager.appendAndClose("HTTP Client Response: " + response);
+                mFileManager.append("HTTP Client Response: " + response);
                 smssyncResponses = gson.fromJson(response, SmssyncResponse.class);
             } catch (Exception e) {
                 Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: "
                         + messageHttpClient.getResponse());
                 try {
-                    mFileManager.appendAndClose(
+                    mFileManager.append(
                             "Task crashed: " + e.getMessage() + " response: " + messageHttpClient
                                     .getResponse().body().string());
                 } catch (IOException e1) {
@@ -394,7 +394,7 @@ public class PostMessage extends ProcessMessage {
 
             if (smssyncResponses != null) {
                 Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
-                mFileManager.appendAndClose("TaskCheckResponse: " + smssyncResponses.toString());
+                mFileManager.append("TaskCheckResponse: " + smssyncResponses.toString());
 
                 if (smssyncResponses.getPayload() != null) {
                     String task = smssyncResponses.getPayload().getTask();
@@ -424,7 +424,7 @@ public class PostMessage extends ProcessMessage {
                 }
             }
 
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     mContext.getString(R.string.finish_task_check) + " " + mErrorMessage + " for "
                             + syncUrl.getUrl());
         }

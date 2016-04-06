@@ -47,7 +47,7 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
                 resultMessage = context.getResources().getString(R.string.sms_delivered);
                 Toast.makeText(context, context.getResources().getString(R.string.sms_delivered),
                         Toast.LENGTH_LONG);
-                fileManager.appendAndClose(context.getResources().getString(
+                fileManager.append(context.getResources().getString(
                         R.string.sms_delivered));
                 break;
             case Activity.RESULT_CANCELED:
@@ -55,7 +55,7 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
                 Toast.makeText(context,
                         context.getResources().getString(R.string.sms_not_delivered),
                         Toast.LENGTH_LONG);
-                fileManager.appendAndClose(
+                fileManager.append(
                         context.getResources().getString(R.string.sms_not_delivered));
                 break;
         }

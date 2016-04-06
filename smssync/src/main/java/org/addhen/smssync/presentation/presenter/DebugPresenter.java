@@ -74,7 +74,7 @@ public class DebugPresenter {
             try {
                 mAppHttpClient.execute();
             } catch (Exception e) {
-                mFileManager.appendAndClose(e.getMessage());
+                mFileManager.append(e.getMessage());
             }
 
             if (responseCode != 0) {

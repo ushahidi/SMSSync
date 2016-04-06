@@ -50,7 +50,7 @@ public class MessageResultsService extends BaseWakefulIntentService {
     @Override
     public void executeTask(Intent intent) {
         log(getString(R.string.checking_scheduled_message));
-        mFileManager.appendAndClose(getString(R.string.checking_scheduled_message));
+        mFileManager.append(getString(R.string.checking_scheduled_message));
         mProcessMessageResult.processMessageResult();
     }
 }

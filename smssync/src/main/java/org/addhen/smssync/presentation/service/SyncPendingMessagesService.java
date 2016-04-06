@@ -105,9 +105,9 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
             if (!isWorking()) {
                 if (!SyncPendingMessagesService.isServiceWorking()) {
                     log("Sync started");
-                    mFileManager.appendAndClose(getString(R.string.sync_started));
+                    mFileManager.append(getString(R.string.sync_started));
                     // Log activity
-                    mFileManager.appendAndClose(getString(R.string.smssync_service_running));
+                    mFileManager.append(getString(R.string.smssync_service_running));
                     mState = new SyncPendingMessagesState(INITIAL, 0, 0, 0, 0, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
@@ -116,7 +116,7 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
                     } catch (Exception e) {
                         log("Not syncing " + e.getMessage());
                         mFileManager
-                                .appendAndClose(getString(R.string.not_syncing, e.getMessage()));
+                                .append(getString(R.string.not_syncing, e.getMessage()));
                         App.bus.post(mState.transition(ERROR, e));
                     }
                 } else {
@@ -148,7 +148,7 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
             }
         } else {
             log(state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done));
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     (state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done)));
             stopForeground(true);
             stopSelf();

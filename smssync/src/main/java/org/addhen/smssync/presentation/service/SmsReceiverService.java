@@ -279,7 +279,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
             }
             log("handleSmsReceived() messagesUuid: " + messagesUuid);
             // Log received SMS
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     getString(R.string.received_msg, msg.getMessageBody(), msg.getMessageFrom()));
 
             // Route the SMS
@@ -300,7 +300,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         } else {
             Utility.showFailNotification(this, messagesBody,
                     getString(R.string.sending_succeeded));
-            mFileManager.appendAndClose(getString(R.string.sending_succeeded));
+            mFileManager.append(getString(R.string.sending_succeeded));
         }
         statusIntent.putExtra("sentstatus", 0);
         sendBroadcast(statusIntent);

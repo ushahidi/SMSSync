@@ -89,11 +89,11 @@ public class AlertPresenter {
                     mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.POST);
                     mAppHttpClient.execute();
                 } catch (Exception e) {
-                    mFileManager.appendAndClose(e.getMessage());
+                    mFileManager.append(e.getMessage());
                 } finally {
                     if ((mAppHttpClient.getResponse()) != null && (200 == mAppHttpClient
                             .getResponse().code())) {
-                        mFileManager.appendAndClose(
+                        mFileManager.append(
                                 mContext.getResources()
                                         .getString(R.string.successful_alert_to_server));
                     }
@@ -125,11 +125,11 @@ public class AlertPresenter {
                 mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.POST);
                 mAppHttpClient.execute();
             } catch (Exception e) {
-                mFileManager.appendAndClose(e.getMessage());
+                mFileManager.append(e.getMessage());
             } finally {
                 if (mAppHttpClient.getResponse() != null) {
                     if (200 == mAppHttpClient.getResponse().code()) {
-                        mFileManager.appendAndClose(mContext.getResources().getString(
+                        mFileManager.append(mContext.getResources().getString(
                                 R.string.successful_alert_to_server));
                     }
                 }

@@ -128,7 +128,7 @@ public class ProcessMessageResult {
             try {
                 urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
             } catch (java.io.UnsupportedEncodingException e) {
-                mFileManager.appendAndClose(e.getLocalizedMessage());
+                mFileManager.append(e.getLocalizedMessage());
             }
             newEndPointURL = newEndPointURL.concat(urlSecretEncoded);
         }
@@ -141,10 +141,10 @@ public class ProcessMessageResult {
             mAppHttpClient.setRequestBody(body);
             mAppHttpClient.execute();
         } catch (Exception e) {
-            mFileManager.appendAndClose(mContext.getString(R.string.message_processed_failed));
+            mFileManager.append(mContext.getString(R.string.message_processed_failed));
         } finally {
             if (200 == mAppHttpClient.getResponse().code()) {
-                mFileManager.appendAndClose(mContext.getString(R.string.message_processed_success));
+                mFileManager.append(mContext.getString(R.string.message_processed_success));
             }
         }
     }
@@ -171,24 +171,24 @@ public class ProcessMessageResult {
                 mAppHttpClient.execute();
             } catch (Exception e) {
                 e.printStackTrace();
-                mFileManager.appendAndClose("process crashed");
-                mFileManager.appendAndClose(mContext.getString(R.string.message_processed_failed));
-                mFileManager.appendAndClose(
+                mFileManager.append("process crashed");
+                mFileManager.append(mContext.getString(R.string.message_processed_failed));
+                mFileManager.append(
                         mContext.getString(R.string.message_processed_failed) + " " + e
                                 .getMessage());
             } finally {
                 if (200 == mAppHttpClient.getResponse().code()) {
 
-                    mFileManager.appendAndClose(
+                    mFileManager.append(
                             mContext.getString(R.string.message_processed_success));
                     response = parseMessagesUUIDSResponse(mAppHttpClient);
                     response.setSuccess(true);
-                    mFileManager.appendAndClose(
+                    mFileManager.append(
                             mContext.getString(R.string.message_processed_success));
 
                 } else {
                     response = new MessagesUUIDSResponse(mAppHttpClient.getResponse().code());
-                    mFileManager.appendAndClose(
+                    mFileManager.append(
                             mContext.getString(R.string.queued_messages_request_status,
                                     mAppHttpClient.getResponse().code(),
                                     mAppHttpClient.getResponse()));
@@ -217,7 +217,7 @@ public class ProcessMessageResult {
             try {
                 urlSecretEncoded = URLEncoder.encode(urlSecret, "UTF-8");
             } catch (java.io.UnsupportedEncodingException e) {
-                mFileManager.appendAndClose(e.getLocalizedMessage());
+                mFileManager.append(e.getLocalizedMessage());
             }
             newEndPointURL = newEndPointURL.concat(urlSecretEncoded);
         }
@@ -227,11 +227,11 @@ public class ProcessMessageResult {
             mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.GET);
             mAppHttpClient.execute();
         } catch (JSONException e) {
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     mContext.getString(R.string.message_processed_json_failed) + " " + e
                             .getMessage());
         } catch (Exception e) {
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     mContext.getString(R.string.message_processed_failed) + " " + e.getMessage());
         } finally {
             if (200 == mAppHttpClient.getResponse().code()) {
@@ -239,7 +239,7 @@ public class ProcessMessageResult {
                 response.setSuccess(true);
             } else {
                 response = new MessagesUUIDSResponse(mAppHttpClient.getResponse().code());
-                mFileManager.appendAndClose(
+                mFileManager.append(
                         mContext.getString(R.string.messages_result_request_status,
                                 mAppHttpClient.getResponse().code(), mAppHttpClient.getResponse()));
             }
@@ -271,7 +271,7 @@ public class ProcessMessageResult {
         } catch (Exception e) {
             e.printStackTrace();
             response = new MessagesUUIDSResponse(client.getResponse().code());
-            mFileManager.appendAndClose(mContext.getString(R.string.message_processed_json_failed));
+            mFileManager.append(mContext.getString(R.string.message_processed_json_failed));
         }
         return response;
     }
