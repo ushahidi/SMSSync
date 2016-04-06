@@ -207,7 +207,7 @@ public class TweetMessage extends ProcessMessage {
     }
 
     public boolean tweetPendingMessage(Message message) {
-        Logger.log(TAG, "tweetMessages");
+        Logger.log(TAG, "tweetPendingMessage");
         List<Filter> filters = mFilterDataSource.getFilters();
         if (mTwitterClient.getSessionManager().getActiveSession() != null) {
             // Process if white-listing is enabled
