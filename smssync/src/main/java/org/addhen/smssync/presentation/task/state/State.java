@@ -52,7 +52,7 @@ public abstract class State {
     }
 
     public boolean isRunning() {
-        return EnumSet.of(SyncState.SYNC).contains(state);
+        return state == SyncState.SYNC;
     }
 
     public abstract State transition(SyncState newState, Exception exception);
