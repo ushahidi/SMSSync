@@ -6,8 +6,6 @@ do so follow the steps below:
 1. Install the following software:
        - Android SDK:
          http://developer.android.com/sdk/index.html
-       - Gradle:
-         http://www.gradle.org/downloads
        - Android Studio - Optional: 
          http://developer.android.com/sdk/installing/studio.html
 
