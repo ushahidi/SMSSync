@@ -157,7 +157,7 @@ public class ServiceControl {
 
             // do we have data network?
             if (isConnected()) {
-                SchedulerInstance.INSTANCE.getScheduler(mContext, mFileManager, intent, requestCode)
+                getScheduler(intent, requestCode)
                         .updateScheduler(interval);
             }
         }
@@ -173,7 +173,7 @@ public class ServiceControl {
      */
     public void stopServices(Intent intent, int requestCode) {
         Logger.log(CLASS_TAG, "Stopping services");
-        SchedulerInstance.INSTANCE.getScheduler(mContext, mFileManager, intent, requestCode)
+        getScheduler(intent, requestCode)
                 .stopScheduler();
     }
 
@@ -207,13 +207,8 @@ public class ServiceControl {
         return Utility.isConnected(mContext);
     }
 
-    public enum SchedulerInstance {
-        INSTANCE;
-
-        private Scheduler getScheduler(Context context, FileManager fileManager, Intent intent,
-                int requestCode) {
-            return new Scheduler(context, fileManager, intent, requestCode,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-        }
+    private Scheduler getScheduler(Intent intent, int requestCode) {
+        return new Scheduler(mContext, mFileManager, intent, requestCode,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
