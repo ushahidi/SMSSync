@@ -41,15 +41,13 @@ import android.os.BatteryManager;
  */
 public class PowerStateChangedReceiver extends BroadcastReceiver {
 
-    private boolean mBatteryLow;
-
     private Intent mSmsSyncAutoSyncServiceIntent;
 
     private Intent mSmsSyncTaskCheckServiceIntent;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        mBatteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
+        boolean mBatteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
         boolean batteryOkay = intent.getAction().equals(Intent.ACTION_BATTERY_OKAY);
 
         int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
