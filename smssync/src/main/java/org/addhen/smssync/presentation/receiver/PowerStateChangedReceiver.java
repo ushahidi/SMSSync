@@ -93,7 +93,6 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
                 // clear all notifications
                 Utility.clearNotify(context);
 
-                // Stop the service that pushes pending messages
                 if (prefsFactory.enableAutoSync().get()) {
                     mSmsSyncAutoSyncServiceIntent = new Intent(context,
                             AutoSyncScheduledService.class);
@@ -101,7 +100,6 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
                             .sendWakefulWork(context, mSmsSyncAutoSyncServiceIntent);
                 }
 
-                // Stop the service that checks for tasks
                 if (prefsFactory.enableTaskCheck().get()) {
                     mSmsSyncTaskCheckServiceIntent = new Intent(context, CheckTaskService.class);
                     CheckTaskService.sendWakefulWork(context, mSmsSyncTaskCheckServiceIntent);
