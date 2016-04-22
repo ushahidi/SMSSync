@@ -243,7 +243,9 @@
             </intent-filter>
         </receiver>
 
-        <!-- Activity that allows the user to send new SMS/MMS messages -->
+        <!-- Android 4.4+ (kitkat) SMS support
+             I think this refers to an external Activity, although it may just be that it doesn't work currently.
+             Activity that allows the user to send new SMS/MMS messages -->
         <activity android:name=".ComposeSmsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>
@@ -259,7 +261,9 @@
             </intent-filter>
         </activity>
 
-        <!-- Service that delivers messages from the phone "quick response" -->
+        <!-- Android 4.4+ (kitkat) SMS support
+             I think this refers to an external Service, although it may just be that it doesn't work currently.
+             Service that delivers messages from the phone "quick response" -->
         <service
                 android:name=".HeadlessSmsSendService"
                 android:exported="true"
