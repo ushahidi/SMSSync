@@ -83,8 +83,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     private Context mContext;
 
-    private SmsMessage sms;
-
     private AppServiceComponent mAppServiceComponent;
 
     synchronized protected static WifiManager.WifiLock getWifiLock(
@@ -246,7 +244,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         if (bundle != null) {
             SmsMessage[] messages = getMessagesFromIntent(intent);
             if (messages != null) {
-                sms = messages[0];
+                SmsMessage sms = messages[0];
 
                 // extract message details. phone number and the message body
                 msg.setMessageFrom(sms.getOriginatingAddress());
