@@ -255,8 +255,8 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
         if (bundle != null) {
             SmsMessage[] messages = getMessagesFromIntent(intent);
-            sms = messages[0];
             if (messages != null) {
+                sms = messages[0];
 
                 // extract message details. phone number and the message body
                 msg.setMessageFrom(sms.getOriginatingAddress());
