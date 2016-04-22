@@ -91,7 +91,7 @@ public class ProcessMessageResult {
         List<SyncUrl> syncUrlList = mWebServiceDataSource.get(SyncUrl.Status.ENABLED);
         for (SyncUrl syncUrl : syncUrlList) {
             MessagesUUIDSResponse response = sendMessageResultGETRequest(syncUrl);
-            if ((response != null) && (response.isSuccess()) && (response.getUuids() != null)) {
+            if ((response != null) && (response.isSuccess()) && (response.hasUUIDs())) {
                 final List<MessageResult> messageResults = new ArrayList<>();
                 for (String uuid : response.getUuids()) {
                     Message message = mMessageDataSource.fetchPendingByUuid(uuid);
