@@ -92,8 +92,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     private SmsMessage sms;
 
-    private Intent statusIntent;
-
     private AppServiceComponent mAppServiceComponent;
 
     synchronized protected static WifiManager.WifiLock getWifiLock(
@@ -202,7 +200,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
-        statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
         App.bus.register(this);
@@ -302,6 +299,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                     getString(R.string.sending_succeeded));
             mFileManager.append(getString(R.string.sending_succeeded));
         }
+        Intent statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
         statusIntent.putExtra("sentstatus", 0);
         sendBroadcast(statusIntent);
     }
