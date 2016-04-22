@@ -57,11 +57,6 @@ public class CheckTaskService extends BaseWakefulIntentService {
         getComponent().inject(this);
     }
 
-    /**
-     * Starts the background service
-     *
-     * @return void
-     */
     protected void executeTask(Intent intent) {
         log("checkTaskService: check if a task has been enabled.");
         if (Utility.isConnected(this)) {
