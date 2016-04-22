@@ -71,6 +71,6 @@ public class CheckTaskService extends BaseWakefulIntentService {
             }
             return;
         }
-        mFileManager.appendAndClose(getString(R.string.no_data_connection));
+        mFileManager.append(getString(R.string.no_data_connection));
     }
 }

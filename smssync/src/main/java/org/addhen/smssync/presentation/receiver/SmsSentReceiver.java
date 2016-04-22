@@ -134,6 +134,6 @@ public class SmsSentReceiver extends BroadcastReceiver {
 
     private void logActivities(String message) {
         FileManager fileManager = App.getAppComponent().fileManager();
-        fileManager.appendAndClose(message);
+        fileManager.append(message);
     }
 }

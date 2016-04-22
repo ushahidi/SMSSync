@@ -190,13 +190,13 @@ public abstract class ProcessMessage {
     }
 
     protected void logActivities(@StringRes int id) {
-        mFileManager.appendAndClose(mContext.getString(id));
+        mFileManager.append(mContext.getString(id));
     }
 
     protected void deleteFromSmsInbox(Message message) {
         if (mPrefsFactory.autoDelete().get()) {
             mProcessSms.delSmsFromInbox(map(message));
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     mContext.getString(R.string.auto_message_deleted, message.getMessageBody()));
         }
     }

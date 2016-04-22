@@ -78,6 +78,6 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
             mAlertPresenter.lostConnectionThread.start();
         }
         App.getAppComponent().fileManager()
-                .appendAndClose(context.getString(R.string.no_data_connection));
+                .append(context.getString(R.string.no_data_connection));
     }
 }

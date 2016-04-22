@@ -53,11 +53,11 @@ public class BootReceiver extends BroadcastReceiver {
         if (shutdown) {
             final long currentTime = System.currentTimeMillis();
             final String time = Utility.formatTimestamp(context, currentTime);
-            fileManager.appendAndClose(context.getString(R.string.device_shutdown, time));
+            fileManager.append(context.getString(R.string.device_shutdown, time));
         }
 
         if (rebooted) {
-            fileManager.appendAndClose(context.getString(R.string.device_reboot));
+            fileManager.append(context.getString(R.string.device_reboot));
             // Is SMSsync enabled
             if (prefsFactory.serviceEnabled().get()) {
 

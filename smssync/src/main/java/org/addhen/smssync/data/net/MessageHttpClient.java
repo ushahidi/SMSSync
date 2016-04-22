@@ -163,13 +163,13 @@ public class MessageHttpClient extends BaseHttpClient {
             case JSON:
                 body = RequestBody.create(JSON, DataFormatUtil.makeJSONString(getParams()));
                 log("setHttpEntity format JSON");
-                mFileManager.appendAndClose("setHttpEntity format JSON");
+                mFileManager.append("setHttpEntity format JSON");
                 break;
             case XML:
                 body = RequestBody.create(XML,
                         DataFormatUtil.makeXMLString(getParams(), "payload", UTF_8.name()));
                 log("setHttpEntity format XML");
-                mFileManager.appendAndClose(mContext.getString(R.string.http_entity_format, "XML"));
+                mFileManager.append(mContext.getString(R.string.http_entity_format, "XML"));
                 break;
             case URLEncoded:
                 log("setHttpEntity format URLEncoded");
@@ -178,12 +178,12 @@ public class MessageHttpClient extends BaseHttpClient {
                 for (HttpNameValuePair pair : params) {
                     formEncodingBuilder.add(pair.getName(), pair.getValue());
                 }
-                mFileManager.appendAndClose(
+                mFileManager.append(
                         mContext.getString(R.string.http_entity_format, "URLEncoded"));
                 body = formEncodingBuilder.build();
                 break;
             default:
-                mFileManager.appendAndClose(mContext.getString(R.string.invalid_data_format));
+                mFileManager.append(mContext.getString(R.string.invalid_data_format));
                 throw new Exception("Invalid data format");
         }
 
@@ -200,7 +200,7 @@ public class MessageHttpClient extends BaseHttpClient {
         Resources res = mContext.getResources();
         mClientError = String.format(Locale.getDefault(), "%s",
                 res.getString(R.string.sending_failed_custom_error, error));
-        mFileManager.appendAndClose(mClientError);
+        mFileManager.append(mClientError);
     }
 
     public String getServerError() {
@@ -213,7 +213,7 @@ public class MessageHttpClient extends BaseHttpClient {
         mServerError = String
                 .format(res.getString(R.string.sending_failed_custom_error, error),
                         res.getString(R.string.sending_failed_http_code, statusCode));
-        mFileManager.appendAndClose(mServerError);
+        mFileManager.append(mServerError);
     }
 
     public SmssyncResponse getServerSuccessResp() {
