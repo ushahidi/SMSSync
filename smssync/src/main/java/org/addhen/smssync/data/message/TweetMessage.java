@@ -149,7 +149,6 @@ public class TweetMessage extends ProcessMessage {
             final Message message = mMessageDataSource.fetchPendingByUuid(uuid);
             List<Message> messages = new ArrayList<Message>();
             messages.add(message);
-            List<String> keywords = getKeywords();
             status = tweetMessages(messages);
         } else {
             final List<Message> messages = mMessageDataSource.syncFetchPending();
