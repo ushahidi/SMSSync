@@ -173,9 +173,7 @@ public class PostMessage extends ProcessMessage {
         } else {
             final List<Message> messages = mMessageDataSource.syncFetchPending();
             if (messages != null && messages.size() > 0) {
-                for (Message message : messages) {
-                    status = postMessage(messages);
-                }
+                status = postMessage(messages);
             }
         }
 
