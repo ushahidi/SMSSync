@@ -158,26 +158,16 @@ public class PostMessage extends ProcessMessage {
 
     /**
      * Sync pending messages to the configured sync URL.
-     *
-     * @param uuid The message uuid
      */
-    public boolean syncPendingMessages(final String uuid) {
-        Logger.log(TAG, "syncPendingMessages: push pending messages to the Sync URL" + uuid);
-        boolean status = false;
-        // check if it should sync by id
-        if (!TextUtils.isEmpty(uuid)) {
-            final Message message = mMessageDataSource.fetchPendingByUuid(uuid);
-            List<Message> messages = new ArrayList<Message>();
-            messages.add(message);
-            status = postMessage(messages);
-        } else {
-            final List<Message> messages = mMessageDataSource.syncFetchPending();
-            if (messages != null && messages.size() > 0) {
-                status = postMessage(messages);
-            }
+    public boolean syncPendingMessages() {
+        Logger.log(TAG, "syncPendingMessages: push pending messages to the Sync URL");
+
+        final List<Message> messages = mMessageDataSource.syncFetchPending();
+        if (messages != null && messages.size() > 0) {
+            return postMessage(messages);
         }
 
-        return status;
+        return false;
     }
 
     public boolean postMessage(List<Message> messages) {
