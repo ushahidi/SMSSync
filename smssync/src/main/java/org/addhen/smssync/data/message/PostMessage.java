@@ -118,10 +118,8 @@ public class PostMessage extends ProcessMessage {
                             }
                         }
                     }
-                }
-
-                // Process blacklist
-                if (mPrefsFactory.enableBlacklist().get()) {
+                } else if (mPrefsFactory.enableBlacklist().get()) {
+                    // Process blacklist
                     for (Filter filter : filters) {
 
                         if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
