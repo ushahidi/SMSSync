@@ -17,33 +17,28 @@
 
 package org.addhen.smssync.presentation.service;
 
-import com.squareup.otto.Produce;
-import com.squareup.otto.Subscribe;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.mapper.MessageDataMapper;
 import org.addhen.smssync.data.message.PostMessage;
 import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.util.Logger;
+import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
-import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.task.SyncConfig;
-import org.addhen.smssync.presentation.task.SyncPendingMessagesTask;
 import org.addhen.smssync.presentation.task.SyncType;
 import org.addhen.smssync.presentation.task.state.SyncPendingMessagesState;
-import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
 import android.app.PendingIntent;
 import android.content.Intent;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
-import static org.addhen.smssync.presentation.task.SyncType.MANUAL;
-import static org.addhen.smssync.presentation.task.state.SyncState.ERROR;
 import static org.addhen.smssync.presentation.task.state.SyncState.INITIAL;
 
 /**
@@ -79,15 +74,12 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
         super(CLASS_TAG);
     }
 
-    public static boolean isServiceWorking() {
-        return mService != null && mService.isWorking();
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         mService = this;
         getComponent().inject(this);
+
     }
 
     @Override
@@ -102,83 +94,22 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG,
                     "doWakefulWork() executing this task with Flag " + intent.getFlags());
-            if (!isWorking()) {
-                if (!SyncPendingMessagesService.isServiceWorking()) {
-                    log("Sync started");
-                    mFileManager.append(getString(R.string.sync_started));
-                    // Log activity
-                    mFileManager.append(getString(R.string.smssync_service_running));
-                    mState = new SyncPendingMessagesState(INITIAL, syncType, null);
-                    try {
-                        SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
-                        new SyncPendingMessagesTask(this, mPostMessage, mTweetMessage,
-                                mMessageRepository, mMessageDataMapper).execute(config);
-                    } catch (Exception e) {
-                        log("Not syncing " + e.getMessage());
-                        mFileManager
-                                .append(getString(R.string.not_syncing, e.getMessage()));
-                        App.bus.post(mState.transition(ERROR, e));
-                    }
-                } else {
-                    log("Sync is running now.");
-                    App.bus.post(mState.transition(ERROR, null));
-                }
-            } else {
-                log("Sync already running");
+
+            log("Sync started");
+            mFileManager.append(getString(R.string.sync_started));
+            // Log activity
+            mFileManager.append(getString(R.string.smssync_service_running));
+            mState = new SyncPendingMessagesState(INITIAL, syncType, null);
+            try {
+                SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
+                syncPending(config);
+            } catch (Exception e) {
+                log("Not syncing " + e.getMessage());
+                mFileManager
+                        .append(getString(R.string.not_syncing, e.getMessage()));
+
             }
         }
-    }
-
-    @Subscribe
-    public void syncStateChanged(final SyncPendingMessagesState state) {
-        mState = state;
-        if (mState.isInitialState()) {
-            return;
-        }
-
-        if (state.isError()) {
-
-            createNotification(R.string.sync_in_completed,
-                    state.getNotification(getResources()), getPendingIntent());
-        }
-
-        if (state.isRunning()) {
-            if (state.syncType == MANUAL) {
-                updateSyncStatusNotification(state);
-            }
-        } else {
-            log(state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done));
-            mFileManager.append(
-                    (state.isCanceled() ? getString(R.string.canceled) : getString(R.string.done)));
-            stopForeground(true);
-            stopSelf();
-        }
-    }
-
-    public SyncPendingMessagesState getState() {
-        return mState;
-
-    }
-
-    @Produce
-    public SyncPendingMessagesState produceLastState() {
-        return mState;
-    }
-
-    private void updateSyncStatusNotification(SyncPendingMessagesState state) {
-        createNotification(R.string.sync_in_progress,
-                state.getNotification(getResources()), getPendingIntent());
-
-    }
-
-    public boolean isWorking() {
-        return getState().isRunning();
-    }
-
-    protected void createNotification(int resId, String title, PendingIntent intent) {
-        Utility.buildNotification(this, R.drawable.ic_stat_notfiy, title, getString(resId),
-                intent, true);
-
     }
 
     protected PendingIntent getPendingIntent() {
@@ -190,5 +121,36 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
     public void onDestroy() {
         super.onDestroy();
         mService = null;
+    }
+
+    /**
+     * Sync pending messages to the enabled sync URL.
+     *
+     * @param config The sync configuration.
+     * @return int The number of syncd items
+     */
+    private void syncPending(SyncConfig config) {
+        List<MessageEntity> listMessages = new ArrayList<>();
+
+        // determine if syncing by message UUID
+        if (config.messageUuids != null && config.messageUuids.size() > 0) {
+            for (String messageUuid : config.messageUuids) {
+                MessageEntity msg = mMessageRepository.syncFetchByUuid(messageUuid);
+                listMessages.add(msg);
+            }
+        } else {
+            // load all messages
+            listMessages = mMessageRepository.syncFetchPending();
+        }
+        if (listMessages.size() > 0) {
+            Logger.log(CLASS_TAG, String.format(Locale.ENGLISH, "Starting to sync (%d messages)",
+                    listMessages.size()));
+            for (MessageEntity m : listMessages) {
+                // route the message to twitter
+                mTweetMessage.tweetPendingMessage(mMessageDataMapper.map(m));
+                // route the message to the appropriate enabled sync URL
+                mPostMessage.routePendingMessage(mMessageDataMapper.map(m));
+            }
+        }
     }
 }
