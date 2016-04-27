@@ -86,7 +86,7 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
         if (config.skip) {
             Logger.log(CLASS_TAG, "Sync skipped");
             // In case a user decides to skip the sync process
-            return new SyncPendingMessagesState(FINISHED_SYNC, 0, 0, 0, 0, SyncType.MANUAL, null);
+            return new SyncPendingMessagesState(FINISHED_SYNC, SyncType.MANUAL, null);
         }
 
         return sync(config);
@@ -149,8 +149,7 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
         Logger.log("SyncPendingMessages", "successful: " + syncdStatus.successful + " failed: "
                 + syncdStatus.failed);
 
-        return new SyncPendingMessagesState(FINISHED_SYNC, syncdStatus.successful,
-                syncdStatus.failed, syncdStatus.progress, itemsToSync, config.syncType, null);
+        return new SyncPendingMessagesState(FINISHED_SYNC, config.syncType, null);
 
     }
 
@@ -210,10 +209,7 @@ public class SyncPendingMessagesTask extends AsyncTask<SyncConfig, SyncPendingMe
                     }
 
                     // update the UI with progress of the sync progress
-                    publishProgress(new SyncPendingMessagesState(SYNC, syncdItems, failedItems,
-                            progress,
-                            itemsToSync,
-                            config.syncType, null));
+                    publishProgress(new SyncPendingMessagesState(SYNC, config.syncType, null));
                 }
             }
 

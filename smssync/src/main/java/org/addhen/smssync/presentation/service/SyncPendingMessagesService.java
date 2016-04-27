@@ -108,7 +108,7 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
                     mFileManager.append(getString(R.string.sync_started));
                     // Log activity
                     mFileManager.append(getString(R.string.smssync_service_running));
-                    mState = new SyncPendingMessagesState(INITIAL, 0, 0, 0, 0, syncType, null);
+                    mState = new SyncPendingMessagesState(INITIAL, syncType, null);
                     try {
                         SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
                         new SyncPendingMessagesTask(this, mPostMessage, mTweetMessage,
