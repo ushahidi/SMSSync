@@ -108,36 +108,6 @@ public class AlertPresenter {
     }
 
     /**
-     * If an SMS fails to send (due to credit, cell coverage, or bad number) post alert to server
-     */
-    public void smsSendFailedRequest(String resultMessage,
-            String errorCode) {
-        List<WebServiceEntity> webServiceEntities = mWebServiceRepository.syncGetByStatus(
-                WebServiceEntity.Status.ENABLED);
-        for (WebServiceEntity webServiceEntity : webServiceEntities) {
-            mAppHttpClient.setUrl(webServiceEntity.getUrl());
-            mAppHttpClient.addParam(TASK_PARAM, "alert");
-            mAppHttpClient.addParam(MESSAGE_PARAM, resultMessage);
-            if (!errorCode.matches("")) {
-                mAppHttpClient.addParam("errorCode", errorCode);
-            }
-            try {
-                mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.POST);
-                mAppHttpClient.execute();
-            } catch (Exception e) {
-                mFileManager.append(e.getMessage());
-            } finally {
-                if (mAppHttpClient.getResponse() != null) {
-                    if (200 == mAppHttpClient.getResponse().code()) {
-                        mFileManager.append(mContext.getResources().getString(
-                                R.string.successful_alert_to_server));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * If data connection is lost for extended time (either WiFi, or GSM) send alert SMS to stored
      * phone number
      */

@@ -278,6 +278,13 @@ public class Utility {
      * @return String
      */
     public static String capitalizeFirstLetter(String text) {
+        if(text == null) {
+            return null;
+        } else if(text.length() == 0) {
+            return "";
+        } else if(text.length() == 1) {
+            return text.toUpperCase();
+        }
         return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 

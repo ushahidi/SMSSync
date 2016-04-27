@@ -58,9 +58,6 @@ import javax.inject.Inject;
 public class SmsReceiverService extends Service implements HasComponent<AppServiceComponent> {
 
     @Inject
-    PostMessage mProcessMessage;
-
-    @Inject
     FileManager mFileManager;
 
     @Inject
@@ -85,12 +82,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     private Looper mServiceLooper;
 
     private Context mContext;
-
-    private String messagesBody = "";
-
-    private String messagesUuid = "";
-
-    private SmsMessage sms;
 
     private AppServiceComponent mAppServiceComponent;
 
@@ -253,7 +244,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
         if (bundle != null) {
             SmsMessage[] messages = getMessagesFromIntent(intent);
             if (messages != null) {
-                sms = messages[0];
+                SmsMessage sms = messages[0];
 
                 // extract message details. phone number and the message body
                 msg.setMessageFrom(sms.getOriginatingAddress());
@@ -274,7 +265,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 msg.setMessageType(Message.Type.PENDING);
                 msg.setStatus(Message.Status.UNCONFIRMED);
             }
-            log("handleSmsReceived() messagesUuid: " + messagesUuid);
+
             // Log received SMS
             mFileManager.append(
                     getString(R.string.received_msg, msg.getMessageBody(), msg.getMessageFrom()));
@@ -292,10 +283,10 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
 
     private void showNotification(boolean status) {
         if (!status) {
-            Utility.showFailNotification(this, messagesBody,
+            Utility.showFailNotification(this, "",
                     getString(R.string.sending_failed));
         } else {
-            Utility.showFailNotification(this, messagesBody,
+            Utility.showFailNotification(this, "",
                     getString(R.string.sending_succeeded));
             mFileManager.append(getString(R.string.sending_succeeded));
         }
