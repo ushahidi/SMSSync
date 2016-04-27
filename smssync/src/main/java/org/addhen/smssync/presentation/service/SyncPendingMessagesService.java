@@ -27,7 +27,6 @@ import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
 import org.addhen.smssync.presentation.task.SyncConfig;
 import org.addhen.smssync.presentation.task.SyncType;
-import org.addhen.smssync.presentation.task.state.SyncPendingMessagesState;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
 import android.app.PendingIntent;
@@ -38,8 +37,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
-
-import static org.addhen.smssync.presentation.task.state.SyncState.INITIAL;
 
 /**
  * @author Henry Addo
@@ -53,7 +50,6 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
 
     private ArrayList<String> messageUuids = null;
 
-    private SyncPendingMessagesState mState = new SyncPendingMessagesState();
 
     @Inject
     FileManager mFileManager;
@@ -99,7 +95,6 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
             mFileManager.append(getString(R.string.sync_started));
             // Log activity
             mFileManager.append(getString(R.string.smssync_service_running));
-            mState = new SyncPendingMessagesState(INITIAL, syncType, null);
             try {
                 SyncConfig config = new SyncConfig(3, false, messageUuids, syncType);
                 syncPending(config);
