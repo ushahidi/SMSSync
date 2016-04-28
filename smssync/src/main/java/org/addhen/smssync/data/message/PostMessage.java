@@ -108,8 +108,11 @@ public class PostMessage extends ProcessMessage {
             for (SyncUrl syncUrl : syncUrlList) {
                 // Process if white-listing is enabled
                 if (mPrefsFactory.enableWhitelist().get()) {
+                    // TODO: Check for potential NPE for filters
                     for (Filter filter : filters) {
-                        if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
+                        // Make sure phone number matches and it's indeed whitelisted
+                        if ((filter.getPhoneNumber().equals(message.getMessageFrom())) && (filter
+                                .getStatus().equals(Filter.Status.WHITELIST))) {
                             if (postMessage(message, syncUrl)) {
                                 postToSentBox(message);
                                 deleteFromSmsInbox(message);
@@ -118,16 +121,15 @@ public class PostMessage extends ProcessMessage {
                             }
                         }
                     }
-                } else if (mPrefsFactory.enableBlacklist().get()) {
+                }
+
+                if (mPrefsFactory.enableBlacklist().get()) {
                     // Process blacklist
+                    // TODO: Check for potential NPE for filters
                     for (Filter filter : filters) {
-
-                        if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
-                            Logger.log("message",
-                                    " from:" + message.getMessageFrom() + " filter:"
-                                            + filter.getPhoneNumber());
-                            return false;
-                        } else {
+                        // Make sure phone number doesn't match and not blacklisted
+                        if ((filter.getPhoneNumber().equals(message.getMessageFrom())) && (!filter
+                                .getStatus().equals(Filter.Status.BLACKLIST))) {
                             if (postMessage(message, syncUrl)) {
                                 postToSentBox(message);
                                 deleteFromSmsInbox(message);
@@ -135,9 +137,11 @@ public class PostMessage extends ProcessMessage {
                                 savePendingMessage(message);
                             }
                         }
-
                     }
-                } else {
+                }
+
+                if ((!mPrefsFactory.enableBlacklist().get()) && (!mPrefsFactory.enableWhitelist()
+                        .get())) {
                     if (postMessage(message, syncUrl)) {
                         postToSentBox(message);
                         deleteFromSmsInbox(message);

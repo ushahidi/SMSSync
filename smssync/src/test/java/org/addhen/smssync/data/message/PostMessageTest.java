@@ -132,6 +132,48 @@ public class PostMessageTest {
     @Test
     public void shouldSendMessageOnceWhenWhitelistIsEnabledAndNumberIsWhiteListed() {
         List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+        preformSyncWithWhitelistAndBlacklistDisabled(syncUrls);
+        verify(mMockMessageHttpClient, times(1))
+                .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
+    }
+
+    @Test
+    public void shouldSendMessageWhenBlackListIsEnabledButNoBlacklistedNumber() {
+        List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+        given(mMockFilter.getPhoneNumber()).willReturn(FROM);
+        given(mMockFilter.getStatus()).willReturn(Filter.Status.WHITELIST);
+        List<Filter> filters = Arrays.asList(mMockFilter);
+        // Set filters
+        given(mMockFilterDataSource.getFilters()).willReturn(filters);
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, false, true,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+        verify(mMockMessageHttpClient, times(1))
+                .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
+    }
+
+    @Test
+    public void shouldSendMessageWhenWhitelistIsEnabledAndBlacklistIsDisabled() {
+        List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, false, false,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+        verify(mMockMessageHttpClient, times(1))
+                .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
+    }
+
+    @Test
+    public void shouldSendMessageWhenBothWhitelistAndBlacklistAreDisabled() {
+        List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+
+        given(mMockFilter.getPhoneNumber()).willReturn(FROM);
+        given(mMockFilter.getStatus()).willReturn(Filter.Status.WHITELIST);
+        List<Filter> filters = Arrays.asList(mMockFilter);
+        // Set filters
+        given(mMockFilterDataSource.getFilters()).willReturn(filters);
+
         preformSyncWhiteListEnabled(syncUrls);
         verify(mMockMessageHttpClient, times(1))
                 .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
@@ -150,6 +192,13 @@ public class PostMessageTest {
         // Get Enable sync URLS
         given(mMockFilterDataSource.getFilters()).willReturn(filters);
         stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, true, false,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+    }
+
+    private void preformSyncWithWhitelistAndBlacklistDisabled(List<SyncUrl> syncUrls) {
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, false, false,
                 false, false);
         mPostMessage.routeSms(mMockMessage);
         verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
