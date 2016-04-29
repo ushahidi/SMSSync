@@ -6,6 +6,9 @@ before_install:
   - android list sdk --no-ui --all --extended
 android:
   components:
+  # use the latest revision of Android SDK Tools
+  - platform-tools
+  - tools
   - build-tools-24.0.0-preview
   - android-23
   - extra-android-support
