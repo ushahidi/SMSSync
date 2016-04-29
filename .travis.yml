@@ -6,7 +6,7 @@ before_install:
   - android list sdk --no-ui --all --extended
 android:
   components:
-  - build-tools-23.0.1
+  - build-tools-24.0.0-preview
   - android-23
   - extra-android-support
   - extra-android-m2repository
