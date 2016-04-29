@@ -3,6 +3,7 @@ language: android
 jdk: oraclejdk8
 before_install:
   - export JAVA8_HOME=$JAVA_HOME
+  - android list sdk --no-ui --all --extended
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 cache:
@@ -14,7 +15,7 @@ android:
   # use the latest revision of Android SDK Tools
   - platform-tools
   - tools
-  - build-tools-24.0.0-preview
+  - build-tools-23.0.3
   - android-23
   - extra-android-support
   - extra-android-m2repository
