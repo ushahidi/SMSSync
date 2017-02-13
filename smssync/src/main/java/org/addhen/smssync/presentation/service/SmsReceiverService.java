@@ -187,8 +187,7 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     public void onCreate() {
         super.onCreate();
         injector();
-        HandlerThread thread = new HandlerThread(CLASS_TAG,
-                Process.THREAD_PRIORITY_BACKGROUND);
+        HandlerThread thread = new HandlerThread(CLASS_TAG, Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
         mServiceLooper = thread.getLooper();
@@ -234,11 +233,9 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
      * Handle receiving SMS message
      */
     protected void handleSmsReceived(Intent intent) {
-
         String body;
         Bundle bundle = intent.getExtras();
         Message msg = new Message();
-
         log("handleSmsReceived() bundle " + bundle);
 
         if (bundle != null) {
