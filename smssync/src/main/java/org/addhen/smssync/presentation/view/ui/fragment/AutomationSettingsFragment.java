@@ -23,10 +23,14 @@ import org.addhen.smssync.presentation.view.ui.widget.TimePreferenceFragmentDial
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.SwitchPreferenceCompat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -60,8 +64,8 @@ public class AutomationSettingsFragment extends BasePreferenceFragmentCompat imp
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         initialize();
     }
 
@@ -98,6 +102,15 @@ public class AutomationSettingsFragment extends BasePreferenceFragmentCompat imp
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(this);
 
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        initialize();
+        return view;
     }
 
     private void initialize() {

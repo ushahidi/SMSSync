@@ -28,18 +28,20 @@ import org.addhen.smssync.presentation.view.webservice.UpdateWebServiceKeywordsV
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -51,10 +53,10 @@ public class AddTwitterKeywordFragment extends BaseFragment implements
 
     private static AddTwitterKeywordFragment mAddTwitterKeywordFragment;
 
-    @Bind(R.id.filter_keyword_integration_title)
+    @BindView(R.id.filter_keyword_integration_title)
     AppCompatTextView mWebServiceTitleTextView;
 
-    @Bind(R.id.keywords_container)
+    @BindView(R.id.keywords_container)
     KeywordView mKeywordsView;
 
     private PrefsFactory mPrefsFactory;
@@ -76,20 +78,13 @@ public class AddTwitterKeywordFragment extends BaseFragment implements
         return mAddTwitterKeywordFragment;
     }
 
+    @Nullable
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         initialize();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+        return view;
     }
 
     @OnClick(R.id.add_keyword_btn)

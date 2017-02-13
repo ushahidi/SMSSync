@@ -26,7 +26,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -36,7 +36,7 @@ import butterknife.OnClick;
  */
 public class TwitterProfileFragment extends BaseFragment {
 
-    @Bind(R.id.twitter_logged_user)
+    @BindView(R.id.twitter_logged_user)
     AppCompatTextView mLoggedInUser;
 
     public TwitterProfileFragment() {

@@ -26,6 +26,7 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.service.DeleteMessageService;
 import org.addhen.smssync.presentation.service.ServiceConstants;
 import org.addhen.smssync.presentation.service.UpdateMessageService;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -43,7 +44,7 @@ public class SmsSentReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        messageModel = (MessageModel) intent.getParcelableExtra(ServiceConstants.SENT_SMS_BUNDLE);
+        messageModel = (MessageModel) intent.getParcelableExtra(ProcessSms.SENT_SMS_BUNDLE);
         final int result = getResultCode();
         boolean sentSuccess = false;
         log("smsSentReceiver onReceive result: " + result);
@@ -121,7 +122,6 @@ public class SmsSentReceiver extends BroadcastReceiver {
                 }
             }
         }
-
     }
 
     private void toastLong(String message, Context context) {

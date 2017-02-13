@@ -55,7 +55,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Fragment for showing list of webServices
@@ -67,13 +67,13 @@ public class ListWebServiceFragment
         implements ListWebServiceView,
         RecyclerViewItemTouchListenerAdapter.RecyclerViewOnItemClickListener {
 
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton mFab;
 
-    @Bind(android.R.id.empty)
+    @BindView(android.R.id.empty)
     RelativeLayout mEmptyView;
 
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     BloatedRecyclerView mWebServiceRecyclerView;
 
     @Inject

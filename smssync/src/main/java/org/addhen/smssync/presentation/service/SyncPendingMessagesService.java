@@ -25,18 +25,26 @@ import org.addhen.smssync.data.message.TweetMessage;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.domain.entity.MessageEntity;
 import org.addhen.smssync.domain.repository.MessageRepository;
+import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.task.SyncConfig;
 import org.addhen.smssync.presentation.task.SyncType;
+import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.support.v7.app.NotificationCompat;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
+
+import static org.addhen.smssync.presentation.service.ServiceConstants.ACTIVE_SYNC;
+import static org.addhen.smssync.presentation.service.ServiceConstants.INACTIVE_SYNC;
+import static org.addhen.smssync.presentation.service.ServiceConstants.SYNC_STATUS;
+import static org.addhen.smssync.presentation.util.Utility.NOTIFICATION_PROGRESS_BAR_MAX;
 
 /**
  * @author Henry Addo
@@ -47,8 +55,6 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
             .getSimpleName();
 
     private static SyncPendingMessagesService mService;
-
-    private ArrayList<String> messageUuids = null;
 
 
     @Inject
@@ -66,8 +72,15 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
     @Inject
     MessageDataMapper mMessageDataMapper;
 
+    private ArrayList<String> messageUuids = null;
+
+    // holds the status of the sync and sends it to the pending messages
+    // activity to update the ui
+    private Intent statusIntent;
+
     public SyncPendingMessagesService() {
         super(CLASS_TAG);
+        statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
     }
 
     @Override
@@ -83,10 +96,8 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
         if (intent != null) {
             final SyncType syncType = SyncType.fromIntent(intent);
             // Get Id
-            if (intent.getFlags() == 100) {
-                log("Get syncMessages messagesUuid: ");
-                messageUuids = intent.getStringArrayListExtra(ServiceConstants.MESSAGE_UUID);
-            }
+            log("Get syncMessages messagesUuid: ");
+            messageUuids = intent.getStringArrayListExtra(ServiceConstants.MESSAGE_UUID);
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG,
                     "doWakefulWork() executing this task with Flag " + intent.getFlags());
@@ -126,7 +137,9 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
      */
     private void syncPending(SyncConfig config) {
         List<MessageEntity> listMessages = new ArrayList<>();
-
+        statusIntent.putExtra(SYNC_STATUS, ACTIVE_SYNC);
+        // Notify UI sync is in operation
+        sendBroadcast(statusIntent);
         // determine if syncing by message UUID
         if (config.messageUuids != null && config.messageUuids.size() > 0) {
             for (String messageUuid : config.messageUuids) {
@@ -140,12 +153,32 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
         if (listMessages.size() > 0) {
             Logger.log(CLASS_TAG, String.format(Locale.ENGLISH, "Starting to sync (%d messages)",
                     listMessages.size()));
-            for (MessageEntity m : listMessages) {
+            Utility.BuildNotification buildNotification = Utility
+                    .getSyncNotificationStatus(this, getString(R.string.sync_in_progress));
+            NotificationCompat.Builder builder = buildNotification.getBuilder();
+            List<String> failedMessages = new ArrayList<>();
+            int failedCounter = 0;
+            int successCounter = 0;
+            for (int i = 0; i < listMessages.size(); i++) {
+                MessageEntity m = listMessages.get(i);
                 // route the message to twitter
-                mTweetMessage.tweetPendingMessage(mMessageDataMapper.map(m));
+                if (App.getTwitterInstance().getSessionManager().getActiveSession() != null) {
+                    // TODO: show status message for twitter
+                    mTweetMessage.tweetPendingMessage(mMessageDataMapper.map(m));
+                }
                 // route the message to the appropriate enabled sync URL
-                mPostMessage.routePendingMessage(mMessageDataMapper.map(m));
+                if (!mPostMessage.routePendingMessage(mMessageDataMapper.map(m))) {
+                    failedCounter++;
+                } else {
+                    successCounter++;
+                }
+                builder.setProgress(NOTIFICATION_PROGRESS_BAR_MAX, i, false);
             }
+            String status = getString(R.string.status_sync_details, successCounter, failedCounter,
+                    listMessages.size());
+            Utility.showSyncNotificationStatus(this, status, buildNotification);
+            statusIntent.putExtra(SYNC_STATUS, INACTIVE_SYNC);
+            sendBroadcast(statusIntent);
         }
     }
 }

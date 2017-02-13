@@ -554,7 +554,7 @@
     <string name="getting_started">Getting started</string>
     <string name="undo">Undo</string>
     <string name="item_deleted">
-        <xliff:g id="deleted">%1$s</xliff:g>
+        <xliff:g id="deleted">%1$d</xliff:g>
         message was deleted
     </string>
     <string name="publish">Publish</string>
@@ -638,4 +638,5 @@
         string
     </string>
     <string name="no_published_messages">There are no more published messages</string>
+    <string name="add">Add</string>
 </resources>

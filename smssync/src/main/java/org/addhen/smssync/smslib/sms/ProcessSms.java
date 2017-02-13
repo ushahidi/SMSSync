@@ -49,17 +49,17 @@ import javax.inject.Singleton;
 @Singleton
 public class ProcessSms {
 
+    public static String DELIVERED = "SMS_DELIVERED";
+
+    public static final String SENT_SMS_BUNDLE = "sent";
+
+    public static final String DELIVERED_SMS_BUNDLE = "delivered";
+
     private static final String SMS_CONTENT_URI = "content://sms/conversations/";
 
     private static final String SMS_CONTENT_INBOX = "content://sms/inbox";
 
     private static String SENT = "SMS_SENT";
-
-    private static final String SENT_SMS_BUNDLE = "sent";
-
-    private static String DELIVERED = "SMS_DELIVERED";
-
-    private static final String DELIVERED_SMS_BUNDLE = "delivered";
 
     private static final String CLASS_TAG = ProcessSms.class.getSimpleName();
 

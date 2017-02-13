@@ -55,6 +55,8 @@ import java.util.regex.Pattern;
  */
 public class Utility {
 
+    public static final int NOTIFICATION_PROGRESS_BAR_MAX = 100;
+
     private static final String URL_PATTERN
             = "\\b(https?|ftp|file)://[-a-zA-Z0-9+\\$&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
@@ -171,13 +173,12 @@ public class Utility {
     }
 
     /**
-     * Show a notification
+     * Show a notification when a sync is in progress
      *
-     * @param message           to display
-     * @param notificationTitle notification title
+     * @param message to display
      */
-    public static void showFailNotification(Context context, String message,
-            String notificationTitle) {
+    public static BuildNotification getSyncNotificationStatus(Context context,
+            String message) {
 
         Intent baseIntent = new Intent(context, MainActivity.class);
         baseIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -185,9 +186,24 @@ public class Utility {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                 baseIntent, 0);
 
-        buildNotification(context, R.drawable.ic_stat_notfiy, message, notificationTitle,
-                pendingIntent, false);
+        BuildNotification notification = new BuildNotification(context, R.drawable.ic_stat_notfiy,
+                message, context.getString(R.string.sync_in_progress), pendingIntent)
+                .invoke();
+        notification.getBuilder().setOngoing(true)
+                .setProgress(NOTIFICATION_PROGRESS_BAR_MAX, 0, false);
+        NotificationManager notificationManager = notification.getNotificationManager();
+        notificationManager.notify(NOTIFY_RUNNING, notification.getBuilder().build());
+        return notification;
+    }
 
+    public static void showSyncNotificationStatus(Context context, String message,
+            BuildNotification buildNotification) {
+        buildNotification.getBuilder()
+                .setContentTitle(context.getString(R.string.sync_in_completed));
+        buildNotification.getBuilder().setContentText(message)
+                .setProgress(0, 0, false); // Remove progress bar
+        NotificationManager notificationManager = buildNotification.getNotificationManager();
+        notificationManager.notify(NOTIFY_RUNNING, buildNotification.getBuilder().build());
     }
 
     /**
@@ -203,15 +219,10 @@ public class Utility {
     public static void buildNotification(Context context, int drawable,
             String message, String title, PendingIntent intent, boolean ongoing) {
 
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                context);
-        builder.setContentTitle(title);
-        builder.setContentText(message);
-        builder.setSmallIcon(drawable);
-        builder.setContentIntent(intent);
+        BuildNotification buildNotification = new BuildNotification(context, drawable, message,
+                title, intent).invoke();
+        NotificationCompat.Builder builder = buildNotification.getBuilder();
+        NotificationManager notificationManager = buildNotification.getNotificationManager();
 
         if (ongoing) {
             builder.setOngoing(ongoing);
@@ -219,6 +230,7 @@ public class Utility {
 
         notificationManager.notify(NOTIFY_RUNNING, builder.build());
     }
+
 
     /**
      * Clear all notifications shown to the user.
@@ -278,11 +290,11 @@ public class Utility {
      * @return String
      */
     public static String capitalizeFirstLetter(String text) {
-        if(text == null) {
+        if (text == null) {
             return null;
-        } else if(text.length() == 0) {
+        } else if (text.length() == 0) {
             return "";
-        } else if(text.length() == 1) {
+        } else if (text.length() == 1) {
             return text.toUpperCase();
         }
         return text.substring(0, 1).toUpperCase() + text.substring(1);
@@ -349,5 +361,52 @@ public class Utility {
     @DrawableRes
     public static int keywordIcon() {
         return R.drawable.ic_highlight_remove_white_18dp;
+    }
+
+    public static class BuildNotification {
+
+        private Context mContext;
+
+        private int mDrawable;
+
+        private String mMessage;
+
+        private String mTitle;
+
+        private PendingIntent mIntent;
+
+        private NotificationManager mNotificationManager;
+
+        private NotificationCompat.Builder mBuilder;
+
+        public BuildNotification(Context context, int drawable, String message, String title,
+                PendingIntent intent) {
+            mContext = context;
+            mDrawable = drawable;
+            mMessage = message;
+            mTitle = title;
+            mIntent = intent;
+        }
+
+        public NotificationManager getNotificationManager() {
+            return mNotificationManager;
+        }
+
+        public NotificationCompat.Builder getBuilder() {
+            return mBuilder;
+        }
+
+        public BuildNotification invoke() {
+            mNotificationManager = (NotificationManager) mContext
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+
+            mBuilder = new NotificationCompat.Builder(
+                    mContext);
+            mBuilder.setContentTitle(mTitle);
+            mBuilder.setContentText(mMessage);
+            mBuilder.setSmallIcon(mDrawable);
+            mBuilder.setContentIntent(mIntent);
+            return this;
+        }
     }
 }
