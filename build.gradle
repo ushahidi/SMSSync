@@ -27,9 +27,6 @@ buildscript {
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
         classpath 'me.tatarka:gradle-retrolambda:3.2.3'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        // Workaround for sdk-manager
-        // See: http://stackoverflow.com/questions/33881984/errorcause-com-android-sdklib-repository-fullrevision
-        classpath 'com.github.JakeWharton:sdk-manager-plugin:220bf7a88a7072df3ed16dc8466fb144f2817070'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
         classpath 'org.ajoberstar:gradle-git:1.3.2'
     }

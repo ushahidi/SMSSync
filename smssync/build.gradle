@@ -18,7 +18,6 @@
 import org.ajoberstar.gradle.git.release.opinion.Strategies
 import org.ajoberstar.grgit.Grgit
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
