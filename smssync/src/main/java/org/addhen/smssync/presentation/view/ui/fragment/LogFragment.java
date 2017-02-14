@@ -57,7 +57,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 
 /**
@@ -66,22 +66,22 @@ import butterknife.OnCheckedChanged;
 public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         implements ListLogView {
 
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     BloatedRecyclerView mLogRecyclerView;
 
-    @Bind(R.id.data_connection_status)
+    @BindView(R.id.data_connection_status)
     TextView mDataConnection;
 
-    @Bind(R.id.phone_status_label)
+    @BindView(R.id.phone_status_label)
     TextView mPhoneStatusLabel;
 
-    @Bind(R.id.battery_level_status)
+    @BindView(R.id.battery_level_status)
     TextView mBatteryLevelStatus;
 
-    @Bind(R.id.log_location)
+    @BindView(R.id.log_location)
     TextView mLogLocation;
 
-    @Bind(R.id.start_logs)
+    @BindView(R.id.start_logs)
     SwitchCompat mStartCheckBox;
 
     @Inject

@@ -31,11 +31,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -44,7 +46,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -56,10 +58,10 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
     private static final String ARGUMENT_KEY_WEBSERVICE_MODE
             = "org.addhen.smssync.ARGUMENT_WEBSERVICE_MODEL";
 
-    @Bind(R.id.filter_keyword_integration_title)
+    @BindView(R.id.filter_keyword_integration_title)
     AppCompatTextView mWebServiceTitleTextView;
 
-    @Bind(R.id.keywords_container)
+    @BindView(R.id.keywords_container)
     KeywordView mKeywordsView;
 
     @Inject
@@ -85,20 +87,10 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mWebServiceModel = getArguments().getParcelable(ARGUMENT_KEY_WEBSERVICE_MODE);
-        initialize();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+        getComponent(WebServiceComponent.class).inject(this);
     }
 
     @OnClick(R.id.add_keyword_btn)
@@ -106,8 +98,16 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
         showDialog();
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        initialize();
+        return view;
+    }
+
     private void initialize() {
-        getComponent(WebServiceComponent.class).inject(this);
         mUpdateWebServiceKeywordsPresenter.setView(this);
         mWebServiceTitleTextView.setText(mWebServiceModel.getTitle());
         initKeywords();

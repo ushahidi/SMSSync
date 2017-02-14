@@ -37,7 +37,7 @@ import android.support.v7.widget.SwitchCompat;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
@@ -46,7 +46,7 @@ import butterknife.OnClick;
  */
 public class IntegrationFragment extends BaseFragment implements IntegrationView {
 
-    @Bind(R.id.start_service_checkbox)
+    @BindView(R.id.start_service_checkbox)
     SwitchCompat mStartServiceCheckBox;
 
     @Inject

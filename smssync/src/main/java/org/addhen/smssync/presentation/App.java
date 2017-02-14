@@ -18,8 +18,6 @@
 package org.addhen.smssync.presentation;
 
 import com.addhen.android.raiburari.presentation.BaseApplication;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 
 import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.data.twitter.TwitterBuilder;
@@ -37,7 +35,6 @@ public class App extends BaseApplication {
 
     private static App mApp;
 
-    public static final AppBus bus = new AppBus(new Bus(ThreadEnforcer.ANY));
 
     public static synchronized TwitterClient getTwitterInstance() {
         if (mTwitter == null) {

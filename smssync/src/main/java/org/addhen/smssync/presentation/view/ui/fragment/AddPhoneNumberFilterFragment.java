@@ -34,18 +34,20 @@ import org.addhen.smssync.presentation.view.ui.widget.KeywordView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -64,10 +66,10 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     @Inject
     AddFilterPresenter mAddFilterPresenter;
 
-    @Bind(R.id.filter_white_list_container)
+    @BindView(R.id.filter_white_list_container)
     KeywordView mWhiteListKeywordView;
 
-    @Bind(R.id.filter_black_list_container)
+    @BindView(R.id.filter_black_list_container)
     KeywordView mBlackListKeywordView;
 
     private List<FilterModel> mFilterModels;
@@ -84,13 +86,21 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getComponent(FilterComponent.class).inject(this);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         initialize();
+        return view;
     }
 
     private void initialize() {
-        getComponent(FilterComponent.class).inject(this);
         mListFilterPresenter.setView(this);
         mAddFilterPresenter.setView(this);
         mDeleteFilterPresenter.setView(this);
@@ -125,8 +135,8 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         mListFilterPresenter.destroy();
         mDeleteFilterPresenter.destroy();
         mAddFilterPresenter.destroy();

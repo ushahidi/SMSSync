@@ -19,7 +19,6 @@ import org.ajoberstar.gradle.git.release.opinion.Strategies
 import org.ajoberstar.grgit.Grgit
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.ajoberstar.release-opinion'
 apply plugin: 'com.github.triplet.play'
@@ -235,12 +234,14 @@ task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
     def appDependencies = rootProject.ext.appDependencies
     def appTestDependencies = rootProject.ext.appTestDependencies
-    apt appDependencies.daggerCompiler // Needed for source code generation
-    compile fileTree(dir: 'libs', include: '*.jar')
+    annotationProcessor appDependencies.daggerCompiler // Needed for source code generation
+    annotationProcessor appDependencies.butterKnifeComplier
     compile appDependencies.raiburari
     compile appDependencies.cupboard
+    compile appDependencies.butterKnife
     compile appDependencies.wakeful
     compile appDependencies.okHttp
     compile appDependencies.twitter4jCore
@@ -254,10 +255,10 @@ dependencies {
     testCompile appTestDependencies.junit
     testCompile appTestDependencies.mockito
     testCompile appTestDependencies.mockWebServer
-    testApt appDependencies.daggerCompiler
+    testAnnotationProcessor appDependencies.daggerCompiler
 
     androidTestCompile appTestDependencies.mockito
     androidTestCompile appTestDependencies.dexmaker
     androidTestCompile appTestDependencies.dexmakerMockito
-    androidTestApt appDependencies.daggerCompiler
+    androidTestAnnotationProcessor appDependencies.daggerCompiler
 }

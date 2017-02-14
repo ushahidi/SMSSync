@@ -29,9 +29,10 @@ ext {
     androidCompileSdkVersion = 23
 
     //Libraries
-    daggerVersion = '2.0.1'
+    daggerVersion = '2.8'
+    butterKnifeVersion = '8.4.0'
     javaxAnnotationVersion = '1.0'
-    raiburariVersion = '2.12.0'
+    raiburariVersion = '2.20.0'
     cupboardVersion = '2.1.3'
     wakefulVersion = '1.0.5'
     okHttpVersion = '2.7.0'
@@ -48,18 +49,20 @@ ext {
     mockWebServerVersion = '2.7.0'
 
     appDependencies = [
-            daggerCompiler   : "com.google.dagger:dagger-compiler:${daggerVersion}",
-            dagger           : "com.google.dagger:dagger:${daggerVersion}",
-            javaxAnnotation  : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
-            raiburari        : "com.addhen.android:raiburari:${raiburariVersion}",
-            cupboard         : "nl.qbusict:cupboard:${cupboardVersion}",
-            wakeful          : "com.commonsware.cwac:wakeful:${wakefulVersion}",
-            okHttp           : "com.squareup.okhttp:okhttp:${okHttpVersion}",
-            twitter4jCore    : "org.twitter4j:twitter4j-core:${twitter4jCoreVersion}",
-            nineOldAndroids  : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
-            bottomSheet      : "com.cocosw:bottomsheet:${bottomsheetVersion}",
-            zXingQRCode      : "me.dm7.barcodescanner:zxing:${zXingQRCodeVersion}",
-            supportPreference: "com.android.support:preference-v7:${supportPreferenceVersion}",
+            daggerCompiler     : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger             : "com.google.dagger:dagger:${daggerVersion}",
+            javaxAnnotation    : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            raiburari          : "com.addhen.android:raiburari:${raiburariVersion}",
+            butterKnife        : "com.jakewharton:butterknife:${butterKnifeVersion}",
+            butterKnifeComplier: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+            cupboard           : "nl.qbusict:cupboard:${cupboardVersion}",
+            wakeful            : "com.commonsware.cwac:wakeful:${wakefulVersion}",
+            okHttp             : "com.squareup.okhttp:okhttp:${okHttpVersion}",
+            twitter4jCore      : "org.twitter4j:twitter4j-core:${twitter4jCoreVersion}",
+            nineOldAndroids    : "com.nineoldandroids:library:${nineOldAndroidsVersion}",
+            bottomSheet        : "com.cocosw:bottomsheet:${bottomsheetVersion}",
+            zXingQRCode        : "me.dm7.barcodescanner:zxing:${zXingQRCodeVersion}",
+            supportPreference  : "com.android.support:preference-v7:${supportPreferenceVersion}",
     ]
 
     appTestDependencies = [

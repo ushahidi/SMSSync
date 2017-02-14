@@ -25,7 +25,6 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.widget.TextDrawable;
 
-import android.content.Context;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -42,8 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -66,11 +66,8 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
 
     List<MessageModel> msgs = new ArrayList<>();
 
-    public MessageAdapter(Context context) {
+    public MessageAdapter() {
         mSelectedItems = new SparseBooleanArray();
-        flipIn = AnimationUtils.loadAnimation(context, R.anim.flip_front);
-        flipOut = AnimationUtils.loadAnimation(context, R.anim.flip_back);
-
     }
 
     @Override
@@ -171,6 +168,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
     }
 
     private void setFlipAnimation(Widgets widgets, int position) {
+        flipIn = AnimationUtils.loadAnimation(widgets.itemView.getContext(), R.anim.flip_front);
         Animation.AnimationListener animationListener = new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -207,6 +205,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
                 : true)) {
 
             final MessageModel messageModel = getItem(position);
+            flipOut = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.flip_back);
             // Initialize view with content
             Widgets widgets = ((Widgets) holder);
             widgets.messageFrom.setText(messageModel.getMessageFrom());
@@ -250,25 +249,25 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
 
     public class Widgets extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.status_indicator)
+        @BindView(R.id.status_indicator)
         ImageView statusIndicator;
 
-        @Bind(R.id.message_from)
+        @BindView(R.id.message_from)
         AppCompatTextView messageFrom;
 
-        @Bind(R.id.message_date)
+        @BindView(R.id.message_date)
         AppCompatTextView messageDate;
 
-        @Bind(R.id.message)
+        @BindView(R.id.message)
         CapitalizedTextView message;
 
-        @Bind(R.id.sent_message_type)
+        @BindView(R.id.sent_message_type)
         AppCompatTextView messageType;
 
-        @Bind(R.id.message_icons)
+        @BindView(R.id.message_icons)
         ImageView imageView;
 
-        @Bind(R.id.check_icon)
+        @BindView(R.id.check_icon)
         ImageView checkIcon;
 
         public Widgets(final View view) {

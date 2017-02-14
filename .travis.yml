@@ -15,12 +15,13 @@ android:
   # use the latest revision of Android SDK Tools
   - platform-tools
   - tools
-  - build-tools-23.0.3
+  - build-tools-25.0.2
   - android-23
   - extra-android-support
   - extra-android-m2repository
-    
-script: ./gradlew clean build -x validateReleaseSignSigning
+
+# Exclude signing validation for product flavors
+script: ./gradlew clean build -x validateSigningInternalRelease -x validateSigningNoAnalyticsRelease -x validateSigningWithAnalyticsRelease
 notifications:
   hipchat:
     template: '<a href="%{build_url}">%{repository}#%{build_number}</a> (%{branch} - <a href="%{compare_url}">%{commit}</a> : %{author}): %{message}'
