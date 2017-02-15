@@ -21,6 +21,10 @@
             android:title="@string/about_smssync"
             android:key="about_preference"/>
     <Preference
+            android:title="@string/privacy_title"
+            android:summary="@string/privacy_hint"
+            android:key="privacy_preference"/>
+    <Preference
             android:title="@string/translate_title"
             android:summary="@string/translate_hint"
             android:key="translate_preference"/>

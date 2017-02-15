@@ -96,8 +96,10 @@ public class SyncPendingMessagesService extends BaseWakefulIntentService {
         if (intent != null) {
             final SyncType syncType = SyncType.fromIntent(intent);
             // Get Id
-            log("Get syncMessages messagesUuid: ");
-            messageUuids = intent.getStringArrayListExtra(ServiceConstants.MESSAGE_UUID);
+            if (intent.getFlags() == 100) {
+                log("Get syncMessages messagesUuid: ");
+                messageUuids = intent.getStringArrayListExtra(ServiceConstants.MESSAGE_UUID);
+            }
             Logger.log(CLASS_TAG, "SyncType: " + syncType);
             Logger.log(CLASS_TAG,
                     "doWakefulWork() executing this task with Flag " + intent.getFlags());

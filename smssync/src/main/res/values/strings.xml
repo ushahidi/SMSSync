@@ -543,6 +543,11 @@
     <string name="google_plus_community_hint">Connect with us on our Google+ community page. Read
         about releases, share ideas or suggest improvements
     </string>
+    <string name="privacy_title">Privacy Notice</string>
+    <string name="privacy_hint">The following describes our policy for the information gathering,
+        use and dissemination practices of Ushahidi for the services provided through its various
+        websites and mobile apps.
+    </string>
     <string name="forums_title">SMSsync forum</string>
     <string name="forums_hint">Report issues or help someone with issues</string>
     <string name="about">About</string>
