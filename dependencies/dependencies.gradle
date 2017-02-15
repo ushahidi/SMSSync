@@ -41,6 +41,7 @@ ext {
     bottomsheetVersion = '1.3.0'
     zXingQRCodeVersion = '1.8.3'
     supportPreferenceVersion = '23.2.1'
+    timberVersion = '4.3.0'
 
     //Testing
     jUnitVersion = '4.12'
@@ -63,6 +64,7 @@ ext {
             bottomSheet        : "com.cocosw:bottomsheet:${bottomsheetVersion}",
             zXingQRCode        : "me.dm7.barcodescanner:zxing:${zXingQRCodeVersion}",
             supportPreference  : "com.android.support:preference-v7:${supportPreferenceVersion}",
+            timber             : "com.jakewharton.timber:timber:${timberVersion}",
     ]
 
     appTestDependencies = [

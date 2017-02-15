@@ -22,6 +22,7 @@ import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
+import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.model.LogModel;
 import org.addhen.smssync.presentation.model.PhoneStatusInfoModel;
@@ -92,6 +93,9 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
 
     @Inject
     PrefsFactory mPrefsFactory;
+
+    @Inject
+    FileManager mFileManager;
 
     private LogAdapter mLogAdapter;
 
@@ -284,8 +288,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
                         : getString(R.string.confirm_no)));
 
         // Get the log entries if they exist
-        final String logs = "";
-
+        final String logs = mFileManager.readLogs(FileManager.LOG_NAME);
         if ((logs != null) && (!TextUtils.isEmpty(logs))) {
             build.append(newLine);
             build.append(newLine);

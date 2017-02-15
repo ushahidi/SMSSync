@@ -43,7 +43,7 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
+import timber.log.Timber;
 
 import static com.squareup.okhttp.internal.Util.UTF_8;
 
@@ -102,9 +102,9 @@ public class MessageHttpClient extends BaseHttpClient {
                 setServerError(response.body().string(), statusCode);
             }
         } catch (Exception e) {
-            Observable.error(e);
+            Timber.e(e);
             log("Request failed", e);
-            setClientError("Request failed. " + e.getMessage());
+            setClientError("Request failed. " + e.getMessage() + "\n sync url " + syncUrl.getUrl());
         }
         return false;
 
@@ -131,8 +131,9 @@ public class MessageHttpClient extends BaseHttpClient {
         try {
             setHttpEntity(format);
         } catch (Exception e) {
+            Timber.e(e);
             log("Failed to set request body", e);
-            setClientError("Failed to format request body" + e.getLocalizedMessage());
+            setClientError("Failed to format request body " + e.getMessage());
         }
 
         try {
@@ -149,7 +150,7 @@ public class MessageHttpClient extends BaseHttpClient {
             }
         } catch (Exception e) {
             log("failed to set request method.", e);
-            setClientError("Failed to set request method.");
+            setClientError("Failed to set request method. sync url \n" + syncUrl.getUrl());
         }
 
     }
@@ -186,7 +187,7 @@ public class MessageHttpClient extends BaseHttpClient {
                 mFileManager.append(mContext.getString(R.string.invalid_data_format));
                 throw new Exception("Invalid data format");
         }
-
+        log("RequestBody is " + body.toString());
         setRequestBody(body);
 
     }

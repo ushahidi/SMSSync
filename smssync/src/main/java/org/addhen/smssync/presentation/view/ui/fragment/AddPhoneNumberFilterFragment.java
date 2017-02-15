@@ -86,8 +86,8 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         getComponent(FilterComponent.class).inject(this);
     }
 

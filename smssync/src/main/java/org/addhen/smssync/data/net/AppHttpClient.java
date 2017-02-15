@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import rx.Observable;
+import timber.log.Timber;
 
 import static com.squareup.okhttp.internal.Util.UTF_8;
 
@@ -84,9 +85,10 @@ public class AppHttpClient extends BaseHttpClient {
                     smssyncResponses = gson.fromJson(response.body().charStream(),
                             SmssyncResponse.class);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Timber.e(e.getMessage(), e);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
+                    Timber.e(e.getMessage(), e);
                 }
                 if (smssyncResponses != null && smssyncResponses.getPayload() != null) {
                     if (smssyncResponses.getPayload().isSuccess() || !smssyncResponses.getPayload()

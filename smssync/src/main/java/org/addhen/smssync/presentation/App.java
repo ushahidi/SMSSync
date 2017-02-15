@@ -24,6 +24,8 @@ import org.addhen.smssync.data.twitter.TwitterBuilder;
 import org.addhen.smssync.data.twitter.TwitterClient;
 import org.addhen.smssync.presentation.di.component.AppComponent;
 
+import timber.log.Timber;
+
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
@@ -51,6 +53,7 @@ public class App extends BaseApplication {
         super.onCreate();
         initializeInjector();
         mApp = this;
+        Timber.plant(new Timber.DebugTree());
     }
 
     private void initializeInjector() {

@@ -38,14 +38,10 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.List;
@@ -93,9 +89,10 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         getFilterComponent(FilterComponent.class).inject(this);
+        initialize();
     }
 
     @Override
@@ -123,15 +120,6 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
         if (mUpdateWebServiceKeywordsPresenter != null) {
             mUpdateWebServiceKeywordsPresenter.destroy();
         }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        initialize();
-        return view;
     }
 
     @Override

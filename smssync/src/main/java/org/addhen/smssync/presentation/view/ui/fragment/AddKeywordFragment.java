@@ -31,13 +31,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -90,21 +88,18 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWebServiceModel = getArguments().getParcelable(ARGUMENT_KEY_WEBSERVICE_MODE);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         getComponent(WebServiceComponent.class).inject(this);
+        initialize();
     }
 
     @OnClick(R.id.add_keyword_btn)
     void onAddKeywordClicked() {
         showDialog();
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        initialize();
-        return view;
     }
 
     private void initialize() {
