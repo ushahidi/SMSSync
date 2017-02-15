@@ -155,11 +155,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(broadcastReceiver);

@@ -38,10 +38,14 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.List;
@@ -121,11 +125,14 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
         }
     }
 
-    private void initialize() {
-        mListFilterPresenter.setView(this);
-        mUpdateWebServiceKeywordsPresenter.setView(this);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        initialize();
+        return view;
     }
-
 
     @Override
     public void showFilters(List<FilterModel> filterModelList) {
@@ -170,6 +177,11 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
 
     protected <C> C getFilterComponent(Class<C> componentType) {
         return componentType.cast(((MainActivity) getActivity()).getFilterComponent());
+    }
+
+    private void initialize() {
+        mListFilterPresenter.setView(this);
+        mUpdateWebServiceKeywordsPresenter.setView(this);
     }
 
     private void initTwitterView() {
