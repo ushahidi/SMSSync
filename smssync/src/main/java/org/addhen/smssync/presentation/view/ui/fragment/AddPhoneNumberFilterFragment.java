@@ -34,13 +34,11 @@ import org.addhen.smssync.presentation.view.ui.widget.KeywordView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import java.util.List;
@@ -89,15 +87,7 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getComponent(FilterComponent.class).inject(this);
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
         initialize();
-        return view;
     }
 
     private void initialize() {
