@@ -483,9 +483,9 @@
     <string name="message_processed_failed">SMSsync has failed processing this message.</string>
     <string name="message_processed_json_failed">SMSsync has failed creating JSON response.</string>
     <string name="queued_messages_request_status">Queued Messages POST request returned status
-        %1$s\n and body %2$s
+        %1$d\n and body %2$s
     </string>
-    <string name="messages_result_request_status">Message result GET request returned status %1$s\n
+    <string name="messages_result_request_status">Message result GET request returned status %1$d\n
         and body %2$s
     </string>
 
