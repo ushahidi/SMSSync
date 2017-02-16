@@ -246,9 +246,11 @@ dependencies {
     compile appDependencies.okHttp
     compile appDependencies.twitter4jCore
     compile appDependencies.nineOldAndroids
+    compile appDependencies.loggingInterceptor
     compile appDependencies.bottomSheet
     compile appDependencies.zXingQRCode
     compile appDependencies.supportPreference
+    compile appDependencies.timber
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     // Test depedencies

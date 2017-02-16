@@ -17,13 +17,8 @@
 
 package org.addhen.smssync.data.net;
 
-import com.squareup.okhttp.Headers;
-import com.squareup.okhttp.MediaType;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
 
+import org.addhen.smssync.BuildConfig;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.domain.entity.HttpNameValuePair;
 
@@ -38,6 +33,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import timber.log.Timber;
 
 /**
  * A Singleton class for accessing RequestQueue instance. It instantiates the
@@ -88,10 +92,7 @@ public abstract class BaseHttpClient {
         mContext = context;
         mParams = new ArrayList<>();
         mHeader = new HashMap<>();
-        mHttpClient = new OkHttpClient();
-        mHttpClient.setConnectTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
-        mHttpClient.setWriteTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
-        mHttpClient.setReadTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS);
+        initOkHttp();
     }
 
     public void setUrl(String url) {
@@ -104,6 +105,23 @@ public abstract class BaseHttpClient {
 
     public void setHeaders(Headers mHeaders) {
         this.mHeaders = mHeaders;
+    }
+
+    private void initOkHttp() {
+        mHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS)
+                .writeTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS)
+                .readTimeout(TIME_OUT_CONNECTION, TimeUnit.SECONDS)
+                .addInterceptor(getLoggingInterceptor())
+                .build();
+    }
+
+    private HttpLoggingInterceptor getLoggingInterceptor() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(
+                message -> Timber.tag("OkHttp").v(message));
+        loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.BASIC);
+        return loggingInterceptor;
     }
 
     private void addHeader() {

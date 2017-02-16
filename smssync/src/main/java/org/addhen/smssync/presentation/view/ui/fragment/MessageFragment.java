@@ -49,7 +49,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -58,11 +57,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -140,10 +137,10 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         getMessageComponent(MessageComponent.class).inject(this);
+        initialize();
     }
 
     @Override
@@ -152,11 +149,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         getActivity().registerReceiver(broadcastReceiver,
                 new IntentFilter(ServiceConstants.AUTO_SYNC_ACTION));
         mListMessagePresenter.resume();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -175,15 +167,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         if (mPublishMessagesPresenter != null) {
             mPublishMessagesPresenter.destroy();
         }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        initialize();
-        return view;
     }
 
     @Override

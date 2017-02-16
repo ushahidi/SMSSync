@@ -89,9 +89,10 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         getFilterComponent(FilterComponent.class).inject(this);
+        initialize();
     }
 
     @Override
@@ -120,12 +121,6 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
             mUpdateWebServiceKeywordsPresenter.destroy();
         }
     }
-
-    private void initialize() {
-        mListFilterPresenter.setView(this);
-        mUpdateWebServiceKeywordsPresenter.setView(this);
-    }
-
 
     @Override
     public void showFilters(List<FilterModel> filterModelList) {
@@ -170,6 +165,11 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
 
     protected <C> C getFilterComponent(Class<C> componentType) {
         return componentType.cast(((MainActivity) getActivity()).getFilterComponent());
+    }
+
+    private void initialize() {
+        mListFilterPresenter.setView(this);
+        mUpdateWebServiceKeywordsPresenter.setView(this);
     }
 
     private void initTwitterView() {

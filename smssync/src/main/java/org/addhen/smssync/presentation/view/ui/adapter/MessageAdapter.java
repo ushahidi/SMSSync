@@ -25,6 +25,7 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.widget.TextDrawable;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -64,7 +65,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
 
     private Filter mFilter = null;
 
-    List<MessageModel> msgs = new ArrayList<>();
+    private List<MessageModel> msgs = new ArrayList<>();
 
     public MessageAdapter() {
         mSelectedItems = new SparseBooleanArray();
@@ -155,47 +156,17 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
     private void updateCheckedState(Widgets holder, int position) {
         if (isChecked(position)) {
             holder.imageView.setImageDrawable(
-                    mDrawableBuilder.build(holder.itemView.getContext().getResources()
-                            .getDrawable(R.drawable.ic_done_white_18dp), 0xff616161));
+                    mDrawableBuilder.build(ContextCompat.getDrawable(holder.itemView.getContext(),
+                            R.drawable.ic_done_white_18dp)
+                            , 0xff616161));
         } else {
             TextDrawable drawable = mDrawableBuilder
-                    .build(holder.itemView.getContext().getResources()
-                                    .getDrawable(R.drawable.ic_call_white_18dp),
-                            holder.itemView.getContext().getResources().getColor(
-                                    R.color.orange_light));
+                    .build(ContextCompat.getDrawable(holder.itemView.getContext(),
+                            R.drawable.ic_call_white_18dp),
+                            ContextCompat
+                                    .getColor(holder.itemView.getContext(), R.color.orange_light));
             holder.imageView.setImageDrawable(drawable);
         }
-    }
-
-    private void setFlipAnimation(Widgets widgets, int position) {
-        flipIn = AnimationUtils.loadAnimation(widgets.itemView.getContext(), R.anim.flip_front);
-        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                if (animation == flipOut) {
-                    updateCheckedState(widgets, position);
-                }
-                widgets.imageView.clearAnimation();
-                widgets.imageView.setAnimation(flipIn);
-                widgets.imageView.startAnimation(flipIn);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (isChecked(position)) {
-                    widgets.checkIcon.setVisibility(View.VISIBLE);
-                } else {
-                    widgets.checkIcon.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-        flipIn.setAnimationListener(animationListener);
-        flipOut.setAnimationListener(animationListener);
     }
 
     @Override
@@ -205,6 +176,7 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
                 : true)) {
 
             final MessageModel messageModel = getItem(position);
+            flipIn = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.flip_front);
             flipOut = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.flip_back);
             // Initialize view with content
             Widgets widgets = ((Widgets) holder);
@@ -227,24 +199,55 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
                     .setTextColor(
                             widgets.itemView.getContext().getResources().getColor(R.color.red));
 
+            updateCheckedState(widgets, position);
             widgets.imageView.setOnClickListener(v -> {
-
-                if (mOnCheckedListener != null) {
-                    mOnCheckedListener.onChecked(position);
-                }
                 widgets.imageView.clearAnimation();
                 widgets.imageView.setAnimation(flipOut);
                 widgets.imageView.startAnimation(flipOut);
+                if (mOnCheckedListener != null) {
+                    mOnCheckedListener.onChecked(position);
+                }
                 setFlipAnimation(widgets, position);
             });
 
-            updateCheckedState(widgets, position);
             widgets.statusIndicator.setOnClickListener(v -> {
                 if (mOnMoreActionListener != null) {
                     mOnMoreActionListener.onMoreActionTap(position);
                 }
             });
         }
+    }
+
+    private void setFlipAnimation(Widgets widgets, int position) {
+
+        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                if (animation == flipOut) {
+                    updateCheckedState(widgets, position);
+                } else {
+                    widgets.imageView.clearAnimation();
+                    widgets.imageView.setAnimation(flipIn);
+                    widgets.imageView.startAnimation(flipIn);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isChecked(position)) {
+                    widgets.checkIcon.setVisibility(View.VISIBLE);
+                } else {
+                    widgets.checkIcon.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+        flipIn.setAnimationListener(animationListener);
+        flipOut.setAnimationListener(animationListener);
     }
 
     public class Widgets extends RecyclerView.ViewHolder {
