@@ -24,6 +24,7 @@ import org.addhen.smssync.domain.usecase.message.DeleteMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.ImportMessagesUsecase;
 import org.addhen.smssync.domain.usecase.message.ListMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.ListPublishedMessageUsecase;
+import org.addhen.smssync.domain.usecase.message.PublishAllMessagesUsecase;
 import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
 import org.addhen.smssync.domain.usecase.message.UpdateMessageUsecase;
 
@@ -59,6 +60,14 @@ public class MessageModule {
     PublishMessageUsecase providePublishedMessageUsecase(
             PublishMessageUsecase publishMessageUsecase) {
         return publishMessageUsecase;
+    }
+
+    @Provides
+    @ActivityScope
+    @Named("publishAllMessages")
+    Usecase providePublishedMessagesUsecase(
+            PublishAllMessagesUsecase publishMessagesUsecase) {
+        return publishMessagesUsecase;
     }
 
     @Provides

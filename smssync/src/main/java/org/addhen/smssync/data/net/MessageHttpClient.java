@@ -28,6 +28,7 @@ import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.domain.entity.HttpNameValuePair;
 import org.addhen.smssync.domain.util.DataFormatUtil;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -123,7 +124,12 @@ public class MessageHttpClient extends BaseHttpClient {
                 String.valueOf(message.getMessageDate().getTime())
         );
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.SENT_TO), toNumber);
-        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID), message.getMessageUuid());
+        if (message.getMessageUuid() == null) {
+            message.setMessageUuid(new ProcessSms(mContext).getUuid());
+        }
+        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID),
+                message.getMessageUuid());
+
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.DEVICE_ID), deviceId);
         try {
             setHttpEntity(format);

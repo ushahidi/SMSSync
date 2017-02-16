@@ -27,13 +27,15 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ImportMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ListMessagePresenter;
-import org.addhen.smssync.presentation.presenter.message.PublishMessagesPresenter;
+import org.addhen.smssync.presentation.presenter.message.PublishAllMessagesPresenter;
+import org.addhen.smssync.presentation.presenter.message.PublishMessagePresenter;
 import org.addhen.smssync.presentation.service.ServiceConstants;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.DeleteMessageView;
 import org.addhen.smssync.presentation.view.message.ImportMessageView;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.message.PublishMessageView;
+import org.addhen.smssync.presentation.view.message.PublishAllMessagesView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
@@ -97,7 +99,10 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     ListMessagePresenter mListMessagePresenter;
 
     @Inject
-    PublishMessagesPresenter mPublishMessagesPresenter;
+    PublishMessagePresenter mPublishMessagePresenter;
+
+    @Inject
+    PublishAllMessagesPresenter mPublishAllMessagesPresenter;
 
     @Inject
     DeleteMessagePresenter mDeleteMessagePresenter;
@@ -156,6 +161,8 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         super.onPause();
         getActivity().unregisterReceiver(broadcastReceiver);
         mListMessagePresenter.pause();
+        mPublishAllMessagesPresenter.pause();
+        mPublishMessagePresenter.pause();
     }
 
     @Override
@@ -164,8 +171,12 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         if (mListMessagePresenter != null) {
             mListMessagePresenter.destroy();
         }
-        if (mPublishMessagesPresenter != null) {
-            mPublishMessagesPresenter.destroy();
+        if (mPublishAllMessagesPresenter != null) {
+            mPublishAllMessagesPresenter.destroy();
+        }
+
+        if (mPublishMessagePresenter != null) {
+            mPublishMessagePresenter.destroy();
         }
     }
 
@@ -184,11 +195,59 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         initializePublishPresenter();
         initializeDeletePresenter();
         initializeImportPresenter();
+        initializePublishMessagesPresenter();
         initRecyclerView();
     }
 
     private void initializePublishPresenter() {
-        mPublishMessagesPresenter.setView(new PublishMessageView() {
+        mPublishMessagePresenter.setView(new PublishMessageView() {
+            @Override
+            public void successfullyPublished(boolean status) {
+                reloadMessages();
+            }
+
+            @Override
+            public void showLoading() {
+                MessageFragment.this.showLoading();
+            }
+
+            @Override
+            public void hideLoading() {
+                MessageFragment.this.hideLoading();
+            }
+
+            @Override
+            public void showRetry() {
+                MessageFragment.this.showRetry();
+            }
+
+            @Override
+            public void hideRetry() {
+                MessageFragment.this.hideRetry();
+            }
+
+            @Override
+            public void showError(String s) {
+                showSnackbar(mFab, s);
+            }
+
+            @Override
+            public void showEnableServiceMessage(String s) {
+                Snackbar snackbar = Snackbar.make(mFab, s, Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.enable, e -> {
+                    ((MainActivity) getActivity()).launchIntegration();
+                }).show();
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getActivity();
+            }
+        });
+    }
+
+    private void initializePublishMessagesPresenter() {
+        mPublishAllMessagesPresenter.setView(new PublishAllMessagesView() {
             @Override
             public void successfullyPublished(boolean status) {
                 reloadMessages();
@@ -441,7 +500,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @OnClick(R.id.messages_fab)
     void syncItems() {
-        mPublishMessagesPresenter.publishMessage(mRecyclerViewAdapter.getItems());
+        mPublishAllMessagesPresenter.publishMessages();
     }
 
     @OnClick(android.R.id.empty)
@@ -630,9 +689,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                     if (mPendingMessages.size() > 0) {
                         List<MessageModel> messageModels = new ArrayList<MessageModel>();
                         for (PendingMessage pendingDeletedDeployment : mPendingMessages) {
-                            messageModels.add(pendingDeletedDeployment.messageModel);
+                            mPublishMessagePresenter
+                                    .publishMessage(pendingDeletedDeployment.messageModel);
                         }
-                        mPublishMessagesPresenter.publishMessage(messageModels);
                         clearItems();
                     }
                 }
@@ -659,9 +718,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    List<MessageModel> messageModels = new ArrayList<MessageModel>();
-                    messageModels.add(mRemovedMessage);
-                    mPublishMessagesPresenter.publishMessage(messageModels);
+                    mPublishMessagePresenter.publishMessage(mRemovedMessage);
                 }
             }
         });

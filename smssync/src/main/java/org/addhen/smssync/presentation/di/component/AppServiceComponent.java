@@ -24,7 +24,7 @@ package org.addhen.smssync.presentation.di.component;
 import org.addhen.smssync.presentation.di.module.ServiceModule;
 import org.addhen.smssync.presentation.di.qualifier.ServiceScope;
 import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
-import org.addhen.smssync.presentation.presenter.message.PublishMessagesPresenter;
+import org.addhen.smssync.presentation.presenter.message.PublishMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.UpdateMessagePresenter;
 import org.addhen.smssync.presentation.service.AutoSyncScheduledService;
 import org.addhen.smssync.presentation.service.BaseWakefulIntentService;
@@ -61,5 +61,5 @@ public interface AppServiceComponent {
 
     DeleteMessagePresenter deleteMessagePresenter();
 
-    PublishMessagesPresenter publishMessagesPresenter();
+    PublishMessagePresenter publishMessagePresenter();
 }
