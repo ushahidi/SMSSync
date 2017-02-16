@@ -163,7 +163,7 @@ public class MessageModel extends Model implements Parcelable {
     }
 
     public enum Type {
-        TASK, PENDING
+        TASK, PENDING, ALERT
     }
 
     public MessageModel() {
