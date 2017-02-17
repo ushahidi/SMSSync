@@ -251,6 +251,9 @@ dependencies {
     compile appDependencies.zXingQRCode
     compile appDependencies.supportPreference
     compile appDependencies.timber
+    // Firebase(analytics, crash report)
+    compile appDependencies.firebaseCore
+    compile appDependencies.firebaseCrash
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     // Test depedencies
@@ -264,3 +267,6 @@ dependencies {
     androidTestCompile appTestDependencies.dexmakerMockito
     androidTestAnnotationProcessor appDependencies.daggerCompiler
 }
+
+// MUST BE AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'
