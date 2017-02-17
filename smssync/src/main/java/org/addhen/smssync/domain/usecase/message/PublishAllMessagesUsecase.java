@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * Copyright (c) 2010 - 2017 Ushahidi Inc
  * All rights reserved
  * Contact: team@ushahidi.com
  * Website: http://www.ushahidi.com
@@ -31,36 +31,26 @@ import javax.inject.Inject;
 import rx.Observable;
 
 /**
- * Publishes {@link org.addhen.smssync.domain.entity.MessageEntity} to a configured {@link
+ * Publishes {@link MessageEntity} to a configured {@link
  * org.addhen.smssync.domain.entity.WebServiceEntity}
  *
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class PublishMessageUsecase extends Usecase {
+public class PublishAllMessagesUsecase extends Usecase {
 
     private final MessageRepository mMessageRepository;
 
-    public MessageEntity mMessageEntity;
-
     @Inject
-    protected PublishMessageUsecase(@NonNull MessageRepository messageRepository,
+    protected PublishAllMessagesUsecase(@NonNull MessageRepository messageRepository,
             @NonNull ThreadExecutor threadExecutor,
             @NonNull PostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         mMessageRepository = messageRepository;
     }
 
-    public void setMessageEntity(MessageEntity messageEntity) {
-        mMessageEntity = messageEntity;
-    }
-
     @Override
     protected Observable buildUseCaseObservable() {
-        if (mMessageEntity == null) {
-            throw new RuntimeException(
-                    "MessageEntity is null. You must call setMessageEntity(...)");
-        }
-        return mMessageRepository.publishMessage(mMessageEntity);
+        return mMessageRepository.publishMessages();
     }
 
 }

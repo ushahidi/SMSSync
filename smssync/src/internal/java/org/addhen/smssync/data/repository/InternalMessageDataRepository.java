@@ -35,6 +35,7 @@ import android.support.annotation.NonNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -169,11 +170,18 @@ public class InternalMessageDataRepository implements MessageRepository {
     }
 
     @Override
-    public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
+    public Observable<Boolean> publishMessage(MessageEntity messageEntity) {
         return Observable.defer(() -> {
             boolean status = mProcessMessage
-                    .postMessage(mMessageDataMapper.unmap(messageEntities));
+                    .postMessage(mMessageDataMapper.unmap(Arrays.asList(messageEntity)));
             return Observable.just(status);
+        });
+    }
+
+    @Override
+    public Observable<Boolean> publishMessages() {
+        return Observable.defer(() -> {
+            return Observable.just(true);
         });
     }
 
