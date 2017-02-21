@@ -1,9 +1,1 @@
-Added firebase crash reporting support.
-Added progressbar to the notification message when synchronizing a message.
-Upgraded Raiburai.
-Added privacy notice link to settings about screen.
-Log messages for gained and lost data connectivity.
-Fixed issue with imported messages getting synchronized multiple times.
-Cleaned up major parts of the code base.
-Fixed checkbox flipping animation.
-Fixed issue with whitelist causing duplicated messages synchronization.
+Fix Google security vulnerabilities alert warning.

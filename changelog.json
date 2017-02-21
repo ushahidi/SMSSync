@@ -1,7 +1,15 @@
 [
   {
-    "version": "v3.0.6",
-    "date": "21st February, 2019",
+    "version": "v3.1.1",
+    "date": "21st February, 2017",
+    "features": [],
+    "bugs": [
+      "Fix Google security vulnerabilities alert warning."
+    ]
+  },
+  {
+    "version": "v3.1.0",
+    "date": "21st February, 2017",
     "features": [
       "Added firebase crash reporting support.",
       "Added progressbar to the notification message when synchronizing a message.",
