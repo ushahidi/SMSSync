@@ -141,7 +141,7 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 def newName = outputFile.name.replace(outputFile.name,
-                        "smssync-v" + defaultConfig.versionName + "-" +
+                        "smssync-${variant.name}-v" + defaultConfig.versionName + "-" +
                                 variant.buildType.name.toUpperCase() +
                                 ".apk");
 
