@@ -19,6 +19,8 @@ android:
   - android-23
   - extra-android-support
   - extra-android-m2repository
+  - extra-google-google_play_services
+  - extra-google-m2repository
 
 # Exclude signing validation for product flavors
 script: ./gradlew clean build -x validateSigningInternalRelease -x validateSigningNoAnalyticsRelease -x validateSigningWithAnalyticsRelease

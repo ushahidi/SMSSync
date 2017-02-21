@@ -53,7 +53,7 @@ public class App extends BaseApplication {
         super.onCreate();
         initializeInjector();
         mApp = this;
-        Timber.plant(new Timber.DebugTree());
+        Timber.plant(new FirebaseCrashTree());
     }
 
     private void initializeInjector() {
