@@ -46,7 +46,7 @@ allprojects {
     }
 
     ext {
-        androidVersionCode = 45
+        androidVersionCode = 46
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 }
