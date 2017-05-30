@@ -17,11 +17,6 @@
 
 package org.addhen.smssync.smslib.sms;
 
-import org.addhen.smssync.presentation.model.MessageModel;
-import org.addhen.smssync.smslib.model.SmsMessage;
-import org.addhen.smssync.smslib.util.LogUtil;
-import org.addhen.smssync.smslib.util.Util;
-
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.ContentUris;
@@ -32,6 +27,12 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
+
+import org.addhen.smssync.presentation.model.MessageModel;
+import org.addhen.smssync.presentation.util.Utility;
+import org.addhen.smssync.smslib.model.SmsMessage;
+import org.addhen.smssync.smslib.util.LogUtil;
+import org.addhen.smssync.smslib.util.Util;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,6 +124,11 @@ public class ProcessSms {
      * @return true if deleted otherwise false
      */
     public boolean delSmsFromInbox(MessageModel messageModel) {
+        if (!Utility.isDefaultSmsApp(mContext)) {
+            LogUtil.logDebug(CLASS_TAG, "delSmsFromInbox(): Failed as not default sms app");
+            return false;
+        }
+
         LogUtil.logInfo(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
         final long threadId = getThreadId(messageModel);
         if (threadId >= 0) {
