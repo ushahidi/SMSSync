@@ -95,7 +95,7 @@ public class ProcessMessageResult {
                 final List<MessageResult> messageResults = new ArrayList<>();
                 for (String uuid : response.getUuids()) {
                     Message message = mMessageDataSource.fetchByUuid(uuid);
-                    if (!message.getStatus().equals(Message.Status.UNCONFIRMED)) {
+                    if (message != null && !message.getStatus().equals(Message.Status.UNCONFIRMED)) {
                         MessageResult messageResult = new MessageResult();
                         messageResult.setMessageUUID(message.getMessageUuid());
                         messageResult.setSentResultMessage(message.getSentResultMessage());
