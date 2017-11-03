@@ -23,7 +23,7 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0-beta3'
+        classpath 'com.android.tools.build:gradle:2.3.1'
         classpath 'me.tatarka:gradle-retrolambda:3.5.0'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
@@ -46,7 +46,7 @@ allprojects {
     }
 
     ext {
-        androidVersionCode = 46
+        androidVersionCode = 47
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 }

@@ -374,9 +374,11 @@ public class PostMessage extends ProcessMessage {
                 Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: "
                         + messageHttpClient.getResponse());
                 try {
-                    mFileManager.append(
-                            "Task crashed: " + e.getMessage() + " response: " + messageHttpClient
-                                    .getResponse().body().string());
+                    if (messageHttpClient.getResponse() != null) {
+                        mFileManager.append(
+                                "Task crashed: " + e.getMessage() + " response: " + messageHttpClient
+                                        .getResponse().body().string());
+                    }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

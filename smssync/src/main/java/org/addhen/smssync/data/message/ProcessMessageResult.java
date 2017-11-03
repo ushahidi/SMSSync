@@ -94,8 +94,8 @@ public class ProcessMessageResult {
             if ((response != null) && (response.isSuccess()) && (response.hasUUIDs())) {
                 final List<MessageResult> messageResults = new ArrayList<>();
                 for (String uuid : response.getUuids()) {
-                    Message message = mMessageDataSource.fetchPendingByUuid(uuid);
-                    if (message != null) {
+                    Message message = mMessageDataSource.fetchByUuid(uuid);
+                    if (message != null && !message.getStatus().equals(Message.Status.UNCONFIRMED)) {
                         MessageResult messageResult = new MessageResult();
                         messageResult.setMessageUUID(message.getMessageUuid());
                         messageResult.setSentResultMessage(message.getSentResultMessage());
@@ -143,7 +143,7 @@ public class ProcessMessageResult {
         } catch (Exception e) {
             mFileManager.append(mContext.getString(R.string.message_processed_failed));
         } finally {
-            if (200 == mAppHttpClient.getResponse().code()) {
+            if (mAppHttpClient.getResponse() != null && 200 == mAppHttpClient.getResponse().code()) {
                 mFileManager.append(mContext.getString(R.string.message_processed_success));
             }
         }
@@ -177,7 +177,9 @@ public class ProcessMessageResult {
                         mContext.getString(R.string.message_processed_failed) + " " + e
                                 .getMessage());
             } finally {
-                if (200 == mAppHttpClient.getResponse().code()) {
+                if (mAppHttpClient.getResponse() == null) {
+                    response = null;
+                } else if (200 == mAppHttpClient.getResponse().code()) {
 
                     mFileManager.append(
                             mContext.getString(R.string.message_processed_success));
@@ -234,7 +236,9 @@ public class ProcessMessageResult {
             mFileManager.append(
                     mContext.getString(R.string.message_processed_failed) + " " + e.getMessage());
         } finally {
-            if (200 == mAppHttpClient.getResponse().code()) {
+            if (mAppHttpClient.getResponse() == null) {
+                response = null;
+            } else if (200 == mAppHttpClient.getResponse().code()) {
                 response = parseMessagesUUIDSResponse(mAppHttpClient);
                 response.setSuccess(true);
             } else {
