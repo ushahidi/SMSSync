@@ -43,9 +43,9 @@ def trackProperty() {
 }
 
 def readWhatsNewFile(filename) {
-    File file = new File('smssync/src/main/play/en-US/' + filename);
+    File file = new File('smssync/src/main/play/en-US/' + filename)
     return file.exists() ? file.text + '\n\n' :
-            new File('smssync/src/main/play/en-US/whatsnew').text;
+            new File('smssync/src/main/play/en-US/whatsnew').text
 }
 
 def globalConfiguration = rootProject.extensions.getByName("ext")
@@ -137,24 +137,16 @@ android {
     }
 
     android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def newName = outputFile.name.replace(outputFile.name,
-                        "smssync-${variant.name}-v" + defaultConfig.versionName + "-" +
-                                variant.buildType.name.toUpperCase() +
-                                ".apk");
-
-                output.outputFile = file("$project.buildDir/apk/" + newName);
-                if (output.zipAlign) {
-                    output.zipAlign.outputFile =
-                            file("$project.buildDir/apk/" + newName.replace("-unaligned", ""));
-                }
+        variant.outputs.all { output ->
+            if (outputFileName != null && outputFileName.endsWith('.apk')) {
+                outputFileName = "smssync-${variant.name}-v" + defaultConfig.versionName +
+                        "-" + variant.buildType.name.toUpperCase() + ".apk"
             }
         }
     }
 
     productFlavors {
+        flavorDimensions 'default'
 
         withAnalytics {
             applicationId 'org.addhen.smssync'
@@ -172,12 +164,13 @@ android {
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
         preDexLibraries = preDexEnabled && !isTravis
-        incremental = true;
+        incremental = true
     }
 
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

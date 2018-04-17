@@ -17,6 +17,7 @@
 
 package org.addhen.smssync.smslib.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.telephony.TelephonyManager;
@@ -24,6 +25,7 @@ import android.telephony.TelephonyManager;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
+@SuppressLint("MissingPermission")
 public class Util {
 
     private static final int KITKAT = 19;

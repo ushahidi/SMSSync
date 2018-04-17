@@ -21,14 +21,15 @@ buildscript {
         maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
 
         maven { url 'https://jitpack.io' }
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0-beta3'
+        classpath 'com.android.tools.build:gradle:3.1.1'
         classpath 'me.tatarka:gradle-retrolambda:3.5.0'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
         classpath 'org.ajoberstar:gradle-git:1.6.0'
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.google.gms:google-services:3.1.0'
     }
 
     // Exclude the version that the android plugin depends on.
