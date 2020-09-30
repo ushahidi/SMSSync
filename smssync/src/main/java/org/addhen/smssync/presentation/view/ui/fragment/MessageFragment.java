@@ -18,7 +18,6 @@
 package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
-import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -28,13 +27,15 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.presenter.message.DeleteMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ImportMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ListMessagePresenter;
-import org.addhen.smssync.presentation.presenter.message.PublishMessagesPresenter;
+import org.addhen.smssync.presentation.presenter.message.PublishAllMessagesPresenter;
+import org.addhen.smssync.presentation.presenter.message.PublishMessagePresenter;
 import org.addhen.smssync.presentation.service.ServiceConstants;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.message.DeleteMessageView;
 import org.addhen.smssync.presentation.view.message.ImportMessageView;
 import org.addhen.smssync.presentation.view.message.ListMessageView;
 import org.addhen.smssync.presentation.view.message.PublishMessageView;
+import org.addhen.smssync.presentation.view.message.PublishAllMessagesView;
 import org.addhen.smssync.presentation.view.ui.activity.MainActivity;
 import org.addhen.smssync.presentation.view.ui.adapter.MessageAdapter;
 import org.addhen.smssync.presentation.view.ui.widget.DividerItemDecoration;
@@ -70,9 +71,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.BindView;
 import butterknife.OnClick;
+import rx.subscriptions.CompositeSubscription;
+
+import static org.addhen.smssync.presentation.service.ServiceConstants.ACTIVE_SYNC;
+import static org.addhen.smssync.presentation.service.ServiceConstants.SYNC_STATUS;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -85,25 +89,26 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     /** List of items pending to to be deleted **/
     public List<PendingMessage> mPendingMessages;
 
-    @Bind(R.id.messages_fab)
+    @BindView(R.id.messages_fab)
     FloatingActionButton mFab;
 
-    @Bind(R.id.messages_list)
-    BloatedRecyclerView mMessageRecyclerView;
+    @BindView(android.R.id.empty)
+    View mEmptyView;
 
     @Inject
     ListMessagePresenter mListMessagePresenter;
 
     @Inject
-    PublishMessagesPresenter mPublishMessagesPresenter;
+    PublishMessagePresenter mPublishMessagePresenter;
+
+    @Inject
+    PublishAllMessagesPresenter mPublishAllMessagesPresenter;
 
     @Inject
     DeleteMessagePresenter mDeleteMessagePresenter;
 
     @Inject
     ImportMessagePresenter mImportMessagePresenter;
-
-    private MessageAdapter mMessageAdapter;
 
     private int mRemovedItemPosition = 0;
 
@@ -112,6 +117,21 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     private ActionMode mActionMode;
 
     private boolean mIsPermanentlyDeleted = true;
+
+    private CompositeSubscription mSubscriptions = new CompositeSubscription();
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                if (intent.getIntExtra(SYNC_STATUS, 0) == ACTIVE_SYNC) {
+                    mBloatedRecyclerView.enableDefaultSwipeRefresh(false);
+                    mFab.setVisibility(View.GONE);
+                }
+                mListMessagePresenter.loadMessages();
+            }
+        }
+    };
 
     public MessageFragment() {
         super(MessageAdapter.class, R.layout.fragment_list_message, R.menu.menu_messages);
@@ -122,14 +142,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getMessageComponent(MessageComponent.class).inject(this);
         initialize();
     }
 
@@ -146,22 +161,22 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         super.onPause();
         getActivity().unregisterReceiver(broadcastReceiver);
         mListMessagePresenter.pause();
+        mPublishAllMessagesPresenter.pause();
+        mPublishMessagePresenter.pause();
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         if (mListMessagePresenter != null) {
             mListMessagePresenter.destroy();
         }
-        if (mPublishMessagesPresenter != null) {
-            mPublishMessagesPresenter.destroy();
+        if (mPublishAllMessagesPresenter != null) {
+            mPublishAllMessagesPresenter.destroy();
+        }
+
+        if (mPublishMessagePresenter != null) {
+            mPublishMessagePresenter.destroy();
         }
     }
 
@@ -176,16 +191,16 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     }
 
     private void initialize() {
-        getMessageComponent(MessageComponent.class).inject(this);
         mListMessagePresenter.setView(this);
         initializePublishPresenter();
         initializeDeletePresenter();
         initializeImportPresenter();
+        initializePublishMessagesPresenter();
         initRecyclerView();
     }
 
     private void initializePublishPresenter() {
-        mPublishMessagesPresenter.setView(new PublishMessageView() {
+        mPublishMessagePresenter.setView(new PublishMessageView() {
             @Override
             public void successfullyPublished(boolean status) {
                 reloadMessages();
@@ -193,22 +208,69 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showLoading() {
-                mMessageRecyclerView.setRefreshing(true);
+                MessageFragment.this.showLoading();
             }
 
             @Override
             public void hideLoading() {
-                mMessageRecyclerView.setRefreshing(false);
+                MessageFragment.this.hideLoading();
             }
 
             @Override
             public void showRetry() {
-                // Do nothing
+                MessageFragment.this.showRetry();
             }
 
             @Override
             public void hideRetry() {
-                // Do nothing
+                MessageFragment.this.hideRetry();
+            }
+
+            @Override
+            public void showError(String s) {
+                showSnackbar(mFab, s);
+            }
+
+            @Override
+            public void showEnableServiceMessage(String s) {
+                Snackbar snackbar = Snackbar.make(mFab, s, Snackbar.LENGTH_LONG);
+                snackbar.setAction(R.string.enable, e -> {
+                    ((MainActivity) getActivity()).launchIntegration();
+                }).show();
+            }
+
+            @Override
+            public Context getAppContext() {
+                return getActivity();
+            }
+        });
+    }
+
+    private void initializePublishMessagesPresenter() {
+        mPublishAllMessagesPresenter.setView(new PublishAllMessagesView() {
+            @Override
+            public void successfullyPublished(boolean status) {
+                reloadMessages();
+            }
+
+            @Override
+            public void showLoading() {
+                MessageFragment.this.showLoading();
+            }
+
+            @Override
+            public void hideLoading() {
+                MessageFragment.this.hideLoading();
+            }
+
+            @Override
+            public void showRetry() {
+                MessageFragment.this.showRetry();
+            }
+
+            @Override
+            public void hideRetry() {
+                MessageFragment.this.hideRetry();
             }
 
             @Override
@@ -240,22 +302,22 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showLoading() {
-                // Do nothing
+                MessageFragment.this.showLoading();
             }
 
             @Override
             public void hideLoading() {
-                // Do nothing
+                MessageFragment.this.hideLoading();
             }
 
             @Override
             public void showRetry() {
-                // Do nothing
+                MessageFragment.this.showRetry();
             }
 
             @Override
             public void hideRetry() {
-                // Do nothing
+                MessageFragment.this.hideRetry();
             }
 
             @Override
@@ -275,7 +337,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             @Override
             public void showMessages(List<MessageModel> messageModelList) {
                 if (!Utility.isEmpty(messageModelList)) {
-                    mMessageAdapter.setItems(messageModelList);
+                    mRecyclerViewAdapter.setItems(messageModelList);
                     mFab.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -284,22 +346,22 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
             @Override
             public void showLoading() {
-                mMessageRecyclerView.setRefreshing(true);
+                MessageFragment.this.showLoading();
             }
 
             @Override
             public void hideLoading() {
-                mMessageRecyclerView.setRefreshing(false);
+                MessageFragment.this.hideLoading();
             }
 
             @Override
             public void showRetry() {
-                // Do nothing
+                MessageFragment.this.showRetry();
             }
 
             @Override
             public void hideRetry() {
-                // Do nothing
+                MessageFragment.this.hideRetry();
             }
 
             @Override
@@ -316,37 +378,35 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     private void initRecyclerView() {
         mPendingMessages = new ArrayList<>();
-        mMessageAdapter = new MessageAdapter(getActivity());
-        mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mMessageRecyclerView.setFocusable(true);
-        mMessageRecyclerView.setFocusableInTouchMode(true);
-        mMessageRecyclerView.setAdapter(mMessageAdapter);
-        mMessageRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
-        mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
-        mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mMessageAdapter.setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
-                .sheet(R.menu.menu_messages_more_actions)
-                .listener((dialog, which) -> {
-                    switch (which) {
-                        case R.id.menu_messages_more_actions_delete:
-                            deleteItem(position);
-                            break;
-                        default:
-                            publishItem(position);
-                    }
-                }).show());
+        mBloatedRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mBloatedRecyclerView.setFocusable(true);
+        mBloatedRecyclerView.setFocusableInTouchMode(true);
+        mBloatedRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
+        mRecyclerViewAdapter.setOnCheckedListener(position -> setItemChecked(position));
+        mBloatedRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewAdapter
+                .setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
+                        .sheet(R.menu.menu_messages_more_actions)
+                        .listener((dialog, which) -> {
+                            switch (which) {
+                                case R.id.menu_messages_more_actions_delete:
+                                    deleteItem(position);
+                                    break;
+                                default:
+                                    publishItem(position);
+                            }
+                        }).show());
         if (Build.VERSION.SDK_INT >= HONEYCOMB) {
             enableSwipeToPerformAction();
         }
     }
-
 
     public void requestQuery(final String query) {
         Handler handler = new Handler();
         final Runnable filterDeployments = new Runnable() {
             public void run() {
                 try {
-                    mMessageAdapter.getFilter().filter(query);
+                    mRecyclerViewAdapter.getFilter().filter(query);
                 } catch (Exception e) {
                     reloadMessages();
                 }
@@ -395,7 +455,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     private void removeItems() {
         if (!Utility.isEmpty(mPendingMessages)) {
             for (PendingMessage message : mPendingMessages) {
-                mMessageAdapter.removeItem(message.messageModel);
+                mRecyclerViewAdapter.removeItem(message.messageModel);
             }
         }
     }
@@ -435,12 +495,12 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDismiss);
-        itemTouchHelper.attachToRecyclerView(mMessageRecyclerView.recyclerView);
+        itemTouchHelper.attachToRecyclerView(mBloatedRecyclerView.recyclerView);
     }
 
     @OnClick(R.id.messages_fab)
     void syncItems() {
-        mPublishMessagesPresenter.publishMessage(mMessageAdapter.getItems());
+        mPublishAllMessagesPresenter.publishMessages();
     }
 
     @OnClick(android.R.id.empty)
@@ -451,22 +511,27 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
     @Override
     public void showMessages(List<MessageModel> messageModelList) {
         if (!Utility.isEmpty(messageModelList)) {
-            mMessageAdapter.setItems(messageModelList);
+            mRecyclerViewAdapter.setItems(messageModelList);
             mFab.setVisibility(View.VISIBLE);
             return;
         }
-        mMessageAdapter.setItems(new ArrayList<>());
+        mRecyclerViewAdapter.setItems(new ArrayList<>());
         mFab.setVisibility(View.GONE);
+        if (mRecyclerViewAdapter.getAdapterItemCount() == 0) {
+            mEmptyView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void showLoading() {
-        mMessageRecyclerView.setRefreshing(true);
+        mBloatedRecyclerView.setRefreshing(true);
+        mFab.setVisibility(View.GONE);
     }
 
     @Override
     public void hideLoading() {
-        mMessageRecyclerView.setRefreshing(false);
+        mBloatedRecyclerView.setRefreshing(false);
+        mFab.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -476,7 +541,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     @Override
     public void hideRetry() {
-        mMessageRecyclerView.setRefreshing(false);
+        mBloatedRecyclerView.setRefreshing(false);
     }
 
     @Override
@@ -501,7 +566,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         Snackbar snackbar = Snackbar.make(mFab, s, Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.undo, v -> {
             // Restore item
-            mMessageAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
+            mRecyclerViewAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
         });
 
         View view = snackbar.getView();
@@ -521,9 +586,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
 
     public void setItemChecked(int position) {
 
-        mMessageAdapter.toggleSelection(position);
+        mRecyclerViewAdapter.toggleSelection(position);
 
-        int checkedCount = mMessageAdapter.getSelectedItemCount();
+        int checkedCount = mRecyclerViewAdapter.getSelectedItemCount();
 
         if (checkedCount == 0) {
             if (mActionMode != null) {
@@ -536,9 +601,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                     .startSupportActionMode(new ActionBarModeCallback());
         }
 
-        if (mMessageAdapter != null) {
+        if (mRecyclerViewAdapter != null) {
             mPendingMessages.add(new PendingMessage(position,
-                    mMessageAdapter.getItem(position)));
+                    mRecyclerViewAdapter.getItem(position)));
 
         }
 
@@ -551,7 +616,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
      * Clear all checked items in the list and the selected {@link MessageModel}
      */
     private void clearItems() {
-        mMessageAdapter.clearSelections();
+        mRecyclerViewAdapter.clearSelections();
         if (mPendingMessages != null) {
             mPendingMessages.clear();
         }
@@ -569,7 +634,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             // Restore items
             for (PendingMessage pendingDeletedDeployment
                     : mPendingMessages) {
-                mMessageAdapter.addItem(pendingDeletedDeployment.messageModel,
+                mRecyclerViewAdapter.addItem(pendingDeletedDeployment.messageModel,
                         pendingDeletedDeployment.getPosition());
             }
             clearItems();
@@ -608,7 +673,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             // Restore items
             for (PendingMessage pendingDeletedDeployment
                     : mPendingMessages) {
-                mMessageAdapter.addItem(pendingDeletedDeployment.messageModel,
+                mRecyclerViewAdapter.addItem(pendingDeletedDeployment.messageModel,
                         pendingDeletedDeployment.getPosition());
             }
             clearItems();
@@ -624,9 +689,9 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
                     if (mPendingMessages.size() > 0) {
                         List<MessageModel> messageModels = new ArrayList<MessageModel>();
                         for (PendingMessage pendingDeletedDeployment : mPendingMessages) {
-                            messageModels.add(pendingDeletedDeployment.messageModel);
+                            mPublishMessagePresenter
+                                    .publishMessage(pendingDeletedDeployment.messageModel);
                         }
-                        mPublishMessagesPresenter.publishMessage(messageModels);
                         clearItems();
                     }
                 }
@@ -639,11 +704,11 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         //Sort in ascending order for restoring deleted items
         Snackbar snackbar = Snackbar.make(mFab, getActivity().getString(R.string.published),
                 Snackbar.LENGTH_LONG);
-        mRemovedMessage = mMessageAdapter.getItem(position);
-        mMessageAdapter.removeItem(mRemovedMessage);
+        mRemovedMessage = mRecyclerViewAdapter.getItem(position);
+        mRecyclerViewAdapter.removeItem(mRemovedMessage);
         snackbar.setAction(R.string.undo, e -> {
             // Restore items
-            mMessageAdapter.addItem(mRemovedMessage, position);
+            mRecyclerViewAdapter.addItem(mRemovedMessage, position);
         });
         View view = snackbar.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -653,9 +718,7 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             public void onDismissed(Snackbar snackbar, int event) {
                 super.onDismissed(snackbar, event);
                 if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
-                    List<MessageModel> messageModels = new ArrayList<MessageModel>();
-                    messageModels.add(mRemovedMessage);
-                    mPublishMessagesPresenter.publishMessage(messageModels);
+                    mPublishMessagePresenter.publishMessage(mRemovedMessage);
                 }
             }
         });
@@ -667,11 +730,11 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
         Snackbar snackbar = Snackbar.make(mFab, getActivity()
                         .getString(R.string.item_deleted, mPendingMessages.size()),
                 Snackbar.LENGTH_LONG);
-        mRemovedMessage = mMessageAdapter.getItem(position);
-        mMessageAdapter.removeItem(mRemovedMessage);
+        mRemovedMessage = mRecyclerViewAdapter.getItem(position);
+        mRecyclerViewAdapter.removeItem(mRemovedMessage);
         snackbar.setAction(R.string.undo, e -> {
             // Restore items
-            mMessageAdapter.addItem(mRemovedMessage, position);
+            mRecyclerViewAdapter.addItem(mRemovedMessage, position);
         });
         View view = snackbar.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -710,15 +773,6 @@ public class MessageFragment extends BaseRecyclerViewFragment<MessageModel, Mess
             return mPosition;
         }
     }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent != null) {
-                mListMessagePresenter.loadMessages();
-            }
-        }
-    };
 
     private class ActionBarModeCallback implements ActionMode.Callback {
 

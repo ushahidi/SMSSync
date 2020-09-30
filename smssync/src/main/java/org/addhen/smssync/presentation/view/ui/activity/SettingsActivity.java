@@ -44,7 +44,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -52,7 +52,7 @@ import butterknife.Bind;
 public class SettingsActivity extends BaseActivity implements HasComponent<SettingsComponent>,
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
     private AppActivityComponent mAppComponent;

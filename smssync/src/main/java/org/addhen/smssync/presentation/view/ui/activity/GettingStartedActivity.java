@@ -42,7 +42,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -54,19 +54,19 @@ public class GettingStartedActivity extends BaseActivity {
 
     private static final String STATE_PARAM_SELECTED_PAGE = "org.addhen.smssync.SELECTED_PAGE";
 
-    @Bind(R.id.getting_started_view_pager)
+    @BindView(R.id.getting_started_view_pager)
     ViewPager mViewPager;
 
-    @Bind(R.id.getting_started_circles)
+    @BindView(R.id.getting_started_circles)
     LinearLayout mCircles;
 
-    @Bind(R.id.getting_started_skip)
+    @BindView(R.id.getting_started_skip)
     Button mSkip;
 
-    @Bind(R.id.getting_started_done)
+    @BindView(R.id.getting_started_done)
     Button mDone;
 
-    @Bind(R.id.getting_started_next)
+    @BindView(R.id.getting_started_next)
     ImageButton mNext;
 
     private boolean mIsOpaque = true;
@@ -107,7 +107,7 @@ public class GettingStartedActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         if (mViewPager != null) {
             mViewPager.clearOnPageChangeListeners();

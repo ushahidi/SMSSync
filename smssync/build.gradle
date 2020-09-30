@@ -18,9 +18,7 @@
 import org.ajoberstar.gradle.git.release.opinion.Strategies
 import org.ajoberstar.grgit.Grgit
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'org.ajoberstar.release-opinion'
 apply plugin: 'com.github.triplet.play'
@@ -143,7 +141,7 @@ android {
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
                 def newName = outputFile.name.replace(outputFile.name,
-                        "smssync-v" + defaultConfig.versionName + "-" +
+                        "smssync-${variant.name}-v" + defaultConfig.versionName + "-" +
                                 variant.buildType.name.toUpperCase() +
                                 ".apk");
 
@@ -226,7 +224,7 @@ if (project.hasProperty('releaseKeyStore') &&
     android.signingConfigs.releaseSign.keyPassword ""
 }
 
-tasks.release.dependsOn(['publishApkWithAnalyticsRelease'])
+//tasks.release.dependsOn(['publishApkWithAnalyticsRelease'])
 
 // Build and launch app from command line
 task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
@@ -236,29 +234,39 @@ task runApp(type: Exec, dependsOn: ['build', 'installWithAnalyticsDebug']) {
 }
 
 dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
     def appDependencies = rootProject.ext.appDependencies
     def appTestDependencies = rootProject.ext.appTestDependencies
-    apt appDependencies.daggerCompiler // Needed for source code generation
-    compile fileTree(dir: 'libs', include: '*.jar')
+    annotationProcessor appDependencies.daggerCompiler // Needed for source code generation
+    annotationProcessor appDependencies.butterKnifeComplier
     compile appDependencies.raiburari
     compile appDependencies.cupboard
+    compile appDependencies.butterKnife
     compile appDependencies.wakeful
     compile appDependencies.okHttp
     compile appDependencies.twitter4jCore
     compile appDependencies.nineOldAndroids
+    compile appDependencies.loggingInterceptor
     compile appDependencies.bottomSheet
     compile appDependencies.zXingQRCode
     compile appDependencies.supportPreference
+    compile appDependencies.timber
+    // Firebase(analytics, crash report)
+    compile appDependencies.firebaseCore
+    compile appDependencies.firebaseCrash
     provided appDependencies.javaxAnnotation // Needed to resolve compilation errors
 
     // Test depedencies
     testCompile appTestDependencies.junit
     testCompile appTestDependencies.mockito
     testCompile appTestDependencies.mockWebServer
-    testApt appDependencies.daggerCompiler
+    testAnnotationProcessor appDependencies.daggerCompiler
 
     androidTestCompile appTestDependencies.mockito
     androidTestCompile appTestDependencies.dexmaker
     androidTestCompile appTestDependencies.dexmakerMockito
-    androidTestApt appDependencies.daggerCompiler
+    androidTestAnnotationProcessor appDependencies.daggerCompiler
 }
+
+// MUST BE AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,135 @@
+{
+  "project_info": {
+    "project_number": "101482340714",
+    "firebase_url": "https://smssync-5b8f2.firebaseio.com",
+    "project_id": "smssync-5b8f2",
+    "storage_bucket": "smssync-5b8f2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101482340714:android:e85ac0bc14641c30",
+        "android_client_info": {
+          "package_name": "org.addhen.smssync"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101482340714-4ac55sl39ridbfbgmfrnao7rcnb4u0d2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq8W3PYWqYtAwFLaZAmD9RHvtDW6YVqKE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101482340714:android:60009a2109c34e65",
+        "android_client_info": {
+          "package_name": "org.addhen.smssync.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101482340714-4ac55sl39ridbfbgmfrnao7rcnb4u0d2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq8W3PYWqYtAwFLaZAmD9RHvtDW6YVqKE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101482340714:android:f49bf4e46dfcb48d",
+        "android_client_info": {
+          "package_name": "org.addhen.smssync.internal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101482340714-4ac55sl39ridbfbgmfrnao7rcnb4u0d2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq8W3PYWqYtAwFLaZAmD9RHvtDW6YVqKE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101482340714:android:9b182fa62fd287ee",
+        "android_client_info": {
+          "package_name": "org.addhen.smssync.internal.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101482340714-4ac55sl39ridbfbgmfrnao7rcnb4u0d2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCq8W3PYWqYtAwFLaZAmD9RHvtDW6YVqKE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

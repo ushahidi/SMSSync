@@ -19,8 +19,6 @@ package org.addhen.smssync.data.message;
 
 import com.google.gson.Gson;
 
-import com.squareup.okhttp.RequestBody;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Message;
@@ -45,6 +43,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import okhttp3.RequestBody;
 
 /**
  * Created by Kamil Kalfas(kkalfas@soldevelo.com) on 23.04.14.
@@ -191,7 +191,7 @@ public class ProcessMessageResult {
                     mFileManager.append(
                             mContext.getString(R.string.queued_messages_request_status,
                                     mAppHttpClient.getResponse().code(),
-                                    mAppHttpClient.getResponse()));
+                                    mAppHttpClient.getResponse().toString()));
                 }
             }
         }

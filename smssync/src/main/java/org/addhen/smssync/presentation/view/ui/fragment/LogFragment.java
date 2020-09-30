@@ -22,6 +22,7 @@ import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
+import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.presentation.di.component.LogComponent;
 import org.addhen.smssync.presentation.model.LogModel;
 import org.addhen.smssync.presentation.model.PhoneStatusInfoModel;
@@ -57,7 +58,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 
 /**
@@ -66,22 +67,22 @@ import butterknife.OnCheckedChanged;
 public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
         implements ListLogView {
 
-    @Bind(android.R.id.list)
+    @BindView(android.R.id.list)
     BloatedRecyclerView mLogRecyclerView;
 
-    @Bind(R.id.data_connection_status)
+    @BindView(R.id.data_connection_status)
     TextView mDataConnection;
 
-    @Bind(R.id.phone_status_label)
+    @BindView(R.id.phone_status_label)
     TextView mPhoneStatusLabel;
 
-    @Bind(R.id.battery_level_status)
+    @BindView(R.id.battery_level_status)
     TextView mBatteryLevelStatus;
 
-    @Bind(R.id.log_location)
+    @BindView(R.id.log_location)
     TextView mLogLocation;
 
-    @Bind(R.id.start_logs)
+    @BindView(R.id.start_logs)
     SwitchCompat mStartCheckBox;
 
     @Inject
@@ -92,6 +93,9 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
 
     @Inject
     PrefsFactory mPrefsFactory;
+
+    @Inject
+    FileManager mFileManager;
 
     private LogAdapter mLogAdapter;
 
@@ -284,8 +288,7 @@ public class LogFragment extends BaseRecyclerViewFragment<LogModel, LogAdapter>
                         : getString(R.string.confirm_no)));
 
         // Get the log entries if they exist
-        final String logs = "";
-
+        final String logs = mFileManager.readLogs(FileManager.LOG_NAME);
         if ((logs != null) && (!TextUtils.isEmpty(logs))) {
             build.append(newLine);
             build.append(newLine);

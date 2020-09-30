@@ -1,4 +1,1 @@
-Fixed so app uses the devices phone number as the  value for the sent_to field not the from number.
-Fixed so individual messages can be synchronized.
-Fixed duplication of messages when task checking is enabled.
-Fixed Test Integration from always reporting wrong endpoint is entered.
+Fix Google security vulnerabilities alert warning.

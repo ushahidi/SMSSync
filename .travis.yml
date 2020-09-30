@@ -1,17 +1,29 @@
-sudo: false
+sudo: true
 language: android
 jdk: oraclejdk8
 before_install:
   - export JAVA8_HOME=$JAVA_HOME
   - android list sdk --no-ui --all --extended
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 android:
   components:
-  - build-tools-23.0.1
+  # use the latest revision of Android SDK Tools
+  - platform-tools
+  - tools
+  - build-tools-25.0.2
   - android-23
   - extra-android-support
   - extra-android-m2repository
-    
-script: ./gradlew clean build -x validateReleaseSignSigning
+  - extra-google-google_play_services
+  - extra-google-m2repository
+
+# Exclude signing validation for product flavors
+script: ./gradlew clean build -x validateSigningInternalRelease -x validateSigningNoAnalyticsRelease -x validateSigningWithAnalyticsRelease
 notifications:
   hipchat:
     template: '<a href="%{build_url}">%{repository}#%{build_number}</a> (%{branch} - <a href="%{compare_url}">%{commit}</a> : %{author}): %{message}'

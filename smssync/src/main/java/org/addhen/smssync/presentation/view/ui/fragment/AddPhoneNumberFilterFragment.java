@@ -45,7 +45,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -64,10 +64,10 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     @Inject
     AddFilterPresenter mAddFilterPresenter;
 
-    @Bind(R.id.filter_white_list_container)
+    @BindView(R.id.filter_white_list_container)
     KeywordView mWhiteListKeywordView;
 
-    @Bind(R.id.filter_black_list_container)
+    @BindView(R.id.filter_black_list_container)
     KeywordView mBlackListKeywordView;
 
     private List<FilterModel> mFilterModels;
@@ -86,11 +86,11 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getComponent(FilterComponent.class).inject(this);
         initialize();
     }
 
     private void initialize() {
-        getComponent(FilterComponent.class).inject(this);
         mListFilterPresenter.setView(this);
         mAddFilterPresenter.setView(this);
         mDeleteFilterPresenter.setView(this);
@@ -125,8 +125,8 @@ public class AddPhoneNumberFilterFragment extends BaseFragment implements AddFil
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         mListFilterPresenter.destroy();
         mDeleteFilterPresenter.destroy();
         mAddFilterPresenter.destroy();

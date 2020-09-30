@@ -23,15 +23,12 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0-beta3'
+        classpath 'me.tatarka:gradle-retrolambda:3.5.0'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        // Workaround for sdk-manager
-        // See: http://stackoverflow.com/questions/33881984/errorcause-com-android-sdklib-repository-fullrevision
-        classpath 'com.github.JakeWharton:sdk-manager-plugin:220bf7a88a7072df3ed16dc8466fb144f2817070'
-        classpath 'com.github.triplet.gradle:play-publisher:1.1.4'
-        classpath 'org.ajoberstar:gradle-git:1.3.2'
+        classpath 'com.github.triplet.gradle:play-publisher:1.1.5'
+        classpath 'org.ajoberstar:gradle-git:1.6.0'
+        classpath 'com.google.gms:google-services:3.0.0'
     }
 
     // Exclude the version that the android plugin depends on.
@@ -49,7 +46,7 @@ allprojects {
     }
 
     ext {
-        androidVersionCode = 44
+        androidVersionCode = 46
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 }

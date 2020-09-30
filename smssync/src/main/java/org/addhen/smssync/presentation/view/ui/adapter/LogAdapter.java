@@ -30,7 +30,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -63,7 +63,7 @@ public class LogAdapter extends BaseRecyclerViewAdapter<LogModel> {
 
     public class Widgets extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.log_message)
+        @BindView(R.id.log_message)
         AppCompatTextView logMessage;
 
         public Widgets(final View view) {

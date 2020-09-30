@@ -45,6 +45,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.Process;
+import android.support.v7.app.NotificationCompat;
 import android.telephony.SmsMessage;
 
 import java.lang.ref.WeakReference;
@@ -187,13 +188,11 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     public void onCreate() {
         super.onCreate();
         injector();
-        HandlerThread thread = new HandlerThread(CLASS_TAG,
-                Process.THREAD_PRIORITY_BACKGROUND);
+        HandlerThread thread = new HandlerThread(CLASS_TAG, Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
-        App.bus.register(this);
 
     }
 
@@ -221,7 +220,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     @Override
     public void onDestroy() {
         mServiceLooper.quit();
-        App.bus.unregister(this);
         super.onDestroy();
     }
 
@@ -234,11 +232,9 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
      * Handle receiving SMS message
      */
     protected void handleSmsReceived(Intent intent) {
-
         String body;
         Bundle bundle = intent.getExtras();
         Message msg = new Message();
-
         log("handleSmsReceived() bundle " + bundle);
 
         if (bundle != null) {
@@ -282,16 +278,18 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     }
 
     private void showNotification(boolean status) {
+        Utility.BuildNotification buildNotification = Utility
+                .getSyncNotificationStatus(this, getString(R.string.sync_in_progress));
+        NotificationCompat.Builder builder = buildNotification.getBuilder();
         if (!status) {
-            Utility.showFailNotification(this, "",
-                    getString(R.string.sending_failed));
+            Utility.showSyncNotificationStatus(this, getString(R.string.sending_failed),
+                    buildNotification);
         } else {
-            Utility.showFailNotification(this, "",
-                    getString(R.string.sending_succeeded));
+            Utility.showSyncNotificationStatus(this, getString(R.string.sending_succeeded),
+                    buildNotification);
             mFileManager.append(getString(R.string.sending_succeeded));
         }
         Intent statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
-        statusIntent.putExtra("sentstatus", 0);
         sendBroadcast(statusIntent);
     }
 

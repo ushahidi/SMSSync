@@ -19,10 +19,6 @@ package org.addhen.smssync.data.net;
 
 import com.google.gson.Gson;
 
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.cache.FileManager;
 import org.addhen.smssync.data.entity.Message;
@@ -32,6 +28,7 @@ import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.data.util.Logger;
 import org.addhen.smssync.domain.entity.HttpNameValuePair;
 import org.addhen.smssync.domain.util.DataFormatUtil;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -43,9 +40,11 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
-import static com.squareup.okhttp.internal.Util.UTF_8;
+import static okhttp3.internal.Util.UTF_8;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -102,9 +101,8 @@ public class MessageHttpClient extends BaseHttpClient {
                 setServerError(response.body().string(), statusCode);
             }
         } catch (Exception e) {
-            Observable.error(e);
             log("Request failed", e);
-            setClientError("Request failed. " + e.getMessage());
+            setClientError("Request failed. " + e.getMessage() + "\n sync url " + syncUrl.getUrl());
         }
         return false;
 
@@ -126,13 +124,18 @@ public class MessageHttpClient extends BaseHttpClient {
                 String.valueOf(message.getMessageDate().getTime())
         );
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.SENT_TO), toNumber);
-        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID), message.getMessageUuid());
+        if (message.getMessageUuid() == null) {
+            message.setMessageUuid(new ProcessSms(mContext).getUuid());
+        }
+        addParam(syncScheme.getKey(SyncScheme.SyncDataKey.MESSAGE_ID),
+                message.getMessageUuid());
+
         addParam(syncScheme.getKey(SyncScheme.SyncDataKey.DEVICE_ID), deviceId);
         try {
             setHttpEntity(format);
         } catch (Exception e) {
             log("Failed to set request body", e);
-            setClientError("Failed to format request body" + e.getLocalizedMessage());
+            setClientError("Failed to format request body " + e.getMessage());
         }
 
         try {
@@ -149,7 +152,7 @@ public class MessageHttpClient extends BaseHttpClient {
             }
         } catch (Exception e) {
             log("failed to set request method.", e);
-            setClientError("Failed to set request method.");
+            setClientError("Failed to set request method. sync url \n" + syncUrl.getUrl());
         }
 
     }
@@ -173,20 +176,21 @@ public class MessageHttpClient extends BaseHttpClient {
                 break;
             case URLEncoded:
                 log("setHttpEntity format URLEncoded");
-                FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder();
+                FormBody.Builder builder = new FormBody.Builder();
                 List<HttpNameValuePair> params = getParams();
                 for (HttpNameValuePair pair : params) {
-                    formEncodingBuilder.add(pair.getName(), pair.getValue());
+                    builder.add(pair.getName(), pair.getValue());
                 }
                 mFileManager.append(
                         mContext.getString(R.string.http_entity_format, "URLEncoded"));
-                body = formEncodingBuilder.build();
+                body = builder.build();
+                body.toString();
                 break;
             default:
                 mFileManager.append(mContext.getString(R.string.invalid_data_format));
                 throw new Exception("Invalid data format");
         }
-
+        log("RequestBody is " + body.toString());
         setRequestBody(body);
 
     }

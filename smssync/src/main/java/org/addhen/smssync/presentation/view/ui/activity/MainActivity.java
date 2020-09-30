@@ -63,7 +63,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import butterknife.Bind;
+import butterknife.BindView;
+
 
 /**
  * @author Henry Addo
@@ -86,13 +87,13 @@ public class MainActivity extends BaseActivity implements HasComponent<AppActivi
 
     private static final String INCOMING_FAG_TAG = "incoming_messages";
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    @Bind((R.id.nav_view))
+    @BindView((R.id.nav_view))
     NavigationView mNavigationView;
 
     private AppCompatTextView mAppCompatTextView;

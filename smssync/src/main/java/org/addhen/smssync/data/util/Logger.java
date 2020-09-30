@@ -19,7 +19,7 @@ package org.addhen.smssync.data.util;
 
 import org.addhen.smssync.BuildConfig;
 
-import android.util.Log;
+import timber.log.Timber;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -34,19 +34,19 @@ public class Logger {
 
     public static void log(String tag, String message) {
         if (LOGGING_MODE) {
-            Log.i(tag, message);
+            Timber.tag(tag).i(message);
         }
     }
 
     public static void log(String tag, String format, Object... args) {
         if (LOGGING_MODE) {
-            Log.i(tag, String.format(format, args));
+            Timber.tag(tag).i(String.format(format, args));
         }
     }
 
     public static void log(String tag, String message, Exception ex) {
         if (LOGGING_MODE) {
-            Log.e(tag, message, ex);
+            Timber.tag(tag).e(ex, message);
         }
     }
 }

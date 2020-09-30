@@ -483,9 +483,9 @@
     <string name="message_processed_failed">SMSsync has failed processing this message.</string>
     <string name="message_processed_json_failed">SMSsync has failed creating JSON response.</string>
     <string name="queued_messages_request_status">Queued Messages POST request returned status
-        %1$s\n and body %2$s
+        %1$d\n and body %2$s
     </string>
-    <string name="messages_result_request_status">Message result GET request returned status %1$s\n
+    <string name="messages_result_request_status">Message result GET request returned status %1$d\n
         and body %2$s
     </string>
 
@@ -543,6 +543,11 @@
     <string name="google_plus_community_hint">Connect with us on our Google+ community page. Read
         about releases, share ideas or suggest improvements
     </string>
+    <string name="privacy_title">Privacy Notice</string>
+    <string name="privacy_hint">The following describes our policy for the information gathering,
+        use and dissemination practices of Ushahidi for the services provided through its various
+        websites and mobile apps.
+    </string>
     <string name="forums_title">SMSsync forum</string>
     <string name="forums_hint">Report issues or help someone with issues</string>
     <string name="about">About</string>
@@ -554,7 +559,7 @@
     <string name="getting_started">Getting started</string>
     <string name="undo">Undo</string>
     <string name="item_deleted">
-        <xliff:g id="deleted">%1$s</xliff:g>
+        <xliff:g id="deleted">%1$d</xliff:g>
         message was deleted
     </string>
     <string name="publish">Publish</string>
@@ -638,4 +643,5 @@
         string
     </string>
     <string name="no_published_messages">There are no more published messages</string>
+    <string name="add">Add</string>
 </resources>
