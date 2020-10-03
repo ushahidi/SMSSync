@@ -34,7 +34,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -139,13 +139,13 @@ public class WebServiceAdapter extends BaseRecyclerViewAdapter<WebServiceModel> 
      */
     public class Widgets extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.web_service_title)
+        @BindView(R.id.web_service_title)
         CapitalizedTextView title;
 
-        @Bind(R.id.web_service_description)
+        @BindView(R.id.web_service_description)
         TextView url;
 
-        @Bind(R.id.web_service_selected)
+        @BindView(R.id.web_service_selected)
         SwitchCompat listCheckBox;
 
         /**

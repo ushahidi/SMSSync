@@ -23,6 +23,7 @@ import org.addhen.smssync.presentation.App;
 import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.service.ServiceConstants;
 import org.addhen.smssync.presentation.service.UpdateMessageService;
+import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -39,7 +40,7 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         int result = getResultCode();
         MessageModel message = (MessageModel) intent.getParcelableExtra(
-                ServiceConstants.DELIVERED_SMS_BUNDLE);
+                ProcessSms.DELIVERED_SMS_BUNDLE);
         FileManager fileManager = App.getAppComponent().fileManager();
         String resultMessage = "";
         switch (result) {
@@ -47,7 +48,7 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
                 resultMessage = context.getResources().getString(R.string.sms_delivered);
                 Toast.makeText(context, context.getResources().getString(R.string.sms_delivered),
                         Toast.LENGTH_LONG);
-                fileManager.appendAndClose(context.getResources().getString(
+                fileManager.append(context.getResources().getString(
                         R.string.sms_delivered));
                 break;
             case Activity.RESULT_CANCELED:
@@ -55,7 +56,7 @@ public class SmsDeliveredReceiver extends BroadcastReceiver {
                 Toast.makeText(context,
                         context.getResources().getString(R.string.sms_not_delivered),
                         Toast.LENGTH_LONG);
-                fileManager.appendAndClose(
+                fileManager.append(
                         context.getResources().getString(R.string.sms_not_delivered));
                 break;
         }

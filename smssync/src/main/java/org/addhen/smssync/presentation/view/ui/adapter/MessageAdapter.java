@@ -25,7 +25,7 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.util.Utility;
 import org.addhen.smssync.presentation.view.ui.widget.TextDrawable;
 
-import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
@@ -42,8 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -64,13 +65,10 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
 
     private Filter mFilter = null;
 
-    List<MessageModel> msgs = new ArrayList<>();
+    private List<MessageModel> msgs = new ArrayList<>();
 
-    public MessageAdapter(Context context) {
+    public MessageAdapter() {
         mSelectedItems = new SparseBooleanArray();
-        flipIn = AnimationUtils.loadAnimation(context, R.anim.flip_front);
-        flipOut = AnimationUtils.loadAnimation(context, R.anim.flip_back);
-
     }
 
     @Override
@@ -158,46 +156,17 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
     private void updateCheckedState(Widgets holder, int position) {
         if (isChecked(position)) {
             holder.imageView.setImageDrawable(
-                    mDrawableBuilder.build(holder.itemView.getContext().getResources()
-                            .getDrawable(R.drawable.ic_done_white_18dp), 0xff616161));
+                    mDrawableBuilder.build(ContextCompat.getDrawable(holder.itemView.getContext(),
+                            R.drawable.ic_done_white_18dp)
+                            , 0xff616161));
         } else {
             TextDrawable drawable = mDrawableBuilder
-                    .build(holder.itemView.getContext().getResources()
-                                    .getDrawable(R.drawable.ic_call_white_18dp),
-                            holder.itemView.getContext().getResources().getColor(
-                                    R.color.orange_light));
+                    .build(ContextCompat.getDrawable(holder.itemView.getContext(),
+                            R.drawable.ic_call_white_18dp),
+                            ContextCompat
+                                    .getColor(holder.itemView.getContext(), R.color.orange_light));
             holder.imageView.setImageDrawable(drawable);
         }
-    }
-
-    private void setFlipAnimation(Widgets widgets, int position) {
-        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                if (animation == flipOut) {
-                    updateCheckedState(widgets, position);
-                }
-                widgets.imageView.clearAnimation();
-                widgets.imageView.setAnimation(flipIn);
-                widgets.imageView.startAnimation(flipIn);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (isChecked(position)) {
-                    widgets.checkIcon.setVisibility(View.VISIBLE);
-                } else {
-                    widgets.checkIcon.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-        flipIn.setAnimationListener(animationListener);
-        flipOut.setAnimationListener(animationListener);
     }
 
     @Override
@@ -207,6 +176,8 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
                 : true)) {
 
             final MessageModel messageModel = getItem(position);
+            flipIn = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.flip_front);
+            flipOut = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.flip_back);
             // Initialize view with content
             Widgets widgets = ((Widgets) holder);
             widgets.messageFrom.setText(messageModel.getMessageFrom());
@@ -228,18 +199,17 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
                     .setTextColor(
                             widgets.itemView.getContext().getResources().getColor(R.color.red));
 
+            updateCheckedState(widgets, position);
             widgets.imageView.setOnClickListener(v -> {
-
-                if (mOnCheckedListener != null) {
-                    mOnCheckedListener.onChecked(position);
-                }
                 widgets.imageView.clearAnimation();
                 widgets.imageView.setAnimation(flipOut);
                 widgets.imageView.startAnimation(flipOut);
+                if (mOnCheckedListener != null) {
+                    mOnCheckedListener.onChecked(position);
+                }
                 setFlipAnimation(widgets, position);
             });
 
-            updateCheckedState(widgets, position);
             widgets.statusIndicator.setOnClickListener(v -> {
                 if (mOnMoreActionListener != null) {
                     mOnMoreActionListener.onMoreActionTap(position);
@@ -248,27 +218,59 @@ public class MessageAdapter extends BaseRecyclerViewAdapter<MessageModel> implem
         }
     }
 
+    private void setFlipAnimation(Widgets widgets, int position) {
+
+        Animation.AnimationListener animationListener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                if (animation == flipOut) {
+                    updateCheckedState(widgets, position);
+                } else {
+                    widgets.imageView.clearAnimation();
+                    widgets.imageView.setAnimation(flipIn);
+                    widgets.imageView.startAnimation(flipIn);
+                }
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (isChecked(position)) {
+                    widgets.checkIcon.setVisibility(View.VISIBLE);
+                } else {
+                    widgets.checkIcon.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+        flipIn.setAnimationListener(animationListener);
+        flipOut.setAnimationListener(animationListener);
+    }
+
     public class Widgets extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.status_indicator)
+        @BindView(R.id.status_indicator)
         ImageView statusIndicator;
 
-        @Bind(R.id.message_from)
+        @BindView(R.id.message_from)
         AppCompatTextView messageFrom;
 
-        @Bind(R.id.message_date)
+        @BindView(R.id.message_date)
         AppCompatTextView messageDate;
 
-        @Bind(R.id.message)
+        @BindView(R.id.message)
         CapitalizedTextView message;
 
-        @Bind(R.id.sent_message_type)
+        @BindView(R.id.sent_message_type)
         AppCompatTextView messageType;
 
-        @Bind(R.id.message_icons)
+        @BindView(R.id.message_icons)
         ImageView imageView;
 
-        @Bind(R.id.check_icon)
+        @BindView(R.id.check_icon)
         ImageView checkIcon;
 
         public Widgets(final View view) {

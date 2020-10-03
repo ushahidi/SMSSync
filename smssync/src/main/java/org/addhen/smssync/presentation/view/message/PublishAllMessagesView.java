@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 - 2015 Ushahidi Inc
+ * Copyright (c) 2010 - 2017 Ushahidi Inc
  * All rights reserved
  * Contact: team@ushahidi.com
  * Website: http://www.ushahidi.com
@@ -15,15 +15,16 @@
  * Ushahidi developers at team@ushahidi.com.
  */
 
-package org.addhen.smssync.presentation.task.state;
+package org.addhen.smssync.presentation.view.message;
+
+import com.addhen.android.raiburari.presentation.ui.view.LoadDataView;
 
 /**
- * Provides synchronization states
+ * @author Ushahidi Team <team@ushahidi.com>
  */
-public enum SyncState {
-    INITIAL,
-    SYNC,
-    ERROR,
-    CANCELED_SYNC,
-    FINISHED_SYNC
+public interface PublishAllMessagesView extends LoadDataView {
+
+    void successfullyPublished(boolean status);
+
+    void showEnableServiceMessage(String s);
 }

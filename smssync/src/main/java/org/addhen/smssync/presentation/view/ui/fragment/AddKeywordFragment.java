@@ -44,7 +44,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -56,10 +56,10 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
     private static final String ARGUMENT_KEY_WEBSERVICE_MODE
             = "org.addhen.smssync.ARGUMENT_WEBSERVICE_MODEL";
 
-    @Bind(R.id.filter_keyword_integration_title)
+    @BindView(R.id.filter_keyword_integration_title)
     AppCompatTextView mWebServiceTitleTextView;
 
-    @Bind(R.id.keywords_container)
+    @BindView(R.id.keywords_container)
     KeywordView mKeywordsView;
 
     @Inject
@@ -85,20 +85,16 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mWebServiceModel = getArguments().getParcelable(ARGUMENT_KEY_WEBSERVICE_MODE);
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mWebServiceModel = getArguments().getParcelable(ARGUMENT_KEY_WEBSERVICE_MODE);
+        getComponent(WebServiceComponent.class).inject(this);
         initialize();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     @OnClick(R.id.add_keyword_btn)
@@ -107,7 +103,6 @@ public class AddKeywordFragment extends BaseFragment implements UpdateWebService
     }
 
     private void initialize() {
-        getComponent(WebServiceComponent.class).inject(this);
         mUpdateWebServiceKeywordsPresenter.setView(this);
         mWebServiceTitleTextView.setText(mWebServiceModel.getTitle());
         initKeywords();

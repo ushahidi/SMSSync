@@ -108,8 +108,11 @@ public class PostMessage extends ProcessMessage {
             for (SyncUrl syncUrl : syncUrlList) {
                 // Process if white-listing is enabled
                 if (mPrefsFactory.enableWhitelist().get()) {
+                    // TODO: Check for potential NPE for filters
                     for (Filter filter : filters) {
-                        if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
+                        // Make sure phone number matches and it's indeed whitelisted
+                        if ((filter.getPhoneNumber().equals(message.getMessageFrom())) && (filter
+                                .getStatus().equals(Filter.Status.WHITELIST))) {
                             if (postMessage(message, syncUrl)) {
                                 postToSentBox(message);
                                 deleteFromSmsInbox(message);
@@ -120,16 +123,13 @@ public class PostMessage extends ProcessMessage {
                     }
                 }
 
-                // Process blacklist
                 if (mPrefsFactory.enableBlacklist().get()) {
+                    // Process blacklist
+                    // TODO: Check for potential NPE for filters
                     for (Filter filter : filters) {
-
-                        if (filter.getPhoneNumber().equals(message.getMessageFrom())) {
-                            Logger.log("message",
-                                    " from:" + message.getMessageFrom() + " filter:"
-                                            + filter.getPhoneNumber());
-                            return false;
-                        } else {
+                        // Make sure phone number doesn't match and not blacklisted
+                        if ((filter.getPhoneNumber().equals(message.getMessageFrom())) && (!filter
+                                .getStatus().equals(Filter.Status.BLACKLIST))) {
                             if (postMessage(message, syncUrl)) {
                                 postToSentBox(message);
                                 deleteFromSmsInbox(message);
@@ -137,9 +137,11 @@ public class PostMessage extends ProcessMessage {
                                 savePendingMessage(message);
                             }
                         }
-
                     }
-                } else {
+                }
+
+                if ((!mPrefsFactory.enableBlacklist().get()) && (!mPrefsFactory.enableWhitelist()
+                        .get())) {
                     if (postMessage(message, syncUrl)) {
                         postToSentBox(message);
                         deleteFromSmsInbox(message);
@@ -158,28 +160,16 @@ public class PostMessage extends ProcessMessage {
 
     /**
      * Sync pending messages to the configured sync URL.
-     *
-     * @param uuid The message uuid
      */
-    public boolean syncPendingMessages(final String uuid) {
-        Logger.log(TAG, "syncPendingMessages: push pending messages to the Sync URL" + uuid);
-        boolean status = false;
-        // check if it should sync by id
-        if (!TextUtils.isEmpty(uuid)) {
-            final Message message = mMessageDataSource.fetchPendingByUuid(uuid);
-            List<Message> messages = new ArrayList<Message>();
-            messages.add(message);
-            status = postMessage(messages);
-        } else {
-            final List<Message> messages = mMessageDataSource.syncFetchPending();
-            if (messages != null && messages.size() > 0) {
-                for (Message message : messages) {
-                    status = postMessage(messages);
-                }
-            }
+    public boolean syncPendingMessages() {
+        Logger.log(TAG, "syncPendingMessages: push pending messages to the Sync URL");
+
+        final List<Message> messages = mMessageDataSource.syncFetchPending();
+        if (messages != null && messages.size() > 0) {
+            return postMessage(messages);
         }
 
-        return status;
+        return false;
     }
 
     public boolean postMessage(List<Message> messages) {
@@ -280,7 +270,7 @@ public class PostMessage extends ProcessMessage {
                 msg.setMessageType(Message.Type.TASK);
                 if (response.getUuids().contains(msg.getMessageUuid())) {
                     sendTaskSms(msg);
-                    mFileManager.appendAndClose(mContext.getString(R.string.processed_task,
+                    mFileManager.append(mContext.getString(R.string.processed_task,
                             msg.getMessageBody()));
                 }
             }
@@ -378,13 +368,13 @@ public class PostMessage extends ProcessMessage {
                 messageHttpClient.execute();
                 gson = new Gson();
                 final String response = messageHttpClient.getResponse().body().string();
-                mFileManager.appendAndClose("HTTP Client Response: " + response);
+                mFileManager.append("HTTP Client Response: " + response);
                 smssyncResponses = gson.fromJson(response, SmssyncResponse.class);
             } catch (Exception e) {
                 Logger.log(TAG, "Task checking crashed " + e.getMessage() + " response: "
                         + messageHttpClient.getResponse());
                 try {
-                    mFileManager.appendAndClose(
+                    mFileManager.append(
                             "Task crashed: " + e.getMessage() + " response: " + messageHttpClient
                                     .getResponse().body().string());
                 } catch (IOException e1) {
@@ -394,7 +384,7 @@ public class PostMessage extends ProcessMessage {
 
             if (smssyncResponses != null) {
                 Logger.log(TAG, "TaskCheckResponse: " + smssyncResponses.toString());
-                mFileManager.appendAndClose("TaskCheckResponse: " + smssyncResponses.toString());
+                mFileManager.append("TaskCheckResponse: " + smssyncResponses.toString());
 
                 if (smssyncResponses.getPayload() != null) {
                     String task = smssyncResponses.getPayload().getTask();
@@ -424,7 +414,7 @@ public class PostMessage extends ProcessMessage {
                 }
             }
 
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     mContext.getString(R.string.finish_task_check) + " " + mErrorMessage + " for "
                             + syncUrl.getUrl());
         }

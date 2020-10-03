@@ -22,6 +22,7 @@ import com.addhen.android.raiburari.data.pref.StringPreference;
 
 import org.addhen.smssync.data.PrefsFactory;
 import org.addhen.smssync.data.cache.FileManager;
+import org.addhen.smssync.data.entity.Filter;
 import org.addhen.smssync.data.entity.Message;
 import org.addhen.smssync.data.entity.SyncUrl;
 import org.addhen.smssync.data.net.MessageHttpClient;
@@ -99,6 +100,9 @@ public class PostMessageTest {
     private SyncUrl mMockSyncUrl;
 
     @Mock
+    Filter mMockFilter;
+
+    @Mock
     private BooleanPreference mMockBooleanPreference;
 
     @Before
@@ -112,8 +116,7 @@ public class PostMessageTest {
     @Test
     public void shouldSuccessfullyRouteSMSToASingleWebService() throws IOException {
         List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
-
-        stubNeedMethodsForSyncOperation(syncUrls);
+        syncOperation(syncUrls);
         verify(mMockMessageHttpClient, times(1))
                 .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
     }
@@ -121,64 +124,131 @@ public class PostMessageTest {
     @Test
     public void shouldSuccessfullyRouteSMSToTwoWebServices() throws IOException {
         List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl, mMockSyncUrl);
-
-        stubNeedMethodsForSyncOperation(syncUrls);
+        syncOperation(syncUrls);
         verify(mMockMessageHttpClient, times(2))
                 .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
     }
 
     @Test
-    public void shouldSuccessfullyRouteSMSToSingleWebServiceWithServerResponse() {
-
+    public void shouldSendMessageOnceWhenWhitelistIsEnabledAndNumberIsWhiteListed() {
+        List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+        preformSyncWithWhitelistAndBlacklistDisabled(syncUrls);
+        verify(mMockMessageHttpClient, times(1))
+                .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
     }
 
-    private void stubNeedMethodsForSyncOperation(List<SyncUrl> syncUrls) {
+    @Test
+    public void shouldSendMessageWhenBlackListIsEnabledButNoBlacklistedNumber() {
+        List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+        given(mMockFilter.getPhoneNumber()).willReturn(FROM);
+        given(mMockFilter.getStatus()).willReturn(Filter.Status.WHITELIST);
+        List<Filter> filters = Arrays.asList(mMockFilter);
+        // Set filters
+        given(mMockFilterDataSource.getFilters()).willReturn(filters);
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, false, true,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+        verify(mMockMessageHttpClient, times(1))
+                .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
+    }
 
-        // Enable SMSsync service
+    @Test
+    public void shouldSendMessageWhenWhitelistIsEnabledAndBlacklistIsDisabled() {
+        List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, false, false,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+        verify(mMockMessageHttpClient, times(1))
+                .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
+    }
+
+    @Test
+    public void shouldSendMessageWhenBothWhitelistAndBlacklistAreDisabled() {
+        List<SyncUrl> syncUrls = Arrays.asList(mMockSyncUrl);
+
+        given(mMockFilter.getPhoneNumber()).willReturn(FROM);
+        given(mMockFilter.getStatus()).willReturn(Filter.Status.WHITELIST);
+        List<Filter> filters = Arrays.asList(mMockFilter);
+        // Set filters
+        given(mMockFilterDataSource.getFilters()).willReturn(filters);
+
+        preformSyncWhiteListEnabled(syncUrls);
+        verify(mMockMessageHttpClient, times(1))
+                .postSmsToWebService(syncUrls.get(0), mMockMessage, FROM, DEVICE_ID);
+    }
+
+    private void syncOperation(List<SyncUrl> syncUrls) {
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, false, false,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+    }
+
+    private void preformSyncWhiteListEnabled(List<SyncUrl> syncUrls) {
+        given(mMockFilter.getPhoneNumber()).willReturn(FROM);
+        List<Filter> filters = Arrays.asList(mMockFilter);
+        // Get Enable sync URLS
+        given(mMockFilterDataSource.getFilters()).willReturn(filters);
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, true, false,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+    }
+
+    private void preformSyncWithWhitelistAndBlacklistDisabled(List<SyncUrl> syncUrls) {
+        stubNeedMethodsRouteSms(syncUrls, true, false, true, SyncUrl.Status.ENABLED, false, false,
+                false, false);
+        mPostMessage.routeSms(mMockMessage);
+        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
+    }
+
+    /**
+     * Too many params
+     */
+    private void stubNeedMethodsRouteSms(List<SyncUrl> syncUrls, boolean toggleService,
+            boolean toggleAutoReply, boolean toggleInternet, SyncUrl.Status status,
+            boolean toggleWhiteList, boolean toggleBlackList, boolean toggleReplyFromServer,
+            boolean toggleDeleteFromServer) {
+        // Toggle SMSsync service
         BooleanPreference serviceEnabled = mock(BooleanPreference.class);
-        given(mMockPrefsFactory.serviceEnabled())
-                .willReturn(serviceEnabled);
-        given(mMockPrefsFactory.serviceEnabled().get()).willReturn(true);
-
-        // Disable AutoReply
+        given(mMockPrefsFactory.serviceEnabled()).willReturn(serviceEnabled);
+        given(mMockPrefsFactory.serviceEnabled().get()).willReturn(toggleService);
+        // Toggle AutoReply
         BooleanPreference booleanPreference = mock(BooleanPreference.class);
         given(mMockPrefsFactory.enableReply())
                 .willReturn(booleanPreference);
-        given(mMockPrefsFactory.enableReply().get()).willReturn(false);
-        doReturn(true).when(mPostMessage).isConnected();
-
-        given(mMockWebServiceDataSource.get(SyncUrl.Status.ENABLED)).willReturn(syncUrls);
-
-        // Don't process whitelist
-        BooleanPreference enableWhitelist = mock(BooleanPreference.class);
-        given(mMockPrefsFactory.enableWhitelist()).willReturn(enableWhitelist);
-        given(mMockPrefsFactory.enableWhitelist().get()).willReturn(false);
-
-        // Don't process blacklist
-        BooleanPreference enableBlackList = mock(BooleanPreference.class);
-        given(mMockPrefsFactory.enableBlacklist()).willReturn(enableBlackList);
-        given(mMockPrefsFactory.enableBlacklist().get()).willReturn(false);
-
+        given(mMockPrefsFactory.enableReply().get()).willReturn(toggleAutoReply);
+        // Toggle internet
+        doReturn(toggleInternet).when(mPostMessage).isConnected();
+        // Get Enable sync URLS
+        given(mMockWebServiceDataSource.get(status)).willReturn(syncUrls);
+        // Toggle whitelist
+        BooleanPreference enableWhitelistPreference = mock(BooleanPreference.class);
+        given(mMockPrefsFactory.enableWhitelist()).willReturn(enableWhitelistPreference);
+        given(mMockPrefsFactory.enableWhitelist().get()).willReturn(toggleWhiteList);
+        // Toggle blacklist
+        BooleanPreference enableBlackListPreference = mock(BooleanPreference.class);
+        given(mMockPrefsFactory.enableBlacklist()).willReturn(enableBlackListPreference);
+        given(mMockPrefsFactory.enableBlacklist().get()).willReturn(toggleBlackList);
         given(mMockMessage.getMessageFrom()).willReturn(FROM);
         //Get UniqueID
         StringPreference getUniquePreference = mock(StringPreference.class);
         given(mMockPrefsFactory.uniqueId()).willReturn(getUniquePreference);
         given(mMockPrefsFactory.uniqueId().get()).willReturn(DEVICE_ID);
-
         given(mMockMessage.getMessageType()).willReturn(Message.Type.PENDING);
-        // Disable replyFromServer
-        BooleanPreference enableReplyFromServer = mock(BooleanPreference.class);
-        given(mMockPrefsFactory.enableReplyFrmServer()).willReturn(enableReplyFromServer);
-        // Don't delete from server
+        // Toggle replyFromServer
+        BooleanPreference enableReplyFromServerPreference = mock(BooleanPreference.class);
+        given(mMockPrefsFactory.enableReplyFrmServer()).willReturn(enableReplyFromServerPreference);
+        given(mMockPrefsFactory.enableReplyFrmServer().get()).willReturn(toggleReplyFromServer);
+        // Toggle delete from server
         BooleanPreference deleteFromInbox = mock(BooleanPreference.class);
         given(mMockPrefsFactory.autoDelete()).willReturn(deleteFromInbox);
-        given(mMockPrefsFactory.autoDelete().get()).willReturn(false);
+        given(mMockPrefsFactory.autoDelete().get()).willReturn(toggleDeleteFromServer);
         doReturn(FROM).when(mPostMessage).getPhoneNumber();
         given(mMockMessageHttpClient
                 .postSmsToWebService(mMockSyncUrl, mMockMessage, FROM,
                         mMockPrefsFactory.uniqueId().get())).willReturn(true);
-
-        mPostMessage.routeSms(mMockMessage);
-        verify(mMockWebServiceDataSource).get(SyncUrl.Status.ENABLED);
     }
 }

@@ -48,7 +48,7 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
@@ -68,50 +68,50 @@ public class UpdateWebServiceFragment extends BaseFragment implements UpdateWebS
     private static final String BUNDLE_STATE_WEB_SERVICE_MODEL
             = "org.addhen.smssync.BUNDLE_STATE_WEB_SERVICE_MODEL";
 
-    @Bind(R.id.add_custom_web_service_title)
+    @BindView(R.id.add_custom_web_service_title)
     EditText mEditTextTitle;
 
-    @Bind(R.id.add_custom_web_service_url)
+    @BindView(R.id.add_custom_web_service_url)
     EditText mEditTextUrl;
 
-    @Bind(R.id.add_custom_web_service_secret)
+    @BindView(R.id.add_custom_web_service_secret)
     EditText mEditTextSecret;
 
 
-    @Bind(R.id.sync_method)
+    @BindView(R.id.sync_method)
     Spinner mSpinnerMethods;
 
-    @Bind(R.id.sync_data_format)
+    @BindView(R.id.sync_data_format)
     Spinner mSpinnerDataFormats;
 
-    @Bind(R.id.sync_k_secret)
+    @BindView(R.id.sync_k_secret)
     EditText mKeySecret;
 
-    @Bind(R.id.sync_k_from)
+    @BindView(R.id.sync_k_from)
     EditText mKeyFrom;
 
-    @Bind(R.id.sync_k_message)
+    @BindView(R.id.sync_k_message)
     EditText mKeyMessage;
 
-    @Bind(R.id.sync_k_sent_timestamp)
+    @BindView(R.id.sync_k_sent_timestamp)
     EditText mKeySentTimeStamp;
 
-    @Bind(R.id.sync_k_sent_to)
+    @BindView(R.id.sync_k_sent_to)
     EditText mKeySentTo;
 
-    @Bind(R.id.sync_k_message_id)
+    @BindView(R.id.sync_k_message_id)
     EditText mKeyMessageID;
 
-    @Bind(R.id.sync_k_device_id)
+    @BindView(R.id.sync_k_device_id)
     EditText mKeyDeviceID;
 
-    @Bind(R.id.add_custom_web_service_add)
+    @BindView(R.id.add_custom_web_service_add)
     Button mButton;
 
-    @Bind(R.id.test_progress_bar)
+    @BindView(R.id.test_progress_bar)
     ProgressBar mProgressBar;
 
-    @Bind(R.id.button_container)
+    @BindView(R.id.button_container)
     ViewGroup mButtonViewGroup;
 
     @Inject

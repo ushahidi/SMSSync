@@ -41,15 +41,13 @@ import android.os.BatteryManager;
  */
 public class PowerStateChangedReceiver extends BroadcastReceiver {
 
-    private boolean mBatteryLow;
-
     private Intent mSmsSyncAutoSyncServiceIntent;
 
     private Intent mSmsSyncTaskCheckServiceIntent;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        mBatteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
+        boolean mBatteryLow = intent.getAction().equals(Intent.ACTION_BATTERY_LOW);
         boolean batteryOkay = intent.getAction().equals(Intent.ACTION_BATTERY_OKAY);
 
         int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
@@ -61,7 +59,7 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
         AlertPresenter alertPresenter = App.getAppComponent().alertPresenter();
         if (mBatteryLow) {
             // is smssync service enabled
-            fileManager.appendAndClose(context.getString(R.string.battery_low));
+            fileManager.append(context.getString(R.string.battery_low));
             if (prefsFactory.serviceEnabled().get()) {
                 Utility.clearAll(context);
                 // Stop the service that pushes pending messages
@@ -86,14 +84,13 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
         }
 
         if (batteryOkay) {
-            fileManager.appendAndClose(context.getString(R.string.battery_okay));
+            fileManager.append(context.getString(R.string.battery_okay));
             // is smssync enabled
             if (prefsFactory.serviceEnabled().get()) {
 
                 // clear all notifications
                 Utility.clearNotify(context);
 
-                // Stop the service that pushes pending messages
                 if (prefsFactory.enableAutoSync().get()) {
                     mSmsSyncAutoSyncServiceIntent = new Intent(context,
                             AutoSyncScheduledService.class);
@@ -101,7 +98,6 @@ public class PowerStateChangedReceiver extends BroadcastReceiver {
                             .sendWakefulWork(context, mSmsSyncAutoSyncServiceIntent);
                 }
 
-                // Stop the service that checks for tasks
                 if (prefsFactory.enableTaskCheck().get()) {
                     mSmsSyncTaskCheckServiceIntent = new Intent(context, CheckTaskService.class);
                     CheckTaskService.sendWakefulWork(context, mSmsSyncTaskCheckServiceIntent);

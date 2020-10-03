@@ -6,8 +6,6 @@ do so follow the steps below:
 1. Install the following software:
        - Android SDK:
          http://developer.android.com/sdk/index.html
-       - Gradle:
-         http://www.gradle.org/downloads
        - Android Studio - Optional: 
          http://developer.android.com/sdk/installing/studio.html
 
@@ -97,7 +95,7 @@ releaseKeyStore=/home/username/.android/debug.keystore
 releaseKeyStorePassword=android
 releaseKeyAlias=androiddebugkey
 releaseKeyPassword=android
-googleDocsForm=https://docs.google.com/forms/d/1lL/formResponse
+googleDocsForm="https://docs.google.com/forms/d/1lL/formResponse"
 gPlaystoreServiceAccountEmailAddress=9323892392132-842jajdkdadummy@developer.gserviceaccount.com
 gPlaystorePKFile=/home/username/pdummy-pk-file.p12
 inAppPurchasePubKey=MIDKDLSkdakidkkse8283-23jjkasdk

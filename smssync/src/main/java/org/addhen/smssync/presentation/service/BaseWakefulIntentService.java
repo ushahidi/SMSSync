@@ -81,13 +81,11 @@ public abstract class BaseWakefulIntentService extends WakefulIntentService impl
     @Override
     public void onCreate() {
         super.onCreate();
-        App.bus.register(this);
         injector();
     }
 
     @Override
     public void onDestroy() {
-        App.bus.unregister(this);
         super.onDestroy();
     }
 

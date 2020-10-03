@@ -20,10 +20,6 @@ package org.addhen.smssync.data.net;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
-
 import org.addhen.smssync.data.entity.SmssyncResponse;
 import org.addhen.smssync.data.entity.SyncScheme;
 import org.addhen.smssync.data.entity.SyncUrl;
@@ -32,15 +28,18 @@ import org.addhen.smssync.domain.util.DataFormatUtil;
 
 import android.content.Context;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import rx.Observable;
+import timber.log.Timber;
 
-import static com.squareup.okhttp.internal.Util.UTF_8;
+import static okhttp3.internal.Util.UTF_8;
 
 /**
  * Basic HTTP client for making a request to URL pass to it
@@ -83,10 +82,8 @@ public class AppHttpClient extends BaseHttpClient {
                 try {
                     smssyncResponses = gson.fromJson(response.body().charStream(),
                             SmssyncResponse.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
                 } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
+                    Timber.e(e.getMessage(), e);
                 }
                 if (smssyncResponses != null && smssyncResponses.getPayload() != null) {
                     if (smssyncResponses.getPayload().isSuccess() || !smssyncResponses.getPayload()
@@ -149,12 +146,12 @@ public class AppHttpClient extends BaseHttpClient {
                 break;
             case URLEncoded:
                 log("setHttpEntity format URLEncoded");
-                FormEncodingBuilder formEncodingBuilder = new FormEncodingBuilder();
+                FormBody.Builder builder = new FormBody.Builder();
                 List<HttpNameValuePair> params = getParams();
                 for (HttpNameValuePair pair : params) {
-                    formEncodingBuilder.add(pair.getName(), pair.getValue());
+                    builder.add(pair.getName(), pair.getValue());
                 }
-                body = formEncodingBuilder.build();
+                body = builder.build();
                 break;
             default:
                 throw new Exception("Invalid data format");

@@ -81,6 +81,7 @@ public class AlertPresenter {
                 .syncGetByStatus(WebServiceEntity.Status.ENABLED);
         if (!Utility.isEmpty(webServiceEntities)) {
             for (WebServiceEntity webServiceEntity : webServiceEntities) {
+                mAppHttpClient.setUrl(webServiceEntity.getUrl());
                 mAppHttpClient.addParam(TASK_PARAM, "alert");
                 mAppHttpClient.addParam(MESSAGE_PARAM, mContext.getResources()
                         .getString(R.string.battery_level_message, batteryLevel));
@@ -88,10 +89,11 @@ public class AlertPresenter {
                     mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.POST);
                     mAppHttpClient.execute();
                 } catch (Exception e) {
-                    mFileManager.appendAndClose(e.getMessage());
+                    mFileManager.append(e.getMessage());
                 } finally {
-                    if (200 == mAppHttpClient.getResponse().code()) {
-                        mFileManager.appendAndClose(
+                    if ((mAppHttpClient.getResponse()) != null && (200 == mAppHttpClient
+                            .getResponse().code())) {
+                        mFileManager.append(
                                 mContext.getResources()
                                         .getString(R.string.successful_alert_to_server));
                     }
@@ -101,35 +103,6 @@ public class AlertPresenter {
             if (!mPrefsFactory.alertPhoneNumber().get().matches("")) {
                 sendSms(mContext.getResources().getString(R.string.battery_level_message,
                         batteryLevel));
-            }
-        }
-    }
-
-    /**
-     * If an SMS fails to send (due to credit, cell coverage, or bad number) post alert to server
-     */
-    public void smsSendFailedRequest(String resultMessage,
-            String errorCode) {
-        List<WebServiceEntity> webServiceEntities = mWebServiceRepository.syncGetByStatus(
-                WebServiceEntity.Status.ENABLED);
-        for (WebServiceEntity webServiceEntity : webServiceEntities) {
-            mAppHttpClient.addParam(TASK_PARAM, "alert");
-            mAppHttpClient.addParam(MESSAGE_PARAM, resultMessage);
-            if (!errorCode.matches("")) {
-                mAppHttpClient.addParam("errorCode", errorCode);
-            }
-            try {
-                mAppHttpClient.setMethod(BaseHttpClient.HttpMethod.POST);
-                mAppHttpClient.execute();
-            } catch (Exception e) {
-                mFileManager.appendAndClose(e.getMessage());
-            } finally {
-                if (mAppHttpClient.getResponse() != null) {
-                    if (200 == mAppHttpClient.getResponse().code()) {
-                        mFileManager.appendAndClose(mContext.getResources().getString(
-                                R.string.successful_alert_to_server));
-                    }
-                }
             }
         }
     }

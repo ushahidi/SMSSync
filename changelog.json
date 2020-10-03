@@ -1,7 +1,32 @@
 [
   {
+    "version": "v3.1.1",
+    "date": "21st February, 2017",
+    "features": [],
+    "bugs": [
+      "Fix Google security vulnerabilities alert warning."
+    ]
+  },
+  {
+    "version": "v3.1.0",
+    "date": "21st February, 2017",
+    "features": [
+      "Added firebase crash reporting support.",
+      "Added progressbar to the notification message when synchronizing a message.",
+      "Upgraded Raiburai.",
+      "Added privacy notice link to settings about screen.",
+      "Log messages for gained and lost data connectivity."
+    ],
+    "bugs": [
+      "Fixed issue with imported messages getting synchronized multiple times.",
+      "Cleaned up major parts of the code base.",
+      "Fixed checkbox flipping animation.",
+      "Fixed issue with whitelist causing duplicated messages synchronization."
+    ]
+  },
+  {
     "version": "v3.0.5",
-    "date": "12th Feburary, 2016",
+    "date": "12th February, 2016",
     "features": [],
     "bugs": [
       "Fixed so app uses the devices phone number as the  value for the sent_to field not the from number.",

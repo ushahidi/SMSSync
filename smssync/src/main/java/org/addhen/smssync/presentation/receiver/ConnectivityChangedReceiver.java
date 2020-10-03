@@ -59,25 +59,28 @@ public class ConnectivityChangedReceiver extends BroadcastReceiver {
                 mAlertPresenter.lostConnectionThread.interrupt();
             }
 
-            return;
-        }
-
-        if (mAlertPresenter.lostConnectionThread == null
-                || !mAlertPresenter.lostConnectionThread.isAlive()) {
-            mAlertPresenter.lostConnectionThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(AlertPresenter.MAX_DISCONNECT_TIME);
-                    } catch (InterruptedException e) {
-                        return;
+            App.getAppComponent().fileManager()
+                    .append(context.getString(R.string.active_data_connection));
+        } else if (!Utility.isConnected(context) && App.getAppComponent().prefsFactory()
+                .serviceEnabled().get()) {
+            if (mAlertPresenter.lostConnectionThread == null
+                    || !mAlertPresenter.lostConnectionThread.isAlive()) {
+                mAlertPresenter.lostConnectionThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(AlertPresenter.MAX_DISCONNECT_TIME);
+                        } catch (InterruptedException e) {
+                            return;
+                        }
+                        mAlertPresenter.dataConnectionLost();
                     }
-                    mAlertPresenter.dataConnectionLost();
-                }
-            });
-            mAlertPresenter.lostConnectionThread.start();
+                });
+                mAlertPresenter.lostConnectionThread.start();
+            }
+            App.getAppComponent().fileManager()
+                    .append(context.getString(R.string.no_data_connection));
+
         }
-        App.getAppComponent().fileManager()
-                .appendAndClose(context.getString(R.string.no_data_connection));
     }
 }

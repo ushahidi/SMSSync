@@ -20,19 +20,16 @@ package org.addhen.smssync.presentation.presenter.message;
 import com.addhen.android.raiburari.domain.exception.DefaultErrorHandler;
 import com.addhen.android.raiburari.domain.exception.ErrorHandler;
 import com.addhen.android.raiburari.domain.usecase.DefaultSubscriber;
+import com.addhen.android.raiburari.domain.usecase.Usecase;
 import com.addhen.android.raiburari.presentation.presenter.Presenter;
 
 import org.addhen.smssync.R;
 import org.addhen.smssync.data.PrefsFactory;
-import org.addhen.smssync.domain.usecase.message.PublishMessageUsecase;
 import org.addhen.smssync.presentation.exception.ErrorMessageFactory;
-import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.presentation.model.mapper.MessageModelDataMapper;
-import org.addhen.smssync.presentation.view.message.PublishMessageView;
+import org.addhen.smssync.presentation.view.message.PublishAllMessagesView;
 
 import android.support.annotation.NonNull;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -40,28 +37,28 @@ import javax.inject.Named;
 /**
  * @author Ushahidi Team <team@ushahidi.com>
  */
-public class PublishMessagesPresenter implements Presenter {
+public class PublishAllMessagesPresenter implements Presenter {
 
-    private final PublishMessageUsecase mPublishMessageUsecase;
+    private final Usecase mPublishAllMessagesUsecase;
 
     private final MessageModelDataMapper mMessageModelDataMapper;
 
-    private PublishMessageView mPublishMessageView;
+    private PublishAllMessagesView mPublishMessagesView;
 
     private PrefsFactory mPrefsFactory;
 
     @Inject
-    public PublishMessagesPresenter(
-            @Named("messagePublish") PublishMessageUsecase publishMessageUsecase,
+    public PublishAllMessagesPresenter(
+            @Named("publishAllMessages") Usecase publishAllMessagesUsecase,
             MessageModelDataMapper messageModelDataMapper,
             PrefsFactory prefsFactory) {
-        mPublishMessageUsecase = publishMessageUsecase;
+        mPublishAllMessagesUsecase = publishAllMessagesUsecase;
         mMessageModelDataMapper = messageModelDataMapper;
         mPrefsFactory = prefsFactory;
     }
 
-    public void setView(@NonNull PublishMessageView publishMessageView) {
-        mPublishMessageView = publishMessageView;
+    public void setView(@NonNull PublishAllMessagesView publishMessageView) {
+        mPublishMessagesView = publishMessageView;
     }
 
     @Override
@@ -76,49 +73,48 @@ public class PublishMessagesPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        mPublishMessageUsecase.unsubscribe();
+        mPublishAllMessagesUsecase.unsubscribe();
     }
 
-    public void publishMessage(List<MessageModel> messageModels) {
+    public void publishMessages() {
         if (!mPrefsFactory.serviceEnabled().get()) {
-            mPublishMessageView.showEnableServiceMessage(
-                    mPublishMessageView.getAppContext().getString(R.string.smssync_not_enabled));
+            mPublishMessagesView.showEnableServiceMessage(
+                    mPublishMessagesView.getAppContext().getString(R.string.smssync_not_enabled));
             return;
         }
-        mPublishMessageUsecase.setMessageEntity(mMessageModelDataMapper.unmap(messageModels));
-        mPublishMessageUsecase.execute(new PublishMessageSubscriber());
+        mPublishAllMessagesUsecase.execute(new PublishMessageSubscriber());
     }
 
     private void showErrorMessage(ErrorHandler errorHandler) {
-        String errorMessage = ErrorMessageFactory.create(mPublishMessageView.getAppContext(),
+        String errorMessage = ErrorMessageFactory.create(mPublishMessagesView.getAppContext(),
                 errorHandler.getException());
-        mPublishMessageView.showError(errorMessage);
+        mPublishMessagesView.showError(errorMessage);
     }
 
     private class PublishMessageSubscriber extends DefaultSubscriber<Boolean> {
 
         @Override
         public void onStart() {
-            mPublishMessageView.hideRetry();
-            mPublishMessageView.showLoading();
+            mPublishMessagesView.hideRetry();
+            mPublishMessagesView.showLoading();
         }
 
         @Override
         public void onCompleted() {
-            mPublishMessageView.hideLoading();
+            mPublishMessagesView.hideLoading();
         }
 
         @Override
         public void onNext(Boolean status) {
-            mPublishMessageView.hideLoading();
-            mPublishMessageView.successfullyPublished(status);
+            mPublishMessagesView.hideLoading();
+            mPublishMessagesView.successfullyPublished(status);
         }
 
         @Override
         public void onError(Throwable e) {
-            mPublishMessageView.hideLoading();
+            mPublishMessagesView.hideLoading();
             showErrorMessage(new DefaultErrorHandler((Exception) e));
-            mPublishMessageView.showRetry();
+            mPublishMessagesView.showRetry();
         }
     }
 }

@@ -29,6 +29,7 @@ import org.addhen.smssync.presentation.model.MessageModel;
 import org.addhen.smssync.smslib.sms.ProcessSms;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -97,12 +98,24 @@ public class MessageDataRepository implements MessageRepository {
     }
 
     @Override
-    public Observable<Boolean> publishMessage(List<MessageEntity> messageEntities) {
+    public Observable<Boolean> publishMessage(MessageEntity messageEntities) {
         return Observable.defer(() -> {
             boolean status = true;
-            mTweetMessage.tweetMessages(mMessageDataMapper.unmap(messageEntities));
-            status = mPostMessage
-                    .postMessage(mMessageDataMapper.unmap(messageEntities));
+            List<Message> messages = Arrays.asList(mMessageDataMapper.map(messageEntities));
+            mTweetMessage.tweetMessages(messages);
+            status = mPostMessage.postMessage(messages);
+            return Observable.just(status);
+        });
+    }
+
+    @Override
+    public Observable<Boolean> publishMessages() {
+        return Observable.defer(() -> {
+            mMessageDataSource = mMessageDataSourceFactory.createMessageDatabaseSource();
+            List<Message> messages = mMessageDataSource.syncFetchPending();
+            boolean status = true;
+            mTweetMessage.tweetMessages(messages);
+            status = mPostMessage.postMessage(messages);
             return Observable.just(status);
         });
     }

@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView
-            android:id="@+id/messages_list"
+            android:id="@+id/android:list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:cacheColorHint="@android:color/transparent"

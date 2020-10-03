@@ -40,7 +40,9 @@ public interface MessageRepository extends Repository<MessageEntity> {
 
     Observable<List<MessageEntity>> fetchPending();
 
-    Observable<Boolean> publishMessage(List<MessageEntity> messageEntities);
+    Observable<Boolean> publishMessage(MessageEntity messageEntity);
+
+    Observable<Boolean> publishMessages();
 
     Observable<List<MessageEntity>> importMessage();
 

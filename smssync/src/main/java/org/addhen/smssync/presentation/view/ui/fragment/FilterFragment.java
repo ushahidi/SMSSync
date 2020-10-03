@@ -48,7 +48,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -71,13 +71,13 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     @Inject
     TwitterClient mTwitterClient;
 
-    @Bind(R.id.custom_integration_filter_container)
+    @BindView(R.id.custom_integration_filter_container)
     LinearLayout mFilterViewGroup;
 
-    @Bind(R.id.black_list)
+    @BindView(R.id.black_list)
     FilterKeywordsView mBlackListFilterKeywordsView;
 
-    @Bind(R.id.white_list)
+    @BindView(R.id.white_list)
     FilterKeywordsView mWhiteListFilterKeywordsView;
 
     public FilterFragment() {
@@ -91,6 +91,7 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getFilterComponent(FilterComponent.class).inject(this);
         initialize();
     }
 
@@ -111,8 +112,8 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         if (mListFilterPresenter != null) {
             mListFilterPresenter.destroy();
         }
@@ -120,13 +121,6 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
             mUpdateWebServiceKeywordsPresenter.destroy();
         }
     }
-
-    private void initialize() {
-        getFilterComponent(FilterComponent.class).inject(this);
-        mListFilterPresenter.setView(this);
-        mUpdateWebServiceKeywordsPresenter.setView(this);
-    }
-
 
     @Override
     public void showFilters(List<FilterModel> filterModelList) {
@@ -171,6 +165,11 @@ public class FilterFragment extends BaseFragment implements ListFilterView,
 
     protected <C> C getFilterComponent(Class<C> componentType) {
         return componentType.cast(((MainActivity) getActivity()).getFilterComponent());
+    }
+
+    private void initialize() {
+        mListFilterPresenter.setView(this);
+        mUpdateWebServiceKeywordsPresenter.setView(this);
     }
 
     private void initTwitterView() {

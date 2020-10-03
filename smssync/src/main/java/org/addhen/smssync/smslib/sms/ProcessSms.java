@@ -49,17 +49,17 @@ import javax.inject.Singleton;
 @Singleton
 public class ProcessSms {
 
+    public static String DELIVERED = "SMS_DELIVERED";
+
+    public static final String SENT_SMS_BUNDLE = "sent";
+
+    public static final String DELIVERED_SMS_BUNDLE = "delivered";
+
     private static final String SMS_CONTENT_URI = "content://sms/conversations/";
 
     private static final String SMS_CONTENT_INBOX = "content://sms/inbox";
 
     private static String SENT = "SMS_SENT";
-
-    private static final String SENT_SMS_BUNDLE = "sent";
-
-    private static String DELIVERED = "SMS_DELIVERED";
-
-    private static final String DELIVERED_SMS_BUNDLE = "delivered";
 
     private static final String CLASS_TAG = ProcessSms.class.getSimpleName();
 
@@ -125,11 +125,11 @@ public class ProcessSms {
     public boolean delSmsFromInbox(MessageModel messageModel) {
         LogUtil.logInfo(CLASS_TAG, "delSmsFromInbox(): Delete SMS message app inbox");
         final long threadId = getThreadId(messageModel);
-        Uri smsUri = Util.isKitKatOrHigher() ? ContentUris
-                .withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
-                        threadId)
-                : ContentUris.withAppendedId(Uri.parse(SMS_CONTENT_URI), threadId);
         if (threadId >= 0) {
+            Uri smsUri = Util.isKitKatOrHigher() ? ContentUris
+                    .withAppendedId(SmsQuery.SMS_CONVERSATION_URI,
+                            threadId)
+                    : ContentUris.withAppendedId(Uri.parse(SMS_CONTENT_URI), threadId);
 
             int rowsDeleted = mContext.getContentResolver().delete(
                     smsUri, null, null);
@@ -207,7 +207,7 @@ public class ProcessSms {
                                 .getString(c.getColumnIndex(Telephony.Sms.Inbox.ADDRESS)));
                         message.setMessageBody(c
                                 .getString(c.getColumnIndex(Telephony.Sms.Inbox.BODY)));
-
+                        message.setMessageUuid(getUuid());
                         message.setMessageType(MessageModel.Type.PENDING);
                         // Treat imported messages as failed
                         message.setStatus(MessageModel.Status.FAILED);

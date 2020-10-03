@@ -23,7 +23,8 @@ import com.addhen.android.raiburari.presentation.di.qualifier.ActivityScope;
 import org.addhen.smssync.presentation.di.module.MessageModule;
 import org.addhen.smssync.presentation.presenter.message.ListMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.ListPublishedMessagePresenter;
-import org.addhen.smssync.presentation.presenter.message.PublishMessagesPresenter;
+import org.addhen.smssync.presentation.presenter.message.PublishAllMessagesPresenter;
+import org.addhen.smssync.presentation.presenter.message.PublishMessagePresenter;
 import org.addhen.smssync.presentation.presenter.message.UpdateMessagePresenter;
 import org.addhen.smssync.presentation.view.ui.fragment.MessageFragment;
 import org.addhen.smssync.presentation.view.ui.fragment.PublishedMessageFragment;
@@ -46,7 +47,9 @@ public interface MessageComponent extends AppActivityComponent {
 
     ListPublishedMessagePresenter listPublishedMessagePresenter();
 
-    PublishMessagesPresenter publishMessagesPresenter();
+    PublishMessagePresenter publishMessagePresenter();
+
+    PublishAllMessagesPresenter publishAllMessagesPresenter();
 
     UpdateMessagePresenter updateMessagePresenter();
 }

@@ -20,6 +20,8 @@ package org.addhen.smssync.presentation.util;
 import org.addhen.smssync.BaseRobolectricTestCase;
 import org.junit.Test;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -37,5 +39,35 @@ public class UtilityTest extends BaseRobolectricTestCase {
     public void shouldCheckForIPBasedUrlToBeValid() {
         boolean actual = Utility.validateUrl("http://192.168.1.4:3000/");
         assertTrue("The provided URL is not a valid one", actual);
+    }
+
+    @Test
+    public void stringCapitalisationShouldWorkForNull() {
+        // expect
+        assertNull(Utility.capitalizeFirstLetter(null));
+    }
+
+    @Test
+    public void stringCapitalisationShouldWorkForEmptyString() {
+        // expect
+        assertEquals("", Utility.capitalizeFirstLetter(""));
+    }
+
+    @Test
+    public void stringCapitalisationShouldWorkForSingleCharacterString() {
+        // expect
+        assertEquals("A", Utility.capitalizeFirstLetter("a"));
+    }
+
+    @Test
+    public void stringCapitalisationShouldWorkForTwoCharacterString() {
+        // expect
+        assertEquals("Ab", Utility.capitalizeFirstLetter("ab"));
+    }
+
+    @Test
+    public void stringCapitalisationShouldWorkForLongerString() {
+        // expect
+        assertEquals("AbRaCaDaBrA", Utility.capitalizeFirstLetter("abRaCaDaBrA"));
     }
 }

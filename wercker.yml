@@ -1,10 +1,10 @@
-box: wercker/default
+box: golang
 # Build definition
 build:
   # The steps that will be executed on build
   steps:
     - arjen/hugo-build:
-        version: 0.14
+        version: "0.14"
         config: ./website-src/config.toml
         flags: --buildDrafts=true --source=$WERCKER_SOURCE_DIR/website-src
 # A step that deploys hugo build

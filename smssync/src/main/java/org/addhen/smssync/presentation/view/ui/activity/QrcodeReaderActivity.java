@@ -39,6 +39,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 /**
@@ -76,13 +77,13 @@ public class QrcodeReaderActivity extends BaseActivity
         mScannerView = new ZXingScannerView(this);
         setupFormats();
         setContentView(mScannerView);
+        mUnbinder = ButterKnife.bind(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mScannerView.setResultHandler(this);
-        int cameraId = -1;
         mScannerView.startCamera();
         mScannerView.setFlash(false);
         mScannerView.setAutoFocus(true);

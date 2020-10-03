@@ -18,7 +18,6 @@
 package org.addhen.smssync.presentation.view.ui.fragment;
 
 import com.addhen.android.raiburari.presentation.ui.fragment.BaseRecyclerViewFragment;
-import com.addhen.android.raiburari.presentation.ui.widget.BloatedRecyclerView;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -64,8 +63,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.BindView;
 
 /**
  * @author Ushahidi Team <team@ushahidi.com>
@@ -75,10 +73,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     private static final int HONEYCOMB = 11;
 
-    @Bind(android.R.id.list)
-    BloatedRecyclerView mMessageRecyclerView;
-
-    @Bind(android.R.id.empty)
+    @BindView(android.R.id.empty)
     ViewGroup mEmptyView;
 
     @Inject
@@ -86,9 +81,6 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     @Inject
     DeleteMessagePresenter mDeleteMessagePresenter;
-
-    private MessageAdapter mMessageAdapter;
-
 
     private int mRemovedItemPosition = 0;
 
@@ -110,14 +102,9 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getMessageComponent(MessageComponent.class).inject(this);
         initialize();
     }
 
@@ -137,14 +124,8 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         if (mListMessagePresenter != null) {
             mListMessagePresenter.destroy();
         }
@@ -159,25 +140,24 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     private void initRecyclerView() {
         mPendingDeletedMessages = new ArrayList<>();
-        mMessageAdapter = new MessageAdapter(getActivity());
-        mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mMessageRecyclerView.setFocusable(true);
-        mMessageRecyclerView.setFocusableInTouchMode(true);
-        mMessageRecyclerView.setAdapter(mMessageAdapter);
-        mMessageRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
-        mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mMessageRecyclerView.enableDefaultSwipeRefresh(false);
-        mMessageAdapter.setOnCheckedListener(position -> setItemChecked(position));
-        mMessageRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mMessageAdapter.setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
-                .sheet(R.menu.menu_published_messages_more_actions)
-                .listener((dialog, which) -> {
-                    switch (which) {
-                        case R.id.menu_published_messages_more_actions_delete:
-                            showUndoSnackbar(position);
-                            break;
-                    }
-                }).show());
+        mBloatedRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mBloatedRecyclerView.setFocusable(true);
+        mBloatedRecyclerView.setFocusableInTouchMode(true);
+        mBloatedRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), null));
+        mBloatedRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mBloatedRecyclerView.enableDefaultSwipeRefresh(false);
+        mRecyclerViewAdapter.setOnCheckedListener(position -> setItemChecked(position));
+        mBloatedRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewAdapter
+                .setOnMoreActionListener(position -> new BottomSheet.Builder(getActivity())
+                        .sheet(R.menu.menu_published_messages_more_actions)
+                        .listener((dialog, which) -> {
+                            switch (which) {
+                                case R.id.menu_published_messages_more_actions_delete:
+                                    showUndoSnackbar(position);
+                                    break;
+                            }
+                        }).show());
         if (Build.VERSION.SDK_INT >= HONEYCOMB) {
             enableSwipeToPerformAction();
         }
@@ -209,15 +189,15 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     private void remove(int position) {
         mRemovedItemPosition = position;
-        mRemovedMessage = mMessageAdapter.getItem(position);
-        mMessageAdapter.removeItem(mRemovedMessage);
+        mRemovedMessage = mRecyclerViewAdapter.getItem(position);
+        mRecyclerViewAdapter.removeItem(mRemovedMessage);
         showUndoSnackbar(1);
     }
 
     private void removeItems() {
         if (!Utility.isEmpty(mPendingDeletedMessages)) {
             for (PendingDeletedMessage pendingDeletedMessage : mPendingDeletedMessages) {
-                mMessageAdapter.removeItem(pendingDeletedMessage.messageModel);
+                mRecyclerViewAdapter.removeItem(pendingDeletedMessage.messageModel);
             }
         }
     }
@@ -298,13 +278,13 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeToDismiss);
-        itemTouchHelper.attachToRecyclerView(mMessageRecyclerView.recyclerView);
+        itemTouchHelper.attachToRecyclerView(mBloatedRecyclerView.recyclerView);
     }
 
     @Override
     public void showMessages(List<MessageModel> messageModelList) {
         if (!Utility.isEmpty(messageModelList)) {
-            mMessageAdapter.setItems(messageModelList);
+            mRecyclerViewAdapter.setItems(messageModelList);
         }
     }
 
@@ -351,7 +331,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
                 .make(getView(), getString(R.string.item_deleted, count), Snackbar.LENGTH_LONG);
         snackbar.setAction(R.string.undo, v -> {
             // Restore item
-            mMessageAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
+            mRecyclerViewAdapter.addItem(mRemovedMessage, mRemovedItemPosition);
         });
         View view = snackbar.getView();
         TextView tv = (TextView) view.findViewById(android.support.design.R.id.snackbar_text);
@@ -370,9 +350,9 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
 
     public void setItemChecked(int position) {
 
-        mMessageAdapter.toggleSelection(position);
+        mRecyclerViewAdapter.toggleSelection(position);
 
-        int checkedCount = mMessageAdapter.getSelectedItemCount();
+        int checkedCount = mRecyclerViewAdapter.getSelectedItemCount();
 
         if (checkedCount == 0) {
             if (mActionMode != null) {
@@ -385,9 +365,9 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
                     .startSupportActionMode(new ActionBarModeCallback());
         }
 
-        if (mMessageAdapter != null) {
+        if (mRecyclerViewAdapter != null) {
             mPendingDeletedMessages.add(new PendingDeletedMessage(position,
-                    mMessageAdapter.getItem(position)));
+                    mRecyclerViewAdapter.getItem(position)));
 
         }
 
@@ -400,7 +380,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
      * Clear all checked items in the list and the selected {@link MessageModel}
      */
     private void clearItems() {
-        mMessageAdapter.clearSelections();
+        mRecyclerViewAdapter.clearSelections();
         if (mPendingDeletedMessages != null) {
             mPendingDeletedMessages.clear();
         }
@@ -419,7 +399,7 @@ public class PublishedMessageFragment extends BaseRecyclerViewFragment<MessageMo
             // Restore items
             for (PendingDeletedMessage pendingDeletedDeployment
                     : mPendingDeletedMessages) {
-                mMessageAdapter.addItem(pendingDeletedDeployment.messageModel,
+                mRecyclerViewAdapter.addItem(pendingDeletedDeployment.messageModel,
                         pendingDeletedDeployment.getPosition());
             }
             clearItems();

@@ -45,6 +45,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.PowerManager;
 import android.os.Process;
+import android.support.v7.app.NotificationCompat;
 import android.telephony.SmsMessage;
 
 import java.lang.ref.WeakReference;
@@ -56,9 +57,6 @@ import javax.inject.Inject;
  * @author Ushahidi Team <team@ushahidi.com>
  */
 public class SmsReceiverService extends Service implements HasComponent<AppServiceComponent> {
-
-    @Inject
-    PostMessage mProcessMessage;
 
     @Inject
     FileManager mFileManager;
@@ -85,14 +83,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     private Looper mServiceLooper;
 
     private Context mContext;
-
-    private String messagesBody = "";
-
-    private String messagesUuid = "";
-
-    private SmsMessage sms;
-
-    private Intent statusIntent;
 
     private AppServiceComponent mAppServiceComponent;
 
@@ -198,14 +188,11 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     public void onCreate() {
         super.onCreate();
         injector();
-        HandlerThread thread = new HandlerThread(CLASS_TAG,
-                Process.THREAD_PRIORITY_BACKGROUND);
+        HandlerThread thread = new HandlerThread(CLASS_TAG, Process.THREAD_PRIORITY_BACKGROUND);
         thread.start();
         mContext = getApplicationContext();
-        statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
         mServiceLooper = thread.getLooper();
         mServiceHandler = new ServiceHandler(this, mServiceLooper);
-        App.bus.register(this);
 
     }
 
@@ -233,7 +220,6 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     @Override
     public void onDestroy() {
         mServiceLooper.quit();
-        App.bus.unregister(this);
         super.onDestroy();
     }
 
@@ -246,17 +232,15 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
      * Handle receiving SMS message
      */
     protected void handleSmsReceived(Intent intent) {
-
         String body;
         Bundle bundle = intent.getExtras();
         Message msg = new Message();
-
         log("handleSmsReceived() bundle " + bundle);
 
         if (bundle != null) {
             SmsMessage[] messages = getMessagesFromIntent(intent);
-            sms = messages[0];
             if (messages != null) {
+                SmsMessage sms = messages[0];
 
                 // extract message details. phone number and the message body
                 msg.setMessageFrom(sms.getOriginatingAddress());
@@ -277,9 +261,9 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
                 msg.setMessageType(Message.Type.PENDING);
                 msg.setStatus(Message.Status.UNCONFIRMED);
             }
-            log("handleSmsReceived() messagesUuid: " + messagesUuid);
+
             // Log received SMS
-            mFileManager.appendAndClose(
+            mFileManager.append(
                     getString(R.string.received_msg, msg.getMessageBody(), msg.getMessageFrom()));
 
             // Route the SMS
@@ -294,15 +278,18 @@ public class SmsReceiverService extends Service implements HasComponent<AppServi
     }
 
     private void showNotification(boolean status) {
+        Utility.BuildNotification buildNotification = Utility
+                .getSyncNotificationStatus(this, getString(R.string.sync_in_progress));
+        NotificationCompat.Builder builder = buildNotification.getBuilder();
         if (!status) {
-            Utility.showFailNotification(this, messagesBody,
-                    getString(R.string.sending_failed));
+            Utility.showSyncNotificationStatus(this, getString(R.string.sending_failed),
+                    buildNotification);
         } else {
-            Utility.showFailNotification(this, messagesBody,
-                    getString(R.string.sending_succeeded));
-            mFileManager.appendAndClose(getString(R.string.sending_succeeded));
+            Utility.showSyncNotificationStatus(this, getString(R.string.sending_succeeded),
+                    buildNotification);
+            mFileManager.append(getString(R.string.sending_succeeded));
         }
-        statusIntent.putExtra("sentstatus", 0);
+        Intent statusIntent = new Intent(ServiceConstants.AUTO_SYNC_ACTION);
         sendBroadcast(statusIntent);
     }
 

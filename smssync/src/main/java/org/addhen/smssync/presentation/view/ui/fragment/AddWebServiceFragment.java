@@ -46,10 +46,11 @@ import android.widget.TextView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import butterknife.OnTouch;
 
 /**
  * Fragment for adding a new webService
@@ -60,75 +61,75 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
 
     private static final int MIN_TEXT_LENGTH = 3;
 
-    @Bind(R.id.add_custom_web_service_title)
+    @BindView(R.id.add_custom_web_service_title)
     EditText mEditTextTitle;
 
-    @Bind(R.id.add_custom_web_service_url)
+    @BindView(R.id.add_custom_web_service_url)
     EditText mEditTextUrl;
 
-    @Bind(R.id.add_custom_web_service_secret)
+    @BindView(R.id.add_custom_web_service_secret)
     EditText mEditTextSecret;
 
     // SyncScheme
-    @Bind(R.id.sync_method)
+    @BindView(R.id.sync_method)
     Spinner mSpinnerMethods;
 
-    @Bind(R.id.sync_data_format)
+    @BindView(R.id.sync_data_format)
     Spinner mSpinnerDataFormats;
 
-    @Bind(R.id.sync_k_secret)
+    @BindView(R.id.sync_k_secret)
     EditText mKeySecret;
 
-    @Bind(R.id.sync_k_from)
+    @BindView(R.id.sync_k_from)
     EditText mKeyFrom;
 
-    @Bind(R.id.sync_k_message)
+    @BindView(R.id.sync_k_message)
     EditText mKeyMessage;
 
-    @Bind(R.id.sync_k_sent_timestamp)
+    @BindView(R.id.sync_k_sent_timestamp)
     EditText mKeySentTimeStamp;
 
-    @Bind(R.id.sync_k_sent_to)
+    @BindView(R.id.sync_k_sent_to)
     EditText mKeySentTo;
 
-    @Bind(R.id.sync_k_message_id)
+    @BindView(R.id.sync_k_message_id)
     EditText mKeyMessageID;
 
-    @Bind(R.id.sync_k_device_id)
+    @BindView(R.id.sync_k_device_id)
     EditText mKeyDeviceID;
 
     // Input layout for handling error messages
-    @Bind(R.id.service_title_text_input_layout)
+    @BindView(R.id.service_title_text_input_layout)
     TextInputLayout mTitleTextInputLayout;
 
-    @Bind(R.id.service_url_text_input_layout)
+    @BindView(R.id.service_url_text_input_layout)
     TextInputLayout mUrlTextInputLayout;
 
-    @Bind(R.id.service_secret_text_input_layout)
+    @BindView(R.id.service_secret_text_input_layout)
     TextInputLayout mSecretTextInputLayout;
 
-    @Bind(R.id.service_k_secret_text_input_layout)
+    @BindView(R.id.service_k_secret_text_input_layout)
     TextInputLayout mKSecretTextIputLayout;
 
-    @Bind(R.id.service_k_from_text_input_layout)
+    @BindView(R.id.service_k_from_text_input_layout)
     TextInputLayout mKFromTextInputLayout;
 
-    @Bind(R.id.service_k_message_id_text_input_layout)
+    @BindView(R.id.service_k_message_id_text_input_layout)
     TextInputLayout mKMessageIdTextInputLayout;
 
-    @Bind(R.id.service_k_message_text_input_layout)
+    @BindView(R.id.service_k_message_text_input_layout)
     TextInputLayout mKMessageTextInputLayout;
 
-    @Bind(R.id.service_k_sent_timestamp_text_input_layout)
+    @BindView(R.id.service_k_sent_timestamp_text_input_layout)
     TextInputLayout mKSentTimestampTextInputLayout;
 
-    @Bind(R.id.service_k_sent_to_text_input_layout)
+    @BindView(R.id.service_k_sent_to_text_input_layout)
     TextInputLayout mKSentToTextInputLayout;
 
-    @Bind(R.id.service_k_device_id_text_input_layout)
+    @BindView(R.id.service_k_device_id_text_input_layout)
     TextInputLayout mKDeviceIdTextInputLayout;
 
-    @Bind(R.id.test_progress_bar)
+    @BindView(R.id.test_progress_bar)
     ProgressBar mProgressBar;
 
     @Inject
@@ -149,8 +150,8 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getComponent(WebServiceComponent.class).inject(this);
         initialize();
-        mEditTextUrl.setOnTouchListener((view, event) -> setHttpProtocol());
     }
 
     private boolean setHttpProtocol() {
@@ -179,7 +180,6 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     }
 
     private void initialize() {
-        getComponent(WebServiceComponent.class).inject(this);
         mAddWebServicePresenter.setView(this, new TestWebServiceView() {
             @Override
             public void webServiceTested(boolean status) {
@@ -235,6 +235,12 @@ public class AddWebServiceFragment extends BaseFragment implements AddWebService
     @OnClick(R.id.add_custom_web_service_add)
     public void onClickValidate() {
         submit();
+    }
+
+    @OnTouch(R.id.add_custom_web_service_url)
+    boolean onTouch() {
+        setHttpProtocol();
+        return false;
     }
 
     @OnEditorAction(R.id.add_custom_web_service_add)

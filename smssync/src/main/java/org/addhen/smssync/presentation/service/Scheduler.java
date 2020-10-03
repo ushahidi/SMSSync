@@ -61,7 +61,7 @@ public class Scheduler {
     public void stopScheduler() {
         if (mAlarmManager != null && mPendingIntent != null) {
             Logger.log(CLASS_TAG, "Stop scheduler");
-            mFileManager.appendAndClose(mContext.getString(R.string.stopping_scheduler));
+            mFileManager.append(mContext.getString(R.string.stopping_scheduler));
             mAlarmManager.cancel(mPendingIntent);
         }
     }
@@ -75,7 +75,7 @@ public class Scheduler {
         Logger.log(CLASS_TAG, "updating scheduler");
         if (mAlarmManager != null && mPendingIntent != null) {
             Logger.log(CLASS_TAG, "Update scheduler to " + interval);
-            mFileManager.appendAndClose(mContext.getString(R.string.scheduler_updated_to));
+            mFileManager.append(mContext.getString(R.string.scheduler_updated_to));
             mAlarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + 60000, interval, mPendingIntent);
         }

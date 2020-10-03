@@ -24,13 +24,15 @@ public class ServiceConstants {
 
     public static final int ACTIVE_SYNC_URL = 1;
 
-    public static final int INACTIVE_SYNC_URL = 1;
+    public static final int INACTIVE_SYNC_URL = 0;
+
+    public static final int ACTIVE_SYNC = 1;
+
+    public static final int INACTIVE_SYNC = 0;
+
+    public static final String SYNC_STATUS = "sync_status";
 
     public static final String DEFAULT_SMS_PROVIDER = "org.addhen.smssync.defaultsmsprovider";
-
-    public static final String SENT_SMS_BUNDLE = "sent";
-
-    public static final String DELIVERED_SMS_BUNDLE = "delivered";
 
     public static int CHECK_TASK_SERVICE_REQUEST_CODE = 0;
 
@@ -57,10 +59,6 @@ public class ServiceConstants {
     public static String BATTERY_LEVEL = "org.addhen.smssync.syncservices.batterylevel";
 
     public static String MESSAGE_UUID = "message_uuid";
-
-    public static String SENT = "SMS_SENT";
-
-    public static String DELIVERED = "SMS_DELIVERED";
 
     public static String UPDATE_MESSAGE = "UPDATE_MESSAGE";
 

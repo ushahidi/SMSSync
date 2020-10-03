@@ -19,12 +19,10 @@ package org.addhen.smssync.data.twitter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.net.http.SslError;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -800,13 +798,6 @@ public class TwitterOAuthView extends WebView {
                 // Stop the authorization step.
                 notifyAuthorization();
             }
-
-
-            @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
-            }
-
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {

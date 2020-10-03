@@ -36,11 +36,15 @@ public class AboutSettingsFragment extends BasePreferenceFragmentCompat {
 
     private static final String KEY_TRANSLATE = "translate_preference";
 
+    private static final String KEY_PRIVACY = "privacy_preference";
+
     private static final String KEY_FORUMS = "forums_preference";
 
     private static final String KEY_GOOGLE_PLUS = "google_plus_preference";
 
     private static final String SMSSYNC_WEB_PAGE = "http://smssync.ushahidi.com";
+
+    private static final String PRIVACY_NOTICE_PAGE = "https://www.ushahidi.com/privacy";
 
     private static final String SMSSYNC_GOOGLE_PLUS_PAGE
             = "https://plus.google.com/communities/117573393008661621052";
@@ -66,6 +70,7 @@ public class AboutSettingsFragment extends BasePreferenceFragmentCompat {
         mAboutPreference.setTitle(getString(R.string.app_name));
         mAboutPreference.setSummary(getString(R.string.powered_by, mVersionLabel.toString()));
         launchSMSsyncWebsite();
+        launchPrivacy();
         launchTransifex();
         launchForums();
         launchGooglePlus();
@@ -80,6 +85,14 @@ public class AboutSettingsFragment extends BasePreferenceFragmentCompat {
         // When the about us item is clicked at the Settings screen, open a URL
         mAboutPreference.setOnPreferenceClickListener(preference -> {
             openUrl(SMSSYNC_WEB_PAGE);
+            return true;
+        });
+    }
+
+    private void launchPrivacy() {
+        Preference privacyPreference = findPreference(KEY_PRIVACY);
+        privacyPreference.setOnPreferenceClickListener(preference -> {
+            openUrl(PRIVACY_NOTICE_PAGE);
             return true;
         });
     }

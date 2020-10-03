@@ -118,7 +118,7 @@ public class ServiceControl {
             final Intent intent = new Intent(mContext,
                     MessageResultsScheduledReceiver.class);
             Logger.log(CLASS_TAG, "Message Results service started - interval: " + interval);
-            mFileManager.appendAndClose("Message Results service started - interval: " + interval);
+            mFileManager.append("Message Results service started - interval: " + interval);
             // run the service
             runServices(intent, ServiceConstants.MESSAGE_RESULTS_SCHEDULED_SERVICE_REQUEST_CODE,
                     interval);
